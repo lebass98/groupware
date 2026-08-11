@@ -527,6 +527,26 @@ const App = {
     document.getElementById('request-modal').classList.remove('active');
   },
 
+  selectReqType(typeVal, chipEl) {
+    const selectEl = document.getElementById('req-type');
+    if (selectEl) selectEl.value = typeVal;
+
+    const chips = document.querySelectorAll('.request-chip');
+    chips.forEach(c => c.classList.remove('active'));
+    if (chipEl) chipEl.classList.add('active');
+  },
+
+  syncReqTypeChip(typeVal) {
+    const chips = document.querySelectorAll('.request-chip');
+    chips.forEach(c => {
+      if (c.innerText.includes(typeVal)) {
+        c.classList.add('active');
+      } else {
+        c.classList.remove('active');
+      }
+    });
+  },
+
   submitRequest() {
     const reqType = document.getElementById('req-type').value;
     const reqReason = document.getElementById('req-reason').value || '개인 사유';

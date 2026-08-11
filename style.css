@@ -1124,6 +1124,30 @@ body.dark .bottom-nav {
   box-shadow: 0 8px 20px rgba(0, 82, 208, 0.25);
 }
 
+/* Request Chips */
+.request-chip {
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(162, 171, 215, 0.2);
+  background: var(--surface-container-low);
+  color: var(--on-surface-variant);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.request-chip:hover {
+  background: var(--surface-container);
+}
+
+.request-chip.active {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  border-color: var(--primary);
+  font-weight: 700;
+}
+
 /* Toast Notifications */
 .toast-container {
   position: fixed;

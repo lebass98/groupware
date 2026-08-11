@@ -441,36 +441,64 @@
     </div>
   </div>
 
-  <!-- Manual Log/Request Modal -->
+  <!-- Manual Log/Request Modal (Stitch Fluid Attendant Style) -->
   <div class="modal-overlay" id="request-modal">
     <div class="modal-card">
+      <!-- Modal Header -->
       <div class="modal-header">
-        <h3 class="modal-title">근태 / 휴가 신청</h3>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-xl">event_note</span>
+          </div>
+          <div>
+            <h3 class="modal-title text-left">근태 / 휴가 신청</h3>
+            <p class="text-xs text-on-surface-variant font-medium text-left">신청 구분을 선택하고 제출해 주세요.</p>
+          </div>
+        </div>
         <button class="icon-btn" onclick="App.closeRequestModal()">
-          <span class="material-symbols-outlined">close</span>
+          <span class="material-symbols-outlined text-lg">close</span>
         </button>
       </div>
 
-      <div class="input-group">
-        <label style="font-size: 0.85rem; font-weight: 700;">신청 구분</label>
-        <select class="input-field" id="req-type">
-          <option value="연차">연차 휴가</option>
-          <option value="반차">오전/오후 반차</option>
-          <option value="외근">외부 근무 (외근)</option>
-          <option value="재택">재택 근무</option>
-          <option value="수동출근">수동 출퇴근 정정</option>
+      <!-- Quick Category Selection Pills -->
+      <div class="space-y-1.5 text-left mt-1">
+        <label class="input-label">신청 구분 빠른 선택</label>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="request-chip active" onclick="App.selectReqType('연차', this)">🏖️ 연차 (잔여 12일)</button>
+          <button type="button" class="request-chip" onclick="App.selectReqType('반차', this)">🌗 반차</button>
+          <button type="button" class="request-chip" onclick="App.selectReqType('재택', this)">🏠 재택근무</button>
+          <button type="button" class="request-chip" onclick="App.selectReqType('외근', this)">💼 외근</button>
+        </div>
+      </div>
+
+      <!-- Select Dropdown -->
+      <div class="space-y-1.5 text-left">
+        <label class="input-label">상세 구분</label>
+        <select class="input-field-custom cursor-pointer" id="req-type" onchange="App.syncReqTypeChip(this.value)">
+          <option value="연차">연차 휴가 (1일)</option>
+          <option value="반차">오전/오후 반차 (0.5일)</option>
+          <option value="외근">외부 근무 (외근/출장)</option>
+          <option value="재택">재택 근무 (Remote)</option>
+          <option value="수동출근">수동 출퇴근 시간 정정</option>
         </select>
       </div>
 
-      <div class="input-group">
-        <label style="font-size: 0.85rem; font-weight: 700;">사유 및 설명</label>
-        <textarea class="input-field" id="req-reason" rows="3" placeholder="신청 사유를 입력하세요 (예: 개인 사유, 고객사 미팅)"></textarea>
+      <!-- Reason Field -->
+      <div class="space-y-1.5 text-left">
+        <label class="input-label">신청 사유 및 상세 설명</label>
+        <textarea class="input-field-custom resize-none" id="req-reason" rows="3" placeholder="신청 사유를 입력하세요 (예: 개인 사유, 고객사 미팅)"></textarea>
       </div>
 
-      <button type="button" class="btn-primary" onclick="App.submitRequest()">
-        <span class="material-symbols-outlined">send</span>
-        <span>신청서 제출하기</span>
-      </button>
+      <!-- Buttons Row -->
+      <div class="modal-btn-group pt-2">
+        <button type="button" class="modal-btn modal-btn-cancel" onclick="App.closeRequestModal()">
+          취소
+        </button>
+        <button type="button" class="modal-btn modal-btn-confirm gap-2" onclick="App.submitRequest()">
+          <span class="material-symbols-outlined text-lg">send</span>
+          <span>신청서 제출</span>
+        </button>
+      </div>
     </div>
   </div>
 
