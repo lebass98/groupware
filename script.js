@@ -158,6 +158,83 @@ const App = {
         fileSize: '2.4 MB'
       }
     ],
+    currentDirectoryCategory: 'all',
+    currentEmployeeId: 1,
+    employees: [
+      {
+        id: 1,
+        name: '김종규',
+        dept: '기획팀',
+        role: '팀장',
+        phone: '010-4781-7808',
+        tel: '070-8805-1647',
+        email: 'john@wordncode.com',
+        avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&auto=format&fit=crop&q=80',
+        status: 'active',
+        statusText: ''
+      },
+      {
+        id: 2,
+        name: '김민수',
+        dept: '개발팀',
+        role: '수석 엔지니어',
+        phone: '010-3829-1029',
+        tel: '070-8805-1002',
+        email: 'minsu.kim@company.com',
+        avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80',
+        status: 'active',
+        statusText: ''
+      },
+      {
+        id: 3,
+        name: '이지은',
+        dept: '마케팅팀',
+        role: '팀장',
+        phone: '010-9182-3741',
+        tel: '070-8805-1003',
+        email: 'jieun.lee@company.com',
+        avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80',
+        status: 'online',
+        statusText: '근무중'
+      },
+      {
+        id: 4,
+        name: '박성호',
+        dept: '경영지원팀',
+        role: '매니저',
+        phone: '010-4820-9182',
+        tel: '070-8805-1004',
+        email: 'sungho.park@company.com',
+        avatar: '',
+        avatarInitial: 'P',
+        status: 'active',
+        statusText: ''
+      },
+      {
+        id: 5,
+        name: '최동훈',
+        dept: '디자인팀',
+        role: '시니어 디자이너',
+        phone: '010-7492-0192',
+        tel: '070-8805-1005',
+        email: 'donghoon.choi@company.com',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80',
+        status: 'vacation',
+        statusText: '휴가중 (10/12 - 10/15)'
+      },
+      {
+        id: 6,
+        name: '이재광',
+        dept: '운영관리팀',
+        role: '시니어 운영 관리자',
+        phone: '010-9928-3012',
+        tel: '070-8805-9928',
+        email: 'jaegwang@company.com',
+        avatar: 'profile.png',
+        status: 'active',
+        statusText: ''
+      }
+    ],
     logs: [
       {
         id: 1,
@@ -500,6 +577,8 @@ const App = {
       this.renderLogs();
     } else if (targetId === 'screen-notice-list') {
       this.renderNotices();
+    } else if (targetId === 'screen-directory') {
+      this.renderDirectory();
     }
   },
 
@@ -509,6 +588,148 @@ const App = {
 
     const target = document.getElementById(screenId);
     if (target) target.classList.add('active');
+  },
+
+  // Employee Directory Methods
+  renderDirectory() {
+    const container = document.getElementById('directory-list-container');
+    const totalCountEl = document.getElementById('directory-total-count');
+    if (!container) return;
+
+    const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
+    const cat = this.state.currentDirectoryCategory || 'all';
+
+    let filtered = this.state.employees.filter(emp => {
+      const matchCat = cat === 'all' || emp.dept === cat;
+      const matchQuery = !query || 
+        emp.name.toLowerCase().includes(query) || 
+        emp.dept.toLowerCase().includes(query) || 
+        emp.role.toLowerCase().includes(query) ||
+        emp.phone.includes(query);
+      return matchCat && matchQuery;
+    });
+
+    if (totalCountEl) totalCountEl.innerText = `총 ${filtered.length}명`;
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium">
+          <span class="material-symbols-outlined text-4xl text-outline mb-2">person_search</span>
+          <p>검색 조건에 맞는 임직원이 없습니다.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(emp => {
+      const isVacation = emp.status === 'vacation';
+      const opacityClass = isVacation ? 'opacity-65' : '';
+      
+      let avatarHtml = '';
+      if (emp.avatar) {
+        avatarHtml = `
+          <div class="h-14 w-14 rounded-full overflow-hidden bg-surface-container-low relative flex-shrink-0 cursor-pointer" onclick="App.openDirectoryDetail(${emp.id})">
+            ${emp.status === 'online' ? '<div class="absolute bottom-0 right-0 h-3 w-3 bg-secondary rounded-full border-2 border-surface-container-lowest z-10"></div>' : ''}
+            ${emp.status === 'vacation' ? '<div class="absolute bottom-0 right-0 h-3 w-3 bg-tertiary rounded-full border-2 border-surface-container-lowest z-10"></div>' : ''}
+            <img alt="${emp.name}" class="w-full h-full object-cover hover:scale-105 transition-transform" src="${emp.avatar}" />
+          </div>
+        `;
+      } else {
+        avatarHtml = `
+          <div class="h-14 w-14 rounded-full overflow-hidden bg-surface-container-low flex items-center justify-center text-primary-dim font-headline font-bold text-xl flex-shrink-0 cursor-pointer hover:bg-surface-container transition-colors" onclick="App.openDirectoryDetail(${emp.id})">
+            ${emp.avatarInitial || emp.name.charAt(0)}
+          </div>
+        `;
+      }
+
+      const statusBadgeHtml = emp.statusText ? `<p class="font-body text-xs text-tertiary mt-1 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">event_busy</span> ${emp.statusText}</p>` : '';
+
+      return `
+        <div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between shadow-[0_2px_12px_rgba(35,44,81,0.04)] transition-all duration-200 hover:-translate-y-0.5 ${opacityClass} text-left">
+          <div class="flex items-center space-x-4">
+            ${avatarHtml}
+            <div class="cursor-pointer" onclick="App.openDirectoryDetail(${emp.id})">
+              <h3 class="font-headline font-bold text-on-surface text-base hover:text-primary transition-colors">${emp.name}</h3>
+              <p class="font-body text-xs text-on-surface-variant mt-0.5">${emp.dept} • ${emp.role}</p>
+              ${statusBadgeHtml}
+            </div>
+          </div>
+          <div class="flex space-x-2">
+            <button onclick="App.callEmployee('${emp.phone}')" class="h-10 w-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-primary/10 transition-colors active:scale-95">
+              <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">call</span>
+            </button>
+            <button onclick="App.chatEmployee('${emp.name}')" class="h-10 w-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-primary/10 transition-colors active:scale-95">
+              <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">chat</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  selectDirectoryCategory(dept, chipEl) {
+    this.state.currentDirectoryCategory = dept;
+    const chips = document.querySelectorAll('.dir-chip');
+    chips.forEach(c => {
+      c.classList.remove('bg-primary', 'text-on-primary', 'active');
+      c.classList.add('bg-surface-container', 'text-on-surface-variant');
+    });
+    if (chipEl) {
+      chipEl.classList.remove('bg-surface-container', 'text-on-surface-variant');
+      chipEl.classList.add('bg-primary', 'text-on-primary', 'active');
+    }
+    this.renderDirectory();
+  },
+
+  filterDirectory() {
+    this.renderDirectory();
+  },
+
+  openDirectoryDetail(empId) {
+    const emp = this.state.employees.find(e => e.id === empId) || this.state.employees[0];
+    this.state.currentEmployeeId = emp.id;
+
+    const nameEl = document.getElementById('dir-detail-name');
+    const roleEl = document.getElementById('dir-detail-role');
+    const phoneEl = document.getElementById('dir-detail-phone');
+    const telEl = document.getElementById('dir-detail-tel');
+    const emailEl = document.getElementById('dir-detail-email');
+    const deptEl = document.getElementById('dir-detail-dept');
+    const avatarWrap = document.getElementById('dir-detail-avatar-wrap');
+
+    if (nameEl) nameEl.innerText = emp.name;
+    if (roleEl) roleEl.innerText = `${emp.dept} / ${emp.role}`;
+    if (phoneEl) phoneEl.innerText = emp.phone;
+    if (telEl) telEl.innerText = emp.tel;
+    if (emailEl) emailEl.innerText = emp.email;
+    if (deptEl) deptEl.innerText = emp.dept;
+
+    if (avatarWrap) {
+      if (emp.avatar) {
+        avatarWrap.innerHTML = `<img class="w-full h-full object-cover" id="dir-detail-avatar-img" src="${emp.avatar}" alt="${emp.name}" />`;
+      } else {
+        avatarWrap.innerHTML = `<div class="font-headline font-bold text-3xl text-primary">${emp.avatarInitial || emp.name.charAt(0)}</div>`;
+      }
+    }
+
+    this.switchTab('screen-directory-detail');
+  },
+
+  callEmployee(phone) {
+    const emp = this.state.employees.find(e => e.id === this.state.currentEmployeeId) || this.state.employees[0];
+    const num = phone || emp.phone;
+    this.showToast(`📞 ${emp.name} (${num}) 통화 연결을 시작합니다.`);
+  },
+
+  chatEmployee(name) {
+    const emp = this.state.employees.find(e => e.id === this.state.currentEmployeeId) || this.state.employees[0];
+    const empName = name || emp.name;
+    this.showToast(`💬 ${empName} 님과의 사내 메신저 대화방이 생성되었습니다.`);
+  },
+
+  emailEmployee() {
+    const emp = this.state.employees.find(e => e.id === this.state.currentEmployeeId) || this.state.employees[0];
+    this.showToast(`✉️ ${emp.name} (${emp.email}) 메일 작성 창을 엽니다.`);
   },
 
   // Notice Methods
