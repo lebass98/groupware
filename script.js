@@ -158,6 +158,9 @@ const App = {
         fileSize: '2.4 MB'
       }
     ],
+    calYear: 2023,
+    calMonth: 10,
+    calSelectedDay: 5,
     currentDirectoryCategory: 'all',
     currentEmployeeId: 1,
     employees: [
@@ -758,6 +761,8 @@ const App = {
       this.renderNotices();
     } else if (targetId === 'screen-directory') {
       this.renderDirectory();
+    } else if (targetId === 'screen-calendar') {
+      this.renderCalendar();
     }
   },
 
@@ -767,6 +772,210 @@ const App = {
 
     const target = document.getElementById(screenId);
     if (target) target.classList.add('active');
+  },
+
+  // Attendance Calendar Methods
+  prevMonth() {
+    if (this.state.calMonth === 1) {
+      this.state.calMonth = 12;
+      this.state.calYear--;
+    } else {
+      this.state.calMonth--;
+    }
+    this.renderCalendar();
+  },
+
+  nextMonth() {
+    if (this.state.calMonth === 12) {
+      this.state.calMonth = 1;
+      this.state.calYear++;
+    } else {
+      this.state.calMonth++;
+    }
+    this.renderCalendar();
+  },
+
+  resetCalendarToToday() {
+    const today = new Date();
+    this.state.calYear = today.getFullYear();
+    this.state.calMonth = today.getMonth() + 1;
+    this.state.calSelectedDay = today.getDate();
+    this.renderCalendar();
+  },
+
+  selectCalendarDate(day) {
+    this.state.calSelectedDay = day;
+    this.renderCalendar();
+  },
+
+  renderCalendar() {
+    const yearEl = document.getElementById('cal-header-year');
+    const monthEl = document.getElementById('cal-header-month');
+    const gridEl = document.getElementById('cal-grid');
+
+    if (!gridEl) return;
+
+    if (yearEl) yearEl.innerText = `${this.state.calYear}년`;
+    if (monthEl) monthEl.innerText = `${this.state.calMonth}월`;
+
+    const year = this.state.calYear;
+    const month = this.state.calMonth;
+    const selectedDay = this.state.calSelectedDay;
+
+    const firstDayOfWeek = new Date(year, month - 1, 1).getDay();
+    const totalDaysInMonth = new Date(year, month, 0).getDate();
+    const prevMonthDays = new Date(year, month - 1, 0).getDate();
+
+    let gridHtml = '';
+
+    for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+      const pDay = prevMonthDays - i;
+      gridHtml += `
+        <div class="text-on-surface-variant/40 flex flex-col items-center gap-1">
+          <span class="w-8 h-8 flex items-center justify-center">${pDay}</span>
+        </div>
+      `;
+    }
+
+    for (let d = 1; d <= totalDaysInMonth; d++) {
+      const dateObj = new Date(year, month - 1, d);
+      const dayOfWeek = dateObj.getDay();
+      const isSelected = (d === selectedDay);
+
+      let textClass = 'text-on-surface';
+      if (dayOfWeek === 0) textClass = 'text-error-dim';
+      else if (dayOfWeek === 6) textClass = 'text-primary-dim';
+
+      let dotHtml = '';
+      if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+        if (d === 5 && month === 10) {
+          dotHtml = '<div class="w-1.5 h-1.5 rounded-full bg-tertiary mt-1"></div>';
+        } else if (d <= 14) {
+          dotHtml = '<div class="w-1.5 h-1.5 rounded-full bg-secondary mt-1"></div>';
+        }
+      }
+
+      if (isSelected) {
+        gridHtml += `
+          <div class="flex flex-col items-center gap-1 relative cursor-pointer" onclick="App.selectCalendarDate(${d})">
+            <span class="w-9 h-9 flex items-center justify-center bg-primary text-on-primary rounded-full font-bold shadow-[0_4px_12px_rgba(0,82,208,0.3)] active:scale-95 transition-transform">${d}</span>
+            ${dotHtml}
+          </div>
+        `;
+      } else {
+        gridHtml += `
+          <div class="flex flex-col items-center gap-1 cursor-pointer hover:bg-surface-container-high/50 rounded-full p-1 transition-colors" onclick="App.selectCalendarDate(${d})">
+            <span class="w-8 h-8 flex items-center justify-center ${textClass} font-semibold">${d}</span>
+            ${dotHtml}
+          </div>
+        `;
+      }
+    }
+
+    const totalCellsRendered = firstDayOfWeek + totalDaysInMonth;
+    const remainingCells = (totalCellsRendered > 35 ? 42 : 35) - totalCellsRendered;
+
+    for (let n = 1; n <= remainingCells; n++) {
+      gridHtml += `
+        <div class="text-on-surface-variant/40 flex flex-col items-center gap-1">
+          <span class="w-8 h-8 flex items-center justify-center">${n}</span>
+        </div>
+      `;
+    }
+
+    gridEl.innerHTML = gridHtml;
+    this.renderCalendarLogs();
+  },
+
+  renderCalendarLogs() {
+    const selectedDateStrEl = document.getElementById('cal-selected-date-str');
+    const selectedDateStatusEl = document.getElementById('cal-selected-date-status');
+    const logsContainer = document.getElementById('cal-daily-logs-container');
+
+    if (!logsContainer) return;
+
+    const year = this.state.calYear;
+    const month = this.state.calMonth;
+    const day = this.state.calSelectedDay;
+
+    const dateObj = new Date(year, month - 1, day);
+    const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+    const dayName = dayNames[dateObj.getDay()];
+
+    if (selectedDateStrEl) {
+      selectedDateStrEl.innerText = `${month}월 ${day}일 ${dayName}`;
+    }
+
+    const isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6);
+
+    if (isWeekend) {
+      if (selectedDateStatusEl) {
+        selectedDateStatusEl.innerText = '주말';
+        selectedDateStatusEl.className = 'text-xs font-bold text-outline px-3 py-1 bg-surface-container rounded-full';
+      }
+      logsContainer.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-[0_2px_12px_rgba(35,44,81,0.04)]">
+          <span class="material-symbols-outlined text-4xl text-outline mb-2">weekend</span>
+          <p class="font-bold text-on-surface text-base">주말 휴무일입니다.</p>
+          <p class="text-xs text-text-muted mt-1">지정된 근무 일정이 없습니다.</p>
+        </div>
+      `;
+      return;
+    }
+
+    let isLate = (day === 5 && month === 10);
+    
+    if (selectedDateStatusEl) {
+      if (isLate) {
+        selectedDateStatusEl.innerText = '지각';
+        selectedDateStatusEl.className = 'text-xs font-bold text-tertiary px-3 py-1 bg-tertiary/15 rounded-full';
+      } else {
+        selectedDateStatusEl.innerText = '정상 출근';
+        selectedDateStatusEl.className = 'text-xs font-bold text-secondary px-3 py-1 bg-secondary/15 rounded-full';
+      }
+    }
+
+    const checkInTime = isLate ? '09:15 AM' : '08:54 AM';
+    const checkOutTime = '18:00 PM';
+
+    logsContainer.innerHTML = `
+      <!-- Log Card 1: Check In -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-3.5 relative overflow-hidden shadow-[0_2px_12px_rgba(35,44,81,0.04)]">
+        <div class="flex justify-between items-start">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-secondary/15 text-secondary flex items-center justify-center">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">login</span>
+            </div>
+            <div>
+              <p class="font-body text-xs text-on-surface-variant font-medium">출근 시간</p>
+              <p class="font-headline text-lg font-extrabold text-on-surface">${checkInTime}</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 bg-surface-container rounded-full text-xs font-bold text-on-surface-variant">본사</span>
+        </div>
+        <div class="h-[1px] w-full bg-outline-variant/15"></div>
+        <p class="font-body text-xs text-on-surface-variant flex items-center gap-2">
+          <span class="material-symbols-outlined text-base text-primary" style="font-variation-settings: 'FILL' 0;">location_on</span>
+          <span>서울시 강남구 테헤란로 123 (본사 사옥)</span>
+        </p>
+      </div>
+
+      <!-- Log Card 2: Check Out -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-3.5 relative overflow-hidden shadow-[0_2px_12px_rgba(35,44,81,0.04)]">
+        <div class="flex justify-between items-start">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">logout</span>
+            </div>
+            <div>
+              <p class="font-body text-xs text-on-surface-variant font-medium">퇴근 시간 (예정)</p>
+              <p class="font-headline text-lg font-extrabold text-on-surface">${checkOutTime}</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold">8시간 45분 근무</span>
+        </div>
+      </div>
+    `;
   },
 
   // Employee Directory Methods

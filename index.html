@@ -202,7 +202,15 @@
             <span class="font-label font-bold text-on-surface text-sm">출퇴근 체크</span>
           </button>
 
-          <!-- Card 2: Leave Request -->
+          <!-- Card 2: Attendance Calendar (근태 캘린더) -->
+          <button type="button" onclick="App.switchTab('screen-calendar')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+            </div>
+            <span class="font-label font-bold text-on-surface text-sm">근태 캘린더</span>
+          </button>
+
+          <!-- Card 3: Leave Request -->
           <button type="button" onclick="App.switchTab('screen-request')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">flight_takeoff</span>
@@ -210,7 +218,7 @@
             <span class="font-label font-bold text-on-surface text-sm">휴가 신청</span>
           </button>
 
-          <!-- Card 3: Notice (공지사항) -->
+          <!-- Card 4: Notice (공지사항) -->
           <button type="button" onclick="App.switchTab('screen-notice-list')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">campaign</span>
@@ -218,7 +226,7 @@
             <span class="font-label font-bold text-on-surface text-sm">공지사항</span>
           </button>
 
-          <!-- Card 4: Directory (주소록) -->
+          <!-- Card 5: Directory (주소록) -->
           <button type="button" onclick="App.switchTab('screen-directory')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">contact_page</span>
@@ -226,7 +234,7 @@
             <span class="font-label font-bold text-on-surface text-sm">주소록</span>
           </button>
 
-          <!-- Card 5: Attendance Logs -->
+          <!-- Card 6: Attendance Logs -->
           <button type="button" onclick="App.switchTab('screen-logs')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">event_note</span>
@@ -234,7 +242,7 @@
             <span class="font-label font-bold text-on-surface text-sm">출석 기록</span>
           </button>
 
-          <!-- Card 6: My Profile -->
+          <!-- Card 7: My Profile -->
           <button type="button" onclick="App.switchTab('screen-profile')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">person</span>
@@ -826,11 +834,82 @@
       </main>
     </section>
 
+    <!-- SCREEN 10: CALENDAR / ATTENDANCE CALENDAR (Exact Stitch (6) 1:1 Design) -->
+    <section class="screen-view" id="screen-calendar">
+      <main class="w-full max-w-md mx-auto py-2 text-left space-y-6 pb-20">
+        <!-- Header / Date Selector -->
+        <section class="flex flex-col gap-2">
+          <div class="flex justify-between items-end">
+            <div>
+              <p class="font-body text-on-surface-variant text-sm font-medium" id="cal-header-year">2023년</p>
+              <h1 class="font-headline text-3xl font-extrabold text-on-surface flex items-center gap-2">
+                <span id="cal-header-month">10월</span>
+                <button aria-label="Today" onclick="App.resetCalendarToToday()" class="text-primary hover:bg-surface-container transition-colors rounded-full p-1 active:scale-90" title="오늘 날짜로 이동">
+                  <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">today</span>
+                </button>
+              </h1>
+            </div>
+            <div class="flex gap-2">
+              <button aria-label="Previous Month" onclick="App.prevMonth()" class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chevron_left</span>
+              </button>
+              <button aria-label="Next Month" onclick="App.nextMonth()" class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Calendar Component (Bento-style wrapper) -->
+        <section class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-4 relative overflow-hidden shadow-sm">
+          <!-- Decorative blur element -->
+          <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+          
+          <!-- Days of Week -->
+          <div class="grid grid-cols-7 text-center font-body text-xs font-bold text-on-surface-variant mb-1">
+            <div class="text-error-dim">일</div>
+            <div>월</div>
+            <div>화</div>
+            <div>수</div>
+            <div>목</div>
+            <div>금</div>
+            <div class="text-primary-dim">토</div>
+          </div>
+
+          <!-- Calendar Grid (Rendered dynamically) -->
+          <div class="grid grid-cols-7 gap-y-3 gap-x-1 text-center font-body text-sm" id="cal-grid">
+            <!-- Dynamically populated by App.renderCalendar() -->
+          </div>
+        </section>
+
+        <!-- Daily Logs / Event List -->
+        <section class="flex flex-col gap-4">
+          <div class="flex justify-between items-center px-1">
+            <h2 class="font-headline text-xl font-bold text-on-surface" id="cal-selected-date-str">10월 5일 목요일</h2>
+            <span class="text-xs font-bold text-tertiary px-3 py-1 bg-tertiary/10 rounded-full" id="cal-selected-date-status">지각</span>
+          </div>
+
+          <div class="space-y-3.5" id="cal-daily-logs-container">
+            <!-- Dynamically populated by App.renderCalendarLogs() -->
+          </div>
+        </section>
+      </main>
+
+      <!-- Floating Action Button (FAB) -->
+      <button aria-label="Check In Quick Action" onclick="App.switchTab('screen-checkin')" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform z-40">
+        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">touch_app</span>
+      </button>
+    </section>
+
     <!-- Glassmorphism Bottom Navigation (5 Core Items) -->
     <nav class="bottom-nav" id="bottom-nav" style="display: none;">
       <a class="nav-item active" data-target="screen-home" onclick="App.switchTab('screen-home', this)">
         <span class="material-symbols-outlined">grid_view</span>
         <span>홈</span>
+      </a>
+      <a class="nav-item" data-target="screen-calendar" onclick="App.switchTab('screen-calendar', this)">
+        <span class="material-symbols-outlined">calendar_month</span>
+        <span>캘린더</span>
       </a>
       <a class="nav-item" data-target="screen-directory" onclick="App.switchTab('screen-directory', this)">
         <span class="material-symbols-outlined">contact_page</span>
@@ -839,10 +918,6 @@
       <a class="nav-item" data-target="screen-notice-list" onclick="App.switchTab('screen-notice-list', this)">
         <span class="material-symbols-outlined">campaign</span>
         <span>공지사항</span>
-      </a>
-      <a class="nav-item" data-target="screen-request" onclick="App.switchTab('screen-request', this)">
-        <span class="material-symbols-outlined">event_available</span>
-        <span>휴가 신청</span>
       </a>
       <a class="nav-item" data-target="screen-profile" onclick="App.switchTab('screen-profile', this)">
         <span class="material-symbols-outlined">person</span>
