@@ -868,6 +868,63 @@ const App = {
     this.switchTab('screen-home');
   },
 
+  // =========================================
+  // 플립형 공지 티커
+  // =========================================
+  startNoticeTicker() {
+    const track = document.getElementById('ticker-track');
+    if (!track) return;
+
+    // 공지사항 목록에서 제목만 추출 (최신 순, 최대 6개)
+    const items = this.state.notices
+      .slice(0, 6)
+      .map(n => (n.isPinned ? `📌 ${n.title}` : n.title));
+
+    if (items.length === 0) return;
+
+    let currentIdx = 0;
+
+    // 첫 아이템 즉시 표시
+    const firstEl = track.querySelector('.ticker-item');
+    if (firstEl) {
+      firstEl.textContent = items[0];
+      firstEl.className = 'ticker-item static';
+    }
+
+    // 기존 인터벌 중지
+    if (this._tickerInterval) clearInterval(this._tickerInterval);
+
+    this._tickerInterval = setInterval(() => {
+      const nextIdx = (currentIdx + 1) % items.length;
+
+      // 현재 아이템: flip-out 애니메이션
+      const currentEl = track.querySelector('.ticker-item');
+      if (!currentEl) return;
+
+      currentEl.className = 'ticker-item flip-out';
+
+      // 새 아이템 엘리먼트 생성: flip-in 애니메이션
+      const nextEl = document.createElement('div');
+      nextEl.className = 'ticker-item flip-in';
+      nextEl.textContent = items[nextIdx];
+      track.appendChild(nextEl);
+
+      // 이전 아이템 제거 (0.4초 후)
+      setTimeout(() => {
+        if (currentEl.parentNode) currentEl.parentNode.removeChild(currentEl);
+      }, 380);
+
+      currentIdx = nextIdx;
+    }, 3500);
+  },
+
+  stopNoticeTicker() {
+    if (this._tickerInterval) {
+      clearInterval(this._tickerInterval);
+      this._tickerInterval = null;
+    }
+  },
+
   // Navigation
   switchTab(targetId, navEl) {
     this.state.activeTab = targetId;
