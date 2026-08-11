@@ -291,6 +291,14 @@
             </div>
             <span class="font-label font-bold text-on-surface text-sm">내 정보</span>
           </button>
+
+          <!-- Card 8: Finance (재무/경비) -->
+          <button type="button" onclick="App.switchTab('screen-finance')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+            </div>
+            <span class="font-label font-bold text-on-surface text-sm">재무/경비</span>
+          </button>
         </div>
 
         <!-- Recent Notice Preview Banner -->
@@ -944,6 +952,203 @@
       <!-- Floating Action Button (FAB) -->
       <button aria-label="Check In Quick Action" onclick="App.switchTab('screen-checkin')" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform z-40">
         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">touch_app</span>
+      </button>
+    </section>
+
+    <!-- SCREEN 11: FINANCE / EXPENSE & REPORT (재무/경비) -->
+    <section class="screen-view" id="screen-finance">
+      <main class="w-full max-w-md mx-auto py-2 text-left space-y-6 pb-20">
+        <!-- Header -->
+        <section class="flex flex-col gap-2">
+          <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight" id="finance-main-title">지출결의서</h2>
+          <p class="text-on-surface-variant font-body text-sm" id="finance-main-sub">미결의 내역 및 결의서를 관리하세요.</p>
+        </section>
+
+        <!-- Tab Switcher (Bento style toggle) -->
+        <div class="bg-surface-container-low p-1.5 rounded-xl flex gap-1 mb-6 w-full shadow-sm">
+          <button id="finance-tab-expense" onclick="App.switchFinanceTab('expense')" class="flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center">
+            지출결의서
+          </button>
+          <button id="finance-tab-report" onclick="App.switchFinanceTab('report')" class="flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center">
+            품의서
+          </button>
+        </div>
+
+        <!-- ==================== TAB 1: EXPENSE CONTENT ==================== -->
+        <div id="finance-expense-content" class="space-y-6">
+          <!-- Card Type Bento Chips -->
+          <div class="bg-surface-container-lowest p-1 rounded-xl flex gap-1 w-fit shadow-sm">
+            <button id="card-filter-corp" onclick="App.filterCardType('corp')" class="py-1.5 px-4 rounded-lg text-xs font-label font-bold text-on-primary bg-primary transition-all">
+              법인카드
+            </button>
+            <button id="card-filter-personal" onclick="App.filterCardType('personal')" class="py-1.5 px-4 rounded-lg text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-low transition-all">
+              개인카드
+            </button>
+          </div>
+
+          <!-- Summary Hero Card -->
+          <section class="bg-surface-container-low rounded-2xl p-6 relative overflow-hidden group shadow-sm">
+            <div class="absolute -right-12 -top-12 w-48 h-48 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors duration-500 pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col gap-2">
+              <h3 class="font-label text-xs text-on-surface-variant font-bold uppercase tracking-wider" id="expense-summary-label">미결의 내역</h3>
+              <div class="flex items-baseline gap-2">
+                <span class="font-headline text-4xl font-extrabold text-primary tracking-tight" id="expense-summary-count">4건</span>
+                <span class="font-body text-base text-outline">대기중</span>
+              </div>
+              <p class="text-xs text-on-surface-variant mt-2 max-w-[85%] leading-relaxed" id="expense-summary-sub">
+                이번 달 법인카드 사용 내역 중 아직 결의되지 않은 항목들입니다.
+              </p>
+            </div>
+          </section>
+
+          <!-- Transaction List -->
+          <section class="flex flex-col gap-4">
+            <h3 class="font-headline text-lg font-bold text-on-surface px-1">최근 내역 (11월)</h3>
+            <div class="flex flex-col gap-4" id="expense-list-container">
+              <!-- Item 1 -->
+              <article class="bg-surface-container-lowest rounded-2xl p-5 shadow-[0_4px_16px_rgba(35,44,81,0.02)] flex flex-col gap-4 border border-outline-variant/10">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+                      <span class="material-symbols-outlined filled">restaurant</span>
+                    </div>
+                    <div class="flex flex-col text-left">
+                      <span class="font-body text-xs text-on-surface-variant mb-0.5">11. 24 (금) 12:30</span>
+                      <strong class="font-headline text-base text-on-surface leading-tight">(주)맛있는식당 강남점</strong>
+                    </div>
+                  </div>
+                  <div class="text-right flex flex-col items-end">
+                    <span class="font-headline text-lg font-bold text-on-surface">85,000원</span>
+                    <span class="text-[10px] font-label font-bold px-2 py-0.5 rounded-full bg-error-container/20 text-error-dim mt-1">미결의</span>
+                  </div>
+                </div>
+                <button onclick="App.writeExpenseResolve('(주)맛있는식당 강남점', 85000)" class="w-full py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-xs font-semibold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px]">edit_document</span>
+                  결의서 작성
+                </button>
+              </article>
+
+              <!-- Item 2 -->
+              <article class="bg-surface-container-lowest rounded-2xl p-5 shadow-[0_4px_16px_rgba(35,44,81,0.02)] flex flex-col gap-4 border border-outline-variant/10">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-tertiary shrink-0">
+                      <span class="material-symbols-outlined filled">local_taxi</span>
+                    </div>
+                    <div class="flex flex-col text-left">
+                      <span class="font-body text-xs text-on-surface-variant mb-0.5">11. 23 (목) 20:15</span>
+                      <strong class="font-headline text-base text-on-surface leading-tight">카카오T택시</strong>
+                    </div>
+                  </div>
+                  <div class="text-right flex flex-col items-end">
+                    <span class="font-headline text-lg font-bold text-on-surface">18,500원</span>
+                    <span class="text-[10px] font-label font-bold px-2 py-0.5 rounded-full bg-error-container/20 text-error-dim mt-1">미결의</span>
+                  </div>
+                </div>
+                <button onclick="App.writeExpenseResolve('카카오T택시', 18500)" class="w-full py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-xs font-semibold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px]">edit_document</span>
+                  결의서 작성
+                </button>
+              </article>
+
+              <!-- Item 3 -->
+              <article class="bg-surface-container-lowest/60 rounded-2xl p-5 flex flex-col gap-3 border border-outline-variant/10 opacity-70">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-outline shrink-0">
+                      <span class="material-symbols-outlined filled">coffee</span>
+                    </div>
+                    <div class="flex flex-col text-left">
+                      <span class="font-body text-xs text-outline mb-0.5">11. 22 (수) 14:00</span>
+                      <strong class="font-headline text-base text-on-surface-variant leading-tight">스타벅스 코엑스점</strong>
+                    </div>
+                  </div>
+                  <div class="text-right flex flex-col items-end">
+                    <span class="font-headline text-base font-bold text-on-surface-variant">21,000원</span>
+                    <span class="text-[10px] font-label font-bold px-2 py-0.5 rounded-full bg-secondary-container/30 text-secondary-dim mt-1">완료</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <!-- ==================== TAB 2: REPORT CONTENT ==================== -->
+        <div id="finance-report-content" class="space-y-6 hidden">
+          <!-- Status Filter Chips -->
+          <section class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            <button id="report-filter-all" onclick="App.filterReportStatus('all')" class="whitespace-nowrap px-4 py-2 bg-primary text-on-primary rounded-full font-label text-xs font-semibold shadow-sm transition-transform active:scale-95">전체</button>
+            <button id="report-filter-draft" onclick="App.filterReportStatus('draft')" class="whitespace-nowrap px-4 py-2 bg-surface-container-lowest text-on-surface-variant rounded-full font-label text-xs font-semibold hover:bg-surface-container-low transition-colors active:scale-95">임시저장</button>
+            <button id="report-filter-pending" onclick="App.filterReportStatus('pending')" class="whitespace-nowrap px-4 py-2 bg-surface-container-lowest text-on-surface-variant rounded-full font-label text-xs font-semibold hover:bg-surface-container-low transition-colors active:scale-95">결재대기</button>
+            <button id="report-filter-approved" onclick="App.filterReportStatus('approved')" class="whitespace-nowrap px-4 py-2 bg-surface-container-lowest text-on-surface-variant rounded-full font-label text-xs font-semibold hover:bg-surface-container-low transition-colors active:scale-95">승인완료</button>
+          </section>
+
+          <!-- Request List -->
+          <section class="flex flex-col gap-4" id="report-list-container">
+            <!-- Item 1 -->
+            <article data-status="pending" class="bg-surface-container-lowest rounded-2xl p-5 shadow-[0_4px_16px_rgba(35,44,81,0.02)] flex flex-col gap-4 border border-outline-variant/10">
+              <div class="flex justify-between items-start">
+                <div class="flex flex-col gap-1 text-left">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-tertiary-container/20 text-tertiary-dim font-label text-[10px] font-bold w-fit">
+                    <span class="material-symbols-outlined text-[12px]">pending_actions</span>
+                    결재대기
+                  </span>
+                  <h3 class="font-headline text-base font-bold text-on-surface mt-2 leading-tight">2023년 4분기 마케팅 예산 증액 품의</h3>
+                </div>
+                <span class="text-on-surface-variant font-body text-xs">2023.10.24</span>
+              </div>
+              <div class="flex items-center gap-2 mt-1">
+                <div class="w-6 h-6 rounded-full bg-surface-container-high overflow-hidden">
+                  <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5_BB-f_CanzBEINseddRGKGqWJ6aZuuNAPdBYGwLWebeCwIIolqmbs-JJm6YhqQedc-a2tGm-Q8tPlwGMQojb0_Vig-VX2IqCvCt9a0dTVxVTteKBWVVPycibFv_g_ppThLHac-PjJqjcb1Rue4IBNM_qNfaylqNKJRkrNGwwxFbtYwSVXIXYm-a65-TBSKXLejl8yvtvdUhHMZTF3pJdiTF2siD8GCwoFHNhBDMSLZ1u8NfG3WcKyA" alt="Avatar">
+                </div>
+                <span class="font-body text-xs text-on-surface-variant">결재자: 김철수 팀장</span>
+              </div>
+            </article>
+
+            <!-- Item 2 -->
+            <article data-status="approved" class="bg-surface-container-lowest rounded-2xl p-5 shadow-[0_4px_16px_rgba(35,44,81,0.02)] flex flex-col gap-4 border border-outline-variant/10">
+              <div class="flex justify-between items-start">
+                <div class="flex flex-col gap-1 text-left">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-secondary-container/20 text-secondary-dim font-label text-[10px] font-bold w-fit">
+                    <span class="material-symbols-outlined text-[12px]">check_circle</span>
+                    승인완료
+                  </span>
+                  <h3 class="font-headline text-base font-bold text-on-surface mt-2 leading-tight">신규 디자인 소프트웨어 라이선스 구매</h3>
+                </div>
+                <span class="text-on-surface-variant font-body text-xs">2023.10.20</span>
+              </div>
+              <div class="flex items-center gap-2 mt-1">
+                <div class="w-6 h-6 rounded-full bg-surface-container-high overflow-hidden">
+                  <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFRn-1nymDQCp2F8IvBhrcLN270io4jg6Se-fPjEXp93poyta8VAEba_k-JjGgVLMPp3BimSXSCYTItVF6SNl3egvOynwmjZFu7Ybwdd6q14COG4fdjgBDqXji9ddRyU5qdxA55FZVlReVxce5LGDh33lKUgkI0G__Ix4Yion3-rXpNfjH54KT6PMC8nIGkMHgyQQ-YKrTzmVSaRiL9YSV7H30ma14WBqciR4nXqFEye0R5R1WbbC_hA" alt="Avatar">
+                </div>
+                <span class="font-body text-xs text-on-surface-variant">결재자: 김철수 팀장</span>
+              </div>
+            </article>
+
+            <!-- Item 3 -->
+            <article data-status="draft" class="bg-surface-container-lowest rounded-2xl p-5 shadow-[0_4px_16px_rgba(35,44,81,0.02)] flex flex-col gap-4 border border-outline-variant/10 opacity-80">
+              <div class="flex justify-between items-start">
+                <div class="flex flex-col gap-1 text-left">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-surface-container text-on-surface-variant font-label text-[10px] font-bold w-fit">
+                    <span class="material-symbols-outlined text-[12px]">edit_document</span>
+                    임시저장
+                  </span>
+                  <h3 class="font-headline text-base font-bold text-on-surface mt-2 leading-tight">사내 복지 포인트 지급 기준 변경</h3>
+                </div>
+                <span class="text-on-surface-variant font-body text-xs">2023.10.25</span>
+              </div>
+              <div class="flex items-center justify-between mt-1">
+                <span class="font-body text-xs text-outline">초안 작성 중...</span>
+                <button onclick="App.continueReportDraft()" class="text-primary font-label text-xs font-semibold hover:text-primary-dim transition-colors">이어서 작성</button>
+              </div>
+            </article>
+          </section>
+        </div>
+      </main>
+
+      <!-- Floating Action Button -->
+      <button aria-label="New Finance Action" onclick="App.openNewFinanceRequest()" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform z-40">
+        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">add</span>
       </button>
     </section>
 

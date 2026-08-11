@@ -4,6 +4,22 @@ const App = {
   state: {
     isLoggedIn: false, // Default to FALSE so user starts on Login screen
     activeTab: 'screen-home',
+    finance: {
+      activeTab: 'expense', // 'expense' or 'report'
+      cardFilter: 'corp',   // 'corp' or 'personal'
+      reportFilter: 'all',  // 'all', 'draft', 'pending', 'approved'
+      expenses: {
+        corp: [
+          { id: 1, type: 'restaurant', date: '11. 24 (금) 12:30', title: '(주)맛있는식당 강남점', amount: 85000, status: 'unresolved' },
+          { id: 2, type: 'taxi', date: '11. 23 (목) 20:15', title: '카카오T택시', amount: 18500, status: 'unresolved' },
+          { id: 3, type: 'coffee', date: '11. 22 (수) 14:00', title: '스타벅스 코엑스점', amount: 21000, status: 'completed' }
+        ],
+        personal: [
+          { id: 4, type: 'shopping', date: '11. 25 (토) 10:10', title: '교보문고 강남점 (도서)', amount: 34000, status: 'unresolved' },
+          { id: 5, type: 'coffee', date: '11. 21 (화) 15:45', title: '폴바셋 가산점', amount: 6500, status: 'completed' }
+        ]
+      }
+    },
     isCheckedIn: false,
     checkInTime: null,
     todaySeconds: 0,
@@ -974,6 +990,8 @@ const App = {
       this.renderDirectory();
     } else if (targetId === 'screen-calendar') {
       this.renderCalendar();
+    } else if (targetId === 'screen-finance') {
+      this.renderExpenses();
     }
   },
 
@@ -983,6 +1001,172 @@ const App = {
 
     const target = document.getElementById(screenId);
     if (target) target.classList.add('active');
+  },
+
+  // Finance / Expense & Report Methods
+  switchFinanceTab(tabType) {
+    this.state.finance.activeTab = tabType;
+    
+    const tabExpense = document.getElementById('finance-tab-expense');
+    const tabReport = document.getElementById('finance-tab-report');
+    const contentExpense = document.getElementById('finance-expense-content');
+    const contentReport = document.getElementById('finance-report-content');
+    const titleEl = document.getElementById('finance-main-title');
+    const subEl = document.getElementById('finance-main-sub');
+
+    if (tabType === 'expense') {
+      titleEl.innerText = '지출결의서';
+      subEl.innerText = '미결의 내역 및 결의서를 관리하세요.';
+      
+      tabExpense.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center';
+      tabReport.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center';
+      
+      contentExpense.classList.remove('hidden');
+      contentReport.classList.add('hidden');
+      this.renderExpenses();
+    } else {
+      titleEl.innerText = '품의서';
+      subEl.innerText = '최근 문서 진행 현황을 확인하세요.';
+
+      tabReport.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center';
+      tabExpense.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center';
+
+      contentReport.classList.remove('hidden');
+      contentExpense.classList.add('hidden');
+      this.filterReportStatus(this.state.finance.reportFilter);
+    }
+  },
+
+  filterCardType(cardType) {
+    this.state.finance.cardFilter = cardType;
+    
+    const filterCorp = document.getElementById('card-filter-corp');
+    const filterPersonal = document.getElementById('card-filter-personal');
+
+    if (cardType === 'corp') {
+      filterCorp.className = 'py-1.5 px-4 rounded-lg text-xs font-label font-bold text-on-primary bg-primary transition-all';
+      filterPersonal.className = 'py-1.5 px-4 rounded-lg text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-low transition-all';
+    } else {
+      filterPersonal.className = 'py-1.5 px-4 rounded-lg text-xs font-label font-bold text-on-primary bg-primary transition-all';
+      filterCorp.className = 'py-1.5 px-4 rounded-lg text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-low transition-all';
+    }
+    
+    this.renderExpenses();
+  },
+
+  filterReportStatus(status) {
+    this.state.finance.reportFilter = status;
+    
+    const filters = ['all', 'draft', 'pending', 'approved'];
+    filters.forEach(f => {
+      const el = document.getElementById(`report-filter-${f}`);
+      if (el) {
+        if (f === status) {
+          el.className = 'whitespace-nowrap px-4 py-2 bg-primary text-on-primary rounded-full font-label text-xs font-semibold shadow-sm transition-transform active:scale-95';
+        } else {
+          el.className = 'whitespace-nowrap px-4 py-2 bg-surface-container-lowest text-on-surface-variant rounded-full font-label text-xs font-semibold hover:bg-surface-container-low transition-colors active:scale-95';
+        }
+      }
+    });
+
+    const articles = document.querySelectorAll('#report-list-container article');
+    articles.forEach(article => {
+      const artStatus = article.getAttribute('data-status');
+      if (status === 'all' || artStatus === status) {
+        article.classList.remove('hidden');
+      } else {
+        article.classList.add('hidden');
+      }
+    });
+  },
+
+  writeExpenseResolve(title, amount) {
+    this.showToast(`📝 '${title}' (${amount.toLocaleString()}원) 결의서 작성을 시작합니다.`);
+  },
+
+  continueReportDraft() {
+    this.showToast('📝 임시저장된 품의서 작성을 이어서 시작합니다.');
+  },
+
+  openNewFinanceRequest() {
+    const type = this.state.finance.activeTab === 'expense' ? '결의서' : '품의서';
+    this.showToast(`➕ 신규 ${type} 작성 양식을 엽니다.`);
+  },
+
+  renderExpenses() {
+    const listContainer = document.getElementById('expense-list-container');
+    if (!listContainer) return;
+
+    const currentFilter = this.state.finance.cardFilter;
+    const items = this.state.finance.expenses[currentFilter];
+
+    // 미결의 건수 집계
+    const unresolvedCount = items.filter(i => i.status === 'unresolved').length;
+    const countEl = document.getElementById('expense-summary-count');
+    if (countEl) countEl.innerText = `${unresolvedCount}건`;
+
+    const subEl = document.getElementById('expense-summary-sub');
+    if (subEl) {
+      subEl.innerText = `이번 달 ${currentFilter === 'corp' ? '법인카드' : '개인카드'} 사용 내역 중 아직 결의되지 않은 항목들입니다.`;
+    }
+
+    let html = '';
+    items.forEach(item => {
+      let icon = 'receipt_long';
+      let iconColor = 'text-primary';
+      if (item.type === 'restaurant') { icon = 'restaurant'; }
+      else if (item.type === 'taxi') { icon = 'local_taxi'; iconColor = 'text-tertiary'; }
+      else if (item.type === 'coffee') { icon = 'coffee'; iconColor = 'text-outline'; }
+      else if (item.type === 'shopping') { icon = 'shopping_bag'; iconColor = 'text-secondary'; }
+
+      if (item.status === 'unresolved') {
+        html += `
+          <article class="bg-surface-container-lowest rounded-2xl p-5 shadow-[0_4px_16px_rgba(35,44,81,0.02)] flex flex-col gap-4 border border-outline-variant/10">
+            <div class="flex justify-between items-start">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center ${iconColor} shrink-0">
+                  <span class="material-symbols-outlined filled">${icon}</span>
+                </div>
+                <div class="flex flex-col text-left">
+                  <span class="font-body text-xs text-on-surface-variant mb-0.5">${item.date}</span>
+                  <strong class="font-headline text-base text-on-surface leading-tight">${item.title}</strong>
+                </div>
+              </div>
+              <div class="text-right flex flex-col items-end">
+                <span class="font-headline text-lg font-bold text-on-surface">${item.amount.toLocaleString()}원</span>
+                <span class="text-[10px] font-label font-bold px-2 py-0.5 rounded-full bg-error-container/20 text-error-dim mt-1">미결의</span>
+              </div>
+            </div>
+            <button onclick="App.writeExpenseResolve('${item.title}', ${item.amount})" class="w-full py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-xs font-semibold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px]">edit_document</span>
+              결의서 작성
+            </button>
+          </article>
+        `;
+      } else {
+        html += `
+          <article class="bg-surface-container-lowest/60 rounded-2xl p-5 flex flex-col gap-3 border border-outline-variant/10 opacity-70">
+            <div class="flex justify-between items-start">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center ${iconColor} shrink-0">
+                  <span class="material-symbols-outlined filled">${icon}</span>
+                </div>
+                <div class="flex flex-col text-left">
+                  <span class="font-body text-xs text-outline mb-0.5">${item.date}</span>
+                  <strong class="font-headline text-base text-on-surface-variant leading-tight">${item.title}</strong>
+                </div>
+              </div>
+              <div class="text-right flex flex-col items-end">
+                <span class="font-headline text-base font-bold text-on-surface-variant">${item.amount.toLocaleString()}원</span>
+                <span class="text-[10px] font-label font-bold px-2 py-0.5 rounded-full bg-secondary-container/30 text-secondary-dim mt-1">완료</span>
+              </div>
+            </div>
+          </article>
+        `;
+      }
+    });
+
+    listContainer.innerHTML = html;
   },
 
   // Attendance Calendar Methods
