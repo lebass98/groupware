@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>유동 출결 관리 - Fluid Attendant</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- App Wrapper Container -->
+  <div class="app-container">
+
+    <!-- Top Sticky Header -->
+    <header class="top-header" id="main-header" style="display: none;">
+      <div class="brand-title">
+        <span class="material-symbols-outlined brand-icon filled">touch_app</span>
+        <span>유동 출결 관리</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-toggle-btn" title="테마 변경">
+          <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+        </button>
+        <button class="avatar-btn" id="header-avatar-btn">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="사용자 프로필" id="header-avatar-img" />
+        </button>
+      </div>
+    </header>
+
+    <!-- SCREEN 1: LOGIN -->
+    <section class="screen-view active" id="screen-login">
+      <div class="login-card">
+        <div class="login-logo">
+          <span class="material-symbols-outlined filled" style="font-size: 36px;">touch_app</span>
+        </div>
+        <div>
+          <h1 class="login-title">Fluid Attendant</h1>
+          <p class="login-subtitle">유동 출결 관리 시스템</p>
+        </div>
+
+        <form id="login-form" onsubmit="event.preventDefault(); App.login();">
+          <div class="input-group">
+            <input type="email" id="login-email" class="input-field" placeholder="이메일 주소" value="alex.rivera@company.com" required />
+            <input type="password" id="login-password" class="input-field" placeholder="비밀번호" value="••••••••" required />
+          </div>
+          <button type="submit" class="btn-primary" style="margin-top: 1rem;">
+            <span>로그인</span>
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+        </form>
+
+        <div class="divider-text">또는 원클릭 체험</div>
+
+        <button type="button" class="btn-primary" onclick="App.loginDemo()" style="background: linear-gradient(135deg, #34d399, #059669);">
+          <span class="material-symbols-outlined">bolt</span>
+          <span>데모 계정으로 시작</span>
+        </button>
+
+        <div class="social-btns">
+          <button type="button" class="social-btn" onclick="App.loginDemo('Google')">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+            <span>Google 계정으로 계속</span>
+          </button>
+          <button type="button" class="social-btn naver" onclick="App.loginDemo('Naver')">
+            <span style="font-weight: 900; font-size: 1.1rem; line-height: 1;">N</span>
+            <span>네이버 계정으로 로그인</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: CHECK-IN HOME -->
+    <section class="screen-view" id="screen-checkin">
+      <!-- Greeting Section -->
+      <div class="greeting-section">
+        <div>
+          <p class="greeting-text">좋은 아침입니다, <span id="user-greeting-name">Alex</span>님</p>
+          <div class="live-time">
+            <span id="live-clock">09:42</span>
+            <span class="ampm" id="live-ampm">오전</span>
+          </div>
+        </div>
+        <div class="date-badge">
+          <p class="day" id="live-day">월요일</p>
+          <p class="full-date" id="live-date">2026년 8월 11일</p>
+        </div>
+      </div>
+
+      <!-- Bento Status Card -->
+      <div class="status-card" id="status-card">
+        <div class="status-info">
+          <div class="status-icon-wrapper" id="status-icon-wrap">
+            <span class="material-symbols-outlined" id="status-icon">pending_actions</span>
+          </div>
+          <div>
+            <p class="status-label">오늘의 상태</p>
+            <h3 class="status-title" id="status-title">아직 출근 전입니다</h3>
+          </div>
+        </div>
+        <span class="status-badge" id="status-badge">업무 종료</span>
+      </div>
+
+      <!-- Check-In Pulse Component -->
+      <div class="pulse-section">
+        <div class="pulse-ring-outer"></div>
+        <div class="pulse-ring-inner"></div>
+
+        <button class="pulse-btn" id="pulse-btn" onclick="App.toggleCheckIn()">
+          <div class="pulse-animation"></div>
+          <span class="material-symbols-outlined pulse-icon filled" id="pulse-icon">touch_app</span>
+          <span class="pulse-text" id="pulse-text">출석 체크</span>
+          <span class="pulse-subtext" id="pulse-subtext">원클릭 출근</span>
+        </button>
+
+        <div class="location-indicator" id="location-indicator" onclick="App.refreshLocation()">
+          <span class="material-symbols-outlined loc-icon filled">location_on</span>
+          <span>현재 위치: <strong id="location-text">서울 본사 테크 파크 B동</strong></span>
+          <span class="material-symbols-outlined" style="font-size: 16px; opacity: 0.6;">refresh</span>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-box">
+          <span class="stat-box-title">오늘 근무 시간</span>
+          <span class="stat-box-value" id="today-work-time">0시간 0분 00초</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-box-title">주간 평균 근무</span>
+          <span class="stat-box-value" id="weekly-avg-time">8.4시간</span>
+        </div>
+      </div>
+
+      <!-- Schedule Section -->
+      <div style="margin-top: 1rem;">
+        <h4 class="section-title">오늘의 근무 일정</h4>
+        <div class="schedule-card-group">
+          <div class="schedule-item">
+            <div class="schedule-left">
+              <div class="schedule-bar"></div>
+              <div>
+                <p class="schedule-name">오전 근무</p>
+                <p class="schedule-time">09:00 AM - 01:00 PM</p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined" style="color: var(--primary);">check_circle</span>
+          </div>
+          <div class="schedule-item disabled">
+            <div class="schedule-left">
+              <div class="schedule-bar alt"></div>
+              <div>
+                <p class="schedule-name">오후 근무</p>
+                <p class="schedule-time">02:00 PM - 06:00 PM</p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined" style="color: var(--outline-variant);">schedule</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: ATTENDANCE LOGS -->
+    <section class="screen-view" id="screen-logs">
+      <div class="logs-hero">
+        <div class="logs-hero-card">
+          <span class="logs-hero-title">이번 주 총 기록 시간</span>
+          <span class="logs-hero-value" id="logs-total-hours">38시간 45분</span>
+        </div>
+        <div class="logs-score-card">
+          <span class="material-symbols-outlined filled" style="font-size: 28px; margin-bottom: 0.2rem;">verified</span>
+          <span class="score-num">98%</span>
+          <span class="score-label">근태 점수</span>
+        </div>
+      </div>
+
+      <div class="logs-filter-bar">
+        <div class="filter-pills">
+          <button class="filter-pill active" onclick="App.setLogFilter('all', this)">전체</button>
+          <button class="filter-pill" onclick="App.setLogFilter('week', this)">이번 주</button>
+          <button class="filter-pill" onclick="App.setLogFilter('month', this)">이번 달</button>
+        </div>
+        <button class="add-log-btn" onclick="App.openRequestModal()">
+          <span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+          <span>신청</span>
+        </button>
+      </div>
+
+      <div class="logs-list" id="logs-list-container">
+        <!-- Log items dynamically injected by JS -->
+      </div>
+    </section>
+
+    <!-- SCREEN 4: USER PROFILE -->
+    <section class="screen-view" id="screen-profile">
+      <div class="profile-hero">
+        <div class="profile-banner"></div>
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="프로필 이미지" id="profile-avatar-img" />
+            <div class="profile-edit-badge" onclick="App.editProfilePhoto()">
+              <span class="material-symbols-outlined" style="font-size: 16px;">edit</span>
+            </div>
+          </div>
+          <h2 class="profile-name" id="profile-name-text">알렉스 리버스</h2>
+          <p class="profile-role" id="profile-role-text">시니어 운영 관리자</p>
+          <div class="profile-meta-tags">
+            <span class="meta-tag">ID: FA-99283</span>
+            <span class="meta-tag active">
+              <span class="log-badge-dot"></span> 정상 근무 중
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Cards -->
+      <div class="settings-group">
+        <div class="setting-item">
+          <div class="setting-left">
+            <div class="setting-icon">
+              <span class="material-symbols-outlined">notifications</span>
+            </div>
+            <div>
+              <p class="setting-title">출퇴근 알림</p>
+              <p class="setting-desc">정시 출퇴근 및 잔여시간 알림</p>
+            </div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="notif-toggle" checked onchange="App.toggleSetting('notif', this.checked)" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-left">
+            <div class="setting-icon">
+              <span class="material-symbols-outlined">dark_mode</span>
+            </div>
+            <div>
+              <p class="setting-title">야간 모드 (Dark Theme)</p>
+              <p class="setting-desc">시각적 다크 테마 적용</p>
+            </div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="dark-toggle" onchange="App.toggleDarkMode(this.checked)" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-left">
+            <div class="setting-icon">
+              <span class="material-symbols-outlined">my_location</span>
+            </div>
+            <div>
+              <p class="setting-title">GPS 위치 자동 체크</p>
+              <p class="setting-desc">반경 100m 진입 시 자동 위치 인증</p>
+            </div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="gps-toggle" checked onchange="App.toggleSetting('gps', this.checked)" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="setting-item" onclick="App.openRequestModal()">
+          <div class="setting-left">
+            <div class="setting-icon" style="background: rgba(120, 85, 0, 0.1); color: var(--tertiary);">
+              <span class="material-symbols-outlined">event_note</span>
+            </div>
+            <div>
+              <p class="setting-title">연차 및 휴가 신청</p>
+              <p class="setting-desc">잔여 연차 12일 보유</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined" style="color: var(--outline-variant);">chevron_right</span>
+        </div>
+      </div>
+
+      <button class="btn-logout" id="logout-btn" onclick="App.logout()">
+        <span class="material-symbols-outlined">logout</span>
+        <span>로그아웃</span>
+      </button>
+    </section>
+
+    <!-- Glassmorphism Bottom Navigation -->
+    <nav class="bottom-nav" id="bottom-nav" style="display: none;">
+      <a class="nav-item active" data-target="screen-checkin" onclick="App.switchTab('screen-checkin', this)">
+        <span class="material-symbols-outlined">touch_app</span>
+        <span>출석 체크</span>
+      </a>
+      <a class="nav-item" data-target="screen-logs" onclick="App.switchTab('screen-logs', this)">
+        <span class="material-symbols-outlined">history_edu</span>
+        <span>출석 기록</span>
+      </a>
+      <a class="nav-item" data-target="screen-profile" onclick="App.switchTab('screen-profile', this)">
+        <span class="material-symbols-outlined">person</span>
+        <span>내 정보</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- Confirmation Modal Popup -->
+  <div class="modal-overlay" id="confirm-modal">
+    <div class="modal-card" style="text-align: center;">
+      <div style="width: 56px; height: 56px; border-radius: 9999px; background: rgba(0, 82, 208, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; margin: 0 auto;" id="confirm-modal-icon-wrap">
+        <span class="material-symbols-outlined filled" style="font-size: 32px;" id="confirm-modal-icon">touch_app</span>
+      </div>
+
+      <div>
+        <h3 class="modal-title" id="confirm-modal-title" style="margin-bottom: 0.5rem;">출근 확인</h3>
+        <p style="font-size: 0.9rem; color: var(--on-surface-variant); line-height: 1.5;" id="confirm-modal-msg">
+          현재 위치에서 <strong>출근</strong> 등록을 진행하시겠습니까?
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; width: 100%; margin-top: 0.5rem;">
+        <button type="button" class="btn-primary" style="background: var(--surface-container-high); color: var(--on-surface); box-shadow: none;" onclick="App.closeConfirmModal()">
+          취소
+        </button>
+        <button type="button" class="btn-primary" id="confirm-modal-btn" onclick="App.executeToggleCheckIn()">
+          확인
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manual Log/Request Modal -->
+  <div class="modal-overlay" id="request-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">근태 / 휴가 신청</h3>
+        <button class="icon-btn" onclick="App.closeRequestModal()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="input-group">
+        <label style="font-size: 0.85rem; font-weight: 700;">신청 구분</label>
+        <select class="input-field" id="req-type">
+          <option value="연차">연차 휴가</option>
+          <option value="반차">오전/오후 반차</option>
+          <option value="외근">외부 근무 (외근)</option>
+          <option value="재택">재택 근무</option>
+          <option value="수동출근">수동 출퇴근 정정</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label style="font-size: 0.85rem; font-weight: 700;">사유 및 설명</label>
+        <textarea class="input-field" id="req-reason" rows="3" placeholder="신청 사유를 입력하세요 (예: 개인 사유, 고객사 미팅)"></textarea>
+      </div>
+
+      <button type="button" class="btn-primary" onclick="App.submitRequest()">
+        <span class="material-symbols-outlined">send</span>
+        <span>신청서 제출하기</span>
+      </button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
