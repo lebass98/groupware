@@ -210,12 +210,12 @@
             <span class="font-label font-bold text-on-surface text-sm">휴가 신청</span>
           </button>
 
-          <!-- Card 3: My Profile -->
-          <button type="button" onclick="App.switchTab('screen-profile')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
-            <div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-              <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">person</span>
+          <!-- Card 3: Notice (공지사항) -->
+          <button type="button" onclick="App.switchTab('screen-notice-list')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">campaign</span>
             </div>
-            <span class="font-label font-bold text-on-surface text-sm">내 정보</span>
+            <span class="font-label font-bold text-on-surface text-sm">공지사항</span>
           </button>
 
           <!-- Card 4: Attendance Logs -->
@@ -225,10 +225,28 @@
             </div>
             <span class="font-label font-bold text-on-surface text-sm">출석 기록</span>
           </button>
+
+          <!-- Card 5: My Profile -->
+          <button type="button" onclick="App.switchTab('screen-profile')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group col-span-2 sm:col-span-1">
+            <div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">person</span>
+            </div>
+            <span class="font-label font-bold text-on-surface text-sm">내 정보</span>
+          </button>
+        </div>
+
+        <!-- Recent Notice Preview Banner -->
+        <div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:bg-surface-container-low transition-colors shadow-[0_4px_16px_rgba(35,44,81,0.04)] mt-1 text-left" onclick="App.openNoticeDetail(1)">
+          <div class="flex items-center gap-2.5 truncate">
+            <span class="px-2.5 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary-fixed-dim font-label text-[11px] font-bold shrink-0">[필독]</span>
+            <span class="px-1.5 py-0.5 bg-error text-on-error rounded text-[10px] font-bold uppercase tracking-wider shrink-0">NEW</span>
+            <span class="font-headline font-bold text-xs text-on-surface truncate">2024년 하반기 전사 워크샵 일정 안내</span>
+          </div>
+          <span class="material-symbols-outlined text-outline text-lg shrink-0 ml-1">chevron_right</span>
         </div>
 
         <!-- Quick Status Widget Card -->
-        <div class="bg-primary rounded-2xl p-6 flex items-center justify-between mt-2 cursor-pointer shadow-lg shadow-primary/20 hover:opacity-95 transition-opacity" onclick="App.toggleCheckIn()" id="home-status-widget">
+        <div class="bg-primary rounded-2xl p-6 flex items-center justify-between cursor-pointer shadow-lg shadow-primary/20 hover:opacity-95 transition-opacity" onclick="App.toggleCheckIn()" id="home-status-widget">
           <div class="flex flex-col gap-1">
             <span class="font-label text-on-primary/80 text-xs font-semibold">현재 상태</span>
             <span class="font-headline font-bold text-on-primary text-xl" id="home-status-title">아직 출근 전입니다</span>
@@ -575,11 +593,112 @@
       </main>
     </section>
 
+    <!-- SCREEN 6: NOTICE LIST PAGE (Exact Stitch _1/code.html 1:1 Design) -->
+    <section class="screen-view" id="screen-notice-list">
+      <main class="w-full max-w-md mx-auto py-2 text-left space-y-5 pb-10">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">공지사항</h2>
+            <p class="text-on-surface-variant text-xs mt-1">사내 주요 알림 및 공지사항을 확인하세요.</p>
+          </div>
+          <span class="px-3 py-1 bg-primary/10 text-primary font-bold text-xs rounded-full">실시간 업데이트</span>
+        </div>
+
+        <!-- Search Bar Section -->
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" data-icon="search">search</span>
+          <input class="w-full bg-surface-container-highest rounded-xl py-3.5 pl-12 pr-4 text-sm font-body border-2 border-transparent transition-all duration-300 placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest" id="notice-search-input" onkeyup="App.filterNotices()" placeholder="공지사항 검색..." type="text"/>
+        </div>
+
+        <!-- Quick Category Filter Chips (Bento Style) -->
+        <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" id="notice-category-chips">
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold transition-all active:scale-95 notice-chip active" onclick="App.selectNoticeCategory('all', this)">전체</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest notice-chip" onclick="App.selectNoticeCategory('인사', this)">인사</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest notice-chip" onclick="App.selectNoticeCategory('복지', this)">복지</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest notice-chip" onclick="App.selectNoticeCategory('시스템', this)">시스템</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest notice-chip" onclick="App.selectNoticeCategory('공통', this)">공통</button>
+        </div>
+
+        <!-- Notice Articles Container -->
+        <div class="flex flex-col gap-3.5" id="notice-list-container">
+          <!-- Rendered dynamically by App.renderNotices() -->
+        </div>
+      </main>
+    </section>
+
+    <!-- SCREEN 7: NOTICE DETAIL VIEW PAGE (Exact Stitch _2/code.html 1:1 Design) -->
+    <section class="screen-view" id="screen-notice-detail">
+      <main class="w-full max-w-md mx-auto py-2 text-left space-y-5 pb-16">
+        <!-- Top Navigation Bar Header -->
+        <div class="flex items-center justify-between mb-2">
+          <button onclick="App.switchTab('screen-notice-list')" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors active:scale-95">
+            <span class="material-symbols-outlined text-2xl">arrow_back</span>
+          </button>
+          <span class="font-headline text-lg font-bold text-on-surface">공지사항 상세</span>
+          <div class="w-10"></div>
+        </div>
+
+        <!-- Header Card (Glassmorphism card) -->
+        <div class="bg-surface-container-lowest rounded-2xl p-6 relative overflow-hidden shadow-sm">
+          <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-primary-container"></div>
+          <div class="flex items-center gap-3 mb-3">
+            <span class="bg-primary text-on-primary font-label text-xs font-bold px-3 py-1 rounded-full" id="notice-detail-cat">인사</span>
+            <span class="text-on-surface-variant font-body text-xs" id="notice-detail-date">2024.10.24</span>
+          </div>
+          <h1 class="font-headline text-xl font-bold text-on-surface mb-3 leading-snug" id="notice-detail-title">
+            2024년 하반기 전사 워크샵 일정 안내
+          </h1>
+          <div class="flex items-center gap-2 text-on-surface-variant font-body text-xs border-t border-outline-variant/10 pt-3 mt-2">
+            <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">person</span>
+            <span id="notice-detail-author">관리자</span>
+          </div>
+        </div>
+
+        <!-- Body Content Area -->
+        <div class="bg-surface-container-low rounded-2xl p-6 text-on-surface font-body leading-relaxed space-y-4 text-sm" id="notice-detail-body">
+          <!-- Dynamic Content Body -->
+        </div>
+
+        <!-- Attachments Section -->
+        <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm" id="notice-detail-attachments">
+          <h3 class="font-headline text-base font-bold text-on-surface mb-3 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-xl">attach_file</span>
+            <span>첨부파일</span>
+          </h3>
+          <div class="flex items-center justify-between bg-surface-container hover:bg-surface-container-high transition-colors rounded-xl p-3.5 group cursor-pointer" onclick="App.downloadAttachment()">
+            <div class="flex items-center gap-3 truncate">
+              <span class="material-symbols-outlined text-primary text-2xl">description</span>
+              <div class="flex flex-col truncate">
+                <span class="font-body text-xs font-bold text-on-surface truncate" id="notice-attachment-name">2024_하반기_워크샵_세부안내.pdf</span>
+                <span class="font-label text-[11px] text-on-surface-variant" id="notice-attachment-size">3.8 MB</span>
+              </div>
+            </div>
+            <button type="button" class="bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary rounded-full w-9 h-9 flex items-center justify-center transition-colors shrink-0">
+              <span class="material-symbols-outlined text-lg">download</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bottom Return to List Button -->
+        <div class="pt-2">
+          <button onclick="App.switchTab('screen-notice-list')" class="w-full bg-surface-container-highest text-primary font-headline font-bold text-base py-4 rounded-xl hover:bg-primary-container transition-colors flex justify-center items-center gap-2 shadow-sm active:scale-95">
+            <span class="material-symbols-outlined text-lg">list</span>
+            <span>목록으로</span>
+          </button>
+        </div>
+      </main>
+    </section>
+
     <!-- Glassmorphism Bottom Navigation -->
     <nav class="bottom-nav" id="bottom-nav" style="display: none;">
       <a class="nav-item active" data-target="screen-home" onclick="App.switchTab('screen-home', this)">
         <span class="material-symbols-outlined">grid_view</span>
         <span>홈</span>
+      </a>
+      <a class="nav-item" data-target="screen-notice-list" onclick="App.switchTab('screen-notice-list', this)">
+        <span class="material-symbols-outlined">campaign</span>
+        <span>공지사항</span>
       </a>
       <a class="nav-item" data-target="screen-checkin" onclick="App.switchTab('screen-checkin', this)">
         <span class="material-symbols-outlined">touch_app</span>
