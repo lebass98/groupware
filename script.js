@@ -172,7 +172,7 @@ const App = {
         phone: '010-8885-5177',
         tel: '070-7711-4823',
         email: 'abc@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_abc.png',
+        avatar: './resource/image/profile_abc.png',
         status: 'active',
         statusText: ''
       },
@@ -184,7 +184,7 @@ const App = {
         phone: '010-3712-7932',
         tel: '070-7711-4819',
         email: 'sky@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_sky.png',
+        avatar: './resource/image/profile_sky.png',
         status: 'active',
         statusText: ''
       },
@@ -196,7 +196,7 @@ const App = {
         phone: '010-4781-7808',
         tel: '070-8805-1647',
         email: 'john@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_john.png',
+        avatar: './resource/image/profile_john.png',
         status: 'active',
         statusText: ''
       },
@@ -208,7 +208,7 @@ const App = {
         phone: '010-3230-1573',
         tel: '070-8805-1647',
         email: 'green@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_green.png',
+        avatar: './resource/image/profile_green.png',
         status: 'active',
         statusText: ''
       },
@@ -220,7 +220,7 @@ const App = {
         phone: '010-2635-9110',
         tel: '070-7711-4815',
         email: 'star@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_star_20250326.png',
+        avatar: './resource/image/profile_star_20250326.png',
         status: 'active',
         statusText: ''
       },
@@ -232,7 +232,7 @@ const App = {
         phone: '010-4562-3633',
         tel: '070-7711-4809',
         email: 'you@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_janghyunah.png',
+        avatar: './resource/image/profile_janghyunah.png',
         status: 'active',
         statusText: ''
       },
@@ -244,7 +244,7 @@ const App = {
         phone: '010-2707-5681',
         tel: '070-8805-1646',
         email: 'blue@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_blue.png',
+        avatar: './resource/image/profile_blue.png',
         status: 'active',
         statusText: ''
       },
@@ -256,7 +256,7 @@ const App = {
         phone: '010-8632-0944',
         tel: '070-7711-4821',
         email: 'white@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_white.png',
+        avatar: './resource/image/profile_white.png',
         status: 'active',
         statusText: ''
       },
@@ -268,7 +268,7 @@ const App = {
         phone: '010-8337-0176',
         tel: '070-7711-4810',
         email: 'pink@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_pink____________.png',
+        avatar: './resource/image/profile_pink____________.png',
         status: 'active',
         statusText: ''
       },
@@ -280,7 +280,7 @@ const App = {
         phone: '010-2607-5235',
         tel: '070-7711-4812',
         email: 'gray@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_gray_20240502__.png',
+        avatar: './resource/image/profile_gray_20240502__.png',
         status: 'active',
         statusText: ''
       },
@@ -304,7 +304,7 @@ const App = {
         phone: '010-2362-0263',
         tel: '070-7711-4806',
         email: 'red@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_red_20260602.png',
+        avatar: './resource/image/profile_red_20260602.png',
         status: 'active',
         statusText: ''
       },
@@ -316,7 +316,7 @@ const App = {
         phone: '010-6565-4215',
         tel: '070-7711-4811',
         email: 'pub@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_pub.png',
+        avatar: './resource/image/profile_pub.png',
         status: 'active',
         statusText: ''
       },
@@ -328,7 +328,7 @@ const App = {
         phone: '010-2887-1810',
         tel: '070-8805-1648',
         email: 'mobile@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_mobile.png',
+        avatar: './resource/image/profile_mobile.png',
         status: 'active',
         statusText: ''
       },
@@ -340,7 +340,7 @@ const App = {
         phone: '010-9776-1309',
         tel: '070-7711-4805',
         email: 'pro@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_pro.png',
+        avatar: './resource/image/profile_pro.png',
         status: 'active',
         statusText: ''
       },
@@ -352,7 +352,7 @@ const App = {
         phone: '010-8479-8729',
         tel: '070-7711-1653',
         email: 'spring@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_spring.png',
+        avatar: './resource/image/profile_spring.png',
         status: 'active',
         statusText: ''
       },
@@ -364,7 +364,7 @@ const App = {
         phone: '010-7455-4047',
         tel: '070-7711-4820',
         email: 'jsp@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_jsp.png',
+        avatar: './resource/image/profile_jsp.png',
         status: 'active',
         statusText: ''
       },
@@ -376,7 +376,7 @@ const App = {
         phone: '010-5578-9436',
         tel: '070-7711-4804',
         email: 'help@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_help.png',
+        avatar: './resource/image/profile_help.png',
         status: 'active',
         statusText: ''
       },
@@ -388,7 +388,7 @@ const App = {
         phone: '010-2889-3274',
         tel: '070-7711-4822',
         email: 'apple@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_apple_20250611.png',
+        avatar: './resource/image/profile_apple_20250611.png',
         status: 'active',
         statusText: ''
       },
@@ -400,7 +400,7 @@ const App = {
         phone: '010-4781-7808',
         tel: '070-8805-1647',
         email: 'john@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_john_.png',
+        avatar: './resource/image/profile_john_.png',
         status: 'active',
         statusText: ''
       },
@@ -412,7 +412,7 @@ const App = {
         phone: '010-3533-1662',
         tel: '070-4210-6134',
         email: 'cool@wordncode.com',
-        avatar: 'http://m16.co.kr/phone/resource/image/profile_cool_20241224_lee.png',
+        avatar: './resource/image/profile_cool_20241224_lee.png',
         status: 'active',
         statusText: ''
       }
