@@ -492,7 +492,65 @@ const App = {
       this.startWorkTimer();
     }
 
+    // Auto-fetch real GPS location on init
+    this.updateRealGPSLocation(false);
+
     this.renderUI();
+  },
+
+  // Real GPS Geolocation & Reverse Geocoding
+  updateRealGPSLocation(showNotice = true) {
+    if (!navigator.geolocation) {
+      if (showNotice) this.showToast('⚠️ 기기에서 GPS 지오로케이션을 지원하지 않습니다.');
+      return;
+    }
+
+    if (showNotice) {
+      this.showToast('📡 현재 실시간 GPS 위치를 수신 중입니다...');
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude.toFixed(5);
+        const lng = pos.coords.longitude.toFixed(5);
+
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ko`);
+          const data = await res.json();
+          let addr = '';
+          if (data && data.address) {
+            const a = data.address;
+            const city = a.province || a.city || a.county || '';
+            const district = a.borough || a.suburb || a.district || a.quarter || '';
+            const road = a.road || a.neighbourhood || '';
+            addr = `${city} ${district} ${road}`.trim();
+          }
+          if (!addr && data.display_name) {
+            addr = data.display_name.split(',')[0];
+          }
+          const locStr = addr ? `${addr} (GPS ${lat}, ${lng})` : `위도: ${lat}, 경도: ${lng}`;
+          this.state.currentLocation = locStr;
+          if (showNotice) {
+            this.showToast(`📍 실시간 GPS 연동 성공: ${addr || lat + ', ' + lng}`);
+          }
+        } catch (err) {
+          this.state.currentLocation = `실시간 좌표 (위도: ${lat}, 경도: ${lng})`;
+          if (showNotice) {
+            this.showToast(`📍 GPS 좌표 수신 완료 (${lat}, ${lng})`);
+          }
+        }
+
+        this.saveState();
+        this.renderUI();
+      },
+      (err) => {
+        console.warn('GPS Error:', err);
+        if (showNotice) {
+          this.showToast('⚠️ GPS 수신 실패: 기기 위치 접근 권한을 허용해 주세요.');
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
   },
 
   loadState() {

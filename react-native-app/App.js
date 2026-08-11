@@ -31,6 +31,7 @@ export default function App() {
           thirdPartyCookiesEnabled={true}
           allowFileAccess={true}
           allowsInlineMediaPlayback={true}
+          geolocationEnabled={true}
           renderLoading={() => (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color="#0052D0" />
