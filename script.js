@@ -22,6 +22,7 @@ const App = {
       email: 'jaegwang@company.com',
       role: '시니어 운영 관리자',
       id: 'FA-99283'
+    },
     currentNoticeCategory: 'all',
     currentNoticeId: 1,
     notices: [
