@@ -220,12 +220,12 @@ body.dark .top-header {
 
 .screen-view.active#screen-login {
   display: flex !important;
-  min-height: 80vh;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  padding: 2.5rem 1.5rem;
   text-align: center;
-  padding: 2rem 1.5rem;
 }
 
 @keyframes fadeIn {
@@ -233,134 +233,242 @@ body.dark .top-header {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Login Screen */
+/* Login Screen (Matching Stitch DESIGN.md & code.html) */
+.login-header-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.login-fingerprint-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0, 82, 208, 0.25);
+}
+
+.login-brand-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+}
+
+.login-welcome-wrapper {
+  margin-bottom: 2.25rem;
+  text-align: center;
+}
+
+.login-welcome-heading {
+  font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--on-surface);
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.02em;
+}
+
+.login-welcome-subtext {
+  font-size: 0.95rem;
+  color: var(--on-surface-variant);
+  font-weight: 500;
+}
+
+/* White Login Card */
 .login-card {
   width: 100%;
+  max-width: 400px;
   background: var(--surface-container-lowest);
-  padding: 2.5rem 1.75rem;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  padding: 2.25rem 1.75rem;
+  box-shadow: 0 20px 50px rgba(35, 44, 81, 0.08);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.login-logo {
-  width: 72px;
-  height: 72px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-container));
-  color: var(--on-primary);
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  box-shadow: var(--shadow-lg);
-}
-
-.login-title {
-  font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--on-surface);
-}
-
-.login-subtitle {
-  font-size: 0.9rem;
-  color: var(--on-surface-variant);
-  margin-top: -0.5rem;
-}
-
-.input-group {
+.login-form-space {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.25rem;
   text-align: left;
 }
 
-.input-field {
+.input-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: 0.25rem;
+}
+
+.password-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.find-password-link {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.find-password-link:hover {
+  opacity: 0.8;
+}
+
+.input-field-custom {
   width: 100%;
-  padding: 1rem 1.25rem;
-  background: var(--surface-container-low);
-  border: 1px solid transparent;
+  background: var(--surface-container-highest);
+  border: none;
   border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
   font-size: 0.95rem;
   color: var(--on-surface);
   outline: none;
   transition: all 0.2s ease;
 }
 
-.input-field:focus {
+.input-field-custom:focus {
   background: var(--surface-container-lowest);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(0, 82, 208, 0.15);
+  box-shadow: 0 0 0 2px rgba(0, 82, 208, 0.2);
 }
 
-.btn-primary {
+.btn-primary-gradient {
   width: 100%;
   padding: 1rem;
   border: none;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--primary), var(--primary-dim));
+  background: linear-gradient(135deg, var(--primary), var(--primary-container));
   color: var(--on-primary);
-  font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
-  font-size: 1rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
   box-shadow: var(--shadow-lg);
-  transition: transform 0.2s ease, opacity 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  margin-top: 0.5rem;
 }
 
-.btn-primary:hover {
-  opacity: 0.95;
+.btn-primary-gradient:hover {
+  transform: scale(1.02);
 }
 
-.btn-primary:active {
-  transform: scale(0.97);
+.btn-primary-gradient:active {
+  transform: scale(0.98);
 }
 
-.divider-text {
-  font-size: 0.8rem;
-  color: var(--outline);
-  position: relative;
+/* Divider */
+.login-divider {
+  display: flex;
+  align-items: center;
   margin: 0.5rem 0;
 }
 
-.social-btns {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(162, 171, 215, 0.25);
 }
 
-.social-btn {
-  width: 100%;
+.divider-label {
+  margin: 0 0.85rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--outline);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Social Buttons Grid */
+.social-btns-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.social-btn-card {
   padding: 0.85rem;
-  border: 1px solid rgba(162, 171, 215, 0.3);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(162, 171, 215, 0.2);
   background: var(--surface-container-lowest);
   color: var(--on-surface);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  transition: background 0.2s ease;
+  gap: 0.6rem;
+  transition: all 0.2s ease;
 }
 
-.social-btn:hover {
+.social-btn-card:hover {
   background: var(--surface-container-low);
 }
 
-.social-btn.naver {
+.naver-btn {
   background: #03C75A;
   color: #ffffff;
   border: none;
+}
+
+.naver-btn:hover {
+  opacity: 0.9;
+}
+
+.naver-badge {
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  color: #03C75A;
+  font-size: 0.75rem;
+  font-weight: 900;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Signup Footer */
+.login-signup-footer {
+  margin-top: 1.75rem;
+  font-size: 0.9rem;
+  color: var(--on-surface-variant);
+  font-weight: 500;
+}
+
+.signup-link {
+  color: var(--primary);
+  font-weight: 700;
+  margin-left: 0.35rem;
+  text-decoration: none;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
 }
 
 /* Home / Check-in Screen */
