@@ -9,7 +9,16 @@ const App = {
     todaySeconds: 0,
     timerInterval: null,
     clockInterval: null,
-    currentLocation: '서울 본사 테크 파크 B동',
+    currentLocation: '서울 금천구 벚꽃로 298',
+    gpsLat: null,
+    gpsLng: null,
+    officeLocation: {
+      name: '서울 금천구 벚꽃로 298',
+      address: '서울특별시 금천구 벚꽃로 298 (가산동)',
+      lat: 37.48120,
+      lng: 126.88370,
+      allowedRadiusMeters: 500
+    },
     currentFilter: 'all',
     settings: {
       notif: true,
@@ -697,16 +706,71 @@ const App = {
     if (modal) modal.classList.remove('active');
   },
 
+  // Geofencing Location Calculation & Distance Checking
+  calculateDistanceMeters(lat1, lon1, lat2, lon2) {
+    const R = 6371000;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return Math.round(R * c);
+  },
+
+  checkIsAtOffice() {
+    const target = this.state.officeLocation;
+    const locStr = this.state.currentLocation || '';
+
+    // Check by string address keyword
+    if (locStr.includes('금천구') || locStr.includes('벚꽃로') || locStr.includes('가산')) {
+      return { isAllowed: true, distanceMeter: 0, reason: '지정 오피스 주소 매칭 성공' };
+    }
+
+    // Check by real GPS coordinates
+    if (this.state.gpsLat && this.state.gpsLng) {
+      const dist = this.calculateDistanceMeters(
+        parseFloat(this.state.gpsLat),
+        parseFloat(this.state.gpsLng),
+        target.lat,
+        target.lng
+      );
+      if (dist <= target.allowedRadiusMeters) {
+        return { isAllowed: true, distanceMeter: dist, reason: `지정 반경 내 위치 (${dist}m)` };
+      } else {
+        return { isAllowed: false, distanceMeter: dist, reason: `지정 장소 반경 초과 (${dist}m 이탈)` };
+      }
+    }
+
+    // Default fallback when GPS permission denied or address unverified
+    return { isAllowed: false, distanceMeter: null, reason: 'GPS 위치 미확인' };
+  },
+
   // Called when user clicks "확인" in Confirm Modal
   executeToggleCheckIn() {
     this.closeConfirmModal();
 
     if (!this.state.isCheckedIn) {
+      // GEOFENCE VALIDATION
+      const geo = this.checkIsAtOffice();
+
+      if (!geo.isAllowed) {
+        const distInfo = geo.distanceMeter !== null ? ` (현재 이탈 거리: 약 ${geo.distanceMeter >= 1000 ? (geo.distanceMeter / 1000).toFixed(1) + 'km' : geo.distanceMeter + 'm'})` : '';
+        
+        this.showToast(`⛔ 출근 거부: 지정 장소(서울 금천구 벚꽃로 298) 반경 500m 이내에서만 출근이 가능합니다.`);
+        
+        setTimeout(() => {
+          alert(`⛔ 출근 체크 실패 (위치 제한)\n\n지정된 출근 가능 장소:\n• 서울 금천구 벚꽃로 298 (가산동)\n• 허용 반경: 500m 이내\n\n현재 수신된 위치:\n• ${this.state.currentLocation}${distInfo}\n\n회사 지정 출근 지역으로 이동하신 후 다시 시도해 주세요.`);
+        }, 100);
+        return;
+      }
+
       // EXECUTE CHECK IN
       this.state.isCheckedIn = true;
       this.state.checkInTime = new Date();
       this.startWorkTimer();
-      this.showToast('🎉 출근 체크가 완료되었습니다! 좋은 하루 되세요.');
+      this.showToast('🎉 서울 금천구 벚꽃로 298 출근 체크 성공! 좋은 하루 되세요.');
     } else {
       // EXECUTE CHECK OUT
       const now = new Date();
