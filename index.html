@@ -1070,6 +1070,12 @@
                 </div>
               </article>
             </div>
+
+            <!-- 지출결의서 카드 아래에 위치하는 신규 작성 버튼 -->
+            <button onclick="App.openNewFinanceRequest('expense')" class="w-full py-4 mt-2 bg-surface-container hover:bg-surface-container-high transition-colors text-primary font-label text-sm font-bold rounded-2xl flex justify-center items-center gap-2">
+              <span class="material-symbols-outlined text-lg">add_circle</span>
+              신규 결의서 작성
+            </button>
           </section>
         </div>
 
@@ -1143,13 +1149,14 @@
               </div>
             </article>
           </section>
+
+          <!-- 품의서 카드 아래에 위치하는 신규 작성 버튼 -->
+          <button onclick="App.openNewFinanceRequest('report')" class="w-full py-4 mt-2 bg-surface-container hover:bg-surface-container-high transition-colors text-primary font-label text-sm font-bold rounded-2xl flex justify-center items-center gap-2">
+            <span class="material-symbols-outlined text-lg">add_circle</span>
+            신규 품의서 작성
+          </button>
         </div>
       </main>
-
-      <!-- Floating Action Button -->
-      <button aria-label="New Finance Action" onclick="App.openNewFinanceRequest()" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform z-40">
-        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">add</span>
-      </button>
     </section>
 
     <!-- Glassmorphism Bottom Navigation (5 Core Items) -->
