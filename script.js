@@ -158,9 +158,9 @@ const App = {
         fileSize: '2.4 MB'
       }
     ],
-    calYear: 2023,
-    calMonth: 10,
-    calSelectedDay: 5,
+    calYear: new Date().getFullYear(),
+    calMonth: new Date().getMonth() + 1,
+    calSelectedDay: new Date().getDate(),
     currentDirectoryCategory: 'all',
     currentEmployeeId: 1,
     employees: [
@@ -848,9 +848,9 @@ const App = {
 
       let dotHtml = '';
       if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-        if (d === 5 && month === 10) {
+        if (d === 5) {
           dotHtml = '<div class="w-1.5 h-1.5 rounded-full bg-tertiary mt-1"></div>';
-        } else if (d <= 14) {
+        } else if (d <= new Date().getDate()) {
           dotHtml = '<div class="w-1.5 h-1.5 rounded-full bg-secondary mt-1"></div>';
         }
       }
@@ -923,7 +923,7 @@ const App = {
       return;
     }
 
-    let isLate = (day === 5 && month === 10);
+    let isLate = (day === 5);
     
     if (selectedDateStatusEl) {
       if (isLate) {
