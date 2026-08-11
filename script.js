@@ -3,7 +3,7 @@
 const App = {
   state: {
     isLoggedIn: false, // Default to FALSE so user starts on Login screen
-    activeTab: 'screen-checkin',
+    activeTab: 'screen-home',
     isCheckedIn: false,
     checkInTime: null,
     todaySeconds: 0,
@@ -343,7 +343,7 @@ const App = {
     if (header) header.style.display = 'flex';
     if (nav) nav.style.display = 'flex';
 
-    this.switchTab('screen-checkin');
+    this.switchTab('screen-home');
   },
 
   // Navigation
@@ -383,12 +383,20 @@ const App = {
     const statusTitle = document.getElementById('status-title');
     const statusBadge = document.getElementById('status-badge');
 
+    const homeStatusTitle = document.getElementById('home-status-title');
+    const homeStatusBadge = document.getElementById('home-status-badge');
+    const homeStatusDot = document.getElementById('home-status-dot');
+
     const pulseBtn = document.getElementById('pulse-btn');
     const pulseIcon = document.getElementById('pulse-icon');
     const pulseText = document.getElementById('pulse-text');
     const pulseSubtext = document.getElementById('pulse-subtext');
 
     if (this.state.isCheckedIn) {
+      if (homeStatusTitle) homeStatusTitle.innerText = '근무 중';
+      if (homeStatusBadge) homeStatusBadge.innerText = '09:00 출근';
+      if (homeStatusDot) homeStatusDot.style.background = 'var(--secondary-container)';
+
       if (statusCard) statusCard.classList.add('active');
       if (statusIconWrap) statusIconWrap.style.background = 'rgba(0, 105, 63, 0.15)';
       if (statusIcon) {
@@ -407,6 +415,10 @@ const App = {
       if (pulseText) pulseText.innerText = '퇴근 하기';
       if (pulseSubtext) pulseSubtext.innerText = '업무 종료 체크';
     } else {
+      if (homeStatusTitle) homeStatusTitle.innerText = '아직 출근 전입니다';
+      if (homeStatusBadge) homeStatusBadge.innerText = '원클릭 출근';
+      if (homeStatusDot) homeStatusDot.style.background = 'var(--tertiary-container)';
+
       if (statusCard) statusCard.classList.remove('active');
       if (statusIconWrap) statusIconWrap.style.background = 'rgba(120, 85, 0, 0.1)';
       if (statusIcon) {
