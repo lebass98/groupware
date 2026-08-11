@@ -50,21 +50,205 @@ body.dark {
   --primary: #5e8bff;
   --primary-dim: #3a6ede;
   --primary-container: #1b3b8c;
+  --primary-fixed-dim: #4a72e8;
   --on-primary: #ffffff;
+  --on-primary-container: #c8d8ff;
+
+  --secondary: #27d085;
+  --secondary-container: #004d2e;
+  --on-secondary: #001f12;
+
+  --tertiary: #ecaa00;
+  --tertiary-container: #4a3600;
 
   --surface: #0b1120;
   --surface-container-lowest: #151f32;
   --surface-container-low: #1e293b;
   --surface-container: #334155;
   --surface-container-high: #475569;
-  --surface-container-highest: #64748b;
+  --surface-container-highest: #2d3a4f;
 
   --on-surface: #f1f5f9;
   --on-surface-variant: #94a3b8;
-  --outline-variant: #475569;
+  --outline: #64748b;
+  --outline-variant: #334155;
 
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --error: #ff6b6b;
+  --error-container: #7f1d1d;
+  --on-error: #ffffff;
+
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================================
+   DARK MODE: Input / Textarea / Date 필드
+   ========================================= */
+body.dark input,
+body.dark textarea,
+body.dark input[type="date"],
+body.dark input[type="email"],
+body.dark input[type="password"],
+body.dark input[type="text"] {
+  background-color: var(--surface-container-highest) !important;
+  color: var(--on-surface) !important;
+  border-color: var(--outline-variant) !important;
+  color-scheme: dark;
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder {
+  color: var(--on-surface-variant);
+}
+
+body.dark input:focus,
+body.dark textarea:focus {
+  background-color: var(--surface-container-low) !important;
+}
+
+/* =========================================
+   DARK MODE: 로그인 화면 카드
+   ========================================= */
+body.dark .screen-view#screen-login {
+  background-color: var(--surface);
+}
+
+/* Tailwind bg-surface-container-lowest 다크 재정의 */
+body.dark [class*="bg-surface-container-lowest"] {
+  background-color: var(--surface-container-lowest) !important;
+}
+
+body.dark [class*="bg-surface-container-low"] {
+  background-color: var(--surface-container-low) !important;
+}
+
+body.dark [class*="bg-surface-container-high"] {
+  background-color: var(--surface-container-high) !important;
+}
+
+body.dark [class*="bg-surface-container-highest"] {
+  background-color: var(--surface-container-highest) !important;
+}
+
+body.dark [class*="bg-surface-container"]:not([class*="low"]):not([class*="high"]):not([class*="lowest"]):not([class*="highest"]) {
+  background-color: var(--surface-container) !important;
+}
+
+/* =========================================
+   DARK MODE: 텍스트 색상 재정의
+   ========================================= */
+body.dark [class*="text-on-surface"]:not([class*="variant"]) {
+  color: var(--on-surface);
+}
+
+body.dark [class*="text-on-surface-variant"] {
+  color: var(--on-surface-variant);
+}
+
+/* =========================================
+   DARK MODE: 공지사항 카테고리 칩
+   ========================================= */
+body.dark .notice-chip:not(.active) {
+  background-color: var(--surface-container) !important;
+  color: var(--on-surface-variant) !important;
+}
+
+body.dark .dir-chip:not(.active) {
+  background-color: var(--surface-container) !important;
+  color: var(--on-surface-variant) !important;
+}
+
+/* =========================================
+   DARK MODE: 출근 위치 배지 하드코딩 색 재정의
+   ========================================= */
+body.dark #location-match-badge {
+  filter: brightness(0.85) saturate(1.2);
+}
+
+/* =========================================
+   DARK MODE: 로그인 소셜 버튼 (Google)
+   ========================================= */
+body.dark button.\!border-outline-variant,
+body.dark [class*="border-outline-variant"] {
+  border-color: var(--outline-variant) !important;
+}
+
+/* =========================================
+   DARK MODE: 캘린더 컨테이너
+   ========================================= */
+body.dark [class*="bg-surface-container-low"][class*="rounded-2xl"] {
+  background-color: var(--surface-container-low) !important;
+}
+
+/* =========================================
+   DARK MODE: 하단 네비게이션 활성 아이템
+   ========================================= */
+body.dark .nav-item.active {
+  background: var(--surface-container) !important;
+  color: var(--primary) !important;
+}
+
+/* =========================================
+   DARK MODE: 필터 필 (출석 기록)
+   ========================================= */
+body.dark .filter-pill {
+  color: var(--on-surface-variant);
+}
+
+body.dark .filter-pill.active {
+  background: var(--surface-container-highest);
+  color: var(--primary);
+}
+
+/* =========================================
+   DARK MODE: 모달 카드 내 요소
+   ========================================= */
+body.dark .modal-btn-cancel {
+  background: var(--surface-container-high);
+  color: var(--on-surface);
+}
+
+body.dark .modal-btn-cancel:hover {
+  background: var(--surface-container-highest);
+}
+
+/* =========================================
+   DARK MODE: 테두리 선
+   ========================================= */
+body.dark [class*="border-outline-variant"] {
+  border-color: var(--outline-variant) !important;
+}
+
+/* =========================================
+   DARK MODE: 설정 아이템 hover
+   ========================================= */
+body.dark .setting-item:hover {
+  background: var(--surface-container);
+}
+
+/* =========================================
+   DARK MODE: 버튼 (Return/Back)
+   ========================================= */
+body.dark [class*="bg-surface-container-highest"][class*="text-primary"] {
+  background-color: var(--surface-container-highest) !important;
+  color: var(--primary) !important;
+}
+
+/* =========================================
+   DARK MODE: 체크박스 슬라이더 OFF 상태
+   ========================================= */
+body.dark .slider {
+  background-color: var(--surface-container-high);
+}
+
+/* =========================================
+   DARK MODE: 앱 컨테이너 테두리
+   ========================================= */
+@media (min-width: 768px) {
+  body.dark .app-container {
+    border-color: rgba(255, 255, 255, 0.06);
+  }
 }
 
 * {

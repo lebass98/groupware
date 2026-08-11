@@ -33,7 +33,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   <script id="tailwind-config">
     tailwind.config = {
-      darkMode: "class",
+      darkMode: ["selector", ".dark"],
       theme: {
         extend: {
           colors: {
@@ -144,7 +144,7 @@
         </div>
 
         <!-- Login Form Card (White Container) -->
-        <div class="w-full bg-surface-container-lowest rounded-lg p-6 sm:p-8 shadow-[0_15px_45px_rgba(35,44,81,0.08)]">
+        <div class="w-full bg-surface-container-lowest dark:bg-[#151f32] rounded-lg p-6 sm:p-8 shadow-[0_15px_45px_rgba(35,44,81,0.08)] dark:shadow-[0_15px_45px_rgba(0,0,0,0.4)]">
           <form class="space-y-4 sm:space-y-5" id="login-form" onsubmit="event.preventDefault(); App.login();">
             <!-- Email Field -->
             <div class="space-y-1.5 text-left">

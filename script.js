@@ -1428,15 +1428,17 @@ const App = {
       }
     }
 
-    // Render Dark Mode
+    // Render Dark Mode (body.dark CSS 변수 + Tailwind dark: prefix 동시 적용)
     if (this.state.settings.dark) {
       document.body.classList.add('dark');
+      document.documentElement.classList.add('dark'); // Tailwind dark: prefix 지원
       const darkToggle = document.getElementById('dark-toggle');
       if (darkToggle) darkToggle.checked = true;
       const themeIcon = document.getElementById('theme-icon');
       if (themeIcon) themeIcon.innerText = 'light_mode';
     } else {
       document.body.classList.remove('dark');
+      document.documentElement.classList.remove('dark'); // Tailwind dark: prefix 지원
       const darkToggle = document.getElementById('dark-toggle');
       if (darkToggle) darkToggle.checked = false;
       const themeIcon = document.getElementById('theme-icon');
