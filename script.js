@@ -38,7 +38,7 @@ const App = {
         content: `
           <p class="mb-3">안녕하십니까, 임직원 여러분.</p>
           <p class="mb-3">2024년도 하반기 전사 워크샵 일정을 아래와 같이 안내드리오니, 부서별 일정을 확인하시어 준비해 주시기 바랍니다. 소통과 단합을 위한 다양하고 유익한 프로그램이 준비되어 있습니다.</p>
-          <div class="bg-surface-container rounded-xl p-4 my-4 border-l-4 border-primary">
+          <div class="bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary">
             <h3 class="font-headline font-bold text-primary mb-2 text-sm">워크샵 주요 일정</h3>
             <ul class="list-disc list-inside space-y-1.5 text-xs text-on-surface-variant">
               <li><strong>일시:</strong> 2024년 11월 14일(목) ~ 11월 15일(금) [1박 2일]</li>
@@ -64,7 +64,7 @@ const App = {
         content: `
           <p class="mb-3">안녕하세요, 복지팀입니다.</p>
           <p class="mb-3">임직원분들의 편의 증진을 위해 2024년도 종합 건강검진 지정 제휴 병원을 추가 지정하였습니다.</p>
-          <div class="bg-surface-container rounded-xl p-4 my-4 border-l-4 border-primary">
+          <div class="bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary">
             <h3 class="font-headline font-bold text-primary mb-2 text-sm">신규 제휴 병원 안내</h3>
             <ul class="list-disc list-inside space-y-1.5 text-xs text-on-surface-variant">
               <li>강남 세브란스 검진센터 (서울)</li>
@@ -88,7 +88,7 @@ const App = {
         content: `
           <p class="mb-3">안녕하세요, IT지원팀입니다.</p>
           <p class="mb-3">안정적인 사내 그룹웨어 서비스 제공을 위한 정기 네트워크 점검 작업이 진행됩니다.</p>
-          <div class="bg-surface-container rounded-xl p-4 my-4 border-l-4 border-primary">
+          <div class="bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary">
             <h3 class="font-headline font-bold text-primary mb-2 text-sm">작업 일시 및 영향</h3>
             <ul class="list-disc list-inside space-y-1.5 text-xs text-on-surface-variant">
               <li><strong>점검 시간:</strong> 2024년 10월 27일(일) 02:00 ~ 06:00 (4시간)</li>
@@ -144,7 +144,7 @@ const App = {
         content: `
           <p class="mb-3">안녕하십니까, 임직원 여러분.</p>
           <p class="mb-3">2024년도 귀속 연말정산 일정을 아래와 같이 안내드리오니, 기한 내에 관련 서류를 제출하여 주시기 바랍니다. 올해부터 변경되는 세법 적용 사항이 있으니 첨부된 가이드라인을 반드시 확인해주시길 부탁드립니다.</p>
-          <div class="bg-surface-container rounded-xl p-4 my-4 border-l-4 border-primary">
+          <div class="bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary">
             <h3 class="font-headline font-semibold text-primary mb-2 text-sm">주요 일정</h3>
             <ul class="list-disc list-inside space-y-1.5 text-xs text-on-surface-variant">
               <li>국세청 간소화 서비스 오픈: 2024.01.15</li>
