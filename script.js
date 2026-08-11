@@ -520,6 +520,7 @@ const App = {
 
   // Modal Handlers
   openRequestModal() {
+    this.calculateLeaveDays();
     document.getElementById('request-modal').classList.add('active');
   },
 
@@ -527,29 +528,44 @@ const App = {
     document.getElementById('request-modal').classList.remove('active');
   },
 
-  selectReqType(typeVal, chipEl) {
-    const selectEl = document.getElementById('req-type');
-    if (selectEl) selectEl.value = typeVal;
-
-    const chips = document.querySelectorAll('.request-chip');
-    chips.forEach(c => c.classList.remove('active'));
-    if (chipEl) chipEl.classList.add('active');
+  onLeaveTypeChange(typeVal) {
+    this.state.currentLeaveType = typeVal;
+    this.calculateLeaveDays();
   },
 
-  syncReqTypeChip(typeVal) {
-    const chips = document.querySelectorAll('.request-chip');
-    chips.forEach(c => {
-      if (c.innerText.includes(typeVal)) {
-        c.classList.add('active');
-      } else {
-        c.classList.remove('active');
-      }
-    });
+  calculateLeaveDays() {
+    const startEl = document.getElementById('leave-start-date');
+    const endEl = document.getElementById('leave-end-date');
+    const countEl = document.getElementById('leave-days-count');
+
+    if (!startEl || !endEl || !countEl) return;
+
+    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value || '연차';
+    if (selectedType === '반차') {
+      countEl.innerText = '총 0.5일';
+      return;
+    }
+
+    const startDate = new Date(startEl.value);
+    const endDate = new Date(endEl.value);
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      countEl.innerText = '총 1일';
+      return;
+    }
+
+    const diffTime = endDate.getTime() - startDate.getTime();
+    const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1);
+
+    countEl.innerText = `총 ${diffDays}일`;
   },
 
   submitRequest() {
-    const reqType = document.getElementById('req-type').value;
-    const reqReason = document.getElementById('req-reason').value || '개인 사유';
+    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value || '연차';
+    const startDate = document.getElementById('leave-start-date')?.value || '';
+    const endDate = document.getElementById('leave-end-date')?.value || '';
+    const reason = document.getElementById('leave-reason-text')?.value || '개인 사유';
+    const countText = document.getElementById('leave-days-count')?.innerText || '총 1일';
 
     const now = new Date();
     const daysArr = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
@@ -559,7 +575,7 @@ const App = {
       monthStr: `${now.getMonth() + 1}월`,
       dayNum: String(now.getDate()),
       dayName: daysArr[now.getDay()],
-      statusText: `${reqType} • 신청 완료 (${reqReason})`,
+      statusText: `${selectedType} • ${countText} (${reason})`,
       statusType: 'remote',
       checkInTimeStr: '승인 대기',
       checkOutTimeStr: '-',
@@ -569,7 +585,7 @@ const App = {
     this.state.logs.unshift(newLog);
     this.saveState();
     this.closeRequestModal();
-    this.showToast(`✅ [${reqType}] 신청서가 성공적으로 제출되었습니다.`);
+    this.showToast(`✅ [${selectedType}] ${countText} 신청서가 성공적으로 제출되었습니다.`);
     
     if (this.state.activeTab === 'screen-logs') {
       this.renderLogs();

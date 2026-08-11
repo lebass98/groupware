@@ -441,64 +441,130 @@
     </div>
   </div>
 
-  <!-- Manual Log/Request Modal (Stitch Fluid Attendant Style) -->
+  <!-- Manual Log/Request Modal (Exact Stitch code.html 1:1 Design) -->
   <div class="modal-overlay" id="request-modal">
-    <div class="modal-card">
+    <div class="modal-card max-w-md max-h-[90vh] overflow-y-auto" style="padding: 1.5rem;">
       <!-- Modal Header -->
-      <div class="modal-header">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
-            <span class="material-symbols-outlined text-xl">event_note</span>
-          </div>
-          <div>
-            <h3 class="modal-title text-left">근태 / 휴가 신청</h3>
-            <p class="text-xs text-on-surface-variant font-medium text-left">신청 구분을 선택하고 제출해 주세요.</p>
-          </div>
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <h2 class="font-headline font-bold text-2xl text-on-surface tracking-tight text-left">휴가 신청</h2>
+          <p class="text-on-surface-variant text-xs mt-1 text-left">팀원들과 원활한 일정을 위해 미리 신청해주세요.</p>
         </div>
         <button class="icon-btn" onclick="App.closeRequestModal()">
           <span class="material-symbols-outlined text-lg">close</span>
         </button>
       </div>
 
-      <!-- Quick Category Selection Pills -->
-      <div class="space-y-1.5 text-left mt-1">
-        <label class="input-label">신청 구분 빠른 선택</label>
-        <div class="flex flex-wrap gap-2">
-          <button type="button" class="request-chip active" onclick="App.selectReqType('연차', this)">🏖️ 연차 (잔여 12일)</button>
-          <button type="button" class="request-chip" onclick="App.selectReqType('반차', this)">🌗 반차</button>
-          <button type="button" class="request-chip" onclick="App.selectReqType('재택', this)">🏠 재택근무</button>
-          <button type="button" class="request-chip" onclick="App.selectReqType('외근', this)">💼 외근</button>
+      <!-- Leave Balance Card (Bento Style) -->
+      <div class="bg-surface-container rounded-2xl p-5 relative overflow-hidden group mb-5 text-left">
+        <div class="absolute -right-8 -top-8 w-28 h-28 bg-primary/10 rounded-full blur-2xl"></div>
+        <div class="flex items-start justify-between relative z-10">
+          <div>
+            <p class="text-on-surface-variant text-xs font-medium">잔여 연차</p>
+            <div class="flex items-baseline gap-1 mt-1">
+              <span class="font-headline font-bold text-3xl text-primary" id="bento-remain-days">12</span>
+              <span class="font-bold text-on-surface-variant text-sm">일</span>
+            </div>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-[0_4px_12px_rgba(35,44,81,0.04)]">
+            <span class="material-symbols-outlined text-primary text-xl" data-icon="event_available">event_available</span>
+          </div>
+        </div>
+        <div class="mt-4 flex gap-4 text-xs font-medium border-t border-outline-variant/15 pt-3">
+          <div class="flex-1">
+            <span class="text-on-surface-variant">총 부여:</span> <span class="text-on-surface font-bold">15일</span>
+          </div>
+          <div class="flex-1">
+            <span class="text-on-surface-variant">사용 완료:</span> <span class="text-on-surface font-bold" id="bento-used-days">3일</span>
+          </div>
         </div>
       </div>
 
-      <!-- Select Dropdown -->
-      <div class="space-y-1.5 text-left">
-        <label class="input-label">상세 구분</label>
-        <select class="input-field-custom cursor-pointer" id="req-type" onchange="App.syncReqTypeChip(this.value)">
-          <option value="연차">연차 휴가 (1일)</option>
-          <option value="반차">오전/오후 반차 (0.5일)</option>
-          <option value="외근">외부 근무 (외근/출장)</option>
-          <option value="재택">재택 근무 (Remote)</option>
-          <option value="수동출근">수동 출퇴근 시간 정정</option>
-        </select>
-      </div>
+      <!-- Leave Request Form -->
+      <form class="space-y-5 text-left" id="leave-request-form" onsubmit="event.preventDefault(); App.submitRequest();">
+        <!-- Leave Type Grid -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">휴가 종류</label>
+          <div class="grid grid-cols-2 gap-2.5">
+            <label class="relative cursor-pointer">
+              <input checked="" class="peer sr-only" name="leave_type" type="radio" value="연차" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-3 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
+                연차
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="leave_type" type="radio" value="반차" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-3 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
+                반차
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="leave_type" type="radio" value="병가" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-3 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
+                병가
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="leave_type" type="radio" value="기타" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-3 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
+                기타
+              </div>
+            </label>
+          </div>
+        </div>
 
-      <!-- Reason Field -->
-      <div class="space-y-1.5 text-left">
-        <label class="input-label">신청 사유 및 상세 설명</label>
-        <textarea class="input-field-custom resize-none" id="req-reason" rows="3" placeholder="신청 사유를 입력하세요 (예: 개인 사유, 고객사 미팅)"></textarea>
-      </div>
+        <!-- Schedule Selection -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">일정</label>
+          <div class="flex flex-col gap-3 bg-surface-container-low rounded-xl p-3.5">
+            <!-- Start Date -->
+            <div class="relative group">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <span class="material-symbols-outlined text-outline text-lg" data-icon="calendar_today">calendar_today</span>
+              </div>
+              <input id="leave-start-date" class="w-full pl-11 pr-16 py-3 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-11" onchange="App.calculateLeaveDays()">
+              <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-primary bg-primary-container/30 px-2 py-0.5 rounded-md">시작</span>
+            </div>
 
-      <!-- Buttons Row -->
-      <div class="modal-btn-group pt-2">
-        <button type="button" class="modal-btn modal-btn-cancel" onclick="App.closeRequestModal()">
-          취소
-        </button>
-        <button type="button" class="modal-btn modal-btn-confirm gap-2" onclick="App.submitRequest()">
-          <span class="material-symbols-outlined text-lg">send</span>
-          <span>신청서 제출</span>
-        </button>
-      </div>
+            <!-- Connector -->
+            <div class="flex justify-center -my-2 relative z-10">
+              <div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center border-4 border-surface-container-low">
+                <span class="material-symbols-outlined text-outline text-xs" data-icon="arrow_downward">arrow_downward</span>
+              </div>
+            </div>
+
+            <!-- End Date -->
+            <div class="relative group">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <span class="material-symbols-outlined text-outline text-lg" data-icon="event">event</span>
+              </div>
+              <input id="leave-end-date" class="w-full pl-11 pr-16 py-3 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-12" onchange="App.calculateLeaveDays()">
+              <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-tertiary bg-tertiary-container/30 px-2 py-0.5 rounded-md">종료</span>
+            </div>
+
+            <div class="text-right px-1">
+              <span class="text-xs font-bold text-primary" id="leave-days-count">총 2일</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reason Textarea -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">신청 사유</label>
+          <textarea id="leave-reason-text" class="w-full p-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline resize-none" placeholder="휴가 사유를 간단히 입력해주세요 (선택)" rows="2.5"></textarea>
+        </div>
+
+        <!-- Buttons Row -->
+        <div class="modal-btn-group pt-2">
+          <button type="button" class="modal-btn modal-btn-cancel" onclick="App.closeRequestModal()">
+            취소
+          </button>
+          <button type="submit" class="modal-btn modal-btn-confirm gap-2">
+            <span>신청하기</span>
+            <span class="material-symbols-outlined text-lg" data-icon="send">send</span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
