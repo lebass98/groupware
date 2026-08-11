@@ -423,18 +423,18 @@
         <span class="material-symbols-outlined filled" style="font-size: 32px;" id="confirm-modal-icon">touch_app</span>
       </div>
 
-      <div>
+      <div style="margin-top: 0.5rem;">
         <h3 class="modal-title" id="confirm-modal-title" style="margin-bottom: 0.5rem;">출근 확인</h3>
         <p style="font-size: 0.9rem; color: var(--on-surface-variant); line-height: 1.5;" id="confirm-modal-msg">
           현재 위치에서 <strong>출근</strong> 등록을 진행하시겠습니까?
         </p>
       </div>
 
-      <div style="display: flex; gap: 0.75rem; width: 100%; margin-top: 0.5rem;">
-        <button type="button" class="btn-primary" style="background: var(--surface-container-high); color: var(--on-surface); box-shadow: none;" onclick="App.closeConfirmModal()">
+      <div class="modal-btn-group">
+        <button type="button" class="modal-btn modal-btn-cancel" onclick="App.closeConfirmModal()">
           취소
         </button>
-        <button type="button" class="btn-primary" id="confirm-modal-btn" onclick="App.executeToggleCheckIn()">
+        <button type="button" class="modal-btn modal-btn-confirm" id="confirm-modal-btn" onclick="App.executeToggleCheckIn()">
           확인
         </button>
       </div>
