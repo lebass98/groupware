@@ -1080,17 +1080,159 @@ const App = {
     });
   },
 
+  // Close finance modals
+  closeFinanceModal(type) {
+    const modalId = type === 'expense' ? 'modal-expense-write' : 'modal-report-write';
+    const modalEl = document.getElementById(modalId);
+    if (modalEl) modalEl.classList.add('hidden');
+    
+    // Reset forms
+    const formId = type === 'expense' ? 'form-expense-write' : 'form-report-write';
+    const formEl = document.getElementById(formId);
+    if (formEl) {
+      formEl.reset();
+      if (type === 'expense') {
+        const fileLabel = document.getElementById('expense-receipt-name');
+        if (fileLabel) fileLabel.innerText = '첨부된 파일 없음';
+      }
+    }
+  },
+
+  // Mock Receipt attachment simulation
+  attachMockReceipt() {
+    const fileLabel = document.getElementById('expense-receipt-name');
+    if (fileLabel) {
+      fileLabel.innerText = 'receipt_2026_08_11.png';
+      this.showToast('📎 가상의 영수증 이미지 파일이 첨부되었습니다.');
+    }
+  },
+
   writeExpenseResolve(title, amount) {
-    this.showToast(`📝 '${title}' (${amount.toLocaleString()}원) 결의서 작성을 시작합니다.`);
+    this.openNewFinanceRequest('expense');
+    
+    // Prefill vendor and amount
+    const storeInput = document.getElementById('expense-input-store');
+    const amountInput = document.getElementById('expense-input-amount');
+    
+    if (storeInput) storeInput.value = title;
+    if (amountInput) amountInput.value = amount;
   },
 
   continueReportDraft() {
-    this.showToast('📝 임시저장된 품의서 작성을 이어서 시작합니다.');
+    this.openNewFinanceRequest('report');
+    
+    // Prefill draft info
+    const titleInput = document.getElementById('report-input-title');
+    const contentInput = document.getElementById('report-input-content');
+    
+    if (titleInput) titleInput.value = '사내 복지 포인트 지급 기준 변경';
+    if (contentInput) contentInput.value = '사내 복지 포인트 지급 한도 및 사용처 다양화에 따른 지급 세부 기준 개선 품의서 초안입니다.';
   },
 
-  openNewFinanceRequest() {
-    const type = this.state.finance.activeTab === 'expense' ? '결의서' : '품의서';
-    this.showToast(`➕ 신규 ${type} 작성 양식을 엽니다.`);
+  openNewFinanceRequest(forcedType = null) {
+    const activeTab = forcedType || this.state.finance.activeTab;
+    const modalId = activeTab === 'expense' ? 'modal-expense-write' : 'modal-report-write';
+    const modalEl = document.getElementById(modalId);
+    if (!modalEl) return;
+
+    modalEl.classList.remove('hidden');
+    
+    // Set default today date for expense input
+    if (activeTab === 'expense') {
+      const today = new Date().toISOString().substring(0, 10);
+      const dateEl = document.getElementById('expense-input-date');
+      if (dateEl) dateEl.value = today;
+    }
+  },
+
+  submitExpenseWrite() {
+    const store = document.getElementById('expense-input-store').value;
+    const amount = parseInt(document.getElementById('expense-input-amount').value, 10) || 0;
+    const dateInput = document.getElementById('expense-input-date').value;
+    const category = document.getElementById('expense-input-category').value;
+    
+    // Format date string (e.g., "11. 24 (금) 12:30")
+    const dateObj = dateInput ? new Date(dateInput) : new Date();
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    const formattedDate = `${dateObj.getMonth() + 1}. ${dateObj.getDate()} (${days[dateObj.getDay()]}) 12:00`;
+
+    const cardFilter = this.state.finance.cardFilter;
+    const newExpense = {
+      id: Date.now(),
+      type: category || 'restaurant',
+      date: formattedDate,
+      title: store,
+      amount: amount,
+      status: 'unresolved'
+    };
+
+    // Add to state
+    this.state.finance.expenses[cardFilter].unshift(newExpense);
+    
+    // Re-render
+    this.renderExpenses();
+    this.closeFinanceModal('expense');
+    this.showToast('🎉 지출결의서 작성이 정상적으로 처리되었습니다!');
+  },
+
+  submitReportWrite(isDraft = false) {
+    const title = document.getElementById('report-input-title').value;
+    const approver = document.getElementById('report-input-approver').value;
+    
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
+
+    const status = isDraft ? 'draft' : 'pending';
+    const badgeClass = isDraft ? 'bg-surface-container text-on-surface-variant' : 'bg-tertiary-container/20 text-tertiary-dim';
+    const badgeIcon = isDraft ? 'edit_document' : 'pending_actions';
+    const badgeText = isDraft ? '임시저장' : '결재대기';
+
+    const article = document.createElement('article');
+    article.setAttribute('data-status', status);
+    article.className = `bg-surface-container-lowest rounded-2xl p-5 shadow-[0_4px_16px_rgba(35,44,81,0.02)] flex flex-col gap-4 border border-outline-variant/10 ${isDraft ? 'opacity-80' : ''}`;
+
+    let bottomHtml = '';
+    if (isDraft) {
+      bottomHtml = `
+        <div class="flex items-center justify-between mt-1">
+          <span class="font-body text-xs text-outline">초안 작성 중...</span>
+          <button onclick="App.continueReportDraft()" class="text-primary font-label text-xs font-semibold hover:text-primary-dim transition-colors">이어서 작성</button>
+        </div>
+      `;
+    } else {
+      bottomHtml = `
+        <div class="flex items-center gap-2 mt-1">
+          <div class="w-6 h-6 rounded-full bg-surface-container-high overflow-hidden">
+            <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5_BB-f_CanzBEINseddRGKGqWJ6aZuuNAPdBYGwLWebeCwIIolqmbs-JJm6YhqQedc-a2tGm-Q8tPlwGMQojb0_Vig-VX2IqCvCt9a0dTVxVTteKBWVVPycibFv_g_ppThLHac-PjJqjcb1Rue4IBNM_qNfaylqNKJRkrNGwwxFbtYwSVXIXYm-a65-TBSKXLejl8yvtvdUhHMZTF3pJdiTF2siD8GCwoFHNhBDMSLZ1u8NfG3WcKyA" alt="Avatar">
+          </div>
+          <span class="font-body text-xs text-on-surface-variant">결재자: ${approver}</span>
+        </div>
+      `;
+    }
+
+    article.innerHTML = `
+      <div class="flex justify-between items-start">
+        <div class="flex flex-col gap-1 text-left">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm ${badgeClass} font-label text-[10px] font-bold w-fit">
+            <span class="material-symbols-outlined text-[12px]">${badgeIcon}</span>
+            ${badgeText}
+          </span>
+          <h3 class="font-headline text-base font-bold text-on-surface mt-2 leading-tight">${title}</h3>
+        </div>
+        <span class="text-on-surface-variant font-body text-xs">${todayStr}</span>
+      </div>
+      ${bottomHtml}
+    `;
+
+    const container = document.getElementById('report-list-container');
+    if (container) {
+      container.insertBefore(article, container.firstChild);
+    }
+
+    // Refresh view
+    this.filterReportStatus(this.state.finance.reportFilter);
+    this.closeFinanceModal('report');
+    this.showToast(isDraft ? '💾 품의서가 임시저장되었습니다.' : '🚀 결재 요청 품의서가 성공적으로 등록되었습니다.');
   },
 
   renderExpenses() {

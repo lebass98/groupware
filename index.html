@@ -1330,6 +1330,137 @@
     </div>
   </div>
 
+  <!-- ==================== FINANCE WRITE MODALS ==================== -->
+  <!-- 1. 지출결의서 작성 모달 -->
+  <div id="modal-expense-write" class="fixed inset-0 z-[100] hidden">
+    <!-- backdrop -->
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="App.closeFinanceModal('expense')"></div>
+    <!-- bottom sheet panel -->
+    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[480px] bg-surface-container-lowest rounded-t-[2.5rem] p-6 shadow-[0_-10px_30px_rgba(0,0,0,0.15)] flex flex-col gap-5 border-t border-outline-variant/10 animate-slide-up transition-transform duration-300 ease-out box-sizing-border-box">
+      <!-- header -->
+      <div class="flex justify-between items-center pb-2">
+        <h3 class="font-headline text-lg font-bold text-on-surface">지출결의서 작성</h3>
+        <button onclick="App.closeFinanceModal('expense')" class="p-1 rounded-full hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-on-surface">close</span>
+        </button>
+      </div>
+
+      <!-- form fields -->
+      <form id="form-expense-write" class="space-y-4 text-left pb-6" onsubmit="event.preventDefault(); App.submitExpenseWrite();">
+        <!-- Date -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">결제 일자</label>
+          <div class="relative">
+            <input type="date" id="expense-input-date" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
+          </div>
+        </div>
+
+        <!-- Store / Vendor -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">사용처</label>
+          <input type="text" id="expense-input-store" placeholder="결제처 이름을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
+        </div>
+
+        <!-- Amount -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">금액</label>
+          <div class="relative flex items-center">
+            <input type="number" id="expense-input-amount" placeholder="0" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 pr-12 text-sm text-on-surface text-right font-headline font-bold focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
+            <span class="absolute right-5 font-body text-sm text-on-surface-variant">원</span>
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">항목</label>
+          <select id="expense-input-category" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all appearance-none">
+            <option value="" disabled selected>카테고리 선택</option>
+            <option value="restaurant">식비 (식당)</option>
+            <option value="taxi">교통비 (택시/대중교통)</option>
+            <option value="coffee">도서/기타 (카페/도서)</option>
+            <option value="shopping">소모품비 (쇼핑)</option>
+          </select>
+        </div>
+
+        <!-- Memo / Description -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">내용</label>
+          <textarea id="expense-input-memo" rows="3" placeholder="상세 내용을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all resize-none"></textarea>
+        </div>
+
+        <!-- Receipt Mock Attachment -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">영수증 첨부</label>
+          <div class="flex items-center gap-3">
+            <button type="button" onclick="App.attachMockReceipt()" class="px-4 py-3 bg-surface-container hover:bg-surface-container-high transition-colors rounded-xl font-label text-xs font-bold text-on-surface flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">attach_file</span>
+              영수증 파일 추가
+            </button>
+            <span id="expense-receipt-name" class="font-body text-xs text-outline italic">첨부된 파일 없음</span>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-4">
+          <button type="submit" class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center shadow-md">
+            작성 완료
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. 품의서 작성 모달 -->
+  <div id="modal-report-write" class="fixed inset-0 z-[100] hidden">
+    <!-- backdrop -->
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="App.closeFinanceModal('report')"></div>
+    <!-- bottom sheet panel -->
+    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[480px] bg-surface-container-lowest rounded-t-[2.5rem] p-6 shadow-[0_-10px_30px_rgba(0,0,0,0.15)] flex flex-col gap-5 border-t border-outline-variant/10 animate-slide-up transition-transform duration-300 ease-out box-sizing-border-box">
+      <!-- header -->
+      <div class="flex justify-between items-center pb-2">
+        <h3 class="font-headline text-lg font-bold text-on-surface">품의서 작성</h3>
+        <button onclick="App.closeFinanceModal('report')" class="p-1 rounded-full hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-on-surface">close</span>
+        </button>
+      </div>
+
+      <!-- form fields -->
+      <form id="form-report-write" class="space-y-4 text-left pb-6" onsubmit="event.preventDefault(); App.submitReportWrite();">
+        <!-- Title -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">품의 제목</label>
+          <input type="text" id="report-input-title" placeholder="품의 제목을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
+        </div>
+
+        <!-- Approver -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">결재자</label>
+          <select id="report-input-approver" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all appearance-none">
+            <option value="김철수 팀장" selected>김철수 팀장</option>
+            <option value="박영희 본부장">박영희 본부장</option>
+            <option value="최민수 대표이사">최민수 대표이사</option>
+          </select>
+        </div>
+
+        <!-- Content / Description -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">상세 품의 내용</label>
+          <textarea id="report-input-content" rows="4" placeholder="품의 사유 및 상세 내용을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all resize-none"></textarea>
+        </div>
+
+        <!-- Submit Buttons (Draft & Submit) -->
+        <div class="grid grid-cols-2 gap-3 pt-4">
+          <button type="button" onclick="App.submitReportWrite(true)" class="py-4 bg-surface-container text-on-surface-variant font-label text-sm font-semibold rounded-xl hover:bg-surface-container-high active:scale-[0.98] transition-all flex justify-center items-center">
+            임시저장
+          </button>
+          <button type="submit" class="py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center shadow-md">
+            결재 요청
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
