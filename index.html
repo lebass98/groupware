@@ -344,8 +344,12 @@
 
         <div class="location-indicator" id="location-indicator" onclick="App.refreshLocation()">
           <span class="material-symbols-outlined loc-icon filled">location_on</span>
-          <span>현재 위치: <strong id="location-text">서울 본사 테크 파크 B동</strong></span>
+          <span>현재 위치: <strong id="location-text">서울 금천구 벚꽃로 298</strong></span>
           <span class="material-symbols-outlined" style="font-size: 16px; opacity: 0.6;">refresh</span>
+        </div>
+        <div id="location-match-badge" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-top: 6px; transition: all 0.3s ease;">
+          <span class="material-symbols-outlined" id="location-match-icon" style="font-size: 14px;">check_circle</span>
+          <span id="location-match-text">출근 체크 가능</span>
         </div>
       </div>
 

@@ -1399,6 +1399,35 @@ const App = {
       if (pulseSubtext) pulseSubtext.innerText = '원클릭 출근';
     }
 
+    // Render Location & Geofence Badge Tag
+    const locTextEl = document.getElementById('location-text');
+    if (locTextEl) {
+      locTextEl.innerText = this.state.currentLocation || '서울 금천구 벚꽃로 298';
+    }
+
+    const geoCheck = this.checkIsAtOffice();
+    const matchBadge = document.getElementById('location-match-badge');
+    const matchIcon = document.getElementById('location-match-icon');
+    const matchText = document.getElementById('location-match-text');
+
+    if (matchBadge && matchIcon && matchText) {
+      if (geoCheck.isAllowed) {
+        // Location MATCHED: 출근 체크 가능
+        matchBadge.style.background = 'rgba(0, 82, 208, 0.1)';
+        matchBadge.style.color = '#0052d0';
+        matchBadge.style.border = '1px solid rgba(0, 82, 208, 0.25)';
+        matchIcon.innerText = 'check_circle';
+        matchText.innerText = '출근 체크 가능 (서울 금천구 벚꽃로 298)';
+      } else {
+        // Location MISMATCHED: 위치가 맞지 않음 (출근 불가)
+        matchBadge.style.background = 'rgba(179, 27, 37, 0.1)';
+        matchBadge.style.color = '#b31b25';
+        matchBadge.style.border = '1px solid rgba(179, 27, 37, 0.25)';
+        matchIcon.innerText = 'cancel';
+        matchText.innerText = '위치가 맞지 않음 (출근 불가)';
+      }
+    }
+
     // Render Dark Mode
     if (this.state.settings.dark) {
       document.body.classList.add('dark');
@@ -1476,19 +1505,7 @@ const App = {
 
   // Location Refreshing
   refreshLocation() {
-    const locations = [
-      '서울 본사 테크 파크 B동',
-      '강남 R&D 센터 4층',
-      '판교 스마트 타워 8층',
-      '성수 팝업 오피스 2동'
-    ];
-    const next = locations[Math.floor(Math.random() * locations.length)];
-    this.state.currentLocation = next;
-
-    const locEl = document.getElementById('location-text');
-    if (locEl) locEl.innerText = next;
-
-    this.showToast(`📍 GPS 위치 인증 완료: ${next}`);
+    this.updateRealGPSLocation(true);
   },
 
   // Request Screen / Tab Handlers
