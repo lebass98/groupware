@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-app",
-    "slug": "react-native-app",
+    "name": "그룹웨어",
+    "slug": "groupware-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,11 +11,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
-      }
+        "backgroundColor": "#0052D0",
+        "foregroundImage": "./assets/icon.png"
+      },
+      "package": "com.wordncode.groupware"
     },
     "web": {
       "favicon": "./assets/favicon.png"
