@@ -489,6 +489,17 @@ const App = {
     this.loadState();
     this.startLiveClock();
     
+    // 브라우저 뒤로가기(popstate) 발생 시 탭 전환 연동
+    window.addEventListener('popstate', (event) => {
+      if (this.state.isLoggedIn) {
+        if (event.state && event.state.activeTab) {
+          this.switchTab(event.state.activeTab, null, true);
+        } else {
+          this.switchTab('screen-home', null, true);
+        }
+      }
+    });
+    
     // Check initial logged in state
     if (this.state.isLoggedIn) {
       this.showAppShell();
@@ -824,6 +835,7 @@ const App = {
     this.state.isLoggedIn = true;
     this.state.activeTab = 'screen-home';
     this.saveState();
+    history.replaceState({ activeTab: 'screen-home' }, '', '#screen-home');
     this.showAppShell();
     this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! 워드앤코드 그룹웨어를 시작합니다.`);
   },
@@ -832,6 +844,7 @@ const App = {
     this.state.isLoggedIn = true;
     this.state.activeTab = 'screen-home';
     this.saveState();
+    history.replaceState({ activeTab: 'screen-home' }, '', '#screen-home');
     this.showAppShell();
     const msg = provider 
       ? `🎉 ${provider} 계정으로 로그인되었습니다.` 
@@ -844,6 +857,7 @@ const App = {
     this.state.isCheckedIn = false;
     this.stopWorkTimer();
     this.saveState();
+    history.replaceState(null, '', '#login');
     
     this.hideAppShell();
     this.showScreen('screen-login');
@@ -869,7 +883,9 @@ const App = {
     if (ticker) ticker.style.display = 'flex';
     this.startNoticeTicker();
 
-    this.switchTab(this.state.activeTab || 'screen-home');
+    const startTab = this.state.activeTab || 'screen-home';
+    history.replaceState({ activeTab: startTab }, '', `#${startTab}`);
+    this.switchTab(startTab, null, true);
   },
 
   // =========================================
@@ -930,10 +946,15 @@ const App = {
   },
 
   // Navigation
-  switchTab(targetId, navEl) {
+  switchTab(targetId, navEl, isPopState = false) {
     this.state.activeTab = targetId;
     this.showScreen(targetId);
     this.saveState(); // 탭 이동 시 상태를 저장하여 새로고침 시 화면 복원
+
+    // popstate(뒤로가기)에 의한 탭 전환이 아닐 때만 히스토리 스택에 push
+    if (!isPopState) {
+      history.pushState({ activeTab: targetId }, '', `#${targetId}`);
+    }
 
     // Update bottom nav active state
     const navItems = document.querySelectorAll('.bottom-nav .nav-item');
