@@ -2061,15 +2061,15 @@ const App = {
   applyTheme(themeIdx) {
     const themes = {
       1: {
-        '--primary': '#FF8A8C',
-        '--primary-dim': '#E06D70',
-        '--primary-container': '#FFBE8D',
+        '--primary': '#FFBE8D',
+        '--primary-dim': '#E6A775',
+        '--primary-container': '#FF8A8C',
         '--primary-gradient': 'linear-gradient(135deg, #FFBE8D 0%, #FF8A8C 100%)'
       },
       2: {
-        '--primary': '#5871F3',
-        '--primary-dim': '#3F58DA',
-        '--primary-container': '#FF8A8C',
+        '--primary': '#FF8A8C',
+        '--primary-dim': '#E06D70',
+        '--primary-container': '#5871F3',
         '--primary-gradient': 'linear-gradient(135deg, #FF8A8C 0%, #5871F3 100%)'
       },
       3: {
@@ -2091,8 +2091,8 @@ const App = {
         '--primary-gradient': 'linear-gradient(135deg, #0E0548 0%, #3323A5 100%)'
       },
       6: {
-        '--primary': '#E68A8A',
-        '--primary-dim': '#0E0548',
+        '--primary': '#0E0548',
+        '--primary-dim': '#07022D',
         '--primary-container': '#FFBE8D',
         '--primary-gradient': 'linear-gradient(135deg, #0E0548 0%, #FFBE8D 100%)'
       }
