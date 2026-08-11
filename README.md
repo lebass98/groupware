@@ -1,8 +1,8 @@
-# 📱 Fluid Attendant (유동 출결 관리 시스템)
+# 📱 워드앤코드 그룹웨어
 
-> Google Stitch 디자인 시스템 사양(**Project #11493204596936626116**)을 기반으로 제작된 모바일 퍼스트 프론트엔드 유동 출결(출퇴근) 관리 웹 애플리케이션입니다.
+> 워드앤코드(WordnCode) 임직원을 위한 모바일 퍼스트 통합 스마트 그룹웨어 플랫폼입니다. 출퇴근 체크, 연차 신청, 근태 캘린더, 임직원 주소록, 공지사항을 한 앱에서 관리합니다.
 
-![Fluid Attendant Banner](https://img.shields.io/badge/Design-Stitch_Material_3-0052d0?style=for-the-badge&logo=google)
+![워드앤코드 그룹웨어](https://img.shields.io/badge/WordnCode-Groupware-0052d0?style=for-the-badge&logo=google)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![HTML5](https://img.shields.io/badge/HTML5-SPA-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-Vanilla_CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -31,29 +31,46 @@
   - 대형 원형 펄스(Ripple) 애니메이션 버튼으로 출근/퇴근 토글
   - **출근/퇴근 2차 확인 모달 (Confirm Dialog)**: 버튼 클릭 시 실수 방지를 위한 **[확인 / 취소]** 팝업 모달 제공
 - **실시간 근무 시간 타이머**: 출근 시 1초 단위로 오늘 근무 시간(`HH:MM:SS`)을 자동 계산
-- **GPS 위치 인증**: "서울 본사 테크 파크 B동" 등 현재 오피스 위치 표시 및 위치 갱신 기능
+- **GPS 위치 인증**: 서울 금천구 벚꽃로 298 (본사) 위치 인증 및 반경 500m 이내 출근 제한
 - **일정 & 통계 Grid**: 오늘 오전/오후 근무 일정 및 주간 평균 근무시간 통계
 
 ### 3. 📊 출석 기록 관리 (Attendance Logs)
-- **근태 요약 카드**: 이번 주 총 근무시간("38시간 45분") 및 근태 점수("98%") 요약
+- **근태 요약 카드**: 이번 주 총 근무시간 및 근태 점수 요약
 - **기간별 필터링**: `전체`, `이번 주`, `이번 달` 탭 버튼으로 간편한 조회
-- **상세 기록 리스트**: 날짜별 출근/퇴근 시각, 총 근무 시간, 재택/연차/정상 상태 바이브 지표 표시
-- **수동 근태/휴가 신청 모달**: 연차, 반차, 외근, 재택 근무 수동 신청 및 사유 제출
+- **상세 기록 리스트**: 날짜별 출근/퇴근 시각, 총 근무 시간, 재택/연차/정상 상태 표시
+- **수동 근태/휴가 신청**: 연차, 반차, 병가, 기타 수동 신청 및 사유 제출
 
-### 4. 👤 사용자 프로필 & 설정 (User Profile)
-- **히어로 프로필 바**: 사용자 이름, 직책(시니어 운영 관리자), 사번(FA-99283), 근무 상태 태그
-- **야간 모드 (Dark Theme)**: 다크 모드 토글 스위치 지원 (어두운 환경에서 눈의 피로 감소)
-- **알림 & GPS 자동 체크인**: 알림 핑 수신 및 반경 100m 자동 체크인 설정 토글
+### 4. 📅 근태 캘린더 (Attendance Calendar)
+- 월별 캘린더 UI로 일별 출근 현황 시각화
+- 날짜 선택 시 해당일 출퇴근 상세 기록 표시
+- 정상/지각/연차 구분 색상 표시
+
+### 5. 📣 공지사항 (Notice Board)
+- 카테고리별 필터 (인사, 복지, 시스템, 공통)
+- 공지 검색 기능
+- 상세 보기 및 첨부파일 다운로드 지원
+- 헤더 하단 **플립형 실시간 공지 티커** 표시
+
+### 6. 📞 임직원 주소록 (Employee Directory)
+- 전체 임직원 프로필 카드 목록
+- 부서별 필터링 및 이름/부서/직책 검색
+- 상세 연락처(모바일, 사무실, 이메일) 조회
+- 원클릭 전화/메시지/이메일 연결
+
+### 7. 👤 사용자 프로필 & 설정 (User Profile)
+- **히어로 프로필 배너**: 사용자 이름, 직책, 사번, 근무 상태 태그
+- **야간 모드 (Dark Theme)**: 다크 모드 토글 스위치 지원
+- **알림 & GPS 자동 체크인**: 알림 및 반경 자동 체크인 설정 토글
 - **로그아웃**: 원클릭 로그아웃 처리 후 초기 로그인 화면으로 복귀
 
-### 5. 💾 상태 지속성 (LocalStorage Integration)
-- 출퇴근 상태, 출근 시각, 수동 신청 기록, 다크 모드 설정 등이 브라우저 `LocalStorage`에 자동 저장되어 페이지 새로고침 시에도 기존 데이터가 안전하게 유지됩니다.
+### 8. 💾 상태 지속성 (LocalStorage Integration)
+- 출퇴근 상태, 출근 시각, 수동 신청 기록, 다크 모드 설정 등이 브라우저 `LocalStorage`에 자동 저장
 
 ---
 
 ## 🎨 디자인 사양 (Design Architecture)
 
-Stitch **"The Fluid Attendant"** 전략 가이드라인을 100% 준수하여 디자인되었습니다:
+Material Design 3 (M3) 디자인 시스템 기반:
 
 - **Color Palette**:
   - `Primary`: `#0052d0` (Professional Blue)
@@ -74,8 +91,9 @@ Pool/
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml          # GitHub Pages 자동 배포 CI/CD 워크플로우
-├── index.html                  # 앱 전체 SPA 레이아웃 및 4대 화면 구조
-├── style.css                   # Stitch 디자인 토큰, 애니메이션, 다크모드 CSS
+├── react-native-app/           # React Native (Expo) 앱 래퍼 (WebView)
+├── index.html                  # 앱 전체 SPA 레이아웃 및 화면 구조
+├── style.css                   # 디자인 토큰, 애니메이션, 다크모드 CSS
 ├── script.js                   # SPA 상태 관리, 타이머, 모달, LocalStorage 엔진
 ├── .gitignore                  # 불필요한 OS 및 임시 파일 제외
 └── README.md                   # 프로젝트 상세 한글 설명서

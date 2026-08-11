@@ -1,4 +1,4 @@
-// Fluid Attendant Application Core Logic
+// 워드앤코드 그룹웨어 애플리케이션 코어 로직
 
 const App = {
   state: {
@@ -564,7 +564,7 @@ const App = {
 
   loadState() {
     try {
-      const saved = localStorage.getItem('fluid_attendant_state');
+      const saved = localStorage.getItem('wordncode_groupware_state');
       if (saved) {
         const parsed = JSON.parse(saved);
         this.state.isLoggedIn = parsed.isLoggedIn ?? false;
@@ -582,7 +582,7 @@ const App = {
 
   saveState() {
     try {
-      localStorage.setItem('fluid_attendant_state', JSON.stringify({
+      localStorage.setItem('wordncode_groupware_state', JSON.stringify({
         isLoggedIn: this.state.isLoggedIn,
         isCheckedIn: this.state.isCheckedIn,
         checkInTime: this.state.checkInTime,
@@ -822,7 +822,7 @@ const App = {
     this.state.isLoggedIn = true;
     this.saveState();
     this.showAppShell();
-    this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! 출결 관리 화면으로 이동합니다.`);
+    this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! 워드앤코드 그룹웨어를 시작합니다.`);
   },
 
   loginDemo(provider) {
@@ -849,15 +849,21 @@ const App = {
   hideAppShell() {
     const header = document.getElementById('main-header');
     const nav = document.getElementById('bottom-nav');
+    const ticker = document.getElementById('notice-ticker');
     if (header) header.style.display = 'none';
     if (nav) nav.style.display = 'none';
+    if (ticker) ticker.style.display = 'none';
+    this.stopNoticeTicker();
   },
 
   showAppShell() {
     const header = document.getElementById('main-header');
     const nav = document.getElementById('bottom-nav');
+    const ticker = document.getElementById('notice-ticker');
     if (header) header.style.display = 'flex';
     if (nav) nav.style.display = 'flex';
+    if (ticker) ticker.style.display = 'flex';
+    this.startNoticeTicker();
 
     this.switchTab('screen-home');
   },

@@ -12,7 +12,7 @@ export default function App() {
       {error ? (
         <View style={styles.errorContainer}>
           <Text style={styles.errorTitle}>네트워크 연결 확인</Text>
-          <Text style={styles.errorSub}>그룹웨어 서버에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.</Text>
+          <Text style={styles.errorSub}>워드앤코드 그룹웨어 서버에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.</Text>
           <TouchableOpacity style={styles.retryBtn} onPress={() => { setError(false); setKey(k => k + 1); }}>
             <Text style={styles.retryText}>다시 시도</Text>
           </TouchableOpacity>
