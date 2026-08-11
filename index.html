@@ -51,7 +51,7 @@
             "error": "#b31b25",
             "on-primary-fixed-variant": "#00276c",
             "on-secondary-container": "#005c37",
-            "primary": "#0052d0",
+            "primary": "var(--primary)",
             "on-primary-fixed": "#000000",
             "primary-fixed": "#799dff",
             "surface-bright": "#f7f5ff",
@@ -65,15 +65,15 @@
             "error-dim": "#9f0519",
             "secondary-container": "#61fbab",
             "tertiary-fixed": "#feb700",
-            "primary-dim": "#0047b7",
+            "primary-dim": "var(--primary-dim)",
             "tertiary-fixed-dim": "#ecaa00",
-            "surface-tint": "#0052d0",
+            "surface-tint": "var(--primary)",
             "on-secondary": "#caffdb",
             "on-secondary-fixed": "#004729",
             "surface-variant": "#d5dbff",
             "on-tertiary-fixed-variant": "#5f4200",
             "background": "#f7f5ff",
-            "primary-container": "#799dff",
+            "primary-container": "var(--primary-container)",
             "secondary-fixed": "#61fbab",
             "inverse-primary": "#5e8bff",
             "surface-container-lowest": "#ffffff",
@@ -116,6 +116,10 @@
         <span>워드앤코드 그룹웨어</span>
       </div>
       <div class="header-actions">
+        <!-- 테마 선택 (팔레트) 버튼 추가 -->
+        <button class="icon-btn theme-palette-btn mr-1.5" id="palette-btn" title="포인트 색상 변경" onclick="App.openPaletteModal()" style="background: linear-gradient(135deg, #FFBE8D 0%, #FF8A8C 100%); border-radius: 50%; width: 34px; height: 34px; border: none; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+          <span class="material-symbols-outlined text-[18px]">palette</span>
+        </button>
         <button class="icon-btn" id="theme-toggle-btn" title="테마 변경" onclick="App.toggleDarkMode()">
           <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
         </button>
@@ -1465,6 +1469,61 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- 3. 테마 선택 팝업 모달 -->
+  <div id="modal-theme-select" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+    <!-- backdrop -->
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="App.closePaletteModal()"></div>
+    <!-- panel -->
+    <div class="relative bg-surface-container-lowest rounded-[2.5rem] w-full max-w-sm flex flex-col p-8 shadow-[0_24px_48px_rgba(35,44,81,0.12)] border border-outline-variant/10 transition-all duration-300 ease-out scale-95 opacity-0 transform" id="theme-select-panel" style="pointer-events: auto;">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="font-headline text-2xl font-bold text-on-surface">테마 선택</h2>
+        <button class="text-on-surface-variant hover:text-primary transition-colors p-2 -mr-2 rounded-full hover:bg-surface-container" onclick="App.closePaletteModal()">
+          <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+      </div>
+      <!-- Theme Grid -->
+      <div class="grid grid-cols-2 gap-x-6 gap-y-8 mb-10">
+        <!-- Theme Option 1 -->
+        <button onclick="App.selectColorTheme(1)" class="flex flex-col items-center group transition-transform active:scale-95">
+          <div class="w-20 h-40 rounded-full shadow-[0_8px_24px_rgba(255,138,140,0.2)] mb-3 group-hover:ring-4 ring-primary ring-offset-2 ring-offset-surface-container-lowest transition-all" style="background: linear-gradient(to bottom, #FFBE8D, #FF8A8C);"></div>
+          <span class="font-label text-sm font-semibold text-on-surface-variant group-hover:text-primary transition-colors">테마 1</span>
+        </button>
+        <!-- Theme Option 2 -->
+        <button onclick="App.selectColorTheme(2)" class="flex flex-col items-center group transition-transform active:scale-95">
+          <div class="w-20 h-40 rounded-full shadow-[0_8px_24px_rgba(88,113,243,0.2)] mb-3 group-hover:ring-4 ring-primary ring-offset-2 ring-offset-surface-container-lowest transition-all" style="background: linear-gradient(to bottom, #FF8A8C, #5871F3);"></div>
+          <span class="font-label text-sm font-semibold text-on-surface-variant group-hover:text-primary transition-colors">테마 2</span>
+        </button>
+        <!-- Theme Option 3 -->
+        <button onclick="App.selectColorTheme(3)" class="flex flex-col items-center group transition-transform active:scale-95">
+          <div class="w-20 h-40 rounded-full shadow-[0_8px_24px_rgba(88,113,243,0.2)] mb-3 group-hover:ring-4 ring-primary ring-offset-2 ring-offset-surface-container-lowest transition-all" style="background: #5871F3;"></div>
+          <span class="font-label text-sm font-semibold text-on-surface-variant group-hover:text-primary transition-colors">테마 3</span>
+        </button>
+        <!-- Theme Option 4 -->
+        <button onclick="App.selectColorTheme(4)" class="flex flex-col items-center group transition-transform active:scale-95">
+          <div class="w-20 h-40 rounded-full shadow-[0_8px_24px_rgba(83,69,186,0.2)] mb-3 group-hover:ring-4 ring-primary ring-offset-2 ring-offset-surface-container-lowest transition-all" style="background: #5345BA;"></div>
+          <span class="font-label text-sm font-semibold text-on-surface-variant group-hover:text-primary transition-colors">테마 4</span>
+        </button>
+        <!-- Theme Option 5 -->
+        <button onclick="App.selectColorTheme(5)" class="flex flex-col items-center group transition-transform active:scale-95">
+          <div class="w-20 h-40 rounded-full shadow-[0_8px_24px_rgba(14,5,72,0.2)] mb-3 group-hover:ring-4 ring-primary ring-offset-2 ring-offset-surface-container-lowest transition-all" style="background: #0E0548;"></div>
+          <span class="font-label text-sm font-semibold text-on-surface-variant group-hover:text-primary transition-colors">테마 5</span>
+        </button>
+        <!-- Theme Option 6 -->
+        <button onclick="App.selectColorTheme(6)" class="flex flex-col items-center group transition-transform active:scale-95">
+          <div class="w-20 h-40 rounded-full shadow-[0_8px_24px_rgba(14,5,72,0.2)] mb-3 group-hover:ring-4 ring-primary ring-offset-2 ring-offset-surface-container-lowest transition-all" style="background: linear-gradient(to bottom, #0E0548, #FFBE8D);"></div>
+          <span class="font-label text-sm font-semibold text-on-surface-variant group-hover:text-primary transition-colors">테마 6</span>
+        </button>
+      </div>
+      <!-- Footer Action -->
+      <div class="flex justify-center">
+        <button onclick="App.closePaletteModal()" class="w-full bg-surface-container text-on-surface font-label font-bold py-4 rounded-xl hover:bg-surface-container-high transition-colors active:scale-[0.98]">
+          닫기
+        </button>
+      </div>
     </div>
   </div>
 

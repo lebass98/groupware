@@ -39,7 +39,8 @@ const App = {
     settings: {
       notif: true,
       dark: false,
-      gps: true
+      gps: true,
+      themeIdx: 3
     },
     user: {
       name: '이재광',
@@ -503,6 +504,7 @@ const App = {
 
   init() {
     this.loadState();
+    this.applyTheme(this.state.settings.themeIdx || 3);
     this.startLiveClock();
     
     // 브라우저 뒤로가기(popstate) 발생 시 탭 전환 연동
@@ -2018,6 +2020,97 @@ const App = {
 
   editProfilePhoto() {
     this.showToast('📷 프로필 사진 변경 모달 (준비 완료)');
+  },
+
+  // Palette Theme Select Methods
+  openPaletteModal() {
+    const modal = document.getElementById('modal-theme-select');
+    const panel = document.getElementById('theme-select-panel');
+    if (modal && panel) {
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        panel.classList.remove('scale-95', 'opacity-0');
+        panel.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+  },
+
+  closePaletteModal() {
+    const modal = document.getElementById('modal-theme-select');
+    const panel = document.getElementById('theme-select-panel');
+    if (modal && panel) {
+      panel.classList.remove('scale-100', 'opacity-100');
+      panel.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 200);
+    }
+  },
+
+  selectColorTheme(themeIdx) {
+    this.applyTheme(themeIdx);
+    
+    // Save to state & LocalStorage
+    this.state.settings.themeIdx = themeIdx;
+    this.saveState();
+    
+    this.closePaletteModal();
+    this.showToast(`🎨 테마 ${themeIdx}(으)로 사이트 포인트 색상이 변경되었습니다.`);
+  },
+
+  applyTheme(themeIdx) {
+    const themes = {
+      1: {
+        '--primary': '#FF8A8C',
+        '--primary-dim': '#E06D70',
+        '--primary-container': '#FFBE8D',
+        '--primary-gradient': 'linear-gradient(135deg, #FFBE8D 0%, #FF8A8C 100%)'
+      },
+      2: {
+        '--primary': '#5871F3',
+        '--primary-dim': '#3F58DA',
+        '--primary-container': '#FF8A8C',
+        '--primary-gradient': 'linear-gradient(135deg, #FF8A8C 0%, #5871F3 100%)'
+      },
+      3: {
+        '--primary': '#5871F3',
+        '--primary-dim': '#3F58DA',
+        '--primary-container': '#799DFF',
+        '--primary-gradient': 'linear-gradient(135deg, #5871F3 0%, #799DFF 100%)'
+      },
+      4: {
+        '--primary': '#5345BA',
+        '--primary-dim': '#3D30A0',
+        '--primary-container': '#8D7EF2',
+        '--primary-gradient': 'linear-gradient(135deg, #5345BA 0%, #8D7EF2 100%)'
+      },
+      5: {
+        '--primary': '#0E0548',
+        '--primary-dim': '#07022D',
+        '--primary-container': '#3323A5',
+        '--primary-gradient': 'linear-gradient(135deg, #0E0548 0%, #3323A5 100%)'
+      },
+      6: {
+        '--primary': '#E68A8A',
+        '--primary-dim': '#0E0548',
+        '--primary-container': '#FFBE8D',
+        '--primary-gradient': 'linear-gradient(135deg, #0E0548 0%, #FFBE8D 100%)'
+      }
+    };
+
+    const selectedTheme = themes[themeIdx] || themes[3];
+    const root = document.documentElement;
+    
+    // Set custom CSS variables on documentElement
+    for (const [key, value] of Object.entries(selectedTheme)) {
+      root.style.setProperty(key, value);
+    }
+
+    // Update header palette button gradient
+    const paletteBtn = document.getElementById('palette-btn');
+    if (paletteBtn && selectedTheme['--primary-gradient']) {
+      paletteBtn.style.background = selectedTheme['--primary-gradient'];
+    }
   },
 
   // Toast System
