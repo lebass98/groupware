@@ -518,14 +518,14 @@ const App = {
     this.showToast(`📍 GPS 위치 인증 완료: ${next}`);
   },
 
-  // Modal Handlers
+  // Request Screen / Tab Handlers
   openRequestModal() {
     this.calculateLeaveDays();
-    document.getElementById('request-modal').classList.add('active');
+    this.switchTab('screen-request');
   },
 
   closeRequestModal() {
-    document.getElementById('request-modal').classList.remove('active');
+    this.switchTab('screen-checkin');
   },
 
   onLeaveTypeChange(typeVal) {
