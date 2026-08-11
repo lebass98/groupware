@@ -315,8 +315,12 @@ body {
 
 /* Header */
 .top-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
   z-index: 40;
   background-color: rgba(247, 245, 255, 0.85);
   backdrop-filter: blur(16px);
@@ -326,6 +330,14 @@ body {
   justify-content: space-between;
   padding: 1rem 1.5rem;
   transition: background-color 0.3s ease;
+  height: 56px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .top-header {
+    max-width: 600px;
+  }
 }
 
 body.dark .top-header {
@@ -336,8 +348,12 @@ body.dark .top-header {
    플립형 공지 티커 배너
    ========================================= */
 .notice-ticker {
-  position: sticky;
+  position: fixed;
   top: 56px; /* header 높이 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
   z-index: 39;
   display: flex;
   align-items: center;
@@ -350,6 +366,13 @@ body.dark .top-header {
   height: 36px;
   overflow: hidden;
   transition: background 0.3s ease;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .notice-ticker {
+    max-width: 600px;
+  }
 }
 
 body.dark .notice-ticker {
@@ -523,6 +546,10 @@ body.dark .ticker-action:hover {
   display: none !important;
   padding: 1.5rem;
   animation: fadeIn 0.3s ease forwards;
+}
+
+.screen-view:not(#screen-login) {
+  padding-top: calc(92px + 1.5rem); /* 헤더(56px)+티커(36px) = 92px 만큼 여백 부여 */
 }
 
 .screen-view.active {
