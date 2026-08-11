@@ -571,6 +571,7 @@ const App = {
         this.state.isCheckedIn = parsed.isCheckedIn ?? false;
         this.state.checkInTime = parsed.checkInTime ? new Date(parsed.checkInTime) : null;
         this.state.settings = { ...this.state.settings, ...parsed.settings };
+        this.state.activeTab = parsed.activeTab ?? 'screen-home';
         if (parsed.logs && parsed.logs.length) {
           this.state.logs = parsed.logs;
         }
@@ -587,7 +588,8 @@ const App = {
         isCheckedIn: this.state.isCheckedIn,
         checkInTime: this.state.checkInTime,
         settings: this.state.settings,
-        logs: this.state.logs
+        logs: this.state.logs,
+        activeTab: this.state.activeTab
       }));
     } catch (e) {
       console.warn('Save error:', e);
@@ -820,6 +822,7 @@ const App = {
   // Auth Handlers (Transition from Login to Main App)
   login() {
     this.state.isLoggedIn = true;
+    this.state.activeTab = 'screen-home';
     this.saveState();
     this.showAppShell();
     this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! 워드앤코드 그룹웨어를 시작합니다.`);
@@ -827,6 +830,7 @@ const App = {
 
   loginDemo(provider) {
     this.state.isLoggedIn = true;
+    this.state.activeTab = 'screen-home';
     this.saveState();
     this.showAppShell();
     const msg = provider 
@@ -865,7 +869,7 @@ const App = {
     if (ticker) ticker.style.display = 'flex';
     this.startNoticeTicker();
 
-    this.switchTab('screen-home');
+    this.switchTab(this.state.activeTab || 'screen-home');
   },
 
   // =========================================
@@ -929,6 +933,7 @@ const App = {
   switchTab(targetId, navEl) {
     this.state.activeTab = targetId;
     this.showScreen(targetId);
+    this.saveState(); // 탭 이동 시 상태를 저장하여 새로고침 시 화면 복원
 
     // Update bottom nav active state
     const navItems = document.querySelectorAll('.bottom-nav .nav-item');
