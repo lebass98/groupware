@@ -17,9 +17,9 @@ const App = {
       gps: true
     },
     user: {
-      name: 'Alex',
-      fullName: '알렉스 리버스',
-      email: 'alex.rivera@company.com',
+      name: '이재광',
+      fullName: '이재광',
+      email: 'jaegwang@company.com',
       role: '시니어 운영 관리자',
       id: 'FA-99283'
     },
