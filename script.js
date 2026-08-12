@@ -529,11 +529,11 @@ const App = {
         });
       }
       Sortable.create(menuGrid, {
-        animation: 100,
+        animation: 0,
         handle: '.drag-handle',
         ghostClass: 'opacity-30',
-        forceFallback: true, // 터치/모바일 환경에서 더 빠르고 정확하게 따라다니도록 폴백 사용
-        fallbackClass: 'shadow-2xl',
+        forceFallback: true,
+        fallbackClass: 'shadow-2xl !transition-none',
         onEnd: () => {
           const newOrder = Array.from(menuGrid.children).map(el => el.getAttribute('data-id'));
           localStorage.setItem('wordncode_menu_order', JSON.stringify(newOrder));
