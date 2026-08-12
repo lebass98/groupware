@@ -1657,6 +1657,52 @@ const App = {
     this.openDateDetailModal(day);
   },
 
+  getCategoryColorStyle(category) {
+    switch (category) {
+      case '휴가':
+      case '연차':
+        return {
+          chipClass: 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/30 font-bold shadow-xs',
+          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e6f4ea] text-[#137333] border border-[#137333]/25">연차</span>',
+          dotClass: 'bg-[#137333]'
+        };
+      case '외근':
+      case '출장':
+      case '미팅':
+        return {
+          chipClass: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 font-bold shadow-xs',
+          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/25">외근</span>',
+          dotClass: 'bg-[#1a73e8]'
+        };
+      case '반차':
+      case '반반차':
+        return {
+          chipClass: 'bg-[#fef7e0] text-[#b06000] border border-[#b06000]/30 font-bold shadow-xs',
+          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fef7e0] text-[#b06000] border border-[#b06000]/25">${category}</span>`,
+          dotClass: 'bg-[#b06000]'
+        };
+      case '회의':
+      case '보고':
+        return {
+          chipClass: 'bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/30 font-bold shadow-xs',
+          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/25">${category}</span>`,
+          dotClass: 'bg-[#6b21a8]'
+        };
+      case '공휴일':
+        return {
+          chipClass: 'bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/30 font-bold shadow-xs',
+          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25">공휴일</span>',
+          dotClass: 'bg-[#c5221f]'
+        };
+      default:
+        return {
+          chipClass: 'bg-primary/15 text-primary border border-primary/25 font-bold shadow-xs',
+          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-primary/15 text-primary border border-primary/20">${category || '일정'}</span>`,
+          dotClass: 'bg-primary'
+        };
+    }
+  },
+
   openDateDetailModal(day) {
     const modalEl = document.getElementById('modal-date-detail');
     const titleEl = document.getElementById('modal-date-detail-title');
@@ -1700,14 +1746,15 @@ const App = {
       }
     });
 
-    // 구분 칩 동적 생성 ('전체' + 해당 날짜에 실제 존재하는 구분만 출력)
+    // 구분 칩 동적 생성 (각 구분 고유 색상 적용)
     if (chipsEl) {
       let chipsHtml = `<button type="button" onclick="App.filterDateDetailCategory('all', this)" class="date-detail-chip px-4 py-1.5 rounded-full font-bold bg-primary text-on-primary shadow-xs transition-all active:scale-95 whitespace-nowrap active">전체</button>`;
       
       const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일'];
       categoryOrder.forEach(cat => {
         if (availableCategories.has(cat)) {
-          chipsHtml += `<button type="button" onclick="App.filterDateDetailCategory('${cat}', this)" class="date-detail-chip px-4 py-1.5 rounded-full font-semibold bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95 whitespace-nowrap">${cat}</button>`;
+          const colorInfo = this.getCategoryColorStyle(cat);
+          chipsHtml += `<button type="button" onclick="App.filterDateDetailCategory('${cat}', this)" class="date-detail-chip px-4 py-1.5 rounded-full ${colorInfo.chipClass} transition-all active:scale-95 whitespace-nowrap">${cat}</button>`;
         }
       });
 
@@ -1723,10 +1770,12 @@ const App = {
     this.state.dateDetailCategory = category || 'all';
     const chips = document.querySelectorAll('.date-detail-chip');
     chips.forEach(c => {
-      c.className = 'date-detail-chip px-4 py-1.5 rounded-full font-semibold bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95 whitespace-nowrap';
+      c.classList.remove('ring-2', 'ring-primary', 'shadow-md', 'scale-105');
+      c.classList.add('opacity-80');
     });
     if (chipEl) {
-      chipEl.className = 'date-detail-chip px-4 py-1.5 rounded-full font-bold bg-primary text-on-primary shadow-xs transition-all active:scale-95 whitespace-nowrap active';
+      chipEl.classList.remove('opacity-80');
+      chipEl.classList.add('ring-2', 'ring-primary', 'shadow-md');
     }
     this.renderDateDetailList(this.state.calSelectedDay);
   },
@@ -1762,8 +1811,6 @@ const App = {
 
     if (schedules.length > 0) {
       listEl.innerHTML = schedules.map(s => {
-        const dotColor = s.type === 'secondary' ? 'bg-secondary' : s.type === 'error' ? 'bg-error' : 'bg-primary';
-        
         let avatarUrl = s.avatar;
         let deptName = '';
         if (s.author) {
@@ -1776,14 +1823,24 @@ const App = {
         }
         if (!avatarUrl) avatarUrl = 'profile.png';
 
-        let categoryBadgeHtml = `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary/15 text-primary border border-primary/20">${s.badge || '일정'}</span>`;
+        const titleStr = s.title || '';
+        const badgeStr = s.badge || '';
+        let categoryKey = badgeStr || titleStr;
+        if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) categoryKey = '휴가';
+        else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) categoryKey = '외근';
+        else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) categoryKey = titleStr.includes('반반차') ? '반반차' : '반차';
+        else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) categoryKey = '회의';
+        else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) categoryKey = '공휴일';
+
+        const colorInfo = this.getCategoryColorStyle(categoryKey);
+        let categoryBadgeHtml = colorInfo.badgeHtml;
         if (deptName) {
           categoryBadgeHtml += `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-surface-container-high text-on-surface-variant border border-outline-variant/20 ml-1">${deptName}</span>`;
         }
 
         return `
           <div class="flex items-center bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/10 shadow-2xs hover:bg-surface-container-high transition-colors">
-            <div class="w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0 mr-2.5"></div>
+            <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} flex-shrink-0 mr-2.5"></div>
             <img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
             <div class="flex-1 text-left">
               <div class="flex items-center justify-between gap-1 mb-1">
