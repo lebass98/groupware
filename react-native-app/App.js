@@ -19,9 +19,9 @@ export default function App() {
       return false; // canGoBack이 false이면 기본 뒤로가기 동작(앱 종료 등) 수행
     };
 
-    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+      backHandler.remove();
     };
   }, [canGoBack]);
 
