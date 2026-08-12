@@ -1775,9 +1775,6 @@ const App = {
 
     const colorInfo = this.getCategoryColorStyle(categoryKey);
     let categoryBadgeHtml = colorInfo.badgeHtml;
-    if (deptName) {
-      categoryBadgeHtml += `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-surface-container-high text-on-surface-variant border border-outline-variant/20 whitespace-nowrap shrink-0">${deptName}</span>`;
-    }
 
     return `
       <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border shadow-2xs transition-all">
