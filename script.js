@@ -1660,6 +1660,7 @@ const App = {
   openDateDetailModal(day) {
     const modalEl = document.getElementById('modal-date-detail');
     const titleEl = document.getElementById('modal-date-detail-title');
+    const chipsEl = document.getElementById('modal-date-detail-chips');
 
     if (!modalEl) return;
 
@@ -1675,17 +1676,45 @@ const App = {
       titleEl.innerText = `${year}년 ${month}월 ${day}일 (${dayName})`;
     }
 
-    // Reset category filter to 'all' on modal open
-    this.state.dateDetailCategory = 'all';
-    const chips = document.querySelectorAll('.date-detail-chip');
-    chips.forEach(c => {
-      if (c.getAttribute('onclick')?.includes('all')) {
-        c.className = 'date-detail-chip px-4 py-1.5 rounded-full font-bold bg-primary text-on-primary shadow-xs transition-all active:scale-95 whitespace-nowrap active';
-      } else {
-        c.className = 'date-detail-chip px-4 py-1.5 rounded-full font-semibold bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95 whitespace-nowrap';
+    const schedules = this.getMockSchedules(year, month, day) || [];
+
+    // 해당 날짜에 실제 존재하는 구분(카테고리) 감지
+    const availableCategories = new Set();
+    schedules.forEach(s => {
+      const titleStr = s.title || '';
+      const badgeStr = s.badge || '';
+      if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) {
+        availableCategories.add('휴가');
+      }
+      if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) {
+        availableCategories.add('외근');
+      }
+      if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) {
+        availableCategories.add('반차');
+      }
+      if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) {
+        availableCategories.add('회의');
+      }
+      if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) {
+        availableCategories.add('공휴일');
       }
     });
 
+    // 구분 칩 동적 생성 ('전체' + 해당 날짜에 실제 존재하는 구분만 출력)
+    if (chipsEl) {
+      let chipsHtml = `<button type="button" onclick="App.filterDateDetailCategory('all', this)" class="date-detail-chip px-4 py-1.5 rounded-full font-bold bg-primary text-on-primary shadow-xs transition-all active:scale-95 whitespace-nowrap active">전체</button>`;
+      
+      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일'];
+      categoryOrder.forEach(cat => {
+        if (availableCategories.has(cat)) {
+          chipsHtml += `<button type="button" onclick="App.filterDateDetailCategory('${cat}', this)" class="date-detail-chip px-4 py-1.5 rounded-full font-semibold bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95 whitespace-nowrap">${cat}</button>`;
+        }
+      });
+
+      chipsEl.innerHTML = chipsHtml;
+    }
+
+    this.state.dateDetailCategory = 'all';
     this.renderDateDetailList(day);
     modalEl.classList.remove('hidden');
   },
