@@ -541,6 +541,15 @@ const App = {
       });
     }
     
+    // 탭/창 백그라운드 전환 시 공지 티커 중지/재개 (타이머 중첩 & 텍스트 겹침 완벽 방지)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.stopNoticeTicker();
+      } else if (this.state.isLoggedIn) {
+        this.startNoticeTicker();
+      }
+    });
+
     // Check initial logged in state
     if (this.state.isLoggedIn) {
       this.showAppShell();
@@ -871,7 +880,6 @@ const App = {
     this.renderUI();
   },
 
-  // Auth Handlers (Transition from Login to Main App)
   login() {
     this.state.isLoggedIn = true;
     this.state.activeTab = 'screen-home';
@@ -930,53 +938,63 @@ const App = {
   },
 
   // =========================================
-  // 플립형 공지 티커
+  // 플립형 공지 티커 (텍스트 겹침 오류 완벽 방지)
   // =========================================
   startNoticeTicker() {
     const track = document.getElementById('ticker-track');
     if (!track) return;
 
-    // 공지사항 목록에서 제목만 추출 (최신 순, 최대 6개)
-    const items = this.state.notices
+    // 기존 실행 중인 타이머 확실히 정지
+    this.stopNoticeTicker();
+
+    // 공지사항 목록에서 제목 추출 (최신 순, 최대 6개)
+    const items = (this.state.notices || [])
       .slice(0, 6)
       .map(n => (n.isPinned ? `📌 ${n.title}` : n.title));
 
     if (items.length === 0) return;
 
+    // DOM 완전 초기화 (누적 찌꺼기 노드 즉시 삭제)
+    track.innerHTML = '';
+
     let currentIdx = 0;
+    const initialEl = document.createElement('div');
+    initialEl.className = 'ticker-item static';
+    initialEl.textContent = items[0];
+    track.appendChild(initialEl);
 
-    // 첫 아이템 즉시 표시
-    const firstEl = track.querySelector('.ticker-item');
-    if (firstEl) {
-      firstEl.textContent = items[0];
-      firstEl.className = 'ticker-item static';
-    }
-
-    // 기존 인터벌 중지
-    if (this._tickerInterval) clearInterval(this._tickerInterval);
+    if (items.length <= 1) return;
 
     this._tickerInterval = setInterval(() => {
+      // 1. 찌꺼기 노드 정리 (DOM 상에 1개 초과 노드가 존재하면 최신 노드 제외 즉시 삭제)
+      const existingNodes = Array.from(track.querySelectorAll('.ticker-item'));
+      if (existingNodes.length > 1) {
+        existingNodes.slice(0, existingNodes.length - 1).forEach(el => el.remove());
+      }
+
+      const activeEl = track.querySelector('.ticker-item');
+      if (!activeEl) return;
+
       const nextIdx = (currentIdx + 1) % items.length;
 
-      // 현재 아이템: flip-out 애니메이션
-      const currentEl = track.querySelector('.ticker-item');
-      if (!currentEl) return;
+      // 2. 현재 노드 퇴장 애니메이션
+      activeEl.className = 'ticker-item flip-out';
 
-      currentEl.className = 'ticker-item flip-out';
-
-      // 새 아이템 엘리먼트 생성: flip-in 애니메이션
+      // 3. 신규 노드 생성 및 등장 애니메이션
       const nextEl = document.createElement('div');
       nextEl.className = 'ticker-item flip-in';
       nextEl.textContent = items[nextIdx];
       track.appendChild(nextEl);
 
-      // 이전 아이템 제거 (0.4초 후)
+      // 4. 퇴장 노드 안전하게 제거
       setTimeout(() => {
-        if (currentEl.parentNode) currentEl.parentNode.removeChild(currentEl);
-      }, 380);
+        if (activeEl && activeEl.parentNode === track) {
+          track.removeChild(activeEl);
+        }
+      }, 450);
 
       currentIdx = nextIdx;
-    }, 3500);
+    }, 4000);
   },
 
   stopNoticeTicker() {
