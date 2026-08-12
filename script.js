@@ -1541,10 +1541,10 @@ const App = {
       let tooltipPopoverHtml = '';
       if (isSelected && schedules && schedules.length > 0) {
         tooltipPopoverHtml = `
-          <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-30 bg-surface-container-lowest border-2 border-primary/40 rounded-xl px-3 py-2 shadow-xl whitespace-nowrap text-left flex flex-col gap-1 min-w-[150px] pointer-events-auto">
+          <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-30 bg-surface-container-lowest border-2 border-primary/40 rounded-sm px-3 py-2 shadow-xl whitespace-nowrap text-left flex flex-col gap-1 min-w-[150px] pointer-events-auto">
             <div class="flex items-center justify-between gap-2 border-b border-outline-variant/15 pb-1">
               <span class="text-xs font-bold text-primary font-headline">${month}월 ${d}일 일정</span>
-              <span class="text-[11px] font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">${schedules.length}건</span>
+              <span class="text-[11px] font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded-sm">${schedules.length}건</span>
             </div>
             <div class="flex flex-col gap-1">
               ${schedules.map(s => `
