@@ -17,12 +17,12 @@
   --tertiary: #785500;
   --tertiary-container: #feb700;
 
-  --surface: #f7f5ff;
+  --surface: #ffffff;
   --surface-container-lowest: #ffffff;
-  --surface-container-low: #efefff;
-  --surface-container: #e4e7ff;
-  --surface-container-high: #dde1ff;
-  --surface-container-highest: #d5dbff;
+  --surface-container-low: #f8fafc;
+  --surface-container: #f1f5f9;
+  --surface-container-high: #e2e8f0;
+  --surface-container-highest: #cbd5e1;
 
   --on-surface: #232c51;
   --on-surface-variant: #515981;
