@@ -1519,14 +1519,16 @@ const App = {
     const startTimeEl = document.getElementById('schedule-input-start-time');
     const typeEl = document.getElementById('schedule-input-type');
     const isAllDayEl = document.getElementById('schedule-input-allday');
+    const badgeRadioEl = document.querySelector('input[name="schedule_type_radio"]:checked');
     
     const title = (titleEl?.value || '').trim() || '신규 일정';
     const startDate = startDateEl?.value || '2026-08-12';
     const startTime = startTimeEl?.value || '14:00';
     const isAllDay = isAllDayEl?.checked;
+    const badge = badgeRadioEl ? badgeRadioEl.value : '일정';
     
     const [year, month, day] = startDate.split('-').map(Number);
-    const timeStr = isAllDay ? '종일' : `${startTime} ~ 1시간`;
+    const timeStr = isAllDay ? '종일' : `${startTime} ~ 18:00`;
     
     if (!this.mockDynamicSchedules) {
       this.mockDynamicSchedules = {};
@@ -1538,9 +1540,9 @@ const App = {
     
     this.mockDynamicSchedules[key].push({
       title: title,
-      time: timeStr,
+      time: this.formatConciseTime(timeStr),
       type: typeEl?.value || 'primary',
-      badge: '일정',
+      badge: badge,
       author: '이재광',
       avatar: 'profile.png'
     });

@@ -1770,153 +1770,178 @@
     </div>
   </div>
 
-  <!-- Modal: SCHEDULE REGISTRATION (Exact Stitch (3) code.html 1:1 Design) -->
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-md hidden" id="modal-schedule-write">
-    <div class="w-full h-full md:h-[85vh] md:max-w-xl bg-surface md:rounded-3xl flex flex-col overflow-hidden shadow-[0_16px_40px_rgba(35,44,81,0.1)] relative">
-      <!-- App Bar / Header -->
-      <header class="flex justify-between items-center px-4 py-3 bg-surface z-10 sticky top-0 shrink-0 border-b border-outline-variant/10">
-        <button type="button" onclick="App.closeScheduleModal()" class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-95">
-          <span class="material-symbols-outlined text-[24px]">close</span>
+  <!-- Modal: SCHEDULE REGISTRATION (Redesigned matching Leave Request / 휴가 신청 Pager UI) -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-md hidden transition-all duration-200 p-4" id="modal-schedule-write" onclick="if(event.target === this) App.closeScheduleModal()">
+    <div class="w-full max-w-[480px] bg-surface-container-lowest rounded-3xl p-6 shadow-[0_16px_40px_rgba(0,0,0,0.15)] flex flex-col gap-5 border border-outline-variant/15 animate-slide-up transition-transform duration-300 ease-out box-sizing-border-box max-h-[90vh] overflow-y-auto hide-scrollbar">
+      
+      <!-- Header Section matching Leave Request -->
+      <div class="flex justify-between items-start">
+        <div>
+          <h2 class="font-headline font-bold text-2xl text-on-surface tracking-tight text-left">일정 등록</h2>
+          <p class="text-on-surface-variant text-xs mt-1 text-left">팀원들과 원활한 공유를 위해 일정을 등록해주세요.</p>
+        </div>
+        <button type="button" class="icon-btn shrink-0" onclick="App.closeScheduleModal()">
+          <span class="material-symbols-outlined text-lg">close</span>
         </button>
-        <h1 class="font-headline font-bold text-lg tracking-tight text-on-surface">일정등록</h1>
-        <button type="button" onclick="App.submitScheduleModal()" class="h-9 px-4 flex items-center justify-center rounded-full font-headline font-bold text-sm text-primary hover:bg-surface-container-highest transition-colors active:scale-95">
-          확인
-        </button>
-      </header>
+      </div>
 
-      <!-- Scrollable Form Area -->
-      <main class="flex-1 overflow-y-auto px-6 py-6 pb-24 space-y-6 text-left">
-        <form id="form-schedule-write" onsubmit="event.preventDefault(); App.submitScheduleModal();" class="space-y-6">
-          <!-- Section 1: Title & Privacy -->
-          <section class="space-y-3">
-            <div class="flex flex-col">
-              <label class="sr-only">일정명</label>
-              <input id="schedule-input-title" class="w-full bg-surface-container-highest text-on-surface placeholder-on-surface-variant/70 border-none rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-sm font-medium outline-none" placeholder="일정명" type="text" required/>
+      <!-- Schedule Registration Form -->
+      <form id="form-schedule-write" onsubmit="event.preventDefault(); App.submitScheduleModal();" class="space-y-5 text-left">
+        
+        <!-- Schedule Title Input -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">일정 제목</label>
+          <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+              <span class="material-symbols-outlined text-outline text-lg">edit_note</span>
             </div>
-            <div class="pl-1">
+            <input id="schedule-input-title" class="w-full pl-11 pr-4 py-3 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline" placeholder="일정 제목을 입력하세요 (예: 팀 주간회의)" type="text" required/>
+          </div>
+        </div>
+
+        <!-- Schedule Category Radio Grid (Matching Leave Type Grid) -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">일정 구분</label>
+          <input type="hidden" id="schedule-input-type" value="primary" />
+          <div class="grid grid-cols-3 gap-2">
+            <label class="relative cursor-pointer">
+              <input checked class="peer sr-only" name="schedule_type_radio" type="radio" value="외근" onchange="document.getElementById('schedule-input-type').value='primary';">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-low border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-sm">
+                💼 외근
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="schedule_type_radio" type="radio" value="회의" onchange="document.getElementById('schedule-input-type').value='primary';">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-low border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-sm">
+                👥 회의
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="schedule_type_radio" type="radio" value="연차" onchange="document.getElementById('schedule-input-type').value='secondary';">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-low border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-sm">
+                🌿 연차
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="schedule_type_radio" type="radio" value="반차" onchange="document.getElementById('schedule-input-type').value='warning';">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-low border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-sm">
+                ⏳ 반차
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="schedule_type_radio" type="radio" value="미팅" onchange="document.getElementById('schedule-input-type').value='primary';">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-low border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-sm">
+                🤝 미팅
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="schedule_type_radio" type="radio" value="개인일정" onchange="document.getElementById('schedule-input-type').value='secondary';">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-low border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-sm">
+                📌 개인일정
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Schedule Date & Time Container (Leave Request Pager Card Style) -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">일시 설정</label>
+          <div class="flex flex-col gap-2.5 bg-surface-container-low border border-outline-variant/15 rounded-2xl p-3.5">
+            <!-- Start Date & Time -->
+            <div class="grid grid-cols-2 gap-2">
+              <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-outline text-base">calendar_today</span>
+                </div>
+                <input id="schedule-input-start-date" class="w-full pl-9 pr-2 py-2.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-xs focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-12"/>
+              </div>
+              <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-outline text-base">schedule</span>
+                </div>
+                <input id="schedule-input-start-time" class="w-full pl-9 pr-2 py-2.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-xs focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="time" value="09:00"/>
+              </div>
+            </div>
+
+            <!-- Connector arrow -->
+            <div class="flex justify-center -my-1.5 relative z-10">
+              <div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center border-2 border-surface-container-low shadow-2xs">
+                <span class="material-symbols-outlined text-outline text-[12px]">arrow_downward</span>
+              </div>
+            </div>
+
+            <!-- End Date & Time -->
+            <div class="grid grid-cols-2 gap-2">
+              <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-outline text-base">event</span>
+                </div>
+                <input id="schedule-input-end-date" class="w-full pl-9 pr-2 py-2.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-xs focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-12"/>
+              </div>
+              <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-outline text-base">schedule</span>
+                </div>
+                <input id="schedule-input-end-time" class="w-full pl-9 pr-2 py-2.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-xs focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="time" value="18:00"/>
+              </div>
+            </div>
+
+            <!-- Toggles (종일 / 비공개) -->
+            <div class="flex items-center justify-between pt-2 px-1 border-t border-outline-variant/15">
+              <label class="inline-flex items-center cursor-pointer group">
+                <input id="schedule-input-allday" class="w-4 h-4 rounded text-primary bg-surface-container-highest border-none focus:ring-primary/40 focus:ring-offset-0 transition-colors cursor-pointer" type="checkbox"/>
+                <span class="ml-2 text-xs font-bold text-on-surface-variant group-hover:text-on-surface transition-colors">종일 일정</span>
+              </label>
               <label class="inline-flex items-center cursor-pointer group">
                 <input id="schedule-input-private" class="w-4 h-4 rounded text-primary bg-surface-container-highest border-none focus:ring-primary/40 focus:ring-offset-0 transition-colors cursor-pointer" type="checkbox"/>
-                <span class="ml-2.5 text-xs font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">비공개</span>
+                <span class="ml-2 text-xs font-bold text-on-surface-variant group-hover:text-on-surface transition-colors">비공개</span>
               </label>
             </div>
-          </section>
+          </div>
+        </div>
 
-          <!-- Section 2: Date & Time -->
-          <section class="space-y-4">
-            <!-- Start Date/Time -->
-            <div class="flex items-center gap-3">
-              <span class="w-14 shrink-0 text-xs font-bold text-on-surface-variant">시작</span>
-              <div class="flex-1 grid grid-cols-2 gap-2">
-                <input id="schedule-input-start-date" class="w-full bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" type="date" value="2026-08-12"/>
-                <input id="schedule-input-start-time" class="w-full bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" type="time" value="14:30"/>
-              </div>
-            </div>
-            <!-- End Date/Time -->
-            <div class="flex flex-col gap-3">
-              <div class="flex items-center gap-3">
-                <span class="w-14 shrink-0 text-xs font-bold text-on-surface-variant">종료</span>
-                <div class="flex-1 grid grid-cols-2 gap-2">
-                  <input id="schedule-input-end-date" class="w-full bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" type="date" value="2026-08-12"/>
-                  <input id="schedule-input-end-time" class="w-full bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" type="time" value="15:30"/>
-                </div>
-              </div>
-              <div class="pl-[4.25rem]">
-                <label class="inline-flex items-center cursor-pointer group">
-                  <input id="schedule-input-allday" class="w-4 h-4 rounded text-primary bg-surface-container-highest border-none focus:ring-primary/40 focus:ring-offset-0 transition-colors cursor-pointer" type="checkbox"/>
-                  <span class="ml-2.5 text-xs font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">종일</span>
-                </label>
-              </div>
-            </div>
-          </section>
-
-          <!-- Section 3: Details -->
-          <section class="space-y-4">
-            <!-- Calendar Select -->
-            <div class="flex items-center gap-3">
-              <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant">내 캘린더</span>
-              <div class="relative flex-1">
-                <select id="schedule-input-type" class="w-full bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 pr-8 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none appearance-none cursor-pointer">
-                  <option value="primary">(기본) 원격접속</option>
-                  <option value="secondary">개인 일정</option>
-                  <option value="primary">팀 미팅</option>
-                </select>
-                <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-lg">arrow_drop_down</span>
-              </div>
-            </div>
-
-            <!-- Internal Participants -->
-            <div class="flex flex-col gap-2">
-              <div class="flex items-start gap-3">
-                <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant pt-2">참석자</span>
-                <div id="schedule-participants-chips" class="flex-1 bg-surface-container-highest rounded-xl p-2 min-h-[44px] flex flex-wrap gap-1.5 items-center">
-                  <span class="inline-flex items-center gap-1 bg-surface-container-lowest text-primary text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm">
-                    오은주 차장
-                    <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors">
-                      <span class="material-symbols-outlined text-[12px]">close</span>
-                    </button>
-                  </span>
-                </div>
-              </div>
-              <div class="pl-[4.75rem]">
-                <button type="button" onclick="App.openDirectoryPicker('schedule')" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
-                  <span class="material-symbols-outlined text-base">add</span>
-                  주소록에서 추가
-                </button>
-              </div>
-            </div>
-
-            <!-- External Participants -->
-            <div class="flex items-center gap-3">
-              <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant">외부참석자</span>
-              <div class="flex-1 flex gap-2">
-                <input id="schedule-input-external" class="flex-1 bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" placeholder="이메일 입력" type="text"/>
-                <button type="button" onclick="App.addExternalParticipant()" class="bg-surface-container-low text-on-surface-variant hover:text-on-surface font-bold text-xs px-3.5 rounded-xl hover:bg-surface-variant transition-colors whitespace-nowrap active:scale-95">
-                  추가
-                </button>
-              </div>
-            </div>
-
-            <!-- Location -->
-            <div class="flex items-center gap-3">
-              <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant">장소</span>
-              <input id="schedule-input-location" class="flex-1 bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" placeholder="회의실 또는 장소" type="text"/>
-            </div>
-
-            <!-- Alarm -->
-            <div class="flex items-center gap-3">
-              <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant">알람</span>
-              <button type="button" onclick="App.showToast('⏰ 15분 전 알림이 설정되었습니다.')" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
-                <span class="material-symbols-outlined text-base">add</span>
-                추가
+        <!-- Participants Section (Leave Request Pager Card Layout) -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">참석자 설정</label>
+            <button type="button" onclick="App.openDirectoryPicker('schedule')" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
+              <span class="material-symbols-outlined text-base">person_add</span>
+              주소록에서 추가
+            </button>
+          </div>
+          <div id="schedule-participants-chips" class="bg-surface-container-low border border-outline-variant/15 rounded-xl p-3 min-h-[48px] flex flex-wrap gap-2 items-center">
+            <span class="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-lg border border-primary/20 shadow-2xs">
+              오은주 차장
+              <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors">
+                <span class="material-symbols-outlined text-[12px]">close</span>
               </button>
-            </div>
+            </span>
+          </div>
+        </div>
 
-            <!-- Reservation -->
-            <div class="flex flex-col gap-2">
-              <div class="flex items-center gap-3">
-                <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant">예약</span>
-                <button type="button" onclick="App.selectRoomReservation('회의실 1')" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
-                  <span class="material-symbols-outlined text-base">add</span>
-                  회의실 1
-                </button>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="w-16 shrink-0"></span>
-                <button type="button" onclick="App.selectRoomReservation('회의실 2')" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
-                  <span class="material-symbols-outlined text-base">add</span>
-                  회의실 2
-                </button>
-              </div>
+        <!-- Location & Notes Section -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">장소 및 메모</label>
+          <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+              <span class="material-symbols-outlined text-outline text-lg">location_on</span>
             </div>
-          </section>
+            <input id="schedule-input-location" class="w-full pl-11 pr-4 py-3 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline mb-2" placeholder="장소 또는 회의실 입력 (선택)" type="text"/>
+          </div>
+          <textarea id="schedule-input-notes" class="w-full p-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline resize-none" placeholder="일정 관련 세부 메모를 입력해주세요 (선택)" rows="2.5"></textarea>
+        </div>
 
-          <!-- Section 4: Notes -->
-          <section class="pt-2">
-            <label class="sr-only">내용</label>
-            <textarea id="schedule-input-notes" class="w-full bg-surface-container-highest text-on-surface placeholder-on-surface-variant/70 border-none rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all resize-none text-xs font-medium outline-none" placeholder="내용을 입력하세요." rows="4"></textarea>
-          </section>
-        </form>
-      </main>
+        <!-- Action Button Group (Leave Request standard) -->
+        <div class="modal-btn-group pt-2">
+          <button type="button" class="modal-btn modal-btn-cancel" onclick="App.closeScheduleModal()">
+            취소
+          </button>
+          <button type="submit" class="modal-btn modal-btn-confirm gap-2">
+            <span>일정 등록</span>
+            <span class="material-symbols-outlined text-lg">event_available</span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
