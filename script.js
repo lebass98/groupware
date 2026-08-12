@@ -1861,12 +1861,12 @@ const App = {
     this.state.dateDetailCategory = category || 'all';
     const chips = document.querySelectorAll('.date-detail-chip');
     chips.forEach(c => {
-      c.classList.remove('ring-2', 'ring-primary', 'shadow-md', 'scale-105');
-      c.classList.add('opacity-80');
+      c.classList.remove('border-2', 'border-primary', 'font-black', 'shadow-xs');
+      c.classList.add('opacity-75');
     });
     if (chipEl) {
-      chipEl.classList.remove('opacity-80');
-      chipEl.classList.add('ring-2', 'ring-primary', 'shadow-md');
+      chipEl.classList.remove('opacity-75');
+      chipEl.classList.add('border-2', 'border-primary', 'font-black', 'shadow-xs');
     }
     this.renderDateDetailList(this.state.calSelectedDay);
   },
