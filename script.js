@@ -1682,14 +1682,13 @@ const App = {
       schedules.forEach(s => {
         const dotColor = s.type === 'secondary' ? 'bg-secondary' : s.type === 'error' ? 'bg-error' : 'bg-primary';
         scheduleHtml += `
-          <div class="flex items-start bg-surface-container-lowest p-3.5 rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-md transition-shadow">
-            <div class="mt-1.5 mr-3 w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0"></div>
-            <img alt="${s.author || '프로필'}" class="w-10 h-10 rounded-full object-cover mr-3.5" src="${s.avatar || 'profile.png'}"/>
-            <div class="flex-1">
+          <div class="flex items-center bg-surface-container-lowest p-3.5 rounded-md shadow-xs border border-outline-variant/10 hover:shadow-sm transition-shadow">
+            <div class="w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0 mr-3"></div>
+            <div class="flex-1 text-left">
               <div class="text-xs text-on-surface-variant font-medium mb-0.5">${s.time} • ${s.badge}</div>
               <div class="text-sm text-on-surface font-bold font-headline">${s.title}</div>
             </div>
-            <button class="text-outline-variant hover:text-on-surface transition-colors self-center">
+            <button class="text-outline-variant hover:text-on-surface transition-colors ml-2">
               <span class="material-symbols-outlined text-xl">chevron_right</span>
             </button>
           </div>
@@ -1698,7 +1697,7 @@ const App = {
       logsContainer.innerHTML = scheduleHtml;
     } else {
       logsContainer.innerHTML = `
-        <div class="bg-surface-container-lowest rounded-xl p-6 text-center text-on-surface-variant font-medium border border-outline-variant/10">
+        <div class="bg-surface-container-lowest rounded-md p-6 text-center text-on-surface-variant font-medium border border-outline-variant/10">
           <span class="material-symbols-outlined text-3xl text-outline mb-1.5">event_available</span>
           <p class="font-bold text-on-surface text-sm">지정된 일정이 없습니다.</p>
           <p class="text-xs text-on-surface-variant/70 mt-0.5">새로운 일정을 추가할 수 있습니다.</p>
