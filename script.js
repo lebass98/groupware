@@ -1467,18 +1467,36 @@ const App = {
       "2026-8-5": [
         { title: "월간 팀 미팅", time: "10:00 ~ 11:30", type: "primary", badge: "회의", author: "김종규", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
       ],
+      "2026-8-10": [
+        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+      ],
+      "2026-8-11": [
+        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+      ],
       "2026-8-12": [
-        { title: "여름휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" },
+        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" },
         { title: "NST 미팅", time: "14:00 ~ 15:00", type: "primary", badge: "미팅", author: "김종규", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
       ],
       "2026-8-15": [
         { title: "광복절 (공휴일)", time: "종일", type: "error", badge: "공휴일", author: "회사공지", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
       ],
       "2026-8-17": [
-        { title: "대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "회사공지", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "김철수", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+      ],
+      "2026-8-18": [
+        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "김철수", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+      ],
+      "2026-8-19": [
+        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "김철수", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
       ],
       "2026-8-20": [
-        { title: "프로젝트 QA 리뷰", time: "15:30 ~ 17:00", type: "primary", badge: "업무", author: "박서연", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "박서연", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+      ],
+      "2026-8-21": [
+        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "박서연", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+      ],
+      "2026-8-22": [
+        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "박서연", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
       ],
       "2026-8-27": [
         { title: "전사 월간 보고", time: "09:00 ~ 10:30", type: "primary", badge: "보고", author: "최현우", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
@@ -1514,8 +1532,8 @@ const App = {
     for (let i = firstDayOfWeek - 1; i >= 0; i--) {
       const pDay = prevMonthDays - i;
       gridHtml += `
-        <div class="text-on-surface-variant/30 flex flex-col items-center justify-center p-1 select-none">
-          <span class="w-8 h-8 flex items-center justify-center text-xs">${pDay}</span>
+        <div class="text-on-surface-variant/30 flex flex-col items-center justify-start p-1 min-h-[58px] select-none">
+          <span class="w-7 h-7 flex items-center justify-center text-xs">${pDay}</span>
         </div>
       `;
     }
@@ -1531,10 +1549,31 @@ const App = {
       if (dayOfWeek === 0) textClass = 'text-error font-semibold';
       else if (dayOfWeek === 6) textClass = 'text-primary font-semibold';
 
-      let dotHtml = '';
+      let barsHtml = '';
       if (schedules && schedules.length > 0) {
-        const dotColor = schedules[0].type === 'secondary' ? 'bg-secondary' : schedules[0].type === 'error' ? 'bg-error' : 'bg-primary';
-        dotHtml = `<div class="w-2 h-2 rounded-full ${dotColor} mt-0.5 shadow-sm"></div>`;
+        barsHtml = '<div class="w-full flex flex-col gap-1 mt-1 px-0.5 z-10">';
+        schedules.slice(0, 2).forEach(s => {
+          let colorClass = 'bg-[#d8e2ff] text-[#001a41] border border-[#b4c5ff]/40'; // Default Soft Blue (테스트일정_QA)
+          if (s.title.includes('휴가')) {
+            colorClass = 'bg-[#61fbab] text-[#004729] border border-[#005c37]/20'; // Lime Green
+          } else if (s.title.includes('원격접속') || s.type === 'error' || s.title.includes('공휴일')) {
+            colorClass = 'bg-[#ffdad6] text-[#410002] border border-[#b31b25]/20'; // Soft Red
+          } else if (s.title.includes('미팅') || s.title.includes('회의')) {
+            colorClass = 'bg-[#ffe088] text-[#533a00] border border-[#785500]/20'; // Soft Yellow
+          } else if (s.title.includes('보고')) {
+            colorClass = 'bg-[#e8def8] text-[#1d192b] border border-[#65558f]/20'; // Soft Purple
+          }
+
+          barsHtml += `
+            <div class="w-full text-[10px] font-bold px-1 py-0.5 rounded-sm ${colorClass} truncate text-center leading-tight shadow-2xs">
+              ${s.title}
+            </div>
+          `;
+        });
+        if (schedules.length > 2) {
+          barsHtml += `<div class="text-[9px] font-bold text-on-surface-variant text-center">+${schedules.length - 2}</div>`;
+        }
+        barsHtml += '</div>';
       }
 
       // Readable Tooltip Popover if day is selected and has schedule
@@ -1549,7 +1588,7 @@ const App = {
             <div class="flex flex-col gap-1">
               ${schedules.map(s => `
                 <div class="flex items-center gap-1.5 text-xs text-on-surface font-bold">
-                  <span class="w-2 h-2 rounded-full ${s.type === 'secondary' ? 'bg-secondary' : s.type === 'error' ? 'bg-error' : 'bg-primary'} shrink-0"></span>
+                  <span class="w-2 h-2 rounded-full ${s.title.includes('휴가') ? 'bg-[#00693f]' : s.title.includes('원격접속') || s.type === 'error' ? 'bg-[#b31b25]' : 'bg-primary'} shrink-0"></span>
                   <span class="text-xs sm:text-sm font-bold text-on-surface">${s.title}</span>
                   <span class="text-xs text-on-surface-variant font-medium">(${s.time})</span>
                 </div>
@@ -1559,22 +1598,13 @@ const App = {
         `;
       }
 
-      if (isSelected) {
-        gridHtml += `
-          <div class="flex flex-col items-center justify-center relative cursor-pointer group py-1" onclick="App.selectCalendarDate(${d})">
-            ${tooltipPopoverHtml}
-            <span class="w-8 h-8 flex items-center justify-center bg-primary text-on-primary rounded-full font-bold shadow-md active:scale-95 transition-transform text-xs sm:text-sm">${d}</span>
-            ${dotHtml}
-          </div>
-        `;
-      } else {
-        gridHtml += `
-          <div class="flex flex-col items-center justify-center relative cursor-pointer hover:bg-surface-container-high/60 rounded-xl py-1 transition-colors group" onclick="App.selectCalendarDate(${d})">
-            <span class="w-8 h-8 flex items-center justify-center ${textClass} text-xs sm:text-sm">${d}</span>
-            ${dotHtml}
-          </div>
-        `;
-      }
+      gridHtml += `
+        <div class="flex flex-col items-center justify-start min-h-[58px] relative cursor-pointer group py-1 px-0.5 rounded-xl hover:bg-surface-container-high/40 transition-colors" onclick="App.selectCalendarDate(${d})">
+          ${tooltipPopoverHtml}
+          <span class="w-7 h-7 flex items-center justify-center rounded-full text-xs ${isSelected ? 'bg-primary text-on-primary font-bold shadow-md' : textClass}">${d}</span>
+          ${barsHtml}
+        </div>
+      `;
     }
 
     // Remaining cells padding
@@ -1583,8 +1613,8 @@ const App = {
 
     for (let n = 1; n <= remainingCells; n++) {
       gridHtml += `
-        <div class="text-on-surface-variant/30 flex flex-col items-center justify-center p-1 select-none">
-          <span class="w-8 h-8 flex items-center justify-center text-xs">${n}</span>
+        <div class="text-on-surface-variant/30 flex flex-col items-center justify-start p-1 min-h-[58px] select-none">
+          <span class="w-7 h-7 flex items-center justify-center text-xs">${n}</span>
         </div>
       `;
     }
