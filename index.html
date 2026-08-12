@@ -1118,7 +1118,7 @@
       </main>
 
       <!-- Floating Action Button -->
-      <button onclick="alert('일정 추가 화면으로 이동합니다.')" class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full shadow-[0_8px_24px_rgba(35,44,81,0.15)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40 group">
+      <button onclick="App.openScheduleModal()" class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full shadow-[0_8px_24px_rgba(35,44,81,0.15)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40 group">
         <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">add</span>
       </button>
     </section>
@@ -1274,7 +1274,7 @@
       </main>
 
       <!-- FAB -->
-      <button onclick="alert('일정 추가 화면으로 이동합니다.')" class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full shadow-[0_8px_24px_rgba(35,44,81,0.15)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40 group">
+      <button onclick="App.openScheduleModal()" class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full shadow-[0_8px_24px_rgba(35,44,81,0.15)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40 group">
         <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">add</span>
       </button>
     </section>
@@ -1844,6 +1844,156 @@
           닫기
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal: SCHEDULE REGISTRATION (Exact Stitch (3) code.html 1:1 Design) -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-md hidden" id="modal-schedule-write">
+    <div class="w-full h-full md:h-[85vh] md:max-w-xl bg-surface md:rounded-3xl flex flex-col overflow-hidden shadow-[0_16px_40px_rgba(35,44,81,0.1)] relative">
+      <!-- App Bar / Header -->
+      <header class="flex justify-between items-center px-4 py-3 bg-surface z-10 sticky top-0 shrink-0 border-b border-outline-variant/10">
+        <button type="button" onclick="App.closeScheduleModal()" class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-95">
+          <span class="material-symbols-outlined text-[24px]">close</span>
+        </button>
+        <h1 class="font-headline font-bold text-lg tracking-tight text-on-surface">일정등록</h1>
+        <button type="button" onclick="App.submitScheduleModal()" class="h-9 px-4 flex items-center justify-center rounded-full font-headline font-bold text-sm text-primary hover:bg-surface-container-highest transition-colors active:scale-95">
+          확인
+        </button>
+      </header>
+
+      <!-- Scrollable Form Area -->
+      <main class="flex-1 overflow-y-auto px-6 py-6 pb-24 space-y-6 text-left">
+        <form id="form-schedule-write" onsubmit="event.preventDefault(); App.submitScheduleModal();" class="space-y-6">
+          <!-- Section 1: Title & Privacy -->
+          <section class="space-y-3">
+            <div class="flex flex-col">
+              <label class="sr-only">일정명</label>
+              <input id="schedule-input-title" class="w-full bg-surface-container-highest text-on-surface placeholder-on-surface-variant/70 border-none rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-sm font-medium outline-none" placeholder="일정명" type="text" required/>
+            </div>
+            <div class="pl-1">
+              <label class="inline-flex items-center cursor-pointer group">
+                <input id="schedule-input-private" class="w-4 h-4 rounded text-primary bg-surface-container-highest border-none focus:ring-primary/40 focus:ring-offset-0 transition-colors cursor-pointer" type="checkbox"/>
+                <span class="ml-2.5 text-xs font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">비공개</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- Section 2: Date & Time -->
+          <section class="space-y-4">
+            <!-- Start Date/Time -->
+            <div class="flex items-center gap-3">
+              <span class="w-14 shrink-0 text-xs font-bold text-on-surface-variant">시작</span>
+              <div class="flex-1 grid grid-cols-2 gap-2">
+                <input id="schedule-input-start-date" class="w-full bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" type="date" value="2026-08-12"/>
+                <input id="schedule-input-start-time" class="w-full bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" type="time" value="14:30"/>
+              </div>
+            </div>
+            <!-- End Date/Time -->
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center gap-3">
+                <span class="w-14 shrink-0 text-xs font-bold text-on-surface-variant">종료</span>
+                <div class="flex-1 grid grid-cols-2 gap-2">
+                  <input id="schedule-input-end-date" class="w-full bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" type="date" value="2026-08-12"/>
+                  <input id="schedule-input-end-time" class="w-full bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" type="time" value="15:30"/>
+                </div>
+              </div>
+              <div class="pl-[4.25rem]">
+                <label class="inline-flex items-center cursor-pointer group">
+                  <input id="schedule-input-allday" class="w-4 h-4 rounded text-primary bg-surface-container-highest border-none focus:ring-primary/40 focus:ring-offset-0 transition-colors cursor-pointer" type="checkbox"/>
+                  <span class="ml-2.5 text-xs font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">종일</span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 3: Details -->
+          <section class="space-y-4">
+            <!-- Calendar Select -->
+            <div class="flex items-center gap-3">
+              <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant">내 캘린더</span>
+              <div class="relative flex-1">
+                <select id="schedule-input-type" class="w-full bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 pr-8 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none appearance-none cursor-pointer">
+                  <option value="primary">(기본) 원격접속</option>
+                  <option value="secondary">개인 일정</option>
+                  <option value="primary">팀 미팅</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-lg">arrow_drop_down</span>
+              </div>
+            </div>
+
+            <!-- Internal Participants -->
+            <div class="flex flex-col gap-2">
+              <div class="flex items-start gap-3">
+                <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant pt-2">참석자</span>
+                <div id="schedule-participants-chips" class="flex-1 bg-surface-container-highest rounded-xl p-2 min-h-[44px] flex flex-wrap gap-1.5 items-center">
+                  <span class="inline-flex items-center gap-1 bg-surface-container-lowest text-primary text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm">
+                    김인재 차장
+                    <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors">
+                      <span class="material-symbols-outlined text-[12px]">close</span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="pl-[4.75rem]">
+                <button type="button" onclick="App.addScheduleParticipant()" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
+                  <span class="material-symbols-outlined text-base">add</span>
+                  추가
+                </button>
+              </div>
+            </div>
+
+            <!-- External Participants -->
+            <div class="flex items-center gap-3">
+              <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant">외부참석자</span>
+              <div class="flex-1 flex gap-2">
+                <input id="schedule-input-external" class="flex-1 bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" placeholder="이메일 입력" type="text"/>
+                <button type="button" onclick="App.addExternalParticipant()" class="bg-surface-container-low text-on-surface-variant hover:text-on-surface font-bold text-xs px-3.5 rounded-xl hover:bg-surface-variant transition-colors whitespace-nowrap active:scale-95">
+                  추가
+                </button>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="flex items-center gap-3">
+              <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant">장소</span>
+              <input id="schedule-input-location" class="flex-1 bg-surface-container-highest text-on-surface border-none rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all text-xs font-medium outline-none" placeholder="회의실 또는 장소" type="text"/>
+            </div>
+
+            <!-- Alarm -->
+            <div class="flex items-center gap-3">
+              <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant">알람</span>
+              <button type="button" onclick="App.showToast('⏰ 15분 전 알림이 설정되었습니다.')" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
+                <span class="material-symbols-outlined text-base">add</span>
+                추가
+              </button>
+            </div>
+
+            <!-- Reservation -->
+            <div class="flex flex-col gap-2">
+              <div class="flex items-center gap-3">
+                <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant">예약</span>
+                <button type="button" onclick="App.selectRoomReservation('회의실 1')" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
+                  <span class="material-symbols-outlined text-base">add</span>
+                  회의실 1
+                </button>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="w-16 shrink-0"></span>
+                <button type="button" onclick="App.selectRoomReservation('회의실 2')" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
+                  <span class="material-symbols-outlined text-base">add</span>
+                  회의실 2
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 4: Notes -->
+          <section class="pt-2">
+            <label class="sr-only">내용</label>
+            <textarea id="schedule-input-notes" class="w-full bg-surface-container-highest text-on-surface placeholder-on-surface-variant/70 border-none rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all resize-none text-xs font-medium outline-none" placeholder="내용을 입력하세요." rows="4"></textarea>
+          </section>
+        </form>
+      </main>
     </div>
   </div>
 

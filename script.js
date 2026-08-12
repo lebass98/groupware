@@ -1365,6 +1365,97 @@ const App = {
     this.renderCalendar();
   },
 
+  openScheduleModal(selectedDate = null) {
+    const modalEl = document.getElementById('modal-schedule-write');
+    if (!modalEl) return;
+    
+    modalEl.classList.remove('hidden');
+    
+    const startDateEl = document.getElementById('schedule-input-start-date');
+    const endDateEl = document.getElementById('schedule-input-end-date');
+    
+    const year = this.state.calYear || 2026;
+    const month = String(this.state.calMonth || 8).padStart(2, '0');
+    const day = String(this.state.calSelectedDay || 12).padStart(2, '0');
+    const dateStr = selectedDate || `${year}-${month}-${day}`;
+    
+    if (startDateEl) startDateEl.value = dateStr;
+    if (endDateEl) endDateEl.value = dateStr;
+  },
+
+  closeScheduleModal() {
+    const modalEl = document.getElementById('modal-schedule-write');
+    if (modalEl) modalEl.classList.add('hidden');
+    
+    const formEl = document.getElementById('form-schedule-write');
+    if (formEl) formEl.reset();
+  },
+
+  addScheduleParticipant() {
+    const container = document.getElementById('schedule-participants-chips');
+    if (!container) return;
+    const names = ['이민우 대리', '박서연 과장', '최현우 팀장', '정수진 대리'];
+    const name = names[Math.floor(Math.random() * names.length)];
+    
+    const chip = document.createElement('span');
+    chip.className = 'inline-flex items-center gap-1 bg-surface-container-lowest text-primary text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm';
+    chip.innerHTML = `${name} <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors"><span class="material-symbols-outlined text-[12px]">close</span></button>`;
+    container.appendChild(chip);
+    this.showToast(`👤 ${name} 님이 참석자로 추가되었습니다.`);
+  },
+
+  addExternalParticipant() {
+    const input = document.getElementById('schedule-input-external');
+    if (input && input.value.trim()) {
+      this.showToast(`✉️ 외부 참석자 (${input.value.trim()}) 초대가 발송되었습니다.`);
+      input.value = '';
+    } else {
+      this.showToast('외부 참석자 이메일을 입력해주세요.');
+    }
+  },
+
+  selectRoomReservation(roomName) {
+    this.showToast(`🏢 ${roomName} 예약 신청이 지정되었습니다.`);
+  },
+
+  submitScheduleModal() {
+    const titleEl = document.getElementById('schedule-input-title');
+    const startDateEl = document.getElementById('schedule-input-start-date');
+    const startTimeEl = document.getElementById('schedule-input-start-time');
+    const typeEl = document.getElementById('schedule-input-type');
+    const isAllDayEl = document.getElementById('schedule-input-allday');
+    
+    const title = (titleEl?.value || '').trim() || '신규 일정';
+    const startDate = startDateEl?.value || '2026-08-12';
+    const startTime = startTimeEl?.value || '14:00';
+    const isAllDay = isAllDayEl?.checked;
+    
+    const [year, month, day] = startDate.split('-').map(Number);
+    const timeStr = isAllDay ? '종일' : `${startTime} ~ 1시간`;
+    
+    if (!this.mockDynamicSchedules) {
+      this.mockDynamicSchedules = {};
+    }
+    const key = `${year}-${month}-${day}`;
+    if (!this.mockDynamicSchedules[key]) {
+      this.mockDynamicSchedules[key] = [];
+    }
+    
+    this.mockDynamicSchedules[key].push({
+      title: title,
+      time: timeStr,
+      type: typeEl?.value || 'primary',
+      badge: '일정',
+      author: '이재광',
+      avatar: 'profile.png'
+    });
+    
+    this.showToast(`✨ 일정 '${title}' 등록이 완료되었습니다!`);
+    this.closeScheduleModal();
+    
+    this.renderCalendar();
+  },
+
   selectCalendarDate(day) {
     this.state.calSelectedDay = day;
     this.renderCalendar();
@@ -1393,7 +1484,10 @@ const App = {
         { title: "전사 월간 보고", time: "09:00 ~ 10:30", type: "primary", badge: "보고", author: "최현우", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
       ]
     };
-    return defaultData[key] || null;
+    const defaults = defaultData[key] || [];
+    const userAdded = (this.mockDynamicSchedules && this.mockDynamicSchedules[key]) || [];
+    const combined = [...defaults, ...userAdded];
+    return combined.length > 0 ? combined : null;
   },
 
   renderCalendar() {
