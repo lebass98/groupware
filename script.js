@@ -1633,6 +1633,112 @@ const App = {
     return combined.length > 0 ? combined : null;
   },
 
+  selectCalendarDate(day) {
+    this.state.calSelectedDay = day;
+    this.renderCalendar();
+    this.openDateDetailModal(day);
+  },
+
+  openDateDetailModal(day) {
+    const modalEl = document.getElementById('modal-date-detail');
+    const titleEl = document.getElementById('modal-date-detail-title');
+    const listEl = document.getElementById('modal-date-detail-list');
+
+    if (!modalEl) return;
+
+    const year = this.state.calYear || 2026;
+    const month = this.state.calMonth || 8;
+    this.state.calSelectedDay = day;
+
+    const dateObj = new Date(year, month - 1, day);
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+    const dayName = dayNames[dateObj.getDay()];
+
+    if (titleEl) {
+      titleEl.innerText = `${year}년 ${month}월 ${day}일 (${dayName})`;
+    }
+
+    const schedules = this.getMockSchedules(year, month, day);
+
+    if (listEl) {
+      if (schedules && schedules.length > 0) {
+        listEl.innerHTML = schedules.map(s => {
+          const dotColor = s.type === 'secondary' ? 'bg-secondary' : s.type === 'error' ? 'bg-error' : 'bg-primary';
+          
+          let avatarUrl = s.avatar;
+          if (s.author) {
+            const authorFirstName = s.author.split(' ')[0];
+            const emp = (this.state.employees || []).find(e => e.name === authorFirstName);
+            if (emp && emp.avatar) {
+              avatarUrl = emp.avatar;
+            }
+          }
+          if (!avatarUrl) avatarUrl = 'profile.png';
+
+          return `
+            <div class="flex items-center bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/10 shadow-2xs hover:bg-surface-container-high transition-colors">
+              <div class="w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0 mr-2.5"></div>
+              <img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
+              <div class="flex-1 text-left">
+                <div class="text-xs text-on-surface-variant font-medium mb-0.5"><span class="font-bold text-primary mr-0.5">${s.author || '이재광 차장'}</span> • ${s.badge} • ${s.time}</div>
+                <div class="text-sm text-on-surface font-bold font-headline">${s.title}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        listEl.innerHTML = `
+          <div class="p-8 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl border border-outline-variant/10">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
+            <p class="font-bold text-on-surface text-sm">지정된 일정이 없습니다.</p>
+            <p class="text-xs text-on-surface-variant/70 mt-1">새로운 일정을 추가해 보세요.</p>
+          </div>
+        `;
+      }
+    }
+
+    modalEl.classList.remove('hidden');
+  },
+
+  closeDateDetailModal() {
+    const modalEl = document.getElementById('modal-date-detail');
+    if (modalEl) modalEl.classList.add('hidden');
+  },
+
+  prevDateDetailDay() {
+    if (this.state.calSelectedDay > 1) {
+      this.state.calSelectedDay--;
+    } else {
+      if (this.state.calMonth === 1) {
+        this.state.calMonth = 12;
+        this.state.calYear--;
+      } else {
+        this.state.calMonth--;
+      }
+      const prevTotalDays = new Date(this.state.calYear, this.state.calMonth, 0).getDate();
+      this.state.calSelectedDay = prevTotalDays;
+    }
+    this.renderCalendar();
+    this.openDateDetailModal(this.state.calSelectedDay);
+  },
+
+  nextDateDetailDay() {
+    const totalDaysInMonth = new Date(this.state.calYear, this.state.calMonth, 0).getDate();
+    if (this.state.calSelectedDay < totalDaysInMonth) {
+      this.state.calSelectedDay++;
+    } else {
+      if (this.state.calMonth === 12) {
+        this.state.calMonth = 1;
+        this.state.calYear++;
+      } else {
+        this.state.calMonth++;
+      }
+      this.state.calSelectedDay = 1;
+    }
+    this.renderCalendar();
+    this.openDateDetailModal(this.state.calSelectedDay);
+  },
+
   renderCalendar() {
     const monthHeaderEl = document.getElementById('cal-header-month-text');
     const gridEl = document.getElementById('cal-grid');
@@ -1704,32 +1810,8 @@ const App = {
         barsHtml += '</div>';
       }
 
-      // Tooltip Popover is strictly rendered ONLY when user explicitly clicks on the date
-      let tooltipPopoverHtml = '';
-      const isTooltipClicked = (d === this.state.clickedTooltipDay);
-      if (isTooltipClicked && schedules && schedules.length > 0) {
-        tooltipPopoverHtml = `
-          <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-30 bg-surface-container-lowest border-2 border-primary/40 rounded-sm px-3 py-2 shadow-xl whitespace-nowrap text-left flex flex-col gap-1 min-w-[170px] pointer-events-auto">
-            <div class="flex items-center justify-between gap-2 border-b border-outline-variant/15 pb-1">
-              <span class="text-xs font-bold text-primary font-headline">${month}월 ${d}일 일정</span>
-              <span class="text-[11px] font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded-sm">${schedules.length}건</span>
-            </div>
-            <div class="flex flex-col gap-1">
-              ${schedules.map(s => `
-                <div class="flex items-center gap-1.5 text-xs text-on-surface font-bold">
-                  <span class="w-2 h-2 rounded-full ${s.title.includes('휴가') || s.title.includes('연차') ? 'bg-[#00693f]' : s.title.includes('반차') || s.title.includes('반반차') ? 'bg-[#b07d00]' : 'bg-primary'} shrink-0"></span>
-                  ${s.author && !s.title.includes('공휴일') ? `<span class="text-xs sm:text-sm font-bold text-primary">${s.author}</span><span class="text-xs font-semibold text-on-surface">• ${s.title}</span>` : `<span class="text-xs sm:text-sm font-bold text-on-surface">${s.title}</span>`}
-                  <span class="text-xs text-on-surface-variant font-medium">(${s.time})</span>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      }
-
       gridHtml += `
         <div class="flex flex-col items-center justify-start min-h-[58px] relative cursor-pointer group py-1 px-0.5 rounded-xl hover:bg-surface-container-high/40 transition-colors" onclick="App.selectCalendarDate(${d})">
-          ${tooltipPopoverHtml}
           <span class="w-7 h-7 flex items-center justify-center rounded-full text-xs ${isSelected ? 'bg-primary text-on-primary font-bold shadow-md' : textClass}">${d}</span>
           ${barsHtml}
         </div>

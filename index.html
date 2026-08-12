@@ -1946,6 +1946,32 @@
     </div>
   </div>
 
+  <!-- Modal: DATE DETAIL POPUP (달력 일자 상세 중앙 팝업 모달) -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-md hidden transition-all duration-200 p-4" id="modal-date-detail" onclick="if(event.target === this) App.closeDateDetailModal()">
+    <div class="w-full max-w-sm bg-surface rounded-3xl p-5 flex flex-col gap-4 shadow-[0_16px_40px_rgba(35,44,81,0.15)] relative border border-outline-variant/15 text-left">
+      <!-- Header with Prev/Next date arrows and X close button -->
+      <header class="flex justify-between items-center border-b border-outline-variant/10 pb-3">
+        <div class="flex items-center gap-1">
+          <button type="button" onclick="App.prevDateDetailDay()" class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-colors active:scale-90">
+            <span class="material-symbols-outlined text-xl">chevron_left</span>
+          </button>
+          <h2 id="modal-date-detail-title" class="font-headline font-bold text-base text-on-surface">2026년 8월 12일 (수)</h2>
+          <button type="button" onclick="App.nextDateDetailDay()" class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-colors active:scale-90">
+            <span class="material-symbols-outlined text-xl">chevron_right</span>
+          </button>
+        </div>
+        <button type="button" onclick="App.closeDateDetailModal()" class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-error transition-colors active:scale-90">
+          <span class="material-symbols-outlined text-xl">close</span>
+        </button>
+      </header>
+
+      <!-- Date Schedules List Body -->
+      <main id="modal-date-detail-list" class="flex flex-col gap-2.5 max-h-[60vh] overflow-y-auto pr-1">
+        <!-- Rendered dynamically by App.openDateDetailModal() -->
+      </main>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
