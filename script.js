@@ -2126,47 +2126,56 @@ const App = {
     const schedules = this.getMockSchedules(year, month, day);
 
     if (schedules && schedules.length > 0) {
-      let scheduleHtml = '';
-      schedules.forEach(s => {
-        const dotColor = s.type === 'secondary' ? 'bg-secondary' : s.type === 'error' ? 'bg-error' : 'bg-primary';
-        
-        let avatarUrl = s.avatar;
-        if (s.author) {
-          const authorFirstName = s.author.split(' ')[0];
-          const emp = (this.state.employees || []).find(e => e.name === authorFirstName);
-          if (emp && emp.avatar) {
-            avatarUrl = emp.avatar;
-          }
-        }
-        if (!avatarUrl) avatarUrl = 'profile.png';
+      const groupMap = {};
+      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '기타'];
 
-        scheduleHtml += `
-          <div class="flex items-center bg-surface-container-lowest p-3 rounded-md shadow-xs border border-outline-variant/10 hover:shadow-sm transition-shadow">
-            <!-- Left Color Indicator Dot -->
-            <div class="w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0 mr-2.5"></div>
-            
-            <!-- Employee Directory Photo (Right to the right of color dot) -->
-            <img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
-            
-            <!-- Schedule Details -->
-            <div class="flex-1 text-left">
-              <div class="text-xs text-on-surface-variant font-medium mb-0.5"><span class="font-bold text-primary mr-0.5">${s.author || '이재광 차장'}</span> • ${s.badge} • ${s.time}</div>
-              <div class="text-sm text-on-surface font-bold font-headline">${s.title}</div>
-            </div>
-            
-            <button class="text-outline-variant hover:text-on-surface transition-colors ml-2" onclick="App.showToast('👤 ${s.author || '이재광'} 님의 ${s.title} 일정입니다.')">
-              <span class="material-symbols-outlined text-xl">chevron_right</span>
-            </button>
-          </div>
-        `;
+      schedules.forEach(s => {
+        const titleStr = s.title || '';
+        const badgeStr = s.badge || '';
+        let key = '기타';
+        if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) key = '휴가';
+        else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) key = '외근';
+        else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) key = '반차';
+        else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) key = '회의';
+        else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) key = '공휴일';
+
+        if (!groupMap[key]) groupMap[key] = [];
+        groupMap[key].push(s);
       });
-      logsContainer.innerHTML = scheduleHtml;
+
+      let finalHtml = '';
+      let groupCount = 0;
+
+      categoryOrder.forEach(gKey => {
+        const items = groupMap[gKey];
+        if (items && items.length > 0) {
+          groupCount++;
+          const colorInfo = this.getCategoryColorStyle(gKey);
+          let sectionDivider = groupCount > 1 ? '<div class="my-2.5 border-t border-outline-variant/20"></div>' : '';
+
+          finalHtml += `
+            ${sectionDivider}
+            <div class="flex items-center justify-between pt-1 pb-1 text-xs font-bold text-on-surface select-none">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass}"></span>
+                <span class="font-headline font-bold text-sm">${gKey === '휴가' ? '연차/휴가' : gKey}</span>
+              </div>
+              <span class="text-[11px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">${items.length}건</span>
+            </div>
+            <div class="flex flex-col gap-2.5">
+              ${items.map(item => this.renderScheduleCardItem(item)).join('')}
+            </div>
+          `;
+        }
+      });
+
+      logsContainer.innerHTML = finalHtml;
     } else {
       logsContainer.innerHTML = `
-        <div class="bg-surface-container-lowest rounded-md p-6 text-center text-on-surface-variant font-medium border border-outline-variant/10">
-          <span class="material-symbols-outlined text-3xl text-outline mb-1.5">event_available</span>
-          <p class="font-bold text-on-surface text-sm">지정된 일정이 없습니다.</p>
-          <p class="text-xs text-on-surface-variant/70 mt-0.5">새로운 일정을 추가할 수 있습니다.</p>
+        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium border border-outline-variant/10 shadow-xs">
+          <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
+          <p class="font-bold text-on-surface text-sm">선택한 날짜에 등록된 일정이 없습니다.</p>
+          <p class="text-xs text-on-surface-variant/70 mt-1">상단 달력에서 다른 날짜를 선택해 보세요.</p>
         </div>
       `;
     }
