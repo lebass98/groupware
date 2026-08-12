@@ -1370,21 +1370,45 @@ const App = {
     this.renderCalendar();
   },
 
+  getMockSchedules(year, month, day) {
+    const key = `${year}-${month}-${day}`;
+    const defaultData = {
+      "2026-8-5": [
+        { title: "월간 팀 미팅", time: "10:00 ~ 11:30", type: "primary", badge: "회의", author: "김종규", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+      ],
+      "2026-8-12": [
+        { title: "여름휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" },
+        { title: "NST 미팅", time: "14:00 ~ 15:00", type: "primary", badge: "미팅", author: "김종규", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+      ],
+      "2026-8-15": [
+        { title: "광복절 (공휴일)", time: "종일", type: "error", badge: "공휴일", author: "회사공지", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+      ],
+      "2026-8-17": [
+        { title: "대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "회사공지", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+      ],
+      "2026-8-20": [
+        { title: "프로젝트 QA 리뷰", time: "15:30 ~ 17:00", type: "primary", badge: "업무", author: "박서연", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+      ],
+      "2026-8-27": [
+        { title: "전사 월간 보고", time: "09:00 ~ 10:30", type: "primary", badge: "보고", author: "최현우", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+      ]
+    };
+    return defaultData[key] || null;
+  },
+
   renderCalendar() {
-    // [UI 목업 적용] 정적 레이아웃 보존을 위해 동적 달력 생성 기능을 비활성화합니다.
-    return;
-    const yearEl = document.getElementById('cal-header-year');
-    const monthEl = document.getElementById('cal-header-month');
+    const monthHeaderEl = document.getElementById('cal-header-month-text');
     const gridEl = document.getElementById('cal-grid');
 
     if (!gridEl) return;
 
-    if (yearEl) yearEl.innerText = `${this.state.calYear}년`;
-    if (monthEl) monthEl.innerText = `${this.state.calMonth}월`;
-
     const year = this.state.calYear;
     const month = this.state.calMonth;
     const selectedDay = this.state.calSelectedDay;
+
+    if (monthHeaderEl) {
+      monthHeaderEl.innerText = `${year}.${String(month).padStart(2, '0')}`;
+    }
 
     const firstDayOfWeek = new Date(year, month - 1, 1).getDay();
     const totalDaysInMonth = new Date(year, month, 0).getDate();
@@ -1392,53 +1416,81 @@ const App = {
 
     let gridHtml = '';
 
+    // Prev month days padding
     for (let i = firstDayOfWeek - 1; i >= 0; i--) {
       const pDay = prevMonthDays - i;
       gridHtml += `
-        <div class="text-on-surface-variant/40 flex flex-col items-center gap-1">
-          <span class="w-8 h-8 flex items-center justify-center">${pDay}</span>
+        <div class="text-on-surface-variant/30 flex flex-col items-center justify-center p-1 select-none">
+          <span class="w-8 h-8 flex items-center justify-center text-xs">${pDay}</span>
         </div>
       `;
     }
 
+    // Current month days
     for (let d = 1; d <= totalDaysInMonth; d++) {
       const dateObj = new Date(year, month - 1, d);
       const dayOfWeek = dateObj.getDay();
       const isSelected = (d === selectedDay);
+      const schedules = this.getMockSchedules(year, month, d);
 
-      let textClass = 'text-on-surface';
-      if (dayOfWeek === 0) textClass = 'text-error-dim';
-      else if (dayOfWeek === 6) textClass = 'text-primary-dim';
+      let textClass = 'text-on-surface font-medium';
+      if (dayOfWeek === 0) textClass = 'text-error font-semibold';
+      else if (dayOfWeek === 6) textClass = 'text-primary font-semibold';
 
       let dotHtml = '';
-      if (d === 5 || d === 12 || d === 20) {
-        dotHtml = '<div class="w-1.5 h-1.5 rounded-full bg-primary mt-1"></div>';
+      if (schedules && schedules.length > 0) {
+        const dotColor = schedules[0].type === 'secondary' ? 'bg-secondary' : schedules[0].type === 'error' ? 'bg-error' : 'bg-primary';
+        dotHtml = `<div class="w-2 h-2 rounded-full ${dotColor} mt-0.5 shadow-sm"></div>`;
+      }
+
+      // Readable Tooltip Popover if day is selected and has schedule
+      let tooltipPopoverHtml = '';
+      if (isSelected && schedules && schedules.length > 0) {
+        tooltipPopoverHtml = `
+          <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-30 bg-surface-container-lowest border-2 border-primary/40 rounded-xl px-3 py-2 shadow-xl whitespace-nowrap text-left flex flex-col gap-1 min-w-[150px] pointer-events-auto">
+            <div class="flex items-center justify-between gap-2 border-b border-outline-variant/15 pb-1">
+              <span class="text-xs font-bold text-primary font-headline">${month}월 ${d}일 일정</span>
+              <span class="text-[11px] font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">${schedules.length}건</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              ${schedules.map(s => `
+                <div class="flex items-center gap-1.5 text-xs text-on-surface font-bold">
+                  <span class="w-2 h-2 rounded-full ${s.type === 'secondary' ? 'bg-secondary' : s.type === 'error' ? 'bg-error' : 'bg-primary'} shrink-0"></span>
+                  <span class="text-xs sm:text-sm font-bold text-on-surface">${s.title}</span>
+                  <span class="text-xs text-on-surface-variant font-medium">(${s.time})</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
       }
 
       if (isSelected) {
         gridHtml += `
-          <div class="flex flex-col items-center gap-1 relative cursor-pointer" onclick="App.selectCalendarDate(${d})">
-            <span class="w-9 h-9 flex items-center justify-center bg-primary text-on-primary rounded-full font-bold shadow-[0_4px_12px_rgba(0,82,208,0.3)] active:scale-95 transition-transform">${d}</span>
+          <div class="flex flex-col items-center justify-center relative cursor-pointer group py-1" onclick="App.selectCalendarDate(${d})">
+            ${tooltipPopoverHtml}
+            <span class="w-8 h-8 flex items-center justify-center bg-primary text-on-primary rounded-full font-bold shadow-md active:scale-95 transition-transform text-xs sm:text-sm">${d}</span>
             ${dotHtml}
           </div>
         `;
       } else {
         gridHtml += `
-          <div class="flex flex-col items-center gap-1 cursor-pointer hover:bg-surface-container-high/50 rounded-full p-1 transition-colors" onclick="App.selectCalendarDate(${d})">
-            <span class="w-8 h-8 flex items-center justify-center ${textClass} font-semibold">${d}</span>
+          <div class="flex flex-col items-center justify-center relative cursor-pointer hover:bg-surface-container-high/60 rounded-xl py-1 transition-colors group" onclick="App.selectCalendarDate(${d})">
+            <span class="w-8 h-8 flex items-center justify-center ${textClass} text-xs sm:text-sm">${d}</span>
             ${dotHtml}
           </div>
         `;
       }
     }
 
+    // Remaining cells padding
     const totalCellsRendered = firstDayOfWeek + totalDaysInMonth;
     const remainingCells = (totalCellsRendered > 35 ? 42 : 35) - totalCellsRendered;
 
     for (let n = 1; n <= remainingCells; n++) {
       gridHtml += `
-        <div class="text-on-surface-variant/40 flex flex-col items-center gap-1">
-          <span class="w-8 h-8 flex items-center justify-center">${n}</span>
+        <div class="text-on-surface-variant/30 flex flex-col items-center justify-center p-1 select-none">
+          <span class="w-8 h-8 flex items-center justify-center text-xs">${n}</span>
         </div>
       `;
     }
@@ -1448,10 +1500,7 @@ const App = {
   },
 
   renderCalendarLogs() {
-    // [UI 목업 적용] 정적 레이아웃 보존을 위해 기능 비활성화
-    return;
-    const selectedDateStrEl = document.getElementById('cal-selected-date-str');
-    const selectedDateStatusEl = document.getElementById('cal-selected-date-status');
+    const titleEl = document.getElementById('cal-schedule-title');
     const logsContainer = document.getElementById('cal-daily-logs-container');
 
     if (!logsContainer) return;
@@ -1461,62 +1510,43 @@ const App = {
     const day = this.state.calSelectedDay;
 
     const dateObj = new Date(year, month - 1, day);
-    const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
     const dayName = dayNames[dateObj.getDay()];
 
-    if (selectedDateStrEl) {
-      selectedDateStrEl.innerText = `${month}월 ${day}일 ${dayName}`;
+    if (titleEl) {
+      titleEl.innerText = `${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')} (${dayName}) 일정`;
     }
 
-    const isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6);
+    const schedules = this.getMockSchedules(year, month, day);
 
-    if (isWeekend) {
-      if (selectedDateStatusEl) {
-        selectedDateStatusEl.innerText = '';
-        selectedDateStatusEl.className = 'hidden';
-      }
-      logsContainer.innerHTML = `
-        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-[0_2px_12px_rgba(35,44,81,0.04)]">
-          <span class="material-symbols-outlined text-4xl text-outline mb-2">weekend</span>
-          <p class="font-bold text-on-surface text-base">주말입니다.</p>
-          <p class="text-xs text-text-muted mt-1">지정된 일정이 없습니다.</p>
-        </div>
-      `;
-      return;
-    }
-
-    if (selectedDateStatusEl) {
-      selectedDateStatusEl.innerText = '';
-      selectedDateStatusEl.className = 'hidden';
-    }
-
-    let scheduleHtml = '';
-    
-    if (day === 5 || day === 12 || day === 20) {
-      scheduleHtml = `
-        <div class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-3.5 relative overflow-hidden shadow-[0_2px_12px_rgba(35,44,81,0.04)] border-l-4 border-l-primary">
-          <div class="flex justify-between items-start">
-            <div class="flex flex-col">
-              <span class="font-label text-xs text-primary font-bold mb-1">14:00 - 15:30</span>
-              <h3 class="font-headline text-lg font-bold text-on-surface">주간 부서 회의</h3>
+    if (schedules && schedules.length > 0) {
+      let scheduleHtml = '';
+      schedules.forEach(s => {
+        const dotColor = s.type === 'secondary' ? 'bg-secondary' : s.type === 'error' ? 'bg-error' : 'bg-primary';
+        scheduleHtml += `
+          <div class="flex items-start bg-surface-container-lowest p-3.5 rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-md transition-shadow">
+            <div class="mt-1.5 mr-3 w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0"></div>
+            <img alt="${s.author || '프로필'}" class="w-10 h-10 rounded-full object-cover mr-3.5" src="${s.avatar || 'profile.png'}"/>
+            <div class="flex-1">
+              <div class="text-xs text-on-surface-variant font-medium mb-0.5">${s.time} • ${s.badge}</div>
+              <div class="text-sm text-on-surface font-bold font-headline">${s.title}</div>
             </div>
+            <button class="text-outline-variant hover:text-on-surface transition-colors self-center">
+              <span class="material-symbols-outlined text-xl">chevron_right</span>
+            </button>
           </div>
-          <div class="flex items-center gap-2 mt-1">
-            <span class="material-symbols-outlined text-sm text-on-surface-variant">location_on</span>
-            <span class="font-body text-xs text-on-surface-variant">제 1 회의실</span>
-          </div>
-        </div>
-      `;
+        `;
+      });
+      logsContainer.innerHTML = scheduleHtml;
     } else {
-      scheduleHtml = `
-        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-[0_2px_12px_rgba(35,44,81,0.04)]">
-          <span class="material-symbols-outlined text-4xl text-outline mb-2">event_busy</span>
-          <p class="font-bold text-on-surface text-base">일정이 없습니다.</p>
+      logsContainer.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-xl p-6 text-center text-on-surface-variant font-medium border border-outline-variant/10">
+          <span class="material-symbols-outlined text-3xl text-outline mb-1.5">event_available</span>
+          <p class="font-bold text-on-surface text-sm">지정된 일정이 없습니다.</p>
+          <p class="text-xs text-on-surface-variant/70 mt-0.5">새로운 일정을 추가할 수 있습니다.</p>
         </div>
       `;
     }
-
-    logsContainer.innerHTML = scheduleHtml;
   },
 
   // Employee Directory Methods
