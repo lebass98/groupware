@@ -1774,13 +1774,31 @@ const App = {
       let scheduleHtml = '';
       schedules.forEach(s => {
         const dotColor = s.type === 'secondary' ? 'bg-secondary' : s.type === 'error' ? 'bg-error' : 'bg-primary';
+        
+        let avatarUrl = s.avatar;
+        if (s.author) {
+          const authorFirstName = s.author.split(' ')[0];
+          const emp = (this.state.employees || []).find(e => e.name === authorFirstName);
+          if (emp && emp.avatar) {
+            avatarUrl = emp.avatar;
+          }
+        }
+        if (!avatarUrl) avatarUrl = 'profile.png';
+
         scheduleHtml += `
-          <div class="flex items-center bg-surface-container-lowest p-3.5 rounded-md shadow-xs border border-outline-variant/10 hover:shadow-sm transition-shadow">
-            <div class="w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0 mr-3"></div>
+          <div class="flex items-center bg-surface-container-lowest p-3 rounded-md shadow-xs border border-outline-variant/10 hover:shadow-sm transition-shadow">
+            <!-- Left Color Indicator Dot -->
+            <div class="w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0 mr-2.5"></div>
+            
+            <!-- Employee Directory Photo (Right to the right of color dot) -->
+            <img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
+            
+            <!-- Schedule Details -->
             <div class="flex-1 text-left">
               <div class="text-xs text-on-surface-variant font-medium mb-0.5">${s.time} • ${s.badge} • <span class="font-bold text-primary">${s.author || '이재광 차장'}</span></div>
               <div class="text-sm text-on-surface font-bold font-headline">${s.title}</div>
             </div>
+            
             <button class="text-outline-variant hover:text-on-surface transition-colors ml-2" onclick="App.showToast('👤 ${s.author || '이재광'} 님의 ${s.title} 일정입니다.')">
               <span class="material-symbols-outlined text-xl">chevron_right</span>
             </button>
