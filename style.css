@@ -322,7 +322,7 @@ body {
   width: 100%;
   max-width: 480px;
   z-index: 40;
-  background-color: rgba(247, 245, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   display: flex;
@@ -332,6 +332,7 @@ body {
   transition: background-color 0.3s ease;
   height: 56px;
   box-sizing: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 @media (min-width: 768px) {
@@ -342,6 +343,7 @@ body {
 
 body.dark .top-header {
   background-color: rgba(11, 17, 32, 0.85);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 /* =========================================
@@ -358,10 +360,10 @@ body.dark .top-header {
   display: flex;
   align-items: center;
   gap: 0;
-  background: linear-gradient(90deg, rgba(0, 82, 208, 0.08) 0%, rgba(247, 245, 255, 0.92) 100%);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 82, 208, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   padding: 0;
   height: 36px;
   overflow: hidden;
