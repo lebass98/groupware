@@ -1067,67 +1067,213 @@
 
     <!-- SCREEN 10: CALENDAR / ATTENDANCE CALENDAR (Exact Stitch (6) 1:1 Design) -->
     <section class="screen-view" id="screen-calendar">
-      <main class="w-full max-w-md mx-auto py-2 text-left space-y-6 pb-20">
-        <!-- Header / Date Selector -->
-        <section class="flex flex-col gap-2">
-          <div class="flex justify-between items-end">
-            <div>
-              <p class="font-body text-on-surface-variant text-sm font-medium" id="cal-header-year">2023년</p>
-              <h1 class="font-headline text-3xl font-extrabold text-on-surface flex items-center gap-2">
-                <span id="cal-header-month">10월</span>
-                <button aria-label="Today" onclick="App.resetCalendarToToday()" class="text-primary hover:bg-surface-container transition-colors rounded-full p-1 active:scale-90" title="오늘 날짜로 이동">
-                  <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">today</span>
-                </button>
-              </h1>
-            </div>
-            <div class="flex gap-2">
-              <button aria-label="Previous Month" onclick="App.prevMonth()" class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95">
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chevron_left</span>
-              </button>
-              <button aria-label="Next Month" onclick="App.nextMonth()" class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95">
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chevron_right</span>
-              </button>
-            </div>
+      <main class="w-full max-w-3xl mx-auto px-4 pb-20 overflow-y-auto">
+        <!-- Calendar Controls -->
+        <div class="flex items-center justify-between py-4 mb-2">
+          <button class="px-4 py-2 bg-surface-container-lowest rounded-full text-sm font-medium text-on-surface hover:bg-surface-container-high transition-colors shadow-sm">주간</button>
+          <div class="flex items-center space-x-4">
+            <button class="text-on-surface-variant hover:text-primary transition-colors">
+              <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <h2 class="font-headline font-bold text-lg text-on-surface">2026.08</h2>
+            <button class="text-on-surface-variant hover:text-primary transition-colors">
+              <span class="material-symbols-outlined">chevron_right</span>
+            </button>
           </div>
-        </section>
-
-        <!-- Calendar Component (Bento-style wrapper) -->
-        <section class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-4 relative overflow-hidden shadow-sm">
-          <!-- Decorative blur element -->
-          <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
-          
+          <button class="px-4 py-2 bg-surface-container-lowest rounded-full text-sm font-medium text-on-surface hover:bg-surface-container-high transition-colors shadow-sm">오늘</button>
+        </div>
+        
+        <!-- Calendar Grid -->
+        <div class="bg-surface-container-lowest rounded-3xl p-4 shadow-sm mb-6">
           <!-- Days of Week -->
-          <div class="grid grid-cols-7 text-center font-body text-xs font-bold text-on-surface-variant mb-1">
-            <div class="text-error-dim">일</div>
-            <div>월</div>
-            <div>화</div>
-            <div>수</div>
-            <div>목</div>
-            <div>금</div>
-            <div class="text-primary-dim">토</div>
+          <div class="grid grid-cols-7 text-center mb-4 text-xs font-semibold">
+            <div class="text-error">일</div>
+            <div class="text-on-surface-variant">월</div>
+            <div class="text-on-surface-variant">화</div>
+            <div class="text-on-surface-variant">수</div>
+            <div class="text-on-surface-variant">목</div>
+            <div class="text-on-surface-variant">금</div>
+            <div class="text-primary">토</div>
           </div>
+          
+          <!-- Dates (Static representation) -->
+          <div class="grid grid-cols-7 gap-y-4 gap-x-1 text-sm pb-4 relative">
+            <!-- Week 1 -->
+            <div class="flex flex-col items-center">
+              <span class="text-error-dim opacity-50 mb-1">26</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-on-surface-variant opacity-50 mb-1">27</span>
+              <div class="flex items-center space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-surface-container-high"></div><span class="text-[0.6rem] text-on-surface-variant truncate w-8">월간미팅</span></div>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-on-surface-variant opacity-50 mb-1">28</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-on-surface-variant opacity-50 mb-1">29</span>
+              <div class="flex items-center space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-primary-container"></div><span class="text-[0.6rem] text-on-surface-variant truncate w-8">대구 영진고</span></div>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-on-surface-variant opacity-50 mb-1">30</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-on-surface-variant opacity-50 mb-1">31</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-primary mb-1">1</span>
+            </div>
+            <!-- Event Bars -->
+            <div class="absolute top-[3.5rem] left-[57%] right-[0%]">
+              <div class="bg-secondary/20 text-secondary event-bar text-transparent">휴가</div>
+            </div>
+            <div class="absolute top-[4.5rem] left-[57%] right-[14%]">
+              <div class="bg-primary-container text-on-primary-container event-bar">테스트일정_QA</div>
+            </div>
+            <div class="absolute top-[4.5rem] left-[71%] right-[0%]">
+              <div class="bg-primary-container text-on-primary-container event-bar">[결재중]연차...</div>
+            </div>
+            
+            <!-- Week 2 -->
+            <div class="flex flex-col items-center mt-12">
+              <span class="text-error mb-1">2</span>
+            </div>
+            <div class="flex flex-col items-center mt-12">
+              <span class="text-on-surface mb-1">3</span>
+            </div>
+            <div class="flex flex-col items-center mt-12">
+              <span class="text-on-surface mb-1">4</span>
+            </div>
+            <div class="flex flex-col items-center mt-12">
+              <span class="text-on-surface mb-1">5</span>
+            </div>
+            <div class="flex flex-col items-center mt-12">
+              <span class="text-on-surface mb-1">6</span>
+            </div>
+            <div class="flex flex-col items-center mt-12">
+              <span class="text-on-surface mb-1">7</span>
+            </div>
+            <div class="flex flex-col items-center mt-12">
+              <span class="text-primary mb-1">8</span>
+            </div>
+            <!-- Event Bars -->
+            <div class="absolute top-[10rem] left-[0%] right-[57%]">
+              <div class="bg-secondary text-white event-bar">휴가</div>
+            </div>
+            <div class="absolute top-[10rem] left-[43%] right-[43%]">
+              <div class="bg-error text-white event-bar">원격접속</div>
+            </div>
+            <div class="absolute top-[10rem] left-[57%] right-[14%]">
+              <div class="bg-secondary text-white event-bar">[완료]연차(강희계)</div>
+            </div>
+            <div class="absolute top-[11rem] left-[71%] right-[14%]">
+              <div class="bg-error text-white event-bar">원격접속</div>
+            </div>
+            
+            <!-- Week 3 -->
+            <div class="flex flex-col items-center mt-16">
+              <span class="text-error mb-1">9</span>
+            </div>
+            <div class="flex flex-col items-center mt-16">
+              <span class="text-on-surface mb-1">10</span>
+            </div>
+            <div class="flex flex-col items-center mt-16">
+              <span class="text-on-surface mb-1">11</span>
+            </div>
+            <div class="flex flex-col items-center mt-16 relative z-10">
+              <div class="w-8 h-8 rounded-full bg-on-surface text-surface-container-lowest flex items-center justify-center font-bold mb-1 shadow-lg ring-4 ring-surface-container-lowest">12</div>
+              <div class="absolute top-10 left-0 right-0 border border-outline-variant/30 rounded-md bg-surface-container-lowest p-1 shadow-sm z-20 w-16 -ml-4">
+                <div class="flex items-center space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-secondary"></div><span class="text-[0.55rem] text-on-surface-variant truncate">NST 미팅</span></div>
+              </div>
+            </div>
+            <div class="flex flex-col items-center mt-16">
+              <span class="text-on-surface mb-1">13</span>
+            </div>
+            <div class="flex flex-col items-center mt-16">
+              <span class="text-on-surface mb-1">14</span>
+            </div>
+            <div class="flex flex-col items-center mt-16">
+              <span class="text-error mb-1">15</span>
+              <span class="text-[0.6rem] text-error">광복절</span>
+            </div>
+            <!-- Event Bars -->
+            <div class="absolute top-[17rem] left-[43%] right-[43%]">
+              <div class="bg-secondary text-white event-bar">여름휴가</div>
+            </div>
+            <div class="absolute top-[17rem] left-[85%] right-[-5%]">
+              <div class="bg-secondary text-white event-bar text-transparent">휴가</div>
+            </div>
+            
+            <!-- Week 4 -->
+            <div class="flex flex-col items-center mt-20">
+              <span class="text-error mb-1">16</span>
+            </div>
+            <div class="flex flex-col items-center mt-20">
+              <span class="text-error mb-1">17</span>
+              <span class="text-[0.55rem] text-error whitespace-nowrap -ml-4">대체공휴일(광복...</span>
+            </div>
+            <div class="flex flex-col items-center mt-20">
+              <span class="text-on-surface mb-1">18</span>
+            </div>
+            <div class="flex flex-col items-center mt-20">
+              <span class="text-on-surface mb-1">19</span>
+            </div>
+            <div class="flex flex-col items-center mt-20">
+              <span class="text-on-surface mb-1">20</span>
+            </div>
+            <div class="flex flex-col items-center mt-20">
+              <span class="text-on-surface mb-1">21</span>
+            </div>
+            <div class="flex flex-col items-center mt-20">
+              <span class="text-primary mb-1">22</span>
+            </div>
+            <!-- Event Bars -->
+            <div class="absolute top-[23rem] left-[0%] right-[71%]">
+              <div class="bg-secondary text-white event-bar">여름휴가</div>
+            </div>
+          </div>
+        </div>
 
-          <!-- Calendar Grid (Rendered dynamically) -->
-          <div class="grid grid-cols-7 gap-y-3 gap-x-1 text-center font-body text-sm" id="cal-grid">
-            <!-- Dynamically populated by App.renderCalendar() -->
-          </div>
-        </section>
+        <!-- Divider Drag Handle -->
+        <div class="flex justify-center mb-6">
+          <div class="w-12 h-1.5 bg-outline-variant/30 rounded-full"></div>
+        </div>
 
-        <!-- Daily Logs / Event List -->
-        <section class="flex flex-col gap-4">
-          <div class="flex justify-between items-center px-1">
-            <h2 class="font-headline text-xl font-bold text-on-surface" id="cal-selected-date-str">10월 5일 목요일</h2>
+        <!-- Daily Schedule List -->
+        <div class="bg-surface-container-low rounded-[2rem] p-6 mb-8 mt-8">
+          <h3 class="font-headline font-bold text-xl text-on-surface mb-6 text-2xl mb-8">08.12 (수)</h3>
+          <div class="space-y-6">
+            <!-- Event Item 1 -->
+            <div class="flex items-start bg-surface-container-lowest p-4 rounded-[1.5rem] shadow-sm hover:shadow-md transition-shadow">
+              <div class="mt-1 mr-3 w-2.5 h-2.5 rounded-full bg-secondary flex-shrink-0"></div>
+              <img alt="Profile" class="w-12 h-12 rounded-full object-cover mr-4" data-alt="A professional headshot of a Korean businessman with short dark hair, wearing a dark suit and light blue shirt. He has a serious expression. Soft indoor office lighting, shallow depth of field focusing on his face, blurred background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q"/>
+              <div class="flex-1">
+                <div class="text-xs text-on-surface-variant font-medium mb-1">종일</div>
+                <div class="text-base text-on-surface font-semibold font-headline">여름휴가</div>
+              </div>
+              <button class="text-outline-variant hover:text-on-surface transition-colors self-center">
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
+            
+            <!-- Event Item 2 -->
+            <div class="flex items-start bg-surface-container-lowest p-4 rounded-[1.5rem] shadow-sm hover:shadow-md transition-shadow">
+              <div class="mt-1 mr-3 w-2.5 h-2.5 rounded-full bg-secondary flex-shrink-0"></div>
+              <img alt="Profile" class="w-12 h-12 rounded-full object-cover mr-4" data-alt="A portrait of a bald Korean man with glasses and a goatee, wearing a dark patterned shirt. He has a slightly intense look. Warm lighting, solid dark background, high contrast portrait style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ"/>
+              <div class="flex-1">
+                <div class="text-xs text-on-surface-variant font-medium mb-1">08.12(수) 14:00 ~ 08.12(수) 15:00</div>
+                <div class="text-base text-on-surface font-semibold font-headline">NST 미팅</div>
+              </div>
+              <button class="text-outline-variant hover:text-on-surface transition-colors self-center">
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
           </div>
-
-          <div class="space-y-3.5" id="cal-daily-logs-container">
-            <!-- Dynamically populated by App.renderCalendarLogs() -->
-          </div>
-        </section>
+        </div>
       </main>
 
-      <!-- Floating Action Button (FAB) -->
-      <button aria-label="Add Schedule" onclick="alert('일정 추가 화면으로 이동합니다.')" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform z-40">
-        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">add</span>
+      <!-- Floating Action Button -->
+      <button onclick="alert('일정 추가 화면으로 이동합니다.')" class="fixed bottom-28 right-6 w-16 h-16 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full shadow-[0_8px_24px_rgba(35,44,81,0.15)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40 group">
+        <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">add</span>
       </button>
     </section>
 

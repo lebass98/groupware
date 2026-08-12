@@ -1371,6 +1371,8 @@ const App = {
   },
 
   renderCalendar() {
+    // [UI 목업 적용] 정적 레이아웃 보존을 위해 동적 달력 생성 기능을 비활성화합니다.
+    return;
     const yearEl = document.getElementById('cal-header-year');
     const monthEl = document.getElementById('cal-header-month');
     const gridEl = document.getElementById('cal-grid');
@@ -1446,6 +1448,8 @@ const App = {
   },
 
   renderCalendarLogs() {
+    // [UI 목업 적용] 정적 레이아웃 보존을 위해 기능 비활성화
+    return;
     const selectedDateStrEl = document.getElementById('cal-selected-date-str');
     const selectedDateStatusEl = document.getElementById('cal-selected-date-status');
     const logsContainer = document.getElementById('cal-daily-logs-container');

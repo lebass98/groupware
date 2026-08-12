@@ -1546,3 +1546,15 @@ body.dark .bottom-nav {
   animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   z-index: 0;
 }
+
+.event-bar {
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 0.65rem;
+  line-height: 1;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
