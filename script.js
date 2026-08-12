@@ -1660,7 +1660,6 @@ const App = {
   openDateDetailModal(day) {
     const modalEl = document.getElementById('modal-date-detail');
     const titleEl = document.getElementById('modal-date-detail-title');
-    const listEl = document.getElementById('modal-date-detail-list');
 
     if (!modalEl) return;
 
@@ -1676,46 +1675,109 @@ const App = {
       titleEl.innerText = `${year}년 ${month}월 ${day}일 (${dayName})`;
     }
 
-    const schedules = this.getMockSchedules(year, month, day);
-
-    if (listEl) {
-      if (schedules && schedules.length > 0) {
-        listEl.innerHTML = schedules.map(s => {
-          const dotColor = s.type === 'secondary' ? 'bg-secondary' : s.type === 'error' ? 'bg-error' : 'bg-primary';
-          
-          let avatarUrl = s.avatar;
-          if (s.author) {
-            const authorFirstName = s.author.split(' ')[0];
-            const emp = (this.state.employees || []).find(e => e.name === authorFirstName);
-            if (emp && emp.avatar) {
-              avatarUrl = emp.avatar;
-            }
-          }
-          if (!avatarUrl) avatarUrl = 'profile.png';
-
-          return `
-            <div class="flex items-center bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/10 shadow-2xs hover:bg-surface-container-high transition-colors">
-              <div class="w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0 mr-2.5"></div>
-              <img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
-              <div class="flex-1 text-left">
-                <div class="text-xs text-on-surface-variant font-medium mb-0.5"><span class="font-bold text-primary mr-0.5">${s.author || '이재광 차장'}</span> • ${s.badge} • ${s.time}</div>
-                <div class="text-sm text-on-surface font-bold font-headline">${s.title}</div>
-              </div>
-            </div>
-          `;
-        }).join('');
+    // Reset category filter to 'all' on modal open
+    this.state.dateDetailCategory = 'all';
+    const chips = document.querySelectorAll('.date-detail-chip');
+    chips.forEach(c => {
+      if (c.getAttribute('onclick')?.includes('all')) {
+        c.className = 'date-detail-chip px-4 py-1.5 rounded-full font-bold bg-primary text-on-primary shadow-xs transition-all active:scale-95 whitespace-nowrap active';
       } else {
-        listEl.innerHTML = `
-          <div class="p-8 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl border border-outline-variant/10">
-            <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
-            <p class="font-bold text-on-surface text-sm">지정된 일정이 없습니다.</p>
-            <p class="text-xs text-on-surface-variant/70 mt-1">새로운 일정을 추가해 보세요.</p>
-          </div>
-        `;
+        c.className = 'date-detail-chip px-4 py-1.5 rounded-full font-semibold bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95 whitespace-nowrap';
       }
+    });
+
+    this.renderDateDetailList(day);
+    modalEl.classList.remove('hidden');
+  },
+
+  filterDateDetailCategory(category, chipEl) {
+    this.state.dateDetailCategory = category || 'all';
+    const chips = document.querySelectorAll('.date-detail-chip');
+    chips.forEach(c => {
+      c.className = 'date-detail-chip px-4 py-1.5 rounded-full font-semibold bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95 whitespace-nowrap';
+    });
+    if (chipEl) {
+      chipEl.className = 'date-detail-chip px-4 py-1.5 rounded-full font-bold bg-primary text-on-primary shadow-xs transition-all active:scale-95 whitespace-nowrap active';
+    }
+    this.renderDateDetailList(this.state.calSelectedDay);
+  },
+
+  renderDateDetailList(day) {
+    const listEl = document.getElementById('modal-date-detail-list');
+    if (!listEl) return;
+
+    const year = this.state.calYear || 2026;
+    const month = this.state.calMonth || 8;
+    const cat = this.state.dateDetailCategory || 'all';
+
+    let schedules = this.getMockSchedules(year, month, day) || [];
+
+    if (cat !== 'all') {
+      schedules = schedules.filter(s => {
+        const titleStr = s.title || '';
+        const badgeStr = s.badge || '';
+        if (cat === '휴가') {
+          return titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차');
+        } else if (cat === '외근') {
+          return titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근');
+        } else if (cat === '반차') {
+          return titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차');
+        } else if (cat === '회의') {
+          return titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의');
+        } else if (cat === '공휴일') {
+          return titleStr.includes('공휴일') || badgeStr.includes('공휴일');
+        }
+        return titleStr.includes(cat) || badgeStr.includes(cat);
+      });
     }
 
-    modalEl.classList.remove('hidden');
+    if (schedules.length > 0) {
+      listEl.innerHTML = schedules.map(s => {
+        const dotColor = s.type === 'secondary' ? 'bg-secondary' : s.type === 'error' ? 'bg-error' : 'bg-primary';
+        
+        let avatarUrl = s.avatar;
+        let deptName = '';
+        if (s.author) {
+          const authorFirstName = s.author.split(' ')[0];
+          const emp = (this.state.employees || []).find(e => e.name === authorFirstName);
+          if (emp) {
+            if (emp.avatar) avatarUrl = emp.avatar;
+            deptName = emp.dept || '';
+          }
+        }
+        if (!avatarUrl) avatarUrl = 'profile.png';
+
+        let categoryBadgeHtml = `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary/15 text-primary border border-primary/20">${s.badge || '일정'}</span>`;
+        if (deptName) {
+          categoryBadgeHtml += `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-surface-container-high text-on-surface-variant border border-outline-variant/20 ml-1">${deptName}</span>`;
+        }
+
+        return `
+          <div class="flex items-center bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/10 shadow-2xs hover:bg-surface-container-high transition-colors">
+            <div class="w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0 mr-2.5"></div>
+            <img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
+            <div class="flex-1 text-left">
+              <div class="flex items-center justify-between gap-1 mb-1">
+                <div class="flex items-center gap-1">
+                  <span class="font-bold text-xs text-primary">${s.author || '이재광 차장'}</span>
+                  ${categoryBadgeHtml}
+                </div>
+                <span class="text-[11px] text-on-surface-variant font-medium">${s.time}</span>
+              </div>
+              <div class="text-sm text-on-surface font-bold font-headline leading-snug">${s.title}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    } else {
+      listEl.innerHTML = `
+        <div class="p-8 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl border border-outline-variant/10">
+          <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
+          <p class="font-bold text-on-surface text-sm">선택한 구분 조건에 일치하는 일정이 없습니다.</p>
+          <p class="text-xs text-on-surface-variant/70 mt-1">상단 '전체' 또는 다른 구분을 클릭해 보세요.</p>
+        </div>
+      `;
+    }
   },
 
   closeDateDetailModal() {
