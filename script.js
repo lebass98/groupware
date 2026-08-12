@@ -1344,6 +1344,7 @@ const App = {
     } else {
       this.state.calMonth--;
     }
+    this.state.clickedTooltipDay = null;
     this.renderCalendar();
   },
 
@@ -1354,6 +1355,7 @@ const App = {
     } else {
       this.state.calMonth++;
     }
+    this.state.clickedTooltipDay = null;
     this.renderCalendar();
   },
 
@@ -1362,6 +1364,7 @@ const App = {
     this.state.calYear = today.getFullYear();
     this.state.calMonth = today.getMonth() + 1;
     this.state.calSelectedDay = today.getDate();
+    this.state.clickedTooltipDay = null;
     this.renderCalendar();
   },
 
@@ -1457,7 +1460,12 @@ const App = {
   },
 
   selectCalendarDate(day) {
-    this.state.calSelectedDay = day;
+    if (this.state.calSelectedDay === day) {
+      this.state.clickedTooltipDay = (this.state.clickedTooltipDay === day) ? null : day;
+    } else {
+      this.state.calSelectedDay = day;
+      this.state.clickedTooltipDay = day;
+    }
     this.renderCalendar();
   },
 
@@ -1551,22 +1559,45 @@ const App = {
 
       let barsHtml = '';
       if (schedules && schedules.length > 0) {
-        barsHtml = '<div class="w-full flex flex-col gap-1 mt-1 px-0.5 z-10">';
+        barsHtml = '<div class="w-full flex flex-col gap-1 mt-1 z-10">';
         schedules.slice(0, 2).forEach(s => {
-          let colorClass = 'bg-[#d8e2ff] text-[#001a41] border border-[#b4c5ff]/40'; // Default Soft Blue (테스트일정_QA)
+          let colorClass = 'bg-[#d8e2ff] text-[#001a41]'; // Default Soft Blue (테스트일정_QA)
           if (s.title.includes('휴가')) {
-            colorClass = 'bg-[#61fbab] text-[#004729] border border-[#005c37]/20'; // Lime Green
+            colorClass = 'bg-[#61fbab] text-[#004729]'; // Lime Green
           } else if (s.title.includes('원격접속') || s.type === 'error' || s.title.includes('공휴일')) {
-            colorClass = 'bg-[#ffdad6] text-[#410002] border border-[#b31b25]/20'; // Soft Red
+            colorClass = 'bg-[#ffdad6] text-[#410002]'; // Soft Red
           } else if (s.title.includes('미팅') || s.title.includes('회의')) {
-            colorClass = 'bg-[#ffe088] text-[#533a00] border border-[#785500]/20'; // Soft Yellow
+            colorClass = 'bg-[#ffe088] text-[#533a00]'; // Soft Yellow
           } else if (s.title.includes('보고')) {
-            colorClass = 'bg-[#e8def8] text-[#1d192b] border border-[#65558f]/20'; // Soft Purple
+            colorClass = 'bg-[#e8def8] text-[#1d192b]'; // Soft Purple
+          }
+
+          // Check adjacent days for seamless horizontal multi-day connection
+          const prevSchedules = d > 1 ? this.getMockSchedules(year, month, d - 1) : null;
+          const nextSchedules = d < totalDaysInMonth ? this.getMockSchedules(year, month, d + 1) : null;
+
+          const hasPrev = prevSchedules && prevSchedules.some(ps => ps.title === s.title);
+          const hasNext = nextSchedules && nextSchedules.some(ns => ns.title === s.title);
+
+          let spanStyle = 'rounded-md w-full';
+          let textDisplay = s.title;
+
+          if (hasPrev && hasNext) {
+            // Middle day of multi-day span: span across left & right borders with no radius
+            spanStyle = 'rounded-none -mx-1.5 w-[calc(100%+0.75rem)]';
+            textDisplay = '&nbsp;';
+          } else if (!hasPrev && hasNext) {
+            // Start day of multi-day span: round left edge, extend right edge
+            spanStyle = 'rounded-l-md rounded-r-none -mr-1.5 w-[calc(100%+0.375rem)]';
+          } else if (hasPrev && !hasNext) {
+            // End day of multi-day span: round right edge, extend left edge
+            spanStyle = 'rounded-r-md rounded-l-none -ml-1.5 w-[calc(100%+0.375rem)]';
+            textDisplay = '&nbsp;';
           }
 
           barsHtml += `
-            <div class="w-full text-[10px] font-bold px-1 py-0.5 rounded-sm ${colorClass} truncate text-center leading-tight shadow-2xs">
-              ${s.title}
+            <div class="text-[10px] font-bold px-1 py-0.5 ${spanStyle} ${colorClass} truncate text-center leading-tight shadow-2xs">
+              ${textDisplay}
             </div>
           `;
         });
@@ -1576,9 +1607,10 @@ const App = {
         barsHtml += '</div>';
       }
 
-      // Readable Tooltip Popover if day is selected and has schedule
+      // Tooltip Popover is strictly rendered ONLY when user explicitly clicks on the date
       let tooltipPopoverHtml = '';
-      if (isSelected && schedules && schedules.length > 0) {
+      const isTooltipClicked = (d === this.state.clickedTooltipDay);
+      if (isTooltipClicked && schedules && schedules.length > 0) {
         tooltipPopoverHtml = `
           <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-30 bg-surface-container-lowest border-2 border-primary/40 rounded-sm px-3 py-2 shadow-xl whitespace-nowrap text-left flex flex-col gap-1 min-w-[150px] pointer-events-auto">
             <div class="flex items-center justify-between gap-2 border-b border-outline-variant/15 pb-1">
