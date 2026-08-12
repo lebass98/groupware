@@ -1771,8 +1771,8 @@
   </div>
 
   <!-- Modal: SCHEDULE REGISTRATION (Redesigned matching Leave Request / 휴가 신청 Pager UI) -->
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-md hidden transition-all duration-200 p-4" id="modal-schedule-write" onclick="if(event.target === this) App.closeScheduleModal()">
-    <div class="w-full max-w-[480px] bg-surface-container-lowest rounded-3xl p-6 shadow-[0_16px_40px_rgba(0,0,0,0.15)] flex flex-col gap-5 border border-outline-variant/15 animate-slide-up transition-transform duration-300 ease-out box-sizing-border-box max-h-[90vh] overflow-y-auto hide-scrollbar">
+  <div class="modal-overlay" id="modal-schedule-write" onclick="if(event.target === this) App.closeScheduleModal()">
+    <div class="modal-card max-w-[480px] w-full max-h-[90vh] overflow-y-auto hide-scrollbar border border-outline-variant/15 shadow-[0_16px_40px_rgba(0,0,0,0.15)] mx-auto flex flex-col gap-5 rounded-3xl" style="padding: 1.5rem;">
       
       <!-- Header Section matching Leave Request -->
       <div class="flex justify-between items-start">

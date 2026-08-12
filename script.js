@@ -1393,6 +1393,7 @@ const App = {
     if (!modalEl) return;
     
     modalEl.classList.remove('hidden');
+    modalEl.classList.add('active');
     
     const startDateEl = document.getElementById('schedule-input-start-date');
     const endDateEl = document.getElementById('schedule-input-end-date');
@@ -1408,7 +1409,10 @@ const App = {
 
   closeScheduleModal() {
     const modalEl = document.getElementById('modal-schedule-write');
-    if (modalEl) modalEl.classList.add('hidden');
+    if (modalEl) {
+      modalEl.classList.add('hidden');
+      modalEl.classList.remove('active');
+    }
     
     const formEl = document.getElementById('form-schedule-write');
     if (formEl) formEl.reset();
