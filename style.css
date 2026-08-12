@@ -185,7 +185,7 @@ body.dark [class*="bg-surface-container-low"][class*="rounded-2xl"] {
    DARK MODE: 하단 네비게이션 활성 아이템
    ========================================= */
 body.dark .nav-item.active {
-  background: var(--surface-container) !important;
+  background: transparent !important;
   color: var(--primary) !important;
 }
 
@@ -1367,10 +1367,9 @@ body.dark .bottom-nav {
 }
 
 .nav-item.active {
-  background: var(--surface-container);
+  background: transparent;
   color: var(--primary);
   font-weight: 700;
-  border-radius: var(--radius-lg);
 }
 
 .nav-item.active .material-symbols-outlined {
