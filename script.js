@@ -1644,7 +1644,7 @@ const App = {
     const selectedDay = this.state.calSelectedDay;
 
     if (monthHeaderEl) {
-      monthHeaderEl.innerText = `${year}.${String(month).padStart(2, '0')}`;
+      monthHeaderEl.innerText = `${year}년 ${month}월`;
     }
 
     const firstDayOfWeek = new Date(year, month - 1, 1).getDay();
