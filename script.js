@@ -1546,42 +1546,85 @@ const App = {
   getMockSchedules(year, month, day) {
     const key = `${year}-${month}-${day}`;
     const defaultData = {
+      "2026-8-3": [
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" }
+      ],
+      "2026-8-4": [
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" },
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" },
+        { title: "반차(오후)", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" }
+      ],
       "2026-8-5": [
-        { title: "월간 팀 미팅", time: "10:00 ~ 11:30", type: "primary", badge: "회의", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" }
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" },
+        { title: "반반차 [09:00~11:00]", time: "09:00 ~ 11:00", type: "warning", badge: "반반차", author: "윤익수 부장", avatar: "./resource/image/profile_blue.png" },
+        { title: "외근(오후) [건강가정진흥원]", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+      ],
+      "2026-8-6": [
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" },
+        { title: "외근(오전) [한국건강가정진흥원] 주간회의", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "이혜림 대리", avatar: "./resource/image/profile_white.png" },
+        { title: "외근(오전) [한국건강가정진흥원] 주간회의", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
+        { title: "외근(오전) [한가원] 주간보고", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" },
+        { title: "외근(오전) [한국건강가정진흥원] 주간회의", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
+        { title: "외근(종일) [인천공항테크마켓] API 확인", time: "09:00 ~ 18:00", type: "primary", badge: "외근", author: "안영재 대리", avatar: "./resource/image/profile_pro.png" },
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "유종현 주임", avatar: "./resource/image/profile_jsp.png" },
+        { title: "외근(오전) [한가원] 주간보고", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" },
+        { title: "반차(오후)", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" },
+        { title: "연차", time: "종일", type: "error", badge: "연차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" }
+      ],
+      "2026-8-7": [
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
+        { title: "반차(오후)", time: "13:00 ~ 18:00", type: "error", badge: "반차", author: "이재광 차장", avatar: "profile.png" },
+        { title: "반차(오후)", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "신현우 주임", avatar: "./resource/image/profile_pink____________.png" },
+        { title: "반반차 [16:00~18:00]", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
+        { title: "외근(오후) [비트라믹스 외]", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
       ],
       "2026-8-10": [
-        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광 차장", avatar: "profile.png" }
+        { title: "반차(오후)", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
+        { title: "반차(오후)", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" },
+        { title: "반반차 [16:00~18:00]", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" }
       ],
       "2026-8-11": [
-        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광 차장", avatar: "profile.png" }
+        { title: "외근(오후) [한국수소연합] 업무미팅", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
+        { title: "외근(오후) [한국수소연합] 미팅", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
+        { title: "외근(오후) [수소연합] 방문", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
       ],
       "2026-8-12": [
-        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광 차장", avatar: "profile.png" },
-        { title: "NST 미팅", time: "14:00 ~ 15:00", type: "primary", badge: "미팅", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" }
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
+        { title: "외근(오전) [건강가정진흥원]", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
+        { title: "외근(오후) [유비디시즌]", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
+        { title: "외근(오후) [한국건강가정진흥원] 월간회의", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
+        { title: "외근(오후) [한국건강가정진흥원] 월간회의", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "이혜림 대리", avatar: "./resource/image/profile_white.png" },
+        { title: "외근(오후) [한가원] 월간보고", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" },
+        { title: "외근(오후) [한국건강가정진흥원] 월간회의", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
+        { title: "외근(오후) [한가원] 월간보고", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" },
+        { title: "연차", time: "종일", type: "error", badge: "연차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" },
+        { title: "반반차 [16:00~18:00]", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "윤익수 부장", avatar: "./resource/image/profile_blue.png" }
+      ],
+      "2026-8-13": [
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "명희진 주임", avatar: "./resource/image/profile_gray_20240502__.png" }
+      ],
+      "2026-8-14": [
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "명희진 주임", avatar: "./resource/image/profile_gray_20240502__.png" },
+        { title: "외근(오후) [인천공항]", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
+        { title: "외근(종일) [인천공항테크마켓] IDC센터", time: "09:00 ~ 18:00", type: "primary", badge: "외근", author: "안영재 대리", avatar: "./resource/image/profile_pro.png" },
+        { title: "외근(오전) [프로젝트 공리]", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
       ],
       "2026-8-15": [
         { title: "광복절 (공휴일)", time: "종일", type: "error", badge: "공휴일", author: "회사공지", avatar: "./resource/image/profile_abc.png" }
       ],
-      "2026-8-17": [
-        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" }
-      ],
       "2026-8-18": [
-        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" }
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
+        { title: "연차", time: "종일", type: "error", badge: "연차", author: "이재광 차장", avatar: "profile.png" }
       ],
       "2026-8-19": [
-        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" }
-      ],
-      "2026-8-20": [
-        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "최지영 과장", avatar: "./resource/image/profile_white.png" }
+        { title: "연차", time: "종일", type: "error", badge: "연차", author: "이재광 차장", avatar: "profile.png" }
       ],
       "2026-8-21": [
-        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "최지영 과장", avatar: "./resource/image/profile_white.png" }
+        { title: "반차(오후)", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "박규태 대리", avatar: "./resource/image/profile_green.png" }
       ],
-      "2026-8-22": [
-        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "최지영 과장", avatar: "./resource/image/profile_white.png" }
-      ],
-      "2026-8-27": [
-        { title: "전사 월간 보고", time: "09:00 ~ 10:30", type: "primary", badge: "보고", author: "김경현 대표", avatar: "./resource/image/profile_abc.png" }
+      "2026-8-24": [
+        { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
       ]
     };
     const defaults = defaultData[key] || [];
@@ -1635,51 +1678,26 @@ const App = {
       if (schedules && schedules.length > 0) {
         barsHtml = '<div class="w-full flex flex-col gap-1 mt-1 z-10">';
         schedules.slice(0, 2).forEach(s => {
-          let colorClass = 'bg-[#d8e2ff] text-[#001a41]'; // Default Soft Blue (테스트일정_QA)
-          if (s.title.includes('휴가')) {
-            colorClass = 'bg-[#61fbab] text-[#004729]'; // Lime Green
-          } else if (s.title.includes('원격접속') || s.type === 'error' || s.title.includes('공휴일')) {
-            colorClass = 'bg-[#ffdad6] text-[#410002]'; // Soft Red
-          } else if (s.title.includes('미팅') || s.title.includes('회의')) {
-            colorClass = 'bg-[#ffe088] text-[#533a00]'; // Soft Yellow
-          } else if (s.title.includes('보고')) {
-            colorClass = 'bg-[#e8def8] text-[#1d192b]'; // Soft Purple
+          let colorClass = 'bg-[#d8e2ff] text-[#001a41]';
+          if (s.title.includes('휴가') || s.title.includes('연차')) {
+            colorClass = (s.type === 'error' || s.author?.includes('이재광') || s.author?.includes('조지혜')) ? 'bg-[#ffdad6] text-[#410002]' : 'bg-[#61fbab] text-[#004729]';
+          } else if (s.title.includes('반차') || s.title.includes('반반차')) {
+            colorClass = 'bg-[#ffe088] text-[#533a00]';
+          } else if (s.title.includes('외근') || s.title.includes('미팅') || s.title.includes('회의')) {
+            colorClass = 'bg-[#d8e2ff] text-[#001a41]';
+          } else if (s.title.includes('공휴일')) {
+            colorClass = 'bg-[#ffdad6] text-[#410002]';
           }
-
-          // Check adjacent days for seamless horizontal multi-day connection
-          const prevSchedules = d > 1 ? this.getMockSchedules(year, month, d - 1) : null;
-          const nextSchedules = d < totalDaysInMonth ? this.getMockSchedules(year, month, d + 1) : null;
-
-          const hasPrev = prevSchedules && prevSchedules.some(ps => ps.title === s.title);
-          const hasNext = nextSchedules && nextSchedules.some(ns => ns.title === s.title);
 
           let spanStyle = 'rounded-md w-full';
-          let labelText = s.author && !s.title.includes('공휴일') ? `${s.author.split(' ')[0]}: ${s.title}` : s.title;
-          let textDisplay = labelText;
-
-          if (hasPrev && hasNext) {
-            // Middle day of multi-day span: span across left & right borders with no radius
-            spanStyle = 'rounded-none -mx-1.5 w-[calc(100%+0.75rem)]';
-            textDisplay = labelText;
-          } else if (!hasPrev && hasNext) {
-            // Start day of multi-day span: round left edge, extend right edge
-            spanStyle = 'rounded-l-md rounded-r-none -mr-1.5 w-[calc(100%+0.375rem)]';
-            textDisplay = labelText;
-          } else if (hasPrev && !hasNext) {
-            // End day of multi-day span: round right edge, extend left edge
-            spanStyle = 'rounded-r-md rounded-l-none -ml-1.5 w-[calc(100%+0.375rem)]';
-            textDisplay = labelText;
-          }
+          let labelText = s.author && !s.title.includes('공휴일') ? `[${s.author.split(' ')[0]}] ${s.title}` : s.title;
 
           barsHtml += `
             <div class="text-[10px] font-bold px-1 py-0.5 ${spanStyle} ${colorClass} truncate text-center leading-tight shadow-2xs">
-              ${textDisplay}
+              ${labelText}
             </div>
           `;
         });
-        if (schedules.length > 2) {
-          barsHtml += `<div class="text-[9px] font-bold text-on-surface-variant text-center">+${schedules.length - 2}</div>`;
-        }
         barsHtml += '</div>';
       }
 
