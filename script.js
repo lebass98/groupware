@@ -1663,44 +1663,96 @@ const App = {
       case '연차':
         return {
           chipClass: 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/30 font-bold shadow-xs',
-          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e6f4ea] text-[#137333] border border-[#137333]/25">연차</span>',
-          dotClass: 'bg-[#137333]'
+          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">연차</span>',
+          dotClass: 'bg-[#137333]',
+          cardBgClass: 'bg-[#f2f9f4] border-[#137333]/25 hover:bg-[#e6f4ea]/60'
         };
       case '외근':
       case '출장':
       case '미팅':
         return {
           chipClass: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 font-bold shadow-xs',
-          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/25">외근</span>',
-          dotClass: 'bg-[#1a73e8]'
+          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/25 whitespace-nowrap shrink-0">외근</span>',
+          dotClass: 'bg-[#1a73e8]',
+          cardBgClass: 'bg-[#f0f5fe] border-[#1a73e8]/25 hover:bg-[#e8f0fe]/60'
         };
       case '반차':
       case '반반차':
         return {
           chipClass: 'bg-[#fef7e0] text-[#b06000] border border-[#b06000]/30 font-bold shadow-xs',
-          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fef7e0] text-[#b06000] border border-[#b06000]/25">${category}</span>`,
-          dotClass: 'bg-[#b06000]'
+          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fef7e0] text-[#b06000] border border-[#b06000]/25 whitespace-nowrap shrink-0">${category}</span>`,
+          dotClass: 'bg-[#b06000]',
+          cardBgClass: 'bg-[#fffdf5] border-[#b06000]/25 hover:bg-[#fef7e0]/60'
         };
       case '회의':
       case '보고':
         return {
           chipClass: 'bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/30 font-bold shadow-xs',
-          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/25">${category}</span>`,
-          dotClass: 'bg-[#6b21a8]'
+          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/25 whitespace-nowrap shrink-0">${category}</span>`,
+          dotClass: 'bg-[#6b21a8]',
+          cardBgClass: 'bg-[#fbf7ff] border-[#6b21a8]/25 hover:bg-[#f3e8ff]/60'
         };
       case '공휴일':
         return {
           chipClass: 'bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/30 font-bold shadow-xs',
-          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25">공휴일</span>',
-          dotClass: 'bg-[#c5221f]'
+          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25 whitespace-nowrap shrink-0">공휴일</span>',
+          dotClass: 'bg-[#c5221f]',
+          cardBgClass: 'bg-[#fff5f5] border-[#c5221f]/25 hover:bg-[#fce8e6]/60'
         };
       default:
         return {
           chipClass: 'bg-primary/15 text-primary border border-primary/25 font-bold shadow-xs',
-          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-primary/15 text-primary border border-primary/20">${category || '일정'}</span>`,
-          dotClass: 'bg-primary'
+          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-primary/15 text-primary border border-primary/20 whitespace-nowrap shrink-0">${category || '일정'}</span>`,
+          dotClass: 'bg-primary',
+          cardBgClass: 'bg-surface-container-low border-outline-variant/15 hover:bg-surface-container-high'
         };
     }
+  },
+
+  renderScheduleCardItem(s) {
+    let avatarUrl = s.avatar;
+    let deptName = '';
+    if (s.author) {
+      const authorFirstName = s.author.split(' ')[0];
+      const emp = (this.state.employees || []).find(e => e.name === authorFirstName);
+      if (emp) {
+        if (emp.avatar) avatarUrl = emp.avatar;
+        deptName = emp.dept || '';
+      }
+    }
+    if (!avatarUrl) avatarUrl = 'profile.png';
+
+    const titleStr = s.title || '';
+    const badgeStr = s.badge || '';
+    let categoryKey = badgeStr || titleStr;
+    if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) categoryKey = '휴가';
+    else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) categoryKey = '외근';
+    else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) categoryKey = titleStr.includes('반반차') ? '반반차' : '반차';
+    else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) categoryKey = '회의';
+    else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) categoryKey = '공휴일';
+
+    const colorInfo = this.getCategoryColorStyle(categoryKey);
+    let categoryBadgeHtml = colorInfo.badgeHtml;
+    if (deptName) {
+      categoryBadgeHtml += `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-surface-container-high text-on-surface-variant border border-outline-variant/20 whitespace-nowrap shrink-0">${deptName}</span>`;
+    }
+
+    return `
+      <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border shadow-2xs transition-all">
+        <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0 mr-2.5"></div>
+        <img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
+        <div class="flex-1 text-left min-w-0">
+          <div class="flex items-center justify-between gap-1.5 mb-1 flex-wrap sm:flex-nowrap">
+            <div class="flex items-center gap-1.5 flex-wrap shrink-0">
+              <span class="font-bold text-xs text-primary whitespace-nowrap">${s.author || '이재광 차장'}</span>
+              ${categoryBadgeHtml}
+            </div>
+            <span class="text-[11px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 ml-auto">${s.time}</span>
+          </div>
+          <div class="text-sm text-on-surface font-bold font-headline leading-snug break-words">${s.title}</div>
+        </div>
+      </div>
+    `;
   },
 
   openDateDetailModal(day) {
@@ -1790,8 +1842,66 @@ const App = {
 
     let schedules = this.getMockSchedules(year, month, day) || [];
 
-    if (cat !== 'all') {
-      schedules = schedules.filter(s => {
+    if (schedules.length === 0) {
+      listEl.innerHTML = `
+        <div class="p-8 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl border border-outline-variant/10">
+          <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
+          <p class="font-bold text-on-surface text-sm">지정된 일정이 없습니다.</p>
+          <p class="text-xs text-on-surface-variant/70 mt-1">새로운 일정을 추가해 보세요.</p>
+        </div>
+      `;
+      return;
+    }
+
+    if (cat === 'all') {
+      // '전체' 보기: 구분별 그룹화 + 구분이 잘 되도록 그룹 헤더 & 서피스 구분선 추가
+      const groupMap = {};
+      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '기타'];
+
+      schedules.forEach(s => {
+        const titleStr = s.title || '';
+        const badgeStr = s.badge || '';
+        let key = '기타';
+        if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) key = '휴가';
+        else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) key = '외근';
+        else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) key = '반차';
+        else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) key = '회의';
+        else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) key = '공휴일';
+
+        if (!groupMap[key]) groupMap[key] = [];
+        groupMap[key].push(s);
+      });
+
+      let finalHtml = '';
+      let groupCount = 0;
+
+      categoryOrder.forEach(gKey => {
+        const items = groupMap[gKey];
+        if (items && items.length > 0) {
+          groupCount++;
+          const colorInfo = this.getCategoryColorStyle(gKey);
+          let sectionDivider = groupCount > 1 ? '<div class="my-2.5 border-t border-outline-variant/20"></div>' : '';
+
+          finalHtml += `
+            ${sectionDivider}
+            <div class="flex items-center justify-between pt-1 pb-1 text-xs font-bold text-on-surface select-none">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass}"></span>
+                <span class="font-headline font-bold text-sm">${gKey === '휴가' ? '연차/휴가' : gKey}</span>
+              </div>
+              <span class="text-[11px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">${items.length}건</span>
+            </div>
+            <div class="flex flex-col gap-2">
+              ${items.map(item => this.renderScheduleCardItem(item)).join('')}
+            </div>
+          `;
+        }
+      });
+
+      listEl.innerHTML = finalHtml;
+    } else {
+      // 개별 구분 필터 보기
+      const filtered = schedules.filter(s => {
         const titleStr = s.title || '';
         const badgeStr = s.badge || '';
         if (cat === '휴가') {
@@ -1807,62 +1917,18 @@ const App = {
         }
         return titleStr.includes(cat) || badgeStr.includes(cat);
       });
-    }
 
-    if (schedules.length > 0) {
-      listEl.innerHTML = schedules.map(s => {
-        let avatarUrl = s.avatar;
-        let deptName = '';
-        if (s.author) {
-          const authorFirstName = s.author.split(' ')[0];
-          const emp = (this.state.employees || []).find(e => e.name === authorFirstName);
-          if (emp) {
-            if (emp.avatar) avatarUrl = emp.avatar;
-            deptName = emp.dept || '';
-          }
-        }
-        if (!avatarUrl) avatarUrl = 'profile.png';
-
-        const titleStr = s.title || '';
-        const badgeStr = s.badge || '';
-        let categoryKey = badgeStr || titleStr;
-        if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) categoryKey = '휴가';
-        else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) categoryKey = '외근';
-        else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) categoryKey = titleStr.includes('반반차') ? '반반차' : '반차';
-        else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) categoryKey = '회의';
-        else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) categoryKey = '공휴일';
-
-        const colorInfo = this.getCategoryColorStyle(categoryKey);
-        let categoryBadgeHtml = colorInfo.badgeHtml;
-        if (deptName) {
-          categoryBadgeHtml += `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-surface-container-high text-on-surface-variant border border-outline-variant/20 ml-1">${deptName}</span>`;
-        }
-
-        return `
-          <div class="flex items-center bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/10 shadow-2xs hover:bg-surface-container-high transition-colors">
-            <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} flex-shrink-0 mr-2.5"></div>
-            <img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
-            <div class="flex-1 text-left">
-              <div class="flex items-center justify-between gap-1 mb-1">
-                <div class="flex items-center gap-1">
-                  <span class="font-bold text-xs text-primary">${s.author || '이재광 차장'}</span>
-                  ${categoryBadgeHtml}
-                </div>
-                <span class="text-[11px] text-on-surface-variant font-medium">${s.time}</span>
-              </div>
-              <div class="text-sm text-on-surface font-bold font-headline leading-snug">${s.title}</div>
-            </div>
+      if (filtered.length > 0) {
+        listEl.innerHTML = filtered.map(item => this.renderScheduleCardItem(item)).join('');
+      } else {
+        listEl.innerHTML = `
+          <div class="p-8 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl border border-outline-variant/10">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
+            <p class="font-bold text-on-surface text-sm">선택한 구분 조건에 일치하는 일정이 없습니다.</p>
+            <p class="text-xs text-on-surface-variant/70 mt-1">상단 '전체' 또는 다른 구분을 클릭해 보세요.</p>
           </div>
         `;
-      }).join('');
-    } else {
-      listEl.innerHTML = `
-        <div class="p-8 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl border border-outline-variant/10">
-          <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
-          <p class="font-bold text-on-surface text-sm">선택한 구분 조건에 일치하는 일정이 없습니다.</p>
-          <p class="text-xs text-on-surface-variant/70 mt-1">상단 '전체' 또는 다른 구분을 클릭해 보세요.</p>
-        </div>
-      `;
+      }
     }
   },
 
