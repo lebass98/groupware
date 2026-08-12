@@ -1717,9 +1717,8 @@ const App = {
             <div class="flex flex-col gap-1">
               ${schedules.map(s => `
                 <div class="flex items-center gap-1.5 text-xs text-on-surface font-bold">
-                  <span class="w-2 h-2 rounded-full ${s.title.includes('휴가') ? 'bg-[#00693f]' : s.title.includes('원격접속') || s.type === 'error' ? 'bg-[#b31b25]' : 'bg-primary'} shrink-0"></span>
-                  <span class="text-xs sm:text-sm font-bold text-on-surface">${s.title}</span>
-                  ${s.author ? `<span class="text-xs font-bold text-primary">(${s.author})</span>` : ''}
+                  <span class="w-2 h-2 rounded-full ${s.title.includes('휴가') || s.title.includes('연차') ? 'bg-[#00693f]' : s.title.includes('반차') || s.title.includes('반반차') ? 'bg-[#b07d00]' : 'bg-primary'} shrink-0"></span>
+                  ${s.author && !s.title.includes('공휴일') ? `<span class="text-xs sm:text-sm font-bold text-primary">${s.author}</span><span class="text-xs font-semibold text-on-surface">• ${s.title}</span>` : `<span class="text-xs sm:text-sm font-bold text-on-surface">${s.title}</span>`}
                   <span class="text-xs text-on-surface-variant font-medium">(${s.time})</span>
                 </div>
               `).join('')}
