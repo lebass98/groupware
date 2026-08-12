@@ -530,8 +530,7 @@ const App = {
       }
       Sortable.create(menuGrid, {
         animation: 150,
-        delay: 200, // delay for touch devices to allow scrolling
-        delayOnTouchOnly: true,
+        handle: '.drag-handle',
         ghostClass: 'opacity-50',
         onEnd: () => {
           const newOrder = Array.from(menuGrid.children).map(el => el.getAttribute('data-id'));

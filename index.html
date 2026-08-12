@@ -242,7 +242,10 @@
         <!-- Menu 2x2 Grid Cards -->
         <div class="grid grid-cols-2 gap-4 mt-2" id="home-menu-grid">
           <!-- Card 1: Check-in/out -->
-          <button type="button" data-id="screen-checkin" onclick="App.switchTab('screen-checkin')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-checkin" onclick="App.switchTab('screen-checkin')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
+              <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+            </div>
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">login</span>
             </div>
@@ -250,7 +253,10 @@
           </button>
 
           <!-- Card 2: Attendance Calendar (근태 캘린더) -->
-          <button type="button" data-id="screen-calendar" onclick="App.switchTab('screen-calendar')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-calendar" onclick="App.switchTab('screen-calendar')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
+              <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+            </div>
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
             </div>
@@ -258,7 +264,10 @@
           </button>
 
           <!-- Card 3: Leave Request -->
-          <button type="button" data-id="screen-request" onclick="App.switchTab('screen-request')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-request" onclick="App.switchTab('screen-request')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
+              <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+            </div>
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">flight_takeoff</span>
             </div>
@@ -266,7 +275,10 @@
           </button>
 
           <!-- Card 4: Notice (공지사항) -->
-          <button type="button" data-id="screen-notice-list" onclick="App.switchTab('screen-notice-list')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-notice-list" onclick="App.switchTab('screen-notice-list')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
+              <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+            </div>
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">campaign</span>
             </div>
@@ -274,7 +286,10 @@
           </button>
 
           <!-- Card 5: Directory (주소록) -->
-          <button type="button" data-id="screen-directory" onclick="App.switchTab('screen-directory')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-directory" onclick="App.switchTab('screen-directory')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
+              <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+            </div>
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">contact_page</span>
             </div>
@@ -282,7 +297,10 @@
           </button>
 
           <!-- Card 6: Attendance Logs -->
-          <button type="button" data-id="screen-logs" onclick="App.switchTab('screen-logs')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-logs" onclick="App.switchTab('screen-logs')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
+              <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+            </div>
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">event_note</span>
             </div>
@@ -290,7 +308,10 @@
           </button>
 
           <!-- Card 7: My Profile -->
-          <button type="button" data-id="screen-profile" onclick="App.switchTab('screen-profile')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-profile" onclick="App.switchTab('screen-profile')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
+              <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+            </div>
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">person</span>
             </div>
@@ -298,7 +319,10 @@
           </button>
 
           <!-- Card 8: Finance (재무/경비) -->
-          <button type="button" data-id="screen-finance" onclick="App.switchTab('screen-finance')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-finance" onclick="App.switchTab('screen-finance')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
+              <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+            </div>
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
             </div>
