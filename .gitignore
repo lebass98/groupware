@@ -3,3 +3,7 @@
 node_modules/
 *.apk
 react-native-app/android/
+._*
+*.swp
+.DS_Store
+.App.js.swp
