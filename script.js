@@ -517,6 +517,28 @@ const App = {
         }
       }
     });
+
+    // Initialize SortableJS for Home Menu Grid
+    const menuGrid = document.getElementById('home-menu-grid');
+    if (menuGrid && typeof Sortable !== 'undefined') {
+      const savedOrder = JSON.parse(localStorage.getItem('wordncode_menu_order'));
+      if (savedOrder && Array.isArray(savedOrder)) {
+        savedOrder.reverse().forEach(id => {
+          const el = menuGrid.querySelector(`[data-id="${id}"]`);
+          if (el) menuGrid.prepend(el);
+        });
+      }
+      Sortable.create(menuGrid, {
+        animation: 150,
+        delay: 200, // delay for touch devices to allow scrolling
+        delayOnTouchOnly: true,
+        ghostClass: 'opacity-50',
+        onEnd: () => {
+          const newOrder = Array.from(menuGrid.children).map(el => el.getAttribute('data-id'));
+          localStorage.setItem('wordncode_menu_order', JSON.stringify(newOrder));
+        }
+      });
+    }
     
     // Check initial logged in state
     if (this.state.isLoggedIn) {

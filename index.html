@@ -29,6 +29,7 @@
   <meta name="twitter:description" content="출퇴근 체크, 연차 신청, 근태 캘린더, 임직원 주소록 및 공지사항을 한눈에 관리하는 통합 스마트 그룹웨어" />
   <meta name="twitter:image" content="https://lebass98.github.io/groupware/resource/image/og_image.png" />
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
   <link as="style" crossorigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   <script id="tailwind-config">
@@ -235,13 +236,13 @@
         <!-- Welcome Hero -->
         <div class="flex flex-col gap-1.5 mt-2">
           <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight" id="home-welcome-title">안녕하세요,<br/>이재광님!</h2>
-          <p class="font-body text-on-surface-variant text-base">오늘도 좋은 하루 보내세요..</p>
+          <p class="font-body text-on-surface-variant text-base">오늘도 좋은 하루 보내세요.</p>
         </div>
 
         <!-- Menu 2x2 Grid Cards -->
-        <div class="grid grid-cols-2 gap-4 mt-2">
+        <div class="grid grid-cols-2 gap-4 mt-2" id="home-menu-grid">
           <!-- Card 1: Check-in/out -->
-          <button type="button" onclick="App.switchTab('screen-checkin')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-checkin" onclick="App.switchTab('screen-checkin')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">login</span>
             </div>
@@ -249,7 +250,7 @@
           </button>
 
           <!-- Card 2: Attendance Calendar (근태 캘린더) -->
-          <button type="button" onclick="App.switchTab('screen-calendar')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-calendar" onclick="App.switchTab('screen-calendar')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
             </div>
@@ -257,7 +258,7 @@
           </button>
 
           <!-- Card 3: Leave Request -->
-          <button type="button" onclick="App.switchTab('screen-request')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-request" onclick="App.switchTab('screen-request')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">flight_takeoff</span>
             </div>
@@ -265,7 +266,7 @@
           </button>
 
           <!-- Card 4: Notice (공지사항) -->
-          <button type="button" onclick="App.switchTab('screen-notice-list')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-notice-list" onclick="App.switchTab('screen-notice-list')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">campaign</span>
             </div>
@@ -273,7 +274,7 @@
           </button>
 
           <!-- Card 5: Directory (주소록) -->
-          <button type="button" onclick="App.switchTab('screen-directory')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-directory" onclick="App.switchTab('screen-directory')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">contact_page</span>
             </div>
@@ -281,7 +282,7 @@
           </button>
 
           <!-- Card 6: Attendance Logs -->
-          <button type="button" onclick="App.switchTab('screen-logs')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-logs" onclick="App.switchTab('screen-logs')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">event_note</span>
             </div>
@@ -289,7 +290,7 @@
           </button>
 
           <!-- Card 7: My Profile -->
-          <button type="button" onclick="App.switchTab('screen-profile')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-profile" onclick="App.switchTab('screen-profile')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">person</span>
             </div>
@@ -297,7 +298,7 @@
           </button>
 
           <!-- Card 8: Finance (재무/경비) -->
-          <button type="button" onclick="App.switchTab('screen-finance')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+          <button type="button" data-id="screen-finance" onclick="App.switchTab('screen-finance')" class="bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
             </div>
