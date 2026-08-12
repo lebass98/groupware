@@ -1698,6 +1698,9 @@ const App = {
             </div>
           `;
         });
+        if (schedules.length > 2) {
+          barsHtml += `<div class="text-[10px] font-black text-on-surface-variant/70 text-center leading-none mt-0.5 tracking-widest select-none">...</div>`;
+        }
         barsHtml += '</div>';
       }
 
