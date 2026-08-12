@@ -1654,19 +1654,21 @@ const App = {
           const hasNext = nextSchedules && nextSchedules.some(ns => ns.title === s.title);
 
           let spanStyle = 'rounded-md w-full';
-          let textDisplay = s.title;
+          let labelText = s.author && !s.title.includes('공휴일') ? `${s.author.split(' ')[0]}: ${s.title}` : s.title;
+          let textDisplay = labelText;
 
           if (hasPrev && hasNext) {
             // Middle day of multi-day span: span across left & right borders with no radius
             spanStyle = 'rounded-none -mx-1.5 w-[calc(100%+0.75rem)]';
-            textDisplay = '&nbsp;';
+            textDisplay = labelText;
           } else if (!hasPrev && hasNext) {
             // Start day of multi-day span: round left edge, extend right edge
             spanStyle = 'rounded-l-md rounded-r-none -mr-1.5 w-[calc(100%+0.375rem)]';
+            textDisplay = labelText;
           } else if (hasPrev && !hasNext) {
             // End day of multi-day span: round right edge, extend left edge
             spanStyle = 'rounded-r-md rounded-l-none -ml-1.5 w-[calc(100%+0.375rem)]';
-            textDisplay = '&nbsp;';
+            textDisplay = labelText;
           }
 
           barsHtml += `
@@ -1686,7 +1688,7 @@ const App = {
       const isTooltipClicked = (d === this.state.clickedTooltipDay);
       if (isTooltipClicked && schedules && schedules.length > 0) {
         tooltipPopoverHtml = `
-          <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-30 bg-surface-container-lowest border-2 border-primary/40 rounded-sm px-3 py-2 shadow-xl whitespace-nowrap text-left flex flex-col gap-1 min-w-[150px] pointer-events-auto">
+          <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-30 bg-surface-container-lowest border-2 border-primary/40 rounded-sm px-3 py-2 shadow-xl whitespace-nowrap text-left flex flex-col gap-1 min-w-[170px] pointer-events-auto">
             <div class="flex items-center justify-between gap-2 border-b border-outline-variant/15 pb-1">
               <span class="text-xs font-bold text-primary font-headline">${month}월 ${d}일 일정</span>
               <span class="text-[11px] font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded-sm">${schedules.length}건</span>
@@ -1696,6 +1698,7 @@ const App = {
                 <div class="flex items-center gap-1.5 text-xs text-on-surface font-bold">
                   <span class="w-2 h-2 rounded-full ${s.title.includes('휴가') ? 'bg-[#00693f]' : s.title.includes('원격접속') || s.type === 'error' ? 'bg-[#b31b25]' : 'bg-primary'} shrink-0"></span>
                   <span class="text-xs sm:text-sm font-bold text-on-surface">${s.title}</span>
+                  ${s.author ? `<span class="text-xs font-bold text-primary">(${s.author})</span>` : ''}
                   <span class="text-xs text-on-surface-variant font-medium">(${s.time})</span>
                 </div>
               `).join('')}
@@ -1757,10 +1760,10 @@ const App = {
           <div class="flex items-center bg-surface-container-lowest p-3.5 rounded-md shadow-xs border border-outline-variant/10 hover:shadow-sm transition-shadow">
             <div class="w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0 mr-3"></div>
             <div class="flex-1 text-left">
-              <div class="text-xs text-on-surface-variant font-medium mb-0.5">${s.time} • ${s.badge}</div>
+              <div class="text-xs text-on-surface-variant font-medium mb-0.5">${s.time} • ${s.badge} • <span class="font-bold text-primary">${s.author || '이재광 차장'}</span></div>
               <div class="text-sm text-on-surface font-bold font-headline">${s.title}</div>
             </div>
-            <button class="text-outline-variant hover:text-on-surface transition-colors ml-2">
+            <button class="text-outline-variant hover:text-on-surface transition-colors ml-2" onclick="App.showToast('👤 ${s.author || '이재광'} 님의 ${s.title} 일정입니다.')">
               <span class="material-symbols-outlined text-xl">chevron_right</span>
             </button>
           </div>
