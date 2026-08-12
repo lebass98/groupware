@@ -1015,6 +1015,8 @@ const App = {
       this.renderDirectory();
     } else if (targetId === 'screen-calendar') {
       this.renderCalendar();
+    } else if (targetId === 'screen-calendar-weekly') {
+      this.renderWeeklyCalendar();
     } else if (targetId === 'screen-finance') {
       this.renderExpenses();
     }
@@ -1702,6 +1704,165 @@ const App = {
           <p class="text-xs text-on-surface-variant/70 mt-0.5">새로운 일정을 추가할 수 있습니다.</p>
         </div>
       `;
+    }
+  },
+
+  // Weekly Calendar Methods
+  prevWeeklyMonth() {
+    if (!this.state.weeklyMonth) {
+      this.state.weeklyYear = this.state.calYear || 2026;
+      this.state.weeklyMonth = this.state.calMonth || 8;
+      this.state.weeklyDay = this.state.calSelectedDay || 12;
+    }
+    if (this.state.weeklyMonth === 1) {
+      this.state.weeklyMonth = 12;
+      this.state.weeklyYear--;
+    } else {
+      this.state.weeklyMonth--;
+    }
+    this.renderWeeklyCalendar();
+  },
+
+  nextWeeklyMonth() {
+    if (!this.state.weeklyMonth) {
+      this.state.weeklyYear = this.state.calYear || 2026;
+      this.state.weeklyMonth = this.state.calMonth || 8;
+      this.state.weeklyDay = this.state.calSelectedDay || 12;
+    }
+    if (this.state.weeklyMonth === 12) {
+      this.state.weeklyMonth = 1;
+      this.state.weeklyYear++;
+    } else {
+      this.state.weeklyMonth++;
+    }
+    this.renderWeeklyCalendar();
+  },
+
+  resetWeeklyToToday() {
+    const today = new Date();
+    this.state.weeklyYear = today.getFullYear();
+    this.state.weeklyMonth = today.getMonth() + 1;
+    this.state.weeklyDay = today.getDate();
+    this.renderWeeklyCalendar();
+  },
+
+  selectWeeklyDate(day) {
+    this.state.weeklyDay = day;
+    this.renderWeeklyCalendar();
+  },
+
+  renderWeeklyCalendar() {
+    const headerTitleEl = document.getElementById('weekly-header-title');
+    const stripEl = document.getElementById('weekly-date-strip');
+    const timelineTitleEl = document.getElementById('weekly-timeline-title');
+    const eventsContainer = document.getElementById('weekly-timeline-events');
+
+    if (!stripEl) return;
+
+    const year = this.state.weeklyYear || this.state.calYear || 2026;
+    const month = this.state.weeklyMonth || this.state.calMonth || 8;
+    const selectedDay = this.state.weeklyDay || this.state.calSelectedDay || 12;
+
+    this.state.weeklyYear = year;
+    this.state.weeklyMonth = month;
+    this.state.weeklyDay = selectedDay;
+
+    if (headerTitleEl) {
+      headerTitleEl.innerText = `${year}년 ${month}월`;
+    }
+
+    const totalDays = new Date(year, month, 0).getDate();
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+
+    let stripHtml = '';
+    for (let d = 1; d <= totalDays; d++) {
+      const dateObj = new Date(year, month - 1, d);
+      const dayOfWeek = dateObj.getDay();
+      const dayName = dayNames[dayOfWeek];
+      const isSelected = (d === selectedDay);
+
+      let textClass = 'text-on-surface-variant';
+      if (dayOfWeek === 0) textClass = 'text-error font-semibold';
+      else if (dayOfWeek === 6) textClass = 'text-primary font-semibold';
+
+      const schedules = this.getMockSchedules(year, month, d);
+      let hasDot = schedules && schedules.length > 0;
+
+      if (isSelected) {
+        stripHtml += `
+          <div id="weekly-date-pill-${d}" onclick="App.selectWeeklyDate(${d})" class="flex-shrink-0 w-12 flex flex-col items-center justify-center py-2.5 rounded-xl snap-center bg-primary text-on-primary shadow-md cursor-pointer transition-transform active:scale-95">
+            <span class="text-[11px] font-bold text-on-primary/90 mb-0.5">${dayName}</span>
+            <span class="text-base font-bold">${d}</span>
+            ${hasDot ? '<div class="w-1.5 h-1.5 rounded-full bg-on-primary mt-1"></div>' : ''}
+          </div>
+        `;
+      } else {
+        stripHtml += `
+          <div id="weekly-date-pill-${d}" onclick="App.selectWeeklyDate(${d})" class="flex-shrink-0 w-12 flex flex-col items-center justify-center py-2.5 rounded-xl snap-center bg-surface-container-low hover:bg-surface-container-high cursor-pointer transition-colors active:scale-95">
+            <span class="text-[11px] font-semibold ${textClass} mb-0.5">${dayName}</span>
+            <span class="text-base font-semibold text-on-surface">${d}</span>
+            ${hasDot ? '<div class="w-1.5 h-1.5 rounded-full bg-primary mt-1"></div>' : ''}
+          </div>
+        `;
+      }
+    }
+
+    stripEl.innerHTML = stripHtml;
+
+    // Scroll active date pill to center smoothly
+    setTimeout(() => {
+      const activePill = document.getElementById(`weekly-date-pill-${selectedDay}`);
+      if (activePill) {
+        activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }, 50);
+
+    // Timeline section title
+    const selectedDateObj = new Date(year, month - 1, selectedDay);
+    const selectedDayName = dayNames[selectedDateObj.getDay()];
+    if (timelineTitleEl) {
+      timelineTitleEl.innerText = `${String(month).padStart(2, '0')}.${String(selectedDay).padStart(2, '0')} (${selectedDayName}) 타임라인 일정`;
+    }
+
+    // Render timeline events
+    if (eventsContainer) {
+      const schedules = this.getMockSchedules(year, month, selectedDay);
+
+      if (schedules && schedules.length > 0) {
+        let eventsHtml = '';
+        schedules.forEach(s => {
+          let bgStyle = 'bg-primary-container/30 text-on-primary-container border-l-4 border-l-primary';
+          if (s.title.includes('휴가')) {
+            bgStyle = 'bg-[#61fbab]/20 text-[#004729] border-l-4 border-l-[#005c37]';
+          } else if (s.title.includes('원격접속') || s.type === 'error' || s.title.includes('공휴일')) {
+            bgStyle = 'bg-[#ffdad6]/40 text-[#410002] border-l-4 border-l-[#b31b25]';
+          } else if (s.title.includes('미팅') || s.title.includes('회의')) {
+            bgStyle = 'bg-[#ffe088]/30 text-[#533a00] border-l-4 border-l-[#785500]';
+          }
+
+          eventsHtml += `
+            <div class="mb-3 ${bgStyle} rounded-2xl p-4 shadow-xs flex justify-between items-center transition-all border border-outline-variant/10">
+              <div class="flex-1">
+                <span class="text-xs font-bold font-label text-primary">${s.time} • ${s.badge}</span>
+                <h4 class="text-base font-bold font-headline text-on-surface mt-1">${s.title}</h4>
+                <p class="text-xs text-on-surface-variant mt-1">작성자: ${s.author || '이재광'}</p>
+              </div>
+              <button onclick="App.showToast('${s.title} 상세 보기')" class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors shadow-2xs">
+                <span class="material-symbols-outlined text-xl">chevron_right</span>
+              </button>
+            </div>
+          `;
+        });
+        eventsContainer.innerHTML = eventsHtml;
+      } else {
+        eventsContainer.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-10 text-center text-on-surface-variant font-medium border border-outline-variant/10 shadow-xs">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
+            <p class="font-bold text-on-surface text-base">지정된 타임라인 일정이 없습니다.</p>
+            <p class="text-xs text-on-surface-variant/70 mt-1">새로운 일정을 등록할 수 있습니다.</p>
+          </div>
+        `;
+      }
     }
   },
 
