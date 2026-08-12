@@ -1427,12 +1427,16 @@ const App = {
     if (searchInput) searchInput.value = '';
     
     modalEl.classList.remove('hidden');
+    modalEl.classList.add('active');
     this.renderDirectoryPickerList();
   },
 
   closeDirectoryPicker() {
     const modalEl = document.getElementById('modal-directory-picker');
-    if (modalEl) modalEl.classList.add('hidden');
+    if (modalEl) {
+      modalEl.classList.add('hidden');
+      modalEl.classList.remove('active');
+    }
   },
 
   filterDirectoryPicker() {
@@ -1480,10 +1484,13 @@ const App = {
     if (this.state.directoryPickerTarget === 'schedule') {
       const container = document.getElementById('schedule-participants-chips');
       if (container) {
-        const chip = document.createElement('span');
-        chip.className = 'inline-flex items-center gap-1 bg-surface-container-lowest text-primary text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm';
-        chip.innerHTML = `${memberLabel} <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors"><span class="material-symbols-outlined text-[12px]">close</span></button>`;
-        container.appendChild(chip);
+        const existingTexts = Array.from(container.children).map(el => el.innerText.trim());
+        if (!existingTexts.some(t => t.includes(memberLabel.split(' ')[0]))) {
+          const chip = document.createElement('span');
+          chip.className = 'inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-lg border border-primary/20 shadow-2xs';
+          chip.innerHTML = `${memberLabel} <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors"><span class="material-symbols-outlined text-[12px]">close</span></button>`;
+          container.appendChild(chip);
+        }
       }
     } else if (this.state.directoryPickerTarget === 'approver') {
       const selectEl = document.getElementById('report-input-approver');
