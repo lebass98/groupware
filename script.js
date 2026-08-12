@@ -1795,7 +1795,7 @@ const App = {
             
             <!-- Schedule Details -->
             <div class="flex-1 text-left">
-              <div class="text-xs text-on-surface-variant font-medium mb-0.5">${s.time} • ${s.badge} • <span class="font-bold text-primary">${s.author || '이재광 차장'}</span></div>
+              <div class="text-xs text-on-surface-variant font-medium mb-0.5"><span class="font-bold text-primary mr-0.5">${s.author || '이재광 차장'}</span> • ${s.badge} • ${s.time}</div>
               <div class="text-sm text-on-surface font-bold font-headline">${s.title}</div>
             </div>
             
