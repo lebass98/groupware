@@ -1648,7 +1648,49 @@ const App = {
     const defaults = defaultData[key] || [];
     const userAdded = (this.mockDynamicSchedules && this.mockDynamicSchedules[key]) || [];
     const combined = [...defaults, ...userAdded];
-    return combined.length > 0 ? combined : null;
+    if (combined.length > 0) {
+      return combined.map(s => ({
+        ...s,
+        time: this.formatConciseTime(s.time),
+        title: (s.title || '')
+          .replace(/\[09:00~11:00\]/g, '[AM 9 ~ AM 11]')
+          .replace(/\[16:00~18:00\]/g, '[PM 4 ~ PM 6]')
+          .replace(/\[13:00~18:00\]/g, '[PM 1 ~ PM 6]')
+          .replace(/\[09:00~12:00\]/g, '[AM 9 ~ PM 12]')
+          .replace(/\[09:00~18:00\]/g, '[AM 9 ~ PM 6]')
+      }));
+    }
+    return null;
+  },
+
+  formatConciseTime(timeStr) {
+    if (!timeStr || timeStr === '종일') return '종일';
+
+    const convertSingleTime = (t) => {
+      if (!t) return '';
+      t = t.trim();
+      
+      const match = t.match(/(\d{1,2}):(\d{2})/);
+      if (!match) return t;
+
+      let hour = parseInt(match[1], 10);
+      let min = parseInt(match[2], 10);
+      if (isNaN(hour)) return t;
+
+      let period = hour >= 12 ? 'PM' : 'AM';
+      let displayHour = hour % 12;
+      if (displayHour === 0) displayHour = 12;
+
+      let minStr = min > 0 ? `:${String(min).padStart(2, '0')}` : '';
+      return `${period} ${displayHour}${minStr}`;
+    };
+
+    if (timeStr.includes('~')) {
+      const rangeParts = timeStr.split('~');
+      return `${convertSingleTime(rangeParts[0])} ~ ${convertSingleTime(rangeParts[1])}`;
+    }
+
+    return convertSingleTime(timeStr);
   },
 
   selectCalendarDate(day) {
