@@ -252,7 +252,7 @@
             <span class="font-label font-bold text-on-surface text-sm">출퇴근 체크</span>
           </button>
 
-          <!-- Card 2: Attendance Calendar (근태 캘린더) -->
+          <!-- Card 2: Calendar -->
           <button type="button" data-id="screen-calendar" onclick="App.switchTab('screen-calendar')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
               <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
@@ -260,7 +260,7 @@
             <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
             </div>
-            <span class="font-label font-bold text-on-surface text-sm">근태 캘린더</span>
+            <span class="font-label font-bold text-on-surface text-sm">캘린더</span>
           </button>
 
           <!-- Card 3: Leave Request -->
@@ -1117,7 +1117,6 @@
         <section class="flex flex-col gap-4">
           <div class="flex justify-between items-center px-1">
             <h2 class="font-headline text-xl font-bold text-on-surface" id="cal-selected-date-str">10월 5일 목요일</h2>
-            <span class="text-xs font-bold text-tertiary px-3 py-1 bg-tertiary/10 rounded-full" id="cal-selected-date-status">지각</span>
           </div>
 
           <div class="space-y-3.5" id="cal-daily-logs-container">
@@ -1127,8 +1126,8 @@
       </main>
 
       <!-- Floating Action Button (FAB) -->
-      <button aria-label="Check In Quick Action" onclick="App.switchTab('screen-checkin')" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform z-40">
-        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">touch_app</span>
+      <button aria-label="Add Schedule" onclick="alert('일정 추가 화면으로 이동합니다.')" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-dim text-on-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform z-40">
+        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">add</span>
       </button>
     </section>
 

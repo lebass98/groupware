@@ -1409,12 +1409,8 @@ const App = {
       else if (dayOfWeek === 6) textClass = 'text-primary-dim';
 
       let dotHtml = '';
-      if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-        if (d === 5) {
-          dotHtml = '<div class="w-1.5 h-1.5 rounded-full bg-tertiary mt-1"></div>';
-        } else if (d <= new Date().getDate()) {
-          dotHtml = '<div class="w-1.5 h-1.5 rounded-full bg-secondary mt-1"></div>';
-        }
+      if (d === 5 || d === 12 || d === 20) {
+        dotHtml = '<div class="w-1.5 h-1.5 rounded-full bg-primary mt-1"></div>';
       }
 
       if (isSelected) {
@@ -1472,72 +1468,51 @@ const App = {
 
     if (isWeekend) {
       if (selectedDateStatusEl) {
-        selectedDateStatusEl.innerText = '주말';
-        selectedDateStatusEl.className = 'text-xs font-bold text-outline px-3 py-1 bg-surface-container rounded-full';
+        selectedDateStatusEl.innerText = '';
+        selectedDateStatusEl.className = 'hidden';
       }
       logsContainer.innerHTML = `
         <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-[0_2px_12px_rgba(35,44,81,0.04)]">
           <span class="material-symbols-outlined text-4xl text-outline mb-2">weekend</span>
-          <p class="font-bold text-on-surface text-base">주말 휴무일입니다.</p>
-          <p class="text-xs text-text-muted mt-1">지정된 근무 일정이 없습니다.</p>
+          <p class="font-bold text-on-surface text-base">주말입니다.</p>
+          <p class="text-xs text-text-muted mt-1">지정된 일정이 없습니다.</p>
         </div>
       `;
       return;
     }
 
-    let isLate = (day === 5);
-    
     if (selectedDateStatusEl) {
-      if (isLate) {
-        selectedDateStatusEl.innerText = '지각';
-        selectedDateStatusEl.className = 'text-xs font-bold text-tertiary px-3 py-1 bg-tertiary/15 rounded-full';
-      } else {
-        selectedDateStatusEl.innerText = '정상 출근';
-        selectedDateStatusEl.className = 'text-xs font-bold text-secondary px-3 py-1 bg-secondary/15 rounded-full';
-      }
+      selectedDateStatusEl.innerText = '';
+      selectedDateStatusEl.className = 'hidden';
     }
 
-    const checkInTime = isLate ? '09:15 AM' : '08:54 AM';
-    const checkOutTime = '18:00 PM';
-
-    logsContainer.innerHTML = `
-      <!-- Log Card 1: Check In -->
-      <div class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-3.5 relative overflow-hidden shadow-[0_2px_12px_rgba(35,44,81,0.04)]">
-        <div class="flex justify-between items-start">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-secondary/15 text-secondary flex items-center justify-center">
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">login</span>
-            </div>
-            <div>
-              <p class="font-body text-xs text-on-surface-variant font-medium">출근 시간</p>
-              <p class="font-headline text-lg font-extrabold text-on-surface">${checkInTime}</p>
+    let scheduleHtml = '';
+    
+    if (day === 5 || day === 12 || day === 20) {
+      scheduleHtml = `
+        <div class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-3.5 relative overflow-hidden shadow-[0_2px_12px_rgba(35,44,81,0.04)] border-l-4 border-l-primary">
+          <div class="flex justify-between items-start">
+            <div class="flex flex-col">
+              <span class="font-label text-xs text-primary font-bold mb-1">14:00 - 15:30</span>
+              <h3 class="font-headline text-lg font-bold text-on-surface">주간 부서 회의</h3>
             </div>
           </div>
-          <span class="px-3 py-1 bg-surface-container rounded-full text-xs font-bold text-on-surface-variant">본사</span>
-        </div>
-        <div class="h-[1px] w-full bg-outline-variant/15"></div>
-        <p class="font-body text-xs text-on-surface-variant flex items-center gap-2">
-          <span class="material-symbols-outlined text-base text-primary" style="font-variation-settings: 'FILL' 0;">location_on</span>
-          <span>서울시 강남구 테헤란로 123 (본사 사옥)</span>
-        </p>
-      </div>
-
-      <!-- Log Card 2: Check Out -->
-      <div class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-3.5 relative overflow-hidden shadow-[0_2px_12px_rgba(35,44,81,0.04)]">
-        <div class="flex justify-between items-start">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">logout</span>
-            </div>
-            <div>
-              <p class="font-body text-xs text-on-surface-variant font-medium">퇴근 시간 (예정)</p>
-              <p class="font-headline text-lg font-extrabold text-on-surface">${checkOutTime}</p>
-            </div>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="material-symbols-outlined text-sm text-on-surface-variant">location_on</span>
+            <span class="font-body text-xs text-on-surface-variant">제 1 회의실</span>
           </div>
-          <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold">8시간 45분 근무</span>
         </div>
-      </div>
-    `;
+      `;
+    } else {
+      scheduleHtml = `
+        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-[0_2px_12px_rgba(35,44,81,0.04)]">
+          <span class="material-symbols-outlined text-4xl text-outline mb-2">event_busy</span>
+          <p class="font-bold text-on-surface text-base">일정이 없습니다.</p>
+        </div>
+      `;
+    }
+
+    logsContainer.innerHTML = scheduleHtml;
   },
 
   // Employee Directory Methods
