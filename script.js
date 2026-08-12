@@ -1396,17 +1396,89 @@ const App = {
     if (formEl) formEl.reset();
   },
 
-  addScheduleParticipant() {
-    const container = document.getElementById('schedule-participants-chips');
-    if (!container) return;
-    const names = ['이민우 대리', '박서연 과장', '최현우 팀장', '정수진 대리'];
-    const name = names[Math.floor(Math.random() * names.length)];
+  openDirectoryPicker(targetType = 'schedule') {
+    this.state.directoryPickerTarget = targetType;
+    const modalEl = document.getElementById('modal-directory-picker');
+    if (!modalEl) return;
     
-    const chip = document.createElement('span');
-    chip.className = 'inline-flex items-center gap-1 bg-surface-container-lowest text-primary text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm';
-    chip.innerHTML = `${name} <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors"><span class="material-symbols-outlined text-[12px]">close</span></button>`;
-    container.appendChild(chip);
-    this.showToast(`👤 ${name} 님이 참석자로 추가되었습니다.`);
+    const searchInput = document.getElementById('directory-picker-search');
+    if (searchInput) searchInput.value = '';
+    
+    modalEl.classList.remove('hidden');
+    this.renderDirectoryPickerList();
+  },
+
+  closeDirectoryPicker() {
+    const modalEl = document.getElementById('modal-directory-picker');
+    if (modalEl) modalEl.classList.add('hidden');
+  },
+
+  filterDirectoryPicker() {
+    this.renderDirectoryPickerList();
+  },
+
+  renderDirectoryPickerList() {
+    const container = document.getElementById('directory-picker-list');
+    if (!container) return;
+
+    const query = (document.getElementById('directory-picker-search')?.value || '').toLowerCase().trim();
+    const filtered = (this.state.employees || []).filter(emp => 
+      !query || 
+      emp.name.toLowerCase().includes(query) || 
+      emp.dept.toLowerCase().includes(query) || 
+      emp.role.toLowerCase().includes(query)
+    );
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="p-6 text-center text-on-surface-variant text-xs font-medium">
+          검색 조건에 맞는 임직원이 없습니다.
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(emp => `
+      <div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors">
+        <div class="flex items-center gap-3">
+          <img src="${emp.avatar || 'profile.png'}" alt="${emp.name}" class="w-9 h-9 rounded-full object-cover"/>
+          <div>
+            <div class="font-bold text-xs text-on-surface">${emp.name} ${emp.role}</div>
+            <div class="text-[11px] text-on-surface-variant">${emp.dept}</div>
+          </div>
+        </div>
+        <button type="button" onclick="App.selectDirectoryPickerMember('${emp.name} ${emp.role}')" class="px-3 py-1.5 bg-primary text-on-primary font-bold text-xs rounded-lg hover:bg-primary-dim transition-colors active:scale-95">
+          + 선택
+        </button>
+      </div>
+    `).join('');
+  },
+
+  selectDirectoryPickerMember(memberLabel) {
+    if (this.state.directoryPickerTarget === 'schedule') {
+      const container = document.getElementById('schedule-participants-chips');
+      if (container) {
+        const chip = document.createElement('span');
+        chip.className = 'inline-flex items-center gap-1 bg-surface-container-lowest text-primary text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm';
+        chip.innerHTML = `${memberLabel} <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors"><span class="material-symbols-outlined text-[12px]">close</span></button>`;
+        container.appendChild(chip);
+      }
+    } else if (this.state.directoryPickerTarget === 'approver') {
+      const selectEl = document.getElementById('report-input-approver');
+      if (selectEl) {
+        let matchedOpt = Array.from(selectEl.options).find(opt => opt.value.includes(memberLabel.split(' ')[0]));
+        if (matchedOpt) {
+          selectEl.value = matchedOpt.value;
+        }
+      }
+    }
+    
+    this.showToast(`👤 ${memberLabel} 님이 주소록에서 선택되었습니다.`);
+    this.closeDirectoryPicker();
+  },
+
+  addScheduleParticipant() {
+    this.openDirectoryPicker('schedule');
   },
 
   addExternalParticipant() {
@@ -1475,41 +1547,41 @@ const App = {
     const key = `${year}-${month}-${day}`;
     const defaultData = {
       "2026-8-5": [
-        { title: "월간 팀 미팅", time: "10:00 ~ 11:30", type: "primary", badge: "회의", author: "김종규", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+        { title: "월간 팀 미팅", time: "10:00 ~ 11:30", type: "primary", badge: "회의", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" }
       ],
       "2026-8-10": [
-        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광 차장", avatar: "profile.png" }
       ],
       "2026-8-11": [
-        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광 차장", avatar: "profile.png" }
       ],
       "2026-8-12": [
-        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" },
-        { title: "NST 미팅", time: "14:00 ~ 15:00", type: "primary", badge: "미팅", author: "김종규", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+        { title: "휴가", time: "종일", type: "secondary", badge: "휴가", author: "이재광 차장", avatar: "profile.png" },
+        { title: "NST 미팅", time: "14:00 ~ 15:00", type: "primary", badge: "미팅", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" }
       ],
       "2026-8-15": [
-        { title: "광복절 (공휴일)", time: "종일", type: "error", badge: "공휴일", author: "회사공지", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+        { title: "광복절 (공휴일)", time: "종일", type: "error", badge: "공휴일", author: "회사공지", avatar: "./resource/image/profile_abc.png" }
       ],
       "2026-8-17": [
-        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "김철수", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" }
       ],
       "2026-8-18": [
-        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "김철수", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" }
       ],
       "2026-8-19": [
-        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "김철수", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+        { title: "원격접속", time: "종일", type: "error", badge: "근태", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" }
       ],
       "2026-8-20": [
-        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "박서연", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "최지영 과장", avatar: "./resource/image/profile_white.png" }
       ],
       "2026-8-21": [
-        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "박서연", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "최지영 과장", avatar: "./resource/image/profile_white.png" }
       ],
       "2026-8-22": [
-        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "박서연", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBipdb3Sb_E8OZiH_gjj5BUk1HBTcXwZou3JpQQCjClck-xDFOMYb5Qywb1nYj17bvTFNyf1_vLiMHZsre7nhUyCiF445sF5RKpQ5SADPKI4Ee3dled5Rs_vXr2iJlCpZ59iZQgxyolR7GbAw1mxBz2Xk-XIRHb6W2_3bHXhrTjRuJrhzohlTOITpJ5VnnHMCkyU-vMpr1WRhaJYJPRfd0vQ0gxYPtCTAuOqsP7kohnJb2cmQ0WdrEP2Q" }
+        { title: "테스트일정_QA", time: "10:00 ~ 17:00", type: "primary", badge: "QA", author: "최지영 과장", avatar: "./resource/image/profile_white.png" }
       ],
       "2026-8-27": [
-        { title: "전사 월간 보고", time: "09:00 ~ 10:30", type: "primary", badge: "보고", author: "최현우", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY7FCNz0gi2cLj3m28ijdJI6sqIyu73gQSEhQ_pgR3ilQ1nv5RCezE5CkavWrkV6_WLKf_cCCFROOxEHmR9WcYmNnVfTCnXswVCNppyYBgpdexV2gnexpbca0YhyMXJy_ASeJVhY9_TCqAFaNlbP_Ex1OYuMmkX-YQ6-opX-r3div-18rHcr51UzTUvhyUIDB60c_oMLVokFyIWBCu_bDIgyqjHrIJePnpEM-DwW2CGIMxr4x2h-gLXQ" }
+        { title: "전사 월간 보고", time: "09:00 ~ 10:30", type: "primary", badge: "보고", author: "김경현 대표", avatar: "./resource/image/profile_abc.png" }
       ]
     };
     const defaults = defaultData[key] || [];

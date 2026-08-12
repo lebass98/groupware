@@ -1349,9 +1349,9 @@
               </div>
               <div class="flex items-center gap-2 mt-1">
                 <div class="w-6 h-6 rounded-full bg-surface-container-high overflow-hidden">
-                  <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5_BB-f_CanzBEINseddRGKGqWJ6aZuuNAPdBYGwLWebeCwIIolqmbs-JJm6YhqQedc-a2tGm-Q8tPlwGMQojb0_Vig-VX2IqCvCt9a0dTVxVTteKBWVVPycibFv_g_ppThLHac-PjJqjcb1Rue4IBNM_qNfaylqNKJRkrNGwwxFbtYwSVXIXYm-a65-TBSKXLejl8yvtvdUhHMZTF3pJdiTF2siD8GCwoFHNhBDMSLZ1u8NfG3WcKyA" alt="Avatar">
+                  <img class="w-full h-full object-cover" src="./resource/image/profile_john.png" alt="Avatar">
                 </div>
-                <span class="font-body text-xs text-on-surface-variant">결재자: 김철수 팀장</span>
+                <span class="font-body text-xs text-on-surface-variant">결재자: 김종규 팀장 (기획팀)</span>
               </div>
             </article>
 
@@ -1369,9 +1369,9 @@
               </div>
               <div class="flex items-center gap-2 mt-1">
                 <div class="w-6 h-6 rounded-full bg-surface-container-high overflow-hidden">
-                  <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFRn-1nymDQCp2F8IvBhrcLN270io4jg6Se-fPjEXp93poyta8VAEba_k-JjGgVLMPp3BimSXSCYTItVF6SNl3egvOynwmjZFu7Ybwdd6q14COG4fdjgBDqXji9ddRyU5qdxA55FZVlReVxce5LGDh33lKUgkI0G__Ix4Yion3-rXpNfjH54KT6PMC8nIGkMHgyQQ-YKrTzmVSaRiL9YSV7H30ma14WBqciR4nXqFEye0R5R1WbbC_hA" alt="Avatar">
+                  <img class="w-full h-full object-cover" src="./resource/image/profile_sky.png" alt="Avatar">
                 </div>
-                <span class="font-body text-xs text-on-surface-variant">결재자: 김철수 팀장</span>
+                <span class="font-body text-xs text-on-surface-variant">결재자: 오은주 차장 (경영지원팀)</span>
               </div>
             </article>
 
@@ -1687,9 +1687,13 @@
         <div class="space-y-1.5">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">결재자</label>
           <select id="report-input-approver" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all appearance-none">
-            <option value="김철수 팀장" selected>김철수 팀장</option>
-            <option value="박영희 본부장">박영희 본부장</option>
-            <option value="최민수 대표이사">최민수 대표이사</option>
+            <option value="김경현 대표 (경영지원팀)">김경현 대표 (경영지원팀)</option>
+            <option value="오은주 차장 (경영지원팀)">오은주 차장 (경영지원팀)</option>
+            <option value="김종규 팀장 (기획팀)" selected>김종규 팀장 (기획팀)</option>
+            <option value="윤익수 부장 (디자인팀)">윤익수 부장 (디자인팀)</option>
+            <option value="이재광 차장 (퍼블리싱팀)">이재광 차장 (퍼블리싱팀)</option>
+            <option value="최우석 과장 (개발팀)">최우석 과장 (개발팀)</option>
+            <option value="남기현 본부장 (전략본부)">남기현 본부장 (전략본부)</option>
           </select>
         </div>
 
@@ -1847,7 +1851,7 @@
                 <span class="w-16 shrink-0 text-xs font-bold text-on-surface-variant pt-2">참석자</span>
                 <div id="schedule-participants-chips" class="flex-1 bg-surface-container-highest rounded-xl p-2 min-h-[44px] flex flex-wrap gap-1.5 items-center">
                   <span class="inline-flex items-center gap-1 bg-surface-container-lowest text-primary text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm">
-                    김인재 차장
+                    오은주 차장
                     <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors">
                       <span class="material-symbols-outlined text-[12px]">close</span>
                     </button>
@@ -1855,9 +1859,9 @@
                 </div>
               </div>
               <div class="pl-[4.75rem]">
-                <button type="button" onclick="App.addScheduleParticipant()" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
+                <button type="button" onclick="App.openDirectoryPicker('schedule')" class="flex items-center gap-1 text-primary font-bold text-xs hover:text-primary-dim transition-colors active:scale-95">
                   <span class="material-symbols-outlined text-base">add</span>
-                  추가
+                  주소록에서 추가
                 </button>
               </div>
             </div>
@@ -1913,6 +1917,32 @@
             <textarea id="schedule-input-notes" class="w-full bg-surface-container-highest text-on-surface placeholder-on-surface-variant/70 border-none rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all resize-none text-xs font-medium outline-none" placeholder="내용을 입력하세요." rows="4"></textarea>
           </section>
         </form>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal: DIRECTORY MEMBER PICKER (주소록 연동 멤버 선택 모달) -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-md hidden" id="modal-directory-picker">
+    <div class="w-full h-full md:h-[80vh] md:max-w-md bg-surface md:rounded-3xl flex flex-col overflow-hidden shadow-[0_16px_40px_rgba(35,44,81,0.1)] relative">
+      <!-- Header -->
+      <header class="flex justify-between items-center px-5 py-3.5 bg-surface z-10 sticky top-0 shrink-0 border-b border-outline-variant/10">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">contact_page</span>
+          <h1 class="font-headline font-bold text-base text-on-surface">주소록 인원 선택</h1>
+        </div>
+        <button type="button" onclick="App.closeDirectoryPicker()" class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors">
+          <span class="material-symbols-outlined text-xl">close</span>
+        </button>
+      </header>
+      
+      <!-- Search Input -->
+      <div class="px-5 py-3 bg-surface-container-low border-b border-outline-variant/10">
+        <input id="directory-picker-search" oninput="App.filterDirectoryPicker()" type="text" placeholder="임직원 이름 또는 부서 검색..." class="w-full bg-surface-container-lowest text-on-surface text-xs px-3.5 py-2.5 rounded-xl border border-outline-variant/15 outline-none focus:ring-2 focus:ring-primary/40"/>
+      </div>
+      
+      <!-- Member List -->
+      <main id="directory-picker-list" class="flex-1 overflow-y-auto px-5 py-3 space-y-2 text-left">
+        <!-- Rendered dynamically by App.openDirectoryPicker() -->
       </main>
     </div>
   </div>
