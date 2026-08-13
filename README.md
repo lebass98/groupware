@@ -213,5 +213,7 @@ Pool/
   - '오늘의 우선순위' 헤더 우측에 카드형(`dashboard`)/리스트형(`format_list_bulleted`) 뷰 전환 토글 아이콘 버튼 배치.
   - 리스트형 뷰: 한줄 간략 리스팅(완료 체크, 우선순위 도트, 제목 한줄, 마감일, 호버 시 수정 아이콘 노출).
 - **팝업 작성 폼 내 박스/상세내용/첨부파일 영역 보더 라디우스 축소**:
-  - 할 일 작성(`modal-todo-write`), 할 일 상세(`modal-todo-detail`), 지출결의서(`modal-expense-write`), 품의서(`modal-report-write`), 근태/휴가(`leave-reason-text`), 일정 등록(`modal-schedule-write`) 등 모든 작성 팝업 폼의 섹션 그룹 박스, 상세 내용 textarea, 첨부파일 드롭존, 입력 필드 보더 라디우스 축소 조정 (`rounded-2xl`/`xl` → `rounded-lg`/`md`).
+  - 할 일 작성/수정(`modal-todo-write`) 페이지 내 프로젝트, 우선순위, 마감일, 담당자, 상세 내용, 첨부파일 등 개별 섹션 카드 박스의 보더 라디우스 축소 조정 (`rounded-lg` → `rounded-md`/`rounded-sm`).
+  - 할 일 상세(`modal-todo-detail`), 지출결의서(`modal-expense-write`), 품의서(`modal-report-write`), 근태/휴가(`leave-reason-text`), 일정 등록(`modal-schedule-write`) 등 팝업 폼 요소 라디우스 컴팩트화.
+
 
