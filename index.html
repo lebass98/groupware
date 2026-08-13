@@ -1935,27 +1935,37 @@
     </div>
   </div>
 
-  <!-- Modal: DIRECTORY MEMBER PICKER (주소록 연동 멤버 선택 모달 - z-[120] 상위 레이어) -->
-  <div class="fixed inset-0 z-[120] flex items-center justify-center bg-black/60 backdrop-blur-md hidden transition-all duration-200 p-4" id="modal-directory-picker" onclick="if(event.target === this) App.closeDirectoryPicker()">
-    <div class="w-full max-w-[440px] max-h-[85vh] bg-surface-container-lowest rounded-3xl flex flex-col overflow-hidden shadow-2xl relative border border-outline-variant/15 mx-auto animate-slide-up">
+  <!-- Modal: DIRECTORY MEMBER PICKER (Full-Screen Page Modal / 전체 화면 주소록 팝업) -->
+  <div class="fixed inset-0 z-[120] bg-surface-container-lowest flex flex-col w-full h-full hidden overflow-hidden" id="modal-directory-picker">
+    <div class="w-full max-w-[600px] mx-auto h-full bg-surface-container-lowest flex flex-col overflow-hidden relative border-x border-outline-variant/10 shadow-2xl">
       <!-- Header -->
-      <header class="flex justify-between items-center px-5 py-3.5 bg-surface-container-lowest z-10 sticky top-0 shrink-0 border-b border-outline-variant/10">
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-primary text-xl">contact_page</span>
-          <h1 class="font-headline font-bold text-base text-on-surface">주소록 인원 선택</h1>
+      <header class="flex justify-between items-center px-4 py-3.5 bg-surface-container-lowest z-10 sticky top-0 shrink-0 border-b border-outline-variant/15 shadow-2xs">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="App.closeDirectoryPicker()" class="w-9 h-9 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container transition-colors active:scale-95">
+            <span class="material-symbols-outlined text-2xl">arrow_back</span>
+          </button>
+          <div class="text-left">
+            <h1 class="font-headline font-bold text-lg text-on-surface tracking-tight leading-none">주소록 인원 선택</h1>
+            <p class="text-on-surface-variant text-[11px] font-medium mt-1">참석할 임직원을 검색하여 선택하세요.</p>
+          </div>
         </div>
-        <button type="button" onclick="App.closeDirectoryPicker()" class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors">
-          <span class="material-symbols-outlined text-xl">close</span>
+        <button type="button" onclick="App.closeDirectoryPicker()" class="h-9 px-4 flex items-center justify-center rounded-full bg-surface-container text-on-surface-variant font-bold text-xs hover:bg-surface-container-high transition-colors active:scale-95">
+          완료
         </button>
       </header>
       
       <!-- Search Input -->
-      <div class="px-5 py-3 bg-surface-container-low border-b border-outline-variant/10">
-        <input id="directory-picker-search" oninput="App.filterDirectoryPicker()" type="text" placeholder="임직원 이름 또는 부서 검색..." class="w-full bg-surface-container-lowest text-on-surface text-xs px-3.5 py-2.5 rounded-xl border border-outline-variant/15 outline-none focus:ring-2 focus:ring-primary/40"/>
+      <div class="px-5 py-3.5 bg-surface-container-low border-b border-outline-variant/10 shrink-0">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-outline text-lg">search</span>
+          </div>
+          <input id="directory-picker-search" oninput="App.filterDirectoryPicker()" type="text" placeholder="임직원 이름, 부서, 직급 검색..." class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest text-on-surface text-sm rounded-xl border border-outline-variant/15 outline-none focus:ring-2 focus:ring-primary/40 transition-colors"/>
+        </div>
       </div>
       
       <!-- Member List -->
-      <main id="directory-picker-list" class="flex-1 overflow-y-auto px-5 py-3 space-y-2 text-left">
+      <main id="directory-picker-list" class="flex-1 overflow-y-auto px-5 py-4 space-y-2.5 text-left pb-20">
         <!-- Rendered dynamically by App.openDirectoryPicker() -->
       </main>
     </div>
