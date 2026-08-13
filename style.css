@@ -267,7 +267,7 @@ body.dark .app-container {
 
 body {
   font-family: 'Pretendard', 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #f6d5f7 0%, #fbe9d7 100%);
+  background: linear-gradient(135deg, #f8f8f8 0%, #e8e8ec 50%, #d4d4e0 100%);
   background-attachment: fixed;
   color: var(--on-surface);
   min-height: 100vh;
@@ -302,7 +302,7 @@ body {
   width: 100%;
   max-width: 768px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f6d5f7 0%, #fbe9d7 100%);
+  background: linear-gradient(135deg, #f8f8f8 0%, #e8e8ec 50%, #d4d4e0 100%);
   position: relative;
   display: flex;
   flex-direction: column;

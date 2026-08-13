@@ -30,7 +30,8 @@ export default function App() {
   if (Platform.OS === 'web') {
     return (
       <LinearGradient
-        colors={['#f6d5f7', '#fbe9d7']}
+        colors={['#f8f8f8', '#e8e8ec', '#d4d4e0']}
+        locations={[0, 0.5, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.container}
@@ -55,13 +56,14 @@ export default function App() {
 
   return (
     <LinearGradient
-      colors={['#f6d5f7', '#fbe9d7']}
+      colors={['#f8f8f8', '#e8e8ec', '#d4d4e0']}
+      locations={[0, 0.5, 1]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}
     >
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar barStyle="dark-content" backgroundColor="#f6d5f7" />
+        <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" />
         
         {/* 웹뷰를 항상 렌더링 상태로 유지해 세션과 현재 히스토리 URL을 잃지 않도록 합니다. */}
         <WebView
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
-    backgroundColor: '#f6d5f7',
+    backgroundColor: '#f8f8f8',
     zIndex: 999, // 웹뷰 위에 오버레이되도록 보장
   },
   errorTitle: {
