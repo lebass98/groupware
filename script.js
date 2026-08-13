@@ -6,6 +6,7 @@ const App = {
     activeTab: 'screen-today',
     todosFilter: 'all',
     todosSearchQuery: '',
+    selectedProject: null,
     todoFormPriority: 'medium',
     todoViewMode: 'card',
     recentProjects: ['그룹웨어 고도화', '근태관리 시스템', '디자인 시스템 (M3)', '경영지원 / 재무'],
@@ -3869,6 +3870,16 @@ const App = {
   },
 
   // To-Do / Task Management Methods
+  selectProject(projectName) {
+    this.state.selectedProject = projectName;
+    this.renderTodos();
+  },
+
+  clearSelectedProject() {
+    this.state.selectedProject = null;
+    this.renderTodos();
+  },
+
   renderTodos() {
     const container = document.getElementById('todo-list-container');
     const totalCountEl = document.getElementById('todo-total-count');
@@ -3877,6 +3888,7 @@ const App = {
     let list = [...(this.state.todos || [])];
     const filter = this.state.todosFilter || 'all';
     const query = (this.state.todosSearchQuery || '').toLowerCase().trim();
+    const selectedProject = this.state.selectedProject;
 
     // 1. Category Filter
     if (filter === 'my') {
@@ -3902,6 +3914,142 @@ const App = {
       totalCountEl.textContent = `총 ${list.length}개`;
     }
 
+    // -------------------------------------------------------------
+    // CASE A: 특정 프로젝트가 선택된 상태 -> 해당 프로젝트 전용 대기/진행중/완료 수평 칸반 보드 뷰
+    // -------------------------------------------------------------
+    if (selectedProject) {
+      const projectTodos = list.filter(t => (t.project || '일반 업무') === selectedProject);
+
+      // 상단 뒤로가기 헤더 바
+      const backHeaderHtml = `
+        <div class="w-full flex items-center justify-between bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs">
+          <button type="button" onclick="App.clearSelectedProject()" class="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline active:scale-95 transition-transform">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            <span>모든 프로젝트 목록</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <span class="font-headline font-bold text-sm text-on-surface"># ${selectedProject}</span>
+            <span class="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full">${projectTodos.length}개</span>
+          </div>
+        </div>
+      `;
+
+      // 3개 카테고리 분리 (대기, 진행 중, 완료)
+      const todoList = projectTodos.filter(t => t.status === 'todo' || t.status === 'draft');
+      const inProgressList = projectTodos.filter(t => t.status === 'in_progress');
+      const doneList = projectTodos.filter(t => t.status === 'done');
+
+      const renderCard = (t) => {
+        const isDone = t.status === 'done';
+        const isDoneClass = isDone ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
+
+        let priorityBadgeHtml = '';
+        if (t.priority === 'high') {
+          priorityBadgeHtml = `<span class="bg-error-container/20 text-error-dim text-xs font-semibold px-2.5 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-error"></span>높음</span>`;
+        } else if (t.priority === 'low') {
+          priorityBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-xs font-semibold px-2.5 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-outline"></span>낮음</span>`;
+        } else {
+          priorityBadgeHtml = `<span class="bg-tertiary-container/30 text-tertiary-dim text-xs font-semibold px-2.5 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>보통</span>`;
+        }
+
+        let statusBadgeHtml = `<span class="bg-surface-container text-on-surface text-xs font-semibold px-2.5 py-1 rounded-md">할 일</span>`;
+        if (t.status === 'in_progress') {
+          statusBadgeHtml = `<span class="bg-secondary-container/30 text-secondary-dim text-xs font-semibold px-2.5 py-1 rounded-md">진행 중</span>`;
+        } else if (t.status === 'done') {
+          statusBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-xs font-semibold px-2.5 py-1 rounded-md">완료</span>`;
+        } else if (t.status === 'draft') {
+          statusBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-xs font-semibold px-2.5 py-1 rounded-md">임시저장</span>`;
+        }
+
+        const assigneesHtml = (t.assignees || []).map((a, idx) => `
+          <img alt="${a.name}" src="${a.avatar || 'profile.png'}" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest object-cover z-${10 - idx}" title="${a.name}" />
+        `).join('');
+
+        return `
+          <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3 group relative cursor-pointer border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] transition-all text-left" onclick="App.openTodoDetailModal(${t.id})">
+            <div class="flex items-center gap-2 flex-wrap">
+              ${statusBadgeHtml}
+              ${priorityBadgeHtml}
+            </div>
+            <h3 class="font-headline font-semibold text-title-md leading-snug group-hover:text-primary transition-colors ${isDoneClass}">${t.title}</h3>
+            ${t.notes ? `<p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">${t.notes}</p>` : ''}
+            
+            <div class="mt-2 flex items-center justify-between pt-3 border-t border-outline-variant/10">
+              <div class="flex items-center gap-1.5 text-on-surface-variant text-xs font-medium">
+                <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                <span>${t.dueDate || '마감일 미정'}</span>
+              </div>
+              <div class="flex -space-x-2 items-center">
+                ${assigneesHtml || '<div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center text-[10px] font-bold text-on-surface">ME</div>'}
+              </div>
+            </div>
+          </div>
+        `;
+      };
+
+      container.className = "flex flex-col gap-4";
+      container.innerHTML = `
+        ${backHeaderHtml}
+        <div class="kanban-board-container no-scrollbar">
+          <!-- Column 1: 대기 (To-Do) -->
+          <section class="kanban-column">
+            <div class="flex items-center justify-between mb-3 px-1">
+              <h2 class="font-headline font-bold text-base text-on-surface flex items-center gap-2">
+                대기
+                <span class="bg-surface-container-high text-on-surface-variant text-xs font-bold py-0.5 px-2.5 rounded-full">${todoList.length}</span>
+              </h2>
+            </div>
+            <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3.5 pb-2">
+              ${todoList.length > 0 ? todoList.map(renderCard).join('') : `
+                <div class="bg-surface-container-low rounded-2xl p-6 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
+                  대기 중인 할 일이 없습니다.
+                </div>
+              `}
+            </div>
+          </section>
+
+          <!-- Column 2: 진행 중 (In Progress) -->
+          <section class="kanban-column">
+            <div class="flex items-center justify-between mb-3 px-1">
+              <h2 class="font-headline font-bold text-base text-on-surface flex items-center gap-2">
+                진행 중
+                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                <span class="bg-secondary-container/30 text-secondary-dim text-xs font-bold py-0.5 px-2.5 rounded-full">${inProgressList.length}</span>
+              </h2>
+            </div>
+            <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3.5 pb-2">
+              ${inProgressList.length > 0 ? inProgressList.map(renderCard).join('') : `
+                <div class="bg-surface-container-low rounded-2xl p-6 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
+                  진행 중인 할 일이 없습니다.
+                </div>
+              `}
+            </div>
+          </section>
+
+          <!-- Column 3: 완료 (Done) -->
+          <section class="kanban-column">
+            <div class="flex items-center justify-between mb-3 px-1">
+              <h2 class="font-headline font-bold text-base text-on-surface-variant flex items-center gap-2">
+                완료
+                <span class="bg-surface-container-high text-on-surface-variant text-xs font-bold py-0.5 px-2.5 rounded-full">${doneList.length}</span>
+              </h2>
+            </div>
+            <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3.5 pb-2 opacity-85">
+              ${doneList.length > 0 ? doneList.map(renderCard).join('') : `
+                <div class="bg-surface-container-low rounded-2xl p-6 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
+                  완료된 할 일이 없습니다.
+                </div>
+              `}
+            </div>
+          </section>
+        </div>
+      `;
+      return;
+    }
+
+    // -------------------------------------------------------------
+    // CASE B: 프로젝트 목록 뷰 (기존 처럼 프로젝트별로 다 보여주는 메인 카드 목록)
+    // -------------------------------------------------------------
     if (list.length === 0) {
       container.className = "flex flex-col gap-4";
       container.innerHTML = `
@@ -3916,151 +4064,64 @@ const App = {
       return;
     }
 
-    // ========== LIST VIEW (한줄 간략 리스트형) ==========
-    if (this.state.todoViewMode === 'list') {
-      container.className = "flex flex-col gap-2.5";
-      container.innerHTML = list.map(t => {
+    // 프로젝트별 그룹핑
+    const projectsMap = {};
+    list.forEach(t => {
+      const projName = t.project || '일반 업무';
+      if (!projectsMap[projName]) {
+        projectsMap[projName] = [];
+      }
+      projectsMap[projName].push(t);
+    });
+
+    const projectNames = Object.keys(projectsMap);
+
+    container.className = "flex flex-col gap-4";
+    container.innerHTML = projectNames.map(projName => {
+      const items = projectsMap[projName];
+      const todoCount = items.filter(t => t.status === 'todo' || t.status === 'draft').length;
+      const inProgressCount = items.filter(t => t.status === 'in_progress').length;
+      const doneCount = items.filter(t => t.status === 'done').length;
+
+      // 미리보기용 최근 2개 업무
+      const previewItemsHtml = items.slice(0, 2).map(t => {
         const isDone = t.status === 'done';
-        const checkIcon = isDone ? 'check_circle' : 'radio_button_unchecked';
-        const checkColor = isDone ? 'text-primary' : 'text-on-surface-variant';
-        const isDoneClass = isDone ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
-
-        let priorityDot = `<span class="w-2 h-2 rounded-full bg-tertiary-dim shrink-0"></span>`;
-        if (t.priority === 'high') priorityDot = `<span class="w-2 h-2 rounded-full bg-error-dim shrink-0"></span>`;
-        else if (t.priority === 'low') priorityDot = `<span class="w-2 h-2 rounded-full bg-outline shrink-0"></span>`;
-
+        const isDoneClass = isDone ? 'line-through opacity-60' : '';
         return `
-          <div class="flex items-center gap-3 bg-surface-container-lowest rounded-xl px-4 py-3 border border-outline-variant/10 hover:bg-surface-container-low transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openTodoDetailModal(${t.id})">
-            <button onclick="event.stopPropagation(); App.toggleTodoStatus(${t.id})" class="shrink-0 ${checkColor} hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-xl">${checkIcon}</span>
-            </button>
-            ${priorityDot}
-            <div class="flex-1 min-w-0">
-              <span class="font-body text-sm font-semibold ${isDoneClass} truncate block group-hover:text-primary transition-colors">${t.title}</span>
-            </div>
-            <span class="text-[10px] text-on-surface-variant font-medium whitespace-nowrap shrink-0">${t.dueDate || ''}</span>
-            <button onclick="event.stopPropagation(); App.editTodo(${t.id})" class="shrink-0 p-1 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
-              <span class="material-symbols-outlined text-base">edit</span>
-            </button>
+          <div class="flex items-center justify-between text-xs py-1.5 border-b border-outline-variant/10 last:border-none">
+            <span class="font-medium text-on-surface truncate ${isDoneClass}">${t.title}</span>
+            <span class="text-[10px] text-on-surface-variant shrink-0 ml-2">${t.dueDate || ''}</span>
           </div>
         `;
       }).join('');
-      return;
-    }
-
-    // ========== KANBAN BOARD CARD VIEW (대기 / 진행 중 / 완료 수평 드래그 컬럼) ==========
-    container.className = "kanban-board-container no-scrollbar";
-
-    // 3개 카테고리 분리 (대기, 진행 중, 완료)
-    const todoList = list.filter(t => t.status === 'todo' || t.status === 'draft');
-    const inProgressList = list.filter(t => t.status === 'in_progress');
-    const doneList = list.filter(t => t.status === 'done');
-
-    const renderCard = (t) => {
-      const isDone = t.status === 'done';
-      const isDoneClass = isDone ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
-
-      // Priority Badge
-      let priorityBadgeHtml = '';
-      if (t.priority === 'high') {
-        priorityBadgeHtml = `<span class="bg-error-container/20 text-error-dim text-xs font-semibold px-2.5 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-error"></span>높음</span>`;
-      } else if (t.priority === 'low') {
-        priorityBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-xs font-semibold px-2.5 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-outline"></span>낮음</span>`;
-      } else {
-        priorityBadgeHtml = `<span class="bg-tertiary-container/30 text-tertiary-dim text-xs font-semibold px-2.5 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>보통</span>`;
-      }
-
-      // Status Badge
-      let statusBadgeHtml = `<span class="bg-surface-container text-on-surface text-xs font-semibold px-2.5 py-1 rounded-md">할 일</span>`;
-      if (t.status === 'in_progress') {
-        statusBadgeHtml = `<span class="bg-secondary-container/30 text-secondary-dim text-xs font-semibold px-2.5 py-1 rounded-md">진행 중</span>`;
-      } else if (t.status === 'done') {
-        statusBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-xs font-semibold px-2.5 py-1 rounded-md">완료</span>`;
-      } else if (t.status === 'draft') {
-        statusBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-xs font-semibold px-2.5 py-1 rounded-md">임시저장</span>`;
-      }
-
-      // Assignees
-      const assigneesHtml = (t.assignees || []).map((a, idx) => `
-        <img alt="${a.name}" src="${a.avatar || 'profile.png'}" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest object-cover z-${10 - idx}" title="${a.name}" />
-      `).join('');
 
       return `
-        <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3 group relative cursor-pointer border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] transition-all text-left" onclick="App.openTodoDetailModal(${t.id})">
-          <div class="flex items-center gap-2 flex-wrap">
-            ${statusBadgeHtml}
-            ${priorityBadgeHtml}
-            ${t.project ? `<span class="text-on-surface-variant text-xs ml-auto font-medium truncate max-w-[110px]"># ${t.project}</span>` : ''}
+        <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3.5 border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] transition-all cursor-pointer group text-left" onclick="App.selectProject('${projName.replace(/'/g, "\\'")}')">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-xl group-hover:scale-110 transition-transform">folder_open</span>
+              <h3 class="font-headline font-bold text-base text-on-surface group-hover:text-primary transition-colors">${projName}</h3>
+            </div>
+            <div class="flex items-center gap-1 text-on-surface-variant">
+              <span class="bg-primary/10 text-primary text-xs font-bold px-2.5 py-0.5 rounded-full">${items.length}개 업무</span>
+              <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">chevron_right</span>
+            </div>
           </div>
-          <h3 class="font-headline font-semibold text-title-md leading-snug group-hover:text-primary transition-colors ${isDoneClass}">${t.title}</h3>
-          ${t.notes ? `<p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">${t.notes}</p>` : ''}
-          
-          <div class="mt-2 flex items-center justify-between pt-3 border-t border-outline-variant/10">
-            <div class="flex items-center gap-1.5 text-on-surface-variant text-xs font-medium">
-              <span class="material-symbols-outlined text-[16px]">calendar_today</span>
-              <span>${t.dueDate || '마감일 미정'}</span>
-            </div>
-            <div class="flex -space-x-2 items-center">
-              ${assigneesHtml || '<div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center text-[10px] font-bold text-on-surface">ME</div>'}
-            </div>
+
+          <!-- 진행도 요약 칩 바 -->
+          <div class="flex items-center gap-2 pt-1 flex-wrap">
+            <span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-semibold">대기 ${todoCount}</span>
+            <span class="px-2.5 py-1 rounded-md bg-secondary-container/25 text-secondary-dim text-[11px] font-bold">진행 중 ${inProgressCount}</span>
+            <span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface-variant text-[11px] font-semibold">완료 ${doneCount}</span>
+          </div>
+
+          <!-- 최근 업무 미리보기 -->
+          <div class="bg-surface-container-low p-3 rounded-xl flex flex-col">
+            ${previewItemsHtml}
           </div>
         </div>
       `;
-    };
-
-    container.innerHTML = `
-      <!-- Column 1: 대기 (To-Do) -->
-      <section class="kanban-column">
-        <div class="flex items-center justify-between mb-3 px-1">
-          <h2 class="font-headline font-bold text-base text-on-surface flex items-center gap-2">
-            대기
-            <span class="bg-surface-container-high text-on-surface-variant text-xs font-bold py-0.5 px-2.5 rounded-full">${todoList.length}</span>
-          </h2>
-        </div>
-        <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3.5 pb-2">
-          ${todoList.length > 0 ? todoList.map(renderCard).join('') : `
-            <div class="bg-surface-container-low rounded-2xl p-6 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
-              대기 중인 할 일이 없습니다.
-            </div>
-          `}
-        </div>
-      </section>
-
-      <!-- Column 2: 진행 중 (In Progress) -->
-      <section class="kanban-column">
-        <div class="flex items-center justify-between mb-3 px-1">
-          <h2 class="font-headline font-bold text-base text-on-surface flex items-center gap-2">
-            진행 중
-            <span class="w-2 h-2 rounded-full bg-secondary"></span>
-            <span class="bg-secondary-container/30 text-secondary-dim text-xs font-bold py-0.5 px-2.5 rounded-full">${inProgressList.length}</span>
-          </h2>
-        </div>
-        <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3.5 pb-2">
-          ${inProgressList.length > 0 ? inProgressList.map(renderCard).join('') : `
-            <div class="bg-surface-container-low rounded-2xl p-6 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
-              진행 중인 할 일이 없습니다.
-            </div>
-          `}
-        </div>
-      </section>
-
-      <!-- Column 3: 완료 (Done) -->
-      <section class="kanban-column">
-        <div class="flex items-center justify-between mb-3 px-1">
-          <h2 class="font-headline font-bold text-base text-on-surface-variant flex items-center gap-2">
-            완료
-            <span class="bg-surface-container-high text-on-surface-variant text-xs font-bold py-0.5 px-2.5 rounded-full">${doneList.length}</span>
-          </h2>
-        </div>
-        <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3.5 pb-2 opacity-85">
-          ${doneList.length > 0 ? doneList.map(renderCard).join('') : `
-            <div class="bg-surface-container-low rounded-2xl p-6 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
-              완료된 할 일이 없습니다.
-            </div>
-          `}
-        </div>
-      </section>
-    `;
+    }).join('');
   },
 
   setTodoViewMode(mode, btnEl) {
