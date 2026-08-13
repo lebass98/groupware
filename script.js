@@ -1193,14 +1193,18 @@ const App = {
 
       if (schedules.length > 0) {
         schedulesContainer.innerHTML = schedules.map(s => {
+          const isHoliday = (s.badge === '공휴일' || s.title.includes('공휴일') || s.author === '대한민국 공휴일' || s.author === '회사공지' || s.author === '국경일/기념일');
           const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
+          const imgHtml = isHoliday ? '' : `<img src="${s.avatar || 'profile.png'}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
+          const authorText = isHoliday ? '' : `${s.author || '이재광 차장'} • `;
+
           return `
             <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs">
               <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0 mr-3"></div>
-              <img src="${s.avatar || 'profile.png'}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
+              ${imgHtml}
               <div class="flex-1 text-left min-w-0">
                 <div class="flex items-center justify-between gap-1 mb-0.5">
-                  <span class="font-bold text-xs text-primary">${s.author || '이재광 차장'} • ${s.badge}</span>
+                  <span class="font-bold text-xs text-primary">${authorText}${s.badge}</span>
                   <span class="text-[11px] text-on-surface-variant font-medium">${s.time}</span>
                 </div>
                 <div class="text-sm text-on-surface font-bold font-headline leading-snug truncate">${s.title}</div>
@@ -2073,14 +2077,18 @@ const App = {
     const colorInfo = this.getCategoryColorStyle(categoryKey);
     let categoryBadgeHtml = colorInfo.badgeHtml;
 
+    const isHoliday = categoryKey === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지' || s.author === '국경일/기념일';
+    const avatarHtml = isHoliday ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
+    const authorTextHtml = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap">${s.author || '이재광 차장'}</span>`;
+
     return `
       <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border shadow-2xs transition-all">
         <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0 mr-2.5"></div>
-        <img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
+        ${avatarHtml}
         <div class="flex-1 text-left min-w-0">
           <div class="flex items-center justify-between gap-1.5 mb-1 flex-wrap sm:flex-nowrap">
             <div class="flex items-center gap-1.5 flex-wrap shrink-0">
-              <span class="font-bold text-xs text-primary whitespace-nowrap">${s.author || '이재광 차장'}</span>
+              ${authorTextHtml}
               ${categoryBadgeHtml}
             </div>
             <span class="text-[11px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 ml-auto">${s.time}</span>
