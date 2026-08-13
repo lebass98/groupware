@@ -736,31 +736,61 @@
 
         <!-- Leave Request Form -->
         <form class="space-y-6 text-left" id="page-leave-request-form" onsubmit="event.preventDefault(); App.submitRequest();">
-          <!-- Leave Type Radio Cards -->
+          <!-- Leave Type Radio Cards (9종) -->
           <div class="space-y-3">
             <label class="block text-sm font-bold text-on-surface px-1">휴가 종류</label>
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-3 gap-2 sm:gap-2.5">
               <label class="relative cursor-pointer">
                 <input checked="" class="peer sr-only" name="leave_type" type="radio" value="연차" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-4 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
+                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
                   연차
                 </div>
               </label>
               <label class="relative cursor-pointer">
-                <input class="peer sr-only" name="leave_type" type="radio" value="반차" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-4 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
-                  반차
+                <input class="peer sr-only" name="leave_type" type="radio" value="반차(오전)" onchange="App.onLeaveTypeChange(this.value)">
+                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                  반차(오전)
+                </div>
+              </label>
+              <label class="relative cursor-pointer">
+                <input class="peer sr-only" name="leave_type" type="radio" value="반차(오후)" onchange="App.onLeaveTypeChange(this.value)">
+                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                  반차(오후)
+                </div>
+              </label>
+              <label class="relative cursor-pointer">
+                <input class="peer sr-only" name="leave_type" type="radio" value="반반차" onchange="App.onLeaveTypeChange(this.value)">
+                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                  반반차
+                </div>
+              </label>
+              <label class="relative cursor-pointer">
+                <input class="peer sr-only" name="leave_type" type="radio" value="공가" onchange="App.onLeaveTypeChange(this.value)">
+                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                  공가
                 </div>
               </label>
               <label class="relative cursor-pointer">
                 <input class="peer sr-only" name="leave_type" type="radio" value="병가" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-4 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
+                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
                   병가
                 </div>
               </label>
               <label class="relative cursor-pointer">
+                <input class="peer sr-only" name="leave_type" type="radio" value="경조사" onchange="App.onLeaveTypeChange(this.value)">
+                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                  경조사
+                </div>
+              </label>
+              <label class="relative cursor-pointer">
+                <input class="peer sr-only" name="leave_type" type="radio" value="생일휴가" onchange="App.onLeaveTypeChange(this.value)">
+                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                  생일휴가
+                </div>
+              </label>
+              <label class="relative cursor-pointer">
                 <input class="peer sr-only" name="leave_type" type="radio" value="기타" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-4 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
+                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
                   기타
                 </div>
               </label>
@@ -798,6 +828,27 @@
 
               <div class="text-right px-2 mt-1">
                 <span class="text-sm font-bold text-primary" id="leave-days-count">총 2일</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 반반차 선택 시 시간 선택 구획 (시작시간/종료시간) -->
+          <div id="page-leave-time-range-container" class="hidden space-y-3">
+            <label class="block text-sm font-bold text-on-surface px-1">시간 선택 (반반차 2시간)</label>
+            <div class="grid grid-cols-2 gap-3 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+              <div class="space-y-1">
+                <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary">schedule</span>
+                  시작 시간
+                </label>
+                <input id="page-leave-start-time" type="time" value="09:00" onchange="App.calculateLeaveDays()" class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/15 rounded-xl text-on-surface text-sm font-semibold focus:ring-2 focus:ring-primary focus:outline-none">
+              </div>
+              <div class="space-y-1">
+                <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-tertiary">schedule</span>
+                  종료 시간
+                </label>
+                <input id="page-leave-end-time" type="time" value="11:00" onchange="App.calculateLeaveDays()" class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/15 rounded-xl text-on-surface text-sm font-semibold focus:ring-2 focus:ring-primary focus:outline-none">
               </div>
             </div>
           </div>
@@ -1595,31 +1646,61 @@
 
       <!-- Leave Request Form -->
       <form class="space-y-5 text-left" id="leave-request-form" onsubmit="event.preventDefault(); App.submitRequest();">
-        <!-- Leave Type Grid -->
+        <!-- Leave Type Grid (9종) -->
         <div class="space-y-2">
           <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">휴가 종류</label>
-          <div class="grid grid-cols-2 gap-2.5">
+          <div class="grid grid-cols-3 gap-2">
             <label class="relative cursor-pointer">
-              <input checked="" class="peer sr-only" name="leave_type" type="radio" value="연차" onchange="App.onLeaveTypeChange(this.value)">
-              <div class="w-full text-center py-3 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
+              <input checked="" class="peer sr-only" name="modal_leave_type" type="radio" value="연차" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
                 연차
               </div>
             </label>
             <label class="relative cursor-pointer">
-              <input class="peer sr-only" name="leave_type" type="radio" value="반차" onchange="App.onLeaveTypeChange(this.value)">
-              <div class="w-full text-center py-3 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
-                반차
+              <input class="peer sr-only" name="modal_leave_type" type="radio" value="반차(오전)" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                반차(오전)
               </div>
             </label>
             <label class="relative cursor-pointer">
-              <input class="peer sr-only" name="leave_type" type="radio" value="병가" onchange="App.onLeaveTypeChange(this.value)">
-              <div class="w-full text-center py-3 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
+              <input class="peer sr-only" name="modal_leave_type" type="radio" value="반차(오후)" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                반차(오후)
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="modal_leave_type" type="radio" value="반반차" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                반반차
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="modal_leave_type" type="radio" value="공가" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                공가
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="modal_leave_type" type="radio" value="병가" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
                 병가
               </div>
             </label>
             <label class="relative cursor-pointer">
-              <input class="peer sr-only" name="leave_type" type="radio" value="기타" onchange="App.onLeaveTypeChange(this.value)">
-              <div class="w-full text-center py-3 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-[0_8px_16px_rgba(0,82,208,0.2)]">
+              <input class="peer sr-only" name="modal_leave_type" type="radio" value="경조사" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                경조사
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="modal_leave_type" type="radio" value="생일휴가" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                생일휴가
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input class="peer sr-only" name="modal_leave_type" type="radio" value="기타" onchange="App.onLeaveTypeChange(this.value)">
+              <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
                 기타
               </div>
             </label>
@@ -1657,6 +1738,27 @@
 
             <div class="text-right px-1">
               <span class="text-xs font-bold text-primary" id="leave-days-count">총 2일</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 반반차 선택 시 시간 선택 구획 (시작시간/종료시간) -->
+        <div id="modal-leave-time-range-container" class="hidden space-y-2">
+          <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">시간 선택 (반반차 2시간)</label>
+          <div class="grid grid-cols-2 gap-2.5 bg-surface-container-low p-3 rounded-xl border border-outline-variant/10">
+            <div class="space-y-1">
+              <label class="text-[11px] font-bold text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs text-primary">schedule</span>
+                시작 시간
+              </label>
+              <input id="modal-leave-start-time" type="time" value="09:00" onchange="App.calculateLeaveDays()" class="w-full px-2.5 py-2 bg-surface-container-lowest border border-outline-variant/15 rounded-lg text-on-surface text-xs font-semibold focus:ring-2 focus:ring-primary focus:outline-none">
+            </div>
+            <div class="space-y-1">
+              <label class="text-[11px] font-bold text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs text-tertiary">schedule</span>
+                종료 시간
+              </label>
+              <input id="modal-leave-end-time" type="time" value="11:00" onchange="App.calculateLeaveDays()" class="w-full px-2.5 py-2 bg-surface-container-lowest border border-outline-variant/15 rounded-lg text-on-surface text-xs font-semibold focus:ring-2 focus:ring-primary focus:outline-none">
             </div>
           </div>
         </div>

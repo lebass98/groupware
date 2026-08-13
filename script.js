@@ -3695,6 +3695,19 @@ const App = {
 
   onLeaveTypeChange(typeVal) {
     this.state.currentLeaveType = typeVal;
+
+    // Toggle time selection containers for 반반차
+    const pageTimeContainer = document.getElementById('page-leave-time-range-container');
+    const modalTimeContainer = document.getElementById('modal-leave-time-range-container');
+
+    if (typeVal === '반반차') {
+      if (pageTimeContainer) pageTimeContainer.classList.remove('hidden');
+      if (modalTimeContainer) modalTimeContainer.classList.remove('hidden');
+    } else {
+      if (pageTimeContainer) pageTimeContainer.classList.add('hidden');
+      if (modalTimeContainer) modalTimeContainer.classList.add('hidden');
+    }
+
     this.calculateLeaveDays();
   },
 
@@ -3705,9 +3718,25 @@ const App = {
 
     if (!startEl || !endEl || !countEl) return;
 
-    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value || '연차';
-    if (selectedType === '반차') {
+    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value || 
+                         document.querySelector('input[name="modal_leave_type"]:checked')?.value || '연차';
+
+    if (selectedType === '반차(오전)' || selectedType === '반차(오후)') {
       countEl.innerText = '총 0.5일';
+      return;
+    }
+
+    if (selectedType === '반반차') {
+      const pageStartTime = document.getElementById('page-leave-start-time')?.value || '09:00';
+      const pageEndTime = document.getElementById('page-leave-end-time')?.value || '11:00';
+      const modalStartTime = document.getElementById('modal-leave-start-time')?.value || '09:00';
+      const modalEndTime = document.getElementById('modal-leave-end-time')?.value || '11:00';
+
+      const pageTimeContainer = document.getElementById('page-leave-time-range-container');
+      const startTime = pageTimeContainer && !pageTimeContainer.classList.contains('hidden') ? pageStartTime : modalStartTime;
+      const endTime = pageTimeContainer && !pageTimeContainer.classList.contains('hidden') ? pageEndTime : modalEndTime;
+
+      countEl.innerText = `총 0.25일 (${startTime}~${endTime})`;
       return;
     }
 
@@ -3726,7 +3755,8 @@ const App = {
   },
 
   submitRequest() {
-    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value || '연차';
+    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value || 
+                         document.querySelector('input[name="modal_leave_type"]:checked')?.value || '연차';
     const startDate = document.getElementById('leave-start-date')?.value || '';
     const endDate = document.getElementById('leave-end-date')?.value || '';
     const reason = document.getElementById('leave-reason-text')?.value || '개인 사유';
