@@ -4211,7 +4211,7 @@ const App = {
 
     const list = this.state.recentProjects || ['그룹웨어 고도화', '근태관리 시스템', '디자인 시스템 (M3)', '경영지원 / 재무'];
     container.innerHTML = list.map(p => `
-      <button type="button" onclick="App.selectRecentProject('${p}')" class="recent-project-chip px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/20 text-on-surface-variant font-label text-xs font-semibold hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all">
+      <button type="button" onclick="App.selectRecentProject('${p}')" class="recent-project-chip px-3 py-1.5 rounded-lg bg-surface-container-highest/60 border border-outline-variant/15 text-on-surface font-label text-xs font-semibold hover:bg-primary/10 hover:text-primary hover:border-primary/30 active:scale-95 transition-all">
         ${p}
       </button>
     `).join('');

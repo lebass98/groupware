@@ -217,7 +217,7 @@ Pool/
   - 할 일 상세(`modal-todo-detail`), 지출결의서(`modal-expense-write`), 품의서(`modal-report-write`), 근태/휴가(`leave-reason-text`), 일정 등록(`modal-schedule-write`) 등 팝업 폼 요소 라디우스 컴팩트화.
 - **상단 헤더, 공지사항 티커 및 하단 독 네비게이션 글래스모피즘(Glassmorphism) 개편**:
   - 상단 헤더(`.top-header`), 공지 티커 바(`.notice-ticker`), 하단 독 네비게이션(`.bottom-nav`) 배경에 은은한 반투명 유리 배경(`rgba`), 고해상도 백드롭 블러(`backdrop-filter: blur(24px) saturate(180%)`), 반투명 이중 보더 테두리 및 3D 쉐도우 효과를 전면 적용하여 독과 헤더 전체 글래스모피즘 디자인 완성.
-- **할 일 작성/수정 팝업(`modal-todo-write`) 상단 헤더 우측 중복 버튼 제거**:
-  - 하단 하단 고정 액션 바에 `[취소]`, `[임시저장]`, `[등록]` 버튼이 동일하게 제공되므로, 상단 헤더 우측의 중복 버튼들을 제거하여 팝업 상단 UI를 한층 깔끔하고 컴팩트하게 정리.
+- **할 일 관리(`screen-todo`) 및 등록/수정 팝업 내 버튼/토글 디자인 일관성 개편**:
+  - 할 일 작성/수정 팝업(`modal-todo-write`) 내의 상태 선택 토글, 우선순위 토글, 상태 설정 버튼, 주소록 선택 칩, 최근 사용 프로젝트 태그 및 하단 3종 액션 버튼(`[취소]`, `[임시저장]`, `[등록]`)을 프로젝트 디자인 시스템(Material Design 3 + 컴팩트 라디우스 `rounded-2xl`/`rounded-xl` + 터치 피드백 `active:scale-95`)에 맞춰 전면 일관성 있게 다듬음.
 
 
