@@ -1106,13 +1106,17 @@ const App = {
     }
 
     // --- SCREEN-TODAY (TODAY SUMMARY PAGE) LIVE DATA BINDING ---
+    const now = new Date();
+    const todayYear = this.state.calYear || 2026;
+    const todayMonth = this.state.calMonth || 8;
+    const todayDay = this.state.calSelectedDay || now.getDate();
 
     // Date Header
     const dateHeader = document.getElementById('today-summary-header-date');
-    const now = new Date();
     const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+    const targetDateObj = new Date(todayYear, todayMonth - 1, todayDay);
     if (dateHeader) {
-      dateHeader.innerText = `${now.getMonth() + 1}월 ${now.getDate()}일 ${dayNames[now.getDay()]}`;
+      dateHeader.innerText = `${todayMonth}월 ${todayDay}일 ${dayNames[targetDateObj.getDay()]}`;
     }
 
     // Attendance Summary Widget
@@ -1171,9 +1175,6 @@ const App = {
     // Today's Calendar & Schedule Section
     const schedulesContainer = document.getElementById('today-summary-schedules-container');
     if (schedulesContainer) {
-      const todayYear = 2026;
-      const todayMonth = 8;
-      const todayDay = 12;
       const schedules = this.getMockSchedules(todayYear, todayMonth, todayDay) || [];
 
       if (schedules.length > 0) {
