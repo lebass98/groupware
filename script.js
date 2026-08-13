@@ -4293,7 +4293,7 @@ const App = {
       </section>
 
       <!-- Meta Data Card -->
-      <section class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-4 shadow-sm border border-outline-variant/10">
+      <section class="bg-surface-container-lowest rounded-lg p-5 flex flex-col gap-4 shadow-sm border border-outline-variant/10">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
             <span class="material-symbols-outlined text-xl">calendar_today</span>
@@ -4317,7 +4317,7 @@ const App = {
       <!-- Description Section -->
       <section class="flex flex-col gap-2.5 text-left">
         <h3 class="font-headline text-base font-bold text-on-surface">상세 내용</h3>
-        <div class="bg-surface-container-low rounded-2xl p-5 border border-outline-variant/10">
+        <div class="bg-surface-container-low rounded-lg p-5 border border-outline-variant/10">
           <p class="font-body text-sm leading-relaxed text-on-surface whitespace-pre-line">
             ${todo.notes || '작성된 상세 설명 내용이 없습니다.'}
           </p>

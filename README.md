@@ -212,5 +212,6 @@ Pool/
 - **할 일 관리 카드형/리스트형 뷰 모드 토글 기능 추가**:
   - '오늘의 우선순위' 헤더 우측에 카드형(`dashboard`)/리스트형(`format_list_bulleted`) 뷰 전환 토글 아이콘 버튼 배치.
   - 리스트형 뷰: 한줄 간략 리스팅(완료 체크, 우선순위 도트, 제목 한줄, 마감일, 호버 시 수정 아이콘 노출).
-- **독 메뉴 활성 탭 아이콘 꽉찬(Filled) 스타일 동적 적용 수정**:
-  - 탭 전환 시 활성 nav-item 아이콘에 `font-variation-settings: 'FILL' 1` 동적 부여, 비활성 시 `'FILL' 0` 리셋.
+- **팝업 작성 폼 내 박스/상세내용/첨부파일 영역 보더 라디우스 축소**:
+  - 할 일 작성(`modal-todo-write`), 할 일 상세(`modal-todo-detail`), 지출결의서(`modal-expense-write`), 품의서(`modal-report-write`), 근태/휴가(`leave-reason-text`), 일정 등록(`modal-schedule-write`) 등 모든 작성 팝업 폼의 섹션 그룹 박스, 상세 내용 textarea, 첨부파일 드롭존, 입력 필드 보더 라디우스 축소 조정 (`rounded-2xl`/`xl` → `rounded-lg`/`md`).
+

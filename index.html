@@ -1621,7 +1621,7 @@
               <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                 <span class="material-symbols-outlined text-outline text-lg" data-icon="calendar_today">calendar_today</span>
               </div>
-              <input id="leave-start-date" class="w-full pl-11 pr-16 py-3 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-11" onchange="App.calculateLeaveDays()">
+              <input id="leave-start-date" class="w-full pl-11 pr-16 py-3 bg-surface-container-highest border-none rounded-md text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-11" onchange="App.calculateLeaveDays()">
               <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-primary bg-primary-container/30 px-2 py-0.5 rounded-md">시작</span>
             </div>
 
@@ -1637,7 +1637,7 @@
               <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                 <span class="material-symbols-outlined text-outline text-lg" data-icon="event">event</span>
               </div>
-              <input id="leave-end-date" class="w-full pl-11 pr-16 py-3 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-12" onchange="App.calculateLeaveDays()">
+              <input id="leave-end-date" class="w-full pl-11 pr-16 py-3 bg-surface-container-highest border-none rounded-md text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-12" onchange="App.calculateLeaveDays()">
               <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-tertiary bg-tertiary-container/30 px-2 py-0.5 rounded-md">종료</span>
             </div>
 
@@ -1650,7 +1650,7 @@
         <!-- Reason Textarea -->
         <div class="space-y-2">
           <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">신청 사유</label>
-          <textarea id="leave-reason-text" class="w-full p-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline resize-none" placeholder="휴가 사유를 간단히 입력해주세요 (선택)" rows="2.5"></textarea>
+          <textarea id="leave-reason-text" class="w-full p-3.5 bg-surface-container-highest border-none rounded-md text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline resize-none" placeholder="휴가 사유를 간단히 입력해주세요 (선택)" rows="2.5"></textarea>
         </div>
 
         <!-- Buttons Row -->
@@ -1688,21 +1688,21 @@
         <div class="space-y-1.5">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">결제 일자</label>
           <div class="relative">
-            <input type="date" id="expense-input-date" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
+            <input type="date" id="expense-input-date" required class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
           </div>
         </div>
 
         <!-- Store / Vendor -->
         <div class="space-y-1.5">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">사용처</label>
-          <input type="text" id="expense-input-store" placeholder="결제처 이름을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
+          <input type="text" id="expense-input-store" placeholder="결제처 이름을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
         </div>
 
         <!-- Amount -->
         <div class="space-y-1.5">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">금액</label>
           <div class="relative flex items-center">
-            <input type="number" id="expense-input-amount" placeholder="0" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 pr-12 text-sm text-on-surface text-right font-headline font-bold focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
+            <input type="number" id="expense-input-amount" placeholder="0" required class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 pr-12 text-sm text-on-surface text-right font-headline font-bold focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
             <span class="absolute right-5 font-body text-sm text-on-surface-variant">원</span>
           </div>
         </div>
@@ -1710,7 +1710,7 @@
         <!-- Category -->
         <div class="space-y-1.5">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">항목</label>
-          <select id="expense-input-category" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all appearance-none">
+          <select id="expense-input-category" required class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all appearance-none">
             <option value="" disabled selected>카테고리 선택</option>
             <option value="restaurant">식비 (식당)</option>
             <option value="taxi">교통비 (택시/대중교통)</option>
@@ -1722,14 +1722,14 @@
         <!-- Memo / Description -->
         <div class="space-y-1.5">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">내용</label>
-          <textarea id="expense-input-memo" rows="3" placeholder="상세 내용을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all resize-none"></textarea>
+          <textarea id="expense-input-memo" rows="3" placeholder="상세 내용을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all resize-none"></textarea>
         </div>
 
         <!-- Receipt Mock Attachment -->
         <div class="space-y-1.5">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">영수증 첨부</label>
           <div class="flex items-center gap-3">
-            <button type="button" onclick="App.attachMockReceipt()" class="px-4 py-3 bg-surface-container hover:bg-surface-container-high transition-colors rounded-xl font-label text-xs font-bold text-on-surface flex items-center gap-1.5">
+            <button type="button" onclick="App.attachMockReceipt()" class="px-4 py-3 bg-surface-container hover:bg-surface-container-high transition-colors rounded-md font-label text-xs font-bold text-on-surface flex items-center gap-1.5">
               <span class="material-symbols-outlined text-sm">attach_file</span>
               영수증 파일 추가
             </button>
@@ -1739,7 +1739,7 @@
 
         <!-- Submit Button -->
         <div class="pt-4">
-          <button type="submit" class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center shadow-md">
+          <button type="submit" class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-md hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center shadow-md">
             작성 완료
           </button>
         </div>
@@ -1766,13 +1766,13 @@
         <!-- Title -->
         <div class="space-y-1.5">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">품의 제목</label>
-          <input type="text" id="report-input-title" placeholder="품의 제목을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
+          <input type="text" id="report-input-title" placeholder="품의 제목을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" />
         </div>
 
         <!-- Approver -->
         <div class="space-y-1.5">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">결재자</label>
-          <select id="report-input-approver" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all appearance-none">
+          <select id="report-input-approver" required class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all appearance-none">
             <option value="김경현 대표 (경영지원팀)">김경현 대표 (경영지원팀)</option>
             <option value="오은주 차장 (경영지원팀)">오은주 차장 (경영지원팀)</option>
             <option value="김종규 팀장 (기획팀)" selected>김종규 팀장 (기획팀)</option>
@@ -1786,15 +1786,15 @@
         <!-- Content / Description -->
         <div class="space-y-1.5">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant ml-1">상세 품의 내용</label>
-          <textarea id="report-input-content" rows="4" placeholder="품의 사유 및 상세 내용을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-2xl px-5 py-3.5 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all resize-none"></textarea>
+          <textarea id="report-input-content" rows="4" placeholder="품의 사유 및 상세 내용을 입력하세요" required class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all resize-none"></textarea>
         </div>
 
         <!-- Submit Buttons (Draft & Submit) -->
         <div class="grid grid-cols-2 gap-3 pt-4">
-          <button type="button" onclick="App.submitReportWrite(true)" class="py-4 bg-surface-container text-on-surface-variant font-label text-sm font-semibold rounded-xl hover:bg-surface-container-high active:scale-[0.98] transition-all flex justify-center items-center">
+          <button type="button" onclick="App.submitReportWrite(true)" class="py-4 bg-surface-container text-on-surface-variant font-label text-sm font-semibold rounded-md hover:bg-surface-container-high active:scale-[0.98] transition-all flex justify-center items-center">
             임시저장
           </button>
-          <button type="submit" class="py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center shadow-md">
+          <button type="submit" class="py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-md hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center shadow-md">
             결재 요청
           </button>
         </div>
@@ -1985,8 +1985,8 @@
                 주소록에서 추가
               </button>
             </div>
-            <div id="schedule-participants-chips" class="bg-surface-container-low border border-outline-variant/15 rounded-xl p-3 min-h-[48px] flex flex-wrap gap-2 items-center">
-              <span class="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-lg border border-primary/20 shadow-2xs">
+            <div id="schedule-participants-chips" class="bg-surface-container-low border border-outline-variant/15 rounded-md p-3 min-h-[48px] flex flex-wrap gap-2 items-center">
+              <span class="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-md border border-primary/20 shadow-2xs">
                 오은주 차장
                 <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors">
                   <span class="material-symbols-outlined text-[12px]">close</span>
@@ -2002,9 +2002,9 @@
               <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                 <span class="material-symbols-outlined text-outline text-lg">location_on</span>
               </div>
-              <input id="schedule-input-location" class="w-full pl-11 pr-4 py-3 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline mb-2" placeholder="장소 또는 회의실 입력 (선택)" type="text"/>
+              <input id="schedule-input-location" class="w-full pl-11 pr-4 py-3 bg-surface-container-highest border-none rounded-md text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline mb-2" placeholder="장소 또는 회의실 입력 (선택)" type="text"/>
             </div>
-            <textarea id="schedule-input-notes" class="w-full p-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline resize-none" placeholder="일정 관련 세부 메모를 입력해주세요 (선택)" rows="2.5"></textarea>
+            <textarea id="schedule-input-notes" class="w-full p-3.5 bg-surface-container-highest border-none rounded-md text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline resize-none" placeholder="일정 관련 세부 메모를 입력해주세요 (선택)" rows="2.5"></textarea>
           </div>
 
           <!-- Action Button Group (Leave Request standard) -->
@@ -2096,7 +2096,7 @@
           </div>
 
           <!-- Project / Category Selection (Custom Input + Recent Chips) -->
-          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-lg p-4 border border-outline-variant/15">
             <div class="flex justify-between items-center">
               <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
                 <span class="material-symbols-outlined text-lg">folder</span>
@@ -2104,7 +2104,7 @@
               </label>
               <span class="text-[11px] text-outline font-medium">최근 사용 선택 가능</span>
             </div>
-            <input id="todo-input-project" class="w-full bg-surface-container-lowest rounded-xl px-4 py-3 text-sm text-on-surface border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" placeholder="프로젝트명을 직접 입력하세요 (예: 그룹웨어 고도화)" type="text"/>
+            <input id="todo-input-project" class="w-full bg-surface-container-lowest rounded-md px-4 py-3 text-sm text-on-surface border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" placeholder="프로젝트명을 직접 입력하세요 (예: 그룹웨어 고도화)" type="text"/>
             
             <!-- Recent Projects Chips List -->
             <div class="flex flex-col gap-1 mt-1">
@@ -2116,44 +2116,44 @@
           </div>
 
           <!-- Priority -->
-          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-lg p-4 border border-outline-variant/15">
             <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
               <span class="material-symbols-outlined text-lg">flag</span>
               우선순위
             </label>
             <input type="hidden" id="todo-input-priority" value="medium" />
             <div class="grid grid-cols-3 gap-2.5">
-              <button type="button" onclick="App.setTodoPriorityForm('high', this)" class="todo-priority-btn py-2.5 px-3 rounded-xl border border-outline-variant/15 bg-surface-container-lowest text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-all">
+              <button type="button" onclick="App.setTodoPriorityForm('high', this)" class="todo-priority-btn py-2.5 px-3 rounded-md border border-outline-variant/15 bg-surface-container-lowest text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-all">
                 높음
               </button>
-              <button type="button" onclick="App.setTodoPriorityForm('medium', this)" class="todo-priority-btn active py-2.5 px-3 rounded-xl bg-primary-container text-on-primary-container font-bold text-xs border border-primary shadow-xs transition-all">
+              <button type="button" onclick="App.setTodoPriorityForm('medium', this)" class="todo-priority-btn active py-2.5 px-3 rounded-md bg-primary-container text-on-primary-container font-bold text-xs border border-primary shadow-xs transition-all">
                 보통
               </button>
-              <button type="button" onclick="App.setTodoPriorityForm('low', this)" class="todo-priority-btn py-2.5 px-3 rounded-xl border border-outline-variant/15 bg-surface-container-lowest text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-all">
+              <button type="button" onclick="App.setTodoPriorityForm('low', this)" class="todo-priority-btn py-2.5 px-3 rounded-md border border-outline-variant/15 bg-surface-container-lowest text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-all">
                 낮음
               </button>
             </div>
           </div>
 
           <!-- Due Date & Time -->
-          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-lg p-4 border border-outline-variant/15">
             <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
               <span class="material-symbols-outlined text-lg">calendar_today</span>
               마감일 설정
             </label>
             <div class="flex gap-3 items-center">
               <div class="relative flex-1">
-                <input id="todo-input-date" class="w-full px-4 py-3 bg-surface-container-lowest rounded-xl text-on-surface font-medium text-sm border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date"/>
+                <input id="todo-input-date" class="w-full px-4 py-3 bg-surface-container-lowest rounded-md text-on-surface font-medium text-sm border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date"/>
               </div>
               <span class="text-outline-variant font-bold">-</span>
               <div class="relative flex-1">
-                <input id="todo-input-time" class="w-full px-4 py-3 bg-surface-container-lowest rounded-xl text-on-surface font-medium text-sm border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="time" value="18:00"/>
+                <input id="todo-input-time" class="w-full px-4 py-3 bg-surface-container-lowest rounded-md text-on-surface font-medium text-sm border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="time" value="18:00"/>
               </div>
             </div>
           </div>
 
           <!-- Assignee Section -->
-          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-lg p-4 border border-outline-variant/15">
             <div class="flex items-center justify-between">
               <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
                 <span class="material-symbols-outlined text-lg">person_add</span>
@@ -2164,28 +2164,28 @@
               </button>
             </div>
             <div id="todo-assignees-chips" class="flex items-center gap-2 mt-1 flex-wrap">
-              <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-xl border border-primary/20">
+              <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-md border border-primary/20">
                 이재광 (나)
               </span>
             </div>
           </div>
 
           <!-- Detailed Notes Textarea -->
-          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-lg p-4 border border-outline-variant/15">
             <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
               <span class="material-symbols-outlined text-lg">notes</span>
               상세 내용
             </label>
-            <textarea id="todo-input-notes" class="w-full p-3.5 bg-surface-container-lowest rounded-xl text-on-surface font-medium text-sm border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder:text-outline-variant resize-none" placeholder="작업에 대한 상세 내용을 입력하세요." rows="3"></textarea>
+            <textarea id="todo-input-notes" class="w-full p-3.5 bg-surface-container-lowest rounded-md text-on-surface font-medium text-sm border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder:text-outline-variant resize-none" placeholder="작업에 대한 상세 내용을 입력하세요." rows="3"></textarea>
           </div>
 
           <!-- File Attachments Box -->
-          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-lg p-4 border border-outline-variant/15">
             <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
               <span class="material-symbols-outlined text-lg">attach_file</span>
               첨부파일
             </label>
-            <button type="button" onclick="App.triggerTodoFileUpload()" class="w-full py-5 rounded-xl border-2 border-dashed border-outline-variant/30 bg-surface-container-lowest flex flex-col items-center justify-center gap-1.5 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer group">
+            <button type="button" onclick="App.triggerTodoFileUpload()" class="w-full py-5 rounded-md border-2 border-dashed border-outline-variant/30 bg-surface-container-lowest flex flex-col items-center justify-center gap-1.5 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer group">
               <span class="material-symbols-outlined text-3xl group-hover:scale-110 text-primary transition-transform">upload_file</span>
               <span class="font-label text-xs font-bold text-on-surface">파일을 선택하거나 여기에 드래그하세요</span>
               <span class="text-[11px] text-on-surface-variant">PDF, PNG, JPG, DOCX (최대 10MB)</span>
@@ -2194,14 +2194,14 @@
 
           <!-- Modal Submit Buttons -->
           <div class="grid grid-cols-3 gap-2 pt-2">
-            <button type="button" class="py-3 px-4 rounded-xl bg-surface-container text-on-surface-variant font-bold text-xs hover:bg-surface-container-high transition-colors" onclick="App.closeTodoModal()">
+            <button type="button" class="py-3 px-4 rounded-md bg-surface-container text-on-surface-variant font-bold text-xs hover:bg-surface-container-high transition-colors" onclick="App.closeTodoModal()">
               취소
             </button>
-            <button type="button" class="py-3 px-4 rounded-xl bg-surface-container-high text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-1" onclick="App.saveTodoDraft()">
+            <button type="button" class="py-3 px-4 rounded-md bg-surface-container-high text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-1" onclick="App.saveTodoDraft()">
               <span class="material-symbols-outlined text-base">save</span>
               <span>임시저장</span>
             </button>
-            <button type="submit" class="py-3 px-4 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-xs hover:bg-primary-dim transition-colors flex items-center justify-center gap-1">
+            <button type="submit" class="py-3 px-4 rounded-md bg-primary text-on-primary font-bold text-xs shadow-xs hover:bg-primary-dim transition-colors flex items-center justify-center gap-1">
               <span>할 일 등록</span>
               <span class="material-symbols-outlined text-base">check_circle</span>
             </button>
