@@ -1,65 +1,59 @@
-# 📱 워드앤코드 스마트 그룹웨어 (WordnCode Groupware)
+# 워드앤코드 스마트 그룹웨어 (WordnCode Groupware)
 
 > **워드앤코드(WordnCode)** 임직원을 위한 모바일-태블릿 퍼스트 통합 스마트 그룹웨어 플랫폼입니다.  
 > 출퇴근 체크, 투데이 요약, 3단 캘린더, 휴가 신청, 재무/경비 지출결의서 및 품의서 기안, 임직원 주소록, 공지사항을 한 앱에서 완벽하게 관리합니다.
 
-![WordnCode Groupware](https://img.shields.io/badge/WordnCode-Groupware-0052d0?style=for-the-badge&logo=google)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-SPA-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-Vanilla_CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![GitHub Pages](https://img.shields.io/badge/Deployment-GitHub_Pages-222222?style=for-the-badge&logo=github)
+---
+
+## 라이브 데모 (Live Demo)
+
+- **GitHub Pages 실시간 배포 주소**: [https://lebass98.github.io/groupware/](https://lebass98.github.io/groupware/)
 
 ---
 
-## 🌟 라이브 데모 (Live Demo)
+## 핵심 특징 (Key Highlights)
 
-- 🌐 **GitHub Pages 실시간 배포 주소**: [https://lebass98.github.io/groupware/](https://lebass98.github.io/groupware/)
-
----
-
-## ✨ 핵심 특징 (Key Highlights)
-
-- 📱 **모바일-태블릿 퍼스트 768px 완벽 반응형 UI/UX**:
+- **모바일-태블릿 퍼스트 768px 완벽 반응형 UI/UX**:
   - Galaxy Fold 7, 모바일, 태블릿(768px 너비)까지 상단 헤더, 티커, 메인 스크린, 하단 네비게이션, 모달 및 바텀시트가 1:1 대칭 맞춤되는 정밀 레이아웃을 제공합니다.
-- ☀️ **투데이 중심의 유저 익스피리언스**:
+- **투데이 중심의 유저 익스피리언스**:
   - 로그인 직후 첫 화면으로 **'투데이(`screen-today`)'**를 제공하여 오늘의 출근 현황, 잔여 연차, 주요 일정 및 공지를 한눈에 파악할 수 있습니다.
-- 🎨 **M3 기반 비주얼 디자인 & 테마 팔레트**:
+- **M3 기반 비주얼 디자인 & 테마 팔레트**:
   - Material Design 3 톤-온-톤 컬러 레이어링, 글래스모피즘(`backdrop-filter`), **다크 모드** 및 **6가지 포인트 테마 팔레트(블루, 에메랄드, 바이올렛, 코랄, 인디고, 앰버)** 선택 기능을 지원합니다.
-- 💳 **통합 재무/경비 & 품의서 결재 시스템**:
+- **통합 재무/경비 & 품의서 결재 시스템**:
   - 법인/개인 카드 지출결의서 작성 및 결재선 지정 품의서 기안/승인 관리 기능을 내장했습니다.
 
 ---
 
-## 🚀 상세 기능 목록 (Detailed Features)
+## 상세 기능 목록 (Detailed Features)
 
-### 1. 🔒 독립적인 로그인 스크린 (Login & Social Auth)
+### 1. 독립적인 로그인 스크린 (Login & Social Auth)
 - 헤더와 하단 네비게이션이 숨겨진 **독립형 로그인 카드**를 기본 제공합니다.
 - 이메일/비밀번호 로그인 및 **원클릭 데모 로그인**을 지원합니다.
 - **Google**, **Naver** 소셜 로그인 버튼 UI를 갖추고 있으며, 로그인 성공 시 메인 투데이 화면으로 매끄럽게 전환됩니다.
 
-### 2. ☀️ 투데이 스크린 (Today Summary - 첫 진입 화면)
+### 2. 투데이 스크린 (Today Summary - 첫 진입 화면)
 - **오늘의 근무 요약**: 1초 단위 실시간 시계, 요일 및 날짜 자동 업데이트.
 - **근무 현황 & 출퇴근 상태**: 오늘의 누적 근무시간 및 출근/퇴근 상태 즉시 확인.
 - **주요 공지 및 일정 미리보기**: 당일 전달된 주요 공지사항 및 캘린더 일정 브리핑.
 
-### 3. 📱 메인 메뉴 그리드 (Interactive Menu Grid & Drag-Drop)
+### 3. 메인 메뉴 그리드 (Interactive Menu Grid & Drag-Drop)
 - 하단 독 메뉴의 **'메뉴'** 탭을 클릭하여 접근 가능한 2x2 반응형 기능 카드 그리드입니다.
 - **SortableJS 드래그 앤 드롭**: 드래그 핸들을 사용해 사용자가 원하는 순서대로 카드를 자유롭게 재배치할 수 있으며, 이 순서는 LocalStorage에 자동 저장됩니다.
 
-### 4. ⏱️ 스마트 근태 & 출퇴근 체크 (Check-In Home & GPS)
+### 4. 스마트 근태 & 출퇴근 체크 (Check-In Home & GPS)
 - **Interactive Check-In Pulse 버튼**: 대형 원형 펄스(Ripple) 애니메이션으로 출/퇴근 원클릭 체크.
 - **2차 확인 모달 (Confirm Dialog)**: 실수 방지를 위해 버튼 클릭 시 [확인/취소] 팝업 모달 제공.
 - **GPS 500m 위치 인증**: 본사(서울 금천구 벚꽃로 298) 반경 500m 내 출근 가능 여부를 검증하고 위치 상태 배지를 표시합니다.
 - **실시간 근무 시간 타이머**: 출근 시 1초 단위로 오늘 근무 시간(`HH:MM:SS`)을 자동 계산합니다.
 
-### 5. 📅 근태 캘린더 (3-Way Calendar & Schedule Registration)
+### 5. 근태 캘린더 (3-Way Calendar & Schedule Registration)
 - **3단 뷰 세그먼트**: `월간(Month)`, `주간(Week)`, `일간(Day Timeline)` 세그먼트 버튼으로 자유롭게 일정을 전환합니다.
 - **일간 타임라인**: 08:00 ~ 18:00 시간대별 근무 및 사내 일정을 타임라인 형태로 시각화.
 - **일정 등록 모달 (Full-Screen Page Modal)**:
   - 외근, 회의, 연차, 반차, 미팅, 개인일정 구분의 일정 기안.
   - **주소록 연동 참석자 추가 기능**: 사내 임직원을 주소록 팝업에서 검색해 참석자로 지정 가능.
 
-### 6. 💳 재무/경비 관리 (Expense & Report System)
+### 6. 재무/경비 관리 (Expense & Report System)
 - **지출결의서 (Expense Resolution)**:
   - 법인/개인 카드 지출 내역 조회 및 상태(미결의/완료) 관리.
   - 바텀시트 모달을 통한 영수증 및 지출 결의서 신규 기안.
@@ -67,7 +61,7 @@
   - 품의 제목, 예산 금액, 사유 작성 및 결재자(대표이사/차장 등) 지정.
   - 기안 완료 후 '결재 대기' / '승인 완료' 상태 카드 시각화.
 
-### 7. 📢 공지사항 & 헤더 플립 티커 (Notice & Header Ticker)
+### 7. 공지사항 & 헤더 플립 티커 (Notice & Header Ticker)
 - **헤더 플립형 공지 티커**:
   - 상단 헤더 바로 아래에 위치하여 주요 공지가 4초 간격으로 부드럽게 플립 전환됩니다.
   - **티커 글 클릭 연동**: 티커 텍스트 클릭 시 해당 공지사항의 상세 화면(`openNoticeDetail`)으로 즉시 이동합니다.
@@ -75,12 +69,12 @@
   - 인사, 복지, 시스템, 공통 필터 칩 및 키워드 검색.
   - 첨부파일(.pdf 등) 다운로드 지원.
 
-### 8. 📞 임직원 주소록 (Employee Directory)
+### 8. 임직원 주소록 (Employee Directory)
 - 전체 임직원 프로필 카드 목록 및 부서별 필터 칩(경영지원, 기획, 디자인, 퍼블리싱, 개발 등).
 - 이름/부서/전화번호 즉시 검색.
 - 상세 프로필 팝업을 통한 원클릭 전화걸기, 문자 메시지, 이메일 보내기 연동.
 
-### 9. 🎨 커스텀 테마 & 야간 모드 (Theme Palette & Dark Mode)
+### 9. 커스텀 테마 & 야간 모드 (Theme Palette & Dark Mode)
 - **포인트 색상 팔레트 모달**:
   - 상단 헤더의 팔레트 버튼을 통해 **블루(Professional Blue)**, **에메랄드(Emerald Green)**, **바이올렛(Royal Violet)**, **코랄(Coral Pink)**, **인디고(Deep Indigo)**, **앰버(Warm Amber)** 6가지 메인 테마 색상을 한 번의 클릭으로 변경할 수 있습니다.
 - **다크 모드 (Dark Theme)**:
@@ -88,7 +82,7 @@
 
 ---
 
-## 🎨 디자인 사양 (Design System)
+## 디자인 사양 (Design System)
 
 Material Design 3 (M3) 디자인 시스템 기반:
 
@@ -102,7 +96,7 @@ Material Design 3 (M3) 디자인 시스템 기반:
 
 ---
 
-## 📂 프로젝트 구조 (Directory Structure)
+## 프로젝트 구조 (Directory Structure)
 
 ```text
 Pool/
@@ -121,7 +115,7 @@ Pool/
 
 ---
 
-## 🛠️ 로컬 실행 방법 (Local Setup)
+## 로컬 실행 방법 (Local Setup)
 
 별도의 의존성 설치 없이 표준 웹 브라우저에서 바로 실행이 가능합니다.
 
@@ -142,7 +136,7 @@ Pool/
 
 ---
 
-## 🔄 CI/CD 자동 배포 (GitHub Actions)
+## CI/CD 자동 배포 (GitHub Actions)
 
 본 프로젝트는 `.github/workflows/deploy.yml` 설정을 포함하고 있어, `main` 브랜치에 코드 Push 시 **GitHub Actions**가 자동으로 GitHub Pages로 실시간 배포를 완료합니다.
 
@@ -150,7 +144,7 @@ Pool/
 
 ---
 
-## 📝 커밋 컨벤션 (Git Commit Rules)
+## 커밋 컨벤션 (Git Commit Rules)
 
 프로젝트 내 변경사항 커밋 시 아래 한글 커밋 컨벤션을 준수합니다:
 
@@ -161,33 +155,35 @@ Pool/
 
 ---
 
-## 📅 작업 내역 (Work History)
+## 작업 내역 (Work History)
 
-### 🗓️ 2026-08-11
-- 🚀 **스마트 그룹웨어 모바일 퍼스트 SPA 프로젝트 초기 구축**:
+### 2026-08-11
+- **스마트 그룹웨어 모바일 퍼스트 SPA 프로젝트 초기 구축**:
   - 독립형 로그인 화면, 이메일/비밀번호 Form 및 Google/Naver 데모 소셜 로그인 버튼 구현.
   - 1초 단위 실시간 시계 & Bento 상태 카드가 포함된 출퇴근 체크 홈 구현.
   - 대형 펄스 애니메이션 버튼, 출퇴근 2차 확인 Confirm 모달, 실시간 근무시간 타이머 및 본사 GPS 500m 위치 검증 기능 구축.
 
-### 🗓️ 2026-08-12
-- 🎨 **Material Design 3 (M3) 비주얼 디자인 및 테마 시스템 구축**:
+### 2026-08-12
+- **Material Design 3 (M3) 비주얼 디자인 및 테마 시스템 구축**:
   - `Pretendard` & `Plus Jakarta Sans` 기반 가독성 높은 M3 톤-온-톤 컬러 레이어링 및 글래스모피즘(`backdrop-filter: blur(20px)`) 적용.
   - 야간 환경을 위한 **다크 모드 (Dark Theme)** 및 **6가지 메인 포인트 테마 팔레트(블루, 에메랄드, 바이올렛, 코랄, 인디고, 앰버)** 선택 모달 개발.
-- 📅 **3단 통합 근태 캘린더 및 일정 등록 개발**:
+- **3단 통합 근태 캘린더 및 일정 등록 개발**:
   - 월간(Month), 주간(Week), 일간(Day Timeline) 3단 세그먼트 스위처 구현.
   - 일정 등록 전용 풀스크린 모달 및 주소록 연동 참석자 선택 기능 개발.
-- 💳 **재무/경비 (Finance) 지출결의서 & 품의서 시스템 구축**:
+- **재무/경비 (Finance) 지출결의서 & 품의서 시스템 구축**:
   - 법인/개인 카드 미결의 내역 관리 및 영수증 첨부 지출결의서 바텀시트 개발.
   - 품의 제목, 예산, 결재자(대표이사/차장 등) 지정 및 결재 상태(대기/승인) 실시간 관리 구현.
-- 📢 **공지사항 & 주소록 기능 강화**:
+- **공지사항 & 주소록 기능 강화**:
   - 공지 카테고리 필터 칩, 키워드 검색, 첨부파일 다운로드 및 헤더 플립형 공지 티커 개발.
   - 임직원 부서별 필터링, 주소록 상세 프로필 및 원클릭 전화/이메일 연동.
 
-### 🗓️ 2026-08-13
-- 📱 **가로 768px 모바일/태블릿/폴더블 전 스크린 레이아웃 완벽 좌우 맞춤**:
+### 2026-08-13
+- **가로 768px 모바일/태블릿/폴더블 전 스크린 레이아웃 완벽 좌우 맞춤**:
   - Galaxy Fold 7, 태블릿 및 브라우저 창 768px 너비까지 상단 헤더, 티커, 메인 스크린 본문(`<main>`), 하단 네비게이션 및 모달/바텀시트의 `max-width`를 768px로 조정하여 1:1 대칭 폭 밀착 보정.
-- ☀️ **로그인 후 첫 화면 '투데이(`screen-today`)' 지정 및 독 메뉴 '메뉴' 명칭 변경**:
+- **로그인 후 첫 화면 '투데이(`screen-today`)' 지정 및 독 메뉴 '메뉴' 명칭 변경**:
   - 로그인 성공 시 기본 진입 화면을 투데이 화면으로 설정하고, 독 메뉴의 기존 '홈' 라벨을 '메뉴'로 변경.
-- 🔗 **상단 공지 티커 텍스트 클릭 연동**:
+- **상단 공지 티커 텍스트 클릭 연동**:
   - 헤더 공지 티커 글 클릭 시 해당 공지사항 상세 화면(`openNoticeDetail`)으로 즉시 이동되도록 클릭 이벤트 및 호버 어포던스 부여.
-- 📚 **README.md 프로젝트 상세 설명서 전면 개편 및 일자별 작업 내역 자동화 규칙 수립**.
+- **README.md 설명서 문서 개편 및 일자별 작업 내역 자동화 수립**:
+  - README.md 프로젝트 설명 문서 개편, 일자별 작업 내역(Work History) 섹션 신설 및 AGENTS 자동화 규칙 수립.
+  - README.md 문서 내 모든 이모지 및 아이콘 제거하여 가독성 개선.
