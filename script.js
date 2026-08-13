@@ -1141,13 +1141,16 @@ const App = {
       history.pushState({ activeTab: targetId }, '', `#${targetId}`);
     }
 
-    // Update bottom nav active state
+    // Update bottom nav active state & filled icon
     const navItems = document.querySelectorAll('.bottom-nav .nav-item');
     navItems.forEach(item => {
+      const icon = item.querySelector('.material-symbols-outlined');
       if (item.getAttribute('data-target') === targetId) {
         item.classList.add('active');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 1";
       } else {
         item.classList.remove('active');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 0";
       }
     });
 
