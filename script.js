@@ -2075,9 +2075,11 @@ const App = {
     else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) categoryKey = '공휴일';
 
     const colorInfo = this.getCategoryColorStyle(categoryKey);
-    let categoryBadgeHtml = colorInfo.badgeHtml;
-
-    const isHoliday = categoryKey === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지' || s.author === '국경일/기념일';
+    const isHoliday = categoryKey === '공휴일' || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지' || s.author === '국경일/기념일';
+    const cleanTitle = titleStr.replace(/\s*\(공휴일\)/g, '').trim();
+    if (isHoliday) {
+      categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25 whitespace-nowrap shrink-0">${cleanTitle}</span>`;
+    }
     const avatarHtml = isHoliday ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
     const authorTextHtml = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap">${s.author || '이재광 차장'}</span>`;
 
@@ -2360,6 +2362,7 @@ const App = {
       if (schedules && schedules.length > 0) {
         barsHtml = '<div class="w-full flex flex-col gap-1 mt-1 z-10">';
         schedules.slice(0, 2).forEach(s => {
+          const isHoliday = (s.badge === '공휴일' || s.title.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지' || s.author === '국경일/기념일');
           let colorClass = 'bg-[#d8e2ff] text-[#001a41]';
           if (s.title.includes('휴가') || s.title.includes('연차')) {
             colorClass = (s.type === 'error' || s.author?.includes('이재광') || s.author?.includes('조지혜')) ? 'bg-[#ffdad6] text-[#410002]' : 'bg-[#61fbab] text-[#004729]';
@@ -2367,12 +2370,13 @@ const App = {
             colorClass = 'bg-[#ffe088] text-[#533a00]';
           } else if (s.title.includes('외근') || s.title.includes('미팅') || s.title.includes('회의')) {
             colorClass = 'bg-[#d8e2ff] text-[#001a41]';
-          } else if (s.title.includes('공휴일')) {
-            colorClass = 'bg-[#ffdad6] text-[#410002]';
+          } else if (isHoliday) {
+            colorClass = 'bg-[#ffdad6] text-[#c5221f] font-bold';
           }
 
           let spanStyle = 'rounded-md w-full';
-          let labelText = s.author && !s.title.includes('공휴일') ? `[${s.author.split(' ')[0]}] ${s.title}` : s.title;
+          let cleanTitle = (s.title || '').replace(/\s*\(공휴일\)/g, '').trim();
+          let labelText = isHoliday ? cleanTitle : (s.author ? `[${s.author.split(' ')[0]}] ${s.title}` : s.title);
 
           barsHtml += `
             <div class="text-[10px] font-bold px-1 py-0.5 ${spanStyle} ${colorClass} truncate text-center leading-tight shadow-2xs">
