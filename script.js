@@ -2880,7 +2880,7 @@ const App = {
         if (schedules.length === 0) {
           cardsContentHtml = `<div class="text-center py-4 text-on-surface-variant/60 font-body text-xs font-medium">등록된 일정이 없습니다.</div>`;
         } else {
-          cardsContentHtml = `<div class="space-y-3">` + schedules.map(s => this.renderWeeklyDayCardItem(s)).join('') + `</div>`;
+          cardsContentHtml = `<div class="space-y-3">` + schedules.map(s => this.renderScheduleCardItem(s)).join('') + `</div>`;
         }
 
         allDaysHtml += `
@@ -2907,7 +2907,7 @@ const App = {
           </div>
         `;
       } else {
-        logsContainerEl.innerHTML = `<div class="space-y-3">` + schedules.map(s => this.renderWeeklyDayCardItem(s)).join('') + `</div>`;
+        logsContainerEl.innerHTML = `<div class="space-y-3">` + schedules.map(s => this.renderScheduleCardItem(s)).join('') + `</div>`;
       }
     }
   },
