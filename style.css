@@ -1595,10 +1595,18 @@ body.dark .nav-item.active {
   gap: 1.25rem;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
   padding-bottom: 0.75rem;
   width: 100%;
   -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-x;
+}
+
+.kanban-board-container.is-dragging {
+  cursor: grabbing !important;
+  scroll-snap-type: none !important;
 }
 
 .kanban-column {

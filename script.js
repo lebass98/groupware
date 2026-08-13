@@ -3870,6 +3870,54 @@ const App = {
   },
 
   // To-Do / Task Management Methods
+  initKanbanDragScroll() {
+    const kanbanBoard = document.querySelector('.kanban-board-container');
+    if (!kanbanBoard || kanbanBoard._hasDragListener) return;
+    kanbanBoard._hasDragListener = true;
+
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let hasDragged = false;
+
+    kanbanBoard.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      isDown = true;
+      hasDragged = false;
+      kanbanBoard.classList.add('is-dragging');
+      startX = e.pageX - kanbanBoard.offsetLeft;
+      scrollLeft = kanbanBoard.scrollLeft;
+    });
+
+    const stopDragging = () => {
+      if (!isDown) return;
+      isDown = false;
+      kanbanBoard.classList.remove('is-dragging');
+    };
+
+    kanbanBoard.addEventListener('mouseleave', stopDragging);
+    kanbanBoard.addEventListener('mouseup', stopDragging);
+
+    kanbanBoard.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - kanbanBoard.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      if (Math.abs(walk) > 6) {
+        hasDragged = true;
+      }
+      kanbanBoard.scrollLeft = scrollLeft - walk;
+    });
+
+    kanbanBoard.addEventListener('click', (e) => {
+      if (hasDragged) {
+        e.preventDefault();
+        e.stopPropagation();
+        hasDragged = false;
+      }
+    }, true);
+  },
+
   selectProject(projectName) {
     this.state.selectedProject = projectName;
     this.renderTodos();
@@ -4044,6 +4092,7 @@ const App = {
           </section>
         </div>
       `;
+      setTimeout(() => this.initKanbanDragScroll(), 0);
       return;
     }
 
