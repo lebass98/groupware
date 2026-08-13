@@ -1025,13 +1025,18 @@
         <!-- Header -->
         <section class="flex flex-col gap-1">
           <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">캘린더</h2>
-          <p class="text-on-surface-variant font-body text-xs">월간 및 주간 일정을 확인하고 관리하세요.</p>
+          <p class="text-on-surface-variant font-body text-xs">월간, 주간, 일간 일정을 확인하고 관리하세요.</p>
         </section>
 
         <!-- Calendar Controls Card -->
         <div class="flex items-center justify-between bg-surface-container-lowest border border-outline-variant/15 rounded-2xl px-4 py-3 shadow-sm">
-          <button onclick="App.switchTab('screen-calendar-weekly')" class="px-4 py-1.5 bg-primary/10 text-primary font-bold text-xs rounded-full hover:bg-primary/20 transition-all active:scale-95">주간 보기</button>
-          <div class="flex items-center space-x-3">
+          <!-- Segmented View Switcher (월 / 주 / 일) -->
+          <div class="flex items-center bg-surface-container p-0.5 rounded-full shrink-0">
+            <button type="button" onclick="App.setCalendarView('month')" class="px-3.5 py-1 rounded-full font-bold text-xs bg-surface-container-lowest text-primary shadow-xs transition-all">월</button>
+            <button type="button" onclick="App.setCalendarView('week')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">주</button>
+            <button type="button" onclick="App.setCalendarView('day')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">일</button>
+          </div>
+          <div class="flex items-center space-x-2">
             <button onclick="App.prevMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
               <span class="material-symbols-outlined text-xl">chevron_left</span>
             </button>
@@ -1040,7 +1045,7 @@
               <span class="material-symbols-outlined text-xl">chevron_right</span>
             </button>
           </div>
-          <button onclick="App.resetCalendarToToday()" class="px-4 py-1.5 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high transition-all active:scale-95">오늘</button>
+          <button onclick="App.resetCalendarToToday()" class="px-3.5 py-1 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high transition-all active:scale-95">오늘</button>
         </div>
         
         <!-- Calendar Grid Card -->
@@ -1077,39 +1082,84 @@
       </button>
     </section>
 
-    <!-- SCREEN 10-A: CALENDAR WEEKLY (Unified App Layout) -->
+    <!-- SCREEN 10-A: CALENDAR WEEKLY (Weekly Schedule View) -->
     <section class="screen-view hidden" id="screen-calendar-weekly">
       <main class="flex-1 flex flex-col gap-5 max-w-md mx-auto w-full text-left py-2 pb-24">
         <!-- Header -->
-        <section class="flex flex-col gap-2">
-          <div class="flex items-center gap-3">
-            <button onclick="App.switchTab('screen-calendar')" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors active:scale-95 -ml-1">
-              <span class="material-symbols-outlined text-2xl">arrow_back</span>
-            </button>
-            <div>
-              <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">주간 일정</h2>
-              <p class="text-on-surface-variant font-body text-xs mt-0.5">주간 타임라인 및 일별 일정을 확인하세요.</p>
-            </div>
-          </div>
+        <section class="flex flex-col gap-1">
+          <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">주간 일정</h2>
+          <p class="text-on-surface-variant font-body text-xs">주간 단위 일정을 한눈에 확인하고 관리하세요.</p>
         </section>
+
+        <!-- Weekly Controls Card -->
+        <div class="flex items-center justify-between bg-surface-container-lowest border border-outline-variant/15 rounded-2xl px-4 py-3 shadow-sm">
+          <!-- Segmented View Switcher (월 / 주 / 일) -->
+          <div class="flex items-center bg-surface-container p-0.5 rounded-full shrink-0">
+            <button type="button" onclick="App.setCalendarView('month')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">월</button>
+            <button type="button" onclick="App.setCalendarView('week')" class="px-3.5 py-1 rounded-full font-bold text-xs bg-surface-container-lowest text-primary shadow-xs transition-all">주</button>
+            <button type="button" onclick="App.setCalendarView('day')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">일</button>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="App.prevWeek()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
+              <span class="material-symbols-outlined text-xl">chevron_left</span>
+            </button>
+            <h3 id="weekly-view-header-title" class="font-headline font-bold text-base text-on-surface">2026년 8월 2주차</h3>
+            <button onclick="App.nextWeek()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
+              <span class="material-symbols-outlined text-xl">chevron_right</span>
+            </button>
+          </div>
+          <button onclick="App.resetWeeklyToToday()" class="px-3.5 py-1 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high transition-all active:scale-95">오늘</button>
+        </div>
+
+        <!-- 7-Day Header Strip Card (matching code.html & reference design) -->
+        <div id="weekly-7day-header" class="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl p-4 shadow-sm">
+          <!-- Rendered dynamically by App.renderWeeklyScheduleView() -->
+        </div>
+
+        <!-- Day Blocks Container (matching code.html & reference design) -->
+        <div id="weekly-day-blocks-container" class="space-y-4">
+          <!-- Rendered dynamically by App.renderWeeklyScheduleView() -->
+        </div>
+      </main>
+
+      <!-- FAB -->
+      <button onclick="App.openScheduleModal()" class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full shadow-[0_8px_24px_rgba(35,44,81,0.15)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40 group">
+        <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">add</span>
+      </button>
+    </section>
+
+    <!-- SCREEN 10-B: CALENDAR DAILY (Daily Timeline View) -->
+    <section class="screen-view hidden" id="screen-calendar-daily">
+      <main class="flex-1 flex flex-col gap-5 max-w-md mx-auto w-full text-left py-2 pb-24">
+        <!-- Header -->
+        <section class="flex flex-col gap-1">
+          <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">일간 일정</h2>
+          <p class="text-on-surface-variant font-body text-xs">일별 타임라인 및 상세 일정을 확인하세요.</p>
+        </section>
+
+        <!-- Daily Controls Card -->
+        <div class="flex items-center justify-between bg-surface-container-lowest border border-outline-variant/15 rounded-2xl px-4 py-3 shadow-sm">
+          <!-- Segmented View Switcher (월 / 주 / 일) -->
+          <div class="flex items-center bg-surface-container p-0.5 rounded-full shrink-0">
+            <button type="button" onclick="App.setCalendarView('month')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">월</button>
+            <button type="button" onclick="App.setCalendarView('week')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">주</button>
+            <button type="button" onclick="App.setCalendarView('day')" class="px-3.5 py-1 rounded-full font-bold text-xs bg-surface-container-lowest text-primary shadow-xs transition-all">일</button>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="App.prevDailyMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
+              <span class="material-symbols-outlined text-xl">chevron_left</span>
+            </button>
+            <h3 id="daily-header-title" class="font-headline font-bold text-base text-on-surface">2026년 8월</h3>
+            <button onclick="App.nextDailyMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
+              <span class="material-symbols-outlined text-xl">chevron_right</span>
+            </button>
+          </div>
+          <button onclick="App.resetDailyToToday()" class="px-3.5 py-1 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high transition-all active:scale-95">오늘</button>
+        </div>
 
         <!-- Date Picker (Scrollable 1-Month Strip) Card -->
         <div class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-2xl p-4 shadow-sm">
-          <div class="flex items-center justify-between mb-3">
-            <button onclick="App.switchTab('screen-calendar')" class="px-3.5 py-1.5 bg-primary/10 text-primary font-bold text-xs rounded-full hover:bg-primary/20 transition-all active:scale-95">월간 보기</button>
-            <div class="flex items-center space-x-2">
-              <button onclick="App.prevWeeklyMonth()" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors active:scale-95">
-                <span class="material-symbols-outlined text-lg">chevron_left</span>
-              </button>
-              <h3 id="weekly-header-title" class="font-headline font-bold text-base text-on-surface">2026년 8월</h3>
-              <button onclick="App.nextWeeklyMonth()" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors active:scale-95">
-                <span class="material-symbols-outlined text-lg">chevron_right</span>
-              </button>
-            </div>
-            <button onclick="App.resetWeeklyToToday()" class="px-3.5 py-1.5 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high transition-all active:scale-95">오늘</button>
-          </div>
-          <!-- Drag / Scroll 1-Month Date Strip -->
-          <div id="weekly-date-strip" class="flex overflow-x-auto hide-scrollbar space-x-2 snap-x pb-1 cursor-grab active:cursor-grabbing select-none">
+          <div id="daily-date-strip" class="flex overflow-x-auto hide-scrollbar space-x-2 snap-x pb-1 cursor-grab active:cursor-grabbing select-none">
             <!-- Dynamic dates (1 ~ 31) rendered by JS -->
           </div>
         </div>
@@ -1117,7 +1167,7 @@
         <!-- Timeline Section Card -->
         <div class="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl p-4 shadow-sm relative overflow-hidden">
           <div class="flex items-center justify-between mb-4 border-b border-outline-variant/10 pb-2.5">
-            <h3 id="weekly-timeline-title" class="font-headline font-bold text-sm text-on-surface">08.12 (수) 타임라인 일정</h3>
+            <h3 id="daily-timeline-title" class="font-headline font-bold text-sm text-on-surface">08.12 (수) 타임라인 일정</h3>
             <span class="text-xs text-on-surface-variant font-medium">타임라인</span>
           </div>
 
@@ -1139,7 +1189,7 @@
             </div>
             
             <!-- Events Container (Dynamic/Korean Timeline) -->
-            <div id="weekly-timeline-events" class="absolute left-12 right-0 top-0 h-full">
+            <div id="daily-timeline-events" class="absolute left-12 right-0 top-0 h-full">
               <!-- Dynamically rendered by JS -->
             </div>
           </div>

@@ -1065,9 +1065,19 @@ const App = {
     } else if (targetId === 'screen-directory') {
       this.renderDirectory();
     } else if (targetId === 'screen-calendar') {
+      const v = this.state.calView || 'month';
+      if (v === 'week') {
+        this.switchTab('screen-calendar-weekly');
+        return;
+      } else if (v === 'day') {
+        this.switchTab('screen-calendar-daily');
+        return;
+      }
       this.renderCalendar();
     } else if (targetId === 'screen-calendar-weekly') {
-      this.renderWeeklyCalendar();
+      this.renderWeeklyScheduleView();
+    } else if (targetId === 'screen-calendar-daily') {
+      this.renderDailyTimelineView();
     } else if (targetId === 'screen-finance') {
       this.renderExpenses();
     } else if (targetId === 'screen-home' || targetId === 'screen-today') {
@@ -2657,35 +2667,64 @@ const App = {
     }
   },
 
-  // Weekly Calendar Methods
-  prevWeeklyMonth() {
-    if (!this.state.weeklyMonth) {
-      this.state.weeklyYear = this.state.calYear || 2026;
-      this.state.weeklyMonth = this.state.calMonth || 8;
-      this.state.weeklyDay = this.state.calSelectedDay || 12;
-    }
-    if (this.state.weeklyMonth === 1) {
-      this.state.weeklyMonth = 12;
-      this.state.weeklyYear--;
+  // 3-Mode Calendar Views (월 / 주 / 일)
+  setCalendarView(view) {
+    this.state.calView = view || 'month';
+    if (view === 'week') {
+      this.switchTab('screen-calendar-weekly');
+      this.renderWeeklyScheduleView();
+    } else if (view === 'day') {
+      this.switchTab('screen-calendar-daily');
+      this.renderDailyTimelineView();
     } else {
-      this.state.weeklyMonth--;
+      this.switchTab('screen-calendar');
+      this.renderCalendar();
     }
-    this.renderWeeklyCalendar();
   },
 
-  nextWeeklyMonth() {
-    if (!this.state.weeklyMonth) {
-      this.state.weeklyYear = this.state.calYear || 2026;
-      this.state.weeklyMonth = this.state.calMonth || 8;
-      this.state.weeklyDay = this.state.calSelectedDay || 12;
+  getWeekDays(year, month, day) {
+    const current = new Date(year, month - 1, day);
+    const dayOfWeek = current.getDay(); // 0: Sun, 1: Mon... 6: Sat
+    
+    // Start of week (Sunday)
+    const sunday = new Date(current);
+    sunday.setDate(current.getDate() - dayOfWeek);
+
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(sunday);
+      d.setDate(sunday.getDate() + i);
+      days.push({
+        year: d.getFullYear(),
+        month: d.getMonth() + 1,
+        day: d.getDate(),
+        dayOfWeek: d.getDay(),
+        dateObj: d
+      });
     }
-    if (this.state.weeklyMonth === 12) {
-      this.state.weeklyMonth = 1;
-      this.state.weeklyYear++;
-    } else {
-      this.state.weeklyMonth++;
-    }
-    this.renderWeeklyCalendar();
+    return days;
+  },
+
+  prevWeek() {
+    const curYear = this.state.weeklyYear || this.state.calYear || 2026;
+    const curMonth = this.state.weeklyMonth || this.state.calMonth || 8;
+    const curDay = this.state.weeklyDay || this.state.calSelectedDay || 13;
+    const date = new Date(curYear, curMonth - 1, curDay - 7);
+    this.state.weeklyYear = date.getFullYear();
+    this.state.weeklyMonth = date.getMonth() + 1;
+    this.state.weeklyDay = date.getDate();
+    this.renderWeeklyScheduleView();
+  },
+
+  nextWeek() {
+    const curYear = this.state.weeklyYear || this.state.calYear || 2026;
+    const curMonth = this.state.weeklyMonth || this.state.calMonth || 8;
+    const curDay = this.state.weeklyDay || this.state.calSelectedDay || 13;
+    const date = new Date(curYear, curMonth - 1, curDay + 7);
+    this.state.weeklyYear = date.getFullYear();
+    this.state.weeklyMonth = date.getMonth() + 1;
+    this.state.weeklyDay = date.getDate();
+    this.renderWeeklyScheduleView();
   },
 
   resetWeeklyToToday() {
@@ -2693,29 +2732,215 @@ const App = {
     this.state.weeklyYear = today.getFullYear();
     this.state.weeklyMonth = today.getMonth() + 1;
     this.state.weeklyDay = today.getDate();
-    this.renderWeeklyCalendar();
+    this.renderWeeklyScheduleView();
   },
 
-  selectWeeklyDate(day) {
+  selectWeeklyDay(year, month, day) {
+    this.state.weeklyYear = year;
+    this.state.weeklyMonth = month;
     this.state.weeklyDay = day;
-    this.renderWeeklyCalendar();
+    this.renderWeeklyScheduleView();
   },
 
-  renderWeeklyCalendar() {
-    const headerTitleEl = document.getElementById('weekly-header-title');
-    const stripEl = document.getElementById('weekly-date-strip');
-    const timelineTitleEl = document.getElementById('weekly-timeline-title');
-    const eventsContainer = document.getElementById('weekly-timeline-events');
+  renderWeeklyScheduleView() {
+    const headerTitleEl = document.getElementById('weekly-view-header-title');
+    const header7DayEl = document.getElementById('weekly-7day-header');
+    const blocksContainerEl = document.getElementById('weekly-day-blocks-container');
+
+    if (!blocksContainerEl) return;
+
+    const today = new Date();
+    const curYear = this.state.weeklyYear || this.state.calYear || 2026;
+    const curMonth = this.state.weeklyMonth || this.state.calMonth || 8;
+    const curDay = this.state.weeklyDay || this.state.calSelectedDay || 13;
+
+    this.state.weeklyYear = curYear;
+    this.state.weeklyMonth = curMonth;
+    this.state.weeklyDay = curDay;
+
+    const weekDays = this.getWeekDays(curYear, curMonth, curDay);
+    const weekNum = Math.ceil(curDay / 7);
+
+    if (headerTitleEl) {
+      headerTitleEl.innerText = `${curYear}년 ${curMonth}월 ${weekNum}주차`;
+    }
+
+    const dayNamesEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    // 1. Render 7-Day Header Strip Card (matching code.html design)
+    if (header7DayEl) {
+      header7DayEl.innerHTML = `
+        <div class="grid grid-cols-7 gap-1 text-center">
+          ${weekDays.map(w => {
+            const isToday = (w.year === today.getFullYear() && w.month === (today.getMonth() + 1) && w.day === today.getDate());
+            const isSelected = (w.day === curDay && w.month === curMonth);
+
+            let dayColorClass = 'text-on-surface-variant';
+            if (w.dayOfWeek === 0) dayColorClass = 'text-error';
+            else if (w.dayOfWeek === 6) dayColorClass = 'text-primary';
+
+            let numBgClass = 'text-on-surface font-semibold';
+            if (isSelected) numBgClass = 'bg-primary text-on-primary font-bold rounded-full w-8 h-8 flex items-center justify-center shadow-md';
+            else if (isToday) numBgClass = 'bg-primary/15 text-primary font-bold rounded-full w-8 h-8 flex items-center justify-center';
+
+            return `
+              <div onclick="App.selectWeeklyDay(${w.year}, ${w.month}, ${w.day})" class="flex flex-col items-center cursor-pointer p-1 rounded-xl hover:bg-surface-container-high/40 transition-all active:scale-95">
+                <span class="${dayColorClass} font-label text-xs font-semibold mb-1">${dayNamesEn[w.dayOfWeek]}</span>
+                <span class="${numBgClass} font-headline text-base">${w.day}</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // 2. Render Day Blocks Container for all 7 Days (matching code.html design)
+    let blocksHtml = '';
+    weekDays.forEach(w => {
+      const isToday = (w.year === today.getFullYear() && w.month === (today.getMonth() + 1) && w.day === today.getDate());
+      const schedules = this.getMockSchedules(w.year, w.month, w.day) || [];
+
+      let dayTitleClass = 'text-on-surface';
+      if (w.dayOfWeek === 0) dayTitleClass = 'text-error';
+      else if (w.dayOfWeek === 6) dayTitleClass = 'text-primary';
+
+      let cardsContentHtml = '';
+      if (schedules.length === 0) {
+        cardsContentHtml = `<div class="text-center py-5 text-on-surface-variant/60 font-body text-xs font-medium">등록된 일정이 없습니다.</div>`;
+      } else {
+        cardsContentHtml = `<div class="space-y-3">` + schedules.map(s => this.renderWeeklyDayCardItem(s)).join('') + `</div>`;
+      }
+
+      blocksHtml += `
+        <div class="bg-surface-container-low border border-outline-variant/15 rounded-2xl p-5 relative transition-all">
+          ${isToday ? '<div class="absolute -left-1 top-7 w-2.5 h-2.5 rounded-full bg-secondary shadow-xs"></div>' : ''}
+          <div class="flex items-baseline gap-4 mb-3.5">
+            <h3 class="font-headline text-lg font-bold ${dayTitleClass} w-24">${dayNamesEn[w.dayOfWeek]} ${w.day}</h3>
+            <div class="h-[1px] bg-outline-variant/15 flex-1"></div>
+          </div>
+          ${cardsContentHtml}
+        </div>
+      `;
+    });
+
+    blocksContainerEl.innerHTML = blocksHtml;
+  },
+
+  renderWeeklyDayCardItem(s) {
+    let avatarUrl = s.avatar;
+    if (s.author) {
+      const authorFirstName = s.author.split(' ')[0];
+      const emp = (this.state.employees || []).find(e => e.name === authorFirstName);
+      if (emp && emp.avatar) avatarUrl = emp.avatar;
+    }
+    if (!avatarUrl) avatarUrl = 'profile.png';
+
+    const titleStr = s.title || '';
+    const badgeStr = s.badge || '';
+    let categoryKey = badgeStr || titleStr;
+    if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) categoryKey = '휴가';
+    else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) categoryKey = '외근';
+    else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) categoryKey = titleStr.includes('반반차') ? '반반차' : '반차';
+    else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) categoryKey = '회의';
+    else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) categoryKey = '공휴일';
+    else if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') categoryKey = '절기';
+    else if (titleStr.includes('기념일') || badgeStr.includes('기념일') || s.author === '기념일') categoryKey = '기념일';
+
+    const colorInfo = this.getCategoryColorStyle(categoryKey);
+    const isHoliday = categoryKey === '공휴일' || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지';
+    const isSolarTerm = categoryKey === '절기' || s.badge === '절기' || s.author === '24절기';
+    const isObservance = categoryKey === '기념일' || s.badge === '기념일' || s.author === '기념일';
+
+    const cleanTitle = titleStr.replace(/\s*\(공휴일\)/g, '').trim();
+    let categoryBadgeHtml = colorInfo.badgeHtml;
+    if (isHoliday) {
+      categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25 whitespace-nowrap shrink-0">${cleanTitle}</span>`;
+    } else if (isSolarTerm) {
+      const termName = s.termName || titleStr.split(' ')[0];
+      categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">${termName}</span>`;
+    } else if (isObservance) {
+      const obsName = s.obsName || titleStr.split(' ')[0];
+      categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#f0f4f9] text-[#3c4043] border border-[#3c4043]/20 whitespace-nowrap shrink-0">${obsName}</span>`;
+    }
+
+    const showAvatar = !(isHoliday || isSolarTerm || isObservance);
+    const avatarImg = showAvatar ? `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover border-2 border-surface-container-lowest shadow-2xs" />` : '';
+    const authorTextHtml = showAvatar ? `${s.author || '이재광 차장'} • ` : '';
+
+    return `
+      <div class="bg-surface-container-lowest rounded-xl p-4 flex gap-4 items-center shadow-2xs border border-outline-variant/10 hover:shadow-xs transition-all">
+        <div class="w-1.5 self-stretch ${colorInfo.dotClass} rounded-full"></div>
+        <div class="flex-1 min-w-0 text-left">
+          <div class="flex items-center gap-2 mb-1 flex-wrap">
+            <h4 class="font-headline font-bold text-sm text-on-surface truncate">${s.title}</h4>
+            ${categoryBadgeHtml}
+          </div>
+          <p class="text-on-surface-variant text-xs font-medium">${authorTextHtml}${s.time}</p>
+        </div>
+        ${showAvatar ? `<div class="flex -space-x-2 shrink-0">${avatarImg}</div>` : ''}
+      </div>
+    `;
+  },
+
+  // Daily Timeline View Methods
+  prevDailyMonth() {
+    if (!this.state.dailyMonth) {
+      this.state.dailyYear = this.state.calYear || 2026;
+      this.state.dailyMonth = this.state.calMonth || 8;
+      this.state.dailyDay = this.state.calSelectedDay || 13;
+    }
+    if (this.state.dailyMonth === 1) {
+      this.state.dailyMonth = 12;
+      this.state.dailyYear--;
+    } else {
+      this.state.dailyMonth--;
+    }
+    this.renderDailyTimelineView();
+  },
+
+  nextDailyMonth() {
+    if (!this.state.dailyMonth) {
+      this.state.dailyYear = this.state.calYear || 2026;
+      this.state.dailyMonth = this.state.calMonth || 8;
+      this.state.dailyDay = this.state.calSelectedDay || 13;
+    }
+    if (this.state.dailyMonth === 12) {
+      this.state.dailyMonth = 1;
+      this.state.dailyYear++;
+    } else {
+      this.state.dailyMonth++;
+    }
+    this.renderDailyTimelineView();
+  },
+
+  resetDailyToToday() {
+    const today = new Date();
+    this.state.dailyYear = today.getFullYear();
+    this.state.dailyMonth = today.getMonth() + 1;
+    this.state.dailyDay = today.getDate();
+    this.renderDailyTimelineView();
+  },
+
+  selectDailyDate(day) {
+    this.state.dailyDay = day;
+    this.renderDailyTimelineView();
+  },
+
+  renderDailyTimelineView() {
+    const headerTitleEl = document.getElementById('daily-header-title');
+    const stripEl = document.getElementById('daily-date-strip');
+    const timelineTitleEl = document.getElementById('daily-timeline-title');
+    const eventsContainer = document.getElementById('daily-timeline-events');
 
     if (!stripEl) return;
 
-    const year = this.state.weeklyYear || this.state.calYear || 2026;
-    const month = this.state.weeklyMonth || this.state.calMonth || 8;
-    const selectedDay = this.state.weeklyDay || this.state.calSelectedDay || 12;
+    const year = this.state.dailyYear || this.state.weeklyYear || this.state.calYear || 2026;
+    const month = this.state.dailyMonth || this.state.weeklyMonth || this.state.calMonth || 8;
+    const selectedDay = this.state.dailyDay || this.state.weeklyDay || this.state.calSelectedDay || 13;
 
-    this.state.weeklyYear = year;
-    this.state.weeklyMonth = month;
-    this.state.weeklyDay = selectedDay;
+    this.state.dailyYear = year;
+    this.state.dailyMonth = month;
+    this.state.dailyDay = selectedDay;
 
     if (headerTitleEl) {
       headerTitleEl.innerText = `${year}년 ${month}월`;
@@ -2740,7 +2965,7 @@ const App = {
 
       if (isSelected) {
         stripHtml += `
-          <div id="weekly-date-pill-${d}" onclick="App.selectWeeklyDate(${d})" class="flex-shrink-0 w-12 flex flex-col items-center justify-center py-2.5 rounded-xl snap-center bg-primary text-on-primary shadow-md cursor-pointer transition-transform active:scale-95">
+          <div id="daily-date-pill-${d}" onclick="App.selectDailyDate(${d})" class="flex-shrink-0 w-12 flex flex-col items-center justify-center py-2.5 rounded-xl snap-center bg-primary text-on-primary shadow-md cursor-pointer transition-transform active:scale-95">
             <span class="text-[11px] font-bold text-on-primary/90 mb-0.5">${dayName}</span>
             <span class="text-base font-bold">${d}</span>
             ${hasDot ? '<div class="w-1.5 h-1.5 rounded-full bg-on-primary mt-1"></div>' : ''}
@@ -2748,7 +2973,7 @@ const App = {
         `;
       } else {
         stripHtml += `
-          <div id="weekly-date-pill-${d}" onclick="App.selectWeeklyDate(${d})" class="flex-shrink-0 w-12 flex flex-col items-center justify-center py-2.5 rounded-xl snap-center bg-surface-container-low hover:bg-surface-container-high cursor-pointer transition-colors active:scale-95">
+          <div id="daily-date-pill-${d}" onclick="App.selectDailyDate(${d})" class="flex-shrink-0 w-12 flex flex-col items-center justify-center py-2.5 rounded-xl snap-center bg-surface-container-low hover:bg-surface-container-high cursor-pointer transition-colors active:scale-95">
             <span class="text-[11px] font-semibold ${textClass} mb-0.5">${dayName}</span>
             <span class="text-base font-semibold text-on-surface">${d}</span>
             ${hasDot ? '<div class="w-1.5 h-1.5 rounded-full bg-primary mt-1"></div>' : ''}
@@ -2759,25 +2984,21 @@ const App = {
 
     stripEl.innerHTML = stripHtml;
 
-    // Scroll active date pill to center smoothly
     setTimeout(() => {
-      const activePill = document.getElementById(`weekly-date-pill-${selectedDay}`);
+      const activePill = document.getElementById(`daily-date-pill-${selectedDay}`);
       if (activePill) {
         activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
     }, 50);
 
-    // Timeline section title
     const selectedDateObj = new Date(year, month - 1, selectedDay);
     const selectedDayName = dayNames[selectedDateObj.getDay()];
     if (timelineTitleEl) {
       timelineTitleEl.innerText = `${String(month).padStart(2, '0')}.${String(selectedDay).padStart(2, '0')} (${selectedDayName}) 타임라인 일정`;
     }
 
-    // Render timeline events
     if (eventsContainer) {
       const schedules = this.getMockSchedules(year, month, selectedDay);
-
       if (schedules && schedules.length > 0) {
         let eventsHtml = '';
         schedules.forEach(s => {
