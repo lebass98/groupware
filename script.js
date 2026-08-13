@@ -3,7 +3,7 @@
 const App = {
   state: {
     isLoggedIn: false, // Default to FALSE so user starts on Login screen
-    activeTab: 'screen-home',
+    activeTab: 'screen-today',
     finance: {
       activeTab: 'expense', // 'expense' or 'report'
       cardFilter: 'corp',   // 'corp' or 'personal'
@@ -513,7 +513,7 @@ const App = {
         if (event.state && event.state.activeTab) {
           this.switchTab(event.state.activeTab, null, true);
         } else {
-          this.switchTab('screen-home', null, true);
+          this.switchTab('screen-today', null, true);
         }
       }
     });
@@ -633,7 +633,7 @@ const App = {
         this.state.checkInTime = parsed.checkInTime ? new Date(parsed.checkInTime) : null;
         this.state.checkInTimeStr = parsed.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : null);
         this.state.settings = { ...this.state.settings, ...parsed.settings };
-        this.state.activeTab = parsed.activeTab ?? 'screen-home';
+        this.state.activeTab = parsed.activeTab ?? 'screen-today';
         if (parsed.logs && parsed.logs.length) {
           this.state.logs = parsed.logs;
         }
@@ -915,18 +915,18 @@ const App = {
 
   login() {
     this.state.isLoggedIn = true;
-    this.state.activeTab = 'screen-home';
+    this.state.activeTab = 'screen-today';
     this.saveState();
-    history.replaceState({ activeTab: 'screen-home' }, '', '#screen-home');
+    history.replaceState({ activeTab: 'screen-today' }, '', '#screen-today');
     this.showAppShell();
     this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! 워드앤코드 그룹웨어를 시작합니다.`);
   },
 
   loginDemo(provider) {
     this.state.isLoggedIn = true;
-    this.state.activeTab = 'screen-home';
+    this.state.activeTab = 'screen-today';
     this.saveState();
-    history.replaceState({ activeTab: 'screen-home' }, '', '#screen-home');
+    history.replaceState({ activeTab: 'screen-today' }, '', '#screen-today');
     this.showAppShell();
     const msg = provider 
       ? `🎉 ${provider} 계정으로 로그인되었습니다.` 
@@ -965,7 +965,7 @@ const App = {
     if (ticker) ticker.style.display = 'flex';
     this.startNoticeTicker();
 
-    const startTab = this.state.activeTab || 'screen-home';
+    const startTab = this.state.activeTab || 'screen-today';
     history.replaceState({ activeTab: startTab }, '', `#${startTab}`);
     this.switchTab(startTab, null, true);
   },
