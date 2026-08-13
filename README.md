@@ -1,8 +1,9 @@
-# 📱 워드앤코드 그룹웨어
+# 📱 워드앤코드 스마트 그룹웨어 (WordnCode Groupware)
 
-> 워드앤코드(WordnCode) 임직원을 위한 모바일 퍼스트 통합 스마트 그룹웨어 플랫폼입니다. 출퇴근 체크, 연차 신청, 근태 캘린더, 임직원 주소록, 공지사항을 한 앱에서 관리합니다.
+> **워드앤코드(WordnCode)** 임직원을 위한 모바일-태블릿 퍼스트 통합 스마트 그룹웨어 플랫폼입니다.  
+> 출퇴근 체크, 투데이 요약, 3단 캘린더, 휴가 신청, 재무/경비 지출결의서 및 품의서 기안, 임직원 주소록, 공지사항을 한 앱에서 완벽하게 관리합니다.
 
-![워드앤코드 그룹웨어](https://img.shields.io/badge/WordnCode-Groupware-0052d0?style=for-the-badge&logo=google)
+![WordnCode Groupware](https://img.shields.io/badge/WordnCode-Groupware-0052d0?style=for-the-badge&logo=google)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![HTML5](https://img.shields.io/badge/HTML5-SPA-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-Vanilla_CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -12,75 +13,92 @@
 
 ## 🌟 라이브 데모 (Live Demo)
 
-- 🌐 **GitHub Pages 배포 주소**: [https://lebass98.github.io/groupware/](https://lebass98.github.io/groupware/)
+- 🌐 **GitHub Pages 실시간 배포 주소**: [https://lebass98.github.io/groupware/](https://lebass98.github.io/groupware/)
 
 ---
 
-## 🚀 주요 기능 (Key Features)
+## ✨ 핵심 특징 (Key Highlights)
 
-### 1. 🔒 독립적인 로그인 화면 (Login Screen)
-- 앱 진입 시 헤더 및 하단 네비게이션이 숨겨진 **독립적 로그인 카드**만 단독 표시
-- 이메일/비밀번호 로그인 Form
-- **원클릭 데모 로그인** 버튼 및 **Google**, **Naver** 소셜 로그인 UI 지원
-- 로그인 성공 시 상단 헤더, 하단 네비게이션 및 메인 출결 관리 화면으로 매끄럽게 전환
-
-### 2. ⏱️ 실시간 출퇴근 관리 홈 (Check-In Home)
-- **라이브 시계 & 동적 인사말**: 1초 단위 실시간 시계, 오전/오후 및 한국어 날짜 자동 갱신
-- **Bento 스타일 상태 카드**: "아직 출근 전입니다" ↔ "현재 근무 중입니다" 상태 직관적 시각화
-- **Interactive Check-In Pulse 버튼**:
-  - 대형 원형 펄스(Ripple) 애니메이션 버튼으로 출근/퇴근 토글
-  - **출근/퇴근 2차 확인 모달 (Confirm Dialog)**: 버튼 클릭 시 실수 방지를 위한 **[확인 / 취소]** 팝업 모달 제공
-- **실시간 근무 시간 타이머**: 출근 시 1초 단위로 오늘 근무 시간(`HH:MM:SS`)을 자동 계산
-- **GPS 위치 인증**: 서울 금천구 벚꽃로 298 (본사) 위치 인증 및 반경 500m 이내 출근 제한
-- **일정 & 통계 Grid**: 오늘 오전/오후 근무 일정 및 주간 평균 근무시간 통계
-
-### 3. 📊 출석 기록 관리 (Attendance Logs)
-- **근태 요약 카드**: 이번 주 총 근무시간 및 근태 점수 요약
-- **기간별 필터링**: `전체`, `이번 주`, `이번 달` 탭 버튼으로 간편한 조회
-- **상세 기록 리스트**: 날짜별 출근/퇴근 시각, 총 근무 시간, 재택/연차/정상 상태 표시
-- **수동 근태/휴가 신청**: 연차, 반차, 병가, 기타 수동 신청 및 사유 제출
-
-### 4. 📅 근태 캘린더 (Attendance Calendar)
-- 월별 캘린더 UI로 일별 출근 현황 시각화
-- 날짜 선택 시 해당일 출퇴근 상세 기록 표시
-- 정상/지각/연차 구분 색상 표시
-
-### 5. 📣 공지사항 (Notice Board)
-- 카테고리별 필터 (인사, 복지, 시스템, 공통)
-- 공지 검색 기능
-- 상세 보기 및 첨부파일 다운로드 지원
-- 헤더 하단 **플립형 실시간 공지 티커** 표시
-
-### 6. 📞 임직원 주소록 (Employee Directory)
-- 전체 임직원 프로필 카드 목록
-- 부서별 필터링 및 이름/부서/직책 검색
-- 상세 연락처(모바일, 사무실, 이메일) 조회
-- 원클릭 전화/메시지/이메일 연결
-
-### 7. 👤 사용자 프로필 & 설정 (User Profile)
-- **히어로 프로필 배너**: 사용자 이름, 직책, 사번, 근무 상태 태그
-- **야간 모드 (Dark Theme)**: 다크 모드 토글 스위치 지원
-- **알림 & GPS 자동 체크인**: 알림 및 반경 자동 체크인 설정 토글
-- **로그아웃**: 원클릭 로그아웃 처리 후 초기 로그인 화면으로 복귀
-
-### 8. 💾 상태 지속성 (LocalStorage Integration)
-- 출퇴근 상태, 출근 시각, 수동 신청 기록, 다크 모드 설정 등이 브라우저 `LocalStorage`에 자동 저장
+- 📱 **모바일-태블릿 퍼스트 768px 완벽 반응형 UI/UX**:
+  - Galaxy Fold 7, 모바일, 태블릿(768px 너비)까지 상단 헤더, 티커, 메인 스크린, 하단 네비게이션, 모달 및 바텀시트가 1:1 대칭 맞춤되는 정밀 레이아웃을 제공합니다.
+- ☀️ **투데이 중심의 유저 익스피리언스**:
+  - 로그인 직후 첫 화면으로 **'투데이(`screen-today`)'**를 제공하여 오늘의 출근 현황, 잔여 연차, 주요 일정 및 공지를 한눈에 파악할 수 있습니다.
+- 🎨 **M3 기반 비주얼 디자인 & 테마 팔레트**:
+  - Material Design 3 톤-온-톤 컬러 레이어링, 글래스모피즘(`backdrop-filter`), **다크 모드** 및 **6가지 포인트 테마 팔레트(블루, 에메랄드, 바이올렛, 코랄, 인디고, 앰버)** 선택 기능을 지원합니다.
+- 💳 **통합 재무/경비 & 품의서 결재 시스템**:
+  - 법인/개인 카드 지출결의서 작성 및 결재선 지정 품의서 기안/승인 관리 기능을 내장했습니다.
 
 ---
 
-## 🎨 디자인 사양 (Design Architecture)
+## 🚀 상세 기능 목록 (Detailed Features)
+
+### 1. 🔒 독립적인 로그인 스크린 (Login & Social Auth)
+- 헤더와 하단 네비게이션이 숨겨진 **독립형 로그인 카드**를 기본 제공합니다.
+- 이메일/비밀번호 로그인 및 **원클릭 데모 로그인**을 지원합니다.
+- **Google**, **Naver** 소셜 로그인 버튼 UI를 갖추고 있으며, 로그인 성공 시 메인 투데이 화면으로 매끄럽게 전환됩니다.
+
+### 2. ☀️ 투데이 스크린 (Today Summary - 첫 진입 화면)
+- **오늘의 근무 요약**: 1초 단위 실시간 시계, 요일 및 날짜 자동 업데이트.
+- **근무 현황 & 출퇴근 상태**: 오늘의 누적 근무시간 및 출근/퇴근 상태 즉시 확인.
+- **주요 공지 및 일정 미리보기**: 당일 전달된 주요 공지사항 및 캘린더 일정 브리핑.
+
+### 3. 📱 메인 메뉴 그리드 (Interactive Menu Grid & Drag-Drop)
+- 하단 독 메뉴의 **'메뉴'** 탭을 클릭하여 접근 가능한 2x2 반응형 기능 카드 그리드입니다.
+- **SortableJS 드래그 앤 드롭**: 드래그 핸들을 사용해 사용자가 원하는 순서대로 카드를 자유롭게 재배치할 수 있으며, 이 순서는 LocalStorage에 자동 저장됩니다.
+
+### 4. ⏱️ 스마트 근태 & 출퇴근 체크 (Check-In Home & GPS)
+- **Interactive Check-In Pulse 버튼**: 대형 원형 펄스(Ripple) 애니메이션으로 출/퇴근 원클릭 체크.
+- **2차 확인 모달 (Confirm Dialog)**: 실수 방지를 위해 버튼 클릭 시 [확인/취소] 팝업 모달 제공.
+- **GPS 500m 위치 인증**: 본사(서울 금천구 벚꽃로 298) 반경 500m 내 출근 가능 여부를 검증하고 위치 상태 배지를 표시합니다.
+- **실시간 근무 시간 타이머**: 출근 시 1초 단위로 오늘 근무 시간(`HH:MM:SS`)을 자동 계산합니다.
+
+### 5. 📅 근태 캘린더 (3-Way Calendar & Schedule Registration)
+- **3단 뷰 세그먼트**: `월간(Month)`, `주간(Week)`, `일간(Day Timeline)` 세그먼트 버튼으로 자유롭게 일정을 전환합니다.
+- **일간 타임라인**: 08:00 ~ 18:00 시간대별 근무 및 사내 일정을 타임라인 형태로 시각화.
+- **일정 등록 모달 (Full-Screen Page Modal)**:
+  - 외근, 회의, 연차, 반차, 미팅, 개인일정 구분의 일정 기안.
+  - **주소록 연동 참석자 추가 기능**: 사내 임직원을 주소록 팝업에서 검색해 참석자로 지정 가능.
+
+### 6. 💳 재무/경비 관리 (Expense & Report System)
+- **지출결의서 (Expense Resolution)**:
+  - 법인/개인 카드 지출 내역 조회 및 상태(미결의/완료) 관리.
+  - 바텀시트 모달을 통한 영수증 및 지출 결의서 신규 기안.
+- **품의서 기안 및 결재 (Approval Report)**:
+  - 품의 제목, 예산 금액, 사유 작성 및 결재자(대표이사/차장 등) 지정.
+  - 기안 완료 후 '결재 대기' / '승인 완료' 상태 카드 시각화.
+
+### 7. 📢 공지사항 & 헤더 플립 티커 (Notice & Header Ticker)
+- **헤더 플립형 공지 티커**:
+  - 상단 헤더 바로 아래에 위치하여 주요 공지가 4초 간격으로 부드럽게 플립 전환됩니다.
+  - **티커 글 클릭 연동**: 티커 텍스트 클릭 시 해당 공지사항의 상세 화면(`openNoticeDetail`)으로 즉시 이동합니다.
+- **공지사항 목록 & 상세 페이지**:
+  - 인사, 복지, 시스템, 공통 필터 칩 및 키워드 검색.
+  - 첨부파일(.pdf 등) 다운로드 지원.
+
+### 8. 📞 임직원 주소록 (Employee Directory)
+- 전체 임직원 프로필 카드 목록 및 부서별 필터 칩(경영지원, 기획, 디자인, 퍼블리싱, 개발 등).
+- 이름/부서/전화번호 즉시 검색.
+- 상세 프로필 팝업을 통한 원클릭 전화걸기, 문자 메시지, 이메일 보내기 연동.
+
+### 9. 🎨 커스텀 테마 & 야간 모드 (Theme Palette & Dark Mode)
+- **포인트 색상 팔레트 모달**:
+  - 상단 헤더의 팔레트 버튼을 통해 **블루(Professional Blue)**, **에메랄드(Emerald Green)**, **바이올렛(Royal Violet)**, **코랄(Coral Pink)**, **인디고(Deep Indigo)**, **앰버(Warm Amber)** 6가지 메인 테마 색상을 한 번의 클릭으로 변경할 수 있습니다.
+- **다크 모드 (Dark Theme)**:
+  - `body.dark` 클래스 제어로 야간 환경에서도 눈이 편안한 슬레이트 다크 테마를 제공합니다.
+
+---
+
+## 🎨 디자인 사양 (Design System)
 
 Material Design 3 (M3) 디자인 시스템 기반:
 
-- **Color Palette**:
-  - `Primary`: `#0052d0` (Professional Blue)
-  - `Primary Container`: `#799dff`
-  - `Surface Base`: `#f7f5ff` (Soft Alabaster Gray)
-  - `Secondary (Status)`: `#00693f` (Emerald Green Dot)
-  - `Dark Surface`: `#0b1120` (Slate Dark Mode)
-- **Typography**: `Pretendard`, `Plus Jakarta Sans`, `Manrope` 폰트 혼용으로 가독성 및 권위 극대화
-- **The "No-Line" Rule**: 1px 테두리 선을 지양하고 Surface 배경 명암 차이(Tonal Layering)로 컨테이너 구획
-- **Glassmorphism**: 상단 헤더 및 하단 네비게이션 바에 `backdrop-filter: blur(20px)` 적용
+- **Color Tokens**:
+  - `Primary`: `--primary` (선택한 테마 팔레트에 따라 동적 변환)
+  - `Surface`: `#ffffff` (Dark Mode: `#0b1120`)
+  - `Surface Container`: `#f1f5f9` (Dark Mode: `#334155`)
+- **Typography**: `Pretendard`, `Plus Jakarta Sans`, `Manrope` 폰트 혼용으로 뛰어난 가독성 확보.
+- **Glassmorphism**: 상단 헤더, 공지 티커, 하단 네비게이션에 `backdrop-filter: blur(20px)` 적용.
+- **Responsive Container**: `max-width: 768px` 컨테이너 프레임으로 모바일/태블릿 뷰포트 통일.
 
 ---
 
@@ -88,14 +106,16 @@ Material Design 3 (M3) 디자인 시스템 기반:
 
 ```text
 Pool/
+├── .agents/                    # 작업 커밋 및 브랜치 규칙 (AGENTS.md)
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml          # GitHub Pages 자동 배포 CI/CD 워크플로우
-├── react-native-app/           # React Native (Expo) 앱 래퍼 (WebView)
-├── index.html                  # 앱 전체 SPA 레이아웃 및 화면 구조
-├── style.css                   # 디자인 토큰, 애니메이션, 다크모드 CSS
-├── script.js                   # SPA 상태 관리, 타이머, 모달, LocalStorage 엔진
-├── .gitignore                  # 불필요한 OS 및 임시 파일 제외
+├── react-native-app/           # React Native (Expo) 앱 래퍼
+├── index.html                  # 전체 SPA 레이아웃 및 11개 스크린 구조
+├── style.css                   # 디자인 토큰, M3 스타일, 애니메이션, 반응형 레이아웃
+├── script.js                   # SPA 상태 관리, 출퇴근 타이머, 캘린더 엔진, LocalStorage
+├── profile.png                 # 사용자 프로필 기본 이미지
+├── resource/                   # 오픈그래프 및 이미지 리소스
 └── README.md                   # 프로젝트 상세 한글 설명서
 ```
 
@@ -103,7 +123,7 @@ Pool/
 
 ## 🛠️ 로컬 실행 방법 (Local Setup)
 
-별도의 패키지 설치 없이 표준 웹 브라우저에서 바로 실행이 가능합니다.
+별도의 의존성 설치 없이 표준 웹 브라우저에서 바로 실행이 가능합니다.
 
 1. **리포지토리 클론**:
    ```bash
@@ -124,8 +144,17 @@ Pool/
 
 ## 🔄 CI/CD 자동 배포 (GitHub Actions)
 
-본 프로젝트는 `.github/workflows/deploy.yml` 설정을 포함하고 있어, `main` 브랜치에 신규 코드가 Push되면 **GitHub Actions**가 자동으로 빌드하여 **GitHub Pages**로 실시간 배포합니다.
+본 프로젝트는 `.github/workflows/deploy.yml` 설정을 포함하고 있어, `main` 브랜치에 코드 Push 시 **GitHub Actions**가 자동으로 GitHub Pages로 실시간 배포를 완료합니다.
 
-- **GitHub Pages 활성화 방법**:
-  1. GitHub 저장소의 `Settings` > `Pages` 이동
-  2. `Source` 항목을 **GitHub Actions**로 지정
+- **배포 확인 주소**: [https://lebass98.github.io/groupware/](https://lebass98.github.io/groupware/)
+
+---
+
+## 📝 커밋 컨벤션 (Git Commit Rules)
+
+프로젝트 내 변경사항 커밋 시 아래 한글 커밋 컨벤션을 준수합니다:
+
+- `기능: [기능 설명]` (e.g. `기능: 상단 공지 티커 텍스트 클릭 시 해당 공지사항 상세 화면 이동 연동`)
+- `수정: [수정 내용]` (e.g. `수정: 로그인 후 첫 화면 투데이 설정 및 독메뉴 홈 -> 메뉴 명칭 변경`)
+- `스타일: [스타일/UX 변경]` (e.g. `스타일: 가로 768px 너비까지 전 스크린 및 고정 레이아웃 좌우 폭 맞춤 적용`)
+- `문서: [문서 업데이트]` (e.g. `문서: README.md 상세 업데이트`)
