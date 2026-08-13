@@ -1822,6 +1822,34 @@ const App = {
     this.renderCalendar();
   },
 
+  getNationalHoliday(year, month, day) {
+    // Fixed Solar National Holidays
+    if (month === 1 && day === 1) return { title: "신정 (새해 첫날)", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 3 && day === 1) return { title: "삼일절", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 5 && day === 5) return { title: "어린이날", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 6 && day === 6) return { title: "현충일", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 7 && day === 17) return { title: "제헌절", time: "종일", type: "error", badge: "공휴일", author: "국경일/기념일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 8 && day === 15) return { title: "광복절", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 10 && day === 3) return { title: "개천절", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 10 && day === 9) return { title: "한글날", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 12 && day === 25) return { title: "성탄절 (크리스마스)", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+
+    // 2026 Specific Lunar & Substitute Holidays (구글 캘린더 기본 공휴일)
+    if (year === 2026) {
+      if (month === 2 && (day === 16 || day === 18)) return { title: "설날 연휴", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 2 && day === 17) return { title: "설날", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 3 && day === 2) return { title: "삼일절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 5 && day === 24) return { title: "부처님오신날", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 5 && day === 25) return { title: "부처님오신날 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 8 && day === 17) return { title: "광복절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 9 && (day === 24 || day === 26)) return { title: "추석 연휴", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 9 && day === 25) return { title: "추석", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 10 && day === 5) return { title: "개천절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" };
+    }
+
+    return null;
+  },
+
   getMockSchedules(year, month, day) {
     const key = `${year}-${month}-${day}`;
     const defaultData = {
@@ -1890,7 +1918,7 @@ const App = {
         { title: "외근(오전) [프로젝트 공리]", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
       ],
       "2026-8-15": [
-        { title: "광복절 (공휴일)", time: "종일", type: "error", badge: "공휴일", author: "회사공지", avatar: "./resource/image/profile_abc.png" }
+        { title: "광복절 (공휴일)", time: "종일", type: "error", badge: "공휴일", author: "대한민국 공휴일", avatar: "./resource/image/profile_abc.png" }
       ],
       "2026-8-18": [
         { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
@@ -1906,9 +1934,17 @@ const App = {
         { title: "연차", time: "종일", type: "secondary", badge: "연차", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
       ]
     };
+
     const defaults = defaultData[key] || [];
+    const nationalHol = this.getNationalHoliday(year, month, day);
+    
+    let combined = [...defaults];
+    if (nationalHol && !combined.some(s => s.title.includes(nationalHol.title))) {
+      combined.unshift(nationalHol);
+    }
+
     const userAdded = (this.mockDynamicSchedules && this.mockDynamicSchedules[key]) || [];
-    const combined = [...defaults, ...userAdded];
+    combined = [...combined, ...userAdded];
     if (combined.length > 0) {
       return combined.map(s => ({
         ...s,
