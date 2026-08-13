@@ -215,7 +215,7 @@ Pool/
 - **팝업 작성 폼 내 박스/상세내용/첨부파일 영역 보더 라디우스 축소**:
   - 할 일 작성/수정(`modal-todo-write`) 페이지 내 프로젝트, 우선순위, 마감일, 담당자, 상세 내용, 첨부파일 등 개별 섹션 카드 박스의 보더 라디우스 축소 조정 (`rounded-lg` → `rounded-md`/`rounded-sm`).
   - 할 일 상세(`modal-todo-detail`), 지출결의서(`modal-expense-write`), 품의서(`modal-report-write`), 근태/휴가(`leave-reason-text`), 일정 등록(`modal-schedule-write`) 등 팝업 폼 요소 라디우스 컴팩트화.
-- **상단 헤더 및 공지사항 티커 캡슐 바 글래스모피즘(Glassmorphism) 개편**:
-  - 상단 헤더(`.top-header`) 및 공지 티커 바(`.notice-ticker`) 배경에 은은한 투명도(`rgba`), 고해상도 백드롭 블러(`backdrop-filter: blur(20px) saturate(180%)`), 반투명 유리 테두리 및 입체 쉐도우 효과를 적용하여 프리미엄 글래스모피즘 디자인 구현.
+- **상단 헤더, 공지사항 티커 및 하단 독 네비게이션 글래스모피즘(Glassmorphism) 개편**:
+  - 상단 헤더(`.top-header`), 공지 티커 바(`.notice-ticker`), 하단 독 네비게이션(`.bottom-nav`) 배경에 은은한 반투명 유리 배경(`rgba`), 고해상도 백드롭 블러(`backdrop-filter: blur(24px) saturate(180%)`), 반투명 이중 보더 테두리 및 3D 쉐도우 효과를 전면 적용하여 독과 헤더 전체 글래스모피즘 디자인 완성.
 
 

@@ -1339,7 +1339,7 @@ input:checked + .slider:before {
   color: var(--on-error);
 }
 
-/* Glassmorphism Bottom Navigation */
+/* Glassmorphism Bottom Navigation Dock */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -1347,19 +1347,21 @@ input:checked + .slider:before {
   transform: translateX(-50%);
   width: 100%;
   max-width: 768px;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-top-left-radius: var(--radius-xl);
   border-top-right-radius: var(--radius-xl);
   padding: 0.75rem 0.8rem 1.5rem 0.8rem;
   display: flex;
-  justify-around: opacity;
   justify-content: space-around;
   align-items: center;
   z-index: 50;
-  box-shadow: 0 -8px 24px rgba(35, 44, 81, 0.08);
-  transition: background-color 0.3s ease;
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 -10px 36px rgba(35, 44, 81, 0.08), 0 -2px 10px rgba(255, 255, 255, 0.5) inset;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 @media (min-width: 768px) {
@@ -1369,7 +1371,11 @@ input:checked + .slider:before {
 }
 
 body.dark .bottom-nav {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(15, 23, 42, 0.65);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 -10px 36px rgba(0, 0, 0, 0.4);
 }
 
 .nav-item {
@@ -1389,9 +1395,13 @@ body.dark .bottom-nav {
 }
 
 .nav-item.active {
-  background: transparent;
+  background: rgba(0, 82, 208, 0.08);
   color: var(--primary);
   font-weight: 700;
+}
+
+body.dark .nav-item.active {
+  background: rgba(94, 139, 255, 0.15);
 }
 
 .nav-item.active .material-symbols-outlined {
