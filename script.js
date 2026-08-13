@@ -9,6 +9,7 @@ const App = {
     todoFormPriority: 'medium',
     recentProjects: ['그룹웨어 고도화', '근태관리 시스템', '디자인 시스템 (M3)', '경영지원 / 재무'],
     pendingDeleteTodoId: null,
+    currentDetailTodoId: null,
     selectedTrashIds: [],
     trashedTodos: [
       {
@@ -3895,13 +3896,13 @@ const App = {
       return `
         <article class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.03)] border border-outline-variant/10 hover:shadow-[0_8px_24px_rgba(35,44,81,0.06)] transition-all text-left">
           <div class="flex justify-between items-start gap-4">
-            <div class="flex flex-col gap-1.5 text-left cursor-pointer flex-1" onclick="App.editDraftTodo(${t.id})">
+            <div class="flex flex-col gap-1.5 text-left cursor-pointer flex-1 group" onclick="App.openTodoDetailModal(${t.id})">
               <div class="flex items-center gap-2 mb-1 flex-wrap">
                 ${statusBadgeHtml}
                 ${priorityBadgeHtml}
                 ${t.project ? `<span class="text-[11px] text-outline font-medium"># ${t.project}</span>` : ''}
               </div>
-              <h3 class="font-headline font-bold text-base leading-tight ${isDoneClass}">${t.title}</h3>
+              <h3 class="font-headline font-bold text-base leading-tight group-hover:text-primary transition-colors ${isDoneClass}">${t.title}</h3>
               ${t.notes ? `<p class="text-xs text-on-surface-variant mt-1 line-clamp-2">${t.notes}</p>` : ''}
             </div>
             <div class="flex items-center gap-1 shrink-0">
@@ -4171,6 +4172,147 @@ const App = {
     this.saveState();
     this.renderTrashTodos();
     this.showToast('🗑️ 휴지통이 깨끗이 비워졌습니다.');
+  },
+
+  // To-Do Detail Read-Only View Modal Methods
+  openTodoDetailModal(todoId) {
+    const modal = document.getElementById('modal-todo-detail');
+    const container = document.getElementById('todo-detail-content');
+    const actionBtnText = document.getElementById('todo-detail-action-btn-text');
+    if (!modal || !container) return;
+
+    const todo = (this.state.todos || []).find(t => t.id === todoId) || 
+                 (this.state.trashedTodos || []).find(t => t.id === todoId);
+    if (!todo) return;
+
+    this.state.currentDetailTodoId = todo.id;
+
+    // Status Badge
+    let statusBadgeHtml = '';
+    if (todo.status === 'in_progress') {
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label text-xs font-bold uppercase tracking-wider">In Progress</span>`;
+    } else if (todo.status === 'done') {
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label text-xs font-bold uppercase tracking-wider">Completed</span>`;
+    } else if (todo.status === 'draft') {
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold uppercase tracking-wider">Draft (임시저장)</span>`;
+    } else {
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold uppercase tracking-wider">To Do</span>`;
+    }
+
+    // Priority Badge
+    let priorityBadgeHtml = '';
+    if (todo.priority === 'high') {
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-error-container text-on-error-container font-label text-xs font-bold uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-on-error-container mr-1.5"></span> High</span>`;
+    } else if (todo.priority === 'low') {
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold uppercase tracking-wider">Low</span>`;
+    } else {
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary-container/30 text-tertiary-dim font-label text-xs font-bold uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-dim mr-1.5"></span> Medium</span>`;
+    }
+
+    // Assignees Stack
+    const assigneesHtml = (todo.assignees || [
+      { name: '이재광', avatar: 'profile.png' }
+    ]).map((a, idx) => `
+      <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/15">
+        <img src="${a.avatar || 'profile.png'}" class="w-6 h-6 rounded-full object-cover" />
+        <span class="text-xs font-bold text-on-surface">${a.name}</span>
+      </div>
+    `).join('');
+
+    container.innerHTML = `
+      <!-- Header Tags & Title -->
+      <section class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+          ${statusBadgeHtml}
+          ${priorityBadgeHtml}
+          ${todo.project ? `<span class="text-on-surface-variant font-label text-xs ml-auto font-bold bg-surface-container-low px-3 py-1 rounded-full"># ${todo.project}</span>` : ''}
+        </div>
+        <h1 class="font-headline text-2xl sm:text-3xl font-extrabold text-on-surface leading-tight tracking-tight mt-1">
+          ${todo.title}
+        </h1>
+      </section>
+
+      <!-- Meta Data Card -->
+      <section class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-4 shadow-sm border border-outline-variant/10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+            <span class="material-symbols-outlined text-xl">calendar_today</span>
+          </div>
+          <div class="flex flex-col text-left">
+            <span class="font-label text-[11px] text-on-surface-variant uppercase font-bold tracking-wider">Due Date (마감일)</span>
+            <span class="font-body text-sm font-semibold text-on-surface mt-0.5">${todo.dueDate || '마감일 미정'}</span>
+          </div>
+        </div>
+
+        <div class="w-full h-px bg-outline-variant/15"></div>
+
+        <div class="flex flex-col gap-2 text-left">
+          <span class="font-label text-[11px] text-on-surface-variant uppercase font-bold tracking-wider">Assignees (담당자)</span>
+          <div class="flex items-center gap-2 flex-wrap mt-0.5">
+            ${assigneesHtml}
+          </div>
+        </div>
+      </section>
+
+      <!-- Description Section -->
+      <section class="flex flex-col gap-2.5 text-left">
+        <h3 class="font-headline text-base font-bold text-on-surface">상세 내용 (Description)</h3>
+        <div class="bg-surface-container-low rounded-2xl p-5 border border-outline-variant/10">
+          <p class="font-body text-sm leading-relaxed text-on-surface whitespace-pre-line">
+            ${todo.notes || '작성된 상세 설명 내용이 없습니다.'}
+          </p>
+        </div>
+      </section>
+
+      <!-- Activity Timeline -->
+      <section class="flex flex-col gap-3 text-left">
+        <h3 class="font-headline text-base font-bold text-on-surface">Activity (작업 히스토리)</h3>
+        <div class="flex flex-col gap-3 relative pl-2">
+          <div class="flex gap-3 relative z-10 items-start">
+            <div class="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-base">edit_note</span>
+            </div>
+            <div class="flex flex-col bg-surface-container-lowest rounded-xl p-3.5 w-full border border-outline-variant/10 text-left">
+              <div class="flex items-center justify-between">
+                <span class="font-headline text-xs font-bold text-on-surface">${todo.assignees?.[0]?.name || '이재광'}</span>
+                <span class="font-label text-[10px] text-on-surface-variant">방금 전</span>
+              </div>
+              <p class="font-body text-xs text-on-surface-variant mt-1">
+                할 일이 성공적으로 생성 및 갱신되었습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+
+    if (actionBtnText) {
+      actionBtnText.textContent = todo.status === 'done' ? '진행 중 상태로 변경' : '완료 처리하기';
+    }
+
+    modal.classList.remove('hidden');
+  },
+
+  closeTodoDetailModal() {
+    const modal = document.getElementById('modal-todo-detail');
+    if (modal) modal.classList.add('hidden');
+    this.state.currentDetailTodoId = null;
+  },
+
+  editCurrentDetailTodo() {
+    const todoId = this.state.currentDetailTodoId;
+    if (todoId) {
+      this.closeTodoDetailModal();
+      this.editTodo(todoId);
+    }
+  },
+
+  toggleDetailTodoStatus() {
+    const todoId = this.state.currentDetailTodoId;
+    if (todoId) {
+      this.toggleTodoStatus(todoId);
+      this.openTodoDetailModal(todoId);
+    }
   },
 
   openTodoModal(todoToEdit = null) {
