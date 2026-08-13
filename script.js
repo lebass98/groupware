@@ -3967,6 +3967,79 @@ const App = {
     }
 
     // -------------------------------------------------------------
+    // OPTION: 한줄 간략 리스트 모드 (todoViewMode === 'list')
+    // -------------------------------------------------------------
+    if (this.state.todoViewMode === 'list') {
+      container.className = "flex flex-col gap-2.5";
+      
+      const targetList = selectedProject 
+        ? list.filter(t => (t.project || '일반 업무') === selectedProject)
+        : list;
+
+      if (targetList.length === 0) {
+        container.innerHTML = `
+          <div class="flex flex-col items-center justify-center py-12 text-center bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10">
+            <span class="material-symbols-outlined text-3xl text-on-surface-variant opacity-60 mb-2">task</span>
+            <h3 class="font-headline text-base font-bold text-on-surface mb-1">등록된 할 일이 없습니다</h3>
+            <p class="text-xs text-on-surface-variant max-w-xs">새로운 미션을 작성하거나 다른 검색 조건으로 조회해 보세요.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const backHeaderHtml = selectedProject ? `
+        <div class="w-full flex items-center justify-between bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs mb-1">
+          <button type="button" onclick="App.clearSelectedProject()" class="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline active:scale-95 transition-transform">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            <span>모든 프로젝트 목록</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <span class="font-headline font-bold text-sm text-on-surface"># ${selectedProject}</span>
+            <span class="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full">${targetList.length}개</span>
+          </div>
+        </div>
+      ` : '';
+
+      container.innerHTML = `
+        ${backHeaderHtml}
+        ${targetList.map(t => {
+          const isDone = t.status === 'done';
+          const checkIcon = isDone ? 'check_circle' : 'radio_button_unchecked';
+          const checkColor = isDone ? 'text-primary' : 'text-on-surface-variant';
+          const isDoneClass = isDone ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
+
+          let priorityDot = `<span class="w-2 h-2 rounded-full bg-tertiary shrink-0"></span>`;
+          if (t.priority === 'high') priorityDot = `<span class="w-2 h-2 rounded-full bg-error shrink-0"></span>`;
+          else if (t.priority === 'low') priorityDot = `<span class="w-2 h-2 rounded-full bg-outline shrink-0"></span>`;
+
+          let statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">대기</span>`;
+          if (t.status === 'in_progress') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold shrink-0">진행 중</span>`;
+          else if (t.status === 'done') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold shrink-0">완료</span>`;
+          else if (t.status === 'draft') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">임시저장</span>`;
+
+          return `
+            <div class="flex items-center gap-3 bg-surface-container-lowest rounded-xl px-4 py-3 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openTodoDetailModal(${t.id})">
+              <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${t.id});" class="shrink-0 ${checkColor} hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-xl">${checkIcon}</span>
+              </button>
+              ${priorityDot}
+              <div class="flex-1 min-w-0 flex items-center gap-2">
+                <span class="font-headline text-sm font-semibold ${isDoneClass} truncate group-hover:text-primary transition-colors">${t.title}</span>
+                ${t.project ? `<span class="text-[11px] text-on-surface-variant/80 font-medium shrink-0 hidden sm:inline-block"># ${t.project}</span>` : ''}
+              </div>
+              ${statusBadge}
+              <span class="text-[10px] text-on-surface-variant font-medium whitespace-nowrap shrink-0">${t.dueDate || ''}</span>
+              <button type="button" onclick="event.stopPropagation(); App.editTodo(${t.id});" class="shrink-0 p-1 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
+                <span class="material-symbols-outlined text-base">edit</span>
+              </button>
+            </div>
+          `;
+        }).join('')}
+      `;
+      return;
+    }
+
+    // -------------------------------------------------------------
     // CASE A: 특정 프로젝트가 선택된 상태 -> 대기 / 진행 중 / 완료 세로 배치 & 각 행별 가로 스크롤 뷰
     // -------------------------------------------------------------
     if (selectedProject) {
