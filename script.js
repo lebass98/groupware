@@ -2742,17 +2742,27 @@ const App = {
     this.renderWeeklyScheduleView();
   },
 
+  toggleWeeklyAllDays() {
+    this.state.weeklyShowAllDays = !this.state.weeklyShowAllDays;
+    const btn = document.getElementById('weekly-toggle-all-btn');
+    if (btn) {
+      btn.innerText = this.state.weeklyShowAllDays ? '선택일 보기' : '주간 전체 보기';
+    }
+    this.renderWeeklyScheduleView();
+  },
+
   renderWeeklyScheduleView() {
     const headerTitleEl = document.getElementById('weekly-view-header-title');
-    const header7DayEl = document.getElementById('weekly-7day-header');
-    const blocksContainerEl = document.getElementById('weekly-day-blocks-container');
+    const gridCardEl = document.getElementById('weekly-7day-grid-card');
+    const scheduleTitleEl = document.getElementById('weekly-schedule-title');
+    const logsContainerEl = document.getElementById('weekly-schedule-logs-container');
 
-    if (!blocksContainerEl) return;
+    if (!gridCardEl || !logsContainerEl) return;
 
     const today = new Date();
-    const curYear = this.state.weeklyYear || this.state.calYear || 2026;
-    const curMonth = this.state.weeklyMonth || this.state.calMonth || 8;
-    const curDay = this.state.weeklyDay || this.state.calSelectedDay || 13;
+    const curYear = this.state.weeklyYear || this.state.calYear || today.getFullYear();
+    const curMonth = this.state.weeklyMonth || this.state.calMonth || (today.getMonth() + 1);
+    const curDay = this.state.weeklyDay || this.state.calSelectedDay || today.getDate();
 
     this.state.weeklyYear = curYear;
     this.state.weeklyMonth = curMonth;
@@ -2765,65 +2775,141 @@ const App = {
       headerTitleEl.innerText = `${curYear}년 ${curMonth}월 ${weekNum}주차`;
     }
 
-    const dayNamesEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const dayNamesKr = ['일', '월', '화', '수', '목', '금', '토'];
 
-    // 1. Render 7-Day Header Strip Card (matching code.html design)
-    if (header7DayEl) {
-      header7DayEl.innerHTML = `
-        <div class="grid grid-cols-7 gap-1 text-center">
-          ${weekDays.map(w => {
-            const isToday = (w.year === today.getFullYear() && w.month === (today.getMonth() + 1) && w.day === today.getDate());
-            const isSelected = (w.day === curDay && w.month === curMonth);
-
-            let dayColorClass = 'text-on-surface-variant';
-            if (w.dayOfWeek === 0) dayColorClass = 'text-error';
-            else if (w.dayOfWeek === 6) dayColorClass = 'text-primary';
-
-            let numBgClass = 'text-on-surface font-semibold';
-            if (isSelected) numBgClass = 'bg-primary text-on-primary font-bold rounded-full w-8 h-8 flex items-center justify-center shadow-md';
-            else if (isToday) numBgClass = 'bg-primary/15 text-primary font-bold rounded-full w-8 h-8 flex items-center justify-center';
-
-            return `
-              <div onclick="App.selectWeeklyDay(${w.year}, ${w.month}, ${w.day})" class="flex flex-col items-center cursor-pointer p-1 rounded-xl hover:bg-surface-container-high/40 transition-all active:scale-95">
-                <span class="${dayColorClass} font-label text-xs font-semibold mb-1">${dayNamesEn[w.dayOfWeek]}</span>
-                <span class="${numBgClass} font-headline text-base">${w.day}</span>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      `;
-    }
-
-    // 2. Render Day Blocks Container for all 7 Days (matching code.html design)
-    let blocksHtml = '';
+    // 1. Render Upper 7-Day Grid Card (Matching Monthly View grid card layout)
+    let gridCellsHtml = '';
     weekDays.forEach(w => {
       const isToday = (w.year === today.getFullYear() && w.month === (today.getMonth() + 1) && w.day === today.getDate());
+      const isSelected = (w.day === curDay && w.month === curMonth);
       const schedules = this.getMockSchedules(w.year, w.month, w.day) || [];
 
-      let dayTitleClass = 'text-on-surface';
-      if (w.dayOfWeek === 0) dayTitleClass = 'text-error';
-      else if (w.dayOfWeek === 6) dayTitleClass = 'text-primary';
+      let dayTextClass = 'text-on-surface-variant font-semibold';
+      if (w.dayOfWeek === 0) dayTextClass = 'text-error font-bold';
+      else if (w.dayOfWeek === 6) dayTextClass = 'text-primary font-bold';
 
-      let cardsContentHtml = '';
-      if (schedules.length === 0) {
-        cardsContentHtml = `<div class="text-center py-5 text-on-surface-variant/60 font-body text-xs font-medium">등록된 일정이 없습니다.</div>`;
+      let numStyle = 'w-7 h-7 flex items-center justify-center rounded-full mx-auto font-bold text-sm';
+      if (isSelected) {
+        numStyle += ' bg-primary text-on-primary shadow-md';
+      } else if (isToday) {
+        numStyle += ' bg-primary/15 text-primary';
       } else {
-        cardsContentHtml = `<div class="space-y-3">` + schedules.map(s => this.renderWeeklyDayCardItem(s)).join('') + `</div>`;
+        numStyle += ' text-on-surface';
       }
 
-      blocksHtml += `
-        <div class="bg-surface-container-low border border-outline-variant/15 rounded-2xl p-5 relative transition-all">
-          ${isToday ? '<div class="absolute -left-1 top-7 w-2.5 h-2.5 rounded-full bg-secondary shadow-xs"></div>' : ''}
-          <div class="flex items-baseline gap-4 mb-3.5">
-            <h3 class="font-headline text-lg font-bold ${dayTitleClass} w-24">${dayNamesEn[w.dayOfWeek]} ${w.day}</h3>
-            <div class="h-[1px] bg-outline-variant/15 flex-1"></div>
-          </div>
-          ${cardsContentHtml}
+      // Event chips (formatted like Monthly View calendar cells)
+      let chipsHtml = '';
+      if (schedules.length > 0) {
+        chipsHtml = '<div class="w-full flex flex-col gap-1 mt-1.5 z-10">';
+        schedules.slice(0, 2).forEach(s => {
+          const isHoliday = (s.badge === '공휴일' || s.title.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지');
+          const isSolarTerm = (s.badge === '절기' || s.author === '24절기');
+          const isObservance = (s.badge === '기념일' || s.author === '기념일');
+
+          let colorClass = 'bg-[#d8e2ff] text-[#001a41]';
+          if (s.title.includes('휴가') || s.title.includes('연차')) {
+            colorClass = (s.type === 'error' || s.author?.includes('이재광') || s.author?.includes('조지혜')) ? 'bg-[#ffdad6] text-[#410002]' : 'bg-[#61fbab] text-[#004729]';
+          } else if (s.title.includes('반차') || s.title.includes('반반차')) {
+            colorClass = 'bg-[#ffe088] text-[#533a00]';
+          } else if (s.title.includes('외근') || s.title.includes('미팅') || s.title.includes('회의')) {
+            colorClass = 'bg-[#d8e2ff] text-[#001a41]';
+          } else if (isHoliday) {
+            colorClass = 'bg-[#ffdad6] text-[#c5221f] font-bold';
+          } else if (isSolarTerm) {
+            colorClass = 'bg-[#e6f4ea] text-[#137333] font-bold';
+          } else if (isObservance) {
+            colorClass = 'bg-[#f0f4f9] text-[#3c4043] font-bold';
+          }
+
+          let cleanTitle = (s.title || '').replace(/\s*\(공휴일\)/g, '').trim();
+          let labelText = s.title;
+          if (isHoliday) labelText = cleanTitle;
+          else if (isSolarTerm) labelText = s.termName || s.title.split(' ')[0];
+          else if (isObservance) labelText = s.obsName || s.title.split(' ')[0];
+          else if (s.author) labelText = `[${s.author.split(' ')[0]}] ${s.title}`;
+
+          chipsHtml += `
+            <div class="text-[10px] font-bold px-1 py-0.5 rounded-md ${colorClass} truncate text-center leading-tight shadow-2xs">
+              ${labelText}
+            </div>
+          `;
+        });
+        if (schedules.length > 2) {
+          chipsHtml += `<div class="text-[10px] font-black text-on-surface-variant/70 text-center leading-none mt-0.5 select-none">...</div>`;
+        }
+        chipsHtml += '</div>';
+      }
+
+      gridCellsHtml += `
+        <div onclick="App.selectWeeklyDay(${w.year}, ${w.month}, ${w.day})" class="flex flex-col items-center min-h-[96px] p-1.5 rounded-xl border border-transparent hover:border-primary/20 hover:bg-surface-container-high/30 cursor-pointer transition-all ${isSelected ? 'bg-primary/5 border-primary/30 shadow-2xs' : ''}">
+          <span class="text-xs font-semibold mb-1 ${dayTextClass}">${dayNamesKr[w.dayOfWeek]}</span>
+          <div class="${numStyle}">${w.day}</div>
+          ${chipsHtml}
         </div>
       `;
     });
 
-    blocksContainerEl.innerHTML = blocksHtml;
+    gridCardEl.innerHTML = `
+      <div class="grid grid-cols-7 gap-1 text-center">
+        ${gridCellsHtml}
+      </div>
+    `;
+
+    // 2. Render Lower Schedule List Card (Matching Monthly View schedule list card layout)
+    const selDateObj = new Date(curYear, curMonth - 1, curDay);
+    const selDayOfWeekName = dayNamesKr[selDateObj.getDay()];
+    const selFormattedDate = `${String(curMonth).padStart(2, '0')}.${String(curDay).padStart(2, '0')} (${selDayOfWeekName})`;
+
+    const toggleBtn = document.getElementById('weekly-toggle-all-btn');
+    if (toggleBtn) {
+      toggleBtn.innerText = this.state.weeklyShowAllDays ? '선택일 보기' : '주간 전체 보기';
+    }
+
+    if (this.state.weeklyShowAllDays) {
+      if (scheduleTitleEl) scheduleTitleEl.innerText = `${curMonth}월 ${weekNum}주차 전체 일정`;
+      let allDaysHtml = '';
+      weekDays.forEach(w => {
+        const isToday = (w.year === today.getFullYear() && w.month === (today.getMonth() + 1) && w.day === today.getDate());
+        const schedules = this.getMockSchedules(w.year, w.month, w.day) || [];
+
+        let dayTitleClass = 'text-on-surface';
+        if (w.dayOfWeek === 0) dayTitleClass = 'text-error';
+        else if (w.dayOfWeek === 6) dayTitleClass = 'text-primary';
+
+        let cardsContentHtml = '';
+        if (schedules.length === 0) {
+          cardsContentHtml = `<div class="text-center py-4 text-on-surface-variant/60 font-body text-xs font-medium">등록된 일정이 없습니다.</div>`;
+        } else {
+          cardsContentHtml = `<div class="space-y-3">` + schedules.map(s => this.renderWeeklyDayCardItem(s)).join('') + `</div>`;
+        }
+
+        allDaysHtml += `
+          <div class="bg-surface-container-low border border-outline-variant/15 rounded-2xl p-4 relative mb-3">
+            ${isToday ? '<div class="absolute -left-1 top-6 w-2.5 h-2.5 rounded-full bg-secondary shadow-xs"></div>' : ''}
+            <div class="flex items-baseline gap-4 mb-3">
+              <h4 class="font-headline text-base font-bold ${dayTitleClass} w-24">${String(w.month).padStart(2, '0')}.${String(w.day).padStart(2, '0')} (${dayNamesKr[w.dayOfWeek]})</h4>
+              <div class="h-[1px] bg-outline-variant/15 flex-1"></div>
+            </div>
+            ${cardsContentHtml}
+          </div>
+        `;
+      });
+      logsContainerEl.innerHTML = allDaysHtml;
+    } else {
+      if (scheduleTitleEl) scheduleTitleEl.innerText = `${selFormattedDate} 주간 일정`;
+      const schedules = this.getMockSchedules(curYear, curMonth, curDay) || [];
+      if (schedules.length === 0) {
+        logsContainerEl.innerHTML = `
+          <div class="text-center py-8 text-on-surface-variant font-medium">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
+            <p class="font-bold text-on-surface text-base">등록된 일정이 없습니다.</p>
+            <p class="text-xs text-on-surface-variant/70 mt-1">상단 주간 달력에서 날짜를 클릭하여 일정을 확인해보세요.</p>
+          </div>
+        `;
+      } else {
+        logsContainerEl.innerHTML = `<div class="space-y-3">` + schedules.map(s => this.renderWeeklyDayCardItem(s)).join('') + `</div>`;
+      }
+    }
   },
 
   renderWeeklyDayCardItem(s) {

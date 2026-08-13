@@ -1111,14 +1111,20 @@
           <button onclick="App.resetWeeklyToToday()" class="px-3.5 py-1 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high transition-all active:scale-95">오늘</button>
         </div>
 
-        <!-- 7-Day Header Strip Card (matching code.html & reference design) -->
-        <div id="weekly-7day-header" class="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl p-4 shadow-sm">
+        <!-- Weekly Grid Card (Layout identical to Monthly View grid card) -->
+        <div id="weekly-7day-grid-card" class="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl p-4 shadow-sm relative">
           <!-- Rendered dynamically by App.renderWeeklyScheduleView() -->
         </div>
 
-        <!-- Day Blocks Container (matching code.html & reference design) -->
-        <div id="weekly-day-blocks-container" class="space-y-4">
-          <!-- Rendered dynamically by App.renderWeeklyScheduleView() -->
+        <!-- Daily Schedule List Card (Layout identical to Monthly View daily logs card) -->
+        <div class="bg-surface-container-low border border-outline-variant/15 rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 id="weekly-schedule-title" class="font-headline font-bold text-lg text-on-surface">08.13 (목) 주간 일정</h3>
+            <button onclick="App.toggleWeeklyAllDays()" id="weekly-toggle-all-btn" class="text-xs font-bold text-primary hover:underline transition-all">주간 전체 보기</button>
+          </div>
+          <div id="weekly-schedule-logs-container" class="space-y-3">
+            <!-- Schedule items dynamically rendered by App.renderWeeklyScheduleView() -->
+          </div>
         </div>
       </main>
 
