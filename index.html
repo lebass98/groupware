@@ -2129,6 +2129,37 @@
             </div>
           </div>
 
+          <!-- Status Selection & Custom Status Input -->
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-md p-4 border border-outline-variant/15">
+            <div class="flex justify-between items-center">
+              <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">alt_route</span>
+                진행 상태
+              </label>
+              <span class="text-[11px] text-outline font-medium">기본 / 직접 입력</span>
+            </div>
+            <input type="hidden" id="todo-input-status" value="todo" />
+            <div class="grid grid-cols-3 gap-2.5">
+              <button type="button" onclick="App.setTodoStatusForm('todo', this)" class="todo-status-btn active py-2.5 px-2 rounded-sm bg-primary-container text-on-primary-container font-bold text-xs border border-primary shadow-xs transition-all">
+                대기 (할 일)
+              </button>
+              <button type="button" onclick="App.setTodoStatusForm('in_progress', this)" class="todo-status-btn py-2.5 px-2 rounded-sm border border-outline-variant/15 bg-surface-container-lowest text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-all">
+                진행 중
+              </button>
+              <button type="button" onclick="App.setTodoStatusForm('done', this)" class="todo-status-btn py-2.5 px-2 rounded-sm border border-outline-variant/15 bg-surface-container-lowest text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-all">
+                완료
+              </button>
+            </div>
+            
+            <!-- Custom Status Input (직접 입력 등록) -->
+            <div class="flex items-center gap-2 mt-1.5 pt-2 border-t border-outline-variant/10">
+              <input id="todo-input-custom-status" class="flex-1 bg-surface-container-lowest rounded-sm px-3.5 py-2 text-xs text-on-surface border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" placeholder="새로운 상태 직접 입력 (예: 검토 중, 보류)" type="text"/>
+              <button type="button" onclick="App.applyCustomStatusFromInput()" class="px-3 py-2 rounded-sm bg-surface-container-high text-on-surface text-xs font-bold hover:bg-primary hover:text-on-primary transition-all shrink-0">
+                상태 설정
+              </button>
+            </div>
+          </div>
+
           <!-- Priority -->
           <div class="flex flex-col gap-2 bg-surface-container-low rounded-md p-4 border border-outline-variant/15">
             <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">

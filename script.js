@@ -4597,6 +4597,7 @@ const App = {
       if (projectInput) projectInput.value = todoToEdit.project || '';
       if (notesInput) notesInput.value = todoToEdit.notes || '';
       this.setTodoPriorityForm(todoToEdit.priority || 'medium');
+      this.setTodoStatusForm(todoToEdit.status || 'todo');
     } else {
       if (modalTitle) modalTitle.textContent = '할 일 작성';
       if (idInput) idInput.value = '';
@@ -4608,6 +4609,7 @@ const App = {
         dateInput.value = todayStr;
       }
       this.setTodoPriorityForm('medium');
+      this.setTodoStatusForm('todo');
     }
 
     this.renderRecentProjectChips();
@@ -4628,6 +4630,47 @@ const App = {
   closeTodoModal() {
     const modal = document.getElementById('modal-todo-write');
     if (modal) modal.classList.add('hidden');
+  },
+
+  setTodoStatusForm(statusVal, btnEl) {
+    const statusInput = document.getElementById('todo-input-status');
+    const customInput = document.getElementById('todo-input-custom-status');
+    if (statusInput) statusInput.value = statusVal;
+
+    const btns = document.querySelectorAll('.todo-status-btn');
+    btns.forEach(b => {
+      b.classList.remove('active', 'bg-primary-container', 'text-on-primary-container', 'border-primary', 'shadow-xs');
+      b.classList.add('bg-surface-container-lowest', 'text-on-surface', 'border-outline-variant/15');
+    });
+
+    if (btnEl) {
+      btnEl.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'border-outline-variant/15');
+      btnEl.classList.add('active', 'bg-primary-container', 'text-on-primary-container', 'border-primary', 'shadow-xs');
+    } else {
+      if (statusVal === 'todo' && btns[0]) {
+        btns[0].classList.remove('bg-surface-container-lowest', 'text-on-surface', 'border-outline-variant/15');
+        btns[0].classList.add('active', 'bg-primary-container', 'text-on-primary-container', 'border-primary', 'shadow-xs');
+      } else if (statusVal === 'in_progress' && btns[1]) {
+        btns[1].classList.remove('bg-surface-container-lowest', 'text-on-surface', 'border-outline-variant/15');
+        btns[1].classList.add('active', 'bg-primary-container', 'text-on-primary-container', 'border-primary', 'shadow-xs');
+      } else if (statusVal === 'done' && btns[2]) {
+        btns[2].classList.remove('bg-surface-container-lowest', 'text-on-surface', 'border-outline-variant/15');
+        btns[2].classList.add('active', 'bg-primary-container', 'text-on-primary-container', 'border-primary', 'shadow-xs');
+      } else if (customInput) {
+        customInput.value = statusVal;
+      }
+    }
+  },
+
+  applyCustomStatusFromInput() {
+    const customInput = document.getElementById('todo-input-custom-status');
+    const customVal = customInput ? customInput.value.trim() : '';
+    if (!customVal) {
+      alert('등록할 상태명을 입력하세요.');
+      return;
+    }
+    this.setTodoStatusForm(customVal);
+    this.showToast(`📌 상태 '${customVal}'이(가) 설정되었습니다.`);
   },
 
   setTodoPriorityForm(priority, btnEl) {
@@ -4659,6 +4702,7 @@ const App = {
     const dateInput = document.getElementById('todo-input-date');
     const timeInput = document.getElementById('todo-input-time');
     const notesInput = document.getElementById('todo-input-notes');
+    const statusInput = document.getElementById('todo-input-status');
 
     const title = titleInput ? titleInput.value.trim() : '';
     if (!title) {
@@ -4672,6 +4716,7 @@ const App = {
     const dateVal = dateInput && dateInput.value ? dateInput.value : '오늘';
     const timeVal = timeInput && timeInput.value ? timeInput.value : '18:00';
     const notes = notesInput ? notesInput.value.trim() : '';
+    const status = statusInput ? statusInput.value : 'draft';
 
     if (project) this.addRecentProject(project);
 
@@ -4685,7 +4730,7 @@ const App = {
           priority,
           dueDate: `${dateVal}, ${timeVal}`,
           notes,
-          status: 'draft'
+          status
         };
       }
     } else {
@@ -4693,7 +4738,7 @@ const App = {
         id: Date.now(),
         title,
         project,
-        status: 'draft',
+        status,
         priority,
         dueDate: `${dateVal}, ${timeVal}`,
         assignees: [
@@ -4721,6 +4766,7 @@ const App = {
     const dateInput = document.getElementById('todo-input-date');
     const timeInput = document.getElementById('todo-input-time');
     const notesInput = document.getElementById('todo-input-notes');
+    const statusInput = document.getElementById('todo-input-status');
 
     const title = titleInput ? titleInput.value.trim() : '';
     if (!title) {
@@ -4734,6 +4780,7 @@ const App = {
     const dateVal = dateInput && dateInput.value ? dateInput.value : '오늘';
     const timeVal = timeInput && timeInput.value ? timeInput.value : '18:00';
     const notes = notesInput ? notesInput.value.trim() : '';
+    const status = statusInput ? statusInput.value : 'todo';
 
     if (project) this.addRecentProject(project);
 
@@ -4747,7 +4794,7 @@ const App = {
           priority,
           dueDate: `${dateVal}, ${timeVal}`,
           notes,
-          status: 'in_progress'
+          status
         };
       }
     } else {
@@ -4755,7 +4802,7 @@ const App = {
         id: Date.now(),
         title,
         project,
-        status: 'in_progress',
+        status,
         priority,
         dueDate: `${dateVal}, ${timeVal}`,
         assignees: [
