@@ -150,7 +150,7 @@
 
     <!-- SCREEN 1: LOGIN (Optimized for Galaxy Fold 7, Foldables & Mobile/Tablet) -->
     <section class="screen-view active" id="screen-login">
-      <div class="w-full max-w-[420px] mx-auto flex flex-col items-center justify-center my-auto py-4 px-2">
+      <div class="w-full max-w-lg mx-auto flex flex-col items-center justify-center my-auto py-4 px-2">
         
         <!-- Top Logo Header -->
         <header class="w-full mb-6 flex flex-col items-center justify-center gap-2 text-center">
@@ -232,7 +232,7 @@
 
     <!-- SCREEN 2: HOME CARD GRID (Initial screen after login, matching Stitch code.html 1:1) -->
     <section class="screen-view" id="screen-home">
-      <main class="flex-1 flex flex-col gap-6 max-w-md mx-auto w-full text-left py-2">
+      <main class="flex-1 flex flex-col gap-6 w-full text-left py-2">
         <!-- Welcome Hero -->
         <div class="flex flex-col gap-1.5 mt-2">
           <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight" id="home-welcome-title">안녕하세요,<br/>이재광님!</h2>
@@ -355,7 +355,7 @@
 
     <!-- SCREEN 10: TODAY SUMMARY -->
     <section class="screen-view" id="screen-today">
-      <main class="flex-1 flex flex-col gap-6 max-w-md mx-auto w-full text-left py-2 pb-24">
+      <main class="flex-1 flex flex-col gap-6 w-full text-left py-2 pb-24">
         <!-- 1. Attendance Summary -->
         <section class="flex flex-col gap-4">
           <header class="flex justify-between items-end px-1">
@@ -677,7 +677,7 @@
 
     <!-- SCREEN 5: LEAVE REQUEST PAGE (Dedicated Screen View matching Stitch code.html 1:1) -->
     <section class="screen-view" id="screen-request">
-      <main class="space-y-6 max-w-md mx-auto pb-10">
+      <main class="space-y-6 w-full pb-10">
         <!-- Page Title -->
         <div class="text-left mb-6">
           <h2 class="font-headline font-bold text-3xl text-on-surface tracking-tight">휴가 신청</h2>
@@ -796,7 +796,7 @@
 
     <!-- SCREEN 6: NOTICE LIST PAGE (Exact Stitch _1/code.html 1:1 Design) -->
     <section class="screen-view" id="screen-notice-list">
-      <main class="w-full max-w-md mx-auto py-2 text-left space-y-5 pb-10">
+      <main class="w-full py-2 text-left space-y-5 pb-10">
         <!-- Header -->
         <div class="flex items-center justify-between mb-2">
           <div>
@@ -830,7 +830,7 @@
 
     <!-- SCREEN 7: NOTICE DETAIL VIEW PAGE (Exact Stitch _2/code.html 1:1 Design) -->
     <section class="screen-view" id="screen-notice-detail">
-      <main class="w-full max-w-md mx-auto py-2 text-left space-y-5 pb-16">
+      <main class="w-full py-2 text-left space-y-5 pb-16">
         <!-- Top Navigation Bar Header -->
         <div class="flex items-center justify-between mb-2">
           <button onclick="App.switchTab('screen-notice-list')" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors active:scale-95">
@@ -893,7 +893,7 @@
 
     <!-- SCREEN 8: EMPLOYEE DIRECTORY LIST (Exact Stitch _2/code.html 1:1 Design) -->
     <section class="screen-view" id="screen-directory">
-      <main class="w-full max-w-md mx-auto py-2 text-left space-y-5 pb-10">
+      <main class="w-full py-2 text-left space-y-5 pb-10">
         <!-- Header -->
         <div class="flex items-center justify-between mb-2">
           <div>
@@ -932,7 +932,7 @@
 
     <!-- SCREEN 9: EMPLOYEE DIRECTORY DETAIL (Exact Stitch _1/code.html 1:1 Design) -->
     <section class="screen-view" id="screen-directory-detail">
-      <main class="w-full max-w-md mx-auto py-2 text-left space-y-5 pb-16">
+      <main class="w-full py-2 text-left space-y-5 pb-16">
         <!-- Top Back Header -->
         <div class="flex items-center justify-between mb-2">
           <button onclick="App.switchTab('screen-directory')" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors active:scale-95">
@@ -1021,7 +1021,7 @@
 
     <!-- SCREEN 10: CALENDAR / MONTHLY SCHEDULE (Unified App Layout) -->
     <section class="screen-view" id="screen-calendar">
-      <main class="flex-1 flex flex-col gap-5 max-w-md mx-auto w-full text-left py-2 pb-24">
+      <main class="flex-1 flex flex-col gap-5 w-full text-left py-2 pb-24">
         <!-- Header -->
         <section class="flex flex-col gap-1">
           <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">캘린더</h2>
@@ -1084,7 +1084,7 @@
 
     <!-- SCREEN 10-A: CALENDAR WEEKLY (Weekly Schedule View) -->
     <section class="screen-view hidden" id="screen-calendar-weekly">
-      <main class="flex-1 flex flex-col gap-5 max-w-md mx-auto w-full text-left py-2 pb-24">
+      <main class="flex-1 flex flex-col gap-5 w-full text-left py-2 pb-24">
         <!-- Header -->
         <section class="flex flex-col gap-1">
           <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">주간 일정</h2>
@@ -1136,7 +1136,7 @@
 
     <!-- SCREEN 10-B: CALENDAR DAILY (Daily Timeline View) -->
     <section class="screen-view hidden" id="screen-calendar-daily">
-      <main class="flex-1 flex flex-col gap-5 max-w-md mx-auto w-full text-left py-2 pb-24">
+      <main class="flex-1 flex flex-col gap-5 w-full text-left py-2 pb-24">
         <!-- Header -->
         <section class="flex flex-col gap-1">
           <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">일간 일정</h2>
@@ -1210,7 +1210,7 @@
 
     <!-- SCREEN 11: FINANCE / EXPENSE & REPORT (재무/경비) -->
     <section class="screen-view" id="screen-finance">
-      <main class="w-full max-w-md mx-auto py-2 text-left space-y-6 pb-20">
+      <main class="w-full py-2 text-left space-y-6 pb-20">
         <!-- Header -->
         <section class="flex flex-col gap-2">
           <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight" id="finance-main-title">지출결의서</h2>
@@ -1596,7 +1596,7 @@
     <!-- backdrop -->
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="App.closeFinanceModal('expense')"></div>
     <!-- bottom sheet panel -->
-    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[480px] bg-surface-container-lowest rounded-t-[2.5rem] p-6 shadow-[0_-10px_30px_rgba(0,0,0,0.15)] flex flex-col gap-5 border-t border-outline-variant/10 animate-slide-up transition-transform duration-300 ease-out box-sizing-border-box">
+    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[768px] bg-surface-container-lowest rounded-t-[2.5rem] p-6 shadow-[0_-10px_30px_rgba(0,0,0,0.15)] flex flex-col gap-5 border-t border-outline-variant/10 animate-slide-up transition-transform duration-300 ease-out box-sizing-border-box">
       <!-- header -->
       <div class="flex justify-between items-center pb-2">
         <h3 class="font-headline text-lg font-bold text-on-surface">지출결의서 작성</h3>
@@ -1675,7 +1675,7 @@
     <!-- backdrop -->
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="App.closeFinanceModal('report')"></div>
     <!-- bottom sheet panel -->
-    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[480px] bg-surface-container-lowest rounded-t-[2.5rem] p-6 shadow-[0_-10px_30px_rgba(0,0,0,0.15)] flex flex-col gap-5 border-t border-outline-variant/10 animate-slide-up transition-transform duration-300 ease-out box-sizing-border-box">
+    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[768px] bg-surface-container-lowest rounded-t-[2.5rem] p-6 shadow-[0_-10px_30px_rgba(0,0,0,0.15)] flex flex-col gap-5 border-t border-outline-variant/10 animate-slide-up transition-transform duration-300 ease-out box-sizing-border-box">
       <!-- header -->
       <div class="flex justify-between items-center pb-2">
         <h3 class="font-headline text-lg font-bold text-on-surface">품의서 작성</h3>
@@ -1782,7 +1782,7 @@
 
   <!-- Modal: SCHEDULE REGISTRATION (Full-Screen Page Modal / 전체 화면 팝업) -->
   <div class="fixed inset-0 z-[80] bg-surface-container-lowest flex flex-col w-full h-full hidden overflow-hidden" id="modal-schedule-write">
-    <div class="w-full max-w-[600px] mx-auto h-full bg-surface-container-lowest flex flex-col overflow-hidden relative border-x border-outline-variant/10 shadow-2xl">
+    <div class="w-full max-w-[768px] mx-auto h-full bg-surface-container-lowest flex flex-col overflow-hidden relative border-x border-outline-variant/10 shadow-2xl">
       
       <!-- Top App Bar Header -->
       <header class="flex justify-between items-center px-4 py-3.5 bg-surface-container-lowest z-10 sticky top-0 shrink-0 border-b border-outline-variant/15 shadow-2xs">
@@ -1947,7 +1947,7 @@
 
   <!-- Modal: DIRECTORY MEMBER PICKER (Full-Screen Page Modal / 전체 화면 주소록 팝업) -->
   <div class="fixed inset-0 z-[120] bg-surface-container-lowest flex flex-col w-full h-full hidden overflow-hidden" id="modal-directory-picker">
-    <div class="w-full max-w-[600px] mx-auto h-full bg-surface-container-lowest flex flex-col overflow-hidden relative border-x border-outline-variant/10 shadow-2xl">
+    <div class="w-full max-w-[768px] mx-auto h-full bg-surface-container-lowest flex flex-col overflow-hidden relative border-x border-outline-variant/10 shadow-2xl">
       <!-- Header -->
       <header class="flex justify-between items-center px-4 py-3.5 bg-surface-container-lowest z-10 sticky top-0 shrink-0 border-b border-outline-variant/15 shadow-2xs">
         <div class="flex items-center gap-3">
