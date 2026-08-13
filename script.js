@@ -631,6 +631,7 @@ const App = {
         this.state.isLoggedIn = parsed.isLoggedIn ?? false;
         this.state.isCheckedIn = parsed.isCheckedIn ?? false;
         this.state.checkInTime = parsed.checkInTime ? new Date(parsed.checkInTime) : null;
+        this.state.checkInTimeStr = parsed.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : null);
         this.state.settings = { ...this.state.settings, ...parsed.settings };
         this.state.activeTab = parsed.activeTab ?? 'screen-home';
         if (parsed.logs && parsed.logs.length) {
@@ -648,6 +649,7 @@ const App = {
         isLoggedIn: this.state.isLoggedIn,
         isCheckedIn: this.state.isCheckedIn,
         checkInTime: this.state.checkInTime,
+        checkInTimeStr: this.state.checkInTimeStr,
         settings: this.state.settings,
         logs: this.state.logs,
         activeTab: this.state.activeTab
@@ -829,6 +831,16 @@ const App = {
     return { isAllowed: false, distanceMeter: null, reason: 'GPS 위치 미확인' };
   },
 
+  formatCheckInTime(d) {
+    if (!d) return '오전 08:45';
+    const dateObj = typeof d === 'string' ? new Date(d) : d;
+    let h = dateObj.getHours();
+    const m = String(dateObj.getMinutes()).padStart(2, '0');
+    const ampm = h >= 12 ? '오후' : '오전';
+    h = h % 12 || 12;
+    return `${ampm} ${String(h).padStart(2, '0')}:${m}`;
+  },
+
   // Called when user clicks "확인" in Confirm Modal
   executeToggleCheckIn() {
     this.closeConfirmModal();
@@ -851,8 +863,9 @@ const App = {
       // EXECUTE CHECK IN
       this.state.isCheckedIn = true;
       this.state.checkInTime = new Date();
+      this.state.checkInTimeStr = this.formatCheckInTime(this.state.checkInTime);
       this.startWorkTimer();
-      this.showToast('🎉 서울 금천구 벚꽃로 298 출근 체크 성공! 좋은 하루 되세요.');
+      this.showToast(`🎉 서울 금천구 벚꽃로 298 출근 체크 성공! (${this.state.checkInTimeStr})`);
     } else {
       // EXECUTE CHECK OUT
       const now = new Date();
@@ -887,6 +900,7 @@ const App = {
       this.state.logs.unshift(newLog);
       this.state.isCheckedIn = false;
       this.state.checkInTime = null;
+      this.state.checkInTimeStr = null;
       this.stopWorkTimer();
 
       const timerEl = document.getElementById('today-work-time');
@@ -2841,9 +2855,10 @@ const App = {
     const pulseSubtext = document.getElementById('pulse-subtext');
 
     if (this.state.isCheckedIn) {
-      if (homeStatusTitle) homeStatusTitle.innerText = '근무 중';
-      if (homeStatusBadge) homeStatusBadge.innerText = '09:00 출근';
-      if (homeStatusDot) homeStatusDot.style.background = 'var(--secondary-container)';
+      const timeStr = this.state.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : '오전 08:45');
+      if (homeStatusTitle) homeStatusTitle.innerText = `${timeStr} 출근 완료`;
+      if (homeStatusBadge) homeStatusBadge.innerText = '근무 중';
+      if (homeStatusDot) homeStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary';
 
       if (statusCard) statusCard.classList.add('active');
       if (statusIconWrap) statusIconWrap.style.background = 'rgba(0, 105, 63, 0.15)';
@@ -2851,7 +2866,7 @@ const App = {
         statusIcon.innerText = 'directions_run';
         statusIcon.style.color = 'var(--secondary)';
       }
-      if (statusTitle) statusTitle.innerText = '현재 근무 중입니다';
+      if (statusTitle) statusTitle.innerText = `현재 근무 중입니다 (${timeStr} 출근)`;
       if (statusBadge) {
         statusBadge.innerText = '근무 중';
         statusBadge.style.background = 'var(--secondary-container)';
@@ -2861,11 +2876,11 @@ const App = {
       if (pulseBtn) pulseBtn.classList.add('checked-in');
       if (pulseIcon) pulseIcon.innerText = 'logout';
       if (pulseText) pulseText.innerText = '퇴근 하기';
-      if (pulseSubtext) pulseSubtext.innerText = '업무 종료 체크';
+      if (pulseSubtext) pulseSubtext.innerText = `${timeStr} 출근 완료됨`;
     } else {
       if (homeStatusTitle) homeStatusTitle.innerText = '아직 출근 전입니다';
       if (homeStatusBadge) homeStatusBadge.innerText = '원클릭 출근';
-      if (homeStatusDot) homeStatusDot.style.background = 'var(--tertiary-container)';
+      if (homeStatusDot) homeStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary-container';
 
       if (statusCard) statusCard.classList.remove('active');
       if (statusIconWrap) statusIconWrap.style.background = 'rgba(120, 85, 0, 0.1)';
@@ -2931,6 +2946,8 @@ const App = {
       const themeIcon = document.getElementById('theme-icon');
       if (themeIcon) themeIcon.innerText = 'dark_mode';
     }
+
+    this.renderTodayData();
   },
 
   // Logs Rendering
