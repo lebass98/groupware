@@ -1854,6 +1854,52 @@ const App = {
     return null;
   },
 
+  getSolarTerm(year, month, day) {
+    if (year !== 2026) return null;
+
+    const terms = {
+      "1-5": { title: "소한 (小寒)", desc: "추위가 시작되는 시기" },
+      "1-20": { title: "대한 (大寒)", desc: "가장 큰 추위" },
+      "2-4": { title: "입춘 (立春)", desc: "봄의 시작" },
+      "2-19": { title: "우수 (雨水)", desc: "눈이 녹아 비가 되고 얼음이 녹는 시기" },
+      "3-5": { title: "경칩 (驚蟄)", desc: "겨울잠 자던 개구리가 깨어남" },
+      "3-20": { title: "춘분 (春分)", desc: "낮과 밤의 길이가 같아짐" },
+      "4-5": { title: "청명 (清明)", desc: "날씨가 맑아져 농사 준비를 하는 시기" },
+      "4-20": { title: "곡우 (穀雨)", desc: "봄비가 내려 곡식이 윤택해짐" },
+      "5-5": { title: "입하 (立夏)", desc: "여름의 시작" },
+      "5-21": { title: "소만 (小滿)", desc: "햇살이 풍부해지고 만물이 자람" },
+      "6-6": { title: "망종 (芒種)", desc: "씨뿌리기 시작하는 시기" },
+      "6-21": { title: "하지 (夏至)", desc: "1년 중 낮의 길이가 가장 긴 날" },
+      "7-7": { title: "소서 (小暑)", desc: "본격적인 더위의 시작" },
+      "7-23": { title: "대서 (大暑)", desc: "장마가 끝나고 가장 더운 때" },
+      "8-7": { title: "입추 (立秋)", desc: "가을의 시작" },
+      "8-23": { title: "처서 (處暑)", desc: "더위가 가시고 선선해짐" },
+      "9-8": { title: "백로 (白露)", desc: "이슬이 내리기 시작함" },
+      "9-23": { title: "추분 (秋分)", desc: "낮과 밤의 길이가 같아짐" },
+      "10-8": { title: "한로 (寒露)", desc: "찬 이슬이 내리기 시작함" },
+      "10-23": { title: "상강 (霜降)", desc: "서리가 내리기 시작함" },
+      "11-7": { title: "입동 (立冬)", desc: "겨울의 시작" },
+      "11-22": { title: "소설 (小雪)", desc: "첫눈이 내리는 시기" },
+      "12-7": { title: "대설 (大雪)", desc: "눈이 많이 내리는 시기" },
+      "12-22": { title: "동지 (冬至)", desc: "1년 중 밤의 길이가 가장 긴 날" }
+    };
+
+    const key = `${month}-${day}`;
+    const t = terms[key];
+    if (t) {
+      return {
+        title: `${t.title} - ${t.desc}`,
+        termName: t.title.split(' ')[0],
+        time: "종일",
+        type: "info",
+        badge: "절기",
+        author: "24절기",
+        avatar: ""
+      };
+    }
+    return null;
+  },
+
   getMockSchedules(year, month, day) {
     const key = `${year}-${month}-${day}`;
     const defaultData = {
@@ -1941,10 +1987,14 @@ const App = {
 
     const defaults = defaultData[key] || [];
     const nationalHol = this.getNationalHoliday(year, month, day);
+    const solarTerm = this.getSolarTerm(year, month, day);
     
     let combined = [...defaults];
     if (nationalHol && !combined.some(s => s.title.includes(nationalHol.title))) {
       combined.unshift(nationalHol);
+    }
+    if (solarTerm && !combined.some(s => s.title.includes(solarTerm.termName))) {
+      combined.push(solarTerm);
     }
 
     const userAdded = (this.mockDynamicSchedules && this.mockDynamicSchedules[key]) || [];
@@ -2042,6 +2092,13 @@ const App = {
           dotClass: 'bg-[#c5221f]',
           cardBgClass: 'bg-[#fff5f5] border-[#c5221f]/25 hover:bg-[#fce8e6]/60'
         };
+      case '절기':
+        return {
+          chipClass: 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/30 font-bold shadow-xs',
+          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">절기</span>',
+          dotClass: 'bg-[#137333]',
+          cardBgClass: 'bg-[#f4fbf7] border-[#137333]/25 hover:bg-[#e6f4ea]/60'
+        };
       default:
         return {
           chipClass: 'bg-primary/15 text-primary border border-primary/25 font-bold shadow-xs',
@@ -2073,15 +2130,23 @@ const App = {
     else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) categoryKey = titleStr.includes('반반차') ? '반반차' : '반차';
     else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) categoryKey = '회의';
     else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) categoryKey = '공휴일';
+    else if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') categoryKey = '절기';
 
     const colorInfo = this.getCategoryColorStyle(categoryKey);
+    let categoryBadgeHtml = colorInfo.badgeHtml;
     const isHoliday = categoryKey === '공휴일' || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지' || s.author === '국경일/기념일';
+    const isSolarTerm = categoryKey === '절기' || s.badge === '절기' || s.author === '24절기';
+
     const cleanTitle = titleStr.replace(/\s*\(공휴일\)/g, '').trim();
     if (isHoliday) {
       categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25 whitespace-nowrap shrink-0">${cleanTitle}</span>`;
+    } else if (isSolarTerm) {
+      const termName = s.termName || titleStr.split(' ')[0];
+      categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">${termName}</span>`;
     }
-    const avatarHtml = isHoliday ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
-    const authorTextHtml = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap">${s.author || '이재광 차장'}</span>`;
+
+    const avatarHtml = (isHoliday || isSolarTerm) ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
+    const authorTextHtml = (isHoliday || isSolarTerm) ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap">${s.author || '이재광 차장'}</span>`;
 
     return `
       <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border shadow-2xs transition-all">
@@ -2142,13 +2207,16 @@ const App = {
       if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) {
         availableCategories.add('공휴일');
       }
+      if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') {
+        availableCategories.add('절기');
+      }
     });
 
     // 구분 칩 동적 생성 (각 구분 고유 색상 적용)
     if (chipsEl) {
       let chipsHtml = `<button type="button" onclick="App.filterDateDetailCategory('all', this)" class="date-detail-chip px-4 py-1.5 rounded-full font-bold bg-primary text-on-primary shadow-xs transition-all active:scale-95 whitespace-nowrap active">전체</button>`;
       
-      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일'];
+      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '절기'];
       categoryOrder.forEach(cat => {
         if (availableCategories.has(cat)) {
           const colorInfo = this.getCategoryColorStyle(cat);
@@ -2202,7 +2270,7 @@ const App = {
     if (cat === 'all') {
       // '전체' 보기: 구분별 그룹화 + 구분이 잘 되도록 그룹 헤더 & 서피스 구분선 추가
       const groupMap = {};
-      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '기타'];
+      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '절기', '기타'];
 
       schedules.forEach(s => {
         const titleStr = s.title || '';
@@ -2213,6 +2281,7 @@ const App = {
         else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) key = '반차';
         else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) key = '회의';
         else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) key = '공휴일';
+        else if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') key = '절기';
 
         if (!groupMap[key]) groupMap[key] = [];
         groupMap[key].push(s);
