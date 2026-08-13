@@ -1579,6 +1579,45 @@ body.dark .nav-item.active {
   z-index: 0;
 }
 
+/* =========================================
+   KANBAN BOARD (대기 / 진행 중 / 완료 수평 드래그 스타일)
+   ========================================= */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.kanban-board-container {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.75rem;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.kanban-column {
+  flex: 0 0 290px;
+  width: 290px;
+  max-width: 85vw;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .kanban-column {
+    flex: 0 0 320px;
+    width: 320px;
+  }
+}
+
 .event-bar {
   border-radius: 4px;
   padding: 2px 4px;
