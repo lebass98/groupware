@@ -1850,58 +1850,40 @@
             </div>
           </div>
 
-          <!-- Schedule Date & Time Container (Leave Request Pager Card Style) -->
+          <!-- Schedule Date Container (Matching Leave Request Style) -->
           <div class="space-y-2">
-            <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">일시 설정</label>
-            <div class="flex flex-col gap-2.5 bg-surface-container-low border border-outline-variant/15 rounded-2xl p-3.5">
-              <!-- Start Date & Time -->
-              <div class="grid grid-cols-2 gap-2">
-                <div class="relative group">
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span class="material-symbols-outlined text-outline text-base">calendar_today</span>
-                  </div>
-                  <input id="schedule-input-start-date" class="w-full pl-9 pr-2 py-2.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-xs focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-12"/>
+            <label class="block text-xs font-bold text-on-surface uppercase tracking-wider">일정 기간 설정</label>
+            <div class="flex flex-col gap-3 bg-surface-container-low border border-outline-variant/15 rounded-2xl p-4">
+              <!-- Start Date -->
+              <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-outline text-lg">calendar_today</span>
                 </div>
-                <div class="relative group">
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span class="material-symbols-outlined text-outline text-base">schedule</span>
-                  </div>
-                  <input id="schedule-input-start-time" class="w-full pl-9 pr-2 py-2.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-xs focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="time" value="09:00"/>
-                </div>
+                <input id="schedule-input-start-date" class="w-full pl-11 pr-16 py-3 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-12"/>
+                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-primary bg-primary-container/30 px-2 py-0.5 rounded-md">시작일</span>
               </div>
 
               <!-- Connector arrow -->
-              <div class="flex justify-center -my-1.5 relative z-10">
-                <div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center border-2 border-surface-container-low shadow-2xs">
-                  <span class="material-symbols-outlined text-outline text-[12px]">arrow_downward</span>
+              <div class="flex justify-center -my-2 relative z-10">
+                <div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center border-4 border-surface-container-low shadow-2xs">
+                  <span class="material-symbols-outlined text-outline text-xs">arrow_downward</span>
                 </div>
               </div>
 
-              <!-- End Date & Time -->
-              <div class="grid grid-cols-2 gap-2">
-                <div class="relative group">
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span class="material-symbols-outlined text-outline text-base">event</span>
-                  </div>
-                  <input id="schedule-input-end-date" class="w-full pl-9 pr-2 py-2.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-xs focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-12"/>
+              <!-- End Date -->
+              <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-outline text-lg">event</span>
                 </div>
-                <div class="relative group">
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span class="material-symbols-outlined text-outline text-base">schedule</span>
-                  </div>
-                  <input id="schedule-input-end-time" class="w-full pl-9 pr-2 py-2.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-xs focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="time" value="18:00"/>
-                </div>
+                <input id="schedule-input-end-date" class="w-full pl-11 pr-16 py-3 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-12"/>
+                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-tertiary bg-tertiary-container/30 px-2 py-0.5 rounded-md">종료일</span>
               </div>
 
-              <!-- Toggles (종일 / 비공개) -->
-              <div class="flex items-center justify-between pt-2 px-1 border-t border-outline-variant/15">
-                <label class="inline-flex items-center cursor-pointer group">
-                  <input id="schedule-input-allday" class="w-4 h-4 rounded text-primary bg-surface-container-highest border-none focus:ring-primary/40 focus:ring-offset-0 transition-colors cursor-pointer" type="checkbox"/>
-                  <span class="ml-2 text-xs font-bold text-on-surface-variant group-hover:text-on-surface transition-colors">종일 일정</span>
-                </label>
+              <!-- Private Toggle -->
+              <div class="flex items-center justify-end pt-2 px-1 border-t border-outline-variant/15">
                 <label class="inline-flex items-center cursor-pointer group">
                   <input id="schedule-input-private" class="w-4 h-4 rounded text-primary bg-surface-container-highest border-none focus:ring-primary/40 focus:ring-offset-0 transition-colors cursor-pointer" type="checkbox"/>
-                  <span class="ml-2 text-xs font-bold text-on-surface-variant group-hover:text-on-surface transition-colors">비공개</span>
+                  <span class="ml-2 text-xs font-bold text-on-surface-variant group-hover:text-on-surface transition-colors">비공개 일정</span>
                 </label>
               </div>
             </div>
