@@ -3971,12 +3971,89 @@ const App = {
     // -------------------------------------------------------------
     if (this.state.todoViewMode === 'list') {
       container.className = "flex flex-col gap-2.5";
-      
-      const targetList = selectedProject 
-        ? list.filter(t => (t.project || '일반 업무') === selectedProject)
-        : list;
 
-      if (targetList.length === 0) {
+      // 1. 프로젝트 내부 뷰 (특정 프로젝트가 선택된 경우)
+      if (selectedProject) {
+        const projectTodos = list.filter(t => (t.project || '일반 업무') === selectedProject);
+
+        const backHeaderHtml = `
+          <div class="w-full flex items-center justify-between bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs mb-1">
+            <button type="button" onclick="App.clearSelectedProject()" class="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline active:scale-95 transition-transform">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>모든 프로젝트 목록</span>
+            </button>
+            <div class="flex items-center gap-2">
+              <span class="font-headline font-bold text-sm text-on-surface"># ${selectedProject}</span>
+              <span class="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full">${projectTodos.length}개</span>
+              <button type="button" onclick="App.openTodoModal()" class="ml-1 px-3 py-1.5 rounded-full bg-primary text-on-primary text-xs font-bold flex items-center gap-1 hover:bg-primary-dim active:scale-95 transition-all shadow-xs">
+                <span class="material-symbols-outlined text-sm">add</span>
+                <span>미션 등록</span>
+              </button>
+            </div>
+          </div>
+        `;
+
+        if (projectTodos.length === 0) {
+          container.innerHTML = `
+            ${backHeaderHtml}
+            <div class="flex flex-col items-center justify-center py-12 text-center bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10">
+              <span class="material-symbols-outlined text-3xl text-on-surface-variant opacity-60 mb-2">task</span>
+              <h3 class="font-headline text-base font-bold text-on-surface mb-1">등록된 할 일이 없습니다</h3>
+              <p class="text-xs text-on-surface-variant max-w-xs">새로운 미션을 작성해 보세요.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = `
+          ${backHeaderHtml}
+          ${projectTodos.map(t => {
+            const isDone = t.status === 'done';
+            const checkIcon = isDone ? 'check_circle' : 'radio_button_unchecked';
+            const checkColor = isDone ? 'text-primary' : 'text-on-surface-variant';
+            const isDoneClass = isDone ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
+
+            let priorityDot = `<span class="w-2 h-2 rounded-full bg-tertiary shrink-0"></span>`;
+            if (t.priority === 'high') priorityDot = `<span class="w-2 h-2 rounded-full bg-error shrink-0"></span>`;
+            else if (t.priority === 'low') priorityDot = `<span class="w-2 h-2 rounded-full bg-outline shrink-0"></span>`;
+
+            let statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">대기</span>`;
+            if (t.status === 'in_progress') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold shrink-0">진행 중</span>`;
+            else if (t.status === 'done') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold shrink-0">완료</span>`;
+            else if (t.status === 'draft') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">임시저장</span>`;
+
+            return `
+              <div class="flex items-center gap-3 bg-surface-container-lowest rounded-xl px-4 py-3 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openTodoDetailModal(${t.id})">
+                <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${t.id});" class="shrink-0 ${checkColor} hover:text-primary transition-colors">
+                  <span class="material-symbols-outlined text-xl">${checkIcon}</span>
+                </button>
+                ${priorityDot}
+                <div class="flex-1 min-w-0 flex items-center gap-2">
+                  <span class="font-headline text-sm font-semibold ${isDoneClass} truncate group-hover:text-primary transition-colors">${t.title}</span>
+                </div>
+                ${statusBadge}
+                <span class="text-[10px] text-on-surface-variant font-medium whitespace-nowrap shrink-0">${t.dueDate || ''}</span>
+                <button type="button" onclick="event.stopPropagation(); App.editTodo(${t.id});" class="shrink-0 p-1 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
+                  <span class="material-symbols-outlined text-base">edit</span>
+                </button>
+              </div>
+            `;
+          }).join('')}
+        `;
+        return;
+      }
+
+      // 2. 메인 프로젝트 목록 뷰 (한 줄 간략 모드일 때 프로젝트 단위로 표출 & 클릭 시 프로젝트 진입!)
+      const projectsMap = {};
+      list.forEach(t => {
+        const projName = t.project || '일반 업무';
+        if (!projectsMap[projName]) projectsMap[projName] = [];
+        projectsMap[projName].push(t);
+      });
+
+      const projectNames = Object.keys(projectsMap);
+
+      if (projectNames.length === 0) {
         container.innerHTML = `
           <div class="flex flex-col items-center justify-center py-12 text-center bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10">
             <span class="material-symbols-outlined text-3xl text-on-surface-variant opacity-60 mb-2">task</span>
@@ -3987,55 +4064,30 @@ const App = {
         return;
       }
 
-      const backHeaderHtml = selectedProject ? `
-        <div class="w-full flex items-center justify-between bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs mb-1">
-          <button type="button" onclick="App.clearSelectedProject()" class="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline active:scale-95 transition-transform">
-            <span class="material-symbols-outlined text-base">arrow_back</span>
-            <span>모든 프로젝트 목록</span>
-          </button>
-          <div class="flex items-center gap-2">
-            <span class="font-headline font-bold text-sm text-on-surface"># ${selectedProject}</span>
-            <span class="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full">${targetList.length}개</span>
-          </div>
-        </div>
-      ` : '';
+      container.innerHTML = projectNames.map(projName => {
+        const items = projectsMap[projName];
+        const todoCount = items.filter(t => t.status === 'todo' || t.status === 'draft').length;
+        const inProgressCount = items.filter(t => t.status === 'in_progress').length;
+        const doneCount = items.filter(t => t.status === 'done').length;
 
-      container.innerHTML = `
-        ${backHeaderHtml}
-        ${targetList.map(t => {
-          const isDone = t.status === 'done';
-          const checkIcon = isDone ? 'check_circle' : 'radio_button_unchecked';
-          const checkColor = isDone ? 'text-primary' : 'text-on-surface-variant';
-          const isDoneClass = isDone ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
-
-          let priorityDot = `<span class="w-2 h-2 rounded-full bg-tertiary shrink-0"></span>`;
-          if (t.priority === 'high') priorityDot = `<span class="w-2 h-2 rounded-full bg-error shrink-0"></span>`;
-          else if (t.priority === 'low') priorityDot = `<span class="w-2 h-2 rounded-full bg-outline shrink-0"></span>`;
-
-          let statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">대기</span>`;
-          if (t.status === 'in_progress') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold shrink-0">진행 중</span>`;
-          else if (t.status === 'done') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold shrink-0">완료</span>`;
-          else if (t.status === 'draft') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">임시저장</span>`;
-
-          return `
-            <div class="flex items-center gap-3 bg-surface-container-lowest rounded-xl px-4 py-3 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openTodoDetailModal(${t.id})">
-              <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${t.id});" class="shrink-0 ${checkColor} hover:text-primary transition-colors">
-                <span class="material-symbols-outlined text-xl">${checkIcon}</span>
-              </button>
-              ${priorityDot}
-              <div class="flex-1 min-w-0 flex items-center gap-2">
-                <span class="font-headline text-sm font-semibold ${isDoneClass} truncate group-hover:text-primary transition-colors">${t.title}</span>
-                ${t.project ? `<span class="text-[11px] text-on-surface-variant/80 font-medium shrink-0 hidden sm:inline-block"># ${t.project}</span>` : ''}
-              </div>
-              ${statusBadge}
-              <span class="text-[10px] text-on-surface-variant font-medium whitespace-nowrap shrink-0">${t.dueDate || ''}</span>
-              <button type="button" onclick="event.stopPropagation(); App.editTodo(${t.id});" class="shrink-0 p-1 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
-                <span class="material-symbols-outlined text-base">edit</span>
-              </button>
+        return `
+          <div class="flex items-center justify-between bg-surface-container-lowest rounded-xl px-4 py-3.5 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.selectProject('${projName.replace(/'/g, "\\'")}')">
+            <div class="flex items-center gap-3 min-w-0 flex-1 mr-3">
+              <span class="material-symbols-outlined text-primary text-xl group-hover:scale-110 transition-transform">folder_open</span>
+              <h3 class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors truncate">${projName}</h3>
             </div>
-          `;
-        }).join('')}
-      `;
+            
+            <div class="flex items-center gap-2 shrink-0">
+              <div class="flex items-center gap-1.5 text-[11px] font-semibold text-on-surface-variant">
+                <span class="px-2 py-0.5 rounded-full bg-surface-container">대기 ${todoCount}</span>
+                <span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold">진행 중 ${inProgressCount}</span>
+                <span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary font-bold">완료 ${doneCount}</span>
+              </div>
+              <span class="material-symbols-outlined text-on-surface-variant text-base group-hover:translate-x-1 transition-transform ml-1">chevron_right</span>
+            </div>
+          </div>
+        `;
+      }).join('');
       return;
     }
 
