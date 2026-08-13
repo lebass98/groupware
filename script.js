@@ -4,6 +4,54 @@ const App = {
   state: {
     isLoggedIn: false, // Default to FALSE so user starts on Login screen
     activeTab: 'screen-today',
+    todosFilter: 'all',
+    todosSearchQuery: '',
+    todoFormPriority: 'medium',
+    todos: [
+      {
+        id: 1,
+        title: 'Q3 Performance Review UI Updates',
+        project: '그룹웨어 고도화',
+        status: 'in_progress',
+        priority: 'high',
+        dueDate: '오늘, 17:00',
+        assignees: [
+          { name: '이재광', avatar: 'profile.png' },
+          { name: '명희진', avatar: 'profile.png' }
+        ],
+        isOverdue: false,
+        isMine: true,
+        notes: '3분기 평가 UI 디자인 시스템 반응형 레이아웃 반영'
+      },
+      {
+        id: 2,
+        title: 'API Integration for Attendance Log',
+        project: '근태관리 시스템',
+        status: 'todo',
+        priority: 'medium',
+        dueDate: '내일, 12:00',
+        assignees: [
+          { name: '김철수', avatar: 'profile.png' }
+        ],
+        isOverdue: false,
+        isMine: false,
+        notes: '근태 기록 1초 단위 타이머 백엔드 동기화 API 연동'
+      },
+      {
+        id: 3,
+        title: 'Update Weekly Status Report Template',
+        project: '경영지원 / 재무',
+        status: 'done',
+        priority: 'low',
+        dueDate: '2026-08-12, 18:00',
+        assignees: [
+          { name: '이재광', avatar: 'profile.png' }
+        ],
+        isOverdue: false,
+        isMine: true,
+        notes: '주간 보고서 신규 템플릿 마크다운 양식 가이드 전달'
+      }
+    ],
     finance: {
       activeTab: 'expense', // 'expense' or 'report'
       cardFilter: 'corp',   // 'corp' or 'personal'
@@ -637,6 +685,9 @@ const App = {
         if (parsed.logs && parsed.logs.length) {
           this.state.logs = parsed.logs;
         }
+        if (parsed.todos && parsed.todos.length) {
+          this.state.todos = parsed.todos;
+        }
       }
     } catch (e) {
       console.warn('LocalStorage error:', e);
@@ -652,6 +703,7 @@ const App = {
         checkInTimeStr: this.state.checkInTimeStr,
         settings: this.state.settings,
         logs: this.state.logs,
+        todos: this.state.todos,
         activeTab: this.state.activeTab
       }));
     } catch (e) {
@@ -1088,6 +1140,8 @@ const App = {
       this.renderDailyTimelineView();
     } else if (targetId === 'screen-finance') {
       this.renderExpenses();
+    } else if (targetId === 'screen-todo') {
+      this.renderTodos();
     } else if (targetId === 'screen-home' || targetId === 'screen-today') {
       this.renderTodayData();
     }
@@ -3728,6 +3782,248 @@ const App = {
     if (paletteBtn && selectedTheme['--primary-gradient']) {
       paletteBtn.style.background = selectedTheme['--primary-gradient'];
     }
+  },
+
+  // To-Do / Task Management Methods
+  renderTodos() {
+    const container = document.getElementById('todo-list-container');
+    const totalCountEl = document.getElementById('todo-total-count');
+    if (!container) return;
+
+    let list = [...(this.state.todos || [])];
+    const filter = this.state.todosFilter || 'all';
+    const query = (this.state.todosSearchQuery || '').toLowerCase().trim();
+
+    // 1. Category Filter
+    if (filter === 'my') {
+      list = list.filter(t => t.isMine);
+    } else if (filter === 'completed') {
+      list = list.filter(t => t.status === 'done');
+    } else if (filter === 'overdue') {
+      list = list.filter(t => t.isOverdue || t.status === 'overdue');
+    }
+
+    // 2. Search Query Filter
+    if (query) {
+      list = list.filter(t => 
+        t.title.toLowerCase().includes(query) || 
+        (t.project && t.project.toLowerCase().includes(query)) ||
+        (t.notes && t.notes.toLowerCase().includes(query))
+      );
+    }
+
+    if (totalCountEl) {
+      totalCountEl.textContent = `총 ${list.length}개`;
+    }
+
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-12 text-center bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10">
+          <div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center mb-3 text-on-surface-variant opacity-60">
+            <span class="material-symbols-outlined text-3xl">task</span>
+          </div>
+          <h3 class="font-headline text-base font-bold text-on-surface mb-1">등록된 할 일이 없습니다</h3>
+          <p class="text-xs text-on-surface-variant max-w-xs">새로운 미션을 작성하거나 다른 검색 조건으로 조회해 보세요.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = list.map(t => {
+      // Status Badge
+      let statusBadgeHtml = '';
+      if (t.status === 'in_progress') {
+        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-secondary-container/20 text-secondary-dim text-[11px] font-bold tracking-wide uppercase">In Progress</span>`;
+      } else if (t.status === 'done') {
+        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-primary-container/20 text-primary-dim text-[11px] font-bold tracking-wide uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span> Done</span>`;
+      } else {
+        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold tracking-wide uppercase">To Do</span>`;
+      }
+
+      // Priority Badge
+      let priorityBadgeHtml = '';
+      if (t.priority === 'high') {
+        priorityBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-error-container/10 text-error-dim text-[11px] font-bold tracking-wide uppercase flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-error-dim"></span> High</span>`;
+      } else if (t.priority === 'low') {
+        priorityBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface-variant text-[11px] font-bold tracking-wide uppercase">Low</span>`;
+      } else {
+        priorityBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-tertiary-container/20 text-tertiary-dim text-[11px] font-bold tracking-wide uppercase flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-dim"></span> Medium</span>`;
+      }
+
+      // Assignees Stack
+      const assigneesHtml = (t.assignees || []).map((a, idx) => `
+        <img alt="${a.name}" src="${a.avatar || 'profile.png'}" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest object-cover z-${10 - idx}" title="${a.name}" />
+      `).join('');
+
+      const isDoneClass = t.status === 'done' ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
+
+      return `
+        <article class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.03)] border border-outline-variant/10 hover:shadow-[0_8px_24px_rgba(35,44,81,0.06)] transition-all text-left">
+          <div class="flex justify-between items-start gap-4">
+            <div class="flex flex-col gap-1.5 text-left">
+              <div class="flex items-center gap-2 mb-1 flex-wrap">
+                ${statusBadgeHtml}
+                ${priorityBadgeHtml}
+                ${t.project ? `<span class="text-[11px] text-outline font-medium"># ${t.project}</span>` : ''}
+              </div>
+              <h3 class="font-headline font-bold text-base leading-tight ${isDoneClass}">${t.title}</h3>
+              ${t.notes ? `<p class="text-xs text-on-surface-variant mt-1 line-clamp-2">${t.notes}</p>` : ''}
+            </div>
+            <div class="flex items-center gap-1">
+              <button onclick="App.toggleTodoStatus(${t.id})" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" title="${t.status === 'done' ? '진행중으로 변경' : '완료로 변경'}">
+                <span class="material-symbols-outlined text-[20px]">${t.status === 'done' ? 'check_box' : 'check_box_outline_blank'}</span>
+              </button>
+              <button onclick="App.deleteTodo(${t.id})" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-error transition-colors" title="할 일 삭제">
+                <span class="material-symbols-outlined text-[20px]">delete</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between mt-1 pt-3.5 border-t border-outline-variant/15">
+            <div class="flex items-center gap-2 text-on-surface-variant text-xs font-medium">
+              <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+              <span>${t.dueDate || '마감일 미정'}</span>
+            </div>
+            <div class="flex -space-x-2 items-center">
+              ${assigneesHtml}
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  },
+
+  setTodoFilter(filterType, btnEl) {
+    this.state.todosFilter = filterType;
+    const chips = document.querySelectorAll('#todo-filter-chips .todo-chip');
+    chips.forEach(c => {
+      c.classList.remove('active', 'bg-primary', 'text-on-primary');
+      c.classList.add('bg-surface-container', 'text-on-surface-variant');
+    });
+    if (btnEl) {
+      btnEl.classList.remove('bg-surface-container', 'text-on-surface-variant');
+      btnEl.classList.add('active', 'bg-primary', 'text-on-primary');
+    }
+    this.renderTodos();
+  },
+
+  filterTodos() {
+    const input = document.getElementById('todo-search-input');
+    if (input) {
+      this.state.todosSearchQuery = input.value;
+    }
+    this.renderTodos();
+  },
+
+  toggleTodoStatus(todoId) {
+    const todo = (this.state.todos || []).find(t => t.id === todoId);
+    if (!todo) return;
+    if (todo.status === 'done') {
+      todo.status = 'in_progress';
+      this.showToast('할 일이 진행 중 상태로 전환되었습니다.');
+    } else {
+      todo.status = 'done';
+      this.showToast('🎉 할 일이 완료 처리되었습니다!');
+    }
+    this.saveState();
+    this.renderTodos();
+  },
+
+  deleteTodo(todoId) {
+    if (!confirm('이 할 일을 삭제하시겠습니까?')) return;
+    this.state.todos = (this.state.todos || []).filter(t => t.id !== todoId);
+    this.saveState();
+    this.renderTodos();
+    this.showToast('할 일이 삭제되었습니다.');
+  },
+
+  openTodoModal() {
+    const modal = document.getElementById('modal-todo-write');
+    if (!modal) return;
+
+    // Reset Form
+    const titleInput = document.getElementById('todo-input-title');
+    const notesInput = document.getElementById('todo-input-notes');
+    const dateInput = document.getElementById('todo-input-date');
+
+    if (titleInput) titleInput.value = '';
+    if (notesInput) notesInput.value = '';
+    if (dateInput) {
+      const todayStr = new Date().toISOString().split('T')[0];
+      dateInput.value = todayStr;
+    }
+
+    modal.classList.remove('hidden');
+  },
+
+  closeTodoModal() {
+    const modal = document.getElementById('modal-todo-write');
+    if (modal) modal.classList.add('hidden');
+  },
+
+  setTodoPriorityForm(priority, btnEl) {
+    this.state.todoFormPriority = priority;
+    const priorityInput = document.getElementById('todo-input-priority');
+    if (priorityInput) priorityInput.value = priority;
+
+    const btns = document.querySelectorAll('.todo-priority-btn');
+    btns.forEach(b => {
+      b.classList.remove('active', 'bg-primary-container', 'text-on-primary-container', 'border-primary', 'shadow-xs');
+      b.classList.add('bg-surface-container-lowest', 'text-on-surface', 'border-outline-variant/15');
+    });
+
+    if (btnEl) {
+      btnEl.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'border-outline-variant/15');
+      btnEl.classList.add('active', 'bg-primary-container', 'text-on-primary-container', 'border-primary', 'shadow-xs');
+    }
+  },
+
+  triggerTodoFileUpload() {
+    this.showToast('파일 첨부 기능: 파일이 첨부되었습니다 (demo.pdf).');
+  },
+
+  submitTodoModal() {
+    const titleInput = document.getElementById('todo-input-title');
+    const projectSelect = document.getElementById('todo-input-project');
+    const priorityInput = document.getElementById('todo-input-priority');
+    const dateInput = document.getElementById('todo-input-date');
+    const timeInput = document.getElementById('todo-input-time');
+    const notesInput = document.getElementById('todo-input-notes');
+
+    const title = titleInput ? titleInput.value.trim() : '';
+    if (!title) {
+      alert('할 일 제목을 입력해주세요.');
+      return;
+    }
+
+    const project = projectSelect ? projectSelect.value : '기타 업무';
+    const priority = priorityInput ? priorityInput.value : 'medium';
+    const dateVal = dateInput && dateInput.value ? dateInput.value : '오늘';
+    const timeVal = timeInput && timeInput.value ? timeInput.value : '18:00';
+    const notes = notesInput ? notesInput.value.trim() : '';
+
+    const newTodo = {
+      id: Date.now(),
+      title,
+      project,
+      status: 'in_progress',
+      priority,
+      dueDate: `${dateVal}, ${timeVal}`,
+      assignees: [
+        { name: this.state.user.name || '이재광', avatar: 'profile.png' }
+      ],
+      isOverdue: false,
+      isMine: true,
+      notes
+    };
+
+    if (!this.state.todos) this.state.todos = [];
+    this.state.todos.unshift(newTodo);
+
+    this.saveState();
+    this.closeTodoModal();
+    this.renderTodos();
+    this.showToast('새로운 할 일이 등록되었습니다!');
   },
 
   // Toast System

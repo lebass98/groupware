@@ -328,6 +328,17 @@
             </div>
             <span class="font-label font-bold text-on-surface text-sm">재무/경비</span>
           </button>
+
+          <!-- Card 9: To-Do Management (할 일 관리) -->
+          <button type="button" data-id="screen-todo" onclick="App.switchTab('screen-todo')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
+              <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+            </div>
+            <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+            </div>
+            <span class="font-label font-bold text-on-surface text-sm">할 일 관리</span>
+          </button>
         </div>
 
         <!-- Recent Notice Preview Banner -->
@@ -1412,6 +1423,47 @@
       </main>
     </section>
 
+    <!-- SCREEN 12: TO-DO / TASK MANAGEMENT PAGE -->
+    <section class="screen-view" id="screen-todo">
+      <main class="w-full py-2 text-left space-y-6 pb-24">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">할 일 관리</h2>
+            <p class="text-on-surface-variant text-xs mt-1">사내 업무 우선순위 및 미션을 효율적으로 관리하세요.</p>
+          </div>
+          <span class="px-3 py-1 bg-primary/10 text-primary font-bold text-xs rounded-full" id="todo-total-count">총 3개</span>
+        </div>
+
+        <!-- Search Bar Section -->
+        <div class="relative w-full">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
+          <input class="w-full bg-surface-container-highest text-on-surface rounded-full py-3.5 pl-12 pr-4 border-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors font-body text-sm placeholder:text-on-surface-variant shadow-sm" id="todo-search-input" onkeyup="App.filterTodos()" placeholder="할 일 검색..." type="text"/>
+        </div>
+
+        <!-- Category Filter Chips -->
+        <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" id="todo-filter-chips">
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold transition-all active:scale-95 todo-chip active" onclick="App.setTodoFilter('all', this)">전체</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest todo-chip" onclick="App.setTodoFilter('my', this)">내 할 일</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest todo-chip" onclick="App.setTodoFilter('completed', this)">완료</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest todo-chip" onclick="App.setTodoFilter('overdue', this)">지연</button>
+        </div>
+
+        <!-- Task Priorities List Section -->
+        <div class="space-y-4">
+          <h3 class="font-headline text-lg font-bold text-on-surface">오늘의 우선순위</h3>
+          <div class="flex flex-col gap-4" id="todo-list-container">
+            <!-- Dynamic Todo Card items rendered by App.renderTodos() -->
+          </div>
+        </div>
+      </main>
+
+      <!-- FAB (Floating Action Button) for adding a task -->
+      <button onclick="App.openTodoModal()" class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full shadow-[0_8px_24px_rgba(35,44,81,0.15)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40 group" title="새 할 일 작성하기">
+        <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">add</span>
+      </button>
+    </section>
+
     <!-- Glassmorphism Bottom Navigation (5 Core Items) -->
     <nav class="bottom-nav" id="bottom-nav" style="display: none;">
       <a class="nav-item" data-target="screen-home" onclick="App.switchTab('screen-home', this)">
@@ -1977,6 +2029,146 @@
       <!-- Member List -->
       <main id="directory-picker-list" class="flex-1 overflow-y-auto px-5 py-4 space-y-2.5 text-left pb-20">
         <!-- Rendered dynamically by App.openDirectoryPicker() -->
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal: TO-DO WRITE / TASK CREATION (Full-Screen Page Modal) -->
+  <div class="fixed inset-0 z-[110] bg-surface-container-lowest flex flex-col w-full h-full hidden overflow-hidden" id="modal-todo-write">
+    <div class="w-full max-w-[768px] mx-auto h-full bg-surface-container-lowest flex flex-col overflow-hidden relative border-x border-outline-variant/10 shadow-2xl">
+      
+      <!-- Top App Bar Header -->
+      <header class="flex justify-between items-center px-4 py-3.5 bg-surface-container-lowest z-10 sticky top-0 shrink-0 border-b border-outline-variant/15 shadow-2xs">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="App.closeTodoModal()" class="w-9 h-9 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container transition-colors active:scale-95">
+            <span class="material-symbols-outlined text-2xl">close</span>
+          </button>
+          <div class="text-left">
+            <h1 class="font-headline font-bold text-lg text-on-surface tracking-tight leading-none">할 일 작성</h1>
+            <p class="text-on-surface-variant text-[11px] font-medium mt-1">새로운 업무 미션 및 할 일을 작성합니다.</p>
+          </div>
+        </div>
+        <button type="button" onclick="App.submitTodoModal()" class="h-9 px-4 flex items-center justify-center rounded-full bg-primary text-on-primary font-bold text-xs shadow-xs hover:bg-primary-dim transition-all active:scale-95 gap-1">
+          <span>확인</span>
+          <span class="material-symbols-outlined text-base">check</span>
+        </button>
+      </header>
+
+      <!-- Scrollable Form Body -->
+      <main class="flex-1 overflow-y-auto p-5 pb-24 space-y-5 text-left">
+        <form id="form-todo-write" onsubmit="event.preventDefault(); App.submitTodoModal();" class="space-y-5 text-left">
+          
+          <!-- Task Title Input -->
+          <div class="space-y-2">
+            <input id="todo-input-title" class="w-full p-0 bg-transparent border-none text-2xl font-headline font-bold text-on-surface placeholder:text-outline-variant focus:ring-0 focus:outline-none" placeholder="할 일 제목을 입력하세요" type="text" required/>
+          </div>
+
+          <!-- Project / Category Selection -->
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+            <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">folder</span>
+              프로젝트
+            </label>
+            <div class="relative group">
+              <select id="todo-input-project" class="w-full bg-surface-container-lowest rounded-xl px-4 py-3 text-sm text-on-surface border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors appearance-none cursor-pointer">
+                <option value="그룹웨어 고도화">그룹웨어 고도화</option>
+                <option value="근태관리 시스템">근태관리 시스템</option>
+                <option value="디자인 시스템 (M3)">디자인 시스템 (M3)</option>
+                <option value="경영지원 / 재무">경영지원 / 재무</option>
+                <option value="기타 업무">기타 업무</option>
+              </select>
+              <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">arrow_drop_down</span>
+            </div>
+          </div>
+
+          <!-- Priority -->
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+            <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">flag</span>
+              우선순위
+            </label>
+            <input type="hidden" id="todo-input-priority" value="medium" />
+            <div class="grid grid-cols-3 gap-2.5">
+              <button type="button" onclick="App.setTodoPriorityForm('high', this)" class="todo-priority-btn py-2.5 px-3 rounded-xl border border-outline-variant/15 bg-surface-container-lowest text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-all">
+                높음
+              </button>
+              <button type="button" onclick="App.setTodoPriorityForm('medium', this)" class="todo-priority-btn active py-2.5 px-3 rounded-xl bg-primary-container text-on-primary-container font-bold text-xs border border-primary shadow-xs transition-all">
+                보통
+              </button>
+              <button type="button" onclick="App.setTodoPriorityForm('low', this)" class="todo-priority-btn py-2.5 px-3 rounded-xl border border-outline-variant/15 bg-surface-container-lowest text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-all">
+                낮음
+              </button>
+            </div>
+          </div>
+
+          <!-- Due Date & Time -->
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+            <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">calendar_today</span>
+              마감일 설정
+            </label>
+            <div class="flex gap-3 items-center">
+              <div class="relative flex-1">
+                <input id="todo-input-date" class="w-full px-4 py-3 bg-surface-container-lowest rounded-xl text-on-surface font-medium text-sm border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date"/>
+              </div>
+              <span class="text-outline-variant font-bold">-</span>
+              <div class="relative flex-1">
+                <input id="todo-input-time" class="w-full px-4 py-3 bg-surface-container-lowest rounded-xl text-on-surface font-medium text-sm border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="time" value="18:00"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Assignee Section -->
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+            <div class="flex items-center justify-between">
+              <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">person_add</span>
+                담당자
+              </label>
+              <button type="button" onclick="App.openDirectoryPicker('todo')" class="text-xs font-bold text-primary hover:underline transition-all">
+                주소록에서 선택
+              </button>
+            </div>
+            <div id="todo-assignees-chips" class="flex items-center gap-2 mt-1 flex-wrap">
+              <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-xl border border-primary/20">
+                이재광 (나)
+              </span>
+            </div>
+          </div>
+
+          <!-- Detailed Notes Textarea -->
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+            <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">notes</span>
+              상세 내용
+            </label>
+            <textarea id="todo-input-notes" class="w-full p-3.5 bg-surface-container-lowest rounded-xl text-on-surface font-medium text-sm border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder:text-outline-variant resize-none" placeholder="작업에 대한 상세 내용을 입력하세요." rows="3"></textarea>
+          </div>
+
+          <!-- File Attachments Box -->
+          <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
+            <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">attach_file</span>
+              첨부파일
+            </label>
+            <button type="button" onclick="App.triggerTodoFileUpload()" class="w-full py-5 rounded-xl border-2 border-dashed border-outline-variant/30 bg-surface-container-lowest flex flex-col items-center justify-center gap-1.5 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer group">
+              <span class="material-symbols-outlined text-3xl group-hover:scale-110 text-primary transition-transform">upload_file</span>
+              <span class="font-label text-xs font-bold text-on-surface">파일을 선택하거나 여기에 드래그하세요</span>
+              <span class="text-[11px] text-on-surface-variant">PDF, PNG, JPG, DOCX (최대 10MB)</span>
+            </button>
+          </div>
+
+          <!-- Modal Submit Buttons -->
+          <div class="modal-btn-group pt-2">
+            <button type="button" class="modal-btn modal-btn-cancel" onclick="App.closeTodoModal()">
+              취소
+            </button>
+            <button type="submit" class="modal-btn modal-btn-confirm gap-2">
+              <span>할 일 등록</span>
+              <span class="material-symbols-outlined text-lg">check_circle</span>
+            </button>
+          </div>
+        </form>
       </main>
     </div>
   </div>
