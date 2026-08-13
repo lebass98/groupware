@@ -1452,7 +1452,17 @@
 
         <!-- Task Priorities List Section -->
         <div class="space-y-4">
-          <h3 class="font-headline text-lg font-bold text-on-surface">오늘의 우선순위</h3>
+          <div class="flex items-center justify-between">
+            <h3 class="font-headline text-lg font-bold text-on-surface">오늘의 우선순위</h3>
+            <div class="flex items-center bg-surface-container rounded-xl p-0.5 border border-outline-variant/15" id="todo-view-toggle">
+              <button type="button" onclick="App.setTodoViewMode('card', this)" class="todo-view-btn w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary transition-all active:scale-95" title="카드형 보기">
+                <span class="material-symbols-outlined text-lg">dashboard</span>
+              </button>
+              <button type="button" onclick="App.setTodoViewMode('list', this)" class="todo-view-btn w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95" title="리스트형 보기">
+                <span class="material-symbols-outlined text-lg">format_list_bulleted</span>
+              </button>
+            </div>
+          </div>
           <div class="flex flex-col gap-4" id="todo-list-container">
             <!-- Dynamic Todo Card items rendered by App.renderTodos() -->
           </div>

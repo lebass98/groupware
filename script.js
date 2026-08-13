@@ -7,6 +7,7 @@ const App = {
     todosFilter: 'all',
     todosSearchQuery: '',
     todoFormPriority: 'medium',
+    todoViewMode: 'card',
     recentProjects: ['그룹웨어 고도화', '근태관리 시스템', '디자인 시스템 (M3)', '경영지원 / 재무'],
     pendingDeleteTodoId: null,
     currentDetailTodoId: null,
@@ -3893,6 +3894,38 @@ const App = {
 
       const isDoneClass = t.status === 'done' ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
 
+      // Priority dot for compact list view
+      let priorityDot = '';
+      if (t.priority === 'high') {
+        priorityDot = `<span class="w-2 h-2 rounded-full bg-error-dim shrink-0"></span>`;
+      } else if (t.priority === 'low') {
+        priorityDot = `<span class="w-2 h-2 rounded-full bg-outline shrink-0"></span>`;
+      } else {
+        priorityDot = `<span class="w-2 h-2 rounded-full bg-tertiary-dim shrink-0"></span>`;
+      }
+
+      // ========== LIST VIEW (한줄 간략 리스트형) ==========
+      if (this.state.todoViewMode === 'list') {
+        const checkIcon = t.status === 'done' ? 'check_circle' : 'radio_button_unchecked';
+        const checkColor = t.status === 'done' ? 'text-primary' : 'text-on-surface-variant';
+        return `
+          <div class="flex items-center gap-3 bg-surface-container-lowest rounded-xl px-4 py-3 border border-outline-variant/10 hover:bg-surface-container-low transition-all cursor-pointer group text-left" onclick="App.openTodoDetailModal(${t.id})">
+            <button onclick="event.stopPropagation(); App.toggleTodoStatus(${t.id})" class="shrink-0 ${checkColor} hover:text-primary transition-colors">
+              <span class="material-symbols-outlined text-xl">${checkIcon}</span>
+            </button>
+            ${priorityDot}
+            <div class="flex-1 min-w-0">
+              <span class="font-body text-sm font-semibold ${isDoneClass} truncate block group-hover:text-primary transition-colors">${t.title}</span>
+            </div>
+            <span class="text-[10px] text-on-surface-variant font-medium whitespace-nowrap shrink-0">${t.dueDate || ''}</span>
+            <button onclick="event.stopPropagation(); App.editTodo(${t.id})" class="shrink-0 p-1 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
+              <span class="material-symbols-outlined text-base">edit</span>
+            </button>
+          </div>
+        `;
+      }
+
+      // ========== CARD VIEW (기본 카드형) ==========
       return `
         <article class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.03)] border border-outline-variant/10 hover:shadow-[0_8px_24px_rgba(35,44,81,0.06)] transition-all text-left">
           <div class="flex justify-between items-start gap-4">
@@ -3936,6 +3969,30 @@ const App = {
         </article>
       `;
     }).join('');
+
+    // 리스트형일 때 컨테이너 gap 조정
+    if (this.state.todoViewMode === 'list') {
+      container.className = container.className.replace('gap-4', 'gap-2');
+    } else {
+      container.className = container.className.replace('gap-2', 'gap-4');
+    }
+  },
+
+  setTodoViewMode(mode, btnEl) {
+    this.state.todoViewMode = mode;
+    // Toggle button active states
+    const toggleContainer = document.getElementById('todo-view-toggle');
+    if (toggleContainer) {
+      toggleContainer.querySelectorAll('.todo-view-btn').forEach(btn => {
+        btn.classList.remove('bg-primary', 'text-on-primary');
+        btn.classList.add('text-on-surface-variant');
+      });
+    }
+    if (btnEl) {
+      btnEl.classList.remove('text-on-surface-variant');
+      btnEl.classList.add('bg-primary', 'text-on-primary');
+    }
+    this.renderTodos();
   },
 
   renderRecentProjectChips() {

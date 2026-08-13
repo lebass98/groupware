@@ -209,3 +209,6 @@ Pool/
   - 상태 배지(In Progress→진행 중, Done→완료, Draft→임시저장, To Do→할 일), 우선순위 배지(High→높음, Medium→보통, Low→낮음).
   - 상세 보기 모달 내 메타정보(Due Date→마감일, Assignees→담당자, Description→상세 내용, Activity→작업 히스토리).
   - 휴지통 모달 내 레이블(Deleted→삭제일, End of deleted items→삭제 항목 끝).
+- **할 일 관리 카드형/리스트형 뷰 모드 토글 기능 추가**:
+  - '오늘의 우선순위' 헤더 우측에 카드형(`dashboard`)/리스트형(`format_list_bulleted`) 뷰 전환 토글 아이콘 버튼 배치.
+  - 리스트형 뷰: 한줄 간략 리스팅(완료 체크, 우선순위 도트, 제목 한줄, 마감일, 호버 시 수정 아이콘 노출).
