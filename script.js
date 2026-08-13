@@ -3867,23 +3867,23 @@ const App = {
       // Status Badge
       let statusBadgeHtml = '';
       if (t.status === 'in_progress') {
-        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-secondary-container/20 text-secondary-dim text-[11px] font-bold tracking-wide uppercase">In Progress</span>`;
+        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-secondary-container/20 text-secondary-dim text-[11px] font-bold tracking-wide">진행 중</span>`;
       } else if (t.status === 'done') {
-        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-primary-container/20 text-primary-dim text-[11px] font-bold tracking-wide uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span> Done</span>`;
+        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-primary-container/20 text-primary-dim text-[11px] font-bold tracking-wide flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span> 완료</span>`;
       } else if (t.status === 'draft') {
-        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface-variant text-[11px] font-bold tracking-wide uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">edit_note</span> Draft (임시저장)</span>`;
+        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface-variant text-[11px] font-bold tracking-wide flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">edit_note</span> 임시저장</span>`;
       } else {
-        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold tracking-wide uppercase">To Do</span>`;
+        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold tracking-wide">할 일</span>`;
       }
 
       // Priority Badge
       let priorityBadgeHtml = '';
       if (t.priority === 'high') {
-        priorityBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-error-container/10 text-error-dim text-[11px] font-bold tracking-wide uppercase flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-error-dim"></span> High</span>`;
+        priorityBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-error-container/10 text-error-dim text-[11px] font-bold tracking-wide flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-error-dim"></span> 높음</span>`;
       } else if (t.priority === 'low') {
-        priorityBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface-variant text-[11px] font-bold tracking-wide uppercase">Low</span>`;
+        priorityBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface-variant text-[11px] font-bold tracking-wide">낮음</span>`;
       } else {
-        priorityBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-tertiary-container/20 text-tertiary-dim text-[11px] font-bold tracking-wide uppercase flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-dim"></span> Medium</span>`;
+        priorityBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-tertiary-container/20 text-tertiary-dim text-[11px] font-bold tracking-wide flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-dim"></span> 보통</span>`;
       }
 
       // Assignees Stack
@@ -4093,7 +4093,7 @@ const App = {
             <div class="flex-1 flex flex-col text-left">
               <h3 class="font-body text-base font-bold text-on-surface line-through opacity-70 leading-tight">${t.title}</h3>
               <div class="flex items-center gap-2 mt-1.5 flex-wrap">
-                <span class="text-xs text-on-surface-variant font-medium">Deleted: ${t.deletedAt || '방금 전'}</span>
+                <span class="text-xs text-on-surface-variant font-medium">삭제일: ${t.deletedAt || '방금 전'}</span>
                 ${t.project ? `<span class="text-[11px] text-outline font-medium"># ${t.project}</span>` : ''}
               </div>
             </div>
@@ -4112,7 +4112,7 @@ const App = {
       `;
     }).join('') + `
       <div class="mt-4 rounded-2xl overflow-hidden relative h-28 flex items-center justify-center bg-surface-container-low border border-outline-variant/10">
-        <p class="relative z-10 font-label text-xs text-on-surface-variant font-bold tracking-wide uppercase">End of deleted items (삭제 항목 끝)</p>
+        <p class="relative z-10 font-label text-xs text-on-surface-variant font-bold tracking-wide">삭제 항목 끝</p>
       </div>
     `;
   },
@@ -4190,23 +4190,23 @@ const App = {
     // Status Badge
     let statusBadgeHtml = '';
     if (todo.status === 'in_progress') {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label text-xs font-bold uppercase tracking-wider">In Progress</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label text-xs font-bold tracking-wider">진행 중</span>`;
     } else if (todo.status === 'done') {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label text-xs font-bold uppercase tracking-wider">Completed</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label text-xs font-bold tracking-wider">완료</span>`;
     } else if (todo.status === 'draft') {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold uppercase tracking-wider">Draft (임시저장)</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold tracking-wider">임시저장</span>`;
     } else {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold uppercase tracking-wider">To Do</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold tracking-wider">할 일</span>`;
     }
 
     // Priority Badge
     let priorityBadgeHtml = '';
     if (todo.priority === 'high') {
-      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-error-container text-on-error-container font-label text-xs font-bold uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-on-error-container mr-1.5"></span> High</span>`;
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-error-container text-on-error-container font-label text-xs font-bold tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-on-error-container mr-1.5"></span> 높음</span>`;
     } else if (todo.priority === 'low') {
-      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold uppercase tracking-wider">Low</span>`;
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold tracking-wider">낮음</span>`;
     } else {
-      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary-container/30 text-tertiary-dim font-label text-xs font-bold uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-dim mr-1.5"></span> Medium</span>`;
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary-container/30 text-tertiary-dim font-label text-xs font-bold tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-dim mr-1.5"></span> 보통</span>`;
     }
 
     // Assignees Stack
@@ -4239,7 +4239,7 @@ const App = {
             <span class="material-symbols-outlined text-xl">calendar_today</span>
           </div>
           <div class="flex flex-col text-left">
-            <span class="font-label text-[11px] text-on-surface-variant uppercase font-bold tracking-wider">Due Date (마감일)</span>
+            <span class="font-label text-[11px] text-on-surface-variant font-bold tracking-wider">마감일</span>
             <span class="font-body text-sm font-semibold text-on-surface mt-0.5">${todo.dueDate || '마감일 미정'}</span>
           </div>
         </div>
@@ -4247,7 +4247,7 @@ const App = {
         <div class="w-full h-px bg-outline-variant/15"></div>
 
         <div class="flex flex-col gap-2 text-left">
-          <span class="font-label text-[11px] text-on-surface-variant uppercase font-bold tracking-wider">Assignees (담당자)</span>
+          <span class="font-label text-[11px] text-on-surface-variant font-bold tracking-wider">담당자</span>
           <div class="flex items-center gap-2 flex-wrap mt-0.5">
             ${assigneesHtml}
           </div>
@@ -4256,7 +4256,7 @@ const App = {
 
       <!-- Description Section -->
       <section class="flex flex-col gap-2.5 text-left">
-        <h3 class="font-headline text-base font-bold text-on-surface">상세 내용 (Description)</h3>
+        <h3 class="font-headline text-base font-bold text-on-surface">상세 내용</h3>
         <div class="bg-surface-container-low rounded-2xl p-5 border border-outline-variant/10">
           <p class="font-body text-sm leading-relaxed text-on-surface whitespace-pre-line">
             ${todo.notes || '작성된 상세 설명 내용이 없습니다.'}
@@ -4266,7 +4266,7 @@ const App = {
 
       <!-- Activity Timeline -->
       <section class="flex flex-col gap-3 text-left">
-        <h3 class="font-headline text-base font-bold text-on-surface">Activity (작업 히스토리)</h3>
+        <h3 class="font-headline text-base font-bold text-on-surface">작업 히스토리</h3>
         <div class="flex flex-col gap-3 relative pl-2">
           <div class="flex gap-3 relative z-10 items-start">
             <div class="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
