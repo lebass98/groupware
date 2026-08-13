@@ -1330,6 +1330,54 @@ const App = {
       }
     }
 
+    // Today's To-Do Tasks Section (오늘의 할 일 동적 바인딩)
+    const todosContainer = document.getElementById('today-summary-todos-container');
+    if (todosContainer) {
+      const activeTodos = (this.state.todos || []).filter(t => t.status !== 'draft');
+      const displayTodos = activeTodos.slice(0, 3); // 상위 3개 표시
+
+      if (displayTodos.length > 0) {
+        todosContainer.innerHTML = displayTodos.map(todo => {
+          const isDone = todo.status === 'done';
+          const priorityDotColor = todo.priority === 'high' ? 'bg-error' : (todo.priority === 'medium' ? 'bg-tertiary-container' : 'bg-primary');
+          const statusBgClass = isDone 
+            ? 'bg-secondary/10 text-secondary' 
+            : (todo.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
+          const statusText = isDone ? '완료' : (todo.status === 'in_progress' ? '진행 중' : '할 일');
+
+          return `
+            <div class="flex items-center justify-between bg-surface-container-lowest p-3.5 rounded-2xl border border-outline-variant/10 shadow-2xs hover:bg-surface-container-low transition-colors cursor-pointer" onclick="App.openTodoDetailModal(${todo.id})">
+              <div class="flex items-center gap-3 min-w-0 flex-1 mr-2">
+                <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${todo.id});" class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${isDone ? 'bg-secondary border-secondary text-white' : 'border-outline-variant hover:border-primary'}">
+                  ${isDone ? '<span class="material-symbols-outlined text-sm font-bold">check</span>' : ''}
+                </button>
+                <div class="flex flex-col min-w-0 flex-1 text-left">
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="w-2 h-2 rounded-full ${priorityDotColor} shrink-0"></span>
+                    <span class="text-xs text-on-surface-variant font-medium truncate">${todo.project || '일반 업무'}</span>
+                  </div>
+                  <h4 class="font-headline text-sm font-bold text-on-surface truncate ${isDone ? 'line-through opacity-60' : ''}">${todo.title}</h4>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <span class="px-2.5 py-1 rounded-full text-[11px] font-label font-bold ${statusBgClass}">
+                  ${statusText}
+                </span>
+                <span class="material-symbols-outlined text-outline-variant text-base">chevron_right</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        todosContainer.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-6 text-center text-on-surface-variant font-medium border border-outline-variant/10">
+            <span class="material-symbols-outlined text-3xl text-outline mb-1">checklist_rtl</span>
+            <p class="font-bold text-on-surface text-sm">등록된 오늘의 할 일이 없습니다.</p>
+          </div>
+        `;
+      }
+    }
+
     // Leave & Absence Section
     const leaveDaysEl = document.getElementById('today-summary-leave-days');
     const bentoRemainEl = document.getElementById('bento-remain-days');
@@ -4061,6 +4109,7 @@ const App = {
     }
     this.saveState();
     this.renderTodos();
+    this.renderTodayData();
   },
 
   requestDeleteTodo(todoId) {
