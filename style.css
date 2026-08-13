@@ -1580,7 +1580,7 @@ body.dark .nav-item.active {
 }
 
 /* =========================================
-   KANBAN BOARD (대기 / 진행 중 / 완료 수평 드래그 스타일)
+   KANBAN BOARD (대기/진행 중/완료 세로 배치 + 각 행 수평 드래그 스크롤)
    ========================================= */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -1590,13 +1590,13 @@ body.dark .nav-item.active {
   scrollbar-width: none;
 }
 
-.kanban-board-container {
+.kanban-row-scroll-container {
   display: flex;
-  gap: 1.25rem;
+  gap: 1rem;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-snap-type: x proximity;
-  padding-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  padding-top: 0.25rem;
   width: 100%;
   -webkit-overflow-scrolling: touch;
   cursor: grab;
@@ -1604,25 +1604,20 @@ body.dark .nav-item.active {
   touch-action: pan-x;
 }
 
-.kanban-board-container.is-dragging {
+.kanban-row-scroll-container.is-dragging {
   cursor: grabbing !important;
-  scroll-snap-type: none !important;
 }
 
-.kanban-column {
-  flex: 0 0 290px;
-  width: 290px;
-  max-width: 85vw;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-  display: flex;
-  flex-direction: column;
+.kanban-card-item {
+  flex: 0 0 280px;
+  width: 280px;
+  max-width: 82vw;
 }
 
 @media (min-width: 640px) {
-  .kanban-column {
-    flex: 0 0 320px;
-    width: 320px;
+  .kanban-card-item {
+    flex: 0 0 310px;
+    width: 310px;
   }
 }
 

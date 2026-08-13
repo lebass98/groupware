@@ -3871,51 +3871,55 @@ const App = {
 
   // To-Do / Task Management Methods
   initKanbanDragScroll() {
-    const kanbanBoard = document.querySelector('.kanban-board-container');
-    if (!kanbanBoard || kanbanBoard._hasDragListener) return;
-    kanbanBoard._hasDragListener = true;
+    const containers = document.querySelectorAll('.kanban-row-scroll-container');
+    if (!containers || containers.length === 0) return;
 
-    let isDown = false;
-    let startX = 0;
-    let scrollLeft = 0;
-    let hasDragged = false;
+    containers.forEach(container => {
+      if (container._hasDragListener) return;
+      container._hasDragListener = true;
 
-    kanbanBoard.addEventListener('mousedown', (e) => {
-      if (e.button !== 0) return;
-      isDown = true;
-      hasDragged = false;
-      kanbanBoard.classList.add('is-dragging');
-      startX = e.pageX - kanbanBoard.offsetLeft;
-      scrollLeft = kanbanBoard.scrollLeft;
-    });
+      let isDown = false;
+      let startX = 0;
+      let scrollLeft = 0;
+      let hasDragged = false;
 
-    const stopDragging = () => {
-      if (!isDown) return;
-      isDown = false;
-      kanbanBoard.classList.remove('is-dragging');
-    };
-
-    kanbanBoard.addEventListener('mouseleave', stopDragging);
-    kanbanBoard.addEventListener('mouseup', stopDragging);
-
-    kanbanBoard.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - kanbanBoard.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      if (Math.abs(walk) > 6) {
-        hasDragged = true;
-      }
-      kanbanBoard.scrollLeft = scrollLeft - walk;
-    });
-
-    kanbanBoard.addEventListener('click', (e) => {
-      if (hasDragged) {
-        e.preventDefault();
-        e.stopPropagation();
+      container.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        isDown = true;
         hasDragged = false;
-      }
-    }, true);
+        container.classList.add('is-dragging');
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+      });
+
+      const stopDragging = () => {
+        if (!isDown) return;
+        isDown = false;
+        container.classList.remove('is-dragging');
+      };
+
+      container.addEventListener('mouseleave', stopDragging);
+      container.addEventListener('mouseup', stopDragging);
+
+      container.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        if (Math.abs(walk) > 6) {
+          hasDragged = true;
+        }
+        container.scrollLeft = scrollLeft - walk;
+      });
+
+      container.addEventListener('click', (e) => {
+        if (hasDragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          hasDragged = false;
+        }
+      }, true);
+    });
   },
 
   selectProject(projectName) {
@@ -3963,14 +3967,14 @@ const App = {
     }
 
     // -------------------------------------------------------------
-    // CASE A: 특정 프로젝트가 선택된 상태 -> 해당 프로젝트 전용 대기/진행중/완료 수평 칸반 보드 뷰
+    // CASE A: 특정 프로젝트가 선택된 상태 -> 대기 / 진행 중 / 완료 세로 배치 & 각 행별 가로 스크롤 뷰
     // -------------------------------------------------------------
     if (selectedProject) {
       const projectTodos = list.filter(t => (t.project || '일반 업무') === selectedProject);
 
       // 상단 뒤로가기 헤더 바
       const backHeaderHtml = `
-        <div class="w-full flex items-center justify-between bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs">
+        <div class="w-full flex items-center justify-between bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs mb-2">
           <button type="button" onclick="App.clearSelectedProject()" class="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline active:scale-95 transition-transform">
             <span class="material-symbols-outlined text-base">arrow_back</span>
             <span>모든 프로젝트 목록</span>
@@ -4010,87 +4014,94 @@ const App = {
         }
 
         const assigneesHtml = (t.assignees || []).map((a, idx) => `
-          <img alt="${a.name}" src="${a.avatar || 'profile.png'}" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest object-cover z-${10 - idx}" title="${a.name}" />
+          <img alt="${a.name}" src="${a.avatar || 'profile.png'}" class="w-6 h-6 rounded-full border-2 border-surface-container-lowest object-cover z-${10 - idx}" title="${a.name}" />
         `).join('');
 
         return `
-          <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3 group relative cursor-pointer border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] transition-all text-left" onclick="App.openTodoDetailModal(${t.id})">
+          <div class="kanban-card-item bg-surface-container-lowest p-4 rounded-2xl flex flex-col gap-3 group relative cursor-pointer border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] transition-all text-left shrink-0" onclick="App.openTodoDetailModal(${t.id})">
             <div class="flex items-center gap-2 flex-wrap">
               ${statusBadgeHtml}
               ${priorityBadgeHtml}
             </div>
-            <h3 class="font-headline font-semibold text-title-md leading-snug group-hover:text-primary transition-colors ${isDoneClass}">${t.title}</h3>
+            <h3 class="font-headline font-semibold text-sm leading-snug group-hover:text-primary transition-colors ${isDoneClass}">${t.title}</h3>
             ${t.notes ? `<p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">${t.notes}</p>` : ''}
             
-            <div class="mt-2 flex items-center justify-between pt-3 border-t border-outline-variant/10">
-              <div class="flex items-center gap-1.5 text-on-surface-variant text-xs font-medium">
-                <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+            <div class="mt-auto flex items-center justify-between pt-3 border-t border-outline-variant/10">
+              <div class="flex items-center gap-1.5 text-on-surface-variant text-[11px] font-medium">
+                <span class="material-symbols-outlined text-[14px]">calendar_today</span>
                 <span>${t.dueDate || '마감일 미정'}</span>
               </div>
               <div class="flex -space-x-2 items-center">
-                ${assigneesHtml || '<div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center text-[10px] font-bold text-on-surface">ME</div>'}
+                ${assigneesHtml || '<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center text-[10px] font-bold text-on-surface">ME</div>'}
               </div>
             </div>
           </div>
         `;
       };
 
-      container.className = "flex flex-col gap-4";
+      container.className = "flex flex-col gap-6";
       container.innerHTML = `
         ${backHeaderHtml}
-        <div class="kanban-board-container no-scrollbar">
-          <!-- Column 1: 대기 (To-Do) -->
-          <section class="kanban-column">
-            <div class="flex items-center justify-between mb-3 px-1">
-              <h2 class="font-headline font-bold text-base text-on-surface flex items-center gap-2">
-                대기
-                <span class="bg-surface-container-high text-on-surface-variant text-xs font-bold py-0.5 px-2.5 rounded-full">${todoList.length}</span>
-              </h2>
+        
+        <!-- Row 1: 대기 (To-Do) -->
+        <section class="flex flex-col gap-2.5">
+          <div class="flex items-center justify-between px-1">
+            <h2 class="font-headline font-bold text-base text-on-surface flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+              대기
+              <span class="bg-surface-container-high text-on-surface-variant text-xs font-bold py-0.5 px-2.5 rounded-full">${todoList.length}</span>
+            </h2>
+          </div>
+          ${todoList.length > 0 ? `
+            <div class="kanban-row-scroll-container no-scrollbar">
+              ${todoList.map(renderCard).join('')}
             </div>
-            <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3.5 pb-2">
-              ${todoList.length > 0 ? todoList.map(renderCard).join('') : `
-                <div class="bg-surface-container-low rounded-2xl p-6 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
-                  대기 중인 할 일이 없습니다.
-                </div>
-              `}
+          ` : `
+            <div class="bg-surface-container-low rounded-2xl p-5 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
+              대기 중인 할 일이 없습니다.
             </div>
-          </section>
+          `}
+        </section>
 
-          <!-- Column 2: 진행 중 (In Progress) -->
-          <section class="kanban-column">
-            <div class="flex items-center justify-between mb-3 px-1">
-              <h2 class="font-headline font-bold text-base text-on-surface flex items-center gap-2">
-                진행 중
-                <span class="w-2 h-2 rounded-full bg-secondary"></span>
-                <span class="bg-secondary-container/30 text-secondary-dim text-xs font-bold py-0.5 px-2.5 rounded-full">${inProgressList.length}</span>
-              </h2>
+        <!-- Row 2: 진행 중 (In Progress) -->
+        <section class="flex flex-col gap-2.5">
+          <div class="flex items-center justify-between px-1">
+            <h2 class="font-headline font-bold text-base text-on-surface flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+              진행 중
+              <span class="bg-secondary-container/30 text-secondary-dim text-xs font-bold py-0.5 px-2.5 rounded-full">${inProgressList.length}</span>
+            </h2>
+          </div>
+          ${inProgressList.length > 0 ? `
+            <div class="kanban-row-scroll-container no-scrollbar">
+              ${inProgressList.map(renderCard).join('')}
             </div>
-            <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3.5 pb-2">
-              ${inProgressList.length > 0 ? inProgressList.map(renderCard).join('') : `
-                <div class="bg-surface-container-low rounded-2xl p-6 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
-                  진행 중인 할 일이 없습니다.
-                </div>
-              `}
+          ` : `
+            <div class="bg-surface-container-low rounded-2xl p-5 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
+              진행 중인 할 일이 없습니다.
             </div>
-          </section>
+          `}
+        </section>
 
-          <!-- Column 3: 완료 (Done) -->
-          <section class="kanban-column">
-            <div class="flex items-center justify-between mb-3 px-1">
-              <h2 class="font-headline font-bold text-base text-on-surface-variant flex items-center gap-2">
-                완료
-                <span class="bg-surface-container-high text-on-surface-variant text-xs font-bold py-0.5 px-2.5 rounded-full">${doneList.length}</span>
-              </h2>
+        <!-- Row 3: 완료 (Done) -->
+        <section class="flex flex-col gap-2.5">
+          <div class="flex items-center justify-between px-1">
+            <h2 class="font-headline font-bold text-base text-on-surface-variant flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+              완료
+              <span class="bg-surface-container-high text-on-surface-variant text-xs font-bold py-0.5 px-2.5 rounded-full">${doneList.length}</span>
+            </h2>
+          </div>
+          ${doneList.length > 0 ? `
+            <div class="kanban-row-scroll-container no-scrollbar opacity-90">
+              ${doneList.map(renderCard).join('')}
             </div>
-            <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-3.5 pb-2 opacity-85">
-              ${doneList.length > 0 ? doneList.map(renderCard).join('') : `
-                <div class="bg-surface-container-low rounded-2xl p-6 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
-                  완료된 할 일이 없습니다.
-                </div>
-              `}
+          ` : `
+            <div class="bg-surface-container-low rounded-2xl p-5 text-center text-on-surface-variant text-xs font-medium border border-dashed border-outline-variant/30">
+              완료된 할 일이 없습니다.
             </div>
-          </section>
-        </div>
+          `}
+        </section>
       `;
       setTimeout(() => this.initKanbanDragScroll(), 0);
       return;
