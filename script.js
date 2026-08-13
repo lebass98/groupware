@@ -4001,20 +4001,20 @@ const App = {
 
         let priorityBadgeHtml = '';
         if (t.priority === 'high') {
-          priorityBadgeHtml = `<span class="bg-error-container/20 text-error-dim text-xs font-semibold px-2.5 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-error"></span>높음</span>`;
+          priorityBadgeHtml = `<span class="bg-error/10 text-error text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-error"></span>높음</span>`;
         } else if (t.priority === 'low') {
-          priorityBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-xs font-semibold px-2.5 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-outline"></span>낮음</span>`;
+          priorityBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-outline"></span>낮음</span>`;
         } else {
-          priorityBadgeHtml = `<span class="bg-tertiary-container/30 text-tertiary-dim text-xs font-semibold px-2.5 py-1 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>보통</span>`;
+          priorityBadgeHtml = `<span class="bg-tertiary/10 text-tertiary text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>보통</span>`;
         }
 
-        let statusBadgeHtml = `<span class="bg-surface-container text-on-surface text-xs font-semibold px-2.5 py-1 rounded-md">할 일</span>`;
+        let statusBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-[11px] font-bold px-2.5 py-0.5 rounded-full">대기</span>`;
         if (t.status === 'in_progress') {
-          statusBadgeHtml = `<span class="bg-secondary-container/30 text-secondary-dim text-xs font-semibold px-2.5 py-1 rounded-md">진행 중</span>`;
+          statusBadgeHtml = `<span class="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full">진행 중</span>`;
         } else if (t.status === 'done') {
-          statusBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-xs font-semibold px-2.5 py-1 rounded-md">완료</span>`;
+          statusBadgeHtml = `<span class="bg-secondary/10 text-secondary text-[11px] font-bold px-2.5 py-0.5 rounded-full">완료</span>`;
         } else if (t.status === 'draft') {
-          statusBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-xs font-semibold px-2.5 py-1 rounded-md">임시저장</span>`;
+          statusBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-[11px] font-bold px-2.5 py-0.5 rounded-full">임시저장</span>`;
         }
 
         const assigneesHtml = (t.assignees || []).map((a, idx) => `
@@ -4022,7 +4022,7 @@ const App = {
         `).join('');
 
         return `
-          <div class="kanban-card-item bg-surface-container-lowest p-4 rounded-2xl flex flex-col gap-3 group relative cursor-pointer border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] transition-all text-left shrink-0" onclick="App.openTodoDetailModal(${t.id})">
+          <div class="kanban-card-item bg-surface-container-lowest p-4 rounded-2xl flex flex-col gap-3 group relative cursor-pointer border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] transition-all text-left shrink-0 active:scale-98" onclick="App.openTodoDetailModal(${t.id})">
             <div class="flex items-center gap-2 flex-wrap">
               ${statusBadgeHtml}
               ${priorityBadgeHtml}
@@ -4073,7 +4073,7 @@ const App = {
             <h2 class="font-headline font-bold text-base text-on-surface flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
               진행 중
-              <span class="bg-secondary-container/30 text-secondary-dim text-xs font-bold py-0.5 px-2.5 rounded-full">${inProgressList.length}</span>
+              <span class="bg-primary/10 text-primary text-xs font-bold py-0.5 px-2.5 rounded-full">${inProgressList.length}</span>
             </h2>
           </div>
           ${inProgressList.length > 0 ? `
@@ -4093,7 +4093,7 @@ const App = {
             <h2 class="font-headline font-bold text-base text-on-surface-variant flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
               완료
-              <span class="bg-surface-container-high text-on-surface-variant text-xs font-bold py-0.5 px-2.5 rounded-full">${doneList.length}</span>
+              <span class="bg-secondary/10 text-secondary text-xs font-bold py-0.5 px-2.5 rounded-full">${doneList.length}</span>
             </h2>
           </div>
           ${doneList.length > 0 ? `
@@ -4160,7 +4160,7 @@ const App = {
       }).join('');
 
       return `
-        <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3.5 border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] transition-all cursor-pointer group text-left" onclick="App.selectProject('${projName.replace(/'/g, "\\'")}')">
+        <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3.5 border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] active:scale-98 transition-all cursor-pointer group text-left" onclick="App.selectProject('${projName.replace(/'/g, "\\'")}')">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-primary text-xl group-hover:scale-110 transition-transform">folder_open</span>
@@ -4174,9 +4174,9 @@ const App = {
 
           <!-- 진행도 요약 칩 바 -->
           <div class="flex items-center gap-2 pt-1 flex-wrap">
-            <span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-semibold">대기 ${todoCount}</span>
-            <span class="px-2.5 py-1 rounded-md bg-secondary-container/25 text-secondary-dim text-[11px] font-bold">진행 중 ${inProgressCount}</span>
-            <span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface-variant text-[11px] font-semibold">완료 ${doneCount}</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-semibold">대기 ${todoCount}</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] font-bold">진행 중 ${inProgressCount}</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-[11px] font-bold">완료 ${doneCount}</span>
           </div>
 
           <!-- 최근 업무 미리보기 -->
@@ -4458,23 +4458,23 @@ const App = {
     // Status Badge
     let statusBadgeHtml = '';
     if (todo.status === 'in_progress') {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label text-xs font-bold tracking-wider">진행 중</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary font-label text-xs font-bold">진행 중</span>`;
     } else if (todo.status === 'done') {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label text-xs font-bold tracking-wider">완료</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary/10 text-secondary font-label text-xs font-bold">완료</span>`;
     } else if (todo.status === 'draft') {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold tracking-wider">임시저장</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold">임시저장</span>`;
     } else {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold tracking-wider">할 일</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold">${todo.status || '대기'}</span>`;
     }
 
     // Priority Badge
     let priorityBadgeHtml = '';
     if (todo.priority === 'high') {
-      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-error-container text-on-error-container font-label text-xs font-bold tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-on-error-container mr-1.5"></span> 높음</span>`;
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-error/10 text-error font-label text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-error mr-1.5"></span>높음</span>`;
     } else if (todo.priority === 'low') {
-      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold tracking-wider">낮음</span>`;
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold">낮음</span>`;
     } else {
-      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary-container/30 text-tertiary-dim font-label text-xs font-bold tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-dim mr-1.5"></span> 보통</span>`;
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary/10 text-tertiary font-label text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-tertiary mr-1.5"></span>보통</span>`;
     }
 
     // Assignees Stack

@@ -217,7 +217,7 @@ Pool/
   - 할 일 상세(`modal-todo-detail`), 지출결의서(`modal-expense-write`), 품의서(`modal-report-write`), 근태/휴가(`leave-reason-text`), 일정 등록(`modal-schedule-write`) 등 팝업 폼 요소 라디우스 컴팩트화.
 - **상단 헤더, 공지사항 티커 및 하단 독 네비게이션 글래스모피즘(Glassmorphism) 개편**:
   - 상단 헤더(`.top-header`), 공지 티커 바(`.notice-ticker`), 하단 독 네비게이션(`.bottom-nav`) 배경에 은은한 반투명 유리 배경(`rgba`), 고해상도 백드롭 블러(`backdrop-filter: blur(24px) saturate(180%)`), 반투명 이중 보더 테두리 및 3D 쉐도우 효과를 전면 적용하여 독과 헤더 전체 글래스모피즘 디자인 완성.
-- **할 일 관리(`screen-todo`) 및 등록/수정 팝업 내 버튼/토글 디자인 일관성 개편**:
-  - 할 일 작성/수정 팝업(`modal-todo-write`) 내의 상태 선택 토글, 우선순위 토글, 상태 설정 버튼, 주소록 선택 칩, 최근 사용 프로젝트 태그 및 하단 3종 액션 버튼(`[취소]`, `[임시저장]`, `[등록]`)을 프로젝트 디자인 시스템(Material Design 3 + 컴팩트 라디우스 `rounded-2xl`/`rounded-xl` + 터치 피드백 `active:scale-95`)에 맞춰 전면 일관성 있게 다듬음.
+- **할 일 관리 & 투데이 전체 구획 디자인 시스템(M3 + 라디우스 + 칩 피드백) 전수 통일 개편**:
+  - 오늘 신규 추가/수정된 투데이 요약 카드, 할 일 관리 메인 프로젝트 뷰, 프로젝트 내 수평 칸반 보드 카드, 작성/수정 팝업(`modal-todo-write`) 폼 및 읽기 전용 상세 모달(`modal-todo-detail`) 내 모든 상태/우선순위 칩(`rounded-full`), 버튼 패딩, 타이포그래피 크기 및 터치 피드백(`active:scale-95`/`98`)을 프로젝트 기존 디자인 스타일 가이드에 100% 맞춰 이질감 없이 일관되게 정돈.
 
 
