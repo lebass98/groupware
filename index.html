@@ -1432,14 +1432,7 @@
             <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">할 일 관리</h2>
             <p class="text-on-surface-variant text-xs mt-1">사내 업무 우선순위 및 미션을 효율적으로 관리하세요.</p>
           </div>
-          <div class="flex items-center gap-2">
-            <button type="button" onclick="App.openTodoTrashModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-xs font-bold transition-all active:scale-95 border border-outline-variant/15" title="휴지통 전체보기">
-              <span class="material-symbols-outlined text-base text-primary">auto_delete</span>
-              <span>휴지통</span>
-              <span id="todo-trash-count" class="bg-error/10 text-error text-[10px] px-1.5 py-0.5 rounded-full font-bold">0</span>
-            </button>
-            <span class="px-3 py-1.5 bg-primary/10 text-primary font-bold text-xs rounded-full" id="todo-total-count">총 3개</span>
-          </div>
+          <span class="px-3 py-1.5 bg-primary/10 text-primary font-bold text-xs rounded-full" id="todo-total-count">총 3개</span>
         </div>
 
         <!-- Search Bar Section -->
@@ -1463,6 +1456,20 @@
           <div class="flex flex-col gap-4" id="todo-list-container">
             <!-- Dynamic Todo Card items rendered by App.renderTodos() -->
           </div>
+        </div>
+
+        <!-- Bottom Trash Navigation Bar (맨 하단 위치) -->
+        <div class="pt-4 border-t border-outline-variant/15 flex justify-center">
+          <button type="button" onclick="App.openTodoTrashModal()" class="w-full py-3.5 px-5 rounded-2xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 border border-outline-variant/15 flex items-center justify-between shadow-2xs group">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg text-primary group-hover:scale-110 transition-transform">auto_delete</span>
+              <span>삭제된 항목 휴지통 열기</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span id="todo-trash-count" class="bg-error/10 text-error text-[11px] px-2 py-0.5 rounded-full font-bold">0</span>
+              <span class="material-symbols-outlined text-base">chevron_right</span>
+            </div>
+          </button>
         </div>
       </main>
 
