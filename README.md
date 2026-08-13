@@ -193,5 +193,6 @@ Pool/
   - 상단 헤더 아래 유선형 둥근 알약형 캡슐 바(`border-radius: var(--radius-full)`, `bg-surface-container-low`) 디자인 적용.
 - **할 일 관리(To-Do Management) 기능 및 작성 모달 신설**:
   - 메인 메뉴 그리드 내 '할 일 관리' 카드 신설 및 할 일 목록 페이지(`screen-todo`) 구축.
-  - 검색, 카테고리 필터(전체/내 할 일/완료/지연), 완료 처리 토글, 삭제 및 Floating Action Button(`+`) 연동.
-  - 풀스크린 페이지 모달 형태의 '할 일 작성'(`modal-todo-write`) 구축 (제목, 프로젝트, 우선순위, 마감일/시각, 담당자 주소록 연동, 상세 내용, 파일 첨부).
+  - 프로젝트 직접 입력 및 최근 사용한 프로젝트 칩(`recent-projects-chips`) 추천 기능 적용 (클릭 시 자동 대입).
+  - 임시저장(`status: 'draft'`) 기능 구현 및 목록 내 임시저장 필터 칩/배지, 이어서 작성/수정 모달 연동.
+  - 출근 확인 모달과 동일한 M3 디자인 스타일의 '할 일 삭제 확인 팝업'(`modal-todo-delete-confirm`) 신설.

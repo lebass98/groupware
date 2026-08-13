@@ -7,6 +7,8 @@ const App = {
     todosFilter: 'all',
     todosSearchQuery: '',
     todoFormPriority: 'medium',
+    recentProjects: ['그룹웨어 고도화', '근태관리 시스템', '디자인 시스템 (M3)', '경영지원 / 재무'],
+    pendingDeleteTodoId: null,
     todos: [
       {
         id: 1,
@@ -688,6 +690,9 @@ const App = {
         if (parsed.todos && parsed.todos.length) {
           this.state.todos = parsed.todos;
         }
+        if (parsed.recentProjects && parsed.recentProjects.length) {
+          this.state.recentProjects = parsed.recentProjects;
+        }
       }
     } catch (e) {
       console.warn('LocalStorage error:', e);
@@ -704,6 +709,7 @@ const App = {
         settings: this.state.settings,
         logs: this.state.logs,
         todos: this.state.todos,
+        recentProjects: this.state.recentProjects,
         activeTab: this.state.activeTab
       }));
     } catch (e) {
@@ -3799,6 +3805,8 @@ const App = {
       list = list.filter(t => t.isMine);
     } else if (filter === 'completed') {
       list = list.filter(t => t.status === 'done');
+    } else if (filter === 'draft') {
+      list = list.filter(t => t.status === 'draft');
     } else if (filter === 'overdue') {
       list = list.filter(t => t.isOverdue || t.status === 'overdue');
     }
@@ -3836,6 +3844,8 @@ const App = {
         statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-secondary-container/20 text-secondary-dim text-[11px] font-bold tracking-wide uppercase">In Progress</span>`;
       } else if (t.status === 'done') {
         statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-primary-container/20 text-primary-dim text-[11px] font-bold tracking-wide uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span> Done</span>`;
+      } else if (t.status === 'draft') {
+        statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface-variant text-[11px] font-bold tracking-wide uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">edit_note</span> Draft (임시저장)</span>`;
       } else {
         statusBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold tracking-wide uppercase">To Do</span>`;
       }
@@ -3860,7 +3870,7 @@ const App = {
       return `
         <article class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.03)] border border-outline-variant/10 hover:shadow-[0_8px_24px_rgba(35,44,81,0.06)] transition-all text-left">
           <div class="flex justify-between items-start gap-4">
-            <div class="flex flex-col gap-1.5 text-left">
+            <div class="flex flex-col gap-1.5 text-left cursor-pointer flex-1" onclick="App.editDraftTodo(${t.id})">
               <div class="flex items-center gap-2 mb-1 flex-wrap">
                 ${statusBadgeHtml}
                 ${priorityBadgeHtml}
@@ -3869,11 +3879,17 @@ const App = {
               <h3 class="font-headline font-bold text-base leading-tight ${isDoneClass}">${t.title}</h3>
               ${t.notes ? `<p class="text-xs text-on-surface-variant mt-1 line-clamp-2">${t.notes}</p>` : ''}
             </div>
-            <div class="flex items-center gap-1">
-              <button onclick="App.toggleTodoStatus(${t.id})" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" title="${t.status === 'done' ? '진행중으로 변경' : '완료로 변경'}">
-                <span class="material-symbols-outlined text-[20px]">${t.status === 'done' ? 'check_box' : 'check_box_outline_blank'}</span>
-              </button>
-              <button onclick="App.deleteTodo(${t.id})" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-error transition-colors" title="할 일 삭제">
+            <div class="flex items-center gap-1 shrink-0">
+              ${t.status === 'draft' ? `
+                <button onclick="App.editDraftTodo(${t.id})" class="px-3 py-1 rounded-xl bg-primary/10 text-primary text-xs font-bold hover:bg-primary/20 transition-colors" title="이어서 작성">
+                  이어서 작성
+                </button>
+              ` : `
+                <button onclick="App.toggleTodoStatus(${t.id})" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" title="${t.status === 'done' ? '진행중으로 변경' : '완료로 변경'}">
+                  <span class="material-symbols-outlined text-[20px]">${t.status === 'done' ? 'check_box' : 'check_box_outline_blank'}</span>
+                </button>
+              `}
+              <button onclick="App.requestDeleteTodo(${t.id})" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-error transition-colors" title="할 일 삭제">
                 <span class="material-symbols-outlined text-[20px]">delete</span>
               </button>
             </div>
@@ -3891,6 +3907,35 @@ const App = {
         </article>
       `;
     }).join('');
+  },
+
+  renderRecentProjectChips() {
+    const container = document.getElementById('recent-projects-chips');
+    if (!container) return;
+
+    const list = this.state.recentProjects || ['그룹웨어 고도화', '근태관리 시스템', '디자인 시스템 (M3)', '경영지원 / 재무'];
+    container.innerHTML = list.map(p => `
+      <button type="button" onclick="App.selectRecentProject('${p}')" class="recent-project-chip px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/20 text-on-surface-variant font-label text-xs font-semibold hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all">
+        ${p}
+      </button>
+    `).join('');
+  },
+
+  selectRecentProject(projName) {
+    const input = document.getElementById('todo-input-project');
+    if (input) {
+      input.value = projName;
+      input.focus();
+    }
+    this.showToast(`프로젝트 '${projName}'가 선택되었습니다.`);
+  },
+
+  addRecentProject(projName) {
+    if (!projName) return;
+    let list = this.state.recentProjects || [];
+    list = list.filter(p => p !== projName);
+    list.unshift(projName);
+    this.state.recentProjects = list.slice(0, 8); // 최대 8개까지 최근 프로젝트 보관
   },
 
   setTodoFilter(filterType, btnEl) {
@@ -3929,31 +3974,73 @@ const App = {
     this.renderTodos();
   },
 
-  deleteTodo(todoId) {
-    if (!confirm('이 할 일을 삭제하시겠습니까?')) return;
-    this.state.todos = (this.state.todos || []).filter(t => t.id !== todoId);
-    this.saveState();
-    this.renderTodos();
-    this.showToast('할 일이 삭제되었습니다.');
+  requestDeleteTodo(todoId) {
+    this.state.pendingDeleteTodoId = todoId;
+    const modal = document.getElementById('modal-todo-delete-confirm');
+    if (modal) {
+      modal.classList.remove('hidden');
+    }
   },
 
-  openTodoModal() {
+  closeTodoDeleteModal() {
+    this.state.pendingDeleteTodoId = null;
+    const modal = document.getElementById('modal-todo-delete-confirm');
+    if (modal) {
+      modal.classList.add('hidden');
+    }
+  },
+
+  confirmDeleteTodo() {
+    const todoId = this.state.pendingDeleteTodoId;
+    if (todoId) {
+      this.state.todos = (this.state.todos || []).filter(t => t.id !== todoId);
+      this.saveState();
+      this.renderTodos();
+      this.showToast('할 일이 삭제되었습니다.');
+    }
+    this.closeTodoDeleteModal();
+  },
+
+  openTodoModal(todoToEdit = null) {
     const modal = document.getElementById('modal-todo-write');
     if (!modal) return;
 
-    // Reset Form
+    const modalTitle = document.getElementById('modal-todo-write-title');
+    const idInput = document.getElementById('todo-input-id');
     const titleInput = document.getElementById('todo-input-title');
+    const projectInput = document.getElementById('todo-input-project');
     const notesInput = document.getElementById('todo-input-notes');
     const dateInput = document.getElementById('todo-input-date');
 
-    if (titleInput) titleInput.value = '';
-    if (notesInput) notesInput.value = '';
-    if (dateInput) {
-      const todayStr = new Date().toISOString().split('T')[0];
-      dateInput.value = todayStr;
+    if (todoToEdit) {
+      if (modalTitle) modalTitle.textContent = todoToEdit.status === 'draft' ? '임시저장 할 일 작성' : '할 일 수정';
+      if (idInput) idInput.value = todoToEdit.id;
+      if (titleInput) titleInput.value = todoToEdit.title || '';
+      if (projectInput) projectInput.value = todoToEdit.project || '';
+      if (notesInput) notesInput.value = todoToEdit.notes || '';
+      this.setTodoPriorityForm(todoToEdit.priority || 'medium');
+    } else {
+      if (modalTitle) modalTitle.textContent = '할 일 작성';
+      if (idInput) idInput.value = '';
+      if (titleInput) titleInput.value = '';
+      if (projectInput) projectInput.value = '';
+      if (notesInput) notesInput.value = '';
+      if (dateInput) {
+        const todayStr = new Date().toISOString().split('T')[0];
+        dateInput.value = todayStr;
+      }
+      this.setTodoPriorityForm('medium');
     }
 
+    this.renderRecentProjectChips();
     modal.classList.remove('hidden');
+  },
+
+  editDraftTodo(todoId) {
+    const todo = (this.state.todos || []).find(t => t.id === todoId);
+    if (todo) {
+      this.openTodoModal(todo);
+    }
   },
 
   closeTodoModal() {
@@ -3982,9 +4069,72 @@ const App = {
     this.showToast('파일 첨부 기능: 파일이 첨부되었습니다 (demo.pdf).');
   },
 
-  submitTodoModal() {
+  saveTodoDraft() {
+    const idInput = document.getElementById('todo-input-id');
     const titleInput = document.getElementById('todo-input-title');
-    const projectSelect = document.getElementById('todo-input-project');
+    const projectInput = document.getElementById('todo-input-project');
+    const priorityInput = document.getElementById('todo-input-priority');
+    const dateInput = document.getElementById('todo-input-date');
+    const timeInput = document.getElementById('todo-input-time');
+    const notesInput = document.getElementById('todo-input-notes');
+
+    const title = titleInput ? titleInput.value.trim() : '';
+    if (!title) {
+      alert('임시저장을 위해 할 일 제목을 입력해주세요.');
+      return;
+    }
+
+    const existingId = idInput ? parseInt(idInput.value) : null;
+    const project = projectInput ? projectInput.value.trim() : '기타 업무';
+    const priority = priorityInput ? priorityInput.value : 'medium';
+    const dateVal = dateInput && dateInput.value ? dateInput.value : '오늘';
+    const timeVal = timeInput && timeInput.value ? timeInput.value : '18:00';
+    const notes = notesInput ? notesInput.value.trim() : '';
+
+    if (project) this.addRecentProject(project);
+
+    if (existingId) {
+      const idx = (this.state.todos || []).findIndex(t => t.id === existingId);
+      if (idx !== -1) {
+        this.state.todos[idx] = {
+          ...this.state.todos[idx],
+          title,
+          project,
+          priority,
+          dueDate: `${dateVal}, ${timeVal}`,
+          notes,
+          status: 'draft'
+        };
+      }
+    } else {
+      const newDraft = {
+        id: Date.now(),
+        title,
+        project,
+        status: 'draft',
+        priority,
+        dueDate: `${dateVal}, ${timeVal}`,
+        assignees: [
+          { name: this.state.user.name || '이재광', avatar: 'profile.png' }
+        ],
+        isOverdue: false,
+        isMine: true,
+        notes
+      };
+      if (!this.state.todos) this.state.todos = [];
+      this.state.todos.unshift(newDraft);
+    }
+
+    this.saveState();
+    this.closeTodoModal();
+    this.renderTodos();
+    this.showToast('📝 할 일이 임시저장되었습니다.');
+  },
+
+  submitTodoModal() {
+    const idInput = document.getElementById('todo-input-id');
+    const titleInput = document.getElementById('todo-input-title');
+    const projectInput = document.getElementById('todo-input-project');
     const priorityInput = document.getElementById('todo-input-priority');
     const dateInput = document.getElementById('todo-input-date');
     const timeInput = document.getElementById('todo-input-time');
@@ -3996,34 +4146,51 @@ const App = {
       return;
     }
 
-    const project = projectSelect ? projectSelect.value : '기타 업무';
+    const existingId = idInput ? parseInt(idInput.value) : null;
+    const project = projectInput ? projectInput.value.trim() : '기타 업무';
     const priority = priorityInput ? priorityInput.value : 'medium';
     const dateVal = dateInput && dateInput.value ? dateInput.value : '오늘';
     const timeVal = timeInput && timeInput.value ? timeInput.value : '18:00';
     const notes = notesInput ? notesInput.value.trim() : '';
 
-    const newTodo = {
-      id: Date.now(),
-      title,
-      project,
-      status: 'in_progress',
-      priority,
-      dueDate: `${dateVal}, ${timeVal}`,
-      assignees: [
-        { name: this.state.user.name || '이재광', avatar: 'profile.png' }
-      ],
-      isOverdue: false,
-      isMine: true,
-      notes
-    };
+    if (project) this.addRecentProject(project);
 
-    if (!this.state.todos) this.state.todos = [];
-    this.state.todos.unshift(newTodo);
+    if (existingId) {
+      const idx = (this.state.todos || []).findIndex(t => t.id === existingId);
+      if (idx !== -1) {
+        this.state.todos[idx] = {
+          ...this.state.todos[idx],
+          title,
+          project,
+          priority,
+          dueDate: `${dateVal}, ${timeVal}`,
+          notes,
+          status: 'in_progress'
+        };
+      }
+    } else {
+      const newTodo = {
+        id: Date.now(),
+        title,
+        project,
+        status: 'in_progress',
+        priority,
+        dueDate: `${dateVal}, ${timeVal}`,
+        assignees: [
+          { name: this.state.user.name || '이재광', avatar: 'profile.png' }
+        ],
+        isOverdue: false,
+        isMine: true,
+        notes
+      };
+      if (!this.state.todos) this.state.todos = [];
+      this.state.todos.unshift(newTodo);
+    }
 
     this.saveState();
     this.closeTodoModal();
     this.renderTodos();
-    this.showToast('새로운 할 일이 등록되었습니다!');
+    this.showToast('🚀 새로운 할 일이 성공적으로 등록되었습니다!');
   },
 
   // Toast System

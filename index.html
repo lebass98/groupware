@@ -1445,6 +1445,7 @@
         <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" id="todo-filter-chips">
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold transition-all active:scale-95 todo-chip active" onclick="App.setTodoFilter('all', this)">전체</button>
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest todo-chip" onclick="App.setTodoFilter('my', this)">내 할 일</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest todo-chip" onclick="App.setTodoFilter('draft', this)">임시저장</button>
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest todo-chip" onclick="App.setTodoFilter('completed', this)">완료</button>
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest todo-chip" onclick="App.setTodoFilter('overdue', this)">지연</button>
         </div>
@@ -2044,40 +2045,49 @@
             <span class="material-symbols-outlined text-2xl">close</span>
           </button>
           <div class="text-left">
-            <h1 class="font-headline font-bold text-lg text-on-surface tracking-tight leading-none">할 일 작성</h1>
+            <h1 id="modal-todo-write-title" class="font-headline font-bold text-lg text-on-surface tracking-tight leading-none">할 일 작성</h1>
             <p class="text-on-surface-variant text-[11px] font-medium mt-1">새로운 업무 미션 및 할 일을 작성합니다.</p>
           </div>
         </div>
-        <button type="button" onclick="App.submitTodoModal()" class="h-9 px-4 flex items-center justify-center rounded-full bg-primary text-on-primary font-bold text-xs shadow-xs hover:bg-primary-dim transition-all active:scale-95 gap-1">
-          <span>확인</span>
-          <span class="material-symbols-outlined text-base">check</span>
-        </button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="App.saveTodoDraft()" class="h-9 px-3 flex items-center justify-center rounded-full bg-surface-container text-on-surface-variant font-bold text-xs hover:bg-surface-container-high transition-all active:scale-95 gap-1">
+            <span class="material-symbols-outlined text-base">save</span>
+            <span>임시저장</span>
+          </button>
+          <button type="button" onclick="App.submitTodoModal()" class="h-9 px-4 flex items-center justify-center rounded-full bg-primary text-on-primary font-bold text-xs shadow-xs hover:bg-primary-dim transition-all active:scale-95 gap-1">
+            <span>등록</span>
+            <span class="material-symbols-outlined text-base">check</span>
+          </button>
+        </div>
       </header>
 
       <!-- Scrollable Form Body -->
       <main class="flex-1 overflow-y-auto p-5 pb-24 space-y-5 text-left">
         <form id="form-todo-write" onsubmit="event.preventDefault(); App.submitTodoModal();" class="space-y-5 text-left">
+          <input type="hidden" id="todo-input-id" value="" />
           
           <!-- Task Title Input -->
           <div class="space-y-2">
             <input id="todo-input-title" class="w-full p-0 bg-transparent border-none text-2xl font-headline font-bold text-on-surface placeholder:text-outline-variant focus:ring-0 focus:outline-none" placeholder="할 일 제목을 입력하세요" type="text" required/>
           </div>
 
-          <!-- Project / Category Selection -->
+          <!-- Project / Category Selection (Custom Input + Recent Chips) -->
           <div class="flex flex-col gap-2 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15">
-            <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
-              <span class="material-symbols-outlined text-lg">folder</span>
-              프로젝트
-            </label>
-            <div class="relative group">
-              <select id="todo-input-project" class="w-full bg-surface-container-lowest rounded-xl px-4 py-3 text-sm text-on-surface border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors appearance-none cursor-pointer">
-                <option value="그룹웨어 고도화">그룹웨어 고도화</option>
-                <option value="근태관리 시스템">근태관리 시스템</option>
-                <option value="디자인 시스템 (M3)">디자인 시스템 (M3)</option>
-                <option value="경영지원 / 재무">경영지원 / 재무</option>
-                <option value="기타 업무">기타 업무</option>
-              </select>
-              <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">arrow_drop_down</span>
+            <div class="flex justify-between items-center">
+              <label class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">folder</span>
+                프로젝트 (직접 입력)
+              </label>
+              <span class="text-[11px] text-outline font-medium">최근 사용 선택 가능</span>
+            </div>
+            <input id="todo-input-project" class="w-full bg-surface-container-lowest rounded-xl px-4 py-3 text-sm text-on-surface border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" placeholder="프로젝트명을 직접 입력하세요 (예: 그룹웨어 고도화)" type="text"/>
+            
+            <!-- Recent Projects Chips List -->
+            <div class="flex flex-col gap-1 mt-1">
+              <span class="text-[11px] text-on-surface-variant font-semibold">최근 사용한 프로젝트:</span>
+              <div id="recent-projects-chips" class="flex items-center gap-1.5 flex-wrap">
+                <!-- Rendered dynamically by App.renderRecentProjectChips() -->
+              </div>
             </div>
           </div>
 
@@ -2159,15 +2169,23 @@
           </div>
 
           <!-- Modal Submit Buttons -->
-          <div class="modal-btn-group pt-2">
-            <button type="button" class="modal-btn modal-btn-cancel" onclick="App.closeTodoModal()">
+          <div class="grid grid-cols-3 gap-2 pt-2">
+            <button type="button" class="py-3 px-4 rounded-xl bg-surface-container text-on-surface-variant font-bold text-xs hover:bg-surface-container-high transition-colors" onclick="App.closeTodoModal()">
               취소
             </button>
-            <button type="submit" class="modal-btn modal-btn-confirm gap-2">
+            <button type="button" class="py-3 px-4 rounded-xl bg-surface-container-high text-on-surface font-bold text-xs hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-1" onclick="App.saveTodoDraft()">
+              <span class="material-symbols-outlined text-base">save</span>
+              <span>임시저장</span>
+            </button>
+            <button type="submit" class="py-3 px-4 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-xs hover:bg-primary-dim transition-colors flex items-center justify-center gap-1">
               <span>할 일 등록</span>
-              <span class="material-symbols-outlined text-lg">check_circle</span>
+              <span class="material-symbols-outlined text-base">check_circle</span>
             </button>
           </div>
+        </form>
+      </main>
+    </div>
+  </div>
         </form>
       </main>
     </div>
@@ -2206,6 +2224,27 @@
       <main id="modal-date-detail-list" class="flex flex-col gap-2.5 max-h-[55vh] overflow-y-auto pr-1">
         <!-- Rendered dynamically by App.openDateDetailModal() -->
       </main>
+    </div>
+  </div>
+
+  <!-- Modal: TODO DELETE CONFIRM DIALOG (출근 확인 모달과 동일한 M3 디자인) -->
+  <div class="fixed inset-0 z-[130] flex items-center justify-center bg-inverse-surface/40 backdrop-blur-md hidden transition-all duration-200 p-4" id="modal-todo-delete-confirm" onclick="if(event.target === this) App.closeTodoDeleteModal()">
+    <div class="w-full max-w-sm bg-surface-container-lowest rounded-3xl p-6 flex flex-col items-center text-center gap-4 shadow-[0_16px_40px_rgba(35,44,81,0.15)] border border-outline-variant/15">
+      <div class="w-14 h-14 rounded-full bg-error/10 text-error flex items-center justify-center">
+        <span class="material-symbols-outlined text-3xl">delete_forever</span>
+      </div>
+      <div>
+        <h3 class="font-headline font-bold text-lg text-on-surface mb-1">할 일 삭제</h3>
+        <p class="text-xs text-on-surface-variant leading-relaxed">선택하신 할 일 항목을 삭제하시겠습니까?<br/>삭제된 데이터는 복구할 수 없습니다.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3 w-full pt-2">
+        <button type="button" onclick="App.closeTodoDeleteModal()" class="py-3 px-4 rounded-xl bg-surface-container text-on-surface-variant font-bold text-xs hover:bg-surface-container-high transition-colors">
+          취소
+        </button>
+        <button type="button" onclick="App.confirmDeleteTodo()" class="py-3 px-4 rounded-xl bg-error text-white font-bold text-xs shadow-xs hover:bg-error-dim transition-colors">
+          삭제하기
+        </button>
+      </div>
     </div>
   </div>
 
