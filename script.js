@@ -2432,6 +2432,7 @@ const App = {
         barsHtml = '<div class="w-full flex flex-col gap-1 mt-1 z-10">';
         schedules.slice(0, 2).forEach(s => {
           const isHoliday = (s.badge === '공휴일' || s.title.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지' || s.author === '국경일/기념일');
+          const isSolarTerm = (s.badge === '절기' || s.author === '24절기');
           let colorClass = 'bg-[#d8e2ff] text-[#001a41]';
           if (s.title.includes('휴가') || s.title.includes('연차')) {
             colorClass = (s.type === 'error' || s.author?.includes('이재광') || s.author?.includes('조지혜')) ? 'bg-[#ffdad6] text-[#410002]' : 'bg-[#61fbab] text-[#004729]';
@@ -2441,11 +2442,20 @@ const App = {
             colorClass = 'bg-[#d8e2ff] text-[#001a41]';
           } else if (isHoliday) {
             colorClass = 'bg-[#ffdad6] text-[#c5221f] font-bold';
+          } else if (isSolarTerm) {
+            colorClass = 'bg-[#e6f4ea] text-[#137333] font-bold';
           }
 
           let spanStyle = 'rounded-md w-full';
           let cleanTitle = (s.title || '').replace(/\s*\(공휴일\)/g, '').trim();
-          let labelText = isHoliday ? cleanTitle : (s.author ? `[${s.author.split(' ')[0]}] ${s.title}` : s.title);
+          let labelText = s.title;
+          if (isHoliday) {
+            labelText = cleanTitle;
+          } else if (isSolarTerm) {
+            labelText = s.termName || s.title.split(' ')[0];
+          } else if (s.author) {
+            labelText = `[${s.author.split(' ')[0]}] ${s.title}`;
+          }
 
           barsHtml += `
             <div class="text-[10px] font-bold px-1 py-0.5 ${spanStyle} ${colorClass} truncate text-center leading-tight shadow-2xs">
