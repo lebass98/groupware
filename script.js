@@ -1828,29 +1828,94 @@ const App = {
 
   getNationalHoliday(year, month, day) {
     // Fixed Solar National Holidays
-    if (month === 1 && day === 1) return { title: "신정 (새해 첫날)", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-    if (month === 3 && day === 1) return { title: "삼일절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 1 && day === 1) return { title: "신정", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 3 && day === 1) return { title: "3·1절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
     if (month === 5 && day === 5) return { title: "어린이날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
     if (month === 6 && day === 6) return { title: "현충일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-    if (month === 7 && day === 17) return { title: "제헌절", time: "종일", type: "error", badge: "공휴일", author: "기념일", avatar: "./resource/image/profile_abc.png" };
     if (month === 8 && day === 15) return { title: "광복절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
     if (month === 10 && day === 3) return { title: "개천절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
     if (month === 10 && day === 9) return { title: "한글날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-    if (month === 12 && day === 25) return { title: "성탄절 (크리스마스)", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 12 && day === 25) return { title: "성탄절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
 
-    // 2026 Specific Lunar & Substitute Holidays (구글 캘린더 기본 공휴일)
+    // 2026 Specific Lunar & Substitute Holidays (🔴 빨간 날)
     if (year === 2026) {
       if (month === 2 && (day === 16 || day === 18)) return { title: "설날 연휴", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
       if (month === 2 && day === 17) return { title: "설날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-      if (month === 3 && day === 2) return { title: "삼일절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 3 && day === 2) return { title: "3·1절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
       if (month === 5 && day === 24) return { title: "부처님오신날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
       if (month === 5 && day === 25) return { title: "부처님오신날 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-      if (month === 8 && day === 17) return { title: "광복절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
       if (month === 9 && (day === 24 || day === 26)) return { title: "추석 연휴", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
       if (month === 9 && day === 25) return { title: "추석", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-      if (month === 10 && day === 5) return { title: "개천절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 9 && day === 28) return { title: "추석 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
     }
 
+    return null;
+  },
+
+  getObservanceDay(year, month, day) {
+    if (year !== 2026) return null;
+
+    // 📅 2026년 월별 달력 표기 기념일 & 명절 (중복 제외 검은 글씨)
+    const observances = {
+      "3-3": { title: "정월대보름 (납세자의 날)", name: "정월대보름" },
+      "3-18": { title: "상공인의 날", name: "상공인의 날" },
+      "3-27": { title: "서해수호의 날", name: "서해수호의 날" },
+
+      "4-5": { title: "식목일 (한식)", name: "식목일" },
+      "4-19": { title: "4·19 혁명 기념일", name: "4·19 혁명" },
+      "4-20": { title: "장애인의 날", name: "장애인의 날" },
+      "4-21": { title: "과학의 날", name: "과학의 날" },
+      "4-22": { title: "정보통신의 날 (지구의 날)", name: "정보통신의 날" },
+      "4-25": { title: "법의 날", name: "법의 날" },
+
+      "5-1": { title: "근로자의 날", name: "근로자의 날" },
+      "5-8": { title: "어버이날", name: "어버이날" },
+      "5-15": { title: "스승의 날", name: "스승의 날" },
+      "5-18": { title: "5·18 민주화운동 기념일 (성년의 날)", name: "5·18 기념일" },
+      "5-20": { title: "세계인의 날", name: "세계인의 날" },
+      "5-21": { title: "부부의 날", name: "부부의 날" },
+      "5-31": { title: "바다의 날", name: "바다의 날" },
+
+      "6-5": { title: "환경의 날", name: "환경의 날" },
+      "6-10": { title: "6·10 민주항쟁 기념일", name: "6·10 항쟁" },
+      "6-19": { title: "단오 (음력 5월 5일)", name: "단오" },
+      "6-25": { title: "6·25 전쟁 일어난 날", name: "6·25 전쟁" },
+
+      "7-15": { title: "초복", name: "초복" },
+      "7-17": { title: "제헌절", name: "제헌절" },
+      "7-25": { title: "중복", name: "중복" },
+
+      "8-14": { title: "말복", name: "말복" },
+      "8-19": { title: "칠석 (음력 7월 7일)", name: "칠석" },
+
+      "10-1": { title: "국군의 날", name: "국군의 날" },
+      "10-15": { title: "체육의 날", name: "체육의 날" },
+      "10-21": { title: "경찰의 날", name: "경찰의 날" },
+      "10-24": { title: "국제연합(UN)의 날", name: "UN의 날" },
+      "10-29": { title: "지방자치의 날", name: "지방자치" },
+
+      "11-3": { title: "학생독립운동의 날", name: "학생독립" },
+      "11-9": { title: "소방의 날", name: "소방의 날" },
+      "11-11": { title: "농업인의 날", name: "농업인의 날" },
+      "11-17": { title: "순국선열의 날", name: "순국선열" },
+
+      "12-5": { title: "무역의 날", name: "무역의 날" },
+      "12-10": { title: "세계인권선언 기념일", name: "세계인권" }
+    };
+
+    const key = `${month}-${day}`;
+    const obs = observances[key];
+    if (obs) {
+      return {
+        title: obs.title,
+        obsName: obs.name,
+        time: "종일",
+        type: "secondary",
+        badge: "기념일",
+        author: "기념일",
+        avatar: ""
+      };
+    }
     return null;
   },
 
@@ -1988,10 +2053,14 @@ const App = {
     const defaults = defaultData[key] || [];
     const nationalHol = this.getNationalHoliday(year, month, day);
     const solarTerm = this.getSolarTerm(year, month, day);
+    const observance = this.getObservanceDay(year, month, day);
     
     let combined = [...defaults];
     if (nationalHol && !combined.some(s => s.title.includes(nationalHol.title))) {
       combined.unshift(nationalHol);
+    }
+    if (observance && !combined.some(s => s.title.includes(observance.obsName) || (nationalHol && nationalHol.title.includes(observance.obsName)))) {
+      combined.push(observance);
     }
     if (solarTerm && !combined.some(s => s.title.includes(solarTerm.termName))) {
       combined.push(solarTerm);
@@ -2099,6 +2168,14 @@ const App = {
           dotClass: 'bg-[#137333]',
           cardBgClass: 'bg-[#f4fbf7] border-[#137333]/25 hover:bg-[#e6f4ea]/60'
         };
+      case '기념일':
+      case '명절':
+        return {
+          chipClass: 'bg-[#f0f4f9] text-[#3c4043] border border-[#3c4043]/30 font-bold shadow-xs',
+          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#f0f4f9] text-[#3c4043] border border-[#3c4043]/20 whitespace-nowrap shrink-0">기념일</span>',
+          dotClass: 'bg-[#5f6368]',
+          cardBgClass: 'bg-[#f8f9fa] border-[#3c4043]/20 hover:bg-[#f0f4f9]/60'
+        };
       default:
         return {
           chipClass: 'bg-primary/15 text-primary border border-primary/25 font-bold shadow-xs',
@@ -2131,11 +2208,13 @@ const App = {
     else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) categoryKey = '회의';
     else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) categoryKey = '공휴일';
     else if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') categoryKey = '절기';
+    else if (titleStr.includes('기념일') || badgeStr.includes('기념일') || s.author === '기념일') categoryKey = '기념일';
 
     const colorInfo = this.getCategoryColorStyle(categoryKey);
     let categoryBadgeHtml = colorInfo.badgeHtml;
-    const isHoliday = categoryKey === '공휴일' || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지' || s.author === '국경일/기념일';
+    const isHoliday = categoryKey === '공휴일' || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지';
     const isSolarTerm = categoryKey === '절기' || s.badge === '절기' || s.author === '24절기';
+    const isObservance = categoryKey === '기념일' || s.badge === '기념일' || s.author === '기념일';
 
     const cleanTitle = titleStr.replace(/\s*\(공휴일\)/g, '').trim();
     if (isHoliday) {
@@ -2143,10 +2222,13 @@ const App = {
     } else if (isSolarTerm) {
       const termName = s.termName || titleStr.split(' ')[0];
       categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">${termName}</span>`;
+    } else if (isObservance) {
+      const obsName = s.obsName || titleStr.split(' ')[0];
+      categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#f0f4f9] text-[#3c4043] border border-[#3c4043]/20 whitespace-nowrap shrink-0">${obsName}</span>`;
     }
 
-    const avatarHtml = (isHoliday || isSolarTerm) ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
-    const authorTextHtml = (isHoliday || isSolarTerm) ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap">${s.author || '이재광 차장'}</span>`;
+    const avatarHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
+    const authorTextHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap">${s.author || '이재광 차장'}</span>`;
 
     return `
       <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border shadow-2xs transition-all">
@@ -2431,8 +2513,10 @@ const App = {
       if (schedules && schedules.length > 0) {
         barsHtml = '<div class="w-full flex flex-col gap-1 mt-1 z-10">';
         schedules.slice(0, 2).forEach(s => {
-          const isHoliday = (s.badge === '공휴일' || s.title.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지' || s.author === '국경일/기념일');
+          const isHoliday = (s.badge === '공휴일' || s.title.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지');
           const isSolarTerm = (s.badge === '절기' || s.author === '24절기');
+          const isObservance = (s.badge === '기념일' || s.author === '기념일');
+
           let colorClass = 'bg-[#d8e2ff] text-[#001a41]';
           if (s.title.includes('휴가') || s.title.includes('연차')) {
             colorClass = (s.type === 'error' || s.author?.includes('이재광') || s.author?.includes('조지혜')) ? 'bg-[#ffdad6] text-[#410002]' : 'bg-[#61fbab] text-[#004729]';
@@ -2444,6 +2528,8 @@ const App = {
             colorClass = 'bg-[#ffdad6] text-[#c5221f] font-bold';
           } else if (isSolarTerm) {
             colorClass = 'bg-[#e6f4ea] text-[#137333] font-bold';
+          } else if (isObservance) {
+            colorClass = 'bg-[#f0f4f9] text-[#3c4043] font-bold';
           }
 
           let spanStyle = 'rounded-md w-full';
@@ -2453,6 +2539,8 @@ const App = {
             labelText = cleanTitle;
           } else if (isSolarTerm) {
             labelText = s.termName || s.title.split(' ')[0];
+          } else if (isObservance) {
+            labelText = s.obsName || s.title.split(' ')[0];
           } else if (s.author) {
             labelText = `[${s.author.split(' ')[0]}] ${s.title}`;
           }
