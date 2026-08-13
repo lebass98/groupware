@@ -3880,6 +3880,9 @@ const App = {
               ${t.notes ? `<p class="text-xs text-on-surface-variant mt-1 line-clamp-2">${t.notes}</p>` : ''}
             </div>
             <div class="flex items-center gap-1 shrink-0">
+              <button onclick="App.editTodo(${t.id})" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" title="할 일 수정">
+                <span class="material-symbols-outlined text-[20px]">edit</span>
+              </button>
               ${t.status === 'draft' ? `
                 <button onclick="App.editDraftTodo(${t.id})" class="px-3 py-1 rounded-xl bg-primary/10 text-primary text-xs font-bold hover:bg-primary/20 transition-colors" title="이어서 작성">
                   이어서 작성
@@ -4036,11 +4039,15 @@ const App = {
     modal.classList.remove('hidden');
   },
 
-  editDraftTodo(todoId) {
+  editTodo(todoId) {
     const todo = (this.state.todos || []).find(t => t.id === todoId);
     if (todo) {
       this.openTodoModal(todo);
     }
+  },
+
+  editDraftTodo(todoId) {
+    this.editTodo(todoId);
   },
 
   closeTodoModal() {

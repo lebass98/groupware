@@ -191,8 +191,9 @@ Pool/
   - M3 디자인 철학, 컬러 토큰 시스템, 6종 테마 팔레트, 타이포그래피, 768px 반응형 레이아웃 및 컴포넌트 명세서 수립.
 - **상단 공지사항 티커 둥근 캡슐 바(Pill Capsule Bar) 디자인 개편**:
   - 상단 헤더 아래 유선형 둥근 알약형 캡슐 바(`border-radius: var(--radius-full)`, `bg-surface-container-low`) 디자인 적용.
-- **할 일 관리(To-Do Management) 기능 및 작성 모달 신설**:
+- **할 일 관리(To-Do Management) 기능 및 작성/수정 모달 신설**:
   - 메인 메뉴 그리드 내 '할 일 관리' 카드 신설 및 할 일 목록 페이지(`screen-todo`) 구축.
+  - 할 일 카드별 명시적 '수정(edit)' 아이콘 버튼 추가 및 클릭 시 풀스크린 모달(`modal-todo-write`) 팝업 오픈 연동.
   - 프로젝트 직접 입력 및 최근 사용한 프로젝트 칩(`recent-projects-chips`) 추천 기능 적용 (클릭 시 자동 대입).
   - 임시저장(`status: 'draft'`) 기능 구현 및 목록 내 임시저장 필터 칩/배지, 이어서 작성/수정 모달 연동.
   - 출근 확인 모달과 동일한 M3 디자인 스타일의 '할 일 삭제 확인 팝업'(`modal-todo-delete-confirm`) 신설.
