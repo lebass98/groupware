@@ -360,7 +360,7 @@
         <section class="flex flex-col gap-4">
           <header class="flex justify-between items-end px-1">
             <h2 class="font-headline text-2xl font-bold tracking-tight">오늘의 근무</h2>
-            <span class="font-label text-sm text-on-surface-variant">10월 24일 화요일</span>
+            <span id="today-summary-header-date" class="font-label text-sm text-on-surface-variant">8월 12일 수요일</span>
           </header>
           <div class="bg-surface-container-lowest rounded-2xl p-6 relative overflow-hidden group transition-all duration-300">
             <div class="absolute -top-12 -right-12 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>
@@ -369,25 +369,25 @@
                 <div>
                   <div class="flex items-center gap-2 mb-1">
                     <div class="active-dot-wrapper">
-                      <span class="w-2.5 h-2.5 rounded-full bg-secondary relative z-10"></span>
+                      <span id="today-summary-work-dot" class="w-2.5 h-2.5 rounded-full bg-secondary relative z-10"></span>
                     </div>
-                    <span class="font-label text-sm font-semibold text-secondary">근무 중</span>
+                    <span id="today-summary-work-status" class="font-label text-sm font-semibold text-secondary">근무 중</span>
                   </div>
-                  <h3 class="font-body text-4xl font-extrabold text-on-surface tracking-tighter">04<span class="text-2xl text-on-surface-variant font-semibold">h</span> 12<span class="text-2xl text-on-surface-variant font-semibold">m</span></h3>
+                  <h3 id="today-summary-work-time" class="font-body text-4xl font-extrabold text-on-surface tracking-tighter">04<span class="text-2xl text-on-surface-variant font-semibold">h</span> 12<span class="text-2xl text-on-surface-variant font-semibold">m</span></h3>
                 </div>
                 <div class="text-right">
                   <p class="font-label text-xs text-on-surface-variant mb-0.5">출근 시간</p>
-                  <p class="font-body text-base font-bold text-on-surface">08:45 AM</p>
+                  <p id="today-summary-checkin-time" class="font-body text-base font-bold text-on-surface">08:45 AM</p>
                 </div>
               </div>
               <div class="w-full bg-surface-container h-3 rounded-full overflow-hidden mb-3">
-                <div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full w-[52%] relative">
+                <div id="today-summary-progress-bar" class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full w-[52%] relative">
                   <div class="absolute right-0 top-0 bottom-0 w-8 bg-white/20 blur-[2px] rounded-full translate-x-1/2"></div>
                 </div>
               </div>
               <div class="flex justify-between font-label text-xs text-on-surface-variant">
                 <span>목표 8시간</span>
-                <span>퇴근까지 3h 48m</span>
+                <span id="today-summary-remaining-time">퇴근까지 3h 48m</span>
               </div>
             </div>
           </div>
@@ -395,42 +395,15 @@
 
         <!-- 2. Calendar & Schedule -->
         <section class="flex flex-col gap-4">
-          <header class="flex items-center gap-2 px-1">
-            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
-            <h2 class="font-headline text-lg font-bold">일정</h2>
+          <header class="flex items-center justify-between px-1">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+              <h2 class="font-headline text-lg font-bold">오늘의 일정</h2>
+            </div>
+            <button class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-calendar')">전체보기</button>
           </header>
-          <div class="flex flex-col gap-3">
-            <div class="bg-surface-container-low rounded-2xl p-4 flex gap-4 items-center">
-              <div class="flex flex-col items-center justify-center w-12 flex-shrink-0">
-                <span class="font-body text-sm font-bold text-on-surface">10:00</span>
-                <span class="font-label text-[10px] text-on-surface-variant">AM</span>
-              </div>
-              <div class="w-[2px] h-10 bg-primary-container rounded-full opacity-50"></div>
-              <div class="flex-grow">
-                <h4 class="font-body text-base font-semibold text-on-surface mb-0.5">주간 부서 회의</h4>
-                <p class="font-label text-xs text-on-surface-variant flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[14px]">location_on</span> 대회의실 A
-                </p>
-              </div>
-              <div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
-            </div>
-            <div class="bg-surface-container-lowest shadow-[0_8px_24px_rgba(35,44,81,0.04)] rounded-2xl p-4 flex gap-4 items-center relative overflow-hidden">
-              <div class="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-l-2xl"></div>
-              <div class="flex flex-col items-center justify-center w-12 flex-shrink-0">
-                <span class="font-body text-sm font-bold text-primary">14:00</span>
-                <span class="font-label text-[10px] text-primary">PM</span>
-              </div>
-              <div class="w-[2px] h-10 bg-primary rounded-full"></div>
-              <div class="flex-grow">
-                <h4 class="font-body text-base font-semibold text-on-surface mb-0.5">클라이언트 미팅 (온라인)</h4>
-                <p class="font-label text-xs text-on-surface-variant flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[14px]">videocam</span> Google Meet
-                </p>
-              </div>
-              <button class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 active:scale-95 transition-transform">
-                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </button>
-            </div>
+          <div id="today-summary-schedules-container" class="flex flex-col gap-3">
+            <!-- Dynamically populated by App.renderTodayData() -->
           </div>
         </section>
 
@@ -439,14 +412,14 @@
           <header class="flex justify-between items-center px-1">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">beach_access</span>
-              <h2 class="font-headline text-lg font-bold">휴가</h2>
+              <h2 class="font-headline text-lg font-bold">휴가 정보</h2>
             </div>
             <button class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-request')">상세보기</button>
           </header>
           <div class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-4">
             <div class="flex justify-between items-center">
               <span class="font-body text-sm font-medium text-on-surface">잔여 연차</span>
-              <span class="font-headline text-xl font-bold text-primary">12.5 <span class="text-sm font-normal text-on-surface-variant">일</span></span>
+              <span id="today-summary-leave-days" class="font-headline text-xl font-bold text-primary">12 <span class="text-sm font-normal text-on-surface-variant">일</span></span>
             </div>
             <div class="bg-surface-container-low rounded-2xl p-3 flex items-start gap-3">
               <div class="w-8 h-8 rounded-full bg-tertiary-container/30 flex items-center justify-center shrink-0 mt-0.5">
@@ -454,7 +427,7 @@
               </div>
               <div>
                 <p class="font-label text-xs font-semibold text-on-surface mb-0.5">예정된 휴가</p>
-                <p class="font-label text-xs text-on-surface-variant">11월 3일 (금) - 연차</p>
+                <p id="today-summary-upcoming-leave" class="font-label text-xs text-on-surface-variant">8월 18일 (화) - 연차</p>
               </div>
             </div>
           </div>
@@ -465,24 +438,17 @@
           <header class="flex justify-between items-center px-1">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-primary-dim" style="font-variation-settings: 'FILL' 1;">credit_card</span>
-              <h2 class="font-headline text-lg font-bold">경비</h2>
+              <h2 class="font-headline text-lg font-bold">경비 내역</h2>
             </div>
+            <button class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-finance')">상세보기</button>
           </header>
           <div class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-4 cursor-pointer hover:bg-surface-container-low transition-colors" onclick="App.switchTab('screen-finance')">
             <div class="flex justify-between items-center">
               <span class="font-body text-sm font-medium text-on-surface">미청구 내역</span>
-              <span class="font-headline text-xl font-bold text-on-surface">2 <span class="text-sm font-normal text-on-surface-variant">건</span></span>
+              <span id="today-summary-unbilled-count" class="font-headline text-xl font-bold text-on-surface">2 <span class="text-sm font-normal text-on-surface-variant">건</span></span>
             </div>
-            <div class="flex flex-col gap-2">
-              <div class="flex justify-between items-center bg-surface p-3 rounded-2xl">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 bg-surface-container rounded-full flex items-center justify-center text-on-surface-variant">
-                    <span class="material-symbols-outlined text-[16px]">local_taxi</span>
-                  </div>
-                  <span class="font-label text-xs font-semibold text-on-surface">카카오T 택시</span>
-                </div>
-                <span class="font-body text-sm font-bold text-on-surface">15,400원</span>
-              </div>
+            <div id="today-summary-expense-list" class="flex flex-col gap-2">
+              <!-- Dynamically populated by App.renderTodayData() -->
             </div>
           </div>
         </section>
@@ -494,22 +460,10 @@
               <span class="material-symbols-outlined text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">draw</span>
               <h2 class="font-headline text-lg font-bold">결재 대기</h2>
             </div>
-            <span class="bg-tertiary-container text-on-tertiary-container font-label text-xs font-bold px-2 py-0.5 rounded-full">3건</span>
+            <span id="today-summary-pending-count" class="bg-tertiary-container text-on-tertiary-container font-label text-xs font-bold px-2.5 py-0.5 rounded-full">1건</span>
           </header>
-          <div class="flex flex-col gap-3">
-            <div class="bg-surface-container-lowest rounded-2xl p-4 flex justify-between items-center hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="App.switchTab('screen-finance'); App.switchFinanceTab('report');">
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-on-surface-variant">description</span>
-                </div>
-                <div>
-                  <p class="font-label text-[10px] text-tertiary-fixed-dim font-bold mb-0.5">기안 대기</p>
-                  <h4 class="font-body text-sm font-semibold text-on-surface mb-1">2023년 4분기 비품 구매 품의서</h4>
-                  <p class="font-label text-xs text-on-surface-variant">경영지원팀 · 이대리</p>
-                </div>
-              </div>
-              <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
-            </div>
+          <div id="today-summary-pending-list" class="flex flex-col gap-3">
+            <!-- Dynamically populated by App.renderTodayData() -->
           </div>
         </section>
       </main>

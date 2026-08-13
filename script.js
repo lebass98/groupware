@@ -702,6 +702,25 @@ const App = {
       if (timerEl) {
         timerEl.innerText = `${hours}시간 ${mins}분 ${String(secs).padStart(2, '0')}초`;
       }
+
+      const summaryWorkTime = document.getElementById('today-summary-work-time');
+      if (summaryWorkTime) {
+        const hStr = String(hours).padStart(2, '0');
+        const mStr = String(mins).padStart(2, '0');
+        summaryWorkTime.innerHTML = `${hStr}<span class="text-2xl text-on-surface-variant font-semibold">h</span> ${mStr}<span class="text-2xl text-on-surface-variant font-semibold">m</span>`;
+      }
+      const summaryProgressBar = document.getElementById('today-summary-progress-bar');
+      if (summaryProgressBar) {
+        const pct = Math.min(100, Math.round((diffSec / 28800) * 100));
+        summaryProgressBar.style.width = `${pct}%`;
+      }
+      const summaryRemaining = document.getElementById('today-summary-remaining-time');
+      if (summaryRemaining) {
+        const remSecs = Math.max(0, 28800 - diffSec);
+        const remH = Math.floor(remSecs / 3600);
+        const remM = Math.floor((remSecs % 3600) / 60);
+        summaryRemaining.innerText = `퇴근까지 ${remH}h ${remM}m`;
+      }
     };
 
     updateTimer();
@@ -1037,6 +1056,224 @@ const App = {
       this.renderWeeklyCalendar();
     } else if (targetId === 'screen-finance') {
       this.renderExpenses();
+    } else if (targetId === 'screen-home' || targetId === 'screen-today') {
+      this.renderTodayData();
+    }
+  },
+
+  renderTodayData() {
+    const userName = this.state.user?.name || '이재광';
+    
+    // 1. Home Welcome Title
+    const welcomeTitle = document.getElementById('home-welcome-title');
+    if (welcomeTitle) {
+      welcomeTitle.innerHTML = `안녕하세요,<br/>${userName}님!`;
+    }
+    const greetingName = document.getElementById('user-greeting-name');
+    if (greetingName) {
+      greetingName.innerText = userName;
+    }
+
+    // 2. Home Notice Banner (Latest notice from live notices state)
+    const homeNoticeBanner = document.querySelector('#screen-home [onclick*="openNoticeDetail"]');
+    if (homeNoticeBanner && this.state.notices && this.state.notices.length > 0) {
+      const latestNotice = this.state.notices[0];
+      homeNoticeBanner.setAttribute('onclick', `App.openNoticeDetail(${latestNotice.id})`);
+      const noticeTitleEl = homeNoticeBanner.querySelector('.font-headline');
+      if (noticeTitleEl) {
+        noticeTitleEl.innerText = latestNotice.title;
+      }
+      const pinnedBadge = homeNoticeBanner.querySelector('.bg-tertiary-container\\/20');
+      if (pinnedBadge) {
+        pinnedBadge.innerText = latestNotice.isPinned ? '[필독]' : `[${latestNotice.category}]`;
+      }
+    }
+
+    // 3. Home Status Widget (Commute status)
+    const statusTitle = document.getElementById('home-status-title');
+    const statusBadge = document.getElementById('home-status-badge');
+    const statusDot = document.getElementById('home-status-dot');
+    if (statusTitle && statusBadge && statusDot) {
+      if (this.state.isCheckedIn) {
+        statusTitle.innerText = `${this.state.checkInTimeStr || '09:00'} 출근 완료`;
+        statusBadge.innerText = '근무 중';
+        statusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary';
+      } else {
+        statusTitle.innerText = '아직 출근 전입니다';
+        statusBadge.innerText = '원클릭 출근';
+        statusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary-container';
+      }
+    }
+
+    // --- SCREEN-TODAY (TODAY SUMMARY PAGE) LIVE DATA BINDING ---
+
+    // Date Header
+    const dateHeader = document.getElementById('today-summary-header-date');
+    const now = new Date();
+    const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+    if (dateHeader) {
+      dateHeader.innerText = `${now.getMonth() + 1}월 ${now.getDate()}일 ${dayNames[now.getDay()]}`;
+    }
+
+    // Attendance Summary Widget
+    const workDot = document.getElementById('today-summary-work-dot');
+    const workStatus = document.getElementById('today-summary-work-status');
+    const workTime = document.getElementById('today-summary-work-time');
+    const checkinTime = document.getElementById('today-summary-checkin-time');
+    const progressBar = document.getElementById('today-summary-progress-bar');
+    const remainingTime = document.getElementById('today-summary-remaining-time');
+
+    if (this.state.isCheckedIn) {
+      if (workDot) workDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary relative z-10';
+      if (workStatus) {
+        workStatus.innerText = '근무 중';
+        workStatus.className = 'font-label text-sm font-semibold text-secondary';
+      }
+      const secs = this.state.todaySeconds || 0;
+      const hours = String(Math.floor(secs / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((secs % 3600) / 60)).padStart(2, '0');
+      if (workTime) {
+        workTime.innerHTML = `${hours}<span class="text-2xl text-on-surface-variant font-semibold">h</span> ${mins}<span class="text-2xl text-on-surface-variant font-semibold">m</span>`;
+      }
+      if (checkinTime) {
+        checkinTime.innerText = this.state.checkInTimeStr || '08:45 AM';
+      }
+      const pct = Math.min(100, Math.round((secs / 28800) * 100));
+      if (progressBar) {
+        progressBar.style.width = `${pct}%`;
+      }
+      const remSecs = Math.max(0, 28800 - secs);
+      const remH = Math.floor(remSecs / 3600);
+      const remM = Math.floor((remSecs % 3600) / 60);
+      if (remainingTime) {
+        remainingTime.innerText = `퇴근까지 ${remH}h ${remM}m`;
+      }
+    } else {
+      if (workDot) workDot.className = 'w-2.5 h-2.5 rounded-full bg-outline-variant relative z-10';
+      if (workStatus) {
+        workStatus.innerText = '출근 전';
+        workStatus.className = 'font-label text-sm font-semibold text-on-surface-variant';
+      }
+      if (workTime) {
+        workTime.innerHTML = `00<span class="text-2xl text-on-surface-variant font-semibold">h</span> 00<span class="text-2xl text-on-surface-variant font-semibold">m</span>`;
+      }
+      if (checkinTime) {
+        checkinTime.innerText = '--:--';
+      }
+      if (progressBar) {
+        progressBar.style.width = `0%`;
+      }
+      if (remainingTime) {
+        remainingTime.innerText = '퇴근까지 8h 00m';
+      }
+    }
+
+    // Today's Calendar & Schedule Section
+    const schedulesContainer = document.getElementById('today-summary-schedules-container');
+    if (schedulesContainer) {
+      const todayYear = 2026;
+      const todayMonth = 8;
+      const todayDay = 12;
+      const schedules = this.getMockSchedules(todayYear, todayMonth, todayDay) || [];
+
+      if (schedules.length > 0) {
+        schedulesContainer.innerHTML = schedules.map(s => {
+          const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
+          return `
+            <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs">
+              <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0 mr-3"></div>
+              <img src="${s.avatar || 'profile.png'}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />
+              <div class="flex-1 text-left min-w-0">
+                <div class="flex items-center justify-between gap-1 mb-0.5">
+                  <span class="font-bold text-xs text-primary">${s.author || '이재광 차장'} • ${s.badge}</span>
+                  <span class="text-[11px] text-on-surface-variant font-medium">${s.time}</span>
+                </div>
+                <div class="text-sm text-on-surface font-bold font-headline leading-snug truncate">${s.title}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        schedulesContainer.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-6 text-center text-on-surface-variant font-medium border border-outline-variant/10">
+            <span class="material-symbols-outlined text-3xl text-outline mb-1">event_available</span>
+            <p class="font-bold text-on-surface text-sm">오늘 예정된 일정이 없습니다.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Leave & Absence Section
+    const leaveDaysEl = document.getElementById('today-summary-leave-days');
+    const bentoRemainEl = document.getElementById('bento-remain-days');
+    if (leaveDaysEl) {
+      const remainText = bentoRemainEl ? bentoRemainEl.innerText.trim() : '12일';
+      leaveDaysEl.innerHTML = `${remainText.replace('일', '')} <span class="text-sm font-normal text-on-surface-variant">일</span>`;
+    }
+
+    const upcomingLeaveEl = document.getElementById('today-summary-upcoming-leave');
+    if (upcomingLeaveEl) {
+      let foundLeaveStr = '8월 18일 (화) - 연차 (김종규 팀장)';
+      for (let day = 13; day <= 31; day++) {
+        const schs = this.getMockSchedules(2026, 8, day) || [];
+        const vacationSch = schs.find(sc => sc.badge === '휴가' || sc.badge === '연차' || sc.title.includes('휴가') || sc.title.includes('연차'));
+        if (vacationSch) {
+          foundLeaveStr = `8월 ${day}일 - ${vacationSch.title} (${vacationSch.author})`;
+          break;
+        }
+      }
+      upcomingLeaveEl.innerText = foundLeaveStr;
+    }
+
+    // Finance & Expenses Section
+    const unbilledCountEl = document.getElementById('today-summary-unbilled-count');
+    const expenseListEl = document.getElementById('today-summary-expense-list');
+    if (unbilledCountEl && expenseListEl) {
+      const unresolvedCorp = (this.state.finance.expenses.corp || []).filter(e => e.status === 'unresolved');
+      const unresolvedPersonal = (this.state.finance.expenses.personal || []).filter(e => e.status === 'unresolved');
+      const allUnresolved = [...unresolvedCorp, ...unresolvedPersonal];
+      
+      unbilledCountEl.innerHTML = `${allUnresolved.length} <span class="text-sm font-normal text-on-surface-variant">건</span>`;
+      
+      if (allUnresolved.length > 0) {
+        expenseListEl.innerHTML = allUnresolved.slice(0, 2).map(e => `
+          <div class="flex justify-between items-center bg-surface p-3 rounded-2xl">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-surface-container rounded-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-[16px]">${e.type === 'taxi' ? 'local_taxi' : e.type === 'restaurant' ? 'restaurant' : 'credit_card'}</span>
+              </div>
+              <span class="font-label text-xs font-semibold text-on-surface">${e.title}</span>
+            </div>
+            <span class="font-body text-sm font-bold text-on-surface">${e.amount.toLocaleString()}원</span>
+          </div>
+        `).join('');
+      } else {
+        expenseListEl.innerHTML = `
+          <div class="text-xs text-on-surface-variant py-2 text-center">미청구된 경비 내역이 없습니다.</div>
+        `;
+      }
+    }
+
+    // Pending Approvals Section
+    const pendingCountEl = document.getElementById('today-summary-pending-count');
+    const pendingListEl = document.getElementById('today-summary-pending-list');
+    if (pendingCountEl && pendingListEl) {
+      pendingCountEl.innerText = '1건';
+      pendingListEl.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-4 flex justify-between items-center hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="App.switchTab('screen-finance'); App.switchFinanceTab('report');">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-on-surface-variant">description</span>
+            </div>
+            <div>
+              <p class="font-label text-[10px] text-tertiary-fixed-dim font-bold mb-0.5">기안 대기</p>
+              <h4 class="font-body text-sm font-semibold text-on-surface mb-1">2026년 3분기 비품 구매 품의서</h4>
+              <p class="font-label text-xs text-on-surface-variant">경영지원팀 · 이재광 차장</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
+        </div>
+      `;
     }
   },
 
@@ -1557,6 +1794,7 @@ const App = {
     this.closeScheduleModal();
     
     this.renderCalendar();
+    this.renderTodayData();
   },
 
   selectCalendarDate(day) {
