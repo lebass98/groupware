@@ -3982,6 +3982,10 @@ const App = {
           <div class="flex items-center gap-2">
             <span class="font-headline font-bold text-sm text-on-surface"># ${selectedProject}</span>
             <span class="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full">${projectTodos.length}개</span>
+            <button type="button" onclick="App.openTodoModal()" class="ml-1 px-3 py-1.5 rounded-full bg-primary text-on-primary text-xs font-bold flex items-center gap-1 hover:bg-primary-dim active:scale-95 transition-all shadow-xs">
+              <span class="material-symbols-outlined text-sm">add</span>
+              <span>미션 등록</span>
+            </button>
           </div>
         </div>
       `;
@@ -4584,25 +4588,34 @@ const App = {
     if (!modal) return;
 
     const modalTitle = document.getElementById('modal-todo-write-title');
+    const modalSubtitle = document.getElementById('modal-todo-write-subtitle');
+    const projectContainer = document.getElementById('todo-project-input-container');
     const idInput = document.getElementById('todo-input-id');
     const titleInput = document.getElementById('todo-input-title');
     const projectInput = document.getElementById('todo-input-project');
     const notesInput = document.getElementById('todo-input-notes');
     const dateInput = document.getElementById('todo-input-date');
 
+    const selectedProj = this.state.selectedProject;
+
     if (todoToEdit) {
-      if (modalTitle) modalTitle.textContent = todoToEdit.status === 'draft' ? '임시저장 할 일 작성' : '할 일 수정';
+      if (modalTitle) modalTitle.textContent = todoToEdit.status === 'draft' ? '임시저장 수정' : '할 일 / 미션 수정';
+      if (modalSubtitle) modalSubtitle.textContent = todoToEdit.project ? `'${todoToEdit.project}'의 세부 미션을 수정합니다.` : '업무 항목을 수정합니다.';
       if (idInput) idInput.value = todoToEdit.id;
       if (titleInput) titleInput.value = todoToEdit.title || '';
       if (projectInput) projectInput.value = todoToEdit.project || '';
       if (notesInput) notesInput.value = todoToEdit.notes || '';
       this.setTodoPriorityForm(todoToEdit.priority || 'medium');
       this.setTodoStatusForm(todoToEdit.status || 'todo');
+
+      if (selectedProj) {
+        if (projectContainer) projectContainer.classList.add('hidden');
+      } else {
+        if (projectContainer) projectContainer.classList.remove('hidden');
+      }
     } else {
-      if (modalTitle) modalTitle.textContent = '할 일 작성';
       if (idInput) idInput.value = '';
       if (titleInput) titleInput.value = '';
-      if (projectInput) projectInput.value = '';
       if (notesInput) notesInput.value = '';
       if (dateInput) {
         const todayStr = new Date().toISOString().split('T')[0];
@@ -4610,6 +4623,20 @@ const App = {
       }
       this.setTodoPriorityForm('medium');
       this.setTodoStatusForm('todo');
+
+      if (selectedProj) {
+        // [프로젝트 내부에서 등록] 프로젝트 선택 입력창 숨김 & 현재 프로젝트명 자동 할당
+        if (modalTitle) modalTitle.textContent = '프로젝트 내 미션 등록';
+        if (modalSubtitle) modalSubtitle.textContent = `'${selectedProj}' 프로젝트 내 신규 업무 미션을 등록합니다.`;
+        if (projectInput) projectInput.value = selectedProj;
+        if (projectContainer) projectContainer.classList.add('hidden');
+      } else {
+        // [프로젝트 메인 화면에서 등록] 프로젝트명 직접 입력 노출
+        if (modalTitle) modalTitle.textContent = '신규 프로젝트 / 업무 등록';
+        if (modalSubtitle) modalSubtitle.textContent = '새로운 프로젝트명 및 할 일 미션을 등록합니다.';
+        if (projectInput) projectInput.value = '';
+        if (projectContainer) projectContainer.classList.remove('hidden');
+      }
     }
 
     this.renderRecentProjectChips();
