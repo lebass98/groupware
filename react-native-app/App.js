@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, StatusBar, Platform, View, Text, TouchableOpacity, ActivityIndicator, BackHandler } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function App() {
   const [error, setError] = useState(false);
@@ -28,13 +29,20 @@ export default function App() {
   // 웹 브라우저 환경에서는 <iframe>을 사용해 웹뷰를 대체합니다.
   if (Platform.OS === 'web') {
     return (
-      <SafeAreaView style={styles.container}>
-        <iframe
-          src={targetUri}
-          style={{ width: '100%', height: '100%', border: 'none', flex: 1 }}
-          title="Groupware Web View"
-        />
-      </SafeAreaView>
+      <LinearGradient
+        colors={['#f6d5f7', '#fbe9d7']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.container}
+      >
+        <SafeAreaView style={styles.safeArea}>
+          <iframe
+            src={targetUri}
+            style={{ width: '100%', height: '100%', border: 'none', flex: 1, backgroundColor: 'transparent' }}
+            title="Groupware Web View"
+          />
+        </SafeAreaView>
+      </LinearGradient>
     );
   }
 
@@ -46,63 +54,74 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#f7f5ff" />
-      
-      {/* 웹뷰를 항상 렌더링 상태로 유지해 세션과 현재 히스토리 URL을 잃지 않도록 합니다. */}
-      <WebView
-        ref={webViewRef}
-        key={key}
-        source={{ uri: targetUri }}
-        style={{ flex: 1 }}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        startInLoadingState={true}
-        scalesPageToFit={true}
-        mixedContentMode="always"
-        originWhitelist={['*']}
-        thirdPartyCookiesEnabled={true}
-        allowFileAccess={true}
-        allowsInlineMediaPlayback={true}
-        geolocationEnabled={true}
-        onNavigationStateChange={(navState) => {
-          setCanGoBack(navState.canGoBack);
-        }}
-        renderLoading={() => (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#0052D0" />
+    <LinearGradient
+      colors={['#f6d5f7', '#fbe9d7']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <StatusBar barStyle="dark-content" backgroundColor="#f6d5f7" />
+        
+        {/* 웹뷰를 항상 렌더링 상태로 유지해 세션과 현재 히스토리 URL을 잃지 않도록 합니다. */}
+        <WebView
+          ref={webViewRef}
+          key={key}
+          source={{ uri: targetUri }}
+          style={{ flex: 1, backgroundColor: 'transparent' }}
+          containerStyle={{ backgroundColor: 'transparent' }}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          startInLoadingState={true}
+          scalesPageToFit={true}
+          mixedContentMode="always"
+          originWhitelist={['*']}
+          thirdPartyCookiesEnabled={true}
+          allowFileAccess={true}
+          allowsInlineMediaPlayback={true}
+          geolocationEnabled={true}
+          onNavigationStateChange={(navState) => {
+            setCanGoBack(navState.canGoBack);
+          }}
+          renderLoading={() => (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#0052D0" />
+            </View>
+          )}
+          onError={() => setError(true)}
+          onHttpError={() => setError(true)}
+        />
+
+        {/* 에러 발생 시 웹뷰 위에 절대 위치로 에러 레이어를 오버레이합니다. */}
+        {error && (
+          <View style={styles.errorOverlayContainer}>
+            <Text style={styles.errorTitle}>네트워크 연결 확인</Text>
+            <Text style={styles.errorSub}>워드앤코드 그룹웨어 서버에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.</Text>
+            <TouchableOpacity style={styles.retryBtn} onPress={handleReload}>
+              <Text style={styles.retryText}>다시 시도</Text>
+            </TouchableOpacity>
           </View>
         )}
-        onError={() => setError(true)}
-        onHttpError={() => setError(true)}
-      />
-
-      {/* 에러 발생 시 웹뷰 위에 절대 위치로 에러 레이어를 오버레이합니다. */}
-      {error && (
-        <View style={styles.errorOverlayContainer}>
-          <Text style={styles.errorTitle}>네트워크 연결 확인</Text>
-          <Text style={styles.errorSub}>워드앤코드 그룹웨어 서버에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.</Text>
-          <TouchableOpacity style={styles.retryBtn} onPress={handleReload}>
-            <Text style={styles.retryText}>다시 시도</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    </SafeAreaView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f5ff',
+  },
+  safeArea: {
+    flex: 1,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    backgroundColor: 'transparent',
   },
   loadingContainer: {
     position: 'absolute',
     top: 0, bottom: 0, left: 0, right: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f7f5ff',
+    backgroundColor: 'transparent',
   },
   errorOverlayContainer: {
     position: 'absolute',
@@ -110,7 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
-    backgroundColor: '#f7f5ff',
+    backgroundColor: '#f6d5f7',
     zIndex: 999, // 웹뷰 위에 오버레이되도록 보장
   },
   errorTitle: {
