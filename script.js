@@ -9,6 +9,27 @@ const App = {
     todoFormPriority: 'medium',
     recentProjects: ['그룹웨어 고도화', '근태관리 시스템', '디자인 시스템 (M3)', '경영지원 / 재무'],
     pendingDeleteTodoId: null,
+    selectedTrashIds: [],
+    trashedTodos: [
+      {
+        id: 101,
+        title: 'Q3 Performance Review UI Updates (삭제됨)',
+        project: '그룹웨어 고도화',
+        status: 'draft',
+        priority: 'high',
+        deletedAt: '2026-08-12',
+        notes: '휴지통 이동 예시 항목'
+      },
+      {
+        id: 102,
+        title: 'Finalize Q4 Marketing Assets (삭제됨)',
+        project: '경영지원 / 재무',
+        status: 'draft',
+        priority: 'medium',
+        deletedAt: '2026-08-11',
+        notes: '마케팅 에셋 최종 검토 예시'
+      }
+    ],
     todos: [
       {
         id: 1,
@@ -693,6 +714,9 @@ const App = {
         if (parsed.recentProjects && parsed.recentProjects.length) {
           this.state.recentProjects = parsed.recentProjects;
         }
+        if (parsed.trashedTodos && parsed.trashedTodos.length) {
+          this.state.trashedTodos = parsed.trashedTodos;
+        }
       }
     } catch (e) {
       console.warn('LocalStorage error:', e);
@@ -710,6 +734,7 @@ const App = {
         logs: this.state.logs,
         todos: this.state.todos,
         recentProjects: this.state.recentProjects,
+        trashedTodos: this.state.trashedTodos,
         activeTab: this.state.activeTab
       }));
     } catch (e) {
@@ -3996,12 +4021,156 @@ const App = {
   confirmDeleteTodo() {
     const todoId = this.state.pendingDeleteTodoId;
     if (todoId) {
-      this.state.todos = (this.state.todos || []).filter(t => t.id !== todoId);
-      this.saveState();
-      this.renderTodos();
-      this.showToast('할 일이 삭제되었습니다.');
+      const todoIdx = (this.state.todos || []).findIndex(t => t.id === todoId);
+      if (todoIdx !== -1) {
+        const item = this.state.todos.splice(todoIdx, 1)[0];
+        const nowStr = new Date().toISOString().split('T')[0];
+        item.deletedAt = nowStr;
+        if (!this.state.trashedTodos) this.state.trashedTodos = [];
+        this.state.trashedTodos.unshift(item);
+
+        this.saveState();
+        this.renderTodos();
+        this.updateTrashCount();
+        this.showToast('🗑️ 할 일이 휴지통으로 이동되었습니다.');
+      }
     }
     this.closeTodoDeleteModal();
+  },
+
+  updateTrashCount() {
+    const trashCountEl = document.getElementById('todo-trash-count');
+    if (trashCountEl) {
+      const count = (this.state.trashedTodos || []).length;
+      trashCountEl.textContent = count;
+    }
+  },
+
+  openTodoTrashModal() {
+    const modal = document.getElementById('modal-todo-trash');
+    if (!modal) return;
+    this.renderTrashTodos();
+    this.updateTrashCount();
+    modal.classList.remove('hidden');
+  },
+
+  closeTodoTrashModal() {
+    const modal = document.getElementById('modal-todo-trash');
+    if (modal) modal.classList.add('hidden');
+  },
+
+  renderTrashTodos() {
+    const container = document.getElementById('todo-trash-list-container');
+    if (!container) return;
+
+    const list = this.state.trashedTodos || [];
+    this.updateTrashCount();
+
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-16 text-center bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/10">
+          <div class="w-20 h-20 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 text-on-surface-variant opacity-60">
+            <span class="material-symbols-outlined text-4xl">auto_delete</span>
+          </div>
+          <h3 class="font-headline text-lg font-bold text-on-surface mb-1">휴지통이 비어 있습니다</h3>
+          <p class="text-xs text-on-surface-variant max-w-xs">삭제된 할 일 항목이 여기에 안전하게 보관됩니다.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const selectedSet = new Set(this.state.selectedTrashIds || []);
+
+    container.innerHTML = list.map(t => {
+      const isChecked = selectedSet.has(t.id) ? 'checked' : '';
+      return `
+        <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3 group transition-transform hover:-translate-y-0.5 shadow-[0_4px_16px_rgba(35,44,81,0.03)] border border-outline-variant/10 text-left">
+          <div class="flex items-start justify-between gap-4">
+            <label class="pt-0.5 cursor-pointer select-none">
+              <input type="checkbox" ${isChecked} onchange="App.toggleTrashSelect(${t.id})" class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer"/>
+            </label>
+            <div class="flex-1 flex flex-col text-left">
+              <h3 class="font-body text-base font-bold text-on-surface line-through opacity-70 leading-tight">${t.title}</h3>
+              <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                <span class="text-xs text-on-surface-variant font-medium">Deleted: ${t.deletedAt || '방금 전'}</span>
+                ${t.project ? `<span class="text-[11px] text-outline font-medium"># ${t.project}</span>` : ''}
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-end gap-2 mt-1 border-t border-outline-variant/10 pt-3">
+            <button type="button" onclick="App.restoreTodoFromTrash(${t.id})" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary text-xs font-bold transition-colors">
+              <span class="material-symbols-outlined text-base">settings_backup_restore</span>
+              <span>복구</span>
+            </button>
+            <button type="button" onclick="App.permaDeleteFromTrash(${t.id})" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-error/10 hover:bg-error/20 text-error text-xs font-bold transition-colors">
+              <span class="material-symbols-outlined text-base">delete</span>
+              <span>영구 삭제</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('') + `
+      <div class="mt-4 rounded-2xl overflow-hidden relative h-28 flex items-center justify-center bg-surface-container-low border border-outline-variant/10">
+        <p class="relative z-10 font-label text-xs text-on-surface-variant font-bold tracking-wide uppercase">End of deleted items (삭제 항목 끝)</p>
+      </div>
+    `;
+  },
+
+  toggleTrashSelect(todoId) {
+    if (!this.state.selectedTrashIds) this.state.selectedTrashIds = [];
+    const idx = this.state.selectedTrashIds.indexOf(todoId);
+    if (idx === -1) {
+      this.state.selectedTrashIds.push(todoId);
+    } else {
+      this.state.selectedTrashIds.splice(idx, 1);
+    }
+  },
+
+  toggleSelectAllTrash(checkboxEl) {
+    if (!checkboxEl) return;
+    if (checkboxEl.checked) {
+      this.state.selectedTrashIds = (this.state.trashedTodos || []).map(t => t.id);
+    } else {
+      this.state.selectedTrashIds = [];
+    }
+    this.renderTrashTodos();
+  },
+
+  restoreTodoFromTrash(todoId) {
+    const idx = (this.state.trashedTodos || []).findIndex(t => t.id === todoId);
+    if (idx !== -1) {
+      const item = this.state.trashedTodos.splice(idx, 1)[0];
+      delete item.deletedAt;
+      item.status = 'in_progress';
+      if (!this.state.todos) this.state.todos = [];
+      this.state.todos.unshift(item);
+
+      this.saveState();
+      this.renderTodos();
+      this.renderTrashTodos();
+      this.showToast('♻️ 할 일이 성공적으로 복구되었습니다.');
+    }
+  },
+
+  permaDeleteFromTrash(todoId) {
+    if (!confirm('정말로 이 항목을 영구 삭제하시겠습니까? (복구 불가능)')) return;
+    this.state.trashedTodos = (this.state.trashedTodos || []).filter(t => t.id !== todoId);
+    this.saveState();
+    this.renderTrashTodos();
+    this.showToast('할 일이 영구 삭제되었습니다.');
+  },
+
+  emptyTodoTrash() {
+    if ((!this.state.trashedTodos || this.state.trashedTodos.length === 0)) {
+      this.showToast('휴지통이 이미 비어 있습니다.');
+      return;
+    }
+    if (!confirm('휴지통의 모든 항목을 영구 비우시겠습니까?')) return;
+    this.state.trashedTodos = [];
+    this.state.selectedTrashIds = [];
+    this.saveState();
+    this.renderTrashTodos();
+    this.showToast('🗑️ 휴지통이 깨끗이 비워졌습니다.');
   },
 
   openTodoModal(todoToEdit = null) {

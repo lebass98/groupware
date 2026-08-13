@@ -1432,7 +1432,14 @@
             <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">할 일 관리</h2>
             <p class="text-on-surface-variant text-xs mt-1">사내 업무 우선순위 및 미션을 효율적으로 관리하세요.</p>
           </div>
-          <span class="px-3 py-1 bg-primary/10 text-primary font-bold text-xs rounded-full" id="todo-total-count">총 3개</span>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="App.openTodoTrashModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-xs font-bold transition-all active:scale-95 border border-outline-variant/15" title="휴지통 전체보기">
+              <span class="material-symbols-outlined text-base text-primary">auto_delete</span>
+              <span>휴지통</span>
+              <span id="todo-trash-count" class="bg-error/10 text-error text-[10px] px-1.5 py-0.5 rounded-full font-bold">0</span>
+            </button>
+            <span class="px-3 py-1.5 bg-primary/10 text-primary font-bold text-xs rounded-full" id="todo-total-count">총 3개</span>
+          </div>
         </div>
 
         <!-- Search Bar Section -->
@@ -2245,6 +2252,45 @@
           삭제하기
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal: TO-DO TRASH (Full-Screen Page Modal / 휴지통 전체 팝업) -->
+  <div class="fixed inset-0 z-[120] bg-surface-container-lowest flex flex-col w-full h-full hidden overflow-hidden" id="modal-todo-trash">
+    <div class="w-full max-w-[768px] mx-auto h-full bg-surface shadow-2xl flex flex-col overflow-hidden relative border-x border-outline-variant/10">
+      
+      <!-- Top App Bar Header -->
+      <header class="relative z-10 flex items-center justify-between px-6 py-4 w-full bg-surface-container-lowest shrink-0 border-b border-outline-variant/15">
+        <div class="flex-1 text-left">
+          <span class="text-xs text-on-surface-variant font-medium">할 일 휴지통</span>
+        </div>
+        <h1 class="text-xl font-headline font-bold tracking-tight text-on-surface">휴지통</h1>
+        <div class="flex-1 flex justify-end">
+          <button type="button" onclick="App.closeTodoTrashModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors active:scale-95">
+            <span class="material-symbols-outlined text-2xl">close</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="relative z-10 flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-5 text-left pb-24">
+        <!-- Action Bar -->
+        <div class="flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-outline-variant/10">
+          <label class="flex items-center gap-3 cursor-pointer group select-none">
+            <input type="checkbox" id="trash-select-all" onchange="App.toggleSelectAllTrash(this)" class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer"/>
+            <span class="font-label font-bold text-sm text-on-surface-variant group-hover:text-on-surface transition-colors">전체 선택</span>
+          </label>
+          <button type="button" onclick="App.emptyTodoTrash()" class="px-5 py-2.5 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-label font-bold text-xs shadow-md hover:opacity-90 transition-all active:scale-95 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base">delete_sweep</span>
+            <span>휴지통 비우기</span>
+          </button>
+        </div>
+
+        <!-- Task Trash List -->
+        <div class="flex flex-col gap-4" id="todo-trash-list-container">
+          <!-- Rendered dynamically by App.renderTrashTodos() -->
+        </div>
+      </main>
     </div>
   </div>
 
