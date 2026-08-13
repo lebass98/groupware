@@ -980,10 +980,13 @@ const App = {
     // 기존 실행 중인 타이머 확실히 정지
     this.stopNoticeTicker();
 
-    // 공지사항 목록에서 제목 추출 (최신 순, 최대 6개)
+    // 공지사항 목록에서 제목 및 ID 추출 (최신 순, 최대 6개)
     const items = (this.state.notices || [])
       .slice(0, 6)
-      .map(n => (n.isPinned ? `📌 ${n.title}` : n.title));
+      .map(n => ({
+        id: n.id,
+        title: n.isPinned ? `📌 ${n.title}` : n.title
+      }));
 
     if (items.length === 0) return;
 
@@ -993,7 +996,9 @@ const App = {
     let currentIdx = 0;
     const initialEl = document.createElement('div');
     initialEl.className = 'ticker-item static';
-    initialEl.textContent = items[0];
+    initialEl.textContent = items[0].title;
+    initialEl.setAttribute('title', '공지사항 상세 보기');
+    initialEl.onclick = () => this.openNoticeDetail(items[0].id);
     track.appendChild(initialEl);
 
     if (items.length <= 1) return;
@@ -1009,6 +1014,7 @@ const App = {
       if (!activeEl) return;
 
       const nextIdx = (currentIdx + 1) % items.length;
+      const nextItem = items[nextIdx];
 
       // 2. 현재 노드 퇴장 애니메이션
       activeEl.className = 'ticker-item flip-out';
@@ -1016,7 +1022,9 @@ const App = {
       // 3. 신규 노드 생성 및 등장 애니메이션
       const nextEl = document.createElement('div');
       nextEl.className = 'ticker-item flip-in';
-      nextEl.textContent = items[nextIdx];
+      nextEl.textContent = nextItem.title;
+      nextEl.setAttribute('title', '공지사항 상세 보기');
+      nextEl.onclick = () => this.openNoticeDetail(nextItem.id);
       track.appendChild(nextEl);
 
       // 4. 퇴장 노드 안전하게 제거

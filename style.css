@@ -408,6 +408,7 @@ body.dark .ticker-label {
   overflow: hidden;
   height: 100%;
   position: relative;
+  cursor: pointer;
 }
 
 .ticker-track {
@@ -431,6 +432,13 @@ body.dark .ticker-label {
   width: 100%;
   left: 0;
   top: 0;
+  cursor: pointer;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.ticker-item:hover {
+  color: var(--primary);
+  text-decoration: underline;
 }
 
 /* 부드러운 스크롤 & 페이드 애니메이션 */
