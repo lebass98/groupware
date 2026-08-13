@@ -189,3 +189,5 @@ Pool/
   - README.md 문서 내 모든 이모지 및 아이콘 제거하여 가독성 개선.
 - **DESIGN.md 통합 디자인 가이드 문서 신설**:
   - M3 디자인 철학, 컬러 토큰 시스템, 6종 테마 팔레트, 타이포그래피, 768px 반응형 레이아웃 및 컴포넌트 명세서 수립.
+- **상단 공지사항 티커 둥근 캡슐 바(Pill Capsule Bar) 디자인 개편**:
+  - 상단 헤더 아래 유선형 둥근 알약형 캡슐 바(`border-radius: var(--radius-full)`, `bg-surface-container-low`) 디자인 적용.

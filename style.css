@@ -347,60 +347,60 @@ body.dark .top-header {
 }
 
 /* =========================================
-   플립형 공지 티커 배너
+   플립형 공지 티커 배너 (유선형 둥근 알약 캡슐 바 스타일)
    ========================================= */
 .notice-ticker {
   position: fixed;
-  top: 56px; /* header 높이 */
+  top: 62px;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
-  max-width: 768px;
+  width: calc(100% - 2rem);
+  max-width: calc(768px - 2rem);
   z-index: 39;
   display: flex;
   align-items: center;
-  gap: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 0;
-  height: 36px;
+  gap: 0.5rem;
+  background: var(--surface-container-low);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius-full);
+  padding: 0 0.85rem;
+  height: 38px;
   overflow: hidden;
-  transition: background 0.3s ease;
+  box-shadow: 0 4px 16px rgba(35, 44, 81, 0.05);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
   box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
   .notice-ticker {
-    max-width: 768px;
+    max-width: calc(768px - 2rem);
   }
 }
 
 body.dark .notice-ticker {
-  background: linear-gradient(90deg, rgba(94, 139, 255, 0.12) 0%, rgba(11, 17, 32, 0.92) 100%);
-  border-bottom-color: rgba(94, 139, 255, 0.12);
+  background: var(--surface-container-low);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .ticker-label {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0 0.85rem;
-  font-size: 0.7rem;
+  gap: 0.35rem;
+  padding: 0 0.4rem 0 0.2rem;
+  font-size: 0.75rem;
   font-weight: 800;
   color: var(--primary);
   white-space: nowrap;
-  background: rgba(0, 82, 208, 0.1);
+  background: transparent;
   height: 100%;
-  letter-spacing: 0.02em;
-  border-right: 1px solid rgba(0, 82, 208, 0.12);
+  letter-spacing: 0.01em;
   flex-shrink: 0;
 }
 
 body.dark .ticker-label {
-  background: rgba(94, 139, 255, 0.15);
-  border-right-color: rgba(94, 139, 255, 0.12);
+  background: transparent;
+  color: var(--primary);
 }
 
 .ticker-viewport {
@@ -469,24 +469,24 @@ body.dark .ticker-label {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border: none;
   background: transparent;
   color: var(--on-surface-variant);
   cursor: pointer;
   flex-shrink: 0;
+  border-radius: var(--radius-full);
   transition: background 0.2s ease, color 0.2s ease;
-  border-left: 1px solid rgba(162, 171, 215, 0.15);
 }
 
 .ticker-action:hover {
-  background: rgba(0, 82, 208, 0.08);
+  background: var(--surface-container-high);
   color: var(--primary);
 }
 
 body.dark .ticker-action:hover {
-  background: rgba(94, 139, 255, 0.1);
+  background: var(--surface-container-high);
 }
 
 
