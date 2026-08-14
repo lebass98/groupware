@@ -127,7 +127,7 @@
     "phone": "010-5244-1251",
     "tel": "070-7711-4808",
     "email": "yellow@wordncode.com",
-    "avatar": "profile.png",
+    "avatar": "./resource/image/profile_ghibli_lee.jpg",
     "status": "online",
     "statusText": "근무중"
   },
@@ -139,7 +139,7 @@
     "phone": "010-2362-0263",
     "tel": "070-7711-4806",
     "email": "red@wordncode.com",
-    "avatar": "./resource/image/profile_red_20260602.png",
+    "avatar": "./resource/image/profile_ghibli_choi.jpg",
     "status": "active",
     "statusText": ""
   },
@@ -151,7 +151,7 @@
     "phone": "010-6565-4215",
     "tel": "070-7711-4811",
     "email": "pub@wordncode.com",
-    "avatar": "./resource/image/profile_pub.png",
+    "avatar": "./resource/image/profile_ghibli_son.jpg",
     "status": "active",
     "statusText": ""
   },
