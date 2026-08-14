@@ -1302,7 +1302,21 @@ const App = {
 
       if (schedules.length > 0) {
         schedulesContainer.innerHTML = schedules.map(s => {
-          const isHoliday = (s.badge === '공휴일' || s.title.includes('공휴일') || s.author === '대한민국 공휴일' || s.author === '회사공지' || s.author === '국경일/기념일');
+          const isHoliday = (
+            s.badge === '공휴일' ||
+            s.badge === '기념일' ||
+            s.badge === '절기' ||
+            s.title.includes('공휴일') ||
+            s.title.includes('기념일') ||
+            s.title.includes('대체공휴일') ||
+            s.title.includes('절기') ||
+            s.author === '공휴일' ||
+            s.author === '기념일' ||
+            s.author === '24절기' ||
+            s.author === '대한민국 공휴일' ||
+            s.author === '회사공지' ||
+            s.author === '국경일/기념일'
+          );
           const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
           const imgHtml = isHoliday ? '' : `<img src="${s.avatar || 'profile.png'}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
           const authorText = isHoliday ? '' : `${s.author || '이재광 차장'} • `;
@@ -1985,25 +1999,27 @@ const App = {
 
   getNationalHoliday(year, month, day) {
     // Fixed Solar National Holidays
-    if (month === 1 && day === 1) return { title: "신정", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-    if (month === 3 && day === 1) return { title: "3·1절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-    if (month === 5 && day === 5) return { title: "어린이날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-    if (month === 6 && day === 6) return { title: "현충일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-    if (month === 8 && day === 15) return { title: "광복절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-    if (month === 10 && day === 3) return { title: "개천절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-    if (month === 10 && day === 9) return { title: "한글날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-    if (month === 12 && day === 25) return { title: "성탄절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
+    if (month === 1 && day === 1) return { title: "신정", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 3 && day === 1) return { title: "3·1절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 5 && day === 5) return { title: "어린이날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 6 && day === 6) return { title: "현충일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 8 && day === 15) return { title: "광복절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 10 && day === 3) return { title: "개천절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 10 && day === 9) return { title: "한글날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 12 && day === 25) return { title: "성탄절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
 
     // 2026 Specific Lunar & Substitute Holidays (🔴 빨간 날)
     if (year === 2026) {
-      if (month === 2 && (day === 16 || day === 18)) return { title: "설날 연휴", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-      if (month === 2 && day === 17) return { title: "설날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-      if (month === 3 && day === 2) return { title: "3·1절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-      if (month === 5 && day === 24) return { title: "부처님오신날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-      if (month === 5 && day === 25) return { title: "부처님오신날 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-      if (month === 9 && (day === 24 || day === 26)) return { title: "추석 연휴", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-      if (month === 9 && day === 25) return { title: "추석", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
-      if (month === 9 && day === 28) return { title: "추석 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "./resource/image/profile_abc.png" };
+      if (month === 2 && (day === 16 || day === 18)) return { title: "설날 연휴", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 2 && day === 17) return { title: "설날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 3 && day === 2) return { title: "3·1절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 5 && day === 24) return { title: "부처님오신날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 5 && day === 25) return { title: "부처님오신날 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 8 && day === 17) return { title: "광복절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 9 && (day === 24 || day === 26)) return { title: "추석 연휴", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 9 && day === 25) return { title: "추석", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 9 && day === 28) return { title: "추석 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 10 && day === 5) return { title: "개천절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
     }
 
     return null;
@@ -2661,9 +2677,10 @@ const App = {
       const dayOfWeek = dateObj.getDay();
       const isSelected = (d === selectedDay);
       const schedules = this.getMockSchedules(year, month, d);
+      const isNationalHoliday = !!this.getNationalHoliday(year, month, d);
 
       let textClass = 'text-on-surface font-medium';
-      if (dayOfWeek === 0) textClass = 'text-error font-semibold';
+      if (dayOfWeek === 0 || isNationalHoliday) textClass = 'text-error font-semibold';
       else if (dayOfWeek === 6) textClass = 'text-primary font-semibold';
 
       let barsHtml = '';
