@@ -79,7 +79,7 @@
     "phone": "010-2707-5681",
     "tel": "070-8805-1646",
     "email": "blue@wordncode.com",
-    "avatar": "./resource/image/profile_blue.png",
+    "avatar": "./resource/image/profile_ghibli_yoon.jpg",
     "status": "active",
     "statusText": ""
   },
@@ -91,7 +91,7 @@
     "phone": "010-8632-0944",
     "tel": "070-7711-4821",
     "email": "white@wordncode.com",
-    "avatar": "./resource/image/profile_white.png",
+    "avatar": "./resource/image/profile_ghibli_choi_jy.jpg",
     "status": "active",
     "statusText": ""
   },
@@ -103,7 +103,7 @@
     "phone": "010-8337-0176",
     "tel": "070-7711-4810",
     "email": "pink@wordncode.com",
-    "avatar": "./resource/image/profile_pink____________.png",
+    "avatar": "./resource/image/profile_ghibli_shin.jpg",
     "status": "active",
     "statusText": ""
   },
@@ -115,7 +115,7 @@
     "phone": "010-2607-5235",
     "tel": "070-7711-4812",
     "email": "gray@wordncode.com",
-    "avatar": "./resource/image/profile_gray_20240502__.png",
+    "avatar": "./resource/image/profile_ghibli_myeong.jpg",
     "status": "active",
     "statusText": ""
   },

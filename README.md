@@ -241,6 +241,9 @@ Pool/
 - **퍼블리싱팀 임직원 프로필 이미지 지브리 애니메이션 스타일 변환 적용**:
   - 퍼블리싱팀 소속 임직원 3명(이재광 차장, 조지혜 과장, 손석호 주임)의 실물 프로필 사진을 스튜디오 지브리 특유의 따뜻하고 몽환적인 수채화/수작업 애니메이션 아트 스타일(`profile_ghibli_lee.jpg`, `profile_ghibli_choi.jpg`, `profile_ghibli_son.jpg`)로 신규 생성 및 적용.
   - `mockData.js`, `employees.json`, `firebase-seed.json` 데이터베이스 내 퍼블리싱팀 프로필 아바타 경로 업데이트.
+- **디자인팀 임직원 프로필 이미지 지브리 애니메이션 스타일 변환 적용**:
+  - 디자인팀 소속 임직원 4명(윤익수 부장, 최지영 과장, 신현우 주임, 명희진 주임)의 실물 프로필 사진을 스튜디오 지브리 특유의 따뜻하고 몽환적인 애니메이션 아트 스타일(`profile_ghibli_yoon.jpg`, `profile_ghibli_choi_jy.jpg`, `profile_ghibli_shin.jpg`, `profile_ghibli_myeong.jpg`)로 신규 생성 및 적용.
+  - `mockData.js`, `employees.json`, `firebase-seed.json` 데이터베이스 내 디자인팀 프로필 아바타 경로 업데이트.
 - **AGENTS 자동화 커밋/푸시/풀/README 히스토리 규칙 적용**:
   - 규칙 추가 및 기능 구현 명령 완료 시 한국어 커밋 메시지 자동 생성, `README.md` 일자별 작업 내역 기록 및 `git commit`, `git push`, `git pull` 자동 실행 저장소 동기화 규칙 수립.
 
