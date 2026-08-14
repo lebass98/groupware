@@ -236,6 +236,9 @@ Pool/
   - `window.MockData` 내에 24절기(`solarTerms`) 및 월별 기념일(`observances`) 모듈 데이터 추가 바인딩.
   - `getSolarTerm` 및 `getObservanceDay` 연도 제한 풀고, `getMockSchedules` 반환 배열의 맨 상단(우선순위 1위)으로 배치하여 임직원 개인 일정이 많은 날에도 24절기 연두색 칩이 캘린더 그리드 상단에 항상 우선 표시되도록 개선.
   - 하단 일정 상세 리스트 및 모달 분류 카테고리(`renderCalendarLogs`)에 `'절기'` 및 `'기념일'` 정식 통합.
+- **공휴일/절기 중복 표기 제거 및 자동 디두플리케이션(Deduplication) 강화**:
+  - 8월 15일 광복절 등 자동 계산 공휴일(`getNationalHoliday`)과 목업 일정 데이터(`schedules`) 간 중복 등록 항목 제거.
+  - `getMockSchedules` 렌더링 로직 내 `(공휴일)` 등 서식 문자를 제거한 정규화 텍스트 비교 알고리즘 적용으로 중복 일정 자동 필터링 적용.
 - **AGENTS 자동화 커밋/푸시/풀/README 히스토리 규칙 적용**:
   - 규칙 추가 및 기능 구현 명령 완료 시 한국어 커밋 메시지 자동 생성, `README.md` 일자별 작업 내역 기록 및 `git commit`, `git push`, `git pull` 자동 실행 저장소 동기화 규칙 수립.
 

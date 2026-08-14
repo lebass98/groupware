@@ -178,7 +178,6 @@
       { "title": "외근(종일) [인천공항테크마켓] IDC센터", "time": "09:00 ~ 18:00", "type": "primary", "badge": "외근", "author": "안영재 대리", "avatar": "./resource/image/profile_pro.png" },
       { "title": "외근(오전) [프로젝트 공리]", "time": "09:00 ~ 12:00", "type": "primary", "badge": "외근", "author": "남기현 본부장", "avatar": "./resource/image/profile_help.png" }
     ],
-    "2026-8-15": [ { "title": "광복절 (공휴일)", "time": "종일", "type": "error", "badge": "공휴일", "author": "공휴일", "avatar": "" } ],
     "2026-8-18": [
       { "title": "연차", "time": "종일", "type": "secondary", "badge": "연차", "author": "김종규 팀장", "avatar": "./resource/image/profile_john.png" },
       { "title": "연차", "time": "종일", "type": "error", "badge": "연차", "author": "이재광 차장", "avatar": "profile.png" }

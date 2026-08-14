@@ -1563,7 +1563,16 @@ const App = {
       combined.push(observance);
     }
     defaults.forEach(s => {
-      if (!combined.some(existing => existing.title === s.title && existing.author === s.author)) {
+      const sTitleClean = (s.title || '').replace(/\s*\(공휴일\)/g, '').trim();
+      const isDuplicate = combined.some(existing => {
+        const existingTitleClean = (existing.title || '').replace(/\s*\(공휴일\)/g, '').trim();
+        return (
+          existingTitleClean === sTitleClean ||
+          existingTitleClean.includes(sTitleClean) ||
+          sTitleClean.includes(existingTitleClean)
+        );
+      });
+      if (!isDuplicate) {
         combined.push(s);
       }
     });
