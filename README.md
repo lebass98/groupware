@@ -231,5 +231,14 @@ Pool/
   - 파이어베이스 콘솔 연동 시 원클릭 일괄 배치 생성이 가능한 통합 시드 데이터 파일(`data/firebase-seed.json`) 및 자동 입력 유틸리티 모듈(`data/firebase-seeder.js`) 신설.
   - 데이터베이스 마이그레이션 및 파이어베이스 컬렉션/문서 스키마 명세서(`data/README_DATA.md`) 작성.
 
+### 2026-08-15
+- **24절기 캘린더 데이터 바인딩 및 표시 로직 복원**:
+  - `window.MockData` 내에 24절기(`solarTerms`) 및 월별 기념일(`observances`) 모듈 데이터 추가 바인딩.
+  - `getSolarTerm` 및 `getObservanceDay` 연도 제한 풀고, `getMockSchedules` 반환 배열의 맨 상단(우선순위 1위)으로 배치하여 임직원 개인 일정이 많은 날에도 24절기 연두색 칩이 캘린더 그리드 상단에 항상 우선 표시되도록 개선.
+  - 하단 일정 상세 리스트 및 모달 분류 카테고리(`renderCalendarLogs`)에 `'절기'` 및 `'기념일'` 정식 통합.
+- **AGENTS 자동화 커밋/푸시/풀/README 히스토리 규칙 적용**:
+  - 규칙 추가 및 기능 구현 명령 완료 시 한국어 커밋 메시지 자동 생성, `README.md` 일자별 작업 내역 기록 및 `git commit`, `git push`, `git pull` 자동 실행 저장소 동기화 규칙 수립.
+
+
 
 

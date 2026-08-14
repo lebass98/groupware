@@ -1506,9 +1506,7 @@ const App = {
   },
 
   getObservanceDay(year, month, day) {
-    if (year !== 2026) return null;
-
-    const observances = (window.MockData && window.MockData.observances) || {};
+    const observances = (window.MockData && (window.MockData.observances || window.MockData.observances2026)) || {};
 
     const key = `${month}-${day}`;
     const obs = observances[key];
@@ -1527,9 +1525,7 @@ const App = {
   },
 
   getSolarTerm(year, month, day) {
-    if (year !== 2026) return null;
-
-    const terms = (window.MockData && window.MockData.solarTerms) || {};
+    const terms = (window.MockData && (window.MockData.solarTerms || window.MockData.solarTerms2026)) || {};
 
     const key = `${month}-${day}`;
     const t = terms[key];
@@ -1556,16 +1552,21 @@ const App = {
     const solarTerm = this.getSolarTerm(year, month, day);
     const observance = this.getObservanceDay(year, month, day);
     
-    let combined = [...defaults];
-    if (nationalHol && !combined.some(s => s.title.includes(nationalHol.title))) {
-      combined.unshift(nationalHol);
-    }
-    if (observance && !combined.some(s => s.title.includes(observance.obsName) || (nationalHol && nationalHol.title.includes(observance.obsName)))) {
-      combined.push(observance);
+    let combined = [];
+    if (nationalHol) {
+      combined.push(nationalHol);
     }
     if (solarTerm && !combined.some(s => s.title.includes(solarTerm.termName))) {
       combined.push(solarTerm);
     }
+    if (observance && !combined.some(s => s.title.includes(observance.obsName) || (nationalHol && nationalHol.title.includes(observance.obsName)))) {
+      combined.push(observance);
+    }
+    defaults.forEach(s => {
+      if (!combined.some(existing => existing.title === s.title && existing.author === s.author)) {
+        combined.push(s);
+      }
+    });
 
     const userAdded = (this.mockDynamicSchedules && this.mockDynamicSchedules[key]) || [];
     combined = [...combined, ...userAdded];
@@ -1799,7 +1800,7 @@ const App = {
     if (chipsEl) {
       let chipsHtml = `<button type="button" onclick="App.filterDateDetailCategory('all', this)" class="date-detail-chip px-4 py-1.5 rounded-full font-bold bg-primary text-on-primary shadow-xs transition-all active:scale-95 whitespace-nowrap active">전체</button>`;
       
-      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '절기'];
+      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '절기', '기념일'];
       categoryOrder.forEach(cat => {
         if (availableCategories.has(cat)) {
           const colorInfo = this.getCategoryColorStyle(cat);
@@ -1853,7 +1854,7 @@ const App = {
     if (cat === 'all') {
       // '전체' 보기: 구분별 그룹화 + 구분이 잘 되도록 그룹 헤더 & 서피스 구분선 추가
       const groupMap = {};
-      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '절기', '기타'];
+      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '절기', '기념일', '기타'];
 
       schedules.forEach(s => {
         const titleStr = s.title || '';
@@ -1865,6 +1866,7 @@ const App = {
         else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) key = '회의';
         else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) key = '공휴일';
         else if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') key = '절기';
+        else if (titleStr.includes('기념일') || badgeStr.includes('기념일') || s.author === '기념일') key = '기념일';
 
         if (!groupMap[key]) groupMap[key] = [];
         groupMap[key].push(s);
@@ -2105,17 +2107,19 @@ const App = {
 
     if (schedules && schedules.length > 0) {
       const groupMap = {};
-      const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '기타'];
+      const categoryOrder = ['공휴일', '절기', '기념일', '휴가', '외근', '반차', '회의', '기타'];
 
       schedules.forEach(s => {
         const titleStr = s.title || '';
         const badgeStr = s.badge || '';
         let key = '기타';
-        if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) key = '휴가';
+        if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) key = '공휴일';
+        else if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') key = '절기';
+        else if (titleStr.includes('기념일') || badgeStr.includes('기념일') || s.author === '기념일') key = '기념일';
+        else if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) key = '휴가';
         else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) key = '외근';
         else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) key = '반차';
         else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) key = '회의';
-        else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) key = '공휴일';
 
         if (!groupMap[key]) groupMap[key] = [];
         groupMap[key].push(s);
