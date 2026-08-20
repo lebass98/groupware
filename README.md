@@ -266,3 +266,5 @@ Pool/
   - 상단 칩 필터에 상태별 필터(근무중, 외근중, 휴가중, 퇴근) 탭 추가 및 검색창 검색어 연동 지원.
   - 주소록 상세 보기 화면(`screen-directory-detail`)에 현재 근무 상태 뱃지 및 연락처/근무 정보 영역 추가.
   - 전사 임직원 데이터베이스(`employees.json`, `mockData.js`, `firebase-seed.json`) 내 현실적인 `status` 및 `statusText` 데이터 셋업 완료.
+- **하단 독(Dock) 네비게이션 활성화 탭 원형/알약형 배경 제거**:
+  - 하단 네비게이션 독 바에서 활성화된 탭 뒤에 표시되던 둥근/원형 배경을 완전 투명(`background: transparent`) 처리하여 텍스트 및 아이콘 컬러/Fill만으로 깔끔하게 표시되도록 스타일 개선.

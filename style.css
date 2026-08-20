@@ -1395,17 +1395,20 @@ body.dark .bottom-nav {
 }
 
 .nav-item.active {
-  background: rgba(0, 82, 208, 0.08);
+  background: transparent !important;
   color: var(--primary);
   font-weight: 700;
 }
 
 body.dark .nav-item.active {
-  background: rgba(94, 139, 255, 0.15);
+  background: transparent !important;
+  color: var(--primary);
 }
 
 .nav-item.active .material-symbols-outlined {
   font-variation-settings: 'FILL' 1;
+  color: var(--primary);
+  transform: translateY(-1px);
 }
 
 /* Modal Popup */
