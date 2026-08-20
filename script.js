@@ -1,4 +1,4 @@
-// 워드앤코드 그룹웨어 애플리케이션 코어 로직
+// WnC 그룹웨어 애플리케이션 코어 로직
 
 const App = {
   state: {
@@ -491,7 +491,7 @@ const App = {
     this.saveState();
     history.replaceState({ activeTab: 'screen-today' }, '', '#screen-today');
     this.showAppShell();
-    this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! 워드앤코드 그룹웨어를 시작합니다.`);
+    this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! WnC 그룹웨어를 시작합니다.`);
   },
 
   loginDemo(provider) {
