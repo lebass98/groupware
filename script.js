@@ -4687,11 +4687,10 @@ const App = {
             </div>
           </div>
 
-          <!-- 2: 대기 진행중 자리 -> 날짜(프로젝트 기간) 표시 & 우측에 프로젝트 ID 태그 추가 -->
+          <!-- 2: 대기 진행중 자리 -> 글 번호, 상태 뱃지, 프로젝트 ID 태그 -->
           <div class="flex items-center gap-2 pt-0.5 flex-wrap">
-            <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-semibold flex items-center gap-1">
-              <span class="material-symbols-outlined text-[13px] text-primary">calendar_month</span>
-              <span>${periodText}</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-mono font-bold">
+              No. ${p.no}
             </span>
             <span class="px-2.5 py-0.5 rounded-full ${statusBadgeClass} text-[11px] font-bold border">
               ${p.statusText || '진행중'}
