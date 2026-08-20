@@ -83,7 +83,6 @@
   ],
   "2026-8-21": [
     { "title": "반차(오후)", "time": "13:00 ~ 18:00", "type": "warning", "badge": "반차", "author": "박규태 대리", "avatar": "./resource/image/profile_green.png" },
-    { "title": "반차(오후)", "time": "13:00 ~ 18:00", "type": "error", "badge": "반차", "author": "이재광 차장", "avatar": "profile.png" },
     { "title": "외근(오후) [시티시큐] 남기현 오후 시티시큐 방문", "time": "13:00 ~ 18:00", "type": "primary", "badge": "외근", "author": "남기현 본부장", "avatar": "./resource/image/profile_help.png" },
     { "title": "반반차 [16:00~18:00]", "time": "16:00 ~ 18:00", "type": "warning", "badge": "반반차", "author": "윤익수 부장", "avatar": "./resource/image/profile_blue.png" }
   ],
