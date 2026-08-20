@@ -60,8 +60,8 @@
 | 구분 | 폰트 패밀리 (Font Family) | 가이트 체계 | 적용 요소 |
 | :--- | :--- | :--- | :--- |
 | **Headline** | `Pretendard`, `sans-serif` | Weight: 700, 800 / Size: 1.5rem ~ 2.25rem | 스크린 타이틀, 대형 타이머 숫자 |
-| **Body** | `Pretendard`, `Manrope` | Weight: 400, 500, 600 / Size: 0.875rem ~ 1rem | 본문 설명, 공지 내용, 입력 폼 |
-| **Label / Accent**| `Plus Jakarta Sans`, `Pretendard` | Weight: 600, 700 / Size: 0.75rem ~ 0.85rem | 칩, 탭 라벨, 상태 배지, 숫자 카운터 |
+| **Body** | `Pretendard`, `sans-serif` | Weight: 400, 500, 600 / Size: 0.875rem ~ 1rem | 본문 설명, 공지 내용, 입력 폼 |
+| **Label / Accent**| `Pretendard`, `sans-serif` | Weight: 600, 700 / Size: 0.75rem ~ 0.85rem | 칩, 탭 라벨, 상태 배지, 숫자 카운터 |
 
 - **Material Symbols Outlined**:
   - 기본 아이콘 크기: `24px` (소형: `16px`, 대형: `32px`~`40px`)

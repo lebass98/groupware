@@ -4766,7 +4766,7 @@ const App = {
     // 고객사 담당자 렌더링
     const clientContacts = p.clientContacts || [];
     const clientContactsHtml = clientContacts.length > 0 ? clientContacts.map(c => `
-      <div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant/10 text-xs flex flex-col gap-2">
+      <div class="bg-surface-container-lowest p-3.5 rounded-md border border-outline-variant/10 text-xs flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <span class="font-bold text-primary font-mono">${c.label || '담당자 1'}</span>
@@ -4800,7 +4800,7 @@ const App = {
     // 댓글 / 작업 히스토리 렌더링
     const comments = p.comments || [];
     const commentsHtml = comments.length > 0 ? comments.map(cm => `
-      <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/10 flex flex-col gap-2 shadow-2xs">
+      <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/10 flex flex-col gap-2 shadow-2xs">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <div class="w-6 h-6 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center">
@@ -4811,7 +4811,7 @@ const App = {
           </div>
           <span class="font-mono text-[11px] text-on-surface-variant/80">${cm.date}</span>
         </div>
-        <div class="bg-surface-container-low p-3 rounded-lg text-xs font-mono text-on-surface leading-relaxed whitespace-pre-line select-text">
+        <div class="bg-surface-container-low p-3 rounded-2xl text-xs font-mono text-on-surface leading-relaxed whitespace-pre-line select-text">
           ${cm.content}
         </div>
       </div>

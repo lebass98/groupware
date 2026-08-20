@@ -90,7 +90,7 @@ Material Design 3 (M3) 디자인 시스템 기반:
   - `Primary`: `--primary` (선택한 테마 팔레트에 따라 동적 변환)
   - `Surface`: `#ffffff` (Dark Mode: `#0b1120`)
   - `Surface Container`: `#f1f5f9` (Dark Mode: `#334155`)
-- **Typography**: `Pretendard`, `Plus Jakarta Sans`, `Manrope` 폰트 혼용으로 뛰어난 가독성 확보.
+- **Typography**: 고성능 가독성의 `Pretendard` 단일 폰트 패밀리 전면 적용.
 - **Glassmorphism**: 상단 헤더, 공지 티커, 하단 네비게이션에 `backdrop-filter: blur(20px)` 적용.
 - **Responsive Container**: `max-width: 768px` 컨테이너 프레임으로 모바일/태블릿 뷰포트 통일.
 
@@ -190,3 +190,4 @@ Pool/
 - **프로젝트 관리 카드 모드 표기 개선**: 글 번호(No.) 우측으로 PM 뱃지 이동, 프로젝트 ID 우측 끝에 작성일자 배치 및 조회수 제거.
 - **프로젝트 관리 날짜 포맷 변경**: 작성일자 표기를 하이픈(-) 대신 점(.) 포맷(YYYY.MM.DD)으로 통일.
 - **프로젝트 상세 보기(View) 모달 페이지 구현**: 할 일 상세 UI 계승, 기본 정보 전 항목(빈칸 포함)·첨부파일·본문·댓글 및 작업 메모 작성 기능 완벽 연동.
+- **폰트 체계 프리텐다드(Pretendard) 단일화**: 외부 영문 폰트(Plus Jakarta Sans, Manrope) 전면 제거 및 전역 Pretendard 폰트로 통일.

@@ -1,5 +1,5 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
 :root {
   /* Stitch Color Tokens */
@@ -266,7 +266,7 @@ body.dark .app-container {
 }
 
 body {
-  font-family: 'Pretendard', 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
   background: #fdfdfd;
   background-attachment: fixed;
   color: var(--on-surface);
@@ -560,7 +560,7 @@ body.dark .ticker-label {
 
 
 .brand-title {
-  font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -663,7 +663,7 @@ body.dark .ticker-label {
 }
 
 .live-time {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 2.5rem;
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -837,7 +837,7 @@ body.dark .ticker-label {
 }
 
 .pulse-text {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.01em;
@@ -898,7 +898,7 @@ body.dark .ticker-label {
 }
 
 .stat-box-value {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 1.4rem;
   font-weight: 800;
   color: var(--on-surface);
@@ -906,7 +906,7 @@ body.dark .ticker-label {
 
 /* Schedule Section */
 .section-title {
-  font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 1.15rem;
   font-weight: 800;
   margin-bottom: 0.85rem;
@@ -991,7 +991,7 @@ body.dark .ticker-label {
 }
 
 .logs-hero-value {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 1.8rem;
   font-weight: 800;
   color: var(--primary);
@@ -1011,7 +1011,7 @@ body.dark .ticker-label {
 }
 
 .score-num {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 1.6rem;
   font-weight: 800;
   font-style: italic;
@@ -1117,7 +1117,7 @@ body.dark .ticker-label {
 }
 
 .log-day {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--primary);
@@ -1178,7 +1178,7 @@ body.dark .ticker-label {
 }
 
 .log-time-val {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--on-surface);
@@ -1239,7 +1239,7 @@ body.dark .ticker-label {
 }
 
 .profile-name {
-  font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 1.5rem;
   font-weight: 800;
   color: var(--on-surface);
@@ -1380,7 +1380,7 @@ input:checked + .slider:before {
   border-radius: var(--radius-lg);
   background: rgba(179, 27, 37, 0.1);
   color: var(--error);
-  font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
@@ -1505,7 +1505,7 @@ body.dark .nav-item.active {
 }
 
 .modal-title {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 1.25rem;
   font-weight: 800;
   color: var(--on-surface);
@@ -1523,7 +1523,7 @@ body.dark .nav-item.active {
   padding: 0.85rem 1rem;
   border: none;
   border-radius: var(--radius-full);
-  font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
