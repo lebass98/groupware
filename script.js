@@ -4632,14 +4632,12 @@ const App = {
 
     // -------------------------------------------------------------
     // 1. 간략화 리스트 모드 (projectViewMode === 'list')
-    // 1. 폴더아이콘 우측 타이틀: 프로젝트 제목
-    // 2. 우측: PM 이름과 작성한 날짜 기입 (PM 글씨 및 조회수 제외)
+    // 1. 좌측: 폴더아이콘 + 프로젝트 제목
+    // 2. 우측: 작성한 날짜만 깔끔하게 표시
     // -------------------------------------------------------------
     if (this.state.projectViewMode === 'list') {
       container.className = "flex flex-col gap-2.5";
       container.innerHTML = list.map(p => {
-        const pmText = (p.pm && p.pm !== '-') ? p.pm : '미지정';
-
         return `
           <div class="flex items-center justify-between bg-surface-container-lowest rounded-xl px-4 py-3.5 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openProjectDetail(${p.id})">
             <!-- 1. 폴더아이콘 + 프로젝트 제목 -->
@@ -4648,13 +4646,10 @@ const App = {
               <h3 class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</h3>
             </div>
             
-            <!-- 2. 우측: PM 이름과 작성한 날짜 -->
+            <!-- 2. 우측: 작성한 날짜 -->
             <div class="flex items-center gap-2 shrink-0">
-              <div class="flex items-center gap-1.5 text-[11px] font-semibold text-on-surface-variant">
-                <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-bold">${pmText}</span>
-                <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-medium">${p.date}</span>
-              </div>
-              <span class="material-symbols-outlined text-on-surface-variant text-base group-hover:translate-x-1 transition-transform ml-1">chevron_right</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-medium">${p.date}</span>
+              <span class="material-symbols-outlined text-on-surface-variant text-base group-hover:translate-x-1 transition-transform ml-0.5">chevron_right</span>
             </div>
           </div>
         `;
