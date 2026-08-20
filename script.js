@@ -4641,18 +4641,18 @@ const App = {
         const formattedDate = (p.date || '').replace(/-/g, '.');
 
         return `
-          <div class="flex items-center justify-between bg-surface-container-lowest rounded-xl px-4 py-3.5 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openProjectDetail(${p.id})">
-            <!-- 1. 폴더아이콘 + 프로젝트 제목 -->
+          <div class="flex items-center justify-between bg-surface-container-lowest rounded-md px-4 py-3.5 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openProjectDetail(${p.id})">
+            <!-- 1. 폴더아이콘 + 프로젝트 제목 및 하단 줄내림 날짜 -->
             <div class="flex items-center gap-3 min-w-0 flex-1 mr-3">
               <span class="material-symbols-outlined text-primary text-xl group-hover:scale-110 transition-transform shrink-0">folder_open</span>
-              <h3 class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</h3>
+              <div class="flex flex-col min-w-0">
+                <h3 class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</h3>
+                <span class="text-[11px] font-mono text-on-surface-variant/80 font-medium mt-0.5">${formattedDate}</span>
+              </div>
             </div>
             
-            <!-- 2. 우측: 작성한 날짜 -->
-            <div class="flex items-center gap-2 shrink-0">
-              <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-mono font-medium">${formattedDate}</span>
-              <span class="material-symbols-outlined text-on-surface-variant text-base group-hover:translate-x-1 transition-transform ml-0.5">chevron_right</span>
-            </div>
+            <!-- 2. 우측: 이동 화살표 -->
+            <span class="material-symbols-outlined text-on-surface-variant text-base group-hover:translate-x-1 transition-transform shrink-0">chevron_right</span>
           </div>
         `;
       }).join('');
