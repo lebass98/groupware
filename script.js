@@ -2777,7 +2777,7 @@ const App = {
         </span>
       `;
 
-      // Today Scheduled Event Badge (근무중과 완벽히 동일한 크기 & 함축 문구)
+      // Today Scheduled Event Badge (근무중과 완벽히 동일한 크기 & '예정 : 제목' 문구)
       let todayScheduleBadge = '';
       if (statusInfo.todaySchedule) {
         const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
@@ -2789,7 +2789,7 @@ const App = {
         todayScheduleBadge = `
           <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${schedBadgeClass}">
             <span class="material-symbols-outlined text-[13px]">${schedIcon}</span>
-            <span>${statusInfo.todaySchedule}</span>
+            <span>예정 : ${statusInfo.todaySchedule}</span>
           </span>
         `;
       }
@@ -2876,7 +2876,7 @@ const App = {
         extraHtml = `
           <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold ${schedBadgeClass}">
             <span class="material-symbols-outlined text-sm">${schedIcon}</span>
-            <span>${statusInfo.todaySchedule}</span>
+            <span>예정 : ${statusInfo.todaySchedule}</span>
           </span>
         `;
       }
@@ -2901,7 +2901,7 @@ const App = {
           : 'bg-sky-500/10 text-sky-700 border border-sky-500/20';
         scheduleSubBadge = `
           <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${schedBadgeClass}">
-            <span>${statusInfo.todaySchedule}</span>
+            <span>예정 : ${statusInfo.todaySchedule}</span>
           </span>
         `;
       }
