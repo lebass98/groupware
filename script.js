@@ -59,7 +59,7 @@ const App = {
     projects: (window.MockData && window.MockData.projects) || [],
     projectsFilter: 'all',
     projectsSearchQuery: '',
-    projectViewMode: 'list'
+    projectViewMode: 'card'
   },
 
   init() {
@@ -3875,7 +3875,7 @@ const App = {
           </div>
 
           <!-- 최근 업무 미리보기 -->
-          <div class="bg-surface-container-low p-3 rounded-xl flex flex-col">
+          <div class="bg-surface-container-low p-3 rounded-md flex flex-col">
             ${previewItemsHtml}
           </div>
         </div>
@@ -4631,155 +4631,91 @@ const App = {
     }
 
     // -------------------------------------------------------------
-    // 1. 리스트 / 테이블 뷰 (첨부 이미지 컬럼 양식 완벽 반영)
+    // 1. 간략화 리스트 모드 (projectViewMode === 'list')
+    // 1. 폴더아이콘 우측 타이틀: 프로젝트 제목
+    // 2. 우측: PM 이름과 작성한 날짜 기입
     // -------------------------------------------------------------
     if (this.state.projectViewMode === 'list') {
       container.className = "flex flex-col gap-2.5";
-
-      // 테이블 헤더 바
-      const tableHeaderHtml = `
-        <div class="hidden md:grid grid-cols-12 gap-3 px-4 py-2.5 bg-surface-container-low rounded-xl text-[11px] font-bold text-on-surface-variant border border-outline-variant/15 items-center">
-          <div class="col-span-1 text-center">번호</div>
-          <div class="col-span-4">프로젝트 제목 (프로젝트ID)</div>
-          <div class="col-span-3">사이트명 (사이트ID)</div>
-          <div class="col-span-1 text-center">PM</div>
-          <div class="col-span-1 text-center">기간</div>
-          <div class="col-span-1 text-center">글쓴이</div>
-          <div class="col-span-1 text-center">날짜 / 조회</div>
-        </div>
-      `;
-
-      const listRowsHtml = list.map(p => {
-        // 상태 뱃지 스타일링
-        let statusBadgeClass = 'bg-primary/10 text-primary border-primary/20';
-        if (p.status === 'maintenance') statusBadgeClass = 'bg-secondary/10 text-secondary border-secondary/20';
-        else if (p.status === 'build') statusBadgeClass = 'bg-tertiary-container/30 text-tertiary border-tertiary/20';
-
-        const pmText = (p.pm && p.pm !== '-') ? p.pm : '<span class="text-on-surface-variant/40">-</span>';
-        const periodText = (p.period && p.period !== '-') ? p.period : '<span class="text-on-surface-variant/40">-</span>';
+      container.innerHTML = list.map(p => {
+        const pmText = (p.pm && p.pm !== '-') ? p.pm : '미지정';
 
         return `
-          <div class="bg-surface-container-lowest rounded-xl p-3.5 md:p-4 border border-outline-variant/10 hover:bg-surface-container-low/80 hover:border-primary/30 transition-all cursor-pointer group shadow-2xs text-left" onclick="App.openProjectDetail(${p.id})">
-            <!-- Desktop Table Row Layout -->
-            <div class="hidden md:grid grid-cols-12 gap-3 items-center">
-              <div class="col-span-1 text-center font-mono text-xs font-bold text-on-surface-variant/80">${p.no}</div>
-              <div class="col-span-4 min-w-0 pr-2">
-                <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
-                  <span class="font-headline text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</span>
-                </div>
-                <div class="flex items-center gap-1 text-[11px] font-mono text-primary font-semibold">
-                  <span>(${p.projectId})</span>
-                </div>
-              </div>
-              <div class="col-span-3 min-w-0 pr-2">
-                <p class="font-body text-xs text-on-surface font-medium truncate">${p.siteName}</p>
-                <p class="font-mono text-[11px] text-on-surface-variant/70 truncate">(${p.siteId})</p>
-              </div>
-              <div class="col-span-1 text-center">
-                <span class="font-body text-xs font-semibold text-on-surface">${pmText}</span>
-              </div>
-              <div class="col-span-1 text-center font-mono text-[11px] text-on-surface-variant font-medium">
-                ${periodText}
-              </div>
-              <div class="col-span-1 text-center">
-                <span class="font-body text-xs font-bold text-on-surface">${p.author}</span>
-              </div>
-              <div class="col-span-1 text-center flex flex-col items-center">
-                <span class="font-mono text-[11px] text-on-surface-variant">${p.date}</span>
-                <span class="text-[10px] text-on-surface-variant/70 font-semibold mt-0.5">조회 ${p.views}</span>
-              </div>
+          <div class="flex items-center justify-between bg-surface-container-lowest rounded-xl px-4 py-3.5 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openProjectDetail(${p.id})">
+            <!-- 1. 폴더아이콘 + 프로젝트 제목 -->
+            <div class="flex items-center gap-3 min-w-0 flex-1 mr-3">
+              <span class="material-symbols-outlined text-primary text-xl group-hover:scale-110 transition-transform shrink-0">folder_open</span>
+              <h3 class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</h3>
             </div>
-
-            <!-- Mobile Responsive Card Row Layout -->
-            <div class="flex md:hidden flex-col gap-2.5">
-              <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-2">
-                  <span class="font-mono text-xs font-bold text-primary px-2 py-0.5 bg-primary/10 rounded-md">#${p.no}</span>
-                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusBadgeClass}">${p.statusText || '진행중'}</span>
-                </div>
-                <span class="font-mono text-[11px] text-on-surface-variant">${p.date}</span>
+            
+            <!-- 2. 우측: PM 이름과 작성한 날짜 (+ 조회수) -->
+            <div class="flex items-center gap-2 shrink-0">
+              <div class="flex items-center gap-1.5 text-[11px] font-semibold text-on-surface-variant">
+                <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-bold">PM : ${pmText}</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-medium">${p.date}</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-medium text-on-surface-variant/70">조회 ${p.views}</span>
               </div>
-
-              <div>
-                <h4 class="font-headline text-sm font-bold text-on-surface group-hover:text-primary transition-colors">${p.title}</h4>
-                <p class="font-mono text-xs text-primary font-semibold mt-0.5">(${p.projectId})</p>
-              </div>
-
-              <div class="bg-surface-container-low p-2.5 rounded-xl text-xs flex flex-col gap-1 border border-outline-variant/10">
-                <div class="flex items-center justify-between">
-                  <span class="text-on-surface-variant text-[11px]">사이트:</span>
-                  <span class="font-medium text-on-surface truncate text-right ml-2">${p.siteName} (${p.siteId})</span>
-                </div>
-                <div class="flex items-center justify-between pt-1 border-t border-outline-variant/10">
-                  <span class="text-on-surface-variant text-[11px]">PM / 기간:</span>
-                  <span class="font-medium text-on-surface">${p.pm !== '-' ? p.pm : '미지정'} / ${p.period !== '-' ? p.period : '상시'}</span>
-                </div>
-              </div>
-
-              <div class="flex items-center justify-between text-xs text-on-surface-variant pt-1 border-t border-outline-variant/10">
-                <span class="flex items-center gap-1 font-semibold text-on-surface">
-                  <span class="material-symbols-outlined text-sm">person</span>
-                  ${p.author} (${p.authorDept || '사원'})
-                </span>
-                <span class="text-[11px] font-semibold text-on-surface-variant/80">조회 ${p.views}회</span>
-              </div>
+              <span class="material-symbols-outlined text-on-surface-variant text-base group-hover:translate-x-1 transition-transform ml-1">chevron_right</span>
             </div>
           </div>
         `;
       }).join('');
-
-      container.innerHTML = `
-        ${tableHeaderHtml}
-        <div class="flex flex-col gap-2.5">${listRowsHtml}</div>
-      `;
       return;
     }
 
     // -------------------------------------------------------------
-    // 2. 카드 뷰 (M3 글래스모피즘 Grid Card View)
+    // 2. 카드 모드 (projectViewMode === 'card')
+    // 1. 상단타이틀(폴더아이콘 영역): 프로젝트 제목 (ID 표시 안함)
+    // 2. 우측(기존 몇개 업무 자리): PM 이름
+    // 3. 진행도 요약(기존 대기/진행중 자리): 날짜(프로젝트 기간) 표시
+    // 4. 그레이박스 안: 사이트명과 (id) / 우측에 작성한 날짜 / 조회수
     // -------------------------------------------------------------
-    container.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
+    container.className = "flex flex-col gap-4";
     container.innerHTML = list.map(p => {
+      const pmText = (p.pm && p.pm !== '-') ? p.pm : '미지정';
+      const periodText = (p.period && p.period !== '-') ? p.period : '상시';
+
       let statusBadgeClass = 'bg-primary/10 text-primary border-primary/20';
       if (p.status === 'maintenance') statusBadgeClass = 'bg-secondary/10 text-secondary border-secondary/20';
       else if (p.status === 'build') statusBadgeClass = 'bg-tertiary-container/30 text-tertiary border-tertiary/20';
 
       return `
-        <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3.5 border border-outline-variant/10 shadow-2xs hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group text-left" onclick="App.openProjectDetail(${p.id})">
+        <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3.5 border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] active:scale-98 transition-all cursor-pointer group text-left" onclick="App.openProjectDetail(${p.id})">
+          <!-- 1 & 3: 상단 타이틀(폴더아이콘 + 프로젝트제목) & 우측 PM 이름 -->
           <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="font-mono text-xs font-bold text-primary px-2.5 py-0.5 bg-primary/10 rounded-full">#${p.no}</span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusBadgeClass}">${p.statusText || '진행중'}</span>
+            <div class="flex items-center gap-2 min-w-0 flex-1 mr-2">
+              <span class="material-symbols-outlined text-primary text-xl group-hover:scale-110 transition-transform shrink-0">folder_open</span>
+              <h3 class="font-headline font-bold text-base text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</h3>
             </div>
-            <span class="text-xs text-on-surface-variant/80 font-mono">${p.date}</span>
-          </div>
-
-          <div>
-            <h3 class="font-headline font-bold text-base text-on-surface group-hover:text-primary transition-colors leading-snug">${p.title}</h3>
-            <p class="font-mono text-xs text-primary font-semibold mt-1">ID: ${p.projectId}</p>
-          </div>
-
-          <div class="bg-surface-container-low p-3 rounded-xl flex flex-col gap-1.5 border border-outline-variant/10">
-            <div class="flex items-center justify-between text-xs">
-              <span class="text-on-surface-variant">사이트명</span>
-              <span class="font-semibold text-on-surface truncate ml-2">${p.siteName}</span>
-            </div>
-            <div class="flex items-center justify-between text-xs">
-              <span class="text-on-surface-variant">사이트 ID</span>
-              <span class="font-mono text-on-surface-variant font-medium">${p.siteId}</span>
-            </div>
-            <div class="flex items-center justify-between text-xs pt-1 border-t border-outline-variant/10">
-              <span class="text-on-surface-variant">프로젝트 기간</span>
-              <span class="font-mono font-bold text-on-surface">${p.period !== '-' ? p.period : '상시 운영'}</span>
+            <div class="flex items-center gap-1 text-on-surface-variant shrink-0">
+              <span class="bg-primary/10 text-primary text-xs font-bold px-2.5 py-0.5 rounded-full">PM : ${pmText}</span>
+              <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">chevron_right</span>
             </div>
           </div>
 
-          <div class="mt-auto flex items-center justify-between pt-3 border-t border-outline-variant/10 text-xs">
-            <div class="flex items-center gap-2">
-              <span class="font-semibold text-on-surface">${p.author}</span>
-              <span class="text-on-surface-variant/70 text-[11px]">PM: ${p.pm !== '-' ? p.pm : '미지정'}</span>
+          <!-- 2: 대기 진행중 자리 -> 날짜(프로젝트 기간) 표시 -->
+          <div class="flex items-center gap-2 pt-0.5 flex-wrap">
+            <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-semibold flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-primary">calendar_month</span>
+              <span>기간 : ${periodText}</span>
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full ${statusBadgeClass} text-[11px] font-bold border">
+              ${p.statusText || '진행중'}
+            </span>
+          </div>
+
+          <!-- 4: 그레이박스 -> 사이트명과 (id) / 우측에 작성한 날짜 / 조회수 -->
+          <div class="bg-surface-container-low p-3 rounded-md flex items-center justify-between text-xs border border-outline-variant/10">
+            <div class="flex items-center gap-1.5 truncate mr-2">
+              <span class="material-symbols-outlined text-sm text-on-surface-variant shrink-0">web</span>
+              <span class="font-medium text-on-surface truncate">${p.siteName}</span>
+              <span class="text-on-surface-variant/70 text-[11px] font-mono shrink-0">(${p.siteId})</span>
             </div>
-            <span class="text-[11px] font-semibold text-on-surface-variant">조회 ${p.views}</span>
+            <div class="flex items-center gap-2 text-on-surface-variant text-[11px] font-medium shrink-0">
+              <span>${p.date}</span>
+              <span class="text-outline-variant/60">/</span>
+              <span>조회 ${p.views}</span>
+            </div>
           </div>
         </div>
       `;
