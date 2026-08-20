@@ -357,7 +357,7 @@ body.dark .top-header {
 }
 
 /* =========================================
-   플립형 공지 티커 배너 (유선형 둥근 알약 캡슐 바 스타일)
+   플립형 공지 티커 배너 (유선형 둥근 알약 캡슐 바 + Flow 그라데이션 애니메이션)
    ========================================= */
 .notice-ticker {
   position: fixed;
@@ -370,17 +370,38 @@ body.dark .top-header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.55);
+  background: linear-gradient(105deg, 
+    rgba(255, 255, 255, 0.7) 0%, 
+    rgba(238, 242, 255, 0.85) 20%, 
+    rgba(224, 242, 254, 0.9) 40%, 
+    rgba(245, 243, 255, 0.85) 60%, 
+    rgba(238, 242, 255, 0.85) 80%, 
+    rgba(255, 255, 255, 0.7) 100%
+  );
+  background-size: 250% 100%;
+  animation: noticeFlowGradient 5s ease-in-out infinite alternate;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: var(--radius-full);
   padding: 0 0.85rem;
   height: 38px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 24px rgba(35, 44, 81, 0.08), 0 2px 8px rgba(99, 102, 241, 0.08);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   box-sizing: border-box;
+}
+
+@keyframes noticeFlowGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @media (min-width: 768px) {
@@ -390,9 +411,17 @@ body.dark .top-header {
 }
 
 body.dark .notice-ticker {
-  background: rgba(30, 41, 59, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(105deg, 
+    rgba(30, 41, 59, 0.75) 0%, 
+    rgba(49, 46, 129, 0.5) 25%, 
+    rgba(30, 58, 138, 0.55) 50%, 
+    rgba(15, 76, 129, 0.5) 75%, 
+    rgba(30, 41, 59, 0.75) 100%
+  );
+  background-size: 250% 100%;
+  animation: noticeFlowGradient 5s ease-in-out infinite alternate;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 2px 10px rgba(59, 130, 246, 0.15);
 }
 
 .ticker-label {
