@@ -4940,9 +4940,15 @@ const App = {
           <span class="material-symbols-outlined text-primary text-base">subject</span>
           <span>상세 내용</span>
         </h3>
-        <div class="bg-surface-container-low rounded-2xl p-4 sm:p-5 border border-outline-variant/10 text-xs text-on-surface leading-relaxed min-h-[70px] whitespace-pre-line">
-          ${p.content && p.content !== '.' ? p.content : '별도 등록된 본문 텍스트가 없습니다.'}
-        </div>
+        ${p.content && p.content !== '.' ? `
+          <div class="bg-surface-container-low rounded-2xl p-4 sm:p-5 border border-outline-variant/10 text-xs text-on-surface leading-relaxed min-h-[70px] whitespace-pre-line">
+            ${p.content}
+          </div>
+        ` : `
+          <div class="bg-surface-container-low rounded-2xl p-6 border border-outline-variant/10 text-xs text-on-surface-variant flex items-center justify-center text-center min-h-[90px]">
+            별도 등록된 본문 텍스트가 없습니다.
+          </div>
+        `}
       </section>
 
       <!-- 5. 댓글 / 작업 히스토리 -->
