@@ -54,7 +54,12 @@ const App = {
     currentDirectoryCategory: 'all',
     currentEmployeeId: 1,
     employees: (window.MockData && window.MockData.employees) || [],
-    logs: (window.MockData && window.MockData.attendance && window.MockData.attendance.logs) || []
+    logs: (window.MockData && window.MockData.attendance && window.MockData.attendance.logs) || [],
+    // Projects State
+    projects: (window.MockData && window.MockData.projects) || [],
+    projectsFilter: 'all',
+    projectsSearchQuery: '',
+    projectViewMode: 'list'
   },
 
   init() {
@@ -660,6 +665,8 @@ const App = {
       this.renderExpenses();
     } else if (targetId === 'screen-todo') {
       this.renderTodos();
+    } else if (targetId === 'screen-project-list') {
+      this.renderProjects();
     } else if (targetId === 'screen-home' || targetId === 'screen-today') {
       this.renderTodayData();
     }
@@ -4535,6 +4542,255 @@ const App = {
     this.closeTodoModal();
     this.renderTodos();
     this.showToast('🚀 새로운 할 일이 성공적으로 등록되었습니다!');
+  },
+
+  // =========================================
+  // 전사 프로젝트 관리 모듈 (Projects Management)
+  // =========================================
+  setProjectFilter(filterKey, chipEl) {
+    this.state.projectsFilter = filterKey;
+    const chips = document.querySelectorAll('.project-chip');
+    chips.forEach(c => {
+      c.classList.remove('bg-primary', 'text-on-primary', 'active');
+      c.classList.add('bg-surface-container', 'text-on-surface-variant');
+    });
+    if (chipEl) {
+      chipEl.classList.remove('bg-surface-container', 'text-on-surface-variant');
+      chipEl.classList.add('bg-primary', 'text-on-primary', 'active');
+    }
+    this.renderProjects();
+  },
+
+  filterProjects() {
+    const input = document.getElementById('project-search-input');
+    this.state.projectsSearchQuery = input ? input.value : '';
+    this.renderProjects();
+  },
+
+  setProjectViewMode(mode, btnEl) {
+    this.state.projectViewMode = mode;
+    const btns = document.querySelectorAll('.project-view-btn');
+    btns.forEach(b => {
+      b.classList.remove('bg-primary', 'text-on-primary');
+      b.classList.add('text-on-surface-variant');
+    });
+    if (btnEl) {
+      btnEl.classList.remove('text-on-surface-variant');
+      btnEl.classList.add('bg-primary', 'text-on-primary');
+    }
+    this.renderProjects();
+  },
+
+  renderProjects() {
+    const container = document.getElementById('project-list-container');
+    const totalCountEl = document.getElementById('project-total-count');
+    if (!container) return;
+
+    let list = [...(this.state.projects || (window.MockData && window.MockData.projects) || [])];
+    const filter = this.state.projectsFilter || 'all';
+    const query = (this.state.projectsSearchQuery || '').toLowerCase().trim();
+
+    // 1. 상태 및 탭 필터링
+    if (filter === 'in_progress') {
+      list = list.filter(p => p.status === 'in_progress');
+    } else if (filter === 'maintenance') {
+      list = list.filter(p => p.status === 'maintenance');
+    } else if (filter === 'build') {
+      list = list.filter(p => p.status === 'build');
+    } else if (filter === 'my') {
+      const myName = this.state.user?.name || '이재광';
+      list = list.filter(p => (p.pm && p.pm.includes(myName)) || (p.author && p.author.includes(myName)));
+    }
+
+    // 2. 통합 검색 필터링
+    if (query) {
+      list = list.filter(p => 
+        (p.title && p.title.toLowerCase().includes(query)) ||
+        (p.projectId && p.projectId.toLowerCase().includes(query)) ||
+        (p.siteName && p.siteName.toLowerCase().includes(query)) ||
+        (p.siteId && p.siteId.toLowerCase().includes(query)) ||
+        (p.pm && p.pm.toLowerCase().includes(query)) ||
+        (p.author && p.author.toLowerCase().includes(query)) ||
+        (p.category && p.category.toLowerCase().includes(query))
+      );
+    }
+
+    if (totalCountEl) {
+      totalCountEl.textContent = `총 ${list.length}개`;
+    }
+
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-16 text-center bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10 shadow-2xs">
+          <span class="material-symbols-outlined text-4xl text-on-surface-variant opacity-60 mb-2">folder_off</span>
+          <h3 class="font-headline text-base font-bold text-on-surface mb-1">검색된 프로젝트가 없습니다</h3>
+          <p class="text-xs text-on-surface-variant max-w-xs">다른 검색어를 입력하거나 필터를 변경해 보세요.</p>
+        </div>
+      `;
+      return;
+    }
+
+    // -------------------------------------------------------------
+    // 1. 리스트 / 테이블 뷰 (첨부 이미지 컬럼 양식 완벽 반영)
+    // -------------------------------------------------------------
+    if (this.state.projectViewMode === 'list') {
+      container.className = "flex flex-col gap-2.5";
+
+      // 테이블 헤더 바
+      const tableHeaderHtml = `
+        <div class="hidden md:grid grid-cols-12 gap-3 px-4 py-2.5 bg-surface-container-low rounded-xl text-[11px] font-bold text-on-surface-variant border border-outline-variant/15 items-center">
+          <div class="col-span-1 text-center">번호</div>
+          <div class="col-span-4">프로젝트 제목 (프로젝트ID)</div>
+          <div class="col-span-3">사이트명 (사이트ID)</div>
+          <div class="col-span-1 text-center">PM</div>
+          <div class="col-span-1 text-center">기간</div>
+          <div class="col-span-1 text-center">글쓴이</div>
+          <div class="col-span-1 text-center">날짜 / 조회</div>
+        </div>
+      `;
+
+      const listRowsHtml = list.map(p => {
+        // 상태 뱃지 스타일링
+        let statusBadgeClass = 'bg-primary/10 text-primary border-primary/20';
+        if (p.status === 'maintenance') statusBadgeClass = 'bg-secondary/10 text-secondary border-secondary/20';
+        else if (p.status === 'build') statusBadgeClass = 'bg-tertiary-container/30 text-tertiary border-tertiary/20';
+
+        const pmText = (p.pm && p.pm !== '-') ? p.pm : '<span class="text-on-surface-variant/40">-</span>';
+        const periodText = (p.period && p.period !== '-') ? p.period : '<span class="text-on-surface-variant/40">-</span>';
+
+        return `
+          <div class="bg-surface-container-lowest rounded-xl p-3.5 md:p-4 border border-outline-variant/10 hover:bg-surface-container-low/80 hover:border-primary/30 transition-all cursor-pointer group shadow-2xs text-left" onclick="App.openProjectDetail(${p.id})">
+            <!-- Desktop Table Row Layout -->
+            <div class="hidden md:grid grid-cols-12 gap-3 items-center">
+              <div class="col-span-1 text-center font-mono text-xs font-bold text-on-surface-variant/80">${p.no}</div>
+              <div class="col-span-4 min-w-0 pr-2">
+                <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+                  <span class="font-headline text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</span>
+                </div>
+                <div class="flex items-center gap-1 text-[11px] font-mono text-primary font-semibold">
+                  <span>(${p.projectId})</span>
+                </div>
+              </div>
+              <div class="col-span-3 min-w-0 pr-2">
+                <p class="font-body text-xs text-on-surface font-medium truncate">${p.siteName}</p>
+                <p class="font-mono text-[11px] text-on-surface-variant/70 truncate">(${p.siteId})</p>
+              </div>
+              <div class="col-span-1 text-center">
+                <span class="font-body text-xs font-semibold text-on-surface">${pmText}</span>
+              </div>
+              <div class="col-span-1 text-center font-mono text-[11px] text-on-surface-variant font-medium">
+                ${periodText}
+              </div>
+              <div class="col-span-1 text-center">
+                <span class="font-body text-xs font-bold text-on-surface">${p.author}</span>
+              </div>
+              <div class="col-span-1 text-center flex flex-col items-center">
+                <span class="font-mono text-[11px] text-on-surface-variant">${p.date}</span>
+                <span class="text-[10px] text-on-surface-variant/70 font-semibold mt-0.5">조회 ${p.views}</span>
+              </div>
+            </div>
+
+            <!-- Mobile Responsive Card Row Layout -->
+            <div class="flex md:hidden flex-col gap-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-xs font-bold text-primary px-2 py-0.5 bg-primary/10 rounded-md">#${p.no}</span>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusBadgeClass}">${p.statusText || '진행중'}</span>
+                </div>
+                <span class="font-mono text-[11px] text-on-surface-variant">${p.date}</span>
+              </div>
+
+              <div>
+                <h4 class="font-headline text-sm font-bold text-on-surface group-hover:text-primary transition-colors">${p.title}</h4>
+                <p class="font-mono text-xs text-primary font-semibold mt-0.5">(${p.projectId})</p>
+              </div>
+
+              <div class="bg-surface-container-low p-2.5 rounded-xl text-xs flex flex-col gap-1 border border-outline-variant/10">
+                <div class="flex items-center justify-between">
+                  <span class="text-on-surface-variant text-[11px]">사이트:</span>
+                  <span class="font-medium text-on-surface truncate text-right ml-2">${p.siteName} (${p.siteId})</span>
+                </div>
+                <div class="flex items-center justify-between pt-1 border-t border-outline-variant/10">
+                  <span class="text-on-surface-variant text-[11px]">PM / 기간:</span>
+                  <span class="font-medium text-on-surface">${p.pm !== '-' ? p.pm : '미지정'} / ${p.period !== '-' ? p.period : '상시'}</span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between text-xs text-on-surface-variant pt-1 border-t border-outline-variant/10">
+                <span class="flex items-center gap-1 font-semibold text-on-surface">
+                  <span class="material-symbols-outlined text-sm">person</span>
+                  ${p.author} (${p.authorDept || '사원'})
+                </span>
+                <span class="text-[11px] font-semibold text-on-surface-variant/80">조회 ${p.views}회</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        ${tableHeaderHtml}
+        <div class="flex flex-col gap-2.5">${listRowsHtml}</div>
+      `;
+      return;
+    }
+
+    // -------------------------------------------------------------
+    // 2. 카드 뷰 (M3 글래스모피즘 Grid Card View)
+    // -------------------------------------------------------------
+    container.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
+    container.innerHTML = list.map(p => {
+      let statusBadgeClass = 'bg-primary/10 text-primary border-primary/20';
+      if (p.status === 'maintenance') statusBadgeClass = 'bg-secondary/10 text-secondary border-secondary/20';
+      else if (p.status === 'build') statusBadgeClass = 'bg-tertiary-container/30 text-tertiary border-tertiary/20';
+
+      return `
+        <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3.5 border border-outline-variant/10 shadow-2xs hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group text-left" onclick="App.openProjectDetail(${p.id})">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-xs font-bold text-primary px-2.5 py-0.5 bg-primary/10 rounded-full">#${p.no}</span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusBadgeClass}">${p.statusText || '진행중'}</span>
+            </div>
+            <span class="text-xs text-on-surface-variant/80 font-mono">${p.date}</span>
+          </div>
+
+          <div>
+            <h3 class="font-headline font-bold text-base text-on-surface group-hover:text-primary transition-colors leading-snug">${p.title}</h3>
+            <p class="font-mono text-xs text-primary font-semibold mt-1">ID: ${p.projectId}</p>
+          </div>
+
+          <div class="bg-surface-container-low p-3 rounded-xl flex flex-col gap-1.5 border border-outline-variant/10">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-on-surface-variant">사이트명</span>
+              <span class="font-semibold text-on-surface truncate ml-2">${p.siteName}</span>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-on-surface-variant">사이트 ID</span>
+              <span class="font-mono text-on-surface-variant font-medium">${p.siteId}</span>
+            </div>
+            <div class="flex items-center justify-between text-xs pt-1 border-t border-outline-variant/10">
+              <span class="text-on-surface-variant">프로젝트 기간</span>
+              <span class="font-mono font-bold text-on-surface">${p.period !== '-' ? p.period : '상시 운영'}</span>
+            </div>
+          </div>
+
+          <div class="mt-auto flex items-center justify-between pt-3 border-t border-outline-variant/10 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-on-surface">${p.author}</span>
+              <span class="text-on-surface-variant/70 text-[11px]">PM: ${p.pm !== '-' ? p.pm : '미지정'}</span>
+            </div>
+            <span class="text-[11px] font-semibold text-on-surface-variant">조회 ${p.views}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  openProjectDetail(projectId) {
+    const proj = (this.state.projects || []).find(p => p.id === projectId);
+    if (proj) {
+      this.showToast(`📂 [${proj.no}] ${proj.title} 프로젝트 상세 정보를 열람합니다.`);
+    }
   },
 
   // Toast System

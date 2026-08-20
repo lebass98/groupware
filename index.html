@@ -339,6 +339,17 @@
             </div>
             <span class="font-label font-bold text-on-surface text-sm">할 일 관리</span>
           </button>
+
+          <!-- Card 10: Projects (프로젝트 관리) -->
+          <button type="button" data-id="screen-project-list" onclick="App.switchTab('screen-project-list')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
+            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
+              <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+            </div>
+            <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">folder_managed</span>
+            </div>
+            <span class="font-label font-bold text-on-surface text-sm">프로젝트 관리</span>
+          </button>
         </div>
 
         <!-- Recent Notice Preview Banner -->
@@ -1565,6 +1576,53 @@
       <button onclick="App.openTodoModal()" class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full shadow-[0_8px_24px_rgba(35,44,81,0.15)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40 group" title="새 할 일 작성하기">
         <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">add</span>
       </button>
+    </section>
+
+    <!-- SCREEN 13: PROJECT MANAGEMENT LIST PAGE -->
+    <section class="screen-view" id="screen-project-list">
+      <main class="w-full py-2 text-left space-y-6 pb-24">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">프로젝트 관리</h2>
+            <p class="text-on-surface-variant text-xs mt-1">전사 프로젝트 현황 및 사이트 운영 정보를 한눈에 공유하고 관리하세요.</p>
+          </div>
+          <span class="px-3 py-1.5 bg-primary/10 text-primary font-bold text-xs rounded-full" id="project-total-count">총 10개</span>
+        </div>
+
+        <!-- Search Bar Section -->
+        <div class="relative w-full">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
+          <input class="w-full bg-surface-container-highest text-on-surface rounded-full py-3.5 pl-12 pr-4 border-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors font-body text-sm placeholder:text-on-surface-variant shadow-sm" id="project-search-input" onkeyup="App.filterProjects()" placeholder="프로젝트명, 사이트명, PM, 작성자 검색..." type="text"/>
+        </div>
+
+        <!-- Category Filter Chips -->
+        <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" id="project-filter-chips">
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold transition-all active:scale-95 project-chip active" onclick="App.setProjectFilter('all', this)">전체</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip" onclick="App.setProjectFilter('in_progress', this)">진행중</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip" onclick="App.setProjectFilter('maintenance', this)">유지보수</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip" onclick="App.setProjectFilter('build', this)">구축/고도화</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip" onclick="App.setProjectFilter('my', this)">내 담당</button>
+        </div>
+
+        <!-- Project List / Cards Section -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-headline text-lg font-bold text-on-surface">프로젝트 목록</h3>
+            <div class="flex items-center bg-surface-container rounded-xl p-0.5 border border-outline-variant/15" id="project-view-toggle">
+              <button type="button" onclick="App.setProjectViewMode('list', this)" class="project-view-btn w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary transition-all active:scale-95" title="리스트(테이블)형 보기">
+                <span class="material-symbols-outlined text-lg">format_list_bulleted</span>
+              </button>
+              <button type="button" onclick="App.setProjectViewMode('card', this)" class="project-view-btn w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95" title="카드형 보기">
+                <span class="material-symbols-outlined text-lg">dashboard</span>
+              </button>
+            </div>
+          </div>
+          <div class="flex flex-col gap-3" id="project-list-container">
+            <!-- Dynamic Project items rendered by App.renderProjects() -->
+          </div>
+        </div>
+      </main>
     </section>
 
     <!-- Glassmorphism Bottom Navigation (5 Core Items) -->
