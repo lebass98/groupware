@@ -2485,6 +2485,41 @@
     </div>
   </div>
 
+  <!-- Modal: PROJECT DETAIL VIEW (Full-Screen Page Modal / 프로젝트 상세 보기 뷰) -->
+  <div class="fixed inset-0 z-[115] bg-surface-container-lowest flex flex-col w-full h-full hidden overflow-hidden" id="modal-project-detail">
+    <div class="w-full max-w-[768px] mx-auto h-full bg-surface flex flex-col overflow-hidden relative border-x border-outline-variant/10 shadow-2xl">
+      
+      <!-- Top App Bar Header -->
+      <header class="flex justify-between items-center px-5 py-3.5 bg-surface/80 backdrop-blur-xl z-10 sticky top-0 shrink-0 border-b border-outline-variant/15">
+        <button type="button" onclick="App.closeProjectDetailModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors active:scale-95">
+          <span class="material-symbols-outlined text-2xl">arrow_back</span>
+        </button>
+        <div class="font-headline font-bold text-lg text-on-surface">프로젝트 상세 정보</div>
+        <div class="w-9 h-9 flex items-center justify-center">
+          <button type="button" onclick="App.copyProjectUrl()" class="w-9 h-9 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container hover:text-primary transition-colors active:scale-95" title="프로젝트 주소 복사">
+            <span class="material-symbols-outlined text-xl">share</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Scrollable Main Canvas -->
+      <main class="flex-1 overflow-y-auto p-5 sm:p-6 pb-28 space-y-6 text-left" id="project-detail-content">
+        <!-- Rendered dynamically by App.openProjectDetail(projectId) -->
+      </main>
+
+      <!-- Bottom Floating Action Bar -->
+      <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[768px] p-4 bg-surface-container-lowest/90 backdrop-blur-xl z-20 border-t border-outline-variant/15 flex items-center gap-3">
+        <button type="button" onclick="App.openProjectCommentModal()" class="flex-1 py-3.5 px-4 rounded-2xl font-headline font-bold text-on-primary bg-primary shadow-md flex items-center justify-center gap-2 active:scale-98 transition-transform">
+          <span class="material-symbols-outlined text-xl">chat</span>
+          <span>댓글 / 작업 메모 작성</span>
+        </button>
+        <button type="button" onclick="App.closeProjectDetailModal()" class="py-3.5 px-5 rounded-2xl font-headline font-bold text-on-surface bg-surface-container hover:bg-surface-container-high active:scale-98 transition-all">
+          <span>닫기</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal: TODO DELETE CONFIRM DIALOG (출근 확인 모달과 동일한 M3 디자인) -->
   <div class="fixed inset-0 z-[130] flex items-center justify-center bg-inverse-surface/40 backdrop-blur-md hidden transition-all duration-200 p-4" id="modal-todo-delete-confirm" onclick="if(event.target === this) App.closeTodoDeleteModal()">
     <div class="w-full max-w-sm bg-surface-container-lowest rounded-3xl p-6 flex flex-col items-center text-center gap-4 shadow-[0_16px_40px_rgba(35,44,81,0.15)] border border-outline-variant/15">

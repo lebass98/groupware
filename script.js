@@ -4721,9 +4721,315 @@ const App = {
   },
 
   openProjectDetail(projectId) {
-    const proj = (this.state.projects || []).find(p => p.id === projectId);
-    if (proj) {
-      this.showToast(`📂 [${proj.no}] ${proj.title} 프로젝트 상세 정보를 열람합니다.`);
+    const modal = document.getElementById('modal-project-detail');
+    const container = document.getElementById('project-detail-content');
+    if (!modal || !container) return;
+
+    const p = (this.state.projects || []).find(item => item.id === projectId) ||
+              ((window.MockData && window.MockData.projects) || []).find(item => item.id === projectId);
+    if (!p) return;
+
+    this.state.currentDetailProjectId = p.id;
+    const formattedDate = (p.date || '').replace(/-/g, '.');
+    const formattedDateFull = p.dateFull ? p.dateFull.replace(/-/g, '.') : formattedDate;
+
+    let statusBadgeClass = 'bg-primary/10 text-primary border-primary/20';
+    if (p.status === 'maintenance') statusBadgeClass = 'bg-secondary/10 text-secondary border-secondary/20';
+    else if (p.status === 'build') statusBadgeClass = 'bg-tertiary-container/30 text-tertiary border-tertiary/20';
+
+    // 첨부파일 렌더링
+    const attachments = p.attachments || [];
+    const attachmentsHtml = attachments.length > 0 ? attachments.map(att => `
+      <div class="flex items-center justify-between bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all text-xs">
+        <div class="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
+          <span class="material-symbols-outlined text-primary text-xl shrink-0">
+            ${att.type === 'pdf' ? 'picture_as_pdf' : (att.type === 'xlsx' ? 'table_chart' : 'description')}
+          </span>
+          <div class="flex flex-col min-w-0">
+            <span class="font-bold text-on-surface truncate text-xs">${att.name}</span>
+            <span class="text-[10px] text-on-surface-variant font-mono mt-0.5">
+              ${att.size} | Down: ${att.downloads || 0}회 | ${att.date || ''}
+            </span>
+          </div>
+        </div>
+        <button type="button" onclick="App.downloadProjectAttachment('${att.name}')" class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-bold text-xs flex items-center gap-1 shrink-0 active:scale-95 transition-all">
+          <span class="material-symbols-outlined text-sm">download</span>
+          <span>다운로드</span>
+        </button>
+      </div>
+    `).join('') : `
+      <div class="p-4 bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant/20 text-center text-on-surface-variant text-xs">
+        등록된 첨부파일이 없습니다.
+      </div>
+    `;
+
+    // 고객사 담당자 렌더링
+    const clientContacts = p.clientContacts || [];
+    const clientContactsHtml = clientContacts.length > 0 ? clientContacts.map(c => `
+      <div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant/10 text-xs flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-primary font-mono">${c.label || '담당자 1'}</span>
+            <span class="font-mono text-[11px] text-on-surface-variant">[${c.date || ''}]</span>
+          </div>
+          <div class="flex items-center gap-1">
+            ${c.mobile ? `<a href="tel:${c.mobile}" class="p-1 rounded-full hover:bg-surface-container text-primary" title="전화걸기"><span class="material-symbols-outlined text-base">call</span></a>` : ''}
+            ${c.email ? `<a href="mailto:${c.email}" class="p-1 rounded-full hover:bg-surface-container text-primary" title="이메일 보내기"><span class="material-symbols-outlined text-base">mail</span></a>` : ''}
+          </div>
+        </div>
+        <div class="text-on-surface leading-relaxed flex flex-wrap gap-x-2 gap-y-1">
+          <span class="font-bold">${c.name || '-'}</span>
+          <span class="text-on-surface-variant/40">|</span>
+          <span>${c.position || '-'}</span>
+          <span class="text-on-surface-variant/40">|</span>
+          <span>전화 ${c.tel || '-'}</span>
+          <span class="text-on-surface-variant/40">|</span>
+          <span>팩스 ${c.fax || '-'}</span>
+          <span class="text-on-surface-variant/40">|</span>
+          <span class="font-mono text-primary">${c.mobile || '-'}</span>
+          <span class="text-on-surface-variant/40">|</span>
+          <span class="font-mono text-on-surface-variant">${c.email || '-'}</span>
+        </div>
+      </div>
+    `).join('') : `
+      <div class="p-3.5 bg-surface-container-lowest rounded-xl border border-outline-variant/10 text-xs text-on-surface-variant">
+        <span class="font-bold text-on-surface">담당자 1 :</span> 등록된 고객사 담당자 정보가 없습니다.
+      </div>
+    `;
+
+    // 댓글 / 작업 히스토리 렌더링
+    const comments = p.comments || [];
+    const commentsHtml = comments.length > 0 ? comments.map(cm => `
+      <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/10 flex flex-col gap-2 shadow-2xs">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center">
+              ${(cm.author || '사')[0]}
+            </div>
+            <span class="font-bold text-xs text-on-surface">${cm.author}</span>
+            <span class="text-[11px] text-on-surface-variant">(${cm.authorDept || '기획팀'})</span>
+          </div>
+          <span class="font-mono text-[11px] text-on-surface-variant/80">${cm.date}</span>
+        </div>
+        <div class="bg-surface-container-low p-3 rounded-lg text-xs font-mono text-on-surface leading-relaxed whitespace-pre-line select-text">
+          ${cm.content}
+        </div>
+      </div>
+    `).join('') : `
+      <div class="p-4 bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant/20 text-center text-on-surface-variant text-xs">
+        등록된 댓글 및 작업 메모가 없습니다.
+      </div>
+    `;
+
+    container.innerHTML = `
+      <!-- 1. Header Info & Status -->
+      <section class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="font-mono text-xs font-bold text-primary px-2.5 py-0.5 bg-primary/10 rounded-full">No. ${p.no}</span>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusBadgeClass}">${p.statusText || '진행 중'}</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-xs font-semibold">${p.category || '일반'}</span>
+          <span class="text-on-surface-variant/80 font-mono text-xs ml-auto">조회 ${p.views || 0}회</span>
+        </div>
+        <h1 class="font-headline text-xl sm:text-2xl font-extrabold text-on-surface leading-snug tracking-tight">
+          ${p.title}
+        </h1>
+        <div class="flex items-center gap-2 text-xs text-on-surface-variant font-medium pt-1 border-b border-outline-variant/10 pb-3">
+          <span>글쓴이 : <strong class="text-on-surface">${p.author}</strong> (${p.authorDept || '기획팀'})</span>
+          <span class="text-outline-variant/40">•</span>
+          <span class="font-mono">날짜 : ${formattedDateFull}</span>
+        </div>
+      </section>
+
+      <!-- 2. 프로젝트 기본 정보 테이블 (모든 항목 빠짐없이 노출) -->
+      <section class="bg-surface-container-low rounded-2xl p-4 sm:p-5 flex flex-col gap-3 border border-outline-variant/15 shadow-2xs">
+        <h3 class="font-headline font-bold text-sm text-on-surface flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-base">info</span>
+          <span>프로젝트 기본 정보</span>
+        </h3>
+
+        <div class="flex flex-col gap-2.5 text-xs">
+          <!-- 프로젝트 주소 -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between py-1.5 border-b border-outline-variant/10 gap-1">
+            <span class="text-on-surface-variant font-bold shrink-0 w-28">• 프로젝트 주소</span>
+            <div class="flex items-center gap-1.5 flex-1 min-w-0">
+              <a href="${p.projectUrl || '#'}" target="_blank" class="text-primary font-mono text-xs hover:underline truncate">${p.projectUrl || 'http://sitegate.co.kr'}</a>
+              <button type="button" onclick="navigator.clipboard.writeText('${p.projectUrl}'); App.showToast('주소가 복사되었습니다!');" class="p-1 text-on-surface-variant hover:text-primary shrink-0" title="주소 복사">
+                <span class="material-symbols-outlined text-sm">content_copy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 클라이언트 ID -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between py-1.5 border-b border-outline-variant/10 gap-1">
+            <span class="text-on-surface-variant font-bold shrink-0 w-28">• 클라이언트 ID</span>
+            <span class="font-medium text-on-surface">${p.clientName || '-'} <span class="font-mono text-primary font-bold">(${p.clientId || '-'})</span></span>
+          </div>
+
+          <!-- 사이트 ID -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between py-1.5 border-b border-outline-variant/10 gap-1">
+            <span class="text-on-surface-variant font-bold shrink-0 w-28">• 사이트 ID</span>
+            <div class="flex items-center gap-2">
+              <span class="font-medium text-on-surface">${p.siteName}</span>
+              <span class="font-mono text-primary font-bold">(${p.siteId})</span>
+              <span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">낙찰정보(${p.bidCount || 0})</span>
+            </div>
+          </div>
+
+          <!-- PM 및 직군별 담당자 그리드 (빈칸도 다 노출) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 py-1.5 border-b border-outline-variant/10">
+            <div class="flex items-center justify-between">
+              <span class="text-on-surface-variant font-bold w-28">• PM</span>
+              <span class="font-medium text-on-surface">${p.pm || '-'}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-on-surface-variant font-bold w-28">• 담당자(기획)</span>
+              <span class="font-medium text-on-surface">${p.planner || '-'}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-on-surface-variant font-bold w-28">• 담당자(디자인)</span>
+              <span class="font-medium text-on-surface">${p.designer || '-'}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-on-surface-variant font-bold w-28">• 담당자(코딩)</span>
+              <span class="font-medium text-on-surface">${p.publisher || '-'}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-on-surface-variant font-bold w-28">• 담당자(개발)</span>
+              <span class="font-medium text-on-surface">${p.developer || '-'}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-on-surface-variant font-bold w-28">• 개발 언어</span>
+              <span class="font-medium text-on-surface">${p.devLang || '-'}</span>
+            </div>
+          </div>
+
+          <!-- 프로젝트 기간 & 진행상태 -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between py-1.5 border-b border-outline-variant/10 gap-1">
+            <span class="text-on-surface-variant font-bold shrink-0 w-28">• 프로젝트 기간</span>
+            <span class="font-mono font-bold text-on-surface">${p.period || '-'}</span>
+          </div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between py-1.5 border-b border-outline-variant/10 gap-1">
+            <span class="text-on-surface-variant font-bold shrink-0 w-28">• 진행상태</span>
+            <span class="font-bold text-primary">${p.statusText || '진행 중'}</span>
+          </div>
+
+          <!-- 담당자 1 [고객사 연락처] -->
+          <div class="flex flex-col gap-2 pt-1.5">
+            <span class="text-on-surface-variant font-bold">• 고객사 담당자</span>
+            ${clientContactsHtml}
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. 첨부파일 섹션 -->
+      <section class="flex flex-col gap-2.5">
+        <h3 class="font-headline font-bold text-sm text-on-surface flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-base">attach_file</span>
+            <span>첨부파일 (${attachments.length})</span>
+          </span>
+        </h3>
+        <div class="flex flex-col gap-2">
+          ${attachmentsHtml}
+        </div>
+      </section>
+
+      <!-- 4. 본문 내용 -->
+      <section class="flex flex-col gap-2.5">
+        <h3 class="font-headline font-bold text-sm text-on-surface flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-base">subject</span>
+          <span>상세 내용</span>
+        </h3>
+        <div class="bg-surface-container-low rounded-2xl p-4 sm:p-5 border border-outline-variant/10 text-xs text-on-surface leading-relaxed min-h-[70px] whitespace-pre-line">
+          ${p.content && p.content !== '.' ? p.content : '별도 등록된 본문 텍스트가 없습니다.'}
+        </div>
+      </section>
+
+      <!-- 5. 댓글 / 작업 히스토리 -->
+      <section class="flex flex-col gap-3">
+        <h3 class="font-headline font-bold text-sm text-on-surface flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-base">forum</span>
+            <span>댓글 및 작업 메모 (${comments.length})</span>
+          </span>
+        </h3>
+        <div class="flex flex-col gap-2.5" id="project-comments-list">
+          ${commentsHtml}
+        </div>
+
+        <!-- 댓글 작성 폼 -->
+        <div class="bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/15 flex flex-col gap-2.5 mt-2">
+          <span class="text-xs font-bold text-on-surface">새 댓글 / 메모 작성</span>
+          <textarea id="project-new-comment-input" class="w-full p-3 bg-surface-container-lowest rounded-xl text-xs text-on-surface border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:outline-none resize-none" placeholder="서버 정보, 개발 링크, 진행 사항 등을 자유롭게 입력하세요..." rows="3"></textarea>
+          <div class="flex justify-end">
+            <button type="button" onclick="App.submitProjectComment(${p.id})" class="px-4 py-2 bg-primary text-on-primary font-bold text-xs rounded-xl hover:bg-primary-dim active:scale-95 transition-all shadow-xs flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">send</span>
+              <span>작성 완료</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    `;
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  },
+
+  closeProjectDetailModal() {
+    const modal = document.getElementById('modal-project-detail');
+    if (modal) modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  },
+
+  copyProjectUrl() {
+    const p = (this.state.projects || []).find(item => item.id === this.state.currentDetailProjectId);
+    if (p && p.projectUrl) {
+      navigator.clipboard.writeText(p.projectUrl);
+      this.showToast('🔗 프로젝트 주소가 클립보드에 복사되었습니다.');
+    } else {
+      this.showToast('🔗 프로젝트 링크가 복사되었습니다.');
+    }
+  },
+
+  downloadProjectAttachment(fileName) {
+    this.showToast(`📥 [${fileName}] 첨부파일 다운로드를 시작합니다.`);
+  },
+
+  openProjectCommentModal() {
+    const textarea = document.getElementById('project-new-comment-input');
+    if (textarea) {
+      textarea.focus();
+      textarea.scrollIntoView({ behavior: 'smooth' });
+    }
+  },
+
+  submitProjectComment(projectId) {
+    const input = document.getElementById('project-new-comment-input');
+    if (!input || !input.value.trim()) {
+      this.showToast('댓글 내용을 입력해주세요.');
+      return;
+    }
+
+    const p = (this.state.projects || []).find(item => item.id === projectId);
+    if (p) {
+      if (!p.comments) p.comments = [];
+      const now = new Date();
+      const yr = String(now.getFullYear()).slice(-2);
+      const mo = String(now.getMonth() + 1).padStart(2, '0');
+      const da = String(now.getDate()).padStart(2, '0');
+      const ho = String(now.getHours()).padStart(2, '0');
+      const mi = String(now.getMinutes()).padStart(2, '0');
+
+      p.comments.push({
+        id: Date.now(),
+        author: this.state.user?.name || '이재광',
+        authorDept: '수행본부',
+        date: `${yr}-${mo}-${da} ${ho}:${mi}`,
+        content: input.value.trim()
+      });
+
+      this.openProjectDetail(projectId);
+      this.showToast('💬 새로운 댓글 및 작업 메모가 등록되었습니다.');
     }
   },
 
