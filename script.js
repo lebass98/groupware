@@ -4860,23 +4860,21 @@ const App = {
     `;
 
     container.innerHTML = `
-      <!-- 1. Header Info & Status -->
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="font-mono text-xs font-bold text-primary px-2.5 py-0.5 bg-primary/10 rounded-full">No. ${p.no}</span>
-          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusBadgeClass}">${p.statusText || '진행 중'}</span>
-          <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-xs font-semibold">${p.category || '일반'}</span>
-          <span class="text-on-surface-variant/80 font-mono text-xs ml-auto">조회 ${p.views || 0}회</span>
+      <!-- 1. Header Card (공지사항 상세 타이틀 디자인 1:1 통일) -->
+      <div class="bg-surface-container-lowest rounded-2xl p-6 relative overflow-hidden shadow-sm text-left">
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-primary-container"></div>
+        <div class="flex items-center gap-3 mb-3">
+          <span class="bg-primary text-on-primary font-label text-xs font-bold px-3 py-1 rounded-full">${p.category || '프로젝트'}</span>
+          <span class="text-on-surface-variant font-body text-xs">${formattedDate}</span>
         </div>
-        <h1 class="font-headline text-xl sm:text-2xl font-extrabold text-on-surface leading-snug tracking-tight">
+        <h1 class="font-headline text-xl font-bold text-on-surface mb-3 leading-snug">
           ${p.title}
         </h1>
-        <div class="flex items-center gap-2 text-xs text-on-surface-variant font-medium pt-1 border-b border-outline-variant/10 pb-3">
-          <span>글쓴이 : <strong class="text-on-surface">${p.author}</strong> (${p.authorDept || '기획팀'})</span>
-          <span class="text-outline-variant/40">•</span>
-          <span class="font-mono">날짜 : ${formattedDateFull}</span>
+        <div class="flex items-center gap-2 text-on-surface-variant font-body text-xs border-t border-outline-variant/10 pt-3 mt-2">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">person</span>
+          <span>${p.authorDept ? p.authorDept + ' ' : ''}${p.author}${p.authorRole ? ' (' + p.authorRole + ')' : ''}</span>
         </div>
-      </section>
+      </div>
 
       <!-- 2. 프로젝트 기본 정보 테이블 (모든 항목 빠짐없이 노출) -->
       <section class="bg-surface-container-low rounded-2xl p-4 sm:p-5 flex flex-col gap-3 border border-outline-variant/15 shadow-2xs">
