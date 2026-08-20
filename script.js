@@ -4691,7 +4691,7 @@ const App = {
           <div class="flex items-center gap-2 pt-0.5 flex-wrap">
             <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-semibold flex items-center gap-1">
               <span class="material-symbols-outlined text-[13px] text-primary">calendar_month</span>
-              <span>기간 : ${periodText}</span>
+              <span>${periodText}</span>
             </span>
             <span class="px-2.5 py-0.5 rounded-full ${statusBadgeClass} text-[11px] font-bold border">
               ${p.statusText || '진행중'}
