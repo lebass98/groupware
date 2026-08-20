@@ -4638,6 +4638,8 @@ const App = {
     if (this.state.projectViewMode === 'list') {
       container.className = "flex flex-col gap-2.5";
       container.innerHTML = list.map(p => {
+        const formattedDate = (p.date || '').replace(/-/g, '.');
+
         return `
           <div class="flex items-center justify-between bg-surface-container-lowest rounded-xl px-4 py-3.5 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openProjectDetail(${p.id})">
             <!-- 1. 폴더아이콘 + 프로젝트 제목 -->
@@ -4648,7 +4650,7 @@ const App = {
             
             <!-- 2. 우측: 작성한 날짜 -->
             <div class="flex items-center gap-2 shrink-0">
-              <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-medium">${p.date}</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-mono font-medium">${formattedDate}</span>
               <span class="material-symbols-outlined text-on-surface-variant text-base group-hover:translate-x-1 transition-transform ml-0.5">chevron_right</span>
             </div>
           </div>
@@ -4661,13 +4663,13 @@ const App = {
     // 2. 카드 모드 (projectViewMode === 'card')
     // 1. 상단타이틀(폴더아이콘 영역): 프로젝트 제목 (ID 표시 안함)
     // 2. 우측(기존 몇개 업무 자리): PM 이름
-    // 3. 진행도 요약(기존 대기/진행중 자리): 날짜(프로젝트 기간) 표시
-    // 4. 그레이박스 안: 사이트명과 (id) / 우측에 작성한 날짜 / 조회수
+    // 3. 진행도 요약(기존 대기/진행중 자리): 글 번호, 상태 뱃지, 프로젝트 ID
+    // 4. 그레이박스 안: 사이트명과 (id)
     // -------------------------------------------------------------
     container.className = "flex flex-col gap-4";
     container.innerHTML = list.map(p => {
       const pmText = (p.pm && p.pm !== '-') ? p.pm : '미지정';
-      const periodText = (p.period && p.period !== '-') ? p.period : '상시';
+      const formattedDate = (p.date || '').replace(/-/g, '.');
 
       let statusBadgeClass = 'bg-primary/10 text-primary border-primary/20';
       if (p.status === 'maintenance') statusBadgeClass = 'bg-secondary/10 text-secondary border-secondary/20';
@@ -4701,7 +4703,7 @@ const App = {
               </span>
             </div>
             <span class="font-mono text-on-surface-variant text-xs font-medium shrink-0">
-              ${p.date}
+              ${formattedDate}
             </span>
           </div>
 
