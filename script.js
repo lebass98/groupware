@@ -2619,6 +2619,51 @@ const App = {
     }
   },
 
+  // Employee Status Helper
+  getEmployeeStatusInfo(emp) {
+    const rawStatus = (emp.status || 'work').toLowerCase();
+    const rawText = emp.statusText || '';
+
+    if (rawStatus === 'business' || rawText.includes('외근')) {
+      return {
+        type: 'business',
+        text: rawText || '외근중',
+        dotColor: 'bg-sky-500',
+        badgeClass: 'bg-sky-500/10 text-sky-600 border border-sky-500/20',
+        icon: 'directions_car',
+        pulse: false
+      };
+    } else if (rawStatus === 'vacation' || rawText.includes('휴가') || rawText.includes('반차') || rawText.includes('연차')) {
+      return {
+        type: 'vacation',
+        text: rawText || '휴가중',
+        dotColor: 'bg-amber-500',
+        badgeClass: 'bg-amber-500/10 text-amber-600 border border-amber-500/20',
+        icon: 'beach_access',
+        pulse: false
+      };
+    } else if (rawStatus === 'offwork' || rawStatus === 'away' || rawStatus === 'offline' || rawText.includes('퇴근')) {
+      return {
+        type: 'offwork',
+        text: rawText || '퇴근',
+        dotColor: 'bg-slate-400',
+        badgeClass: 'bg-slate-500/10 text-slate-500 border border-slate-500/20',
+        icon: 'home',
+        pulse: false
+      };
+    } else {
+      // default: work / online
+      return {
+        type: 'work',
+        text: rawText || '근무중',
+        dotColor: 'bg-emerald-500',
+        badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
+        icon: 'laptop_mac',
+        pulse: true
+      };
+    }
+  },
+
   // Employee Directory Methods
   renderDirectory() {
     const container = document.getElementById('directory-list-container');
@@ -2629,11 +2674,23 @@ const App = {
     const cat = this.state.currentDirectoryCategory || 'all';
 
     let filtered = this.state.employees.filter(emp => {
-      const matchCat = cat === 'all' || emp.dept === cat;
+      const statusInfo = this.getEmployeeStatusInfo(emp);
+      let matchCat = false;
+      if (cat === 'all') {
+        matchCat = true;
+      } else if (cat.startsWith('status:')) {
+        const targetStatus = cat.split(':')[1];
+        matchCat = statusInfo.type === targetStatus;
+      } else {
+        matchCat = emp.dept === cat;
+      }
+
       const matchQuery = !query || 
         emp.name.toLowerCase().includes(query) || 
         emp.dept.toLowerCase().includes(query) || 
         emp.role.toLowerCase().includes(query) ||
+        (emp.statusText && emp.statusText.toLowerCase().includes(query)) ||
+        (statusInfo.text && statusInfo.text.toLowerCase().includes(query)) ||
         emp.phone.includes(query);
       return matchCat && matchQuery;
     });
@@ -2651,43 +2708,58 @@ const App = {
     }
 
     container.innerHTML = filtered.map(emp => {
-      const isVacation = emp.status === 'vacation';
-      const opacityClass = isVacation ? 'opacity-65' : '';
+      const statusInfo = this.getEmployeeStatusInfo(emp);
+      const isOff = statusInfo.type === 'offwork';
+      const opacityClass = isOff ? 'opacity-75' : '';
       
       let avatarHtml = '';
+      const dotHtml = `
+        <div class="absolute bottom-0 right-0 h-3.5 w-3.5 ${statusInfo.dotColor} rounded-full border-2 border-surface-container-lowest z-10 ${statusInfo.pulse ? 'ring-2 ring-emerald-400/30' : ''}"></div>
+      `;
+
       if (emp.avatar) {
         avatarHtml = `
           <div class="h-14 w-14 rounded-full overflow-hidden bg-surface-container-low relative flex-shrink-0 cursor-pointer" onclick="App.openDirectoryDetail(${emp.id})">
-            ${emp.status === 'online' ? '<div class="absolute bottom-0 right-0 h-3 w-3 bg-secondary rounded-full border-2 border-surface-container-lowest z-10"></div>' : ''}
-            ${emp.status === 'vacation' ? '<div class="absolute bottom-0 right-0 h-3 w-3 bg-tertiary rounded-full border-2 border-surface-container-lowest z-10"></div>' : ''}
+            ${dotHtml}
             <img alt="${emp.name}" class="w-full h-full object-cover hover:scale-105 transition-transform" src="${emp.avatar}" />
           </div>
         `;
       } else {
         avatarHtml = `
-          <div class="h-14 w-14 rounded-full overflow-hidden bg-surface-container-low flex items-center justify-center text-primary-dim font-headline font-bold text-xl flex-shrink-0 cursor-pointer hover:bg-surface-container transition-colors" onclick="App.openDirectoryDetail(${emp.id})">
+          <div class="h-14 w-14 rounded-full overflow-hidden bg-surface-container-low relative flex items-center justify-center text-primary-dim font-headline font-bold text-xl flex-shrink-0 cursor-pointer hover:bg-surface-container transition-colors" onclick="App.openDirectoryDetail(${emp.id})">
+            ${dotHtml}
             ${emp.avatarInitial || emp.name.charAt(0)}
           </div>
         `;
       }
 
-      const statusBadgeHtml = emp.statusText ? `<p class="font-body text-xs text-tertiary mt-1 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">event_busy</span> ${emp.statusText}</p>` : '';
+      const statusBadgeHtml = `
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${statusInfo.badgeClass} mt-1">
+          <span class="material-symbols-outlined text-[13px]">${statusInfo.icon}</span>
+          <span>${statusInfo.text}</span>
+        </span>
+      `;
 
       return `
         <div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between shadow-[0_2px_12px_rgba(35,44,81,0.04)] transition-all duration-200 hover:-translate-y-0.5 ${opacityClass} text-left">
           <div class="flex items-center space-x-4">
             ${avatarHtml}
             <div class="cursor-pointer" onclick="App.openDirectoryDetail(${emp.id})">
-              <h3 class="font-headline font-bold text-on-surface text-base hover:text-primary transition-colors">${emp.name}</h3>
-              <p class="font-body text-xs text-on-surface-variant mt-0.5">${emp.dept} • ${emp.role}</p>
-              ${statusBadgeHtml}
+              <div class="flex items-center gap-2">
+                <h3 class="font-headline font-bold text-on-surface text-base hover:text-primary transition-colors">${emp.name}</h3>
+                <span class="font-body text-xs text-on-surface-variant">${emp.role}</span>
+              </div>
+              <p class="font-body text-xs text-on-surface-variant/80 mt-0.5">${emp.dept}</p>
+              <div class="mt-1">
+                ${statusBadgeHtml}
+              </div>
             </div>
           </div>
           <div class="flex space-x-2">
-            <button onclick="App.callEmployee('${emp.phone}')" class="h-10 w-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-primary/10 transition-colors active:scale-95">
+            <button onclick="App.callEmployee('${emp.phone}')" class="h-10 w-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-primary/10 transition-colors active:scale-95" title="전화걸기">
               <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">call</span>
             </button>
-            <button onclick="App.chatEmployee('${emp.name}')" class="h-10 w-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-primary/10 transition-colors active:scale-95">
+            <button onclick="App.chatEmployee('${emp.name}')" class="h-10 w-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-primary/10 transition-colors active:scale-95" title="메신저">
               <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">chat</span>
             </button>
           </div>
@@ -2725,6 +2797,10 @@ const App = {
     const emailEl = document.getElementById('dir-detail-email');
     const deptEl = document.getElementById('dir-detail-dept');
     const avatarWrap = document.getElementById('dir-detail-avatar-wrap');
+    const statusBadgeEl = document.getElementById('dir-detail-status-badge');
+    const statusTextEl = document.getElementById('dir-detail-status-text');
+
+    const statusInfo = this.getEmployeeStatusInfo(emp);
 
     if (nameEl) nameEl.innerText = emp.name;
     if (roleEl) roleEl.innerText = `${emp.dept} / ${emp.role}`;
@@ -2732,6 +2808,24 @@ const App = {
     if (telEl) telEl.innerText = emp.tel;
     if (emailEl) emailEl.innerText = emp.email;
     if (deptEl) deptEl.innerText = emp.dept;
+
+    if (statusBadgeEl) {
+      statusBadgeEl.innerHTML = `
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
+          <span class="material-symbols-outlined text-sm">${statusInfo.icon}</span>
+          <span>${statusInfo.text}</span>
+        </span>
+      `;
+    }
+
+    if (statusTextEl) {
+      statusTextEl.innerHTML = `
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${statusInfo.badgeClass}">
+          <span class="w-1.5 h-1.5 rounded-full ${statusInfo.dotColor}"></span>
+          <span>${statusInfo.text}</span>
+        </span>
+      `;
+    }
 
     if (avatarWrap) {
       if (emp.avatar) {

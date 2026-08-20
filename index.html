@@ -987,9 +987,13 @@
           <input class="w-full bg-surface-container-highest text-on-surface rounded-full py-3.5 pl-12 pr-4 border-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors font-body text-sm placeholder-on-surface-variant/70 shadow-sm" id="directory-search-input" onkeyup="App.filterDirectory()" placeholder="이름, 부서 또는 전화번호 검색" type="text"/>
         </div>
 
-        <!-- Category Filters (Bento Style Chips) -->
+        <!-- Category & Status Filters (Bento Style Chips) -->
         <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" id="directory-category-chips">
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold transition-all active:scale-95 dir-chip active" onclick="App.selectDirectoryCategory('all', this)">전체</button>
+          <button class="whitespace-nowrap px-3.5 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip flex items-center gap-1.5" onclick="App.selectDirectoryCategory('status:work', this)"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>근무중</button>
+          <button class="whitespace-nowrap px-3.5 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip flex items-center gap-1.5" onclick="App.selectDirectoryCategory('status:business', this)"><span class="w-2 h-2 rounded-full bg-sky-500"></span>외근중</button>
+          <button class="whitespace-nowrap px-3.5 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip flex items-center gap-1.5" onclick="App.selectDirectoryCategory('status:vacation', this)"><span class="w-2 h-2 rounded-full bg-amber-500"></span>휴가중</button>
+          <button class="whitespace-nowrap px-3.5 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip flex items-center gap-1.5" onclick="App.selectDirectoryCategory('status:offwork', this)"><span class="w-2 h-2 rounded-full bg-slate-400"></span>퇴근</button>
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip" onclick="App.selectDirectoryCategory('경영지원팀', this)">경영지원</button>
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip" onclick="App.selectDirectoryCategory('기획팀', this)">기획</button>
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip" onclick="App.selectDirectoryCategory('디자인팀', this)">디자인</button>
@@ -1024,7 +1028,10 @@
             <img class="w-full h-full object-cover" id="dir-detail-avatar-img" src="" alt="프로필 사진" />
           </div>
           <h2 class="font-headline font-extrabold text-2xl text-primary mb-1" id="dir-detail-name">김종규</h2>
-          <p class="font-label text-sm font-semibold text-on-surface-variant mb-5" id="dir-detail-role">기획팀 / 팀장</p>
+          <p class="font-label text-sm font-semibold text-on-surface-variant mb-2" id="dir-detail-role">기획팀 / 팀장</p>
+          <div class="mb-5" id="dir-detail-status-badge">
+            <!-- Dynamic Status Badge -->
+          </div>
 
           <!-- Quick Action Buttons -->
           <div class="flex gap-3 w-full justify-center">
@@ -1042,7 +1049,17 @@
 
         <!-- Contact Details Card -->
         <div class="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl p-6 shadow-sm space-y-4">
-          <h3 class="font-headline font-bold text-base text-on-surface mb-3 border-b border-outline-variant/10 pb-3">연락처 정보</h3>
+          <h3 class="font-headline font-bold text-base text-on-surface mb-3 border-b border-outline-variant/10 pb-3">연락처 및 근무 정보</h3>
+
+          <!-- Work Status Row -->
+          <div class="flex items-center justify-between py-2 border-b border-outline-variant/10">
+            <div class="font-label text-xs font-semibold text-on-surface-variant flex items-center gap-2">
+              <span class="material-symbols-outlined text-base text-primary">badge</span> 근무 상태
+            </div>
+            <div id="dir-detail-status-text">
+              <!-- Dynamic Status Pill -->
+            </div>
+          </div>
           
           <!-- Mobile -->
           <div class="flex items-center justify-between py-2 border-b border-outline-variant/10">
