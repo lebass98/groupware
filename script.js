@@ -2624,44 +2624,74 @@ const App = {
     const rawStatus = (emp.status || 'work').toLowerCase();
     const rawText = emp.statusText || '';
 
-    if (rawStatus === 'business' || rawText.includes('외근')) {
-      return {
+    // 1. Determine Primary Live Status (근무중, 외근중, 휴가중, 퇴근)
+    let mainStatus = {
+      type: 'work',
+      text: '근무중',
+      dotColor: 'bg-emerald-500',
+      badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
+      icon: 'laptop_mac',
+      pulse: true
+    };
+
+    if (rawStatus === 'business' || rawText === '외근중') {
+      mainStatus = {
         type: 'business',
-        text: rawText || '외근중',
+        text: '외근중',
         dotColor: 'bg-sky-500',
         badgeClass: 'bg-sky-500/10 text-sky-600 border border-sky-500/20',
         icon: 'directions_car',
         pulse: false
       };
-    } else if (rawStatus === 'vacation' || rawText.includes('휴가') || rawText.includes('반차') || rawText.includes('연차')) {
-      return {
+    } else if (rawStatus === 'vacation' || rawText === '휴가중' || rawText === '연차') {
+      mainStatus = {
         type: 'vacation',
-        text: rawText || '휴가중',
+        text: '휴가중',
         dotColor: 'bg-amber-500',
         badgeClass: 'bg-amber-500/10 text-amber-600 border border-amber-500/20',
         icon: 'beach_access',
         pulse: false
       };
-    } else if (rawStatus === 'offwork' || rawStatus === 'away' || rawStatus === 'offline' || rawText.includes('퇴근')) {
-      return {
+    } else if (rawStatus === 'offwork' || rawStatus === 'away' || rawStatus === 'offline' || rawText === '퇴근') {
+      mainStatus = {
         type: 'offwork',
-        text: rawText || '퇴근',
+        text: '퇴근',
         dotColor: 'bg-slate-400',
         badgeClass: 'bg-slate-500/10 text-slate-500 border border-slate-500/20',
         icon: 'home',
         pulse: false
       };
     } else {
-      // default: work / online
-      return {
+      mainStatus = {
         type: 'work',
-        text: rawText || '근무중',
+        text: '근무중',
         dotColor: 'bg-emerald-500',
         badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
         icon: 'laptop_mac',
         pulse: true
       };
     }
+
+    // 2. Determine Today's Scheduled Event (외근/반차/연차/회의 등 오늘 예정)
+    let todayScheduleText = emp.todaySchedule || '';
+    if (!todayScheduleText && (rawText.includes('반차') || rawText.includes('외근(') || rawText.includes('미팅'))) {
+      todayScheduleText = rawText;
+    }
+
+    // Auto-detect from schedules database for today (e.g. 2026-8-20) if not specified
+    if (!todayScheduleText && window.MockData && window.MockData.schedules) {
+      const todayKey = '2026-8-20'; // Reference current working date
+      const todayList = window.MockData.schedules[todayKey] || [];
+      const match = todayList.find(s => s.author && s.author.includes(emp.name));
+      if (match) {
+        todayScheduleText = `${match.title} (${match.time || ''})`.trim();
+      }
+    }
+
+    return {
+      ...mainStatus,
+      todaySchedule: todayScheduleText
+    };
   },
 
   // Employee Directory Methods
@@ -2691,6 +2721,7 @@ const App = {
         emp.role.toLowerCase().includes(query) ||
         (emp.statusText && emp.statusText.toLowerCase().includes(query)) ||
         (statusInfo.text && statusInfo.text.toLowerCase().includes(query)) ||
+        (statusInfo.todaySchedule && statusInfo.todaySchedule.toLowerCase().includes(query)) ||
         emp.phone.includes(query);
       return matchCat && matchQuery;
     });
@@ -2733,29 +2764,48 @@ const App = {
         `;
       }
 
-      const statusBadgeHtml = `
-        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${statusInfo.badgeClass} mt-1">
+      // Primary Status Badge (근무중, 외근중, 휴가중, 퇴근)
+      const primaryStatusBadge = `
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
           <span class="material-symbols-outlined text-[13px]">${statusInfo.icon}</span>
           <span>${statusInfo.text}</span>
         </span>
       `;
 
+      // Today Scheduled Event Badge (우측 또는 상태 옆 보조 뱃지)
+      let todayScheduleBadge = '';
+      if (statusInfo.todaySchedule) {
+        const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
+        const schedBadgeClass = isVacationSchedule 
+          ? 'bg-amber-500/10 text-amber-700 border-amber-500/20' 
+          : 'bg-primary/10 text-primary border-primary/20';
+        const schedIcon = isVacationSchedule ? 'event_upcoming' : 'near_me';
+
+        todayScheduleBadge = `
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${schedBadgeClass} border">
+            <span class="material-symbols-outlined text-[13px]">${schedIcon}</span>
+            <span>오늘 예정: ${statusInfo.todaySchedule}</span>
+          </span>
+        `;
+      }
+
       return `
         <div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between shadow-[0_2px_12px_rgba(35,44,81,0.04)] transition-all duration-200 hover:-translate-y-0.5 ${opacityClass} text-left">
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-4 min-w-0">
             ${avatarHtml}
-            <div class="cursor-pointer" onclick="App.openDirectoryDetail(${emp.id})">
+            <div class="cursor-pointer min-w-0" onclick="App.openDirectoryDetail(${emp.id})">
               <div class="flex items-center gap-2">
                 <h3 class="font-headline font-bold text-on-surface text-base hover:text-primary transition-colors">${emp.name}</h3>
-                <span class="font-body text-xs text-on-surface-variant">${emp.role}</span>
+                <span class="font-body text-xs text-on-surface-variant font-medium">${emp.role}</span>
               </div>
               <p class="font-body text-xs text-on-surface-variant/80 mt-0.5">${emp.dept}</p>
-              <div class="mt-1">
-                ${statusBadgeHtml}
+              <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
+                ${primaryStatusBadge}
+                ${todayScheduleBadge}
               </div>
             </div>
           </div>
-          <div class="flex space-x-2">
+          <div class="flex space-x-2 flex-shrink-0 ml-3">
             <button onclick="App.callEmployee('${emp.phone}')" class="h-10 w-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-primary/10 transition-colors active:scale-95" title="전화걸기">
               <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">call</span>
             </button>
@@ -2810,20 +2860,37 @@ const App = {
     if (deptEl) deptEl.innerText = emp.dept;
 
     if (statusBadgeEl) {
+      let extraHtml = '';
+      if (statusInfo.todaySchedule) {
+        extraHtml = `
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-700 border border-amber-500/20">
+            <span class="material-symbols-outlined text-sm">event_upcoming</span>
+            <span>오늘 예정: ${statusInfo.todaySchedule}</span>
+          </span>
+        `;
+      }
+
       statusBadgeEl.innerHTML = `
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
-          <span class="material-symbols-outlined text-sm">${statusInfo.icon}</span>
-          <span>${statusInfo.text}</span>
-        </span>
+        <div class="flex flex-wrap items-center justify-center gap-2">
+          <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
+            <span class="material-symbols-outlined text-sm">${statusInfo.icon}</span>
+            <span>${statusInfo.text}</span>
+          </span>
+          ${extraHtml}
+        </div>
       `;
     }
 
     if (statusTextEl) {
+      let scheduleSubText = statusInfo.todaySchedule ? `<span class="text-xs text-on-surface-variant"> (오늘 예정: ${statusInfo.todaySchedule})</span>` : '';
       statusTextEl.innerHTML = `
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${statusInfo.badgeClass}">
-          <span class="w-1.5 h-1.5 rounded-full ${statusInfo.dotColor}"></span>
-          <span>${statusInfo.text}</span>
-        </span>
+        <div class="flex items-center gap-1.5">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
+            <span class="w-1.5 h-1.5 rounded-full ${statusInfo.dotColor}"></span>
+            <span>${statusInfo.text}</span>
+          </span>
+          ${scheduleSubText}
+        </div>
       `;
     }
 

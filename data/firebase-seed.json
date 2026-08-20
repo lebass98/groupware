@@ -16,7 +16,8 @@
       "email": "abc@wordncode.com",
       "avatar": "./resource/image/profile_abc.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 2,
@@ -27,8 +28,9 @@
       "tel": "070-7711-4819",
       "email": "sky@wordncode.com",
       "avatar": "./resource/image/profile_sky.png",
-      "status": "vacation",
-      "statusText": "오후 반차"
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": "오후 반차 (13:00~18:00)"
     },
     {
       "id": 3,
@@ -40,7 +42,8 @@
       "email": "john@wordncode.com",
       "avatar": "./resource/image/profile_john.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 4,
@@ -52,7 +55,8 @@
       "email": "green@wordncode.com",
       "avatar": "./resource/image/profile_green.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 5,
@@ -64,7 +68,8 @@
       "email": "star@wordncode.com",
       "avatar": "./resource/image/profile_star_20250326.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 6,
@@ -76,7 +81,8 @@
       "email": "you@wordncode.com",
       "avatar": "./resource/image/profile_janghyunah.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 7,
@@ -88,7 +94,8 @@
       "email": "blue@wordncode.com",
       "avatar": "./resource/image/profile_blue.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 8,
@@ -100,7 +107,8 @@
       "email": "white@wordncode.com",
       "avatar": "./resource/image/profile_white.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 9,
@@ -112,7 +120,8 @@
       "email": "pink@wordncode.com",
       "avatar": "./resource/image/profile_pink____________.png",
       "status": "offwork",
-      "statusText": "퇴근"
+      "statusText": "퇴근",
+      "todaySchedule": ""
     },
     {
       "id": 10,
@@ -124,7 +133,8 @@
       "email": "gray@wordncode.com",
       "avatar": "./resource/image/profile_gray_20240502__.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 11,
@@ -136,7 +146,8 @@
       "email": "yellow@wordncode.com",
       "avatar": "profile.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 12,
@@ -148,7 +159,8 @@
       "email": "red@wordncode.com",
       "avatar": "./resource/image/profile_red_20260602.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 13,
@@ -160,7 +172,8 @@
       "email": "pub@wordncode.com",
       "avatar": "./resource/image/profile_pub.png",
       "status": "business",
-      "statusText": "외근중"
+      "statusText": "외근중",
+      "todaySchedule": "한가원 주간보고"
     },
     {
       "id": 14,
@@ -172,7 +185,8 @@
       "email": "mobile@wordncode.com",
       "avatar": "./resource/image/profile_mobile.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 15,
@@ -184,7 +198,8 @@
       "email": "pro@wordncode.com",
       "avatar": "./resource/image/profile_pro.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 16,
@@ -196,7 +211,8 @@
       "email": "spring@wordncode.com",
       "avatar": "./resource/image/profile_spring.png",
       "status": "offwork",
-      "statusText": "퇴근"
+      "statusText": "퇴근",
+      "todaySchedule": ""
     },
     {
       "id": 17,
@@ -208,7 +224,8 @@
       "email": "jsp@wordncode.com",
       "avatar": "./resource/image/profile_jsp.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 18,
@@ -220,7 +237,8 @@
       "email": "help@wordncode.com",
       "avatar": "./resource/image/profile_help.png",
       "status": "business",
-      "statusText": "외근중"
+      "statusText": "외근중",
+      "todaySchedule": "에스엠티 미팅 (09:00~12:00)"
     },
     {
       "id": 19,
@@ -232,7 +250,8 @@
       "email": "apple@wordncode.com",
       "avatar": "./resource/image/profile_apple_20250611.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 20,
@@ -244,7 +263,8 @@
       "email": "john@wordncode.com",
       "avatar": "./resource/image/profile_john_.png",
       "status": "work",
-      "statusText": "근무중"
+      "statusText": "근무중",
+      "todaySchedule": ""
     },
     {
       "id": 21,
@@ -256,7 +276,8 @@
       "email": "cool@wordncode.com",
       "avatar": "./resource/image/profile_cool_20241224_lee.png",
       "status": "business",
-      "statusText": "외근중"
+      "statusText": "외근중",
+      "todaySchedule": "한국건강가정진흥원 회의"
     }
   ],
   "notices": [
