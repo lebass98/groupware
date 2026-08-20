@@ -4633,7 +4633,7 @@ const App = {
     // -------------------------------------------------------------
     // 1. 간략화 리스트 모드 (projectViewMode === 'list')
     // 1. 폴더아이콘 우측 타이틀: 프로젝트 제목
-    // 2. 우측: PM 이름과 작성한 날짜 기입
+    // 2. 우측: PM 이름과 작성한 날짜 기입 (PM 글씨 및 조회수 제외)
     // -------------------------------------------------------------
     if (this.state.projectViewMode === 'list') {
       container.className = "flex flex-col gap-2.5";
@@ -4648,12 +4648,11 @@ const App = {
               <h3 class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</h3>
             </div>
             
-            <!-- 2. 우측: PM 이름과 작성한 날짜 (+ 조회수) -->
+            <!-- 2. 우측: PM 이름과 작성한 날짜 -->
             <div class="flex items-center gap-2 shrink-0">
               <div class="flex items-center gap-1.5 text-[11px] font-semibold text-on-surface-variant">
-                <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-bold">PM : ${pmText}</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-bold">${pmText}</span>
                 <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-medium">${p.date}</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-medium text-on-surface-variant/70">조회 ${p.views}</span>
               </div>
               <span class="material-symbols-outlined text-on-surface-variant text-base group-hover:translate-x-1 transition-transform ml-1">chevron_right</span>
             </div>
