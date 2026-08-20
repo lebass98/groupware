@@ -2619,7 +2619,19 @@ const App = {
     }
   },
 
-  // Employee Status Helper
+  // Employee Status & Schedule Helper
+  simplifyScheduleText(text) {
+    if (!text) return '';
+    const str = String(text);
+    if (str.includes('오후 반차') || str.includes('반차(오후)')) return '오후 반차';
+    if (str.includes('오전 반차') || str.includes('반차(오전)')) return '오전 반차';
+    if (str.includes('반반차')) return '반반차';
+    if (str.includes('연차')) return '연차';
+    if (str.includes('외근') || str.includes('미팅') || str.includes('회의') || str.includes('방문')) return '외근';
+    if (str.includes('휴가') || str.includes('공가') || str.includes('병가')) return '휴가';
+    return str.split('(')[0].split('[')[0].trim();
+  },
+
   getEmployeeStatusInfo(emp) {
     const rawStatus = (emp.status || 'work').toLowerCase();
     const rawText = emp.statusText || '';
@@ -2672,21 +2684,22 @@ const App = {
       };
     }
 
-    // 2. Determine Today's Scheduled Event (외근/반차/연차/회의 등 오늘 예정)
-    let todayScheduleText = emp.todaySchedule || '';
-    if (!todayScheduleText && (rawText.includes('반차') || rawText.includes('외근(') || rawText.includes('미팅'))) {
-      todayScheduleText = rawText;
+    // 2. Determine Today's Scheduled Event (외근, 오후 반차, 연차 등 함축)
+    let rawSched = emp.todaySchedule || '';
+    if (!rawSched && (rawText.includes('반차') || rawText.includes('외근') || rawText.includes('미팅'))) {
+      rawSched = rawText;
     }
 
-    // Auto-detect from schedules database for today (e.g. 2026-8-20) if not specified
-    if (!todayScheduleText && window.MockData && window.MockData.schedules) {
-      const todayKey = '2026-8-20'; // Reference current working date
+    if (!rawSched && window.MockData && window.MockData.schedules) {
+      const todayKey = '2026-8-20';
       const todayList = window.MockData.schedules[todayKey] || [];
       const match = todayList.find(s => s.author && s.author.includes(emp.name));
       if (match) {
-        todayScheduleText = `${match.title} (${match.time || ''})`.trim();
+        rawSched = match.title;
       }
     }
+
+    const todayScheduleText = this.simplifyScheduleText(rawSched);
 
     return {
       ...mainStatus,
@@ -2705,15 +2718,7 @@ const App = {
 
     let filtered = this.state.employees.filter(emp => {
       const statusInfo = this.getEmployeeStatusInfo(emp);
-      let matchCat = false;
-      if (cat === 'all') {
-        matchCat = true;
-      } else if (cat.startsWith('status:')) {
-        const targetStatus = cat.split(':')[1];
-        matchCat = statusInfo.type === targetStatus;
-      } else {
-        matchCat = emp.dept === cat;
-      }
+      const matchCat = cat === 'all' || emp.dept === cat;
 
       const matchQuery = !query || 
         emp.name.toLowerCase().includes(query) || 
@@ -2772,19 +2777,19 @@ const App = {
         </span>
       `;
 
-      // Today Scheduled Event Badge (우측 또는 상태 옆 보조 뱃지)
+      // Today Scheduled Event Badge (근무중과 완벽히 동일한 크기 & 함축 문구)
       let todayScheduleBadge = '';
       if (statusInfo.todaySchedule) {
         const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
         const schedBadgeClass = isVacationSchedule 
-          ? 'bg-amber-500/10 text-amber-700 border-amber-500/20' 
-          : 'bg-primary/10 text-primary border-primary/20';
-        const schedIcon = isVacationSchedule ? 'event_upcoming' : 'near_me';
+          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20' 
+          : 'bg-sky-500/10 text-sky-700 border border-sky-500/20';
+        const schedIcon = isVacationSchedule ? 'event_upcoming' : 'directions_car';
 
         todayScheduleBadge = `
-          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${schedBadgeClass} border">
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${schedBadgeClass}">
             <span class="material-symbols-outlined text-[13px]">${schedIcon}</span>
-            <span>오늘 예정: ${statusInfo.todaySchedule}</span>
+            <span>${statusInfo.todaySchedule}</span>
           </span>
         `;
       }
@@ -2862,10 +2867,16 @@ const App = {
     if (statusBadgeEl) {
       let extraHtml = '';
       if (statusInfo.todaySchedule) {
+        const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
+        const schedBadgeClass = isVacationSchedule 
+          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20' 
+          : 'bg-sky-500/10 text-sky-700 border border-sky-500/20';
+        const schedIcon = isVacationSchedule ? 'event_upcoming' : 'directions_car';
+
         extraHtml = `
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-700 border border-amber-500/20">
-            <span class="material-symbols-outlined text-sm">event_upcoming</span>
-            <span>오늘 예정: ${statusInfo.todaySchedule}</span>
+          <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold ${schedBadgeClass}">
+            <span class="material-symbols-outlined text-sm">${schedIcon}</span>
+            <span>${statusInfo.todaySchedule}</span>
           </span>
         `;
       }
@@ -2882,14 +2893,26 @@ const App = {
     }
 
     if (statusTextEl) {
-      let scheduleSubText = statusInfo.todaySchedule ? `<span class="text-xs text-on-surface-variant"> (오늘 예정: ${statusInfo.todaySchedule})</span>` : '';
+      let scheduleSubBadge = '';
+      if (statusInfo.todaySchedule) {
+        const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
+        const schedBadgeClass = isVacationSchedule 
+          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20' 
+          : 'bg-sky-500/10 text-sky-700 border border-sky-500/20';
+        scheduleSubBadge = `
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${schedBadgeClass}">
+            <span>${statusInfo.todaySchedule}</span>
+          </span>
+        `;
+      }
+
       statusTextEl.innerHTML = `
         <div class="flex items-center gap-1.5">
           <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
             <span class="w-1.5 h-1.5 rounded-full ${statusInfo.dotColor}"></span>
             <span>${statusInfo.text}</span>
           </span>
-          ${scheduleSubText}
+          ${scheduleSubBadge}
         </div>
       `;
     }

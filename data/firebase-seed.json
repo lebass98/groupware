@@ -30,7 +30,7 @@
       "avatar": "./resource/image/profile_sky.png",
       "status": "work",
       "statusText": "근무중",
-      "todaySchedule": "오후 반차 (13:00~18:00)"
+      "todaySchedule": "오후 반차"
     },
     {
       "id": 3,
@@ -173,7 +173,7 @@
       "avatar": "./resource/image/profile_pub.png",
       "status": "business",
       "statusText": "외근중",
-      "todaySchedule": "한가원 주간보고"
+      "todaySchedule": "외근"
     },
     {
       "id": 14,
@@ -238,7 +238,7 @@
       "avatar": "./resource/image/profile_help.png",
       "status": "business",
       "statusText": "외근중",
-      "todaySchedule": "에스엠티 미팅 (09:00~12:00)"
+      "todaySchedule": "외근"
     },
     {
       "id": 19,
@@ -277,7 +277,7 @@
       "avatar": "./resource/image/profile_cool_20241224_lee.png",
       "status": "business",
       "statusText": "외근중",
-      "todaySchedule": "한국건강가정진흥원 회의"
+      "todaySchedule": "외근"
     }
   ],
   "notices": [
