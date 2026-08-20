@@ -4675,19 +4675,19 @@ const App = {
 
       return `
         <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3.5 border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] active:scale-98 transition-all cursor-pointer group text-left" onclick="App.openProjectDetail(${p.id})">
-          <!-- 1 & 3: 상단 타이틀(폴더아이콘 + 프로젝트제목) & 우측 PM 이름 -->
+          <!-- 1 & 3: 상단 타이틀(폴더아이콘 + 프로젝트제목) & 우측 PM 이름 (PM 글씨 제외) -->
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2 min-w-0 flex-1 mr-2">
               <span class="material-symbols-outlined text-primary text-xl group-hover:scale-110 transition-transform shrink-0">folder_open</span>
               <h3 class="font-headline font-bold text-base text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</h3>
             </div>
             <div class="flex items-center gap-1 text-on-surface-variant shrink-0">
-              <span class="bg-primary/10 text-primary text-xs font-bold px-2.5 py-0.5 rounded-full">PM : ${pmText}</span>
+              <span class="bg-primary/10 text-primary text-xs font-bold px-2.5 py-0.5 rounded-full">${pmText}</span>
               <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">chevron_right</span>
             </div>
           </div>
 
-          <!-- 2: 대기 진행중 자리 -> 날짜(프로젝트 기간) 표시 -->
+          <!-- 2: 대기 진행중 자리 -> 날짜(프로젝트 기간) 표시 & 우측에 프로젝트 ID 태그 추가 -->
           <div class="flex items-center gap-2 pt-0.5 flex-wrap">
             <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-semibold flex items-center gap-1">
               <span class="material-symbols-outlined text-[13px] text-primary">calendar_month</span>
@@ -4695,6 +4695,9 @@ const App = {
             </span>
             <span class="px-2.5 py-0.5 rounded-full ${statusBadgeClass} text-[11px] font-bold border">
               ${p.statusText || '진행중'}
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[11px] font-mono font-medium">
+              ${p.projectId}
             </span>
           </div>
 
