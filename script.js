@@ -4687,30 +4687,30 @@ const App = {
             </div>
           </div>
 
-          <!-- 2: 대기 진행중 자리 -> 글 번호, 상태 뱃지, 프로젝트 ID 태그 -->
-          <div class="flex items-center gap-2 pt-0.5 flex-wrap">
-            <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-mono font-bold">
-              No. ${p.no}
-            </span>
-            <span class="px-2.5 py-0.5 rounded-full ${statusBadgeClass} text-[11px] font-bold border">
-              ${p.statusText || '진행중'}
-            </span>
-            <span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[11px] font-mono font-medium">
-              ${p.projectId}
+          <!-- 2: 글 번호, 상태 뱃지, 프로젝트 ID 태그 & 우측 끝 작성일자 -->
+          <div class="flex items-center justify-between gap-2 pt-0.5">
+            <div class="flex items-center gap-2 flex-wrap min-w-0">
+              <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-mono font-bold">
+                No. ${p.no}
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full ${statusBadgeClass} text-[11px] font-bold border">
+                ${p.statusText || '진행중'}
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[11px] font-mono font-medium">
+                ${p.projectId}
+              </span>
+            </div>
+            <span class="font-mono text-on-surface-variant text-xs font-medium shrink-0">
+              ${p.date}
             </span>
           </div>
 
-          <!-- 4: 그레이박스 -> 사이트명과 (id) / 우측에 작성한 날짜 / 조회수 -->
-          <div class="bg-surface-container-low p-3 rounded-md flex items-center justify-between text-xs border border-outline-variant/10">
-            <div class="flex items-center gap-1.5 truncate mr-2">
+          <!-- 4: 그레이박스 -> 사이트명과 (id) -->
+          <div class="bg-surface-container-low p-3 rounded-md flex items-center text-xs border border-outline-variant/10">
+            <div class="flex items-center gap-1.5 truncate">
               <span class="material-symbols-outlined text-sm text-on-surface-variant shrink-0">web</span>
               <span class="font-medium text-on-surface truncate">${p.siteName}</span>
               <span class="text-on-surface-variant/70 text-[11px] font-mono shrink-0">(${p.siteId})</span>
-            </div>
-            <div class="flex items-center gap-2 text-on-surface-variant text-[11px] font-medium shrink-0">
-              <span>${p.date}</span>
-              <span class="text-outline-variant/60">/</span>
-              <span>조회 ${p.views}</span>
             </div>
           </div>
         </div>
