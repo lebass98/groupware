@@ -4217,6 +4217,49 @@ const App = {
         </div>
       </section>
 
+      <!-- Attachments Section (공지사항 상세 디자인 통일) -->
+      <section class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm flex flex-col gap-3 text-left">
+        <h3 class="font-headline text-base font-bold text-on-surface flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-xl">attach_file</span>
+            <span>첨부파일 (${(todo.files || []).length > 0 ? todo.files.length : (todo.hasAttachment ? 1 : 0)})</span>
+          </span>
+        </h3>
+        <div class="flex flex-col gap-2">
+          ${(todo.files || []).length > 0 ? todo.files.map(f => `
+            <div class="flex items-center justify-between bg-surface-container hover:bg-surface-container-high transition-colors rounded-xl p-3.5 group cursor-pointer" onclick="App.showToast('📥 [${f.name}] 첨부파일 다운로드가 시작되었습니다.')">
+              <div class="flex items-center gap-3 truncate">
+                <span class="material-symbols-outlined text-primary text-2xl">description</span>
+                <div class="flex flex-col truncate">
+                  <span class="font-body text-xs font-bold text-on-surface truncate">${f.name}</span>
+                  <span class="font-label text-[11px] text-on-surface-variant">${f.size || '1.2 MB'} • 등록완료</span>
+                </div>
+              </div>
+              <button type="button" class="bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary rounded-full w-9 h-9 flex items-center justify-center transition-colors shrink-0" title="다운로드">
+                <span class="material-symbols-outlined text-lg">download</span>
+              </button>
+            </div>
+          `).join('') : (todo.hasAttachment ? `
+            <div class="flex items-center justify-between bg-surface-container hover:bg-surface-container-high transition-colors rounded-xl p-3.5 group cursor-pointer" onclick="App.showToast('📥 [${todo.title}_기획안.pdf] 첨부파일 다운로드가 시작되었습니다.')">
+              <div class="flex items-center gap-3 truncate">
+                <span class="material-symbols-outlined text-primary text-2xl">description</span>
+                <div class="flex flex-col truncate">
+                  <span class="font-body text-xs font-bold text-on-surface truncate">${todo.title}_관련자료.pdf</span>
+                  <span class="font-label text-[11px] text-on-surface-variant">2.4 MB • 업무 첨부문서</span>
+                </div>
+              </div>
+              <button type="button" class="bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary rounded-full w-9 h-9 flex items-center justify-center transition-colors shrink-0" title="다운로드">
+                <span class="material-symbols-outlined text-lg">download</span>
+              </button>
+            </div>
+          ` : `
+            <div class="bg-surface-container-low rounded-xl p-5 border border-outline-variant/10 text-xs text-on-surface-variant flex items-center justify-center text-center min-h-[70px]">
+              등록된 첨부파일이 없습니다.
+            </div>
+          `)}
+        </div>
+      </section>
+
       <!-- Description Section -->
       <section class="flex flex-col gap-2.5 text-left">
         <h3 class="font-headline text-base font-bold text-on-surface">상세 내용</h3>
@@ -4737,28 +4780,23 @@ const App = {
     if (p.status === 'maintenance') statusBadgeClass = 'bg-secondary/10 text-secondary border-secondary/20';
     else if (p.status === 'build') statusBadgeClass = 'bg-tertiary-container/30 text-tertiary border-tertiary/20';
 
-    // 첨부파일 렌더링
+    // 첨부파일 렌더링 (공지사항 상세 페이지 첨부파일 디자인으로 통일)
     const attachments = p.attachments || [];
     const attachmentsHtml = attachments.length > 0 ? attachments.map(att => `
-      <div class="flex items-center justify-between bg-surface-container-lowest p-3 rounded-md border border-outline-variant/10 hover:border-primary/30 transition-all text-xs">
-        <div class="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
-          <span class="material-symbols-outlined text-primary text-xl shrink-0">
-            ${att.type === 'pdf' ? 'picture_as_pdf' : (att.type === 'xlsx' ? 'table_chart' : 'description')}
-          </span>
-          <div class="flex flex-col min-w-0">
-            <span class="font-bold text-on-surface truncate text-xs">${att.name}</span>
-            <span class="text-[10px] text-on-surface-variant font-mono mt-0.5">
-              ${att.size} | Down: ${att.downloads || 0}회 | ${att.date || ''}
-            </span>
+      <div class="flex items-center justify-between bg-surface-container hover:bg-surface-container-high transition-colors rounded-xl p-3.5 group cursor-pointer" onclick="App.downloadProjectAttachment('${att.name}')">
+        <div class="flex items-center gap-3 truncate">
+          <span class="material-symbols-outlined text-primary text-2xl">description</span>
+          <div class="flex flex-col truncate">
+            <span class="font-body text-xs font-bold text-on-surface truncate">${att.name}</span>
+            <span class="font-label text-[11px] text-on-surface-variant">${att.size} • 다운로드 ${att.downloads || 0}회 • ${att.date || ''}</span>
           </div>
         </div>
-        <button type="button" onclick="App.downloadProjectAttachment('${att.name}')" class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-bold text-xs flex items-center gap-1 shrink-0 active:scale-95 transition-all">
-          <span class="material-symbols-outlined text-sm">download</span>
-          <span>다운로드</span>
+        <button type="button" class="bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary rounded-full w-9 h-9 flex items-center justify-center transition-colors shrink-0" title="다운로드">
+          <span class="material-symbols-outlined text-lg">download</span>
         </button>
       </div>
     `).join('') : `
-      <div class="p-4 bg-surface-container-lowest rounded-md border border-dashed border-outline-variant/20 text-center text-on-surface-variant text-xs">
+      <div class="bg-surface-container-low rounded-xl p-5 border border-outline-variant/10 text-xs text-on-surface-variant flex items-center justify-center text-center min-h-[70px]">
         등록된 첨부파일이 없습니다.
       </div>
     `;
@@ -4921,11 +4959,11 @@ const App = {
         </div>
       </section>
 
-      <!-- 3. 첨부파일 섹션 -->
-      <section class="flex flex-col gap-2.5">
-        <h3 class="font-headline font-bold text-sm text-on-surface flex items-center justify-between">
+      <!-- 3. 첨부파일 섹션 (공지사항 상세 디자인 통일) -->
+      <section class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm flex flex-col gap-3">
+        <h3 class="font-headline text-base font-bold text-on-surface flex items-center justify-between">
           <span class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-base">attach_file</span>
+            <span class="material-symbols-outlined text-primary text-xl">attach_file</span>
             <span>첨부파일 (${attachments.length})</span>
           </span>
         </h3>
