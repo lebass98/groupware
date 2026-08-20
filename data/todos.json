@@ -14,8 +14,8 @@
       "priority": "high",
       "dueDate": "오늘, 17:00",
       "assignees": [
-        { "name": "이재광", "avatar": "profile.png" },
-        { "name": "명희진", "avatar": "profile.png" }
+        { "name": "이재광", "avatar": "profile.png", "dept": "퍼블리싱팀", "role": "차장" },
+        { "name": "명희진", "avatar": "./resource/image/profile_gray_20240502__.png", "dept": "디자인팀", "role": "주임" }
       ],
       "isOverdue": false,
       "isMine": true,
@@ -29,7 +29,8 @@
       "priority": "medium",
       "dueDate": "내일, 12:00",
       "assignees": [
-        { "name": "김철수", "avatar": "profile.png" }
+        { "name": "최우석", "avatar": "./resource/image/profile_mobile.png", "dept": "개발팀", "role": "과장" },
+        { "name": "안영재", "avatar": "./resource/image/profile_pro.png", "dept": "개발팀", "role": "대리" }
       ],
       "isOverdue": false,
       "isMine": false,
@@ -43,7 +44,7 @@
       "priority": "low",
       "dueDate": "2026-08-12, 18:00",
       "assignees": [
-        { "name": "이재광", "avatar": "profile.png" }
+        { "name": "이재광", "avatar": "profile.png", "dept": "퍼블리싱팀", "role": "차장" }
       ],
       "isOverdue": false,
       "isMine": true,

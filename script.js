@@ -39,11 +39,14 @@ const App = {
       themeIdx: 3
     },
     user: {
+      id: 11,
       name: '이재광',
       fullName: '이재광',
-      email: 'jaegwang@company.com',
-      role: '시니어 운영 관리자',
-      id: 'FA-99283'
+      dept: '퍼블리싱팀',
+      role: '차장',
+      email: 'yellow@wordncode.com',
+      phone: '010-5244-1251',
+      avatar: 'profile.png'
     },
     currentNoticeCategory: 'all',
     currentNoticeId: 1,
@@ -946,7 +949,7 @@ const App = {
             <div>
               <p class="font-label text-[10px] text-tertiary-fixed-dim font-bold mb-0.5">기안 대기</p>
               <h4 class="font-body text-sm font-semibold text-on-surface mb-1">2026년 3분기 비품 구매 품의서</h4>
-              <p class="font-label text-xs text-on-surface-variant">경영지원팀 · 이재광 차장</p>
+              <p class="font-label text-xs text-on-surface-variant">퍼블리싱팀 · 이재광 차장</p>
             </div>
           </div>
           <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
@@ -4172,15 +4175,22 @@ const App = {
       priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary/10 text-tertiary font-label text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-tertiary mr-1.5"></span>보통</span>`;
     }
 
-    // Assignees Stack
+    // Assignees Stack (주소록 연동)
     const assigneesHtml = (todo.assignees || [
       { name: '이재광', avatar: 'profile.png' }
-    ]).map((a, idx) => `
-      <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/15">
-        <img src="${a.avatar || 'profile.png'}" class="w-6 h-6 rounded-full object-cover" />
-        <span class="text-xs font-bold text-on-surface">${a.name}</span>
-      </div>
-    `).join('');
+    ]).map((a) => {
+      const emp = this.getEmployeeByName(a.name);
+      const displayName = emp ? `${emp.name} ${emp.role}` : a.name;
+      const avatarSrc = emp ? emp.avatar : (a.avatar || 'profile.png');
+      const deptText = emp ? `<span class="text-[10px] text-on-surface-variant font-normal">(${emp.dept})</span>` : '';
+      return `
+        <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/15">
+          <img src="${avatarSrc}" class="w-6 h-6 rounded-full object-cover" />
+          <span class="text-xs font-bold text-on-surface">${displayName}</span>
+          ${deptText}
+        </div>
+      `;
+    }).join('');
 
     container.innerHTML = `
       <!-- Header Tags & Title -->
@@ -4763,6 +4773,24 @@ const App = {
     }).join('');
   },
 
+  // 주소록 연동 헬퍼: 이름으로 임직원 정보 조회
+  getEmployeeByName(name) {
+    if (!name || name === '-' || name === '.') return null;
+    const cleanName = String(name).trim();
+    const list = this.state.employees || (window.MockData && window.MockData.employees) || [];
+    return list.find(e => e.name === cleanName || cleanName.includes(e.name)) || null;
+  },
+
+  // 주소록 기반 이름 + 직책 포맷팅 (예: "장현아 수습", "남기현 본부장")
+  formatEmployeeWithRole(name) {
+    if (!name || name === '-' || name === '.') return '-';
+    const emp = this.getEmployeeByName(name);
+    if (emp) {
+      return `${emp.name} ${emp.role}`;
+    }
+    return name;
+  },
+
   openProjectDetail(projectId) {
     const modal = document.getElementById('modal-project-detail');
     const container = document.getElementById('project-detail-content');
@@ -4779,6 +4807,12 @@ const App = {
     let statusBadgeClass = 'bg-primary/10 text-primary border-primary/20';
     if (p.status === 'maintenance') statusBadgeClass = 'bg-secondary/10 text-secondary border-secondary/20';
     else if (p.status === 'build') statusBadgeClass = 'bg-tertiary-container/30 text-tertiary border-tertiary/20';
+
+    // 주소록과 작성자 정보 매핑
+    const authorEmp = this.getEmployeeByName(p.author);
+    const authorDept = authorEmp ? authorEmp.dept : (p.authorDept || '기획팀');
+    const authorRole = authorEmp ? authorEmp.role : (p.authorRole || '사원');
+    const authorName = authorEmp ? authorEmp.name : p.author;
 
     // 첨부파일 렌더링 (공지사항 상세 페이지 첨부파일 디자인으로 통일)
     const attachments = p.attachments || [];
@@ -4835,25 +4869,30 @@ const App = {
       </div>
     `;
 
-    // 댓글 / 작업 히스토리 렌더링
+    // 댓글 / 작업 히스토리 렌더링 (주소록 기반 이름/부서/직책 매핑)
     const comments = p.comments || [];
-    const commentsHtml = comments.length > 0 ? comments.map(cm => `
-      <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/10 flex flex-col gap-2 shadow-2xs">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <div class="w-6 h-6 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center">
-              ${(cm.author || '사')[0]}
+    const commentsHtml = comments.length > 0 ? comments.map(cm => {
+      const cEmp = this.getEmployeeByName(cm.author);
+      const cDept = cEmp ? cEmp.dept : (cm.authorDept || '기획팀');
+      const cRole = cEmp ? ` ${cEmp.role}` : '';
+      return `
+        <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/10 flex flex-col gap-2 shadow-2xs">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center">
+                ${(cm.author || '사')[0]}
+              </div>
+              <span class="font-bold text-xs text-on-surface">${cm.author}${cRole}</span>
+              <span class="text-[11px] text-on-surface-variant">(${cDept})</span>
             </div>
-            <span class="font-bold text-xs text-on-surface">${cm.author}</span>
-            <span class="text-[11px] text-on-surface-variant">(${cm.authorDept || '기획팀'})</span>
+            <span class="font-mono text-[11px] text-on-surface-variant/80">${cm.date}</span>
           </div>
-          <span class="font-mono text-[11px] text-on-surface-variant/80">${cm.date}</span>
+          <div class="bg-surface-container-low p-3 rounded-md text-xs font-mono text-on-surface leading-relaxed whitespace-pre-line select-text">
+            ${cm.content}
+          </div>
         </div>
-        <div class="bg-surface-container-low p-3 rounded-md text-xs font-mono text-on-surface leading-relaxed whitespace-pre-line select-text">
-          ${cm.content}
-        </div>
-      </div>
-    `).join('') : `
+      `;
+    }).join('') : `
       <div class="p-4 bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant/20 text-center text-on-surface-variant text-xs">
         등록된 댓글 및 작업 메모가 없습니다.
       </div>
@@ -4872,11 +4911,11 @@ const App = {
         </h1>
         <div class="flex items-center gap-2 text-on-surface-variant font-body text-xs border-t border-outline-variant/10 pt-3 mt-2">
           <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">person</span>
-          <span>${p.authorDept ? p.authorDept + ' ' : ''}${p.author}${p.authorRole ? ' (' + p.authorRole + ')' : ''}</span>
+          <span>${authorDept} <strong>${authorName}</strong> (${authorRole})</span>
         </div>
       </div>
 
-      <!-- 2. 프로젝트 기본 정보 테이블 (모든 항목 빠짐없이 노출) -->
+      <!-- 2. 프로젝트 기본 정보 테이블 (모든 항목 빠짐없이 노출 및 주소록 매핑) -->
       <section class="bg-surface-container-low rounded-2xl p-4 sm:p-5 flex flex-col gap-3 border border-outline-variant/15 shadow-2xs">
         <h3 class="font-headline font-bold text-sm text-on-surface flex items-center gap-2">
           <span class="material-symbols-outlined text-primary text-base">info</span>
@@ -4911,27 +4950,27 @@ const App = {
             </div>
           </div>
 
-          <!-- PM 및 직군별 담당자 그리드 (빈칸도 다 노출) -->
+          <!-- PM 및 직군별 담당자 그리드 (주소록 직책 자동 매핑) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 py-1.5 border-b border-outline-variant/10">
             <div class="flex items-center justify-between">
               <span class="text-on-surface-variant font-bold w-28">• PM</span>
-              <span class="font-medium text-on-surface">${p.pm || '-'}</span>
+              <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.pm)}</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-on-surface-variant font-bold w-28">• 담당자(기획)</span>
-              <span class="font-medium text-on-surface">${p.planner || '-'}</span>
+              <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.planner)}</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-on-surface-variant font-bold w-28">• 담당자(디자인)</span>
-              <span class="font-medium text-on-surface">${p.designer || '-'}</span>
+              <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.designer)}</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-on-surface-variant font-bold w-28">• 담당자(코딩)</span>
-              <span class="font-medium text-on-surface">${p.publisher || '-'}</span>
+              <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.publisher)}</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-on-surface-variant font-bold w-28">• 담당자(개발)</span>
-              <span class="font-medium text-on-surface">${p.developer || '-'}</span>
+              <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.developer)}</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-on-surface-variant font-bold w-28">• 개발 언어</span>
