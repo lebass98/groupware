@@ -4740,7 +4740,7 @@ const App = {
     // 첨부파일 렌더링
     const attachments = p.attachments || [];
     const attachmentsHtml = attachments.length > 0 ? attachments.map(att => `
-      <div class="flex items-center justify-between bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all text-xs">
+      <div class="flex items-center justify-between bg-surface-container-lowest p-3 rounded-md border border-outline-variant/10 hover:border-primary/30 transition-all text-xs">
         <div class="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
           <span class="material-symbols-outlined text-primary text-xl shrink-0">
             ${att.type === 'pdf' ? 'picture_as_pdf' : (att.type === 'xlsx' ? 'table_chart' : 'description')}
@@ -4758,7 +4758,7 @@ const App = {
         </button>
       </div>
     `).join('') : `
-      <div class="p-4 bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant/20 text-center text-on-surface-variant text-xs">
+      <div class="p-4 bg-surface-container-lowest rounded-md border border-dashed border-outline-variant/20 text-center text-on-surface-variant text-xs">
         등록된 첨부파일이 없습니다.
       </div>
     `;
@@ -4792,7 +4792,7 @@ const App = {
         </div>
       </div>
     `).join('') : `
-      <div class="p-3.5 bg-surface-container-lowest rounded-xl border border-outline-variant/10 text-xs text-on-surface-variant">
+      <div class="p-3.5 bg-surface-container-lowest rounded-md border border-outline-variant/10 text-xs text-on-surface-variant">
         <span class="font-bold text-on-surface">담당자 1 :</span> 등록된 고객사 담당자 정보가 없습니다.
       </div>
     `;
@@ -4811,7 +4811,7 @@ const App = {
           </div>
           <span class="font-mono text-[11px] text-on-surface-variant/80">${cm.date}</span>
         </div>
-        <div class="bg-surface-container-low p-3 rounded-2xl text-xs font-mono text-on-surface leading-relaxed whitespace-pre-line select-text">
+        <div class="bg-surface-container-low p-3 rounded-md text-xs font-mono text-on-surface leading-relaxed whitespace-pre-line select-text">
           ${cm.content}
         </div>
       </div>
@@ -4960,7 +4960,7 @@ const App = {
         <!-- 댓글 작성 폼 -->
         <div class="bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/15 flex flex-col gap-2.5 mt-2">
           <span class="text-xs font-bold text-on-surface">새 댓글 / 메모 작성</span>
-          <textarea id="project-new-comment-input" class="w-full p-3 bg-surface-container-lowest rounded-xl text-xs text-on-surface border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:outline-none resize-none" placeholder="서버 정보, 개발 링크, 진행 사항 등을 자유롭게 입력하세요..." rows="3"></textarea>
+          <textarea id="project-new-comment-input" class="w-full p-3 bg-surface-container-lowest rounded-md text-xs text-on-surface border border-outline-variant/15 focus:ring-2 focus:ring-primary focus:outline-none resize-none" placeholder="서버 정보, 개발 링크, 진행 사항 등을 자유롭게 입력하세요..." rows="3"></textarea>
           <div class="flex justify-end">
             <button type="button" onclick="App.submitProjectComment(${p.id})" class="px-4 py-2 bg-primary text-on-primary font-bold text-xs rounded-xl hover:bg-primary-dim active:scale-95 transition-all shadow-xs flex items-center gap-1.5">
               <span class="material-symbols-outlined text-sm">send</span>
