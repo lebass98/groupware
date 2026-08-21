@@ -3370,10 +3370,10 @@ const App = {
       if (outworkSection) outworkSection.classList.add('hidden');
 
       if (btnLeave) {
-        btnLeave.className = 'flex-1 py-2.5 rounded-xl font-headline font-bold text-sm bg-surface-container-lowest text-primary shadow-xs transition-all flex items-center justify-center gap-2';
+        btnLeave.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center';
       }
       if (btnOutwork) {
-        btnOutwork.className = 'flex-1 py-2.5 rounded-xl font-headline font-bold text-sm text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2';
+        btnOutwork.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center';
       }
       if (titleEl) titleEl.innerText = '휴가 신청';
       if (subtitleEl) subtitleEl.innerText = '팀원들과 원활한 일정 공유를 위해 미리 신청해주세요.';
@@ -3383,10 +3383,10 @@ const App = {
       if (outworkSection) outworkSection.classList.remove('hidden');
 
       if (btnLeave) {
-        btnLeave.className = 'flex-1 py-2.5 rounded-xl font-headline font-bold text-sm text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2';
+        btnLeave.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center';
       }
       if (btnOutwork) {
-        btnOutwork.className = 'flex-1 py-2.5 rounded-xl font-headline font-bold text-sm bg-surface-container-lowest text-primary shadow-xs transition-all flex items-center justify-center gap-2';
+        btnOutwork.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center';
       }
       if (titleEl) titleEl.innerText = '외근 신청';
       if (subtitleEl) subtitleEl.innerText = '사외 미팅 및 업무 일정을 미리 등록하여 공유해주세요.';
@@ -5405,17 +5405,15 @@ const App = {
   switchWorkReportTab(tab) {
     this.state.workReportTab = tab;
     
-    // Update Tab Buttons UI
+    // Update Tab Buttons UI (지출결의서 탭 규격 100% 통일)
     const tabBtns = document.querySelectorAll('.report-nav-tab');
     tabBtns.forEach(btn => {
-      btn.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-xs', 'active');
-      btn.classList.add('text-on-surface-variant');
+      btn.className = 'flex-1 py-2.5 px-3 rounded-[0.875rem] text-xs sm:text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab';
     });
 
     const activeBtn = document.getElementById(`tab-btn-report-${tab}`);
     if (activeBtn) {
-      activeBtn.classList.remove('text-on-surface-variant');
-      activeBtn.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-xs', 'active');
+      activeBtn.className = 'flex-1 py-2.5 px-3 rounded-[0.875rem] text-xs sm:text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center report-nav-tab active';
     }
 
     this.renderWorkReportControls();
