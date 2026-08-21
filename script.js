@@ -1,5 +1,28 @@
 // WnC 그룹웨어 애플리케이션 코어 로직
 
+// Framer Motion (Motion One Engine) 래퍼 유틸리티
+const FramerMotion = {
+  get engine() {
+    return window.Motion || null;
+  },
+  animate(element, keyframes, options) {
+    if (this.engine && typeof this.engine.animate === 'function') {
+      try {
+        return this.engine.animate(element, keyframes, options);
+      } catch (e) {
+        console.warn('FramerMotion animate error:', e);
+      }
+    }
+    return null;
+  },
+  spring(config = { stiffness: 320, damping: 26 }) {
+    if (this.engine && typeof this.engine.spring === 'function') {
+      return this.engine.spring(config);
+    }
+    return 'cubic-bezier(0.16, 1, 0.3, 1)';
+  }
+};
+
 const App = {
   state: {
     isLoggedIn: false, // Default to FALSE so user starts on Login screen
@@ -523,19 +546,26 @@ const App = {
     const ticker = document.getElementById('notice-ticker');
 
     const effect = this.state.settings.transitionEffect || 'glass-blur';
-    const exitClass = effect === 'smooth-zoom' ? 'login-exit-zoom' 
-                    : effect === 'slide-up' ? 'login-exit-slide' 
-                    : effect === 'expanding-reveal' ? 'login-exit-reveal' 
-                    : 'login-exit-blur';
-    
-    const enterClass = effect === 'smooth-zoom' ? 'login-enter-zoom' 
-                     : effect === 'slide-up' ? 'login-enter-slide' 
-                     : effect === 'expanding-reveal' ? 'login-enter-reveal' 
-                     : 'login-enter-crossfade';
 
-    // 1. 로그인 화면 퇴장 애니메이션 시작
+    // 1. Framer Motion 엔진 또는 CSS 클래스를 통한 로그인 화면 퇴장 애니메이션
     if (loginScreen) {
-      loginScreen.classList.add(exitClass);
+      if (FramerMotion.engine) {
+        if (effect === 'glass-blur') {
+          FramerMotion.animate(loginScreen, { opacity: [1, 0], filter: ['blur(0px)', 'blur(14px)'], transform: ['scale(1)', 'scale(0.94) translateY(-8px)'] }, { duration: 0.36, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        } else if (effect === 'smooth-zoom') {
+          FramerMotion.animate(loginScreen, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.9)'] }, { duration: 0.32, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        } else if (effect === 'slide-up') {
+          FramerMotion.animate(loginScreen, { opacity: [1, 0], transform: ['translateY(0)', 'translateY(-40px)'] }, { duration: 0.32, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        } else if (effect === 'expanding-reveal') {
+          FramerMotion.animate(loginScreen, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.85)'], filter: ['blur(0px)', 'blur(8px)'] }, { duration: 0.3, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        }
+      } else {
+        const exitClass = effect === 'smooth-zoom' ? 'login-exit-zoom' 
+                        : effect === 'slide-up' ? 'login-exit-slide' 
+                        : effect === 'expanding-reveal' ? 'login-exit-reveal' 
+                        : 'login-exit-blur';
+        loginScreen.classList.add(exitClass);
+      }
     }
 
     setTimeout(() => {
@@ -547,36 +577,66 @@ const App = {
       // 2. 로그인 화면 정리
       if (loginScreen) {
         loginScreen.classList.remove('active', 'login-exit-blur', 'login-exit-zoom', 'login-exit-slide', 'login-exit-reveal');
+        loginScreen.style.opacity = '';
+        loginScreen.style.filter = '';
+        loginScreen.style.transform = '';
       }
 
-      // 3. 메인 투데이 화면 활성화 및 진입 애니메이션
+      // 3. 메인 투데이 화면 활성화 및 Framer Motion 진입 애니메이션
       const screens = document.querySelectorAll('.screen-view');
       screens.forEach(s => s.classList.remove('active', 'login-enter-crossfade', 'login-enter-zoom', 'login-enter-slide', 'login-enter-reveal'));
 
       if (targetScreen) {
-        targetScreen.classList.add('active', enterClass);
-        setTimeout(() => {
-          targetScreen.classList.remove(enterClass);
-        }, 550);
+        targetScreen.classList.add('active');
+        if (FramerMotion.engine) {
+          if (effect === 'glass-blur') {
+            FramerMotion.animate(targetScreen, { opacity: [0, 1], filter: ['blur(12px)', 'blur(0px)'], transform: ['scale(1.02) translateY(8px)', 'scale(1) translateY(0)'] }, { duration: 0.45, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+          } else if (effect === 'smooth-zoom') {
+            FramerMotion.animate(targetScreen, { opacity: [0, 1], transform: ['scale(1.08)', 'scale(1)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 320, damping: 26 }) });
+          } else if (effect === 'slide-up') {
+            FramerMotion.animate(targetScreen, { opacity: [0, 1], transform: ['translateY(45px)', 'translateY(0)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 360, damping: 26 }) });
+          } else if (effect === 'expanding-reveal') {
+            FramerMotion.animate(targetScreen, { opacity: [0, 1], clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+          }
+        } else {
+          const enterClass = effect === 'smooth-zoom' ? 'login-enter-zoom' 
+                           : effect === 'slide-up' ? 'login-enter-slide' 
+                           : effect === 'expanding-reveal' ? 'login-enter-reveal' 
+                           : 'login-enter-crossfade';
+          targetScreen.classList.add(enterClass);
+          setTimeout(() => targetScreen.classList.remove(enterClass), 550);
+        }
       }
 
-      // 4. 상단 헤더, 티커, 하단 독 페이드인 노출
+      // 4. 상단 헤더, 티커, 하단 독 Framer Motion 페이드인 노출
       if (header) {
         header.style.display = 'flex';
-        header.classList.add('appshell-enter-fade');
-        setTimeout(() => header.classList.remove('appshell-enter-fade'), 500);
+        if (FramerMotion.engine) {
+          FramerMotion.animate(header, { opacity: [0, 1], transform: ['translateY(-6px)', 'translateY(0)'] }, { duration: 0.38, easing: 'ease-out' });
+        } else {
+          header.classList.add('appshell-enter-fade');
+          setTimeout(() => header.classList.remove('appshell-enter-fade'), 500);
+        }
       }
       if (nav) {
         nav.style.display = 'flex';
         nav.classList.remove('nav-hidden');
-        nav.classList.add('appshell-enter-fade');
-        setTimeout(() => nav.classList.remove('appshell-enter-fade'), 500);
+        if (FramerMotion.engine) {
+          FramerMotion.animate(nav, { opacity: [0, 1], transform: ['translate(-50%, 15px)', 'translate(-50%, 0)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 350, damping: 26 }) });
+        } else {
+          nav.classList.add('appshell-enter-fade');
+          setTimeout(() => nav.classList.remove('appshell-enter-fade'), 500);
+        }
       }
       if (ticker) {
         ticker.style.display = 'flex';
         ticker.classList.remove('ticker-hidden');
-        ticker.classList.add('appshell-enter-fade');
-        setTimeout(() => ticker.classList.remove('appshell-enter-fade'), 500);
+        if (FramerMotion.engine) {
+          FramerMotion.animate(ticker, { opacity: [0, 1], transform: ['translate(-50%, -6px)', 'translate(-50%, 0)'] }, { duration: 0.38, easing: 'ease-out' });
+        } else {
+          ticker.classList.add('appshell-enter-fade');
+          setTimeout(() => ticker.classList.remove('appshell-enter-fade'), 500);
+        }
       }
 
       this.startNoticeTicker();
@@ -1192,18 +1252,43 @@ const App = {
     if (target) {
       target.classList.add('active');
 
-      // 로그인된 상태에서 일반 페이지 전환 시 선택된 전환 애니메이션 전역 적용
+      // 로그인된 상태에서 일반 페이지 전환 시 Framer Motion 또는 CSS 키프레임 전환 전역 적용
       if (screenId !== 'screen-login' && this.state.isLoggedIn) {
         const effect = this.state.settings.transitionEffect || 'glass-blur';
-        const enterClass = effect === 'smooth-zoom' ? 'page-enter-zoom'
-                         : effect === 'slide-up' ? 'page-enter-slide'
-                         : effect === 'expanding-reveal' ? 'page-enter-reveal'
-                         : 'page-enter-blur';
+        
+        if (FramerMotion.engine) {
+          if (effect === 'glass-blur') {
+            FramerMotion.animate(target,
+              { opacity: [0, 1], filter: ['blur(10px)', 'blur(0px)'], transform: ['scale(1.02) translateY(6px)', 'scale(1) translateY(0)'] },
+              { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+            );
+          } else if (effect === 'smooth-zoom') {
+            FramerMotion.animate(target,
+              { opacity: [0, 1], transform: ['scale(1.06)', 'scale(1)'] },
+              { duration: 0.35, easing: FramerMotion.spring({ stiffness: 350, damping: 28 }) }
+            );
+          } else if (effect === 'slide-up') {
+            FramerMotion.animate(target,
+              { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0)'] },
+              { duration: 0.35, easing: FramerMotion.spring({ stiffness: 380, damping: 28 }) }
+            );
+          } else if (effect === 'expanding-reveal') {
+            FramerMotion.animate(target,
+              { opacity: [0, 1], clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] },
+              { duration: 0.42, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+            );
+          }
+        } else {
+          const enterClass = effect === 'smooth-zoom' ? 'page-enter-zoom'
+                           : effect === 'slide-up' ? 'page-enter-slide'
+                           : effect === 'expanding-reveal' ? 'page-enter-reveal'
+                           : 'page-enter-blur';
 
-        target.classList.add(enterClass);
-        setTimeout(() => {
-          target.classList.remove(enterClass);
-        }, 400);
+          target.classList.add(enterClass);
+          setTimeout(() => {
+            target.classList.remove(enterClass);
+          }, 400);
+        }
       }
     }
   },
@@ -3946,12 +4031,17 @@ const App = {
     });
 
     drawer.classList.remove('hidden');
-    setTimeout(() => {
-      backdrop.classList.remove('opacity-0');
-      backdrop.classList.add('opacity-100');
-      panel.classList.remove('translate-x-full');
-      panel.classList.add('translate-x-0');
-    }, 10);
+    if (FramerMotion.engine) {
+      FramerMotion.animate(backdrop, { opacity: [0, 1] }, { duration: 0.28, easing: 'ease-out' });
+      FramerMotion.animate(panel, { transform: ['translateX(100%)', 'translateX(0%)'] }, { duration: 0.38, easing: FramerMotion.spring({ stiffness: 380, damping: 32 }) });
+    } else {
+      setTimeout(() => {
+        backdrop.classList.remove('opacity-0');
+        backdrop.classList.add('opacity-100');
+        panel.classList.remove('translate-x-full');
+        panel.classList.add('translate-x-0');
+      }, 10);
+    }
   },
 
   closeSettingsDrawer() {
@@ -3960,14 +4050,23 @@ const App = {
     const panel = document.getElementById('drawer-settings-panel');
     if (!drawer || !backdrop || !panel) return;
 
-    backdrop.classList.remove('opacity-100');
-    backdrop.classList.add('opacity-0');
-    panel.classList.remove('translate-x-0');
-    panel.classList.add('translate-x-full');
-
-    setTimeout(() => {
-      drawer.classList.add('hidden');
-    }, 300);
+    if (FramerMotion.engine) {
+      FramerMotion.animate(backdrop, { opacity: [1, 0] }, { duration: 0.22, easing: 'ease-in' });
+      const anim = FramerMotion.animate(panel, { transform: ['translateX(0%)', 'translateX(100%)'] }, { duration: 0.28, easing: 'ease-in' });
+      if (anim && typeof anim.finished === 'object' && anim.finished.then) {
+        anim.finished.then(() => {
+          drawer.classList.add('hidden');
+        });
+      } else {
+        setTimeout(() => drawer.classList.add('hidden'), 280);
+      }
+    } else {
+      backdrop.classList.remove('opacity-100');
+      backdrop.classList.add('opacity-0');
+      panel.classList.remove('translate-x-0');
+      panel.classList.add('translate-x-full');
+      setTimeout(() => drawer.classList.add('hidden'), 300);
+    }
   },
 
   // =========================================
@@ -3994,11 +4093,21 @@ const App = {
 
     if (modal && panel) {
       modal.classList.remove('hidden');
-      setTimeout(() => {
-        panel.classList.remove('scale-95', 'opacity-0');
-        panel.classList.add('scale-100', 'opacity-100');
-        this.runModalTransitionAnimation(this._modalPreviewEffect);
-      }, 20);
+      if (FramerMotion.engine) {
+        FramerMotion.animate(panel, 
+          { opacity: [0, 1], transform: ['scale(0.92) translateY(12px)', 'scale(1) translateY(0)'] }, 
+          { duration: 0.32, easing: FramerMotion.spring({ stiffness: 420, damping: 28 }) }
+        );
+        setTimeout(() => {
+          this.runModalTransitionAnimation(this._modalPreviewEffect);
+        }, 120);
+      } else {
+        setTimeout(() => {
+          panel.classList.remove('scale-95', 'opacity-0');
+          panel.classList.add('scale-100', 'opacity-100');
+          this.runModalTransitionAnimation(this._modalPreviewEffect);
+        }, 20);
+      }
     }
   },
 
@@ -4006,11 +4115,18 @@ const App = {
     const modal = document.getElementById('modal-transition-preview');
     const panel = document.getElementById('transition-preview-modal-panel');
     if (modal && panel) {
-      panel.classList.remove('scale-100', 'opacity-100');
-      panel.classList.add('scale-95', 'opacity-0');
-      setTimeout(() => {
-        modal.classList.add('hidden');
-      }, 200);
+      if (FramerMotion.engine) {
+        const anim = FramerMotion.animate(panel, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.94)'] }, { duration: 0.2, easing: 'ease-in' });
+        if (anim && typeof anim.finished === 'object' && anim.finished.then) {
+          anim.finished.then(() => modal.classList.add('hidden'));
+        } else {
+          setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+      } else {
+        panel.classList.remove('scale-100', 'opacity-100');
+        panel.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => modal.classList.add('hidden'), 200);
+      }
     }
   },
 
@@ -4029,22 +4145,38 @@ const App = {
     step1.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-10';
     step2.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-0 opacity-0';
 
-    const exitClass = effect === 'smooth-zoom' ? 'preview-exit-zoom' 
-                    : effect === 'slide-up' ? 'preview-exit-slide' 
-                    : effect === 'expanding-reveal' ? 'preview-exit-reveal' 
-                    : 'preview-exit-blur';
-    
-    const enterClass = effect === 'smooth-zoom' ? 'preview-enter-zoom' 
-                     : effect === 'slide-up' ? 'preview-enter-slide' 
-                     : effect === 'expanding-reveal' ? 'preview-enter-reveal' 
-                     : 'preview-enter-crossfade';
-
-    // 2. 화면 전환 애니메이션 실행
-    setTimeout(() => {
-      step1.classList.add(exitClass);
-      step2.classList.add(enterClass);
+    if (FramerMotion.engine) {
       step2.style.zIndex = '15';
-    }, 60);
+      if (effect === 'glass-blur') {
+        FramerMotion.animate(step1, { opacity: [1, 0], filter: ['blur(0px)', 'blur(8px)'], transform: ['scale(1)', 'scale(0.93)'] }, { duration: 0.38, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        FramerMotion.animate(step2, { opacity: [0, 1], filter: ['blur(8px)', 'blur(0px)'], transform: ['scale(1.04)', 'scale(1)'] }, { duration: 0.45, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+      } else if (effect === 'smooth-zoom') {
+        FramerMotion.animate(step1, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.88)'] }, { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        FramerMotion.animate(step2, { opacity: [0, 1], transform: ['scale(1.08)', 'scale(1)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 350, damping: 26 }) });
+      } else if (effect === 'slide-up') {
+        FramerMotion.animate(step1, { opacity: [1, 0], transform: ['translateY(0)', 'translateY(-30px)'] }, { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        FramerMotion.animate(step2, { opacity: [0, 1], transform: ['translateY(30px)', 'translateY(0)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 380, damping: 26 }) });
+      } else if (effect === 'expanding-reveal') {
+        FramerMotion.animate(step1, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.86)'], filter: ['blur(0px)', 'blur(5px)'] }, { duration: 0.32, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        FramerMotion.animate(step2, { opacity: [0, 1], clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] }, { duration: 0.46, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+      }
+    } else {
+      const exitClass = effect === 'smooth-zoom' ? 'preview-exit-zoom' 
+                      : effect === 'slide-up' ? 'preview-exit-slide' 
+                      : effect === 'expanding-reveal' ? 'preview-exit-reveal' 
+                      : 'preview-exit-blur';
+      
+      const enterClass = effect === 'smooth-zoom' ? 'preview-enter-zoom' 
+                       : effect === 'slide-up' ? 'preview-enter-slide' 
+                       : effect === 'expanding-reveal' ? 'preview-enter-reveal' 
+                       : 'preview-enter-crossfade';
+
+      setTimeout(() => {
+        step1.classList.add(exitClass);
+        step2.classList.add(enterClass);
+        step2.style.zIndex = '15';
+      }, 60);
+    }
 
     // 3. 2.6초 후 자동으로 다시 화면 1로 초기화 (반복 시연 대비)
     clearTimeout(this._modalPreviewResetTimer);
