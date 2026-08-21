@@ -1122,11 +1122,9 @@
 
         <!-- Search Section -->
         <div class="relative w-full">
-          <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-on-surface-variant pointer-events-none">
-            <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-          </span>
+          <svg class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
           <input class="w-full bg-surface-container-highest text-on-surface rounded-full py-3.5 pl-12 pr-4 border-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors font-body text-sm placeholder-on-surface-variant/70 shadow-sm" id="directory-search-input" onkeyup="App.filterDirectory()" placeholder="이름, 부서 또는 전화번호 검색" type="text"/>
         </div>
 
@@ -2506,12 +2504,10 @@
       <!-- Search Input -->
       <div class="px-5 py-3.5 bg-surface-container-low border-b border-outline-variant/10 shrink-0">
         <div class="relative">
-          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-            <svg class="w-4.5 h-4.5 text-outline" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-          </div>
-          <input id="directory-picker-search" oninput="App.filterDirectoryPicker()" type="text" placeholder="임직원 이름, 부서, 직급 검색..." class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest text-on-surface text-sm rounded-xl border border-outline-variant/15 outline-none focus:ring-2 focus:ring-primary/40 transition-colors"/>
+          <svg class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <input id="directory-picker-search" oninput="App.filterDirectoryPicker()" type="text" placeholder="임직원 이름, 부서, 직급 검색..." class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest text-on-surface text-sm rounded-xl border border-outline-variant/15 outline-none focus:ring-2 focus:ring-primary/40 transition-colors"/>
         </div>
       </div>
       
