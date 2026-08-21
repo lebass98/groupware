@@ -4047,19 +4047,18 @@ const App = {
     if (!drawer || !backdrop || !panel) return;
 
     // 1. 사용자 정보 실시간 동기화
+    const user = this.state.user || {};
     const nameEl = document.getElementById('drawer-user-name');
     const roleEl = document.getElementById('drawer-user-role');
     const deptEl = document.getElementById('drawer-user-dept');
     const avatarEl = document.getElementById('drawer-user-avatar');
-    if (this.state.user) {
-      if (nameEl) nameEl.innerText = this.state.user.name || '이재광';
-      if (roleEl) roleEl.innerText = this.state.user.role || '차장';
-      if (deptEl) deptEl.innerText = `${this.state.user.dept || '퍼블리싱팀'} · ${this.state.user.email || 'yellow@wordncode.com'}`;
-      if (avatarEl) avatarEl.src = this.state.user.avatar || 'profile.png';
-    }
+    if (nameEl) nameEl.innerText = user.name || '이재광';
+    if (roleEl) roleEl.innerText = user.role || '차장';
+    if (deptEl) deptEl.innerText = `${user.dept || '퍼블리싱팀'} · ${user.email || 'yellow@wordncode.com'}`;
+    if (avatarEl) avatarEl.src = user.avatar || 'profile.png';
 
     // 2. 테마 팔레트 활성 상태 갱신
-    const currentTheme = this.state.settings.themeIdx || 3;
+    const currentTheme = (this.state.settings && this.state.settings.themeIdx) || 3;
     document.querySelectorAll('.drawer-theme-btn').forEach(btn => {
       if (Number(btn.getAttribute('data-theme-idx')) === Number(currentTheme)) {
         btn.classList.add('active');
@@ -4069,11 +4068,12 @@ const App = {
     });
 
     // 3. 다크 모드 토글 상태 갱신
+    const isDark = (this.state.settings && this.state.settings.dark) || false;
     const drawerDarkToggle = document.getElementById('drawer-dark-toggle');
     const drawerDarkKnob = document.getElementById('drawer-dark-knob');
     const drawerThemeLabel = document.getElementById('drawer-theme-label');
     if (drawerDarkToggle && drawerDarkKnob && drawerThemeLabel) {
-      if (this.state.settings.dark) {
+      if (isDark) {
         drawerDarkToggle.className = 'relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none';
         drawerDarkKnob.className = 'inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6 shadow-sm';
         drawerThemeLabel.innerText = '다크 모드 적용 중';
@@ -4085,7 +4085,7 @@ const App = {
     }
 
     // 4. 화면 전환 효과 옵션 활성 상태 갱신
-    const currentEffect = this.state.settings.transitionEffect || 'glass-blur';
+    const currentEffect = (this.state.settings && this.state.settings.transitionEffect) || 'glass-blur';
     document.querySelectorAll('.transition-effect-btn').forEach(btn => {
       if (btn.getAttribute('data-effect') === currentEffect) {
         btn.classList.add('active');
@@ -4094,17 +4094,16 @@ const App = {
       }
     });
 
+    // 드로어 노출
     drawer.classList.remove('hidden');
+    backdrop.classList.remove('opacity-0');
+    backdrop.classList.add('opacity-100');
+    panel.classList.remove('translate-x-full');
+    panel.classList.add('translate-x-0');
+
     if (FramerMotion.engine) {
       FramerMotion.animate(backdrop, { opacity: [0, 1] }, { duration: 0.28, easing: 'ease-out' });
-      FramerMotion.animate(panel, { transform: ['translateX(100%)', 'translateX(0%)'] }, { duration: 0.38, easing: FramerMotion.spring({ stiffness: 380, damping: 32 }) });
-    } else {
-      setTimeout(() => {
-        backdrop.classList.remove('opacity-0');
-        backdrop.classList.add('opacity-100');
-        panel.classList.remove('translate-x-full');
-        panel.classList.add('translate-x-0');
-      }, 10);
+      FramerMotion.animate(panel, { transform: ['translateX(100%)', 'translateX(0%)'] }, { duration: 0.35, easing: FramerMotion.spring({ stiffness: 380, damping: 32 }) });
     }
   },
 
@@ -4114,21 +4113,22 @@ const App = {
     const panel = document.getElementById('drawer-settings-panel');
     if (!drawer || !backdrop || !panel) return;
 
+    backdrop.classList.remove('opacity-100');
+    backdrop.classList.add('opacity-0');
+    panel.classList.remove('translate-x-0');
+    panel.classList.add('translate-x-full');
+
     if (FramerMotion.engine) {
       FramerMotion.animate(backdrop, { opacity: [1, 0] }, { duration: 0.22, easing: 'ease-in' });
-      const anim = FramerMotion.animate(panel, { transform: ['translateX(0%)', 'translateX(100%)'] }, { duration: 0.28, easing: 'ease-in' });
-      if (anim && typeof anim.finished === 'object' && anim.finished.then) {
+      const anim = FramerMotion.animate(panel, { transform: ['translateX(0%)', 'translateX(100%)'] }, { duration: 0.26, easing: 'ease-in' });
+      if (anim && anim.finished && anim.finished.then) {
         anim.finished.then(() => {
           drawer.classList.add('hidden');
         });
       } else {
-        setTimeout(() => drawer.classList.add('hidden'), 280);
+        setTimeout(() => drawer.classList.add('hidden'), 260);
       }
     } else {
-      backdrop.classList.remove('opacity-100');
-      backdrop.classList.add('opacity-0');
-      panel.classList.remove('translate-x-0');
-      panel.classList.add('translate-x-full');
       setTimeout(() => drawer.classList.add('hidden'), 300);
     }
   },
