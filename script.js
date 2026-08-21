@@ -608,11 +608,16 @@ const App = {
         }
       }
 
-      // 4. 상단 헤더, 티커, 하단 독 Framer Motion 페이드인 노출
+      // 4. 상단 헤더, 티커, 하단 독 페이드인 노출
       if (header) {
         header.style.display = 'flex';
         if (FramerMotion.engine) {
-          FramerMotion.animate(header, { opacity: [0, 1], transform: ['translateY(-6px)', 'translateY(0)'] }, { duration: 0.38, easing: 'ease-out' });
+          const anim = FramerMotion.animate(header, { opacity: [0, 1], transform: ['translateY(-6px)', 'translateY(0)'] }, { duration: 0.38, easing: 'ease-out' });
+          if (anim && anim.finished && anim.finished.then) {
+            anim.finished.then(() => { header.style.transform = ''; header.style.opacity = ''; });
+          } else {
+            setTimeout(() => { header.style.transform = ''; header.style.opacity = ''; }, 400);
+          }
         } else {
           header.classList.add('appshell-enter-fade');
           setTimeout(() => header.classList.remove('appshell-enter-fade'), 500);
@@ -622,7 +627,12 @@ const App = {
         nav.style.display = 'flex';
         nav.classList.remove('nav-hidden');
         if (FramerMotion.engine) {
-          FramerMotion.animate(nav, { opacity: [0, 1], transform: ['translate(-50%, 15px)', 'translate(-50%, 0)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 350, damping: 26 }) });
+          const anim = FramerMotion.animate(nav, { opacity: [0, 1], transform: ['translate(-50%, 15px)', 'translate(-50%, 0)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 350, damping: 26 }) });
+          if (anim && anim.finished && anim.finished.then) {
+            anim.finished.then(() => { nav.style.transform = ''; nav.style.opacity = ''; });
+          } else {
+            setTimeout(() => { nav.style.transform = ''; nav.style.opacity = ''; }, 450);
+          }
         } else {
           nav.classList.add('appshell-enter-fade');
           setTimeout(() => nav.classList.remove('appshell-enter-fade'), 500);
@@ -632,7 +642,12 @@ const App = {
         ticker.style.display = 'flex';
         ticker.classList.remove('ticker-hidden');
         if (FramerMotion.engine) {
-          FramerMotion.animate(ticker, { opacity: [0, 1], transform: ['translate(-50%, -6px)', 'translate(-50%, 0)'] }, { duration: 0.38, easing: 'ease-out' });
+          const anim = FramerMotion.animate(ticker, { opacity: [0, 1], transform: ['translate(-50%, -6px)', 'translate(-50%, 0)'] }, { duration: 0.38, easing: 'ease-out' });
+          if (anim && anim.finished && anim.finished.then) {
+            anim.finished.then(() => { ticker.style.transform = ''; ticker.style.opacity = ''; });
+          } else {
+            setTimeout(() => { ticker.style.transform = ''; ticker.style.opacity = ''; }, 400);
+          }
         } else {
           ticker.classList.add('appshell-enter-fade');
           setTimeout(() => ticker.classList.remove('appshell-enter-fade'), 500);
@@ -724,9 +739,9 @@ const App = {
   // 스크롤 인터랙션: 최상단 공지 노출 / 아래 스크롤 숨김 & 독메뉴 위/아래 방향 슬라이드
   // =========================================
   initScrollEffects() {
-    let lastScrollY = window.scrollY || window.pageYOffset || 0;
+    let lastScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
     let isTicking = false;
-    const SCROLL_THRESHOLD = 6; // 스크롤 진동/떨림 방지 임계값
+    const SCROLL_THRESHOLD = 5; // 스크롤 감도 임계값
 
     const handleScroll = () => {
       if (!this.state.isLoggedIn) {
@@ -734,25 +749,25 @@ const App = {
         return;
       }
 
-      const currentScrollY = Math.max(0, window.scrollY || window.pageYOffset || 0);
+      const currentScrollY = Math.max(0, window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0);
       const ticker = document.getElementById('notice-ticker');
       const nav = document.getElementById('bottom-nav');
-      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
       const clientHeight = window.innerHeight || document.documentElement.clientHeight;
-      const isAtBottom = (currentScrollY + clientHeight) >= (scrollHeight - 20);
+      const isAtBottom = (currentScrollY + clientHeight) >= (scrollHeight - 25);
 
-      // 1. 공지사항 티커: 스크롤이 최상단(<= 20px)에 닿았을 때만 나타나고, 아래로 내리면 슬라이드 업되어 숨김
+      // 1. 공지사항 티커: 스크롤이 최상단(<= 15px)에 닿았을 때만 나타나고, 아래로 내리면 오른쪽으로 슬라이드 아웃
       if (ticker && ticker.style.display !== 'none') {
-        if (currentScrollY <= 20) {
+        if (currentScrollY <= 15) {
           ticker.classList.remove('ticker-hidden');
         } else {
           ticker.classList.add('ticker-hidden');
         }
       }
 
-      // 2. 하단 독 메뉴: 스크롤을 위로 올릴 때 나타나고, 아래로 내릴 때는 슬라이드 다운되어 숨김
+      // 2. 하단 독 메뉴: 스크롤을 위로 올릴 때 나타나고, 아래로 내릴 때는 아래로 슬라이드 다운되어 숨김
       if (nav && nav.style.display !== 'none') {
-        if (currentScrollY <= 20 || isAtBottom) {
+        if (currentScrollY <= 15 || isAtBottom) {
           // 최상단 또는 페이지 맨 끝에 도달했을 때는 항상 독메뉴 표시
           nav.classList.remove('nav-hidden');
         } else if (Math.abs(currentScrollY - lastScrollY) >= SCROLL_THRESHOLD) {
@@ -771,6 +786,13 @@ const App = {
     };
 
     window.addEventListener('scroll', () => {
+      if (!isTicking) {
+        window.requestAnimationFrame(handleScroll);
+        isTicking = true;
+      }
+    }, { passive: true });
+
+    document.addEventListener('scroll', () => {
       if (!isTicking) {
         window.requestAnimationFrame(handleScroll);
         isTicking = true;
