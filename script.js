@@ -1029,6 +1029,9 @@ const App = {
     }, 200);
   },
 
+  // 고정 독 슬롯 (제거/변경 불가)
+  FIXED_DOCK_MENUS: ['screen-home', 'screen-today'],
+
   renderDockCustomizer() {
     const currentContainer = document.getElementById('dock-current-slots');
     const availableContainer = document.getElementById('dock-available-menus');
@@ -1047,19 +1050,29 @@ const App = {
       currentMenus.forEach(menuId => {
         const item = ALL_DOCK_MENU_ITEMS.find(m => m.id === menuId);
         if (!item) return;
+        const isFixed = this.FIXED_DOCK_MENUS.includes(menuId);
         currentHtml += `
-          <div class="flex items-center justify-between p-2.5 rounded-2xl bg-surface-container-low dark:bg-[#1f2937] border border-outline-variant/20 shadow-2xs hover:border-primary/40 transition-all">
+          <div class="flex items-center justify-between p-2.5 rounded-2xl ${isFixed ? 'bg-primary/5 border border-primary/25' : 'bg-surface-container-low dark:bg-[#1f2937] border border-outline-variant/20'} shadow-2xs transition-all">
             <div class="flex items-center gap-2 text-on-surface font-label text-xs font-bold truncate">
-              <div class="w-7 h-7 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+              <div class="w-7 h-7 rounded-xl ${isFixed ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'} flex items-center justify-center shrink-0">
                 ${item.iconSvg}
               </div>
               <span class="truncate">${item.name}</span>
+              ${isFixed ? `<span class="flex items-center gap-0.5 text-[10px] font-semibold text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded-md shrink-0">
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                고정
+              </span>` : ''}
             </div>
-            <button type="button" onclick="App.removeDockMenu('${item.id}')" class="p-1.5 rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors shrink-0 cursor-pointer" title="독 메뉴에서 제거">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-              </svg>
-            </button>
+            ${isFixed
+              ? `<div class="p-1.5 rounded-lg text-primary/30 shrink-0 cursor-not-allowed" title="고정 메뉴는 변경할 수 없습니다">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                </div>`
+              : `<button type="button" onclick="App.removeDockMenu('${item.id}')" class="p-1.5 rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors shrink-0 cursor-pointer" title="독 메뉴에서 제거">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                  </svg>
+                </button>`
+            }
           </div>
         `;
       });
@@ -1076,15 +1089,17 @@ const App = {
       currentContainer.innerHTML = currentHtml;
     }
 
-    // 2. 추가 가능한 메뉴 (현재 독에 없는 미등록 메뉴만 중복 없이 노출)
-    const availableMenus = ALL_DOCK_MENU_ITEMS.filter(item => !currentMenus.includes(item.id));
+    // 2. 추가 가능한 메뉴 (현재 독에 없고 고정 메뉴도 아닌 것만 노출)
+    const availableMenus = ALL_DOCK_MENU_ITEMS.filter(item =>
+      !currentMenus.includes(item.id) && !this.FIXED_DOCK_MENUS.includes(item.id)
+    );
     if (availableCountEl) availableCountEl.textContent = availableMenus.length;
 
     if (availableContainer) {
       if (availableMenus.length === 0) {
         availableContainer.innerHTML = `
           <div class="col-span-full py-8 text-center text-xs text-on-surface-variant bg-surface-container-low dark:bg-[#1f2937] rounded-2xl border border-outline-variant/15">
-            모든 메뉴가 독에 등록되었습니다.
+            추가할 수 있는 메뉴가 없습니다.
           </div>
         `;
       } else {
@@ -1133,6 +1148,13 @@ const App = {
   },
 
   removeDockMenu(menuId) {
+    // 고정 메뉴(메뉴·투데이)는 제거 불가
+    if (this.FIXED_DOCK_MENUS.includes(menuId)) {
+      const item = ALL_DOCK_MENU_ITEMS.find(m => m.id === menuId);
+      this.showToast(`🔒 '${item ? item.name : menuId}'는 고정 메뉴로 변경할 수 없습니다.`);
+      return;
+    }
+
     if (!this.state.dockMenus || this.state.dockMenus.length <= 1) {
       this.showToast('독 메뉴는 최소 1개 이상 유지되어야 합니다.');
       return;
