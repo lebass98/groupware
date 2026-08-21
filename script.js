@@ -670,6 +670,8 @@ const App = {
       this.renderTodos();
     } else if (targetId === 'screen-project-list') {
       this.renderProjects();
+    } else if (targetId === 'screen-request') {
+      this.switchRequestType(this.state.currentRequestType || 'leave');
     } else if (targetId === 'screen-home' || targetId === 'screen-today') {
       this.renderTodayData();
     }
@@ -3240,13 +3242,67 @@ const App = {
   },
 
   // Request Screen / Tab Handlers
-  openRequestModal() {
+  openRequestModal(defaultType = 'leave') {
+    this.switchRequestType(defaultType);
     this.calculateLeaveDays();
     this.switchTab('screen-request');
   },
 
   closeRequestModal() {
     this.switchTab('screen-checkin');
+  },
+
+  // Request Type Switcher (휴가 vs 외근)
+  switchRequestType(type = 'leave') {
+    this.state.currentRequestType = type;
+
+    const leaveSection = document.getElementById('request-section-leave');
+    const outworkSection = document.getElementById('request-section-outwork');
+    const btnLeave = document.getElementById('tab-btn-request-leave');
+    const btnOutwork = document.getElementById('tab-btn-request-outwork');
+    const titleEl = document.getElementById('request-page-title');
+    const subtitleEl = document.getElementById('request-page-subtitle');
+
+    if (type === 'leave') {
+      if (leaveSection) leaveSection.classList.remove('hidden');
+      if (outworkSection) outworkSection.classList.add('hidden');
+
+      if (btnLeave) {
+        btnLeave.className = 'flex-1 py-2.5 rounded-xl font-headline font-bold text-sm bg-surface-container-lowest text-primary shadow-xs transition-all flex items-center justify-center gap-2';
+      }
+      if (btnOutwork) {
+        btnOutwork.className = 'flex-1 py-2.5 rounded-xl font-headline font-bold text-sm text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2';
+      }
+      if (titleEl) titleEl.innerText = '휴가 신청';
+      if (subtitleEl) subtitleEl.innerText = '팀원들과 원활한 일정 공유를 위해 미리 신청해주세요.';
+      this.calculateLeaveDays();
+    } else {
+      if (leaveSection) leaveSection.classList.add('hidden');
+      if (outworkSection) outworkSection.classList.remove('hidden');
+
+      if (btnLeave) {
+        btnLeave.className = 'flex-1 py-2.5 rounded-xl font-headline font-bold text-sm text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2';
+      }
+      if (btnOutwork) {
+        btnOutwork.className = 'flex-1 py-2.5 rounded-xl font-headline font-bold text-sm bg-surface-container-lowest text-primary shadow-xs transition-all flex items-center justify-center gap-2';
+      }
+      if (titleEl) titleEl.innerText = '외근 신청';
+      if (subtitleEl) subtitleEl.innerText = '사외 미팅 및 업무 일정을 미리 등록하여 공유해주세요.';
+
+      // 오늘 날짜 기본 바인딩
+      const outworkDateEl = document.getElementById('outwork-date');
+      if (outworkDateEl && !outworkDateEl.value) {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        outworkDateEl.value = `${yyyy}-${mm}-${dd}`;
+      }
+    }
+  },
+
+  onOutworkTimeslotChange(timeslot) {
+    this.state.currentOutworkTimeslot = timeslot;
   },
 
   onLeaveTypeChange(typeVal) {
@@ -3341,6 +3397,122 @@ const App = {
     if (this.state.activeTab === 'screen-logs') {
       this.renderLogs();
     }
+  },
+
+  submitOutworkRequest() {
+    const dateInput = document.getElementById('outwork-date');
+    const locationInput = document.getElementById('outwork-location');
+    const titleInput = document.getElementById('outwork-title');
+    const contentInput = document.getElementById('outwork-content');
+    const timeslot = document.querySelector('input[name="outwork_timeslot"]:checked')?.value || '오후';
+
+    const dateVal = dateInput?.value;
+    const location = locationInput?.value?.trim();
+    const title = titleInput?.value?.trim();
+    const content = contentInput?.value?.trim() || '';
+
+    if (!dateVal) {
+      this.showToast('⚠️ 외근 날짜를 선택해주세요.');
+      return;
+    }
+    if (!location) {
+      this.showToast('⚠️ 방문 장소 또는 기관명을 입력해주세요.');
+      locationInput?.focus();
+      return;
+    }
+    if (!title) {
+      this.showToast('⚠️ 외근 제목을 입력해주세요.');
+      titleInput?.focus();
+      return;
+    }
+
+    // 시간대 문자열 생성
+    let timeStr = '13:00 ~ 18:00';
+    let checkInStr = '13:00';
+    let checkOutStr = '18:00';
+    let durSec = 18000;
+
+    if (timeslot === '오전') {
+      timeStr = '09:00 ~ 12:00';
+      checkInStr = '09:00';
+      checkOutStr = '12:00';
+      durSec = 10800;
+    } else if (timeslot === '종일') {
+      timeStr = '09:00 ~ 18:00';
+      checkInStr = '09:00';
+      checkOutStr = '18:00';
+      durSec = 28800;
+    }
+
+    // 로그인 사용자 정보
+    const user = this.state.user || { name: '이재광', role: '차장', avatar: 'profile.png' };
+    const authorName = `${user.name} ${user.role || '차장'}`;
+    const avatarUrl = user.avatar ? (user.avatar.startsWith('./') ? user.avatar : `./resource/image/${user.avatar}`) : './resource/image/profile.png';
+
+    // 날짜 키 파싱 (YYYY-M-D, unpadded)
+    const [yearStr, monthStr, dayStr] = dateVal.split('-');
+    const schedDateKey = `${parseInt(yearStr, 10)}-${parseInt(monthStr, 10)}-${parseInt(dayStr, 10)}`;
+
+    const fullTitle = `외근(${timeslot}) [${location}] ${title}`;
+
+    const newSchedItem = {
+      title: fullTitle,
+      time: timeStr,
+      type: 'primary',
+      badge: '외근',
+      author: authorName,
+      avatar: avatarUrl
+    };
+
+    // 1. MockData.schedules 동기화
+    if (!window.MockData) window.MockData = {};
+    if (!window.MockData.schedules) window.MockData.schedules = {};
+    if (!window.MockData.schedules[schedDateKey]) {
+      window.MockData.schedules[schedDateKey] = [];
+    }
+    window.MockData.schedules[schedDateKey].unshift(newSchedItem);
+
+    // 2. 근태 로그 추가
+    const targetDate = new Date(dateVal);
+    const daysArr = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+    const newLog = {
+      id: Date.now(),
+      monthStr: `${targetDate.getMonth() + 1}월`,
+      dayNum: String(targetDate.getDate()),
+      dayName: daysArr[targetDate.getDay()],
+      statusText: `외근(${timeslot}) • [${location}] ${title}`,
+      statusType: 'remote',
+      checkInTimeStr: checkInStr,
+      checkOutTimeStr: checkOutStr,
+      durationSec: durSec
+    };
+
+    this.state.logs.unshift(newLog);
+    this.saveState();
+
+    // 3. 폼 초기화
+    if (locationInput) locationInput.value = '';
+    if (titleInput) titleInput.value = '';
+    if (contentInput) contentInput.value = '';
+
+    // 4. 알림 및 뷰 갱신
+    this.showToast(`✅ [외근] ${location} 외근 일정이 성공적으로 등록되었습니다.`);
+
+    // 캘린더나 스케줄 뷰 리렌더링
+    if (typeof this.renderCalendar === 'function') {
+      this.renderCalendar();
+    }
+    if (typeof this.renderSchedules === 'function') {
+      this.renderSchedules();
+    }
+    if (this.state.activeTab === 'screen-logs' && typeof this.renderLogs === 'function') {
+      this.renderLogs();
+    }
+
+    // 근태일지 캘린더 화면으로 이동하여 등록 결과 확인
+    setTimeout(() => {
+      this.switchTab('screen-calendar');
+    }, 500);
   },
 
   // Settings & Theme

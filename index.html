@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>WnC 그룹웨어 - 스마트 근태관리 시스템</title>
-  <meta name="description" content="출퇴근 체크, 연차 신청, 근태일지, 임직원 주소록 및 공지사항을 한눈에 효율적으로 관리하는 통합 스마트 그룹웨어 플랫폼" />
-  <meta name="keywords" content="워드앤코드, WnC, 그룹웨어, 근태관리, 출퇴근관리, 연차신청, 주소록, 공지사항, WnC 그룹웨어, 근태일지" />
+  <meta name="description" content="출퇴근 체크, 휴가/외근 신청, 근태일지, 임직원 주소록 및 공지사항을 한눈에 효율적으로 관리하는 통합 스마트 그룹웨어 플랫폼" />
+  <meta name="keywords" content="워드앤코드, WnC, 그룹웨어, 근태관리, 출퇴근관리, 휴가신청, 외근신청, 주소록, 공지사항, WnC 그룹웨어, 근태일지" />
   <meta name="author" content="WnC 그룹웨어" />
   <meta name="theme-color" content="#0052D0" />
 
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://lebass98.github.io/groupware/" />
   <meta property="og:title" content="WnC 그룹웨어 - 스마트 근태관리 시스템" />
-  <meta property="og:description" content="출퇴근 체크, 연차 신청, 근태일지, 임직원 주소록 및 공지사항을 한눈에 관리하는 통합 스마트 WnC 그룹웨어" />
+  <meta property="og:description" content="출퇴근 체크, 휴가/외근 신청, 근태일지, 임직원 주소록 및 공지사항을 한눈에 관리하는 통합 스마트 WnC 그룹웨어" />
   <meta property="og:image" content="https://lebass98.github.io/groupware/resource/image/og_image.png?v=20260820_logo" />
   <meta property="og:image:secure_url" content="https://lebass98.github.io/groupware/resource/image/og_image.png?v=20260820_logo" />
   <meta property="og:image:type" content="image/png" />
@@ -24,7 +24,7 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:url" content="https://lebass98.github.io/groupware/" />
   <meta name="twitter:title" content="WnC 그룹웨어 - 스마트 근태관리 시스템" />
-  <meta name="twitter:description" content="출퇴근 체크, 연차 신청, 근태일지, 임직원 주소록 및 공지사항을 한눈에 관리하는 통합 스마트 WnC 그룹웨어" />
+  <meta name="twitter:description" content="출퇴근 체크, 휴가/외근 신청, 근태일지, 임직원 주소록 및 공지사항을 한눈에 관리하는 통합 스마트 WnC 그룹웨어" />
   <meta name="twitter:image" content="https://lebass98.github.io/groupware/resource/image/og_image.png?v=20260820_logo" />
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
@@ -287,7 +287,7 @@
             <span class="font-label font-bold text-on-surface text-sm">근태일지</span>
           </button>
 
-          <!-- Card 3: Leave Request -->
+          <!-- Card 3: Leave & Outwork Request (휴가/외근 신청) -->
           <button type="button" data-id="screen-request" onclick="App.switchTab('screen-request')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -299,7 +299,7 @@
                 <path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/>
               </svg>
             </div>
-            <span class="font-label font-bold text-on-surface text-sm">휴가 신청</span>
+            <span class="font-label font-bold text-on-surface text-sm">휴가/외근 신청</span>
           </button>
 
           <!-- Card 4: Notice (공지사항) -->
@@ -809,187 +809,314 @@
       </button>
     </section>
 
-    <!-- SCREEN 5: LEAVE REQUEST PAGE (Dedicated Screen View matching Stitch code.html 1:1) -->
+    <!-- SCREEN 5: LEAVE & OUTWORK REQUEST PAGE -->
     <section class="screen-view" id="screen-request">
       <main class="space-y-6 w-full pb-10">
         <!-- Page Title -->
-        <div class="text-left mb-6">
-          <h2 class="font-headline font-bold text-3xl text-on-surface tracking-tight">휴가 신청</h2>
-          <p class="text-on-surface-variant mt-1.5 text-sm font-medium">팀원들과 원활한 일정을 위해 미리 신청해주세요.</p>
+        <div class="text-left mb-4">
+          <h2 class="font-headline font-bold text-3xl text-on-surface tracking-tight" id="request-page-title">휴가/외근 신청</h2>
+          <p class="text-on-surface-variant mt-1.5 text-sm font-medium" id="request-page-subtitle">팀원들과 원활한 일정 공유를 위해 미리 신청해주세요.</p>
         </div>
 
-        <!-- Leave Balance Card (Bento Style) -->
-        <div class="bg-surface-container rounded-2xl p-6 relative overflow-hidden group text-left">
-          <div class="absolute -right-8 -top-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-500"></div>
-          <div class="flex items-start justify-between relative z-10">
-            <div>
-              <p class="text-on-surface-variant text-sm font-medium">잔여 연차</p>
-              <div class="flex items-baseline gap-1 mt-1">
-                <span class="font-headline font-bold text-4xl text-primary" id="bento-remain-days-page">12</span>
-                <span class="font-bold text-on-surface-variant text-lg">일</span>
-              </div>
-            </div>
-            <div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-[0_4px_12px_rgba(35,44,81,0.04)]">
-              <svg class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zm-8.47-3.13l-2.83-2.83 1.41-1.41 1.41 1.41 4.24-4.24 1.41 1.41-5.64 5.66z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="mt-6 flex gap-4 text-xs font-medium border-t border-outline-variant/15 pt-4">
-            <div class="flex-1">
-              <span class="text-on-surface-variant">총 부여:</span> <span class="text-on-surface font-bold">15일</span>
-            </div>
-            <div class="flex-1">
-              <span class="text-on-surface-variant">사용 완료:</span> <span class="text-on-surface font-bold" id="bento-used-days-page">3일</span>
-            </div>
-          </div>
+        <!-- Segmented Tab Switcher (휴가 / 외근) -->
+        <div class="flex items-center bg-surface-container p-1 rounded-2xl mb-4">
+          <button type="button" id="tab-btn-request-leave" onclick="App.switchRequestType('leave')" class="flex-1 py-2.5 rounded-xl font-headline font-bold text-sm bg-surface-container-lowest text-primary shadow-xs transition-all flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/>
+            </svg>
+            <span>휴가</span>
+          </button>
+          <button type="button" id="tab-btn-request-outwork" onclick="App.switchRequestType('outwork')" class="flex-1 py-2.5 rounded-xl font-headline font-bold text-sm text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+            </svg>
+            <span>외근</span>
+          </button>
         </div>
 
-        <!-- Leave Request Form -->
-        <form class="space-y-6 text-left" id="page-leave-request-form" onsubmit="event.preventDefault(); App.submitRequest();">
-          <!-- Leave Type Radio Cards (9종) -->
-          <div class="space-y-3">
-            <label class="block text-sm font-bold text-on-surface px-1">휴가 종류</label>
-            <div class="grid grid-cols-3 gap-2 sm:gap-2.5">
-              <label class="relative cursor-pointer">
-                <input checked="" class="peer sr-only" name="leave_type" type="radio" value="연차" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
-                  연차
+        <!-- 1. LEAVE REQUEST SECTION -->
+        <div id="request-section-leave" class="space-y-6">
+          <!-- Leave Balance Card (Bento Style) -->
+          <div class="bg-surface-container rounded-2xl p-6 relative overflow-hidden group text-left">
+            <div class="absolute -right-8 -top-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-500"></div>
+            <div class="flex items-start justify-between relative z-10">
+              <div>
+                <p class="text-on-surface-variant text-sm font-medium">잔여 연차</p>
+                <div class="flex items-baseline gap-1 mt-1">
+                  <span class="font-headline font-bold text-4xl text-primary" id="bento-remain-days-page">12</span>
+                  <span class="font-bold text-on-surface-variant text-lg">일</span>
                 </div>
-              </label>
-              <label class="relative cursor-pointer">
-                <input class="peer sr-only" name="leave_type" type="radio" value="반차(오전)" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
-                  반차(오전)
-                </div>
-              </label>
-              <label class="relative cursor-pointer">
-                <input class="peer sr-only" name="leave_type" type="radio" value="반차(오후)" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
-                  반차(오후)
-                </div>
-              </label>
-              <label class="relative cursor-pointer">
-                <input class="peer sr-only" name="leave_type" type="radio" value="반반차" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
-                  반반차
-                </div>
-              </label>
-              <label class="relative cursor-pointer">
-                <input class="peer sr-only" name="leave_type" type="radio" value="공가" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
-                  공가
-                </div>
-              </label>
-              <label class="relative cursor-pointer">
-                <input class="peer sr-only" name="leave_type" type="radio" value="병가" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
-                  병가
-                </div>
-              </label>
-              <label class="relative cursor-pointer">
-                <input class="peer sr-only" name="leave_type" type="radio" value="경조사" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
-                  경조사
-                </div>
-              </label>
-              <label class="relative cursor-pointer">
-                <input class="peer sr-only" name="leave_type" type="radio" value="생일휴가" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
-                  생일휴가
-                </div>
-              </label>
-              <label class="relative cursor-pointer">
-                <input class="peer sr-only" name="leave_type" type="radio" value="기타" onchange="App.onLeaveTypeChange(this.value)">
-                <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
-                  기타
-                </div>
-              </label>
+              </div>
+              <div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-[0_4px_12px_rgba(35,44,81,0.04)]">
+                <svg class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zm-8.47-3.13l-2.83-2.83 1.41-1.41 1.41 1.41 4.24-4.24 1.41 1.41-5.64 5.66z"/>
+                </svg>
+              </div>
             </div>
-          </div>
-
-          <!-- Schedule Selection -->
-          <div class="space-y-3">
-            <label class="block text-sm font-bold text-on-surface px-1">일정</label>
-            <div class="flex flex-col gap-4 bg-surface-container-low rounded-lg p-4">
-              <!-- Start Date -->
-              <div class="relative group">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <svg class="w-5 h-5 text-outline" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/>
-                  </svg>
-                </div>
-                <input id="leave-start-date" class="w-full pl-12 pr-16 py-4 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-11" onchange="App.calculateLeaveDays()">
-                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-primary bg-primary-container/30 px-2.5 py-1 rounded-md">시작</span>
+            <div class="mt-6 flex gap-4 text-xs font-medium border-t border-outline-variant/15 pt-4">
+              <div class="flex-1">
+                <span class="text-on-surface-variant">총 부여:</span> <span class="text-on-surface font-bold">15일</span>
               </div>
-
-              <!-- Connector -->
-              <div class="flex justify-center -my-2 relative z-10">
-                <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center border-4 border-surface-container-low">
-                  <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
-                  </svg>
-                </div>
-              </div>
-
-              <!-- End Date -->
-              <div class="relative group">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <svg class="w-5 h-5 text-outline" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
-                  </svg>
-                </div>
-                <input id="leave-end-date" class="w-full pl-12 pr-16 py-4 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-12" onchange="App.calculateLeaveDays()">
-                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-tertiary bg-tertiary-container/30 px-2.5 py-1 rounded-md">종료</span>
-              </div>
-
-              <div class="text-right px-2 mt-1">
-                <span class="text-sm font-bold text-primary" id="leave-days-count">총 2일</span>
+              <div class="flex-1">
+                <span class="text-on-surface-variant">사용 완료:</span> <span class="text-on-surface font-bold" id="bento-used-days-page">3일</span>
               </div>
             </div>
           </div>
 
-          <!-- 반반차 선택 시 시간 선택 구획 (시작시간/종료시간) -->
-          <div id="page-leave-time-range-container" class="hidden space-y-3">
-            <label class="block text-sm font-bold text-on-surface px-1">시간 선택 (반반차 2시간)</label>
-            <div class="grid grid-cols-2 gap-3 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
-              <div class="space-y-1">
-                <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
-                  <svg class="w-3.5 h-3.5 text-primary" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                  </svg>
-                  시작 시간
+          <!-- Leave Request Form -->
+          <form class="space-y-6 text-left" id="page-leave-request-form" onsubmit="event.preventDefault(); App.submitRequest();">
+            <!-- Leave Type Radio Cards (9종) -->
+            <div class="space-y-3">
+              <label class="block text-sm font-bold text-on-surface px-1">휴가 종류</label>
+              <div class="grid grid-cols-3 gap-2 sm:gap-2.5">
+                <label class="relative cursor-pointer">
+                  <input checked="" class="peer sr-only" name="leave_type" type="radio" value="연차" onchange="App.onLeaveTypeChange(this.value)">
+                  <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                    연차
+                  </div>
                 </label>
-                <input id="page-leave-start-time" type="time" value="09:00" onchange="App.calculateLeaveDays()" class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/15 rounded-xl text-on-surface text-sm font-semibold focus:ring-2 focus:ring-primary focus:outline-none">
-              </div>
-              <div class="space-y-1">
-                <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
-                  <svg class="w-3.5 h-3.5 text-tertiary" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                  </svg>
-                  종료 시간
+                <label class="relative cursor-pointer">
+                  <input class="peer sr-only" name="leave_type" type="radio" value="반차(오전)" onchange="App.onLeaveTypeChange(this.value)">
+                  <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                    반차(오전)
+                  </div>
                 </label>
-                <input id="page-leave-end-time" type="time" value="11:00" onchange="App.calculateLeaveDays()" class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/15 rounded-xl text-on-surface text-sm font-semibold focus:ring-2 focus:ring-primary focus:outline-none">
+                <label class="relative cursor-pointer">
+                  <input class="peer sr-only" name="leave_type" type="radio" value="반차(오후)" onchange="App.onLeaveTypeChange(this.value)">
+                  <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                    반차(오후)
+                  </div>
+                </label>
+                <label class="relative cursor-pointer">
+                  <input class="peer sr-only" name="leave_type" type="radio" value="반반차" onchange="App.onLeaveTypeChange(this.value)">
+                  <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                    반반차
+                  </div>
+                </label>
+                <label class="relative cursor-pointer">
+                  <input class="peer sr-only" name="leave_type" type="radio" value="공가" onchange="App.onLeaveTypeChange(this.value)">
+                  <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                    공가
+                  </div>
+                </label>
+                <label class="relative cursor-pointer">
+                  <input class="peer sr-only" name="leave_type" type="radio" value="병가" onchange="App.onLeaveTypeChange(this.value)">
+                  <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                    병가
+                  </div>
+                </label>
+                <label class="relative cursor-pointer">
+                  <input class="peer sr-only" name="leave_type" type="radio" value="경조사" onchange="App.onLeaveTypeChange(this.value)">
+                  <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                    경조사
+                  </div>
+                </label>
+                <label class="relative cursor-pointer">
+                  <input class="peer sr-only" name="leave_type" type="radio" value="생일휴가" onchange="App.onLeaveTypeChange(this.value)">
+                  <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                    생일휴가
+                  </div>
+                </label>
+                <label class="relative cursor-pointer">
+                  <input class="peer sr-only" name="leave_type" type="radio" value="기타" onchange="App.onLeaveTypeChange(this.value)">
+                  <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs sm:text-sm transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                    기타
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Schedule Selection -->
+            <div class="space-y-3">
+              <label class="block text-sm font-bold text-on-surface px-1">일정</label>
+              <div class="flex flex-col gap-4 bg-surface-container-low rounded-lg p-4">
+                <!-- Start Date -->
+                <div class="relative group">
+                  <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg class="w-5 h-5 text-outline" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/>
+                    </svg>
+                  </div>
+                  <input id="leave-start-date" class="w-full pl-12 pr-16 py-4 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-21" onchange="App.calculateLeaveDays()">
+                  <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-primary bg-primary-container/30 px-2.5 py-1 rounded-md">시작</span>
+                </div>
+
+                <!-- Connector -->
+                <div class="flex justify-center -my-2 relative z-10">
+                  <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center border-4 border-surface-container-low">
+                    <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- End Date -->
+                <div class="relative group">
+                  <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg class="w-5 h-5 text-outline" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+                    </svg>
+                  </div>
+                  <input id="leave-end-date" class="w-full pl-12 pr-16 py-4 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors" type="date" value="2026-08-21" onchange="App.calculateLeaveDays()">
+                  <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-tertiary bg-tertiary-container/30 px-2.5 py-1 rounded-md">종료</span>
+                </div>
+
+                <div class="text-right px-2 mt-1">
+                  <span class="text-sm font-bold text-primary" id="leave-days-count">총 1일</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 반반차 선택 시 시간 선택 구획 (시작시간/종료시간) -->
+            <div id="page-leave-time-range-container" class="hidden space-y-3">
+              <label class="block text-sm font-bold text-on-surface px-1">시간 선택 (반반차 2시간)</label>
+              <div class="grid grid-cols-2 gap-3 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+                <div class="space-y-1">
+                  <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    시작 시간
+                  </label>
+                  <input id="page-leave-start-time" type="time" value="09:00" onchange="App.calculateLeaveDays()" class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/15 rounded-xl text-on-surface text-sm font-semibold focus:ring-2 focus:ring-primary focus:outline-none">
+                </div>
+                <div class="space-y-1">
+                  <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5 text-tertiary" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    종료 시간
+                  </label>
+                  <input id="page-leave-end-time" type="time" value="11:00" onchange="App.calculateLeaveDays()" class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/15 rounded-xl text-on-surface text-sm font-semibold focus:ring-2 focus:ring-primary focus:outline-none">
+                </div>
+              </div>
+            </div>
+
+            <!-- Reason Field -->
+            <div class="space-y-3">
+              <label class="block text-sm font-bold text-on-surface px-1">신청 사유</label>
+              <textarea id="leave-reason-text" class="w-full p-4 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline resize-none pl-6" placeholder="휴가 사유를 간단히 입력해주세요 (선택)" rows="3"></textarea>
+            </div>
+
+            <!-- Submit Button Area -->
+            <div class="pt-2">
+              <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold text-lg shadow-[0_8px_24px_rgba(0,82,208,0.25)] hover:shadow-[0_12px_32px_rgba(0,82,208,0.35)] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+                <span>휴가 신청하기</span>
+                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- 2. OUTWORK REQUEST SECTION -->
+        <div id="request-section-outwork" class="hidden space-y-6">
+          <!-- Outwork Info Bento Card -->
+          <div class="bg-surface-container rounded-2xl p-6 relative overflow-hidden group text-left">
+            <div class="absolute -right-8 -top-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-500"></div>
+            <div class="flex items-start justify-between relative z-10">
+              <div>
+                <p class="text-on-surface-variant text-sm font-medium">외근 일정 등록</p>
+                <div class="flex items-baseline gap-1.5 mt-1">
+                  <span class="font-headline font-bold text-2xl text-primary">사외 업무 및 미팅</span>
+                </div>
+                <p class="text-xs text-on-surface-variant mt-1.5 font-medium">등록된 외근 일정은 전사 근태일지에 즉시 실시간 동기화됩니다.</p>
+              </div>
+              <div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-[0_4px_12px_rgba(35,44,81,0.04)] text-primary">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                </svg>
               </div>
             </div>
           </div>
 
-          <!-- Reason Field -->
-          <div class="space-y-3">
-            <label class="block text-sm font-bold text-on-surface px-1">신청 사유</label>
-            <textarea id="leave-reason-text" class="w-full p-4 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder-outline resize-none pl-6" placeholder="휴가 사유를 간단히 입력해주세요 (선택)" rows="3"></textarea>
-          </div>
+          <!-- Outwork Request Form -->
+          <form class="space-y-6 text-left" id="page-outwork-request-form" onsubmit="event.preventDefault(); App.submitOutworkRequest();">
+            <!-- 1. 일시 (날짜 + 시간대: 오전, 오후, 종일) -->
+            <div class="space-y-3">
+              <label class="block text-sm font-bold text-on-surface px-1">외근 일시</label>
+              <div class="flex flex-col gap-3.5 bg-surface-container-low rounded-2xl p-4 border border-outline-variant/10">
+                <!-- Date Input -->
+                <div class="relative group">
+                  <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg class="w-5 h-5 text-outline" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/>
+                    </svg>
+                  </div>
+                  <input id="outwork-date" class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors text-sm" type="date" value="2026-08-21" required>
+                </div>
 
-          <!-- Submit Button Area -->
-          <div class="pt-2">
-            <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold text-lg shadow-[0_8px_24px_rgba(0,82,208,0.25)] hover:shadow-[0_12px_32px_rgba(0,82,208,0.35)] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
-              <span>신청하기</span>
-              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-              </svg>
-            </button>
-          </div>
-        </form>
+                <!-- Time Slot Segment (오전 / 오후 / 종일) -->
+                <div>
+                  <span class="block text-xs font-semibold text-on-surface-variant mb-2 px-1">시간대 구분</span>
+                  <div class="grid grid-cols-3 gap-2">
+                    <label class="relative cursor-pointer">
+                      <input type="radio" name="outwork_timeslot" value="오전" class="peer sr-only">
+                      <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                        오전 <span class="text-[10px] opacity-80 block">(09:00~12:00)</span>
+                      </div>
+                    </label>
+                    <label class="relative cursor-pointer">
+                      <input type="radio" name="outwork_timeslot" value="오후" checked class="peer sr-only">
+                      <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                        오후 <span class="text-[10px] opacity-80 block">(13:00~18:00)</span>
+                      </div>
+                    </label>
+                    <label class="relative cursor-pointer">
+                      <input type="radio" name="outwork_timeslot" value="종일" class="peer sr-only">
+                      <div class="w-full text-center py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/15 text-on-surface-variant font-semibold text-xs transition-all peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:shadow-xs">
+                        종일 <span class="text-[10px] opacity-80 block">(09:00~18:00)</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. 장소 -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-on-surface px-1">방문 장소</label>
+              <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
+                </div>
+                <input id="outwork-location" class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors text-sm placeholder:text-on-surface-variant/60" type="text" placeholder="예: 한국건강가정진흥원, 고객사 본사, 세미나장 등" required>
+              </div>
+            </div>
+
+            <!-- 3. 제목 -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-on-surface px-1">외근 제목</label>
+              <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                  </svg>
+                </div>
+                <input id="outwork-title" class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors text-sm placeholder:text-on-surface-variant/60" type="text" placeholder="예: 주간 업무 회의 및 시스템 점검" required>
+              </div>
+            </div>
+
+            <!-- 4. 내용 -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-on-surface px-1">외근 내용</label>
+              <textarea id="outwork-content" class="w-full p-4 bg-surface-container-highest border-none rounded-xl text-on-surface font-medium focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder:text-on-surface-variant/60 resize-none text-sm" placeholder="외근 목적 및 주요 업무 내용을 상세히 입력해주세요." rows="4"></textarea>
+            </div>
+
+            <!-- Submit Button Area -->
+            <div class="pt-2">
+              <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold text-lg shadow-[0_8px_24px_rgba(0,82,208,0.25)] hover:shadow-[0_12px_32px_rgba(0,82,208,0.35)] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+                <span>외근 신청하기</span>
+                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
       </main>
     </section>
 
