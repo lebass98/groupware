@@ -1402,7 +1402,7 @@ const App = {
         statusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary';
       } else {
         statusTitle.innerText = '아직 출근 전입니다';
-        statusBadge.innerText = '원클릭 출근';
+        statusBadge.innerText = '출근 전';
         statusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary-container';
       }
     }
@@ -3926,7 +3926,7 @@ const App = {
       if (pulseSubtext) pulseSubtext.innerText = `${timeStr} 출근 완료됨`;
     } else {
       if (homeStatusTitle) homeStatusTitle.innerText = '아직 출근 전입니다';
-      if (homeStatusBadge) homeStatusBadge.innerText = '원클릭 출근';
+      if (homeStatusBadge) homeStatusBadge.innerText = '출근 전';
       if (homeStatusDot) homeStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary-container';
 
       if (statusCard) statusCard.classList.remove('active');
@@ -3945,7 +3945,7 @@ const App = {
       if (pulseBtn) pulseBtn.classList.remove('checked-in');
       if (pulseIcon) pulseIcon.innerText = 'touch_app';
       if (pulseText) pulseText.innerText = '출석 체크';
-      if (pulseSubtext) pulseSubtext.innerText = '원클릭 출근';
+      if (pulseSubtext) pulseSubtext.innerText = '탭하여 출근';
     }
 
     // Render Location & Geofence Badge Tag
