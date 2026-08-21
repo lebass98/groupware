@@ -1,9 +1,10 @@
 .DS_Store
+**/.DS_Store
+._*
+**/._*
 *.log
 node_modules/
 *.apk
 react-native-app/android/
-._*
 *.swp
-.DS_Store
 .App.js.swp
