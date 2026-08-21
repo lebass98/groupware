@@ -3482,40 +3482,9 @@ const App = {
     }
     const allEmployees = this.state.employees || [];
 
-    // 1. Render Monthly Birthday Highlight Banner
+    // 생일 배너 비표시 (요청에 따라 이달의 생일 상단 배너 제거)
     if (birthdayBannerContainer) {
-      const birthdayEmployees = allEmployees.filter(e => e.isBirthdayThisMonth);
-      if (birthdayEmployees.length > 0) {
-        birthdayBannerContainer.innerHTML = `
-          <div class="relative overflow-hidden rounded-2xl p-4 bg-gradient-to-r from-pink-500/15 via-rose-500/10 to-amber-500/15 border border-pink-500/30 shadow-[0_4px_20px_rgba(236,72,153,0.08)]">
-            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-pink-500/20 rounded-full blur-xl pointer-events-none"></div>
-            <div class="flex items-center justify-between relative z-10 gap-3">
-              <div class="flex items-center gap-3 min-w-0">
-                <div class="w-11 h-11 rounded-xl bg-pink-500/20 text-pink-600 dark:text-pink-300 flex items-center justify-center flex-shrink-0 text-xl shadow-xs">
-                  🎂
-                </div>
-                <div class="min-w-0">
-                  <div class="flex items-center gap-1.5">
-                    <span class="font-headline font-bold text-xs px-2 py-0.5 rounded-full bg-pink-500 text-white shadow-xs">이달의 생일</span>
-                    <span class="text-xs text-on-surface-variant font-medium">8월 생일을 축하합니다!</span>
-                  </div>
-                  <p class="font-headline font-extrabold text-sm text-on-surface mt-0.5 truncate">
-                    ${birthdayEmployees.map(e => `<span class="text-pink-600 dark:text-pink-400 cursor-pointer hover:underline" onclick="App.openDirectoryDetail(${e.id})">${e.name} ${e.role}</span> (${e.dept})`).join(', ')}
-                  </p>
-                </div>
-              </div>
-              <button onclick="App.openDirectoryDetail(${birthdayEmployees[0].id})" class="px-3 py-1.5 rounded-xl bg-pink-500 hover:bg-pink-600 text-white font-label text-xs font-bold shadow-xs hover:shadow transition-all active:scale-95 whitespace-nowrap flex-shrink-0 flex items-center gap-1">
-                <span>축하하기</span>
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        `;
-      } else {
-        birthdayBannerContainer.innerHTML = '';
-      }
+      birthdayBannerContainer.innerHTML = '';
     }
 
     const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
