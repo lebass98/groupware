@@ -102,7 +102,7 @@
       },
     }
   </script>
-  <link rel="stylesheet" href="style.css?v=20260821_menucols" />
+  <link rel="stylesheet" href="style.css?v=20260821_menucols_icon" />
 </head>
 <body class="bg-surface font-body text-on-surface flex flex-col items-center justify-start min-h-screen relative overflow-x-hidden">
 
@@ -258,17 +258,15 @@
 
           <!-- 가로 2개 / 가로 3개 선택 토글 바 -->
           <div class="flex items-center p-1 bg-surface-container-low rounded-xl border border-outline-variant/15 shadow-2xs gap-1 shrink-0 mb-1">
-            <button type="button" id="menu-col-btn-2" onclick="App.setMenuColumns(2)" class="menu-col-toggle-btn active" title="가로 2개 보기">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+            <button type="button" id="menu-col-btn-2" onclick="App.setMenuColumns(2)" class="menu-col-toggle-btn active" title="가로 2열 뷰">
+              <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3 3h7.5v7.5H3V3zm10.5 0H21v7.5h-7.5V3zM3 13.5h7.5V21H3v-7.5zm10.5 0H21V21h-7.5v-7.5z"/>
               </svg>
-              <span>2개</span>
             </button>
-            <button type="button" id="menu-col-btn-3" onclick="App.setMenuColumns(3)" class="menu-col-toggle-btn" title="가로 3개 보기">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+            <button type="button" id="menu-col-btn-3" onclick="App.setMenuColumns(3)" class="menu-col-toggle-btn" title="가로 3열 뷰">
+              <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3 3h4.6v7.5H3V3zm6.7 0h4.6v7.5H9.7V3zm6.7 0H21v7.5h-4.6V3zM3 13.5h4.6V21H3v-7.5zm6.7 0h4.6V21H9.7v-7.5zm6.7 0H21V21h-4.6v-7.5z"/>
               </svg>
-              <span>3개</span>
             </button>
           </div>
         </div>
