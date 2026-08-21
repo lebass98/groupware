@@ -948,6 +948,19 @@ const App = {
     } else if (targetId === 'screen-notice-list') {
       this.renderNotices();
     } else if (targetId === 'screen-directory') {
+      this.state.currentDirectoryCategory = 'all';
+      const searchInput = document.getElementById('directory-search-input');
+      if (searchInput) searchInput.value = '';
+      const chips = document.querySelectorAll('.dir-chip');
+      chips.forEach((c, idx) => {
+        if (idx === 0) {
+          c.classList.remove('bg-surface-container', 'text-on-surface-variant');
+          c.classList.add('bg-primary', 'text-on-primary', 'active');
+        } else {
+          c.classList.remove('bg-primary', 'text-on-primary', 'active');
+          c.classList.add('bg-surface-container', 'text-on-surface-variant');
+        }
+      });
       this.renderDirectory();
     } else if (targetId === 'screen-calendar') {
       const v = this.state.calView || 'month';
@@ -2992,6 +3005,18 @@ const App = {
   },
 
   getEmployeeStatusInfo(emp) {
+    if (!emp) {
+      return {
+        type: 'work',
+        text: '근무중',
+        dotColor: 'bg-emerald-500',
+        badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
+        icon: 'laptop_mac',
+        pulse: true,
+        todaySchedule: ''
+      };
+    }
+
     const rawStatus = (emp.status || 'work').toLowerCase();
     const rawText = emp.statusText || '';
 
@@ -3046,15 +3071,15 @@ const App = {
     // 2. Determine Today's Scheduled Event (금일 근태일지 일정 및 예정 뱃지 실시간 동기화)
     let rawSched = '';
 
-    // 오늘 날짜 계산 (시스템 현재 날짜 기준: 2026-8-21 등)
     const now = new Date();
     const curYear = now.getFullYear();
     const curMonth = now.getMonth() + 1;
     const curDay = now.getDate();
-    const todayKey = `${curYear}-${curMonth}-${curDay}`;
+    const todayKey1 = `${curYear}-${curMonth}-${curDay}`;
+    const todayKey2 = `${curYear}-${String(curMonth).padStart(2, '0')}-${String(curDay).padStart(2, '0')}`;
 
     if (window.MockData && window.MockData.schedules) {
-      const todayList = window.MockData.schedules[todayKey] || [];
+      const todayList = window.MockData.schedules[todayKey1] || window.MockData.schedules[todayKey2] || [];
       const match = todayList.find(s => s.author && s.author.includes(emp.name));
       if (match) {
         rawSched = match.title;
@@ -3080,9 +3105,15 @@ const App = {
     const birthdayBannerContainer = document.getElementById('directory-birthday-banner-container');
     if (!container) return;
 
+    // Ensure employees list is always loaded
+    if (!this.state.employees || !this.state.employees.length) {
+      this.state.employees = (window.MockData && window.MockData.employees) || [];
+    }
+    const allEmployees = this.state.employees || [];
+
     // 1. Render Monthly Birthday Highlight Banner
     if (birthdayBannerContainer) {
-      const birthdayEmployees = this.state.employees.filter(e => e.isBirthdayThisMonth);
+      const birthdayEmployees = allEmployees.filter(e => e.isBirthdayThisMonth);
       if (birthdayEmployees.length > 0) {
         birthdayBannerContainer.innerHTML = `
           <div class="relative overflow-hidden rounded-2xl p-4 bg-gradient-to-r from-pink-500/15 via-rose-500/10 to-amber-500/15 border border-pink-500/30 shadow-[0_4px_20px_rgba(236,72,153,0.08)]">
@@ -3119,19 +3150,28 @@ const App = {
     const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
     const cat = this.state.currentDirectoryCategory || 'all';
 
-    let filtered = this.state.employees.filter(emp => {
+    let filtered = allEmployees.filter(emp => {
+      if (!emp) return false;
       const statusInfo = this.getEmployeeStatusInfo(emp);
       const matchCat = cat === 'all' || emp.dept === cat;
 
+      const empName = (emp.name || '').toLowerCase();
+      const empDept = (emp.dept || '').toLowerCase();
+      const empRole = (emp.role || '').toLowerCase();
+      const empPhone = (emp.phone || '').toLowerCase();
+      const empStatusText = (emp.statusText || '').toLowerCase();
+      const infoText = (statusInfo.text || '').toLowerCase();
+      const schedText = (statusInfo.todaySchedule || '').toLowerCase();
+
       const matchQuery = !query || 
-        emp.name.toLowerCase().includes(query) || 
-        emp.dept.toLowerCase().includes(query) || 
-        emp.role.toLowerCase().includes(query) ||
-        (emp.statusText && emp.statusText.toLowerCase().includes(query)) ||
-        (statusInfo.text && statusInfo.text.toLowerCase().includes(query)) ||
-        (statusInfo.todaySchedule && statusInfo.todaySchedule.toLowerCase().includes(query)) ||
+        empName.includes(query) || 
+        empDept.includes(query) || 
+        empRole.includes(query) ||
+        empStatusText.includes(query) ||
+        infoText.includes(query) ||
+        schedText.includes(query) ||
         (emp.isBirthdayThisMonth && ('생일'.includes(query) || '생일자'.includes(query) || '이달의생일'.includes(query) || 'birthday'.includes(query))) ||
-        emp.phone.includes(query);
+        empPhone.includes(query);
       return matchCat && matchQuery;
     });
 
@@ -3176,7 +3216,7 @@ const App = {
       } else {
         avatarHtml = `
           <div class="h-14 w-14 rounded-full bg-surface-container-low relative flex items-center justify-center text-primary-dim font-headline font-bold text-xl flex-shrink-0 cursor-pointer hover:bg-surface-container transition-colors" onclick="App.openDirectoryDetail(${emp.id})">
-            ${emp.avatarInitial || emp.name.charAt(0)}
+            ${emp.avatarInitial || (emp.name ? emp.name.charAt(0) : '사')}
             ${dotHtml}
             ${birthdayAvatarDeco}
           </div>
@@ -3186,7 +3226,7 @@ const App = {
       // Primary Status Badge (근무중, 외근중, 휴가중, 퇴근)
       const primaryStatusBadge = `
         <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
-          ${getSvgIcon(statusInfo.icon, 'w-3.5 h-3.5')}
+          ${typeof getSvgIcon === 'function' ? getSvgIcon(statusInfo.icon, 'w-3.5 h-3.5') : ''}
           <span>${statusInfo.text}</span>
         </span>
       `;
@@ -3202,7 +3242,7 @@ const App = {
 
         todayScheduleBadge = `
           <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${schedBadgeClass}">
-            ${getSvgIcon(schedIcon, 'w-3.5 h-3.5')}
+            ${typeof getSvgIcon === 'function' ? getSvgIcon(schedIcon, 'w-3.5 h-3.5') : ''}
             <span>예정 : ${statusInfo.todaySchedule}</span>
           </span>
         `;
@@ -3213,7 +3253,7 @@ const App = {
       if (emp.isBirthdayThisMonth) {
         birthdayBadge = `
           <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-500/15 text-pink-600 dark:text-pink-300 border border-pink-500/30">
-            ${getSvgIcon('cake', 'w-3.5 h-3.5 text-pink-500')}
+            ${typeof getSvgIcon === 'function' ? getSvgIcon('cake', 'w-3.5 h-3.5 text-pink-500') : ''}
             <span>이달의 생일 🎂</span>
           </span>
         `;
@@ -3277,7 +3317,9 @@ const App = {
   },
 
   openDirectoryDetail(empId) {
-    const emp = this.state.employees.find(e => e.id === empId) || this.state.employees[0];
+    const allEmployees = this.state.employees || (window.MockData && window.MockData.employees) || [];
+    const emp = allEmployees.find(e => e.id === empId) || allEmployees[0];
+    if (!emp) return;
     this.state.currentEmployeeId = emp.id;
 
     const nameEl = document.getElementById('dir-detail-name');
