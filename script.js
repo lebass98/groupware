@@ -1,24 +1,41 @@
 // WnC 그룹웨어 애플리케이션 코어 로직
 
-// Framer Motion (Motion One Engine) 래퍼 유틸리티
+// Framer Motion & Spring Physics 모션 엔진 (Web Animations API 120fps 네이티브 가속)
 const FramerMotion = {
-  get engine() {
-    return window.Motion || null;
-  },
-  animate(element, keyframes, options) {
-    if (this.engine && typeof this.engine.animate === 'function') {
-      try {
-        return this.engine.animate(element, keyframes, options);
-      } catch (e) {
-        console.warn('FramerMotion animate error:', e);
+  animate(element, keyframes, options = {}) {
+    if (!element || typeof element.animate !== 'function') return null;
+    const duration = (options.duration || 0.35) * 1000;
+    const easing = options.easing || 'cubic-bezier(0.16, 1, 0.3, 1)';
+    
+    // Keyframes 객체 형식 ({ opacity: [0, 1], transform: [...] }) -> Web Animations API 배열 포맷 변환
+    let waKeyframes = keyframes;
+    if (typeof keyframes === 'object' && !Array.isArray(keyframes)) {
+      const keys = Object.keys(keyframes);
+      const len = Math.max(...keys.map(k => Array.isArray(keyframes[k]) ? keyframes[k].length : 1));
+      waKeyframes = [];
+      for (let i = 0; i < len; i++) {
+        const frame = {};
+        for (const k of keys) {
+          const val = keyframes[k];
+          frame[k] = Array.isArray(val) ? val[i] : val;
+        }
+        waKeyframes.push(frame);
       }
     }
-    return null;
+
+    try {
+      const anim = element.animate(waKeyframes, {
+        duration: duration,
+        easing: easing,
+        fill: options.fill || 'none'
+      });
+      return anim;
+    } catch (e) {
+      console.warn('Animation error:', e);
+      return null;
+    }
   },
   spring(config = { stiffness: 320, damping: 26 }) {
-    if (this.engine && typeof this.engine.spring === 'function') {
-      return this.engine.spring(config);
-    }
     return 'cubic-bezier(0.16, 1, 0.3, 1)';
   }
 };
@@ -588,7 +605,7 @@ const App = {
 
       if (targetScreen) {
         targetScreen.classList.add('active');
-        if (FramerMotion.engine) {
+        if (FramerMotion) {
           if (effect === 'glass-blur') {
             FramerMotion.animate(targetScreen, { opacity: [0, 1], filter: ['blur(12px)', 'blur(0px)'], transform: ['scale(1.02) translateY(8px)', 'scale(1) translateY(0)'] }, { duration: 0.45, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'smooth-zoom') {
@@ -598,59 +615,28 @@ const App = {
           } else if (effect === 'expanding-reveal') {
             FramerMotion.animate(targetScreen, { opacity: [0, 1], clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           }
-        } else {
-          const enterClass = effect === 'smooth-zoom' ? 'login-enter-zoom' 
-                           : effect === 'slide-up' ? 'login-enter-slide' 
-                           : effect === 'expanding-reveal' ? 'login-enter-reveal' 
-                           : 'login-enter-crossfade';
-          targetScreen.classList.add(enterClass);
-          setTimeout(() => targetScreen.classList.remove(enterClass), 550);
         }
       }
 
       // 4. 상단 헤더, 티커, 하단 독 페이드인 노출
       if (header) {
         header.style.display = 'flex';
-        if (FramerMotion.engine) {
-          const anim = FramerMotion.animate(header, { opacity: [0, 1], transform: ['translateY(-6px)', 'translateY(0)'] }, { duration: 0.38, easing: 'ease-out' });
-          if (anim && anim.finished && anim.finished.then) {
-            anim.finished.then(() => { header.style.transform = ''; header.style.opacity = ''; });
-          } else {
-            setTimeout(() => { header.style.transform = ''; header.style.opacity = ''; }, 400);
-          }
-        } else {
-          header.classList.add('appshell-enter-fade');
-          setTimeout(() => header.classList.remove('appshell-enter-fade'), 500);
+        if (FramerMotion) {
+          FramerMotion.animate(header, { opacity: [0, 1], transform: ['translateY(-6px)', 'translateY(0)'] }, { duration: 0.38, easing: 'ease-out' });
         }
       }
       if (nav) {
         nav.style.display = 'flex';
         nav.classList.remove('nav-hidden');
-        if (FramerMotion.engine) {
-          const anim = FramerMotion.animate(nav, { opacity: [0, 1], transform: ['translate(-50%, 15px)', 'translate(-50%, 0)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 350, damping: 26 }) });
-          if (anim && anim.finished && anim.finished.then) {
-            anim.finished.then(() => { nav.style.transform = ''; nav.style.opacity = ''; });
-          } else {
-            setTimeout(() => { nav.style.transform = ''; nav.style.opacity = ''; }, 450);
-          }
-        } else {
-          nav.classList.add('appshell-enter-fade');
-          setTimeout(() => nav.classList.remove('appshell-enter-fade'), 500);
+        if (FramerMotion) {
+          FramerMotion.animate(nav, { opacity: [0, 1], transform: ['translate(-50%, 15px)', 'translate(-50%, 0)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 350, damping: 26 }) });
         }
       }
       if (ticker) {
         ticker.style.display = 'flex';
         ticker.classList.remove('ticker-hidden');
-        if (FramerMotion.engine) {
-          const anim = FramerMotion.animate(ticker, { opacity: [0, 1], transform: ['translate(-50%, -6px)', 'translate(-50%, 0)'] }, { duration: 0.38, easing: 'ease-out' });
-          if (anim && anim.finished && anim.finished.then) {
-            anim.finished.then(() => { ticker.style.transform = ''; ticker.style.opacity = ''; });
-          } else {
-            setTimeout(() => { ticker.style.transform = ''; ticker.style.opacity = ''; }, 400);
-          }
-        } else {
-          ticker.classList.add('appshell-enter-fade');
-          setTimeout(() => ticker.classList.remove('appshell-enter-fade'), 500);
+        if (FramerMotion) {
+          FramerMotion.animate(ticker, { opacity: [0, 1], transform: ['translate(-50%, -6px)', 'translate(-50%, 0)'] }, { duration: 0.38, easing: 'ease-out' });
         }
       }
 
@@ -1291,7 +1277,7 @@ const App = {
       if (screenId !== 'screen-login' && this.state.isLoggedIn) {
         const effect = this.state.settings.transitionEffect || 'glass-blur';
         
-        if (FramerMotion.engine) {
+        if (FramerMotion) {
           if (effect === 'glass-blur') {
             FramerMotion.animate(target,
               { opacity: [0, 1], filter: ['blur(10px)', 'blur(0px)'], transform: ['scale(1.02) translateY(6px)', 'scale(1) translateY(0)'] },
@@ -1300,12 +1286,12 @@ const App = {
           } else if (effect === 'smooth-zoom') {
             FramerMotion.animate(target,
               { opacity: [0, 1], transform: ['scale(1.06)', 'scale(1)'] },
-              { duration: 0.35, easing: FramerMotion.spring({ stiffness: 350, damping: 28 }) }
+              { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
             );
           } else if (effect === 'slide-up') {
             FramerMotion.animate(target,
               { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0)'] },
-              { duration: 0.35, easing: FramerMotion.spring({ stiffness: 380, damping: 28 }) }
+              { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
             );
           } else if (effect === 'expanding-reveal') {
             FramerMotion.animate(target,
@@ -1313,16 +1299,6 @@ const App = {
               { duration: 0.42, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
             );
           }
-        } else {
-          const enterClass = effect === 'smooth-zoom' ? 'page-enter-zoom'
-                           : effect === 'slide-up' ? 'page-enter-slide'
-                           : effect === 'expanding-reveal' ? 'page-enter-reveal'
-                           : 'page-enter-blur';
-
-          target.classList.add(enterClass);
-          setTimeout(() => {
-            target.classList.remove(enterClass);
-          }, 400);
         }
       }
     }
@@ -4137,7 +4113,7 @@ const App = {
   // 화면 전환 효과 팝업 미리보기 모달 제어
   // =========================================
   openTransitionPreviewModal(effect) {
-    this._modalPreviewEffect = effect || this.state.settings.transitionEffect || 'glass-blur';
+    this._modalPreviewEffect = effect || (this.state.settings && this.state.settings.transitionEffect) || 'glass-blur';
 
     const modal = document.getElementById('modal-transition-preview');
     const panel = document.getElementById('transition-preview-modal-panel');
@@ -4157,21 +4133,18 @@ const App = {
 
     if (modal && panel) {
       modal.classList.remove('hidden');
-      if (FramerMotion.engine) {
+      panel.classList.remove('scale-95', 'opacity-0');
+      panel.classList.add('scale-100', 'opacity-100');
+
+      if (FramerMotion) {
         FramerMotion.animate(panel, 
           { opacity: [0, 1], transform: ['scale(0.92) translateY(12px)', 'scale(1) translateY(0)'] }, 
-          { duration: 0.32, easing: FramerMotion.spring({ stiffness: 420, damping: 28 }) }
+          { duration: 0.32, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
         );
-        setTimeout(() => {
-          this.runModalTransitionAnimation(this._modalPreviewEffect);
-        }, 120);
-      } else {
-        setTimeout(() => {
-          panel.classList.remove('scale-95', 'opacity-0');
-          panel.classList.add('scale-100', 'opacity-100');
-          this.runModalTransitionAnimation(this._modalPreviewEffect);
-        }, 20);
       }
+      setTimeout(() => {
+        this.runModalTransitionAnimation(this._modalPreviewEffect);
+      }, 100);
     }
   },
 
@@ -4179,23 +4152,16 @@ const App = {
     const modal = document.getElementById('modal-transition-preview');
     const panel = document.getElementById('transition-preview-modal-panel');
     if (modal && panel) {
-      if (FramerMotion.engine) {
-        const anim = FramerMotion.animate(panel, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.94)'] }, { duration: 0.2, easing: 'ease-in' });
-        if (anim && typeof anim.finished === 'object' && anim.finished.then) {
-          anim.finished.then(() => modal.classList.add('hidden'));
-        } else {
-          setTimeout(() => modal.classList.add('hidden'), 200);
-        }
-      } else {
-        panel.classList.remove('scale-100', 'opacity-100');
-        panel.classList.add('scale-95', 'opacity-0');
-        setTimeout(() => modal.classList.add('hidden'), 200);
-      }
+      panel.classList.remove('scale-100', 'opacity-100');
+      panel.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 200);
     }
   },
 
   replayTransitionModal() {
-    this.runModalTransitionAnimation(this._modalPreviewEffect || this.state.settings.transitionEffect || 'glass-blur');
+    this.runModalTransitionAnimation(this._modalPreviewEffect || (this.state.settings && this.state.settings.transitionEffect) || 'glass-blur');
   },
 
   runModalTransitionAnimation(effect) {
@@ -4209,37 +4175,21 @@ const App = {
     step1.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-10';
     step2.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-0 opacity-0';
 
-    if (FramerMotion.engine) {
+    if (FramerMotion) {
       step2.style.zIndex = '15';
       if (effect === 'glass-blur') {
         FramerMotion.animate(step1, { opacity: [1, 0], filter: ['blur(0px)', 'blur(8px)'], transform: ['scale(1)', 'scale(0.93)'] }, { duration: 0.38, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
         FramerMotion.animate(step2, { opacity: [0, 1], filter: ['blur(8px)', 'blur(0px)'], transform: ['scale(1.04)', 'scale(1)'] }, { duration: 0.45, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
       } else if (effect === 'smooth-zoom') {
         FramerMotion.animate(step1, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.88)'] }, { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-        FramerMotion.animate(step2, { opacity: [0, 1], transform: ['scale(1.08)', 'scale(1)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 350, damping: 26 }) });
+        FramerMotion.animate(step2, { opacity: [0, 1], transform: ['scale(1.08)', 'scale(1)'] }, { duration: 0.42, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
       } else if (effect === 'slide-up') {
         FramerMotion.animate(step1, { opacity: [1, 0], transform: ['translateY(0)', 'translateY(-30px)'] }, { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-        FramerMotion.animate(step2, { opacity: [0, 1], transform: ['translateY(30px)', 'translateY(0)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 380, damping: 26 }) });
+        FramerMotion.animate(step2, { opacity: [0, 1], transform: ['translateY(30px)', 'translateY(0)'] }, { duration: 0.42, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
       } else if (effect === 'expanding-reveal') {
         FramerMotion.animate(step1, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.86)'], filter: ['blur(0px)', 'blur(5px)'] }, { duration: 0.32, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
         FramerMotion.animate(step2, { opacity: [0, 1], clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] }, { duration: 0.46, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
       }
-    } else {
-      const exitClass = effect === 'smooth-zoom' ? 'preview-exit-zoom' 
-                      : effect === 'slide-up' ? 'preview-exit-slide' 
-                      : effect === 'expanding-reveal' ? 'preview-exit-reveal' 
-                      : 'preview-exit-blur';
-      
-      const enterClass = effect === 'smooth-zoom' ? 'preview-enter-zoom' 
-                       : effect === 'slide-up' ? 'preview-enter-slide' 
-                       : effect === 'expanding-reveal' ? 'preview-enter-reveal' 
-                       : 'preview-enter-crossfade';
-
-      setTimeout(() => {
-        step1.classList.add(exitClass);
-        step2.classList.add(enterClass);
-        step2.style.zIndex = '15';
-      }, 60);
     }
 
     // 3. 2.6초 후 자동으로 다시 화면 1로 초기화 (반복 시연 대비)
