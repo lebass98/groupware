@@ -36,7 +36,8 @@ const App = {
       notif: true,
       dark: false,
       gps: true,
-      themeIdx: 3
+      themeIdx: 3,
+      transitionEffect: 'glass-blur'
     },
     user: {
       id: 11,
@@ -228,6 +229,10 @@ const App = {
         }
         if (parsed.menuColumns) {
           this.state.menuColumns = parsed.menuColumns;
+        }
+        const savedEffect = localStorage.getItem('wordncode_transition_effect');
+        if (savedEffect) {
+          this.state.settings.transitionEffect = savedEffect;
         }
       }
     } catch (e) {
@@ -517,9 +522,20 @@ const App = {
     const nav = document.getElementById('bottom-nav');
     const ticker = document.getElementById('notice-ticker');
 
-    // 1. 로그인 화면 글래스 블러 페이드아웃 시작
+    const effect = this.state.settings.transitionEffect || 'glass-blur';
+    const exitClass = effect === 'smooth-zoom' ? 'login-exit-zoom' 
+                    : effect === 'slide-up' ? 'login-exit-slide' 
+                    : effect === 'expanding-reveal' ? 'login-exit-reveal' 
+                    : 'login-exit-blur';
+    
+    const enterClass = effect === 'smooth-zoom' ? 'login-enter-zoom' 
+                     : effect === 'slide-up' ? 'login-enter-slide' 
+                     : effect === 'expanding-reveal' ? 'login-enter-reveal' 
+                     : 'login-enter-crossfade';
+
+    // 1. 로그인 화면 퇴장 애니메이션 시작
     if (loginScreen) {
-      loginScreen.classList.add('login-exit-blur');
+      loginScreen.classList.add(exitClass);
     }
 
     setTimeout(() => {
@@ -530,17 +546,17 @@ const App = {
 
       // 2. 로그인 화면 정리
       if (loginScreen) {
-        loginScreen.classList.remove('active', 'login-exit-blur');
+        loginScreen.classList.remove('active', 'login-exit-blur', 'login-exit-zoom', 'login-exit-slide', 'login-exit-reveal');
       }
 
-      // 3. 메인 투데이 화면 활성화 및 크리스탈 선명화 애니메이션
+      // 3. 메인 투데이 화면 활성화 및 진입 애니메이션
       const screens = document.querySelectorAll('.screen-view');
-      screens.forEach(s => s.classList.remove('active', 'login-enter-crossfade'));
+      screens.forEach(s => s.classList.remove('active', 'login-enter-crossfade', 'login-enter-zoom', 'login-enter-slide', 'login-enter-reveal'));
 
       if (targetScreen) {
-        targetScreen.classList.add('active', 'login-enter-crossfade');
+        targetScreen.classList.add('active', enterClass);
         setTimeout(() => {
-          targetScreen.classList.remove('login-enter-crossfade');
+          targetScreen.classList.remove(enterClass);
         }, 550);
       }
 
@@ -3453,6 +3469,11 @@ const App = {
     }
 
     // Render Dark Mode (body.dark CSS 변수 + Tailwind dark: prefix 동시 적용)
+    const drawerDarkToggle = document.getElementById('drawer-dark-toggle');
+    const drawerDarkKnob = document.getElementById('drawer-dark-knob');
+    const drawerThemeLabel = document.getElementById('drawer-theme-label');
+    const drawerThemeIcon = document.getElementById('drawer-theme-icon');
+
     if (this.state.settings.dark) {
       document.body.classList.add('dark');
       document.documentElement.classList.add('dark'); // Tailwind dark: prefix 지원
@@ -3460,6 +3481,14 @@ const App = {
       if (darkToggle) darkToggle.checked = true;
       const themeIcon = document.getElementById('theme-icon');
       if (themeIcon) themeIcon.innerText = 'light_mode';
+
+      // Drawer Dark Mode Switch
+      if (drawerDarkToggle) drawerDarkToggle.className = 'relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none';
+      if (drawerDarkKnob) drawerDarkKnob.className = 'inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6 shadow-sm';
+      if (drawerThemeLabel) drawerThemeLabel.innerText = '다크 모드 적용 중';
+      if (drawerThemeIcon) {
+        drawerThemeIcon.innerHTML = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>';
+      }
     } else {
       document.body.classList.remove('dark');
       document.documentElement.classList.remove('dark'); // Tailwind dark: prefix 지원
@@ -3467,6 +3496,14 @@ const App = {
       if (darkToggle) darkToggle.checked = false;
       const themeIcon = document.getElementById('theme-icon');
       if (themeIcon) themeIcon.innerText = 'dark_mode';
+
+      // Drawer Dark Mode Switch
+      if (drawerDarkToggle) drawerDarkToggle.className = 'relative inline-flex h-6 w-11 items-center rounded-full bg-surface-container-highest transition-colors focus:outline-none';
+      if (drawerDarkKnob) drawerDarkKnob.className = 'inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1 shadow-sm';
+      if (drawerThemeLabel) drawerThemeLabel.innerText = '라이트 모드 적용 중';
+      if (drawerThemeIcon) {
+        drawerThemeIcon.innerHTML = '<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>';
+      }
     }
 
     this.renderTodayData();
@@ -3831,6 +3868,113 @@ const App = {
     this.showToast('📷 프로필 사진 변경 모달 (준비 완료)');
   },
 
+  // =========================================
+  // 우측 사이드 설정 팝업 드로어 (Settings Drawer) 제어
+  // =========================================
+  openSettingsDrawer() {
+    const drawer = document.getElementById('drawer-settings');
+    const backdrop = document.getElementById('drawer-settings-backdrop');
+    const panel = document.getElementById('drawer-settings-panel');
+    if (!drawer || !backdrop || !panel) return;
+
+    // 1. 사용자 정보 실시간 동기화
+    const nameEl = document.getElementById('drawer-user-name');
+    const roleEl = document.getElementById('drawer-user-role');
+    const deptEl = document.getElementById('drawer-user-dept');
+    const avatarEl = document.getElementById('drawer-user-avatar');
+    if (this.state.user) {
+      if (nameEl) nameEl.innerText = this.state.user.name || '이재광';
+      if (roleEl) roleEl.innerText = this.state.user.role || '차장';
+      if (deptEl) deptEl.innerText = `${this.state.user.dept || '퍼블리싱팀'} · ${this.state.user.email || 'yellow@wordncode.com'}`;
+      if (avatarEl) avatarEl.src = this.state.user.avatar || 'profile.png';
+    }
+
+    // 2. 테마 팔레트 활성 상태 갱신
+    const currentTheme = this.state.settings.themeIdx || 3;
+    document.querySelectorAll('.drawer-theme-btn').forEach(btn => {
+      if (Number(btn.getAttribute('data-theme-idx')) === Number(currentTheme)) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // 3. 다크 모드 토글 상태 갱신
+    const drawerDarkToggle = document.getElementById('drawer-dark-toggle');
+    const drawerDarkKnob = document.getElementById('drawer-dark-knob');
+    const drawerThemeLabel = document.getElementById('drawer-theme-label');
+    if (drawerDarkToggle && drawerDarkKnob && drawerThemeLabel) {
+      if (this.state.settings.dark) {
+        drawerDarkToggle.className = 'relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none';
+        drawerDarkKnob.className = 'inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6 shadow-sm';
+        drawerThemeLabel.innerText = '다크 모드 적용 중';
+      } else {
+        drawerDarkToggle.className = 'relative inline-flex h-6 w-11 items-center rounded-full bg-surface-container-highest transition-colors focus:outline-none';
+        drawerDarkKnob.className = 'inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1 shadow-sm';
+        drawerThemeLabel.innerText = '라이트 모드 적용 중';
+      }
+    }
+
+    // 4. 화면 전환 효과 옵션 활성 상태 갱신
+    const currentEffect = this.state.settings.transitionEffect || 'glass-blur';
+    document.querySelectorAll('.transition-effect-btn').forEach(btn => {
+      if (btn.getAttribute('data-effect') === currentEffect) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    drawer.classList.remove('hidden');
+    setTimeout(() => {
+      backdrop.classList.remove('opacity-0');
+      backdrop.classList.add('opacity-100');
+      panel.classList.remove('translate-x-full');
+      panel.classList.add('translate-x-0');
+    }, 10);
+  },
+
+  closeSettingsDrawer() {
+    const drawer = document.getElementById('drawer-settings');
+    const backdrop = document.getElementById('drawer-settings-backdrop');
+    const panel = document.getElementById('drawer-settings-panel');
+    if (!drawer || !backdrop || !panel) return;
+
+    backdrop.classList.remove('opacity-100');
+    backdrop.classList.add('opacity-0');
+    panel.classList.remove('translate-x-0');
+    panel.classList.add('translate-x-full');
+
+    setTimeout(() => {
+      drawer.classList.add('hidden');
+    }, 300);
+  },
+
+  setTransitionEffect(effect) {
+    this.state.settings.transitionEffect = effect;
+    this.saveState();
+
+    document.querySelectorAll('.transition-effect-btn').forEach(btn => {
+      if (btn.getAttribute('data-effect') === effect) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    try {
+      localStorage.setItem('wordncode_transition_effect', effect);
+    } catch (e) {}
+
+    const effectNames = {
+      'glass-blur': '글래스 블러 & 크로스페이드',
+      'smooth-zoom': '부드러운 줌 & 페이드',
+      'slide-up': '슬라이드 업 & 라이징',
+      'expanding-reveal': '확장 펄스 리빌'
+    };
+    this.showToast(`✨ 화면 전환 효과가 '${effectNames[effect] || effect}'(으)로 설정되었습니다.`);
+  },
+
   // Palette Theme Select Methods
   openPaletteModal() {
     const modal = document.getElementById('modal-theme-select');
@@ -3862,6 +4006,15 @@ const App = {
     // Save to state & LocalStorage
     this.state.settings.themeIdx = themeIdx;
     this.saveState();
+
+    // Update Drawer Theme Buttons active state
+    document.querySelectorAll('.drawer-theme-btn').forEach(btn => {
+      if (Number(btn.getAttribute('data-theme-idx')) === Number(themeIdx)) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
     
     this.closePaletteModal();
     this.showToast(`🎨 테마 ${themeIdx}(으)로 사이트 포인트 색상이 변경되었습니다.`);
