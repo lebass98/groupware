@@ -789,6 +789,70 @@ body.dark .ticker-label {
 }
 
 /* =========================================
+   화면 전환 실시간 미리보기 시뮬레이터 애니메이션
+   ========================================= */
+.preview-exit-blur {
+  animation: previewExitBlur 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+@keyframes previewExitBlur {
+  0% { opacity: 1; filter: blur(0px); transform: scale(1); }
+  100% { opacity: 0; filter: blur(8px); transform: scale(0.92); }
+}
+.preview-enter-crossfade {
+  animation: previewEnterCrossfade 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+@keyframes previewEnterCrossfade {
+  0% { opacity: 0; filter: blur(8px); transform: scale(1.04); }
+  100% { opacity: 1; filter: blur(0px); transform: scale(1); }
+}
+
+.preview-exit-zoom {
+  animation: previewExitZoom 0.36s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+@keyframes previewExitZoom {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.88); }
+}
+.preview-enter-zoom {
+  animation: previewEnterZoom 0.46s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+@keyframes previewEnterZoom {
+  0% { opacity: 0; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.preview-exit-slide {
+  animation: previewExitSlide 0.36s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+@keyframes previewExitSlide {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-30px); }
+}
+.preview-enter-slide {
+  animation: previewEnterSlide 0.46s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+@keyframes previewEnterSlide {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.preview-exit-reveal {
+  animation: previewExitReveal 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+@keyframes previewExitReveal {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.85); filter: blur(5px); }
+}
+.preview-enter-reveal {
+  animation: previewEnterReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+@keyframes previewEnterReveal {
+  0% { opacity: 0; clip-path: circle(0% at 50% 50%); }
+  50% { opacity: 1; }
+  100% { opacity: 1; clip-path: circle(150% at 50% 50%); }
+}
+
+/* =========================================
    설정 사이드 드로어 (Settings Drawer) 컴포넌트 스타일
    ========================================= */
 .drawer-theme-btn {
