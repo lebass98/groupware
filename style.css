@@ -310,6 +310,13 @@ body {
   fill: currentColor;
 }
 
+svg {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
 /* App Layout Frame */
 .app-container {
   width: 100%;
