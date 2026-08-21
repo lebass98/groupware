@@ -1881,6 +1881,23 @@ body.dark .nav-item.active {
   transform: rotate(90deg) scale(1.1);
 }
 
+/* =========================================
+   Global Modal Background Scroll Lock
+   position:fixed 방식으로 완전 차단
+   ========================================= */
+body.modal-open {
+  position: fixed !important;
+  width: 100% !important;
+  overflow-y: scroll !important; /* 스크롤바 너비 유지 (레이아웃 shift 방지) */
+}
+
+/* Modal overlays and inner scroll containers */
+.modal-card,
+[id^="modal-"],
+#drawer-settings {
+  overscroll-behavior: contain;
+}
+
 /* Modal Popup */
 .modal-overlay {
   position: fixed;

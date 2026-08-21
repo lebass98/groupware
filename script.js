@@ -248,6 +248,9 @@ const App = {
     // Initialize Scroll Effects (Header Notice & Dock Menu)
     this.initScrollEffects();
 
+    // Initialize Global Modal Background Scroll Lock Engine
+    this.initModalScrollObserver();
+
     this.renderUI();
   },
 
@@ -883,6 +886,89 @@ const App = {
     if (ticker) ticker.classList.remove('ticker-hidden');
     if (nav) nav.classList.remove('nav-hidden');
   },
+
+  // =========================================
+  // 모달 팝업 오픈 시 배경 스크롤 차단 엔진
+  // position:fixed 방식 — 가장 확실한 크로스브라우저 구현
+  // =========================================
+  _scrollLockY: 0,
+
+  syncModalScrollLock() {
+    const topLevelModalIds = [
+      'confirm-modal',
+      'request-modal',
+      'modal-expense-write',
+      'modal-report-write',
+      'modal-theme-select',
+      'modal-transition-preview',
+      'modal-dock-customizer',
+      'modal-schedule-write',
+      'modal-directory-picker',
+      'modal-todo-write',
+      'modal-date-detail',
+      'modal-todo-detail',
+      'modal-project-detail',
+      'modal-todo-delete-confirm',
+      'modal-todo-trash',
+      'drawer-settings'
+    ];
+
+    const hasOpenModal = topLevelModalIds.some(id => {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      if (el.classList.contains('active')) return true;
+      if (!el.classList.contains('hidden') && el.offsetWidth > 0) return true;
+      return false;
+    });
+
+    const isLocked = document.body.classList.contains('modal-open');
+
+    if (hasOpenModal && !isLocked) {
+      // 스크롤 차단: 현재 스크롤 위치 저장 후 body를 fixed로 고정
+      this._scrollLockY = window.scrollY || window.pageYOffset;
+      document.body.style.top = `-${this._scrollLockY}px`;
+      document.body.classList.add('modal-open');
+    } else if (!hasOpenModal && isLocked) {
+      // 스크롤 복원: body fixed 해제 후 원래 위치로 복귀
+      document.body.classList.remove('modal-open');
+      document.body.style.top = '';
+      window.scrollTo(0, this._scrollLockY);
+    }
+  },
+
+  lockScroll() {
+    if (!document.body.classList.contains('modal-open')) {
+      this._scrollLockY = window.scrollY || window.pageYOffset;
+      document.body.style.top = `-${this._scrollLockY}px`;
+      document.body.classList.add('modal-open');
+    }
+  },
+
+  unlockScroll() {
+    setTimeout(() => {
+      this.syncModalScrollLock();
+    }, 50);
+  },
+
+  initModalScrollObserver() {
+    // MutationObserver로 모달/드로어 class 변경 감지
+    try {
+      const observer = new MutationObserver(() => {
+        this.syncModalScrollLock();
+      });
+      observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style'],
+        subtree: true
+      });
+    } catch (e) {
+      console.warn('MutationObserver not available:', e);
+    }
+
+    // 초기 상태 점검
+    this.syncModalScrollLock();
+  },
+
 
   // =========================================
   // 독 메뉴 동적 렌더링 및 커스터마이징 모달 (Dock Menu Customizer)
