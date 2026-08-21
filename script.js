@@ -634,13 +634,13 @@ const App = {
     // Update bottom nav active state & filled icon
     const navItems = document.querySelectorAll('.bottom-nav .nav-item');
     navItems.forEach(item => {
-      const icon = item.querySelector('.material-symbols-outlined');
+      const icon = item.querySelector('.svg-icon, .material-symbols-outlined');
       if (item.getAttribute('data-target') === targetId) {
         item.classList.add('active');
-        if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+        if (icon && icon.classList.contains('material-symbols-outlined')) icon.style.fontVariationSettings = "'FILL' 1";
       } else {
         item.classList.remove('active');
-        if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+        if (icon && icon.classList.contains('material-symbols-outlined')) icon.style.fontVariationSettings = "'FILL' 0";
       }
     });
 
@@ -1406,7 +1406,7 @@ const App = {
         if (!existingTexts.some(t => t.includes(memberLabel.split(' ')[0]))) {
           const chip = document.createElement('span');
           chip.className = 'inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-lg border border-primary/20 shadow-2xs';
-          chip.innerHTML = `${memberLabel} <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors"><span class="material-symbols-outlined text-[12px]">close</span></button>`;
+          chip.innerHTML = `${memberLabel} <button type="button" onclick="this.parentElement.remove()" class="w-4 h-4 flex items-center justify-center rounded-full hover:bg-error-container hover:text-error transition-colors"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
           container.appendChild(chip);
         }
       }
@@ -2746,7 +2746,9 @@ const App = {
     if (filtered.length === 0) {
       container.innerHTML = `
         <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium">
-          <span class="material-symbols-outlined text-4xl text-outline mb-2">person_search</span>
+          <svg class="w-10 h-10 text-outline mb-2 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h9.49c-.31-.62-.49-1.29-.49-2 0-1.5.68-2.84 1.75-3.75C13.88 14.1 12.87 14 12 14zm8.5 0a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm-1.5 5.5v-2h1.5v2h-1.5zm0 1.5h1.5v1.5h-1.5z"/>
+          </svg>
           <p>검색 조건에 맞는 임직원이 없습니다.</p>
         </div>
       `;
@@ -2782,7 +2784,7 @@ const App = {
       // Primary Status Badge (근무중, 외근중, 휴가중, 퇴근)
       const primaryStatusBadge = `
         <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
-          <span class="material-symbols-outlined text-[13px]">${statusInfo.icon}</span>
+          ${getSvgIcon(statusInfo.icon, 'w-3.5 h-3.5')}
           <span>${statusInfo.text}</span>
         </span>
       `;
@@ -2798,7 +2800,7 @@ const App = {
 
         todayScheduleBadge = `
           <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${schedBadgeClass}">
-            <span class="material-symbols-outlined text-[13px]">${schedIcon}</span>
+            ${getSvgIcon(schedIcon, 'w-3.5 h-3.5')}
             <span>예정 : ${statusInfo.todaySchedule}</span>
           </span>
         `;
@@ -2822,10 +2824,14 @@ const App = {
           </div>
           <div class="flex space-x-2 flex-shrink-0 ml-3">
             <button onclick="App.callEmployee('${emp.phone}')" class="h-10 w-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-primary/10 transition-colors active:scale-95" title="전화걸기">
-              <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">call</span>
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+              </svg>
             </button>
             <button onclick="App.chatEmployee('${emp.name}')" class="h-10 w-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center hover:bg-primary/10 transition-colors active:scale-95" title="메신저">
-              <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">chat</span>
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+              </svg>
             </button>
           </div>
         </div>
@@ -2885,7 +2891,7 @@ const App = {
 
         extraHtml = `
           <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold ${schedBadgeClass}">
-            <span class="material-symbols-outlined text-sm">${schedIcon}</span>
+            ${getSvgIcon(schedIcon, 'w-3.5 h-3.5')}
             <span>예정 : ${statusInfo.todaySchedule}</span>
           </span>
         `;
@@ -2894,7 +2900,7 @@ const App = {
       statusBadgeEl.innerHTML = `
         <div class="flex flex-wrap items-center justify-center gap-2">
           <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
-            <span class="material-symbols-outlined text-sm">${statusInfo.icon}</span>
+            ${getSvgIcon(statusInfo.icon, 'w-3.5 h-3.5')}
             <span>${statusInfo.text}</span>
           </span>
           ${extraHtml}
