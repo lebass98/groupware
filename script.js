@@ -5601,69 +5601,29 @@ const App = {
       }).join('');
     };
 
-    // 프로젝트별 고유 컬러 팔레트 & 뱃지/테두리 테마 매핑 (M3 & Bento 표준)
-    const projectThemes = {
-      1: { // 한국메세나협회 (Indigo/Violet)
-        borderLeft: 'border-l-[5px] border-l-indigo-500',
-        badgeBg: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/60',
-        thisWeekBadge: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300',
-        gradientBar: 'bg-gradient-to-b from-indigo-500 to-indigo-700',
-        cardBorder: 'border-indigo-500/20'
-      },
-      2: { // 한국능률협회 (Emerald/Forest)
-        borderLeft: 'border-l-[5px] border-l-emerald-600',
-        badgeBg: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60',
-        thisWeekBadge: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300',
-        gradientBar: 'bg-gradient-to-b from-emerald-500 to-emerald-700',
-        cardBorder: 'border-emerald-500/20'
-      },
-      3: { // 수소융합얼라이언스 (Sky/Cyan)
-        borderLeft: 'border-l-[5px] border-l-sky-500',
-        badgeBg: 'bg-sky-50 text-sky-700 dark:bg-sky-950/60 dark:text-sky-300 border border-sky-200/80 dark:border-sky-800/60',
-        thisWeekBadge: 'bg-sky-50 text-sky-700 dark:bg-sky-950/60 dark:text-sky-300',
-        gradientBar: 'bg-gradient-to-b from-sky-400 to-sky-600',
-        cardBorder: 'border-sky-500/20'
-      },
-      4: { // 한국건강가정진흥원 (Amber/Orange)
-        borderLeft: 'border-l-[5px] border-l-amber-500',
-        badgeBg: 'bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/60',
-        thisWeekBadge: 'bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300',
-        gradientBar: 'bg-gradient-to-b from-amber-400 to-amber-600',
-        cardBorder: 'border-amber-500/20'
-      },
-      5: { // 인천국제공항공사 (Blue/Cobalt)
-        borderLeft: 'border-l-[5px] border-l-blue-600',
-        badgeBg: 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800/60',
-        thisWeekBadge: 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300',
-        gradientBar: 'bg-gradient-to-b from-blue-500 to-blue-700',
-        cardBorder: 'border-blue-500/20'
-      },
-      6: { // 주식회사 워드앤코드 (WnC Deep Blue)
+    // 프로젝트 교차(Alternating) 테마 컬러 매핑 (블루 ↔ 그린 교차 패턴)
+    const alternatingThemes = [
+      { // Theme A: WnC Primary Deep Blue
         borderLeft: 'border-l-[5px] border-l-primary',
         badgeBg: 'bg-primary/10 text-primary border border-primary/20',
-        thisWeekBadge: 'bg-primary/10 text-primary',
-        gradientBar: 'bg-gradient-to-b from-primary to-primary-container',
-        cardBorder: 'border-primary/20'
+        thisWeekBadge: 'bg-primary/10 text-primary'
+      },
+      { // Theme B: WnC Secondary Forest Green
+        borderLeft: 'border-l-[5px] border-l-[#00693f]',
+        badgeBg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border border-[#00693f]/20',
+        thisWeekBadge: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300'
       }
-    };
+    ];
 
-    const defaultTheme = {
-      borderLeft: 'border-l-[5px] border-l-primary',
-      badgeBg: 'bg-surface-container-highest text-primary-dim border border-outline-variant/20',
-      thisWeekBadge: 'bg-primary/10 text-primary',
-      gradientBar: 'bg-gradient-to-b from-primary to-primary-container',
-      cardBorder: 'border-primary/20'
-    };
-
-    container.innerHTML = filtered.map(report => {
-      const theme = projectThemes[report.id] || defaultTheme;
+    container.innerHTML = filtered.map((report, rIdx) => {
+      const theme = alternatingThemes[rIdx % alternatingThemes.length];
       const prevSections = report.prevWeekSections || [];
       const thisSections = report.thisWeekSections || report.sections || [];
 
       let contentHtml = '';
 
       if (prevSections.length > 0) {
-        // 전주 주간업무 (상단 박스: 차분한 Slate/Neutral 톤) + 금주 주간업무 (하단 박스: 프로젝트 고유 컬러 톤)
+        // 전주 주간업무 (상단 박스: 차분한 Neutral 톤) + 금주 주간업무 (하단 박스: 화이트/테마 톤, 내부 그라데이션 선 삭제)
         contentHtml = `
           <!-- 1. [전주 실적] 주간 업무 내용 (상단 비교 박스) -->
           <div class="space-y-1.5">
@@ -5673,9 +5633,7 @@ const App = {
                 <span>전주 실적 (지난주)</span>
               </span>
             </div>
-            <div class="bg-surface-container-low/80 rounded-md p-3.5 flex flex-col gap-2.5 relative overflow-hidden shadow-xs border border-outline-variant/20">
-              <!-- Subdued Neutral accent edge -->
-              <div class="absolute left-0 top-0 bottom-0 w-1 bg-outline/40"></div>
+            <div class="bg-surface-container-low/80 rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/20">
               ${renderSectionBlock(prevSections, true)}
             </div>
           </div>
@@ -5688,9 +5646,7 @@ const App = {
                 <span>금주 진행 및 계획 (이번주)</span>
               </span>
             </div>
-            <div class="bg-surface-container-lowest rounded-md p-3.5 flex flex-col gap-2.5 relative overflow-hidden shadow-xs border ${theme.cardBorder}">
-              <!-- Vibrant Project Theme Gradient Edge -->
-              <div class="absolute left-0 top-0 bottom-0 w-1 ${theme.gradientBar}"></div>
+            <div class="bg-surface-container-lowest rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/15">
               ${renderSectionBlock(thisSections, false)}
             </div>
           </div>
@@ -5698,15 +5654,14 @@ const App = {
       } else {
         // 단일 섹션
         contentHtml = `
-          <div class="bg-surface-container-lowest rounded-md p-4 flex flex-col gap-3 relative overflow-hidden shadow-xs border border-outline-variant/10">
-            <div class="absolute left-0 top-0 bottom-0 w-1 ${theme.gradientBar}"></div>
+          <div class="bg-surface-container-lowest rounded-md p-4 flex flex-col gap-3 shadow-xs border border-outline-variant/15">
             ${renderSectionBlock(thisSections, false)}
           </div>
         `;
       }
 
       return `
-        <!-- Work Report Card (프로젝트별 고유 테마 바 & 전주/금주 비교 Bento Card) -->
+        <!-- Work Report Card (프로젝트 좌측 액센트 바 & 교차 색상 Bento Card) -->
         <article class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.04)] hover:-translate-y-0.5 transition-all duration-200 text-left ${theme.borderLeft}">
           <div class="min-w-0">
             <span class="text-xs font-semibold ${theme.badgeBg} px-2.5 py-1 rounded-md mb-2 inline-block shadow-xs">${report.client}</span>
