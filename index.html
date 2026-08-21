@@ -2039,7 +2039,7 @@
       </main>
     </section>
 
-    <!-- Glassmorphism Bottom Navigation (5 Core Items) -->
+    <!-- Glassmorphism Bottom Navigation (4 Core Items + 1 Add Custom Button) -->
     <nav class="bottom-nav" id="bottom-nav" style="display: none;">
       <a class="nav-item" data-target="screen-home" onclick="App.switchTab('screen-home', this)">
         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
@@ -2065,11 +2065,11 @@
         </svg>
         <span>공지사항</span>
       </a>
-      <a class="nav-item" data-target="screen-profile" onclick="App.switchTab('screen-profile', this)">
+      <a class="nav-item nav-item-add" id="nav-item-dock-add" onclick="App.openDockCustomizerModal()" title="독 메뉴 추가 및 커스텀">
         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
         </svg>
-        <span>내 정보</span>
+        <span>추가</span>
       </a>
     </nav>
 
@@ -2772,6 +2772,82 @@
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
           </svg>
           이 효과로 적용하기
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================
+       독 메뉴 추가 및 커스터마이징 팝업 모달 (Dock Menu Customizer)
+       ====================================================== -->
+  <div id="modal-dock-customizer" class="fixed inset-0 z-[105] hidden flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity duration-300 opacity-0" onclick="if(event.target === this) App.closeDockCustomizerModal()">
+    <div id="dock-customizer-modal-panel" class="relative w-full max-w-md bg-surface-container-lowest dark:bg-[#111827] rounded-3xl p-6 border border-outline-variant/15 shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-outline-variant/10">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-headline text-base font-bold text-on-surface">독 메뉴 추가 및 관리</h3>
+            <p class="text-[11px] text-on-surface-variant">하단 독에 배치할 핵심 메뉴(최대 4개)를 선택하세요.</p>
+          </div>
+        </div>
+        <button type="button" onclick="App.closeDockCustomizerModal()" class="p-2 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="닫기">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- 1. 현재 독 메뉴 슬롯 -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <label class="font-label text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-primary"></span>
+            현재 독 메뉴 슬롯 (<span id="dock-slot-count">4</span>/4)
+          </label>
+          <span class="text-[11px] text-on-surface-variant font-medium">x 클릭 시 제거</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2" id="dock-current-slots">
+          <!-- Dynamically populated via App.renderDockCustomizer() -->
+        </div>
+      </div>
+
+      <!-- 2. 추가 가능한 메뉴 (현재 독에 없는 미등록 메뉴만 노출) -->
+      <div class="space-y-2.5">
+        <div class="flex items-center justify-between">
+          <label class="font-label text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/>
+            </svg>
+            추가 가능한 메뉴 (<span id="dock-available-count">0</span>개)
+          </label>
+          <span class="text-[10px] text-primary font-bold px-2 py-0.5 rounded-full bg-primary/10">중복 자동 제외</span>
+        </div>
+        <p class="text-[11px] text-on-surface-variant leading-relaxed">원하는 메뉴를 클릭하면 하단 독의 빈 슬롯에 즉시 추가됩니다.</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="dock-available-menus">
+          <!-- Dynamically populated with non-duplicated menus -->
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="flex items-center gap-2 pt-2 border-t border-outline-variant/10">
+        <button type="button" onclick="App.resetDockMenus()" class="py-2.5 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+          </svg>
+          기본 메뉴로 초기화
+        </button>
+        <button type="button" onclick="App.closeDockCustomizerModal()" class="flex-1 py-2.5 px-4 rounded-xl bg-primary hover:bg-primary-dim text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+          </svg>
+          적용 및 완료
         </button>
       </div>
 

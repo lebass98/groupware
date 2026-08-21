@@ -1862,6 +1862,25 @@ body.dark .nav-item.active {
   transform: translateY(-1px);
 }
 
+.nav-item-add {
+  color: var(--primary);
+  opacity: 0.9;
+}
+
+.nav-item-add:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  color: var(--primary-dim);
+}
+
+.nav-item-add svg {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-item-add:hover svg {
+  transform: rotate(90deg) scale(1.1);
+}
+
 /* Modal Popup */
 .modal-overlay {
   position: fixed;

@@ -85,10 +85,27 @@ const FramerMotion = {
   }
 };
 
+// 전체 독 메뉴 메타데이터 정의 (100% SVG 벡터 아이콘)
+const ALL_DOCK_MENU_ITEMS = [
+  { id: 'screen-home', name: '메뉴', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>' },
+  { id: 'screen-today', name: '투데이', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>' },
+  { id: 'screen-checkin', name: '출퇴근', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg>' },
+  { id: 'screen-calendar', name: '근태일지', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>' },
+  { id: 'screen-request', name: '휴가/외근', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/></svg>' },
+  { id: 'screen-notice-list', name: '공지사항', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>' },
+  { id: 'screen-directory', name: '주소록', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V17z"/></svg>' },
+  { id: 'screen-logs', name: '출석기록', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h10v2H7zm0 4h7v2H7z"/></svg>' },
+  { id: 'screen-todo', name: '할 일', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M22 5.18L10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM19.79 10.22C19.92 10.79 20 11.39 20 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8c1.66 0 3.2.51 4.48 1.39l1.45-1.45C16.19 2.7 14.19 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z"/></svg>' },
+  { id: 'screen-project-list', name: '프로젝트', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6 10H6v-2h8v2zm4-4H6v-2h12v2z"/></svg>' },
+  { id: 'screen-finance', name: '재무/경비', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>' },
+  { id: 'screen-work-report', name: '업무보고', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>' }
+];
+
 const App = {
   state: {
     isLoggedIn: false, // Default to FALSE so user starts on Login screen
     activeTab: 'screen-today',
+    dockMenus: ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'], // 4 core slots + 1 add custom button
     todosFilter: 'all',
     todosSearchQuery: '',
     selectedProject: null,
@@ -315,6 +332,11 @@ const App = {
         if (parsed.menuColumns) {
           this.state.menuColumns = parsed.menuColumns;
         }
+        if (parsed.dockMenus && Array.isArray(parsed.dockMenus) && parsed.dockMenus.length) {
+          const validIds = ALL_DOCK_MENU_ITEMS.map(item => item.id);
+          const sanitized = parsed.dockMenus.filter(id => validIds.includes(id) && id !== 'screen-profile');
+          this.state.dockMenus = sanitized.length > 0 ? sanitized.slice(0, 4) : ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'];
+        }
         const savedEffect = localStorage.getItem('wordncode_transition_effect');
         if (savedEffect) {
           this.state.settings.transitionEffect = savedEffect;
@@ -333,6 +355,7 @@ const App = {
         checkInTime: this.state.checkInTime,
         checkInTimeStr: this.state.checkInTimeStr,
         settings: this.state.settings,
+        dockMenus: this.state.dockMenus,
         logs: this.state.logs,
         todos: this.state.todos,
         recentProjects: this.state.recentProjects,
@@ -774,6 +797,7 @@ const App = {
     const ticker = document.getElementById('notice-ticker');
     if (header) header.style.display = 'flex';
     if (nav) {
+      this.renderDockNav();
       nav.style.display = 'flex';
       nav.classList.remove('nav-hidden');
     }
@@ -858,6 +882,192 @@ const App = {
     const nav = document.getElementById('bottom-nav');
     if (ticker) ticker.classList.remove('ticker-hidden');
     if (nav) nav.classList.remove('nav-hidden');
+  },
+
+  // =========================================
+  // 독 메뉴 동적 렌더링 및 커스터마이징 모달 (Dock Menu Customizer)
+  // =========================================
+  renderDockNav() {
+    const nav = document.getElementById('bottom-nav');
+    if (!nav) return;
+
+    const currentTab = this.state.activeTab || 'screen-today';
+    const validDockMenus = (this.state.dockMenus && Array.isArray(this.state.dockMenus) && this.state.dockMenus.length)
+      ? this.state.dockMenus
+      : ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'];
+
+    let html = '';
+    validDockMenus.forEach(menuId => {
+      const item = ALL_DOCK_MENU_ITEMS.find(m => m.id === menuId);
+      if (!item) return;
+      const isActive = (currentTab === item.id);
+      html += `
+        <a class="nav-item ${isActive ? 'active' : ''}" data-target="${item.id}" onclick="App.switchTab('${item.id}', this)" title="${item.name}">
+          ${item.iconSvg}
+          <span>${item.name}</span>
+        </a>
+      `;
+    });
+
+    // 독 마지막 슬롯: '+' (추가) 버튼 고정 렌더링
+    html += `
+      <a class="nav-item nav-item-add" id="nav-item-dock-add" onclick="App.openDockCustomizerModal()" title="독 메뉴 추가 및 커스텀">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        <span>추가</span>
+      </a>
+    `;
+
+    nav.innerHTML = html;
+  },
+
+  openDockCustomizerModal() {
+    const modal = document.getElementById('modal-dock-customizer');
+    if (!modal) return;
+    this.renderDockCustomizer();
+    modal.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      modal.classList.remove('opacity-0');
+      modal.classList.add('opacity-100');
+    });
+  },
+
+  closeDockCustomizerModal() {
+    const modal = document.getElementById('modal-dock-customizer');
+    if (!modal) return;
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 200);
+  },
+
+  renderDockCustomizer() {
+    const currentContainer = document.getElementById('dock-current-slots');
+    const availableContainer = document.getElementById('dock-available-menus');
+    const slotCountEl = document.getElementById('dock-slot-count');
+    const availableCountEl = document.getElementById('dock-available-count');
+
+    const currentMenus = (this.state.dockMenus && Array.isArray(this.state.dockMenus) && this.state.dockMenus.length)
+      ? this.state.dockMenus
+      : ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'];
+
+    if (slotCountEl) slotCountEl.textContent = currentMenus.length;
+
+    // 1. 현재 독 메뉴 슬롯 렌더링
+    if (currentContainer) {
+      let currentHtml = '';
+      currentMenus.forEach(menuId => {
+        const item = ALL_DOCK_MENU_ITEMS.find(m => m.id === menuId);
+        if (!item) return;
+        currentHtml += `
+          <div class="flex items-center justify-between p-2.5 rounded-2xl bg-surface-container-low dark:bg-[#1f2937] border border-outline-variant/20 shadow-2xs hover:border-primary/40 transition-all">
+            <div class="flex items-center gap-2 text-on-surface font-label text-xs font-bold truncate">
+              <div class="w-7 h-7 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                ${item.iconSvg}
+              </div>
+              <span class="truncate">${item.name}</span>
+            </div>
+            <button type="button" onclick="App.removeDockMenu('${item.id}')" class="p-1.5 rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors shrink-0 cursor-pointer" title="독 메뉴에서 제거">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+          </div>
+        `;
+      });
+
+      // 빈 슬롯 표시 (최대 4개 슬롯)
+      const emptySlots = 4 - currentMenus.length;
+      for (let i = 0; i < emptySlots; i++) {
+        currentHtml += `
+          <div class="flex items-center justify-center p-2.5 rounded-2xl border-2 border-dashed border-outline-variant/25 text-on-surface-variant/40 text-xs font-medium bg-surface-container-lowest/50">
+            빈 슬롯
+          </div>
+        `;
+      }
+      currentContainer.innerHTML = currentHtml;
+    }
+
+    // 2. 추가 가능한 메뉴 (현재 독에 없는 미등록 메뉴만 중복 없이 노출)
+    const availableMenus = ALL_DOCK_MENU_ITEMS.filter(item => !currentMenus.includes(item.id));
+    if (availableCountEl) availableCountEl.textContent = availableMenus.length;
+
+    if (availableContainer) {
+      if (availableMenus.length === 0) {
+        availableContainer.innerHTML = `
+          <div class="col-span-full py-8 text-center text-xs text-on-surface-variant bg-surface-container-low dark:bg-[#1f2937] rounded-2xl border border-outline-variant/15">
+            모든 메뉴가 독에 등록되었습니다.
+          </div>
+        `;
+      } else {
+        let availableHtml = '';
+        availableMenus.forEach(item => {
+          availableHtml += `
+            <button type="button" onclick="App.addDockMenu('${item.id}')" class="group relative flex flex-col items-center justify-center gap-2 p-3.5 rounded-2xl bg-surface-container-low dark:bg-[#1f2937] hover:bg-primary/10 dark:hover:bg-primary/20 border border-outline-variant/15 hover:border-primary/40 transition-all active:scale-95 text-center cursor-pointer shadow-2xs">
+              <div class="w-10 h-10 rounded-xl bg-surface-container-lowest dark:bg-[#111827] text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all flex items-center justify-center shadow-xs">
+                ${item.iconSvg}
+              </div>
+              <span class="font-label font-bold text-xs text-on-surface group-hover:text-primary transition-colors">${item.name}</span>
+              <div class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white flex items-center justify-center text-[11px] font-bold transition-all">
+                +
+              </div>
+            </button>
+          `;
+        });
+        availableContainer.innerHTML = availableHtml;
+      }
+    }
+  },
+
+  addDockMenu(menuId) {
+    if (!this.state.dockMenus) {
+      this.state.dockMenus = ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'];
+    }
+
+    if (this.state.dockMenus.includes(menuId)) {
+      this.showToast('이미 독 메뉴에 등록된 항목입니다.');
+      return;
+    }
+
+    if (this.state.dockMenus.length >= 4) {
+      this.showToast('독 메뉴는 최대 4개까지 설정할 수 있습니다. 기존 메뉴를 제거 후 추가해주세요.');
+      return;
+    }
+
+    const item = ALL_DOCK_MENU_ITEMS.find(m => m.id === menuId);
+    this.state.dockMenus.push(menuId);
+    this.saveState();
+    this.renderDockNav();
+    this.renderDockCustomizer();
+    if (item) {
+      this.showToast(`✨ '${item.name}' 메뉴가 독에 추가되었습니다.`);
+    }
+  },
+
+  removeDockMenu(menuId) {
+    if (!this.state.dockMenus || this.state.dockMenus.length <= 1) {
+      this.showToast('독 메뉴는 최소 1개 이상 유지되어야 합니다.');
+      return;
+    }
+
+    const item = ALL_DOCK_MENU_ITEMS.find(m => m.id === menuId);
+    this.state.dockMenus = this.state.dockMenus.filter(id => id !== menuId);
+    this.saveState();
+    this.renderDockNav();
+    this.renderDockCustomizer();
+    if (item) {
+      this.showToast(`독 메뉴에서 '${item.name}' 항목이 제거되었습니다.`);
+    }
+  },
+
+  resetDockMenus() {
+    this.state.dockMenus = ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'];
+    this.saveState();
+    this.renderDockNav();
+    this.renderDockCustomizer();
+    this.showToast('🔄 기본 독 메뉴 구성으로 초기화되었습니다.');
   },
 
   // =========================================
