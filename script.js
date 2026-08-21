@@ -1182,10 +1182,30 @@ const App = {
 
   showScreen(screenId) {
     const screens = document.querySelectorAll('.screen-view');
-    screens.forEach(s => s.classList.remove('active'));
+    const effectClasses = ['page-enter-blur', 'page-enter-zoom', 'page-enter-slide', 'page-enter-reveal', 'login-enter-crossfade', 'login-enter-zoom', 'login-enter-slide', 'login-enter-reveal'];
+
+    screens.forEach(s => {
+      s.classList.remove('active', ...effectClasses);
+    });
 
     const target = document.getElementById(screenId);
-    if (target) target.classList.add('active');
+    if (target) {
+      target.classList.add('active');
+
+      // 로그인된 상태에서 일반 페이지 전환 시 선택된 전환 애니메이션 전역 적용
+      if (screenId !== 'screen-login' && this.state.isLoggedIn) {
+        const effect = this.state.settings.transitionEffect || 'glass-blur';
+        const enterClass = effect === 'smooth-zoom' ? 'page-enter-zoom'
+                         : effect === 'slide-up' ? 'page-enter-slide'
+                         : effect === 'expanding-reveal' ? 'page-enter-reveal'
+                         : 'page-enter-blur';
+
+        target.classList.add(enterClass);
+        setTimeout(() => {
+          target.classList.remove(enterClass);
+        }, 400);
+      }
+    }
   },
 
   // Finance / Expense & Report Methods
@@ -3931,11 +3951,6 @@ const App = {
       backdrop.classList.add('opacity-100');
       panel.classList.remove('translate-x-full');
       panel.classList.add('translate-x-0');
-
-      // 드로어 열릴 때 현재 효과 미리보기 자동 시연
-      setTimeout(() => {
-        this.playTransitionPreview(currentEffect);
-      }, 350);
     }, 10);
   },
 
@@ -3955,6 +3970,98 @@ const App = {
     }, 300);
   },
 
+  // =========================================
+  // 화면 전환 효과 팝업 미리보기 모달 제어
+  // =========================================
+  openTransitionPreviewModal(effect) {
+    this._modalPreviewEffect = effect || this.state.settings.transitionEffect || 'glass-blur';
+
+    const modal = document.getElementById('modal-transition-preview');
+    const panel = document.getElementById('transition-preview-modal-panel');
+    const nameEl = document.getElementById('modal-preview-effect-name');
+    const descEl = document.getElementById('modal-preview-effect-desc');
+
+    const effectInfo = {
+      'glass-blur': { name: '글래스 블러', desc: '블러 & 크로스페이드' },
+      'smooth-zoom': { name: '부드러운 줌', desc: '스케일 줌 & 페이드' },
+      'slide-up': { name: '슬라이드 업', desc: '네이티브 상승 모션' },
+      'expanding-reveal': { name: '확장 펄스', desc: '원형 펄스 리빌' }
+    };
+
+    const cur = effectInfo[this._modalPreviewEffect] || effectInfo['glass-blur'];
+    if (nameEl) nameEl.innerText = cur.name;
+    if (descEl) descEl.innerText = cur.desc;
+
+    if (modal && panel) {
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        panel.classList.remove('scale-95', 'opacity-0');
+        panel.classList.add('scale-100', 'opacity-100');
+        this.runModalTransitionAnimation(this._modalPreviewEffect);
+      }, 20);
+    }
+  },
+
+  closeTransitionPreviewModal() {
+    const modal = document.getElementById('modal-transition-preview');
+    const panel = document.getElementById('transition-preview-modal-panel');
+    if (modal && panel) {
+      panel.classList.remove('scale-100', 'opacity-100');
+      panel.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 200);
+    }
+  },
+
+  replayTransitionModal() {
+    this.runModalTransitionAnimation(this._modalPreviewEffect || this.state.settings.transitionEffect || 'glass-blur');
+  },
+
+  runModalTransitionAnimation(effect) {
+    const step1 = document.getElementById('modal-screen-step1');
+    const step2 = document.getElementById('modal-screen-step2');
+    if (!step1 || !step2) return;
+
+    // 1. 초기 상태로 강제 리셋
+    step1.style.zIndex = '10';
+    step2.style.zIndex = '0';
+    step1.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-10';
+    step2.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-0 opacity-0';
+
+    const exitClass = effect === 'smooth-zoom' ? 'preview-exit-zoom' 
+                    : effect === 'slide-up' ? 'preview-exit-slide' 
+                    : effect === 'expanding-reveal' ? 'preview-exit-reveal' 
+                    : 'preview-exit-blur';
+    
+    const enterClass = effect === 'smooth-zoom' ? 'preview-enter-zoom' 
+                     : effect === 'slide-up' ? 'preview-enter-slide' 
+                     : effect === 'expanding-reveal' ? 'preview-enter-reveal' 
+                     : 'preview-enter-crossfade';
+
+    // 2. 화면 전환 애니메이션 실행
+    setTimeout(() => {
+      step1.classList.add(exitClass);
+      step2.classList.add(enterClass);
+      step2.style.zIndex = '15';
+    }, 60);
+
+    // 3. 2.6초 후 자동으로 다시 화면 1로 초기화 (반복 시연 대비)
+    clearTimeout(this._modalPreviewResetTimer);
+    this._modalPreviewResetTimer = setTimeout(() => {
+      if (step1 && step2) {
+        step1.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-10 transition-opacity duration-300 opacity-100';
+        step2.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-0 transition-opacity duration-300 opacity-0';
+      }
+    }, 2600);
+  },
+
+  applyTransitionEffectFromModal() {
+    const effect = this._modalPreviewEffect || 'glass-blur';
+    this.setTransitionEffect(effect);
+    this.closeTransitionPreviewModal();
+  },
+
   setTransitionEffect(effect) {
     this.state.settings.transitionEffect = effect;
     this.saveState();
@@ -3971,68 +4078,13 @@ const App = {
       localStorage.setItem('wordncode_transition_effect', effect);
     } catch (e) {}
 
-    // 클릭 즉시 실시간 미리보기 시연
-    this.playTransitionPreview(effect);
-
     const effectNames = {
       'glass-blur': '글래스 블러 & 크로스페이드',
       'smooth-zoom': '부드러운 줌 & 페이드',
       'slide-up': '슬라이드 업 & 라이징',
       'expanding-reveal': '확장 펄스 리빌'
     };
-    this.showToast(`✨ '${effectNames[effect] || effect}' 효과가 선택되었습니다.`);
-  },
-
-  playTransitionPreview(targetEffect) {
-    const effect = targetEffect || this.state.settings.transitionEffect || 'glass-blur';
-    const loginScreen = document.getElementById('preview-screen-login');
-    const mainScreen = document.getElementById('preview-screen-main');
-    const titleEl = document.getElementById('preview-effect-title');
-
-    const effectNames = {
-      'glass-blur': '글래스 블러',
-      'smooth-zoom': '부드러운 줌',
-      'slide-up': '슬라이드 업',
-      'expanding-reveal': '확장 펄스'
-    };
-
-    if (titleEl) {
-      titleEl.innerText = effectNames[effect] || effect;
-    }
-
-    if (!loginScreen || !mainScreen) return;
-
-    // 1. 기존 애니메이션 상태 리셋
-    loginScreen.style.zIndex = '10';
-    mainScreen.style.zIndex = '0';
-    loginScreen.className = 'absolute inset-2 bg-gradient-to-br from-[#1e293b] to-[#0f172a] rounded-xl p-2.5 flex flex-col items-center justify-center text-center shadow-md z-10';
-    mainScreen.className = 'absolute inset-2 bg-surface-container-lowest rounded-xl p-2.5 flex flex-col justify-between shadow-md z-0 opacity-0';
-
-    const exitClass = effect === 'smooth-zoom' ? 'preview-exit-zoom' 
-                    : effect === 'slide-up' ? 'preview-exit-slide' 
-                    : effect === 'expanding-reveal' ? 'preview-exit-reveal' 
-                    : 'preview-exit-blur';
-    
-    const enterClass = effect === 'smooth-zoom' ? 'preview-enter-zoom' 
-                     : effect === 'slide-up' ? 'preview-enter-slide' 
-                     : effect === 'expanding-reveal' ? 'preview-enter-reveal' 
-                     : 'preview-enter-crossfade';
-
-    // 2. 트랜지션 애니메이션 실행
-    setTimeout(() => {
-      loginScreen.classList.add(exitClass);
-      mainScreen.classList.add(enterClass);
-      mainScreen.style.zIndex = '15';
-    }, 60);
-
-    // 3. 2.4초 후 다시 로그인 화면으로 부드럽게 초기화 (반복 시연 준비)
-    clearTimeout(this._previewResetTimer);
-    this._previewResetTimer = setTimeout(() => {
-      if (loginScreen && mainScreen) {
-        loginScreen.className = 'absolute inset-2 bg-gradient-to-br from-[#1e293b] to-[#0f172a] rounded-xl p-2.5 flex flex-col items-center justify-center text-center shadow-md z-10 transition-opacity duration-300 opacity-100';
-        mainScreen.className = 'absolute inset-2 bg-surface-container-lowest rounded-xl p-2.5 flex flex-col justify-between shadow-md z-0 transition-opacity duration-300 opacity-0';
-      }
-    }, 2400);
+    this.showToast(`✨ '${effectNames[effect] || effect}' 화면 전환 효과가 적용되었습니다.`);
   },
 
   // Palette Theme Select Methods
