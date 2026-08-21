@@ -70,7 +70,9 @@ const App = {
     workReportMonth: 8,
     workReportWeek: 3,
     workReportDate: '2026-08-21',
-    workReportTeam: 'all'
+    workReportTeam: 'all',
+    // Menu Grid Columns (2 or 3)
+    menuColumns: 2
   },
 
   init() {
@@ -78,6 +80,10 @@ const App = {
     this.applyTheme(this.state.settings.themeIdx || 3);
     this.startLiveClock();
     
+    // Initialize Home Menu Columns (2열 or 3열)
+    const savedCols = parseInt(localStorage.getItem('wordncode_menu_columns'), 10) || this.state.menuColumns || 2;
+    this.setMenuColumns(savedCols);
+
     // 브라우저 뒤로가기(popstate) 발생 시 탭 전환 연동
     window.addEventListener('popstate', (event) => {
       if (this.state.isLoggedIn) {
@@ -220,6 +226,9 @@ const App = {
         if (parsed.trashedTodos && parsed.trashedTodos.length) {
           this.state.trashedTodos = parsed.trashedTodos;
         }
+        if (parsed.menuColumns) {
+          this.state.menuColumns = parsed.menuColumns;
+        }
       }
     } catch (e) {
       console.warn('LocalStorage error:', e);
@@ -238,7 +247,8 @@ const App = {
         todos: this.state.todos,
         recentProjects: this.state.recentProjects,
         trashedTodos: this.state.trashedTodos,
-        activeTab: this.state.activeTab
+        activeTab: this.state.activeTab,
+        menuColumns: this.state.menuColumns
       }));
     } catch (e) {
       console.warn('Save error:', e);
@@ -631,6 +641,39 @@ const App = {
     const nav = document.getElementById('bottom-nav');
     if (ticker) ticker.classList.remove('ticker-hidden');
     if (nav) nav.classList.remove('nav-hidden');
+  },
+
+  // =========================================
+  // 메뉴 화면 가로 2개 / 가로 3개 뷰 컬럼 전환
+  // =========================================
+  setMenuColumns(cols) {
+    const targetCols = Number(cols) === 3 ? 3 : 2;
+    this.state.menuColumns = targetCols;
+
+    const grid = document.getElementById('home-menu-grid');
+    const btn2 = document.getElementById('menu-col-btn-2');
+    const btn3 = document.getElementById('menu-col-btn-3');
+
+    if (grid) {
+      grid.classList.remove('cols-2', 'cols-3', 'grid-cols-2', 'grid-cols-3');
+      grid.classList.add(`cols-${targetCols}`);
+    }
+
+    if (btn2 && btn3) {
+      if (targetCols === 2) {
+        btn2.classList.add('active');
+        btn3.classList.remove('active');
+      } else {
+        btn3.classList.add('active');
+        btn2.classList.remove('active');
+      }
+    }
+
+    try {
+      localStorage.setItem('wordncode_menu_columns', String(targetCols));
+    } catch (e) {}
+
+    this.saveState();
   },
 
   // =========================================
