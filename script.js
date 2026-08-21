@@ -2,9 +2,36 @@
 
 // Framer Motion & Spring Physics 모션 엔진 (Web Animations API 120fps 네이티브 가속)
 const FramerMotion = {
+  // 물리 스프링 수식으로 정밀 탄성 곡선 계산
+  generateSpringKeyframes(from, to, config = { stiffness: 280, damping: 24, mass: 1, samples: 40 }) {
+    const { stiffness: k = 280, damping: c = 24, mass: m = 1, samples = 40 } = config;
+    const gamma = c / (2 * m);
+    const omega0 = Math.sqrt(k / m);
+    const omegaD = Math.sqrt(Math.max(0, omega0 * omega0 - gamma * gamma));
+
+    const frames = [];
+    const delta = to - from;
+
+    for (let i = 0; i <= samples; i++) {
+      const t = (i / samples) * (config.duration || 0.45);
+      let progress = 1;
+      if (omegaD > 0) {
+        progress = 1 - Math.exp(-gamma * t) * (Math.cos(omegaD * t) + (gamma / omegaD) * Math.sin(omegaD * t));
+      } else {
+        progress = 1 - Math.exp(-gamma * t) * (1 + gamma * t);
+      }
+      frames.push(from + delta * progress);
+    }
+    return frames;
+  },
+
+  spring(config = { stiffness: 320, damping: 26 }) {
+    return 'cubic-bezier(0.16, 1, 0.3, 1)';
+  },
+
   animate(element, keyframes, options = {}) {
     if (!element || typeof element.animate !== 'function') return null;
-    const duration = (options.duration || 0.35) * 1000;
+    const duration = (options.duration || 0.42) * 1000;
     const easing = options.easing || 'cubic-bezier(0.16, 1, 0.3, 1)';
     
     // Keyframes 객체 형식 ({ opacity: [0, 1], transform: [...] }) -> Web Animations API 배열 포맷 변환
@@ -35,8 +62,26 @@ const FramerMotion = {
       return null;
     }
   },
-  spring(config = { stiffness: 320, damping: 26 }) {
-    return 'cubic-bezier(0.16, 1, 0.3, 1)';
+
+  // 내부 하위 Bento 카드들을 0.035초 시차를 두고 순차 등장시키는 Stagger 모션
+  staggerChildren(container, selector = '.bento-card, .stat-card, .project-card, .emp-item-card, .board-card, .nav-card, header, .chip-bar', delayStep = 32) {
+    if (!container) return;
+    const items = container.querySelectorAll(selector);
+    items.forEach((el, idx) => {
+      if (idx > 10) return; // 상위 10개 핵심 컴포넌트에 적용
+      try {
+        el.animate([
+          { opacity: 0, transform: 'translateY(22px) scale(0.96)', filter: 'blur(6px)' },
+          { opacity: 0.92, transform: 'translateY(-3px) scale(1.008)', filter: 'blur(0px)', offset: 0.65 },
+          { opacity: 1, transform: 'translateY(0) scale(1)', filter: 'blur(0px)', offset: 1.0 }
+        ], {
+          duration: 450,
+          delay: idx * delayStep,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          fill: 'both'
+        });
+      } catch (e) {}
+    });
   }
 };
 
@@ -607,14 +652,36 @@ const App = {
         targetScreen.classList.add('active');
         if (FramerMotion) {
           if (effect === 'glass-blur') {
-            FramerMotion.animate(targetScreen, { opacity: [0, 1], filter: ['blur(12px)', 'blur(0px)'], transform: ['scale(1.02) translateY(8px)', 'scale(1) translateY(0)'] }, { duration: 0.45, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+            FramerMotion.animate(targetScreen, { 
+              opacity: [0, 0.85, 1], 
+              filter: ['blur(20px) saturate(180%)', 'blur(4px) saturate(140%)', 'blur(0px) saturate(100%)'], 
+              transform: ['scale(0.96) translateY(16px)', 'scale(1.012) translateY(-2px)', 'scale(1) translateY(0)'] 
+            }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'smooth-zoom') {
-            FramerMotion.animate(targetScreen, { opacity: [0, 1], transform: ['scale(1.08)', 'scale(1)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 320, damping: 26 }) });
+            FramerMotion.animate(targetScreen, { 
+              opacity: [0, 0.95, 1], 
+              transform: ['scale(0.88) translateY(24px)', 'scale(1.025) translateY(-4px)', 'scale(1) translateY(0)'],
+              filter: ['blur(10px)', 'blur(0px)', 'blur(0px)']
+            }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'slide-up') {
-            FramerMotion.animate(targetScreen, { opacity: [0, 1], transform: ['translateY(45px)', 'translateY(0)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 360, damping: 26 }) });
+            FramerMotion.animate(targetScreen, { 
+              opacity: [0, 1, 1], 
+              transform: ['translateY(65px) scale(0.96)', 'translateY(-5px) scale(1.008)', 'translateY(0) scale(1)'],
+              filter: ['blur(10px)', 'blur(0px)', 'blur(0px)']
+            }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'expanding-reveal') {
-            FramerMotion.animate(targetScreen, { opacity: [0, 1], clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+            FramerMotion.animate(targetScreen, { 
+              opacity: [0, 0.95, 1], 
+              clipPath: ['circle(0% at 50% 45%)', 'circle(85% at 50% 45%)', 'circle(160% at 50% 45%)'],
+              transform: ['scale(0.92)', 'scale(1.02)', 'scale(1)'],
+              filter: ['blur(14px) brightness(1.2)', 'blur(1px) brightness(1.05)', 'blur(0px) brightness(1)']
+            }, { duration: 0.56, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           }
+
+          // 하위 카드 순차 등장 (Staggered Children Reveal)
+          setTimeout(() => {
+            FramerMotion.staggerChildren(targetScreen);
+          }, 80);
         }
       }
 
@@ -1275,30 +1342,40 @@ const App = {
 
       // 로그인된 상태에서 일반 페이지 전환 시 Framer Motion 또는 CSS 키프레임 전환 전역 적용
       if (screenId !== 'screen-login' && this.state.isLoggedIn) {
-        const effect = this.state.settings.transitionEffect || 'glass-blur';
+        const effect = (this.state.settings && this.state.settings.transitionEffect) || 'glass-blur';
         
         if (FramerMotion) {
           if (effect === 'glass-blur') {
-            FramerMotion.animate(target,
-              { opacity: [0, 1], filter: ['blur(10px)', 'blur(0px)'], transform: ['scale(1.02) translateY(6px)', 'scale(1) translateY(0)'] },
-              { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
-            );
+            FramerMotion.animate(target, { 
+              opacity: [0, 0.9, 1], 
+              filter: ['blur(16px) saturate(160%)', 'blur(3px)', 'blur(0px)'], 
+              transform: ['scale(0.97) translateY(14px)', 'scale(1.01) translateY(-2px)', 'scale(1) translateY(0)'] 
+            }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'smooth-zoom') {
-            FramerMotion.animate(target,
-              { opacity: [0, 1], transform: ['scale(1.06)', 'scale(1)'] },
-              { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
-            );
+            FramerMotion.animate(target, { 
+              opacity: [0, 0.95, 1], 
+              transform: ['scale(0.90) translateY(16px)', 'scale(1.02) translateY(-2px)', 'scale(1) translateY(0)'],
+              filter: ['blur(8px)', 'blur(0px)', 'blur(0px)']
+            }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'slide-up') {
-            FramerMotion.animate(target,
-              { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0)'] },
-              { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
-            );
+            FramerMotion.animate(target, { 
+              opacity: [0, 1, 1], 
+              transform: ['translateY(42px) scale(0.98)', 'translateY(-3px) scale(1.005)', 'translateY(0) scale(1)'],
+              filter: ['blur(6px)', 'blur(0px)', 'blur(0px)']
+            }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'expanding-reveal') {
-            FramerMotion.animate(target,
-              { opacity: [0, 1], clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] },
-              { duration: 0.42, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
-            );
+            FramerMotion.animate(target, { 
+              opacity: [0, 0.95, 1], 
+              clipPath: ['circle(0% at 50% 50%)', 'circle(90% at 50% 50%)', 'circle(160% at 50% 50%)'],
+              transform: ['scale(0.94)', 'scale(1.015)', 'scale(1)'],
+              filter: ['blur(10px)', 'blur(1px)', 'blur(0px)']
+            }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           }
+
+          // 화면 내부 주요 카드 순차 등장
+          setTimeout(() => {
+            FramerMotion.staggerChildren(target);
+          }, 60);
         }
       }
     }
@@ -4178,17 +4255,57 @@ const App = {
     if (FramerMotion) {
       step2.style.zIndex = '15';
       if (effect === 'glass-blur') {
-        FramerMotion.animate(step1, { opacity: [1, 0], filter: ['blur(0px)', 'blur(8px)'], transform: ['scale(1)', 'scale(0.93)'] }, { duration: 0.38, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-        FramerMotion.animate(step2, { opacity: [0, 1], filter: ['blur(8px)', 'blur(0px)'], transform: ['scale(1.04)', 'scale(1)'] }, { duration: 0.45, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        FramerMotion.animate(step1, { 
+          opacity: [1, 0], 
+          filter: ['blur(0px)', 'blur(14px)'], 
+          transform: ['scale(1) translateY(0)', 'scale(0.92) translateY(-10px)'] 
+        }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+
+        FramerMotion.animate(step2, { 
+          opacity: [0, 0.9, 1], 
+          filter: ['blur(16px) saturate(180%)', 'blur(3px)', 'blur(0px)'], 
+          transform: ['scale(0.94) translateY(14px)', 'scale(1.015) translateY(-2px)', 'scale(1) translateY(0)'] 
+        }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+
       } else if (effect === 'smooth-zoom') {
-        FramerMotion.animate(step1, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.88)'] }, { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-        FramerMotion.animate(step2, { opacity: [0, 1], transform: ['scale(1.08)', 'scale(1)'] }, { duration: 0.42, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        FramerMotion.animate(step1, { 
+          opacity: [1, 0], 
+          transform: ['scale(1)', 'scale(0.85)'], 
+          filter: ['blur(0px)', 'blur(10px)'] 
+        }, { duration: 0.38, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+
+        FramerMotion.animate(step2, { 
+          opacity: [0, 0.95, 1], 
+          transform: ['scale(0.86) translateY(16px)', 'scale(1.025) translateY(-3px)', 'scale(1) translateY(0)'],
+          filter: ['blur(8px)', 'blur(0px)', 'blur(0px)']
+        }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+
       } else if (effect === 'slide-up') {
-        FramerMotion.animate(step1, { opacity: [1, 0], transform: ['translateY(0)', 'translateY(-30px)'] }, { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-        FramerMotion.animate(step2, { opacity: [0, 1], transform: ['translateY(30px)', 'translateY(0)'] }, { duration: 0.42, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        FramerMotion.animate(step1, { 
+          opacity: [1, 0], 
+          transform: ['translateY(0) scale(1)', 'translateY(-40px) scale(0.92)'],
+          filter: ['blur(0px)', 'blur(8px)']
+        }, { duration: 0.38, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+
+        FramerMotion.animate(step2, { 
+          opacity: [0, 1, 1], 
+          transform: ['translateY(45px) scale(0.96)', 'translateY(-4px) scale(1.008)', 'translateY(0) scale(1)'],
+          filter: ['blur(8px)', 'blur(0px)', 'blur(0px)']
+        }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+
       } else if (effect === 'expanding-reveal') {
-        FramerMotion.animate(step1, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.86)'], filter: ['blur(0px)', 'blur(5px)'] }, { duration: 0.32, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-        FramerMotion.animate(step2, { opacity: [0, 1], clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] }, { duration: 0.46, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        FramerMotion.animate(step1, { 
+          opacity: [1, 0], 
+          transform: ['scale(1)', 'scale(0.85)'], 
+          filter: ['blur(0px)', 'blur(10px)'] 
+        }, { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+
+        FramerMotion.animate(step2, { 
+          opacity: [0, 0.95, 1], 
+          clipPath: ['circle(0% at 50% 50%)', 'circle(90% at 50% 50%)', 'circle(160% at 50% 50%)'],
+          transform: ['scale(0.90)', 'scale(1.02)', 'scale(1)'],
+          filter: ['blur(12px)', 'blur(1px)', 'blur(0px)']
+        }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
       }
     }
 
