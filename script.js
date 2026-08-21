@@ -5592,7 +5592,7 @@ const App = {
           <div>
             <div class="flex items-center gap-2 mb-0.5">
               <span class="text-xs font-bold ${sec.deptColor || 'text-primary'}">${sec.dept}</span>
-              <span class="text-xs font-semibold text-on-surface">${sec.label || (isPrev ? '전주 실적' : '금주 진행')}</span>
+              <span class="text-xs font-semibold text-on-surface">${sec.label || (isPrev ? '전주' : '금주')}</span>
             </div>
             ${itemsHtml}
             ${commentHtml}
@@ -5623,14 +5623,14 @@ const App = {
       let contentHtml = '';
 
       if (prevSections.length > 0) {
-        // 전주 주간업무 (상단 박스: 차분한 Neutral 톤) + 금주 주간업무 (하단 박스: 화이트/테마 톤, 내부 그라데이션 선 삭제)
+        // 전주 주간업무 (상단 박스: 차분한 Neutral 톤) + 금주 주간업무 (하단 박스: 화이트/테마 톤)
         contentHtml = `
-          <!-- 1. [전주 실적] 주간 업무 내용 (상단 비교 박스) -->
+          <!-- 1. [전주] 주간 업무 내용 (상단 비교 박스) -->
           <div class="space-y-1.5">
             <div class="flex items-center gap-1.5 px-0.5">
               <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-surface-container-highest text-on-surface-variant flex items-center gap-1">
                 ${getSvgIcon('history', 'w-3 h-3 text-outline')}
-                <span>전주 실적 (지난주)</span>
+                <span>전주</span>
               </span>
             </div>
             <div class="bg-surface-container-low/80 rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/20">
@@ -5638,12 +5638,12 @@ const App = {
             </div>
           </div>
 
-          <!-- 2. [금주 진행] 주간 업무 내용 (하단 메인 박스) -->
+          <!-- 2. [금주] 주간 업무 내용 (하단 메인 박스) -->
           <div class="space-y-1.5">
             <div class="flex items-center gap-1.5 px-0.5">
               <span class="px-2 py-0.5 rounded text-[11px] font-bold ${theme.thisWeekBadge} flex items-center gap-1">
                 ${getSvgIcon('trending_up', 'w-3 h-3')}
-                <span>금주 진행 및 계획 (이번주)</span>
+                <span>금주</span>
               </span>
             </div>
             <div class="bg-surface-container-lowest rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/15">
