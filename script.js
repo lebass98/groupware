@@ -5626,7 +5626,7 @@ const App = {
             </div>
           </div>
 
-          <div class="bg-surface-container-lowest rounded-xl p-4 flex flex-col gap-3 relative overflow-hidden shadow-xs border border-outline-variant/10">
+          <div class="bg-surface-container-lowest rounded-md p-4 flex flex-col gap-3 relative overflow-hidden shadow-xs border border-outline-variant/10">
             <!-- Subtle accent gradient edge (Stitch Signature) -->
             <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-primary-container"></div>
             ${sectionsHtml}
