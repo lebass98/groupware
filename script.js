@@ -2694,19 +2694,26 @@ const App = {
       };
     }
 
-    // 2. Determine Today's Scheduled Event (외근, 오후 반차, 연차 등 함축)
-    let rawSched = emp.todaySchedule || '';
-    if (!rawSched && (rawText.includes('반차') || rawText.includes('외근') || rawText.includes('미팅'))) {
-      rawSched = rawText;
-    }
+    // 2. Determine Today's Scheduled Event (금일 캘린더 일정 및 예정 뱃지 실시간 동기화)
+    let rawSched = '';
 
-    if (!rawSched && window.MockData && window.MockData.schedules) {
-      const todayKey = '2026-8-20';
+    // 오늘 날짜 계산 (시스템 현재 날짜 기준: 2026-8-21 등)
+    const now = new Date();
+    const curYear = now.getFullYear();
+    const curMonth = now.getMonth() + 1;
+    const curDay = now.getDate();
+    const todayKey = `${curYear}-${curMonth}-${curDay}`;
+
+    if (window.MockData && window.MockData.schedules) {
       const todayList = window.MockData.schedules[todayKey] || [];
       const match = todayList.find(s => s.author && s.author.includes(emp.name));
       if (match) {
         rawSched = match.title;
       }
+    }
+
+    if (!rawSched && emp.todaySchedule) {
+      rawSched = emp.todaySchedule;
     }
 
     const todayScheduleText = this.simplifyScheduleText(rawSched);

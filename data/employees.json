@@ -23,7 +23,7 @@
     "avatar": "./resource/image/profile_sky.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": "오후 반차"
+    "todaySchedule": ""
   },
   {
     "id": 3,
@@ -49,7 +49,7 @@
     "avatar": "./resource/image/profile_green.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "오후 반차"
   },
   {
     "id": 5,
@@ -88,7 +88,7 @@
     "avatar": "./resource/image/profile_blue.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "반반차"
   },
   {
     "id": 8,
@@ -164,9 +164,9 @@
     "tel": "070-7711-4811",
     "email": "pub@wordncode.com",
     "avatar": "./resource/image/profile_pub.png",
-    "status": "business",
-    "statusText": "외근중",
-    "todaySchedule": "외근"
+    "status": "work",
+    "statusText": "근무중",
+    "todaySchedule": ""
   },
   {
     "id": 14,
@@ -229,8 +229,8 @@
     "tel": "070-7711-4804",
     "email": "help@wordncode.com",
     "avatar": "./resource/image/profile_help.png",
-    "status": "business",
-    "statusText": "외근중",
+    "status": "work",
+    "statusText": "근무중",
     "todaySchedule": "외근"
   },
   {
@@ -268,8 +268,8 @@
     "tel": "070-4210-6134",
     "email": "cool@wordncode.com",
     "avatar": "./resource/image/profile_cool_20241224_lee.png",
-    "status": "business",
-    "statusText": "외근중",
-    "todaySchedule": "외근"
+    "status": "work",
+    "statusText": "근무중",
+    "todaySchedule": ""
   }
 ]
