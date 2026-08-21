@@ -509,25 +509,91 @@ const App = {
     this.renderUI();
   },
 
+  executeLoginTransition(onComplete) {
+    const loginScreen = document.getElementById('screen-login');
+    const startTab = 'screen-today';
+    const targetScreen = document.getElementById(startTab);
+    const header = document.getElementById('main-header');
+    const nav = document.getElementById('bottom-nav');
+    const ticker = document.getElementById('notice-ticker');
+
+    // 1. 로그인 화면 글래스 블러 페이드아웃 시작
+    if (loginScreen) {
+      loginScreen.classList.add('login-exit-blur');
+    }
+
+    setTimeout(() => {
+      this.state.isLoggedIn = true;
+      this.state.activeTab = startTab;
+      this.saveState();
+      history.replaceState({ activeTab: startTab }, '', `#${startTab}`);
+
+      // 2. 로그인 화면 정리
+      if (loginScreen) {
+        loginScreen.classList.remove('active', 'login-exit-blur');
+      }
+
+      // 3. 메인 투데이 화면 활성화 및 크리스탈 선명화 애니메이션
+      const screens = document.querySelectorAll('.screen-view');
+      screens.forEach(s => s.classList.remove('active', 'login-enter-crossfade'));
+
+      if (targetScreen) {
+        targetScreen.classList.add('active', 'login-enter-crossfade');
+        setTimeout(() => {
+          targetScreen.classList.remove('login-enter-crossfade');
+        }, 550);
+      }
+
+      // 4. 상단 헤더, 티커, 하단 독 페이드인 노출
+      if (header) {
+        header.style.display = 'flex';
+        header.classList.add('appshell-enter-fade');
+        setTimeout(() => header.classList.remove('appshell-enter-fade'), 500);
+      }
+      if (nav) {
+        nav.style.display = 'flex';
+        nav.classList.remove('nav-hidden');
+        nav.classList.add('appshell-enter-fade');
+        setTimeout(() => nav.classList.remove('appshell-enter-fade'), 500);
+      }
+      if (ticker) {
+        ticker.style.display = 'flex';
+        ticker.classList.remove('ticker-hidden');
+        ticker.classList.add('appshell-enter-fade');
+        setTimeout(() => ticker.classList.remove('appshell-enter-fade'), 500);
+      }
+
+      this.startNoticeTicker();
+      this.resetScrollEffects();
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      // 하단 독 활성 탭 갱신
+      const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+      navItems.forEach(item => {
+        if (item.getAttribute('data-target') === startTab) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+
+      if (typeof onComplete === 'function') onComplete();
+    }, 280);
+  },
+
   login() {
-    this.state.isLoggedIn = true;
-    this.state.activeTab = 'screen-today';
-    this.saveState();
-    history.replaceState({ activeTab: 'screen-today' }, '', '#screen-today');
-    this.showAppShell();
-    this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! WnC 그룹웨어를 시작합니다.`);
+    this.executeLoginTransition(() => {
+      this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! WnC 그룹웨어를 시작합니다.`);
+    });
   },
 
   loginDemo(provider) {
-    this.state.isLoggedIn = true;
-    this.state.activeTab = 'screen-today';
-    this.saveState();
-    history.replaceState({ activeTab: 'screen-today' }, '', '#screen-today');
-    this.showAppShell();
-    const msg = provider 
-      ? `🎉 ${provider} 계정으로 로그인되었습니다.` 
-      : `🎉 ${this.state.user.name}님, 로그인 완료! 출결 관리 화면으로 이동합니다.`;
-    this.showToast(msg);
+    this.executeLoginTransition(() => {
+      const msg = provider 
+        ? `🎉 ${provider} 계정으로 로그인되었습니다.` 
+        : `🎉 ${this.state.user.name}님, 로그인 완료! 출결 관리 화면으로 이동합니다.`;
+      this.showToast(msg);
+    });
   },
 
   logout() {
