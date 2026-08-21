@@ -835,6 +835,44 @@ window.MockData = {
       weekLabel: "2026년 8월 3주차",
       date: "2026-08-21",
       primaryDept: "개발팀",
+      prevWeekSections: [
+        {
+          dept: "개발팀",
+          deptColor: "text-primary",
+          label: "전주 실적",
+          items: [
+            "관리자 권한별 통계 대시보드 및 엑셀 다운로드 API 구현",
+            "사용자 지원사업 신청 폼 1차 단위 테스트 및 데이터 검증 로직 작성"
+          ]
+        },
+        {
+          dept: "기획팀",
+          deptColor: "text-tertiary",
+          label: "전주 실적",
+          items: [
+            "사용자 / 관리자 시스템 운영 매뉴얼 초안 작성 완료"
+          ]
+        }
+      ],
+      thisWeekSections: [
+        {
+          dept: "개발팀",
+          deptColor: "text-primary",
+          label: "금주 진행",
+          items: [
+            "사용자 / 관리자 페이지 전체 구현 완료",
+            "내부 디버깅 처리 완료",
+            "운영 배포 대기 중 (최종 보안 점검 완료)"
+          ]
+        },
+        {
+          dept: "기획팀",
+          deptColor: "text-tertiary",
+          label: "기획팀_장현아",
+          items: [],
+          comment: "이메일 | 개발일정 문의 → 개발서버 전달 완료 (8/14)"
+        }
+      ],
       sections: [
         {
           dept: "개발팀",
@@ -868,6 +906,36 @@ window.MockData = {
       weekLabel: "2026년 8월 3주차",
       date: "2026-08-21",
       primaryDept: "개발팀",
+      prevWeekSections: [
+        {
+          dept: "개발팀",
+          deptColor: "text-primary",
+          label: "전주 실적",
+          items: [
+            "사후역량점검 테이블 스키마 최적화 및 인덱스 튜닝",
+            "월간 운영 데이터 통계 보고서 작성 및 고객사 담당자 확인 완료"
+          ]
+        }
+      ],
+      thisWeekSections: [
+        {
+          dept: "개발팀",
+          deptColor: "text-primary",
+          label: "금주 진행",
+          items: [
+            "사후역량점검 완료 분기 로직 추가, 관련 alert 수정, 테스트서버/운영서버 반영",
+            "회원가입 본인인증 모듈 취약점 패치 및 예외처리 적용"
+          ]
+        },
+        {
+          dept: "기획팀",
+          deptColor: "text-tertiary",
+          label: "기획팀_박규태 대리",
+          items: [
+            "8월 2차 정기 기능 개선 요구사항 접수 및 개발 일정 조율 완료"
+          ]
+        }
+      ],
       sections: [
         {
           dept: "개발팀",
@@ -901,6 +969,45 @@ window.MockData = {
       weekLabel: "2026년 8월 3주차",
       date: "2026-08-21",
       primaryDept: "디자인팀",
+      prevWeekSections: [
+        {
+          dept: "기획팀",
+          deptColor: "text-tertiary",
+          label: "전주 실적",
+          items: [
+            "수소 충전소 실시간 현황 맵 레이아웃 요구사항 정의",
+            "[국내_운영중_수소시험평가센터_조사양식_항목정의.xlsx] DB 양식 PPT 정리"
+          ]
+        },
+        {
+          dept: "디자인팀",
+          deptColor: "text-primary-dim",
+          label: "전주 실적",
+          items: [
+            "메인 구성관련 회의 및 정보구조도(IA) 확정",
+            "메인시안관련 A, B, C안 스케치 및 레퍼런스 정리"
+          ]
+        }
+      ],
+      thisWeekSections: [
+        {
+          dept: "디자인팀",
+          deptColor: "text-primary-dim",
+          label: "금주 진행",
+          items: [
+            "메인 시안 반응형 웹 디자인 작업 완료 (데스크탑 / 모바일)",
+            "디자인 시안 4종 내부 확인 및 피드백 반영 완료"
+          ]
+        },
+        {
+          dept: "개발팀",
+          deptColor: "text-primary",
+          label: "금주 진행",
+          items: [
+            "실시간 충전소 유가 및 충전 대기 차량 데이터 연계 API 설계 착수"
+          ]
+        }
+      ],
       sections: [
         {
           dept: "디자인팀",
@@ -936,6 +1043,43 @@ window.MockData = {
       weekLabel: "2026년 8월 3주차",
       date: "2026-08-21",
       primaryDept: "퍼블리싱팀",
+      prevWeekSections: [
+        {
+          dept: "기획팀",
+          deptColor: "text-tertiary",
+          label: "전주 실적",
+          items: [
+            "가족상담 신청 프로세스 IA(정보구조) 설계 및 와이어프레임 작성 완료"
+          ]
+        },
+        {
+          dept: "디자인팀",
+          deptColor: "text-primary-dim",
+          label: "전주 실적",
+          items: [
+            "메인 대시보드 및 서브페이지 UI 스타일 가이드 시안 2종 도출"
+          ]
+        }
+      ],
+      thisWeekSections: [
+        {
+          dept: "퍼블리싱팀",
+          deptColor: "text-primary",
+          label: "금주 진행",
+          items: [
+            "가족상담 신청 폼 반응형 웹 접근성(A11y) 마크업 가이드 준수 작업",
+            "서브페이지 12종 HTML/CSS 템플릿 검수 및 모바일 깨짐 수정"
+          ]
+        },
+        {
+          dept: "디자인팀",
+          deptColor: "text-primary-dim",
+          label: "금주 진행",
+          items: [
+            "메인 배너 및 카드 일러스트 에셋 8종 최종 납품 완료"
+          ]
+        }
+      ],
       sections: [
         {
           dept: "퍼블리싱팀",
@@ -969,6 +1113,35 @@ window.MockData = {
       weekLabel: "2026년 8월 3주차",
       date: "2026-08-21",
       primaryDept: "개발팀",
+      prevWeekSections: [
+        {
+          dept: "개발팀",
+          deptColor: "text-primary",
+          label: "전주 실적",
+          items: [
+            "화물 터미널 실시간 반출입 모니터링 웹소켓 세션 안정화",
+            "오라클 DB 쿼리 튜닝 및 느린 쿼리 알림 임계치 재설정"
+          ]
+        }
+      ],
+      thisWeekSections: [
+        {
+          dept: "개발팀",
+          deptColor: "text-primary",
+          label: "금주 진행",
+          items: [
+            "인천공항 IDC 센터 방문 및 연계 서버 API 프로토콜 점검",
+            "인증 토큰 갱신 배치 스케줄러 안정화 및 모니터링 적용"
+          ]
+        },
+        {
+          dept: "전략본부",
+          deptColor: "text-tertiary",
+          label: "전략_남기현 본부장",
+          items: [],
+          comment: "고객사 IT운영팀 실무 미팅 진행 및 3단계 추가 요구사항 조율 완료"
+        }
+      ],
       sections: [
         {
           dept: "개발팀",
@@ -1001,6 +1174,45 @@ window.MockData = {
       weekLabel: "2026년 8월 3주차",
       date: "2026-08-21",
       primaryDept: "퍼블리싱팀",
+      prevWeekSections: [
+        {
+          dept: "개발팀",
+          deptColor: "text-primary",
+          label: "전주 실적",
+          items: [
+            "GPS 기반 원클릭 출퇴근 및 오프라인 로컬 캐싱 동기화 구조 개발",
+            "전자결재 및 지출결의서/품의서 폼 인터랙션 개발"
+          ]
+        },
+        {
+          dept: "디자인팀",
+          deptColor: "text-primary-dim",
+          label: "전주 실적",
+          items: [
+            "Glassmorphism & Bento Grid UI 테마 시스템 및 4대 컬러 모드 정립"
+          ]
+        }
+      ],
+      thisWeekSections: [
+        {
+          dept: "퍼블리싱팀",
+          deptColor: "text-primary",
+          label: "금주 진행",
+          items: [
+            "팀별·주간·일간 업무보고 뷰페이지 및 전주/금주 비교 레이아웃 구현",
+            "전사 상단 탭 지출결의서 규격 100% 통일화",
+            "100% 순수 인라인 SVG 벡터 아이콘 전환 및 최적화"
+          ]
+        },
+        {
+          dept: "경영지원팀",
+          deptColor: "text-secondary",
+          label: "경영지원_오은주 차장",
+          items: [
+            "전사 임직원 21명 계정 및 8월 근태/휴가 데이터 정합성 검증 완료"
+          ]
+        }
+      ],
       sections: [
         {
           dept: "퍼블리싱팀",

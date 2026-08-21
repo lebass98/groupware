@@ -5563,15 +5563,16 @@ const App = {
       return;
     }
 
-    container.innerHTML = filtered.map(report => {
-      // Sections Rendering
-      const sectionsHtml = (report.sections || []).map((sec, idx) => {
+    // Helper for rendering section items
+    const renderSectionBlock = (sections, isPrev = false) => {
+      if (!sections || sections.length === 0) return '';
+      return sections.map((sec, idx) => {
         const divider = idx > 0 ? `<div class="h-px w-full bg-outline-variant/15 my-1"></div>` : '';
         
         let itemsHtml = '';
         if (sec.items && sec.items.length > 0) {
           itemsHtml = `
-            <ul class="text-sm text-on-surface-variant space-y-1.5 pl-1 list-disc list-inside mt-1 font-body leading-relaxed">
+            <ul class="text-xs sm:text-sm text-on-surface-variant space-y-1 pl-1 list-disc list-inside mt-1 font-body leading-relaxed">
               ${sec.items.map(item => `<li>${item}</li>`).join('')}
             </ul>
           `;
@@ -5580,7 +5581,7 @@ const App = {
         let commentHtml = '';
         if (sec.comment) {
           commentHtml = `
-            <p class="text-sm text-error-dim pl-1 mt-1 font-medium font-body leading-relaxed">
+            <p class="text-xs sm:text-sm text-error-dim pl-1 mt-1 font-medium font-body leading-relaxed">
               ${sec.comment}
             </p>
           `;
@@ -5589,18 +5590,68 @@ const App = {
         return `
           ${divider}
           <div>
-            <div class="flex items-center gap-2 mb-1">
+            <div class="flex items-center gap-2 mb-0.5">
               <span class="text-xs font-bold ${sec.deptColor || 'text-primary'}">${sec.dept}</span>
-              <span class="text-xs font-semibold text-on-surface">${sec.label || '작업내역'}</span>
+              <span class="text-xs font-semibold text-on-surface">${sec.label || (isPrev ? '전주 실적' : '금주 진행')}</span>
             </div>
             ${itemsHtml}
             ${commentHtml}
           </div>
         `;
       }).join('');
+    };
+
+    container.innerHTML = filtered.map(report => {
+      const prevSections = report.prevWeekSections || [];
+      const thisSections = report.thisWeekSections || report.sections || [];
+
+      let contentHtml = '';
+
+      if (prevSections.length > 0) {
+        // 전주 주간업무 (상단 박스: 차분한 Slate/Neutral 톤) + 금주 주간업무 (하단 박스: WnC Signature Primary 톤)
+        contentHtml = `
+          <!-- 1. [전주 실적] 주간 업무 내용 (상단 비교 박스) -->
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-1.5 px-0.5">
+              <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-surface-container-highest text-on-surface-variant flex items-center gap-1">
+                ${getSvgIcon('history', 'w-3 h-3 text-outline')}
+                <span>전주 실적 (지난주)</span>
+              </span>
+            </div>
+            <div class="bg-surface-container-low/80 rounded-md p-3.5 flex flex-col gap-2.5 relative overflow-hidden shadow-xs border border-outline-variant/20">
+              <!-- Subdued Neutral accent edge -->
+              <div class="absolute left-0 top-0 bottom-0 w-1 bg-outline/40"></div>
+              ${renderSectionBlock(prevSections, true)}
+            </div>
+          </div>
+
+          <!-- 2. [금주 진행] 주간 업무 내용 (하단 메인 박스) -->
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-1.5 px-0.5">
+              <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary flex items-center gap-1">
+                ${getSvgIcon('trending_up', 'w-3 h-3 text-primary')}
+                <span>금주 진행 및 계획 (이번주)</span>
+              </span>
+            </div>
+            <div class="bg-surface-container-lowest rounded-md p-3.5 flex flex-col gap-2.5 relative overflow-hidden shadow-xs border border-primary/20">
+              <!-- Vibrant Signature Primary Gradient Edge -->
+              <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-primary-container"></div>
+              ${renderSectionBlock(thisSections, false)}
+            </div>
+          </div>
+        `;
+      } else {
+        // 단일 섹션
+        contentHtml = `
+          <div class="bg-surface-container-lowest rounded-md p-4 flex flex-col gap-3 relative overflow-hidden shadow-xs border border-outline-variant/10">
+            <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-primary-container"></div>
+            ${renderSectionBlock(thisSections, false)}
+          </div>
+        `;
+      }
 
       return `
-        <!-- Work Report Card (Exact Stitch Weekly Report 1:1 Bento Card Design) -->
+        <!-- Work Report Card (전주 / 금주 주간 업무 비교 Bento Card) -->
         <article class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:-translate-y-0.5 transition-all duration-200 text-left">
           <div class="min-w-0">
             <span class="text-xs font-semibold text-primary-dim bg-surface-container-highest px-2.5 py-1 rounded-md mb-2 inline-block shadow-xs">${report.client}</span>
@@ -5611,10 +5662,8 @@ const App = {
             </p>
           </div>
 
-          <div class="bg-surface-container-lowest rounded-md p-4 flex flex-col gap-3 relative overflow-hidden shadow-xs border border-outline-variant/10">
-            <!-- Subtle accent gradient edge (Stitch Signature) -->
-            <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-primary-container"></div>
-            ${sectionsHtml}
+          <div class="flex flex-col gap-3.5">
+            ${contentHtml}
           </div>
         </article>
       `;
