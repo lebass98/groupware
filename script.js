@@ -5566,14 +5566,6 @@ const App = {
     }
 
     container.innerHTML = filtered.map(report => {
-      // Status Dot Color
-      let dotColorClass = 'bg-[#00693f] shadow-[0_0_8px_rgba(0,105,63,0.4)]';
-      if (report.status === 'in_progress') {
-        dotColorClass = 'bg-[#785500] shadow-[0_0_8px_rgba(120,85,0,0.4)]';
-      } else if (report.status === 'review') {
-        dotColorClass = 'bg-[#0052d0] shadow-[0_0_8px_rgba(0,82,208,0.4)]';
-      }
-
       // Sections Rendering
       const sectionsHtml = (report.sections || []).map((sec, idx) => {
         const divider = idx > 0 ? `<div class="h-px w-full bg-outline-variant/15 my-1"></div>` : '';
@@ -5612,18 +5604,13 @@ const App = {
       return `
         <!-- Work Report Card (Exact Stitch Weekly Report 1:1 Bento Card Design) -->
         <article class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:-translate-y-0.5 transition-all duration-200 text-left">
-          <div class="flex justify-between items-start gap-3">
-            <div class="min-w-0 flex-1">
-              <span class="text-xs font-semibold text-primary-dim bg-surface-container-highest px-2.5 py-1 rounded-md mb-2 inline-block shadow-xs">${report.client}</span>
-              <h3 class="font-headline font-bold text-on-surface leading-snug text-base sm:text-lg hover:text-primary transition-colors">${report.title}</h3>
-              <p class="text-xs text-on-surface-variant mt-1.5 font-medium flex items-center gap-1">
-                ${getSvgIcon('schedule', 'w-3.5 h-3.5 text-outline')}
-                <span>${report.period}</span>
-              </p>
-            </div>
-            <div class="flex-shrink-0 mt-1">
-              <span class="w-3 h-3 rounded-full ${dotColorClass} inline-block"></span>
-            </div>
+          <div class="min-w-0">
+            <span class="text-xs font-semibold text-primary-dim bg-surface-container-highest px-2.5 py-1 rounded-md mb-2 inline-block shadow-xs">${report.client}</span>
+            <h3 class="font-headline font-bold text-on-surface leading-snug text-base sm:text-lg hover:text-primary transition-colors">${report.title}</h3>
+            <p class="text-xs text-on-surface-variant mt-1.5 font-medium flex items-center gap-1">
+              ${getSvgIcon('schedule', 'w-3.5 h-3.5 text-outline')}
+              <span>${report.period}</span>
+            </p>
           </div>
 
           <div class="bg-surface-container-lowest rounded-md p-4 flex flex-col gap-3 relative overflow-hidden shadow-xs border border-outline-variant/10">
