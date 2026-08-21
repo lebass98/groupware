@@ -62,7 +62,15 @@ const App = {
     projects: (window.MockData && window.MockData.projects) || [],
     projectsFilter: 'all',
     projectsSearchQuery: '',
-    projectViewMode: 'card'
+    projectViewMode: 'card',
+    // Work Reports State
+    workReports: (window.MockData && window.MockData.workReports) || [],
+    workReportTab: 'weekly',
+    workReportYear: 2026,
+    workReportMonth: 8,
+    workReportWeek: 3,
+    workReportDate: '2026-08-21',
+    workReportTeam: 'all'
   },
 
   init() {
@@ -670,6 +678,9 @@ const App = {
       this.renderTodos();
     } else if (targetId === 'screen-project-list') {
       this.renderProjects();
+    } else if (targetId === 'screen-work-report') {
+      this.renderWorkReportControls();
+      this.renderWorkReports();
     } else if (targetId === 'screen-request') {
       this.switchRequestType(this.state.currentRequestType || 'leave');
     } else if (targetId === 'screen-home' || targetId === 'screen-today') {
@@ -5388,6 +5399,241 @@ const App = {
       this.openProjectDetail(projectId);
       this.showToast('💬 새로운 댓글 및 작업 메모가 등록되었습니다.');
     }
+  },
+
+  // ==================== WORK REPORT METHODS ====================
+  switchWorkReportTab(tab) {
+    this.state.workReportTab = tab;
+    
+    // Update Tab Buttons UI
+    const tabBtns = document.querySelectorAll('.report-nav-tab');
+    tabBtns.forEach(btn => {
+      btn.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-xs', 'active');
+      btn.classList.add('text-on-surface-variant');
+    });
+
+    const activeBtn = document.getElementById(`tab-btn-report-${tab}`);
+    if (activeBtn) {
+      activeBtn.classList.remove('text-on-surface-variant');
+      activeBtn.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-xs', 'active');
+    }
+
+    this.renderWorkReportControls();
+    this.renderWorkReports();
+  },
+
+  changeReportWeek(delta) {
+    let week = (this.state.workReportWeek || 3) + delta;
+    if (week < 1) week = 1;
+    if (week > 5) week = 5;
+    this.state.workReportWeek = week;
+    this.renderWorkReportControls();
+    this.renderWorkReports();
+  },
+
+  changeReportDate(delta) {
+    const curr = new Date(this.state.workReportDate || '2026-08-21');
+    curr.setDate(curr.getDate() + delta);
+    const y = curr.getFullYear();
+    const m = String(curr.getMonth() + 1).padStart(2, '0');
+    const d = String(curr.getDate()).padStart(2, '0');
+    this.state.workReportDate = `${y}-${m}-${d}`;
+    this.renderWorkReportControls();
+    this.renderWorkReports();
+  },
+
+  selectReportTeam(dept, chipEl) {
+    this.state.workReportTeam = dept;
+    const chips = document.querySelectorAll('.report-team-chip');
+    chips.forEach(c => {
+      c.classList.remove('bg-primary', 'text-on-primary', 'active');
+      c.classList.add('bg-surface-container', 'text-on-surface-variant');
+    });
+    if (chipEl) {
+      chipEl.classList.remove('bg-surface-container', 'text-on-surface-variant');
+      chipEl.classList.add('bg-primary', 'text-on-primary', 'active');
+    }
+    this.renderWorkReports();
+  },
+
+  renderWorkReportControls() {
+    const container = document.getElementById('work-report-sub-controls');
+    if (!container) return;
+
+    const tab = this.state.workReportTab || 'weekly';
+
+    if (tab === 'weekly') {
+      const year = this.state.workReportYear || 2026;
+      const month = this.state.workReportMonth || 8;
+      const week = this.state.workReportWeek || 3;
+
+      container.innerHTML = `
+        <!-- Weekly Selector (Exact Stitch Design) -->
+        <div class="flex items-center justify-between bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/10 shadow-xs">
+          <button type="button" onclick="App.changeReportWeek(-1)" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors active:scale-95" title="이전 주">
+            ${getSvgIcon('chevron_left', 'w-5 h-5')}
+          </button>
+          <div class="text-center">
+            <h3 class="font-headline font-bold text-base text-primary">${year}년 ${month}월 ${week}주차</h3>
+            <p class="font-body text-[11px] text-on-surface-variant font-medium mt-0.5">${month}월 17일(월) ~ ${month}월 21일(금)</p>
+          </div>
+          <button type="button" onclick="App.changeReportWeek(1)" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors active:scale-95" title="다음 주">
+            ${getSvgIcon('chevron_right', 'w-5 h-5')}
+          </button>
+        </div>
+      `;
+    } else if (tab === 'daily') {
+      const dateStr = this.state.workReportDate || '2026-08-21';
+      const d = new Date(dateStr);
+      const days = ['일', '월', '화', '수', '목', '금', '토'];
+      const dayName = days[d.getDay()];
+
+      container.innerHTML = `
+        <!-- Daily Selector -->
+        <div class="flex items-center justify-between bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/10 shadow-xs">
+          <button type="button" onclick="App.changeReportDate(-1)" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors active:scale-95" title="이전 날">
+            ${getSvgIcon('chevron_left', 'w-5 h-5')}
+          </button>
+          <div class="text-center">
+            <h3 class="font-headline font-bold text-base text-primary">${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 (${dayName})</h3>
+            <p class="font-body text-[11px] text-secondary font-bold mt-0.5">금일 전사 업무 진행 현황</p>
+          </div>
+          <button type="button" onclick="App.changeReportDate(1)" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors active:scale-95" title="다음 날">
+            ${getSvgIcon('chevron_right', 'w-5 h-5')}
+          </button>
+        </div>
+      `;
+    } else if (tab === 'team') {
+      const currentTeam = this.state.workReportTeam || 'all';
+      const teams = ['all', '경영지원팀', '기획팀', '디자인팀', '퍼블리싱팀', '개발팀', '전략본부', '수행본부'];
+      const teamLabels = {
+        all: '전체',
+        경영지원팀: '경영지원',
+        기획팀: '기획',
+        디자인팀: '디자인',
+        퍼블리싱팀: '퍼블리싱',
+        개발팀: '개발',
+        전략본부: '전략본부',
+        수행본부: '수행본부'
+      };
+
+      const chipsHtml = teams.map(t => {
+        const isActive = currentTeam === t;
+        const activeClass = isActive 
+          ? 'bg-primary text-on-primary active' 
+          : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-highest';
+        return `
+          <button class="whitespace-nowrap px-4 py-2 rounded-full font-label text-xs font-bold transition-all active:scale-95 report-team-chip ${activeClass}" onclick="App.selectReportTeam('${t}', this)">${teamLabels[t]}</button>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" id="report-team-chips">
+          ${chipsHtml}
+        </div>
+      `;
+    }
+  },
+
+  renderWorkReports() {
+    const container = document.getElementById('work-report-list-container');
+    if (!container) return;
+
+    const tab = this.state.workReportTab || 'weekly';
+    const allReports = (this.state.workReports && this.state.workReports.length > 0)
+      ? this.state.workReports
+      : ((window.MockData && window.MockData.workReports) || []);
+
+    let filtered = [...allReports];
+
+    if (tab === 'team') {
+      const selectedTeam = this.state.workReportTeam || 'all';
+      if (selectedTeam !== 'all') {
+        filtered = filtered.filter(r => {
+          return r.primaryDept === selectedTeam || (r.sections && r.sections.some(s => s.dept === selectedTeam));
+        });
+      }
+    }
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-xs">
+          ${getSvgIcon('assignment', 'w-10 h-10 text-outline mb-2 mx-auto')}
+          <p>등록된 업무보고 내역이 없습니다.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(report => {
+      // Status Dot Color
+      let dotColorClass = 'bg-[#00693f] shadow-[0_0_8px_rgba(0,105,63,0.4)]';
+      if (report.status === 'in_progress') {
+        dotColorClass = 'bg-[#785500] shadow-[0_0_8px_rgba(120,85,0,0.4)]';
+      } else if (report.status === 'review') {
+        dotColorClass = 'bg-[#0052d0] shadow-[0_0_8px_rgba(0,82,208,0.4)]';
+      }
+
+      // Sections Rendering
+      const sectionsHtml = (report.sections || []).map((sec, idx) => {
+        const divider = idx > 0 ? `<div class="h-px w-full bg-outline-variant/15 my-1"></div>` : '';
+        
+        let itemsHtml = '';
+        if (sec.items && sec.items.length > 0) {
+          itemsHtml = `
+            <ul class="text-sm text-on-surface-variant space-y-1.5 pl-1 list-disc list-inside mt-1 font-body leading-relaxed">
+              ${sec.items.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          `;
+        }
+
+        let commentHtml = '';
+        if (sec.comment) {
+          commentHtml = `
+            <p class="text-sm text-error-dim pl-1 mt-1 font-medium font-body leading-relaxed">
+              ${sec.comment}
+            </p>
+          `;
+        }
+
+        return `
+          ${divider}
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-bold ${sec.deptColor || 'text-primary'}">${sec.dept}</span>
+              <span class="text-xs font-semibold text-on-surface">${sec.label || '작업내역'}</span>
+            </div>
+            ${itemsHtml}
+            ${commentHtml}
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <!-- Work Report Card (Exact Stitch Weekly Report 1:1 Bento Card Design) -->
+        <article class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:-translate-y-0.5 transition-all duration-200 text-left">
+          <div class="flex justify-between items-start gap-3">
+            <div class="min-w-0 flex-1">
+              <span class="text-xs font-semibold text-primary-dim bg-surface-container-highest px-2.5 py-1 rounded-md mb-2 inline-block shadow-xs">${report.client}</span>
+              <h3 class="font-headline font-bold text-on-surface leading-snug text-base sm:text-lg hover:text-primary transition-colors">${report.title}</h3>
+              <p class="text-xs text-on-surface-variant mt-1.5 font-medium flex items-center gap-1">
+                ${getSvgIcon('schedule', 'w-3.5 h-3.5 text-outline')}
+                <span>${report.period}</span>
+              </p>
+            </div>
+            <div class="flex-shrink-0 mt-1">
+              <span class="w-3 h-3 rounded-full ${dotColorClass} inline-block"></span>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest rounded-xl p-4 flex flex-col gap-3 relative overflow-hidden shadow-xs border border-outline-variant/10">
+            <!-- Subtle accent gradient edge (Stitch Signature) -->
+            <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-primary-container"></div>
+            ${sectionsHtml}
+          </div>
+        </article>
+      `;
+    }).join('');
   },
 
   // Toast System
