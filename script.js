@@ -5563,8 +5563,8 @@ const App = {
       return;
     }
 
-    // Helper for rendering section items
-    const renderSectionBlock = (sections, isPrev = false) => {
+    // Helper for rendering section items (팀별 전주/금주 중복 표기 제거)
+    const renderSectionBlock = (sections) => {
       if (!sections || sections.length === 0) return '';
       return sections.map((sec, idx) => {
         const divider = idx > 0 ? `<div class="h-px w-full bg-outline-variant/15 my-1"></div>` : '';
@@ -5587,12 +5587,16 @@ const App = {
           `;
         }
 
+        // '전주', '금주', '전주 실적', '금주 진행', '작업내역' 등 중복 라벨은 제거하고 의미있는 담당자/업무명만 표시
+        const isGenericLabel = !sec.label || ['전주', '금주', '전주 실적', '금주 진행', '작업내역', '디자인', '개발', '기획', '퍼블리싱', '프로젝트 진행 중'].includes(sec.label.trim());
+        const labelHtml = isGenericLabel ? '' : `<span class="text-xs font-semibold text-on-surface">${sec.label}</span>`;
+
         return `
           ${divider}
           <div>
             <div class="flex items-center gap-2 mb-0.5">
               <span class="text-xs font-bold ${sec.deptColor || 'text-primary'}">${sec.dept}</span>
-              <span class="text-xs font-semibold text-on-surface">${sec.label || (isPrev ? '전주' : '금주')}</span>
+              ${labelHtml}
             </div>
             ${itemsHtml}
             ${commentHtml}
@@ -5605,13 +5609,11 @@ const App = {
     const alternatingThemes = [
       { // Theme A: WnC Primary Deep Blue
         borderLeft: 'border-l-[5px] border-l-primary',
-        badgeBg: 'bg-primary/10 text-primary border border-primary/20',
-        thisWeekBadge: 'bg-primary/10 text-primary'
+        badgeBg: 'bg-primary/10 text-primary border border-primary/20'
       },
       { // Theme B: WnC Secondary Forest Green
         borderLeft: 'border-l-[5px] border-l-[#00693f]',
-        badgeBg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border border-[#00693f]/20',
-        thisWeekBadge: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300'
+        badgeBg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border border-[#00693f]/20'
       }
     ];
 
@@ -5623,31 +5625,31 @@ const App = {
       let contentHtml = '';
 
       if (prevSections.length > 0) {
-        // 전주 주간업무 (상단 박스: 차분한 Neutral 톤) + 금주 주간업무 (하단 박스: 화이트/테마 톤)
+        // 전주 & 금주 주간업무 (완벽히 통일된 Bento 박스 및 뱃지 규격)
         contentHtml = `
-          <!-- 1. [전주] 주간 업무 내용 (상단 비교 박스) -->
+          <!-- 1. [전주] 주간 업무 내용 (상단 박스) -->
           <div class="space-y-1.5">
             <div class="flex items-center gap-1.5 px-0.5">
-              <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-surface-container-highest text-on-surface-variant flex items-center gap-1">
-                ${getSvgIcon('history', 'w-3 h-3 text-outline')}
+              <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-surface-container-highest text-on-surface flex items-center gap-1 shadow-2xs">
+                ${getSvgIcon('history', 'w-3.5 h-3.5 text-outline')}
                 <span>전주</span>
               </span>
             </div>
-            <div class="bg-surface-container-low/80 rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/20">
-              ${renderSectionBlock(prevSections, true)}
+            <div class="bg-surface-container-lowest rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/15">
+              ${renderSectionBlock(prevSections)}
             </div>
           </div>
 
-          <!-- 2. [금주] 주간 업무 내용 (하단 메인 박스) -->
+          <!-- 2. [금주] 주간 업무 내용 (하단 박스 - 전주와 100% 동일 규격) -->
           <div class="space-y-1.5">
             <div class="flex items-center gap-1.5 px-0.5">
-              <span class="px-2 py-0.5 rounded text-[11px] font-bold ${theme.thisWeekBadge} flex items-center gap-1">
-                ${getSvgIcon('trending_up', 'w-3 h-3')}
+              <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-surface-container-highest text-on-surface flex items-center gap-1 shadow-2xs">
+                ${getSvgIcon('trending_up', 'w-3.5 h-3.5 text-outline')}
                 <span>금주</span>
               </span>
             </div>
             <div class="bg-surface-container-lowest rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/15">
-              ${renderSectionBlock(thisSections, false)}
+              ${renderSectionBlock(thisSections)}
             </div>
           </div>
         `;
@@ -5655,7 +5657,7 @@ const App = {
         // 단일 섹션
         contentHtml = `
           <div class="bg-surface-container-lowest rounded-md p-4 flex flex-col gap-3 shadow-xs border border-outline-variant/15">
-            ${renderSectionBlock(thisSections, false)}
+            ${renderSectionBlock(thisSections)}
           </div>
         `;
       }
