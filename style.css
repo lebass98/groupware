@@ -406,9 +406,9 @@ body.dark .top-header {
   will-change: transform, opacity;
 }
 
-/* 스크롤 시 상단으로 슬라이드되어 숨겨지는 상태 */
+/* 스크롤 시 오른쪽으로 슬라이드되어 숨겨지는 상태 */
 .notice-ticker.ticker-hidden {
-  transform: translateX(-50%) translateY(-140%) !important;
+  transform: translateX(calc(-50% + 120%)) !important;
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
