@@ -2730,7 +2730,44 @@ const App = {
   renderDirectory() {
     const container = document.getElementById('directory-list-container');
     const totalCountEl = document.getElementById('directory-total-count');
+    const birthdayBannerContainer = document.getElementById('directory-birthday-banner-container');
     if (!container) return;
+
+    // 1. Render Monthly Birthday Highlight Banner
+    if (birthdayBannerContainer) {
+      const birthdayEmployees = this.state.employees.filter(e => e.isBirthdayThisMonth);
+      if (birthdayEmployees.length > 0) {
+        birthdayBannerContainer.innerHTML = `
+          <div class="relative overflow-hidden rounded-2xl p-4 bg-gradient-to-r from-pink-500/15 via-rose-500/10 to-amber-500/15 border border-pink-500/30 shadow-[0_4px_20px_rgba(236,72,153,0.08)]">
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-pink-500/20 rounded-full blur-xl pointer-events-none"></div>
+            <div class="flex items-center justify-between relative z-10 gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-11 h-11 rounded-xl bg-pink-500/20 text-pink-600 dark:text-pink-300 flex items-center justify-center flex-shrink-0 text-xl shadow-xs">
+                  🎂
+                </div>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-headline font-bold text-xs px-2 py-0.5 rounded-full bg-pink-500 text-white shadow-xs">이달의 생일</span>
+                    <span class="text-xs text-on-surface-variant font-medium">8월 생일을 축하합니다!</span>
+                  </div>
+                  <p class="font-headline font-extrabold text-sm text-on-surface mt-0.5 truncate">
+                    ${birthdayEmployees.map(e => `<span class="text-pink-600 dark:text-pink-400 cursor-pointer hover:underline" onclick="App.openDirectoryDetail(${e.id})">${e.name} ${e.role}</span> (${e.dept})`).join(', ')}
+                  </p>
+                </div>
+              </div>
+              <button onclick="App.openDirectoryDetail(${birthdayEmployees[0].id})" class="px-3 py-1.5 rounded-xl bg-pink-500 hover:bg-pink-600 text-white font-label text-xs font-bold shadow-xs hover:shadow transition-all active:scale-95 whitespace-nowrap flex-shrink-0 flex items-center gap-1">
+                <span>축하하기</span>
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        birthdayBannerContainer.innerHTML = '';
+      }
+    }
 
     const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
     const cat = this.state.currentDirectoryCategory || 'all';
@@ -2746,6 +2783,7 @@ const App = {
         (emp.statusText && emp.statusText.toLowerCase().includes(query)) ||
         (statusInfo.text && statusInfo.text.toLowerCase().includes(query)) ||
         (statusInfo.todaySchedule && statusInfo.todaySchedule.toLowerCase().includes(query)) ||
+        (emp.isBirthdayThisMonth && ('생일'.includes(query) || '생일자'.includes(query) || '이달의생일'.includes(query) || 'birthday'.includes(query))) ||
         emp.phone.includes(query);
       return matchCat && matchQuery;
     });
@@ -2774,18 +2812,26 @@ const App = {
         <div class="absolute bottom-0 right-0 h-3.5 w-3.5 ${statusInfo.dotColor} rounded-full border-2 border-surface-container-lowest z-10 ${statusInfo.pulse ? 'ring-2 ring-emerald-400/30' : ''}"></div>
       `;
 
+      const birthdayAvatarDeco = emp.isBirthdayThisMonth
+        ? `<div class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-pink-500 text-white text-[10px] flex items-center justify-center shadow-xs z-10 animate-bounce" title="이달의 생일자">🎂</div>`
+        : '';
+
       if (emp.avatar) {
         avatarHtml = `
-          <div class="h-14 w-14 rounded-full overflow-hidden bg-surface-container-low relative flex-shrink-0 cursor-pointer" onclick="App.openDirectoryDetail(${emp.id})">
+          <div class="h-14 w-14 rounded-full bg-surface-container-low relative flex-shrink-0 cursor-pointer" onclick="App.openDirectoryDetail(${emp.id})">
+            <div class="w-full h-full rounded-full overflow-hidden">
+              <img alt="${emp.name}" class="w-full h-full object-cover hover:scale-105 transition-transform" src="${emp.avatar}" />
+            </div>
             ${dotHtml}
-            <img alt="${emp.name}" class="w-full h-full object-cover hover:scale-105 transition-transform" src="${emp.avatar}" />
+            ${birthdayAvatarDeco}
           </div>
         `;
       } else {
         avatarHtml = `
-          <div class="h-14 w-14 rounded-full overflow-hidden bg-surface-container-low relative flex items-center justify-center text-primary-dim font-headline font-bold text-xl flex-shrink-0 cursor-pointer hover:bg-surface-container transition-colors" onclick="App.openDirectoryDetail(${emp.id})">
-            ${dotHtml}
+          <div class="h-14 w-14 rounded-full bg-surface-container-low relative flex items-center justify-center text-primary-dim font-headline font-bold text-xl flex-shrink-0 cursor-pointer hover:bg-surface-container transition-colors" onclick="App.openDirectoryDetail(${emp.id})">
             ${emp.avatarInitial || emp.name.charAt(0)}
+            ${dotHtml}
+            ${birthdayAvatarDeco}
           </div>
         `;
       }
@@ -2815,8 +2861,24 @@ const App = {
         `;
       }
 
+      // Monthly Birthday Badge (이달의 생일 🎂)
+      let birthdayBadge = '';
+      if (emp.isBirthdayThisMonth) {
+        birthdayBadge = `
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-500/15 text-pink-600 dark:text-pink-300 border border-pink-500/30">
+            ${getSvgIcon('cake', 'w-3.5 h-3.5 text-pink-500')}
+            <span>이달의 생일 🎂</span>
+          </span>
+        `;
+      }
+
+      // Birthday Highlight Card Style
+      const birthdayCardStyle = emp.isBirthdayThisMonth 
+        ? 'border-2 border-pink-500/30 shadow-[0_4px_16px_rgba(236,72,153,0.08)] bg-gradient-to-r from-pink-500/[0.04] to-transparent' 
+        : 'shadow-[0_2px_12px_rgba(35,44,81,0.04)]';
+
       return `
-        <div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between shadow-[0_2px_12px_rgba(35,44,81,0.04)] transition-all duration-200 hover:-translate-y-0.5 ${opacityClass} text-left">
+        <div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between transition-all duration-200 hover:-translate-y-0.5 ${opacityClass} ${birthdayCardStyle} text-left">
           <div class="flex items-center space-x-4 min-w-0">
             ${avatarHtml}
             <div class="cursor-pointer min-w-0" onclick="App.openDirectoryDetail(${emp.id})">
@@ -2828,6 +2890,7 @@ const App = {
               <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
                 ${primaryStatusBadge}
                 ${todayScheduleBadge}
+                ${birthdayBadge}
               </div>
             </div>
           </div>
@@ -2879,6 +2942,7 @@ const App = {
     const avatarWrap = document.getElementById('dir-detail-avatar-wrap');
     const statusBadgeEl = document.getElementById('dir-detail-status-badge');
     const statusTextEl = document.getElementById('dir-detail-status-text');
+    const birthdayEl = document.getElementById('dir-detail-birthday');
 
     const statusInfo = this.getEmployeeStatusInfo(emp);
 
@@ -2888,6 +2952,22 @@ const App = {
     if (telEl) telEl.innerText = emp.tel;
     if (emailEl) emailEl.innerText = emp.email;
     if (deptEl) deptEl.innerText = emp.dept;
+
+    // Birthday Info in detail card
+    if (birthdayEl) {
+      if (emp.isBirthdayThisMonth) {
+        birthdayEl.innerHTML = `
+          <div class="flex items-center gap-1.5">
+            <span class="font-body text-xs font-extrabold text-pink-600 dark:text-pink-400">${emp.birthday ? emp.birthday + '일' : '8월'}</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-pink-500 text-white shadow-xs">이달의 생일 🎂</span>
+          </div>
+        `;
+      } else if (emp.birthday) {
+        birthdayEl.innerHTML = `<span class="font-body text-xs font-semibold text-on-surface">${emp.birthday}</span>`;
+      } else {
+        birthdayEl.innerHTML = `<span class="font-body text-xs text-on-surface-variant/60">-</span>`;
+      }
+    }
 
     if (statusBadgeEl) {
       let extraHtml = '';
@@ -2906,6 +2986,16 @@ const App = {
         `;
       }
 
+      let birthdayBadgeHtml = '';
+      if (emp.isBirthdayThisMonth) {
+        birthdayBadgeHtml = `
+          <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-pink-500/15 text-pink-600 dark:text-pink-300 border border-pink-500/30 shadow-xs">
+            ${getSvgIcon('cake', 'w-3.5 h-3.5 text-pink-500')}
+            <span>이달의 생일자 🎂</span>
+          </span>
+        `;
+      }
+
       statusBadgeEl.innerHTML = `
         <div class="flex flex-wrap items-center justify-center gap-2">
           <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
@@ -2913,6 +3003,7 @@ const App = {
             <span>${statusInfo.text}</span>
           </span>
           ${extraHtml}
+          ${birthdayBadgeHtml}
         </div>
       `;
     }

@@ -140,7 +140,9 @@
     "avatar": "profile.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "isBirthdayThisMonth": true,
+    "birthday": "08.21"
   },
   {
     "id": 12,
