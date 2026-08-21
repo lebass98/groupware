@@ -33,7 +33,7 @@ const FramerMotion = {
     if (!element || typeof element.animate !== 'function') return null;
     const duration = (options.duration || 0.42) * 1000;
     const easing = options.easing || 'cubic-bezier(0.16, 1, 0.3, 1)';
-    
+
     // Keyframes 객체 형식 ({ opacity: [0, 1], transform: [...] }) -> Web Animations API 배열 포맷 변환
     let waKeyframes = keyframes;
     if (typeof keyframes === 'object' && !Array.isArray(keyframes)) {
@@ -80,7 +80,7 @@ const FramerMotion = {
           easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
           fill: 'both'
         });
-      } catch (e) {}
+      } catch (e) { }
     });
   }
 };
@@ -182,7 +182,7 @@ const App = {
     this.loadState();
     this.applyTheme(this.state.settings.themeIdx || 3);
     this.startLiveClock();
-    
+
     // Initialize Home Menu Columns (2열 or 3열)
     const savedCols = parseInt(localStorage.getItem('wordncode_menu_columns'), 10) || this.state.menuColumns || 2;
     this.setMenuColumns(savedCols);
@@ -220,7 +220,7 @@ const App = {
         }
       });
     }
-    
+
     // 탭/창 백그라운드 전환 시 공지 티커 중지/재개 (타이머 중첩 & 텍스트 겹침 완벽 방지)
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
@@ -563,9 +563,9 @@ const App = {
 
       if (!geo.isAllowed) {
         const distInfo = geo.distanceMeter !== null ? ` (현재 이탈 거리: 약 ${geo.distanceMeter >= 1000 ? (geo.distanceMeter / 1000).toFixed(1) + 'km' : geo.distanceMeter + 'm'})` : '';
-        
+
         this.showToast(`⛔ 출근 거부: 지정 장소(서울 금천구 벚꽃로 298) 반경 500m 이내에서만 출근이 가능합니다.`);
-        
+
         setTimeout(() => {
           alert(`⛔ 출근 체크 실패 (위치 제한)\n\n지정된 출근 가능 장소:\n• 서울 금천구 벚꽃로 298 (가산동)\n• 허용 반경: 500m 이내\n\n현재 수신된 위치:\n• ${this.state.currentLocation}${distInfo}\n\n회사 지정 출근 지역으로 이동하신 후 다시 시도해 주세요.`);
         }, 100);
@@ -648,10 +648,10 @@ const App = {
           FramerMotion.animate(loginScreen, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.85)'], filter: ['blur(0px)', 'blur(8px)'] }, { duration: 0.3, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
         }
       } else {
-        const exitClass = effect === 'smooth-zoom' ? 'login-exit-zoom' 
-                        : effect === 'slide-up' ? 'login-exit-slide' 
-                        : effect === 'expanding-reveal' ? 'login-exit-reveal' 
-                        : 'login-exit-blur';
+        const exitClass = effect === 'smooth-zoom' ? 'login-exit-zoom'
+          : effect === 'slide-up' ? 'login-exit-slide'
+            : effect === 'expanding-reveal' ? 'login-exit-reveal'
+              : 'login-exit-blur';
         loginScreen.classList.add(exitClass);
       }
     }
@@ -678,26 +678,26 @@ const App = {
         targetScreen.classList.add('active');
         if (FramerMotion) {
           if (effect === 'glass-blur') {
-            FramerMotion.animate(targetScreen, { 
-              opacity: [0, 0.85, 1], 
-              filter: ['blur(20px) saturate(180%)', 'blur(4px) saturate(140%)', 'blur(0px) saturate(100%)'], 
-              transform: ['scale(0.96) translateY(16px)', 'scale(1.012) translateY(-2px)', 'scale(1) translateY(0)'] 
+            FramerMotion.animate(targetScreen, {
+              opacity: [0, 0.85, 1],
+              filter: ['blur(20px) saturate(180%)', 'blur(4px) saturate(140%)', 'blur(0px) saturate(100%)'],
+              transform: ['scale(0.96) translateY(16px)', 'scale(1.012) translateY(-2px)', 'scale(1) translateY(0)']
             }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'smooth-zoom') {
-            FramerMotion.animate(targetScreen, { 
-              opacity: [0, 0.95, 1], 
+            FramerMotion.animate(targetScreen, {
+              opacity: [0, 0.95, 1],
               transform: ['scale(0.88) translateY(24px)', 'scale(1.025) translateY(-4px)', 'scale(1) translateY(0)'],
               filter: ['blur(10px)', 'blur(0px)', 'blur(0px)']
             }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'slide-up') {
-            FramerMotion.animate(targetScreen, { 
-              opacity: [0, 1, 1], 
+            FramerMotion.animate(targetScreen, {
+              opacity: [0, 1, 1],
               transform: ['translateY(65px) scale(0.96)', 'translateY(-5px) scale(1.008)', 'translateY(0) scale(1)'],
               filter: ['blur(10px)', 'blur(0px)', 'blur(0px)']
             }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'expanding-reveal') {
-            FramerMotion.animate(targetScreen, { 
-              opacity: [0, 0.95, 1], 
+            FramerMotion.animate(targetScreen, {
+              opacity: [0, 0.95, 1],
               clipPath: ['circle(0% at 50% 45%)', 'circle(85% at 50% 45%)', 'circle(160% at 50% 45%)'],
               transform: ['scale(0.92)', 'scale(1.02)', 'scale(1)'],
               filter: ['blur(14px) brightness(1.2)', 'blur(1px) brightness(1.05)', 'blur(0px) brightness(1)']
@@ -759,8 +759,8 @@ const App = {
 
   loginDemo(provider) {
     this.executeLoginTransition(() => {
-      const msg = provider 
-        ? `🎉 ${provider} 계정으로 로그인되었습니다.` 
+      const msg = provider
+        ? `🎉 ${provider} 계정으로 로그인되었습니다.`
         : `🎉 ${this.state.user.name}님, 로그인 완료! 출결 관리 화면으로 이동합니다.`;
       this.showToast(msg);
     });
@@ -772,7 +772,7 @@ const App = {
     this.stopWorkTimer();
     this.saveState();
     history.replaceState(null, '', '#login');
-    
+
     this.hideAppShell();
     this.showScreen('screen-login');
     this.showToast('로그아웃 되었습니다.');
@@ -1064,15 +1064,15 @@ const App = {
               </span>` : ''}
             </div>
             ${isFixed
-              ? `<div class="p-1.5 rounded-lg text-primary/30 shrink-0 cursor-not-allowed" title="고정 메뉴는 변경할 수 없습니다">
+            ? `<div class="p-1.5 rounded-lg text-primary/30 shrink-0 cursor-not-allowed" title="고정 메뉴는 변경할 수 없습니다">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                 </div>`
-              : `<button type="button" onclick="App.removeDockMenu('${item.id}')" class="p-1.5 rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors shrink-0 cursor-pointer" title="독 메뉴에서 제거">
+            : `<button type="button" onclick="App.removeDockMenu('${item.id}')" class="p-1.5 rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors shrink-0 cursor-pointer" title="독 메뉴에서 제거">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                   </svg>
                 </button>`
-            }
+          }
           </div>
         `;
       });
@@ -1206,7 +1206,7 @@ const App = {
 
     try {
       localStorage.setItem('wordncode_menu_columns', String(targetCols));
-    } catch (e) {}
+    } catch (e) { }
 
     this.saveState();
   },
@@ -1365,7 +1365,7 @@ const App = {
 
   renderTodayData() {
     const userName = this.state.user?.name || '이재광';
-    
+
     // 1. Home Welcome Title
     const welcomeTitle = document.getElementById('home-welcome-title');
     if (welcomeTitle) {
@@ -1534,8 +1534,8 @@ const App = {
         todosContainer.innerHTML = displayTodos.map(todo => {
           const isDone = todo.status === 'done';
           const priorityDotColor = todo.priority === 'high' ? 'bg-error' : (todo.priority === 'medium' ? 'bg-tertiary-container' : 'bg-primary');
-          const statusBgClass = isDone 
-            ? 'bg-secondary/10 text-secondary' 
+          const statusBgClass = isDone
+            ? 'bg-secondary/10 text-secondary'
             : (todo.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
           const statusText = isDone ? '완료' : (todo.status === 'in_progress' ? '진행 중' : '할 일');
 
@@ -1601,9 +1601,9 @@ const App = {
       const unresolvedCorp = (this.state.finance.expenses.corp || []).filter(e => e.status === 'unresolved');
       const unresolvedPersonal = (this.state.finance.expenses.personal || []).filter(e => e.status === 'unresolved');
       const allUnresolved = [...unresolvedCorp, ...unresolvedPersonal];
-      
+
       unbilledCountEl.innerHTML = `${allUnresolved.length} <span class="text-sm font-normal text-on-surface-variant">건</span>`;
-      
+
       if (allUnresolved.length > 0) {
         expenseListEl.innerHTML = allUnresolved.slice(0, 2).map(e => `
           <div class="flex justify-between items-center bg-surface p-3 rounded-2xl">
@@ -1661,29 +1661,29 @@ const App = {
       // 로그인된 상태에서 일반 페이지 전환 시 Framer Motion 또는 CSS 키프레임 전환 전역 적용
       if (screenId !== 'screen-login' && this.state.isLoggedIn) {
         const effect = (this.state.settings && this.state.settings.transitionEffect) || 'glass-blur';
-        
+
         if (FramerMotion) {
           if (effect === 'glass-blur') {
-            FramerMotion.animate(target, { 
-              opacity: [0, 0.9, 1], 
-              filter: ['blur(16px) saturate(160%)', 'blur(3px)', 'blur(0px)'], 
-              transform: ['scale(0.97) translateY(14px)', 'scale(1.01) translateY(-2px)', 'scale(1) translateY(0)'] 
+            FramerMotion.animate(target, {
+              opacity: [0, 0.9, 1],
+              filter: ['blur(16px) saturate(160%)', 'blur(3px)', 'blur(0px)'],
+              transform: ['scale(0.97) translateY(14px)', 'scale(1.01) translateY(-2px)', 'scale(1) translateY(0)']
             }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'smooth-zoom') {
-            FramerMotion.animate(target, { 
-              opacity: [0, 0.95, 1], 
+            FramerMotion.animate(target, {
+              opacity: [0, 0.95, 1],
               transform: ['scale(0.90) translateY(16px)', 'scale(1.02) translateY(-2px)', 'scale(1) translateY(0)'],
               filter: ['blur(8px)', 'blur(0px)', 'blur(0px)']
             }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'slide-up') {
-            FramerMotion.animate(target, { 
-              opacity: [0, 1, 1], 
+            FramerMotion.animate(target, {
+              opacity: [0, 1, 1],
               transform: ['translateY(42px) scale(0.98)', 'translateY(-3px) scale(1.005)', 'translateY(0) scale(1)'],
               filter: ['blur(6px)', 'blur(0px)', 'blur(0px)']
             }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
           } else if (effect === 'expanding-reveal') {
-            FramerMotion.animate(target, { 
-              opacity: [0, 0.95, 1], 
+            FramerMotion.animate(target, {
+              opacity: [0, 0.95, 1],
               clipPath: ['circle(0% at 50% 50%)', 'circle(90% at 50% 50%)', 'circle(160% at 50% 50%)'],
               transform: ['scale(0.94)', 'scale(1.015)', 'scale(1)'],
               filter: ['blur(10px)', 'blur(1px)', 'blur(0px)']
@@ -1702,7 +1702,7 @@ const App = {
   // Finance / Expense & Report Methods
   switchFinanceTab(tabType) {
     this.state.finance.activeTab = tabType;
-    
+
     const tabExpense = document.getElementById('finance-tab-expense');
     const tabReport = document.getElementById('finance-tab-report');
     const contentExpense = document.getElementById('finance-expense-content');
@@ -1713,10 +1713,10 @@ const App = {
     if (tabType === 'expense') {
       titleEl.innerText = '지출결의서';
       subEl.innerText = '미결의 내역 및 결의서를 관리하세요.';
-      
+
       tabExpense.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center';
       tabReport.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center';
-      
+
       contentExpense.classList.remove('hidden');
       contentReport.classList.add('hidden');
       this.renderExpenses();
@@ -1735,7 +1735,7 @@ const App = {
 
   filterCardType(cardType) {
     this.state.finance.cardFilter = cardType;
-    
+
     const filterCorp = document.getElementById('card-filter-corp');
     const filterPersonal = document.getElementById('card-filter-personal');
 
@@ -1746,13 +1746,13 @@ const App = {
       filterPersonal.className = 'py-1.5 px-4 rounded-lg text-xs font-label font-bold text-on-primary bg-primary transition-all';
       filterCorp.className = 'py-1.5 px-4 rounded-lg text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-low transition-all';
     }
-    
+
     this.renderExpenses();
   },
 
   filterReportStatus(status) {
     this.state.finance.reportFilter = status;
-    
+
     const filters = ['all', 'draft', 'pending', 'approved'];
     filters.forEach(f => {
       const el = document.getElementById(`report-filter-${f}`);
@@ -1781,7 +1781,7 @@ const App = {
     const modalId = type === 'expense' ? 'modal-expense-write' : 'modal-report-write';
     const modalEl = document.getElementById(modalId);
     if (modalEl) modalEl.classList.add('hidden');
-    
+
     // Reset forms
     const formId = type === 'expense' ? 'form-expense-write' : 'form-report-write';
     const formEl = document.getElementById(formId);
@@ -1805,22 +1805,22 @@ const App = {
 
   writeExpenseResolve(title, amount) {
     this.openNewFinanceRequest('expense');
-    
+
     // Prefill vendor and amount
     const storeInput = document.getElementById('expense-input-store');
     const amountInput = document.getElementById('expense-input-amount');
-    
+
     if (storeInput) storeInput.value = title;
     if (amountInput) amountInput.value = amount;
   },
 
   continueReportDraft() {
     this.openNewFinanceRequest('report');
-    
+
     // Prefill draft info
     const titleInput = document.getElementById('report-input-title');
     const contentInput = document.getElementById('report-input-content');
-    
+
     if (titleInput) titleInput.value = '사내 복지 포인트 지급 기준 변경';
     if (contentInput) contentInput.value = '사내 복지 포인트 지급 한도 및 사용처 다양화에 따른 지급 세부 기준 개선 품의서 초안입니다.';
   },
@@ -1832,7 +1832,7 @@ const App = {
     if (!modalEl) return;
 
     modalEl.classList.remove('hidden');
-    
+
     // Set default today date for expense input
     if (activeTab === 'expense') {
       const today = new Date().toISOString().substring(0, 10);
@@ -1846,7 +1846,7 @@ const App = {
     const amount = parseInt(document.getElementById('expense-input-amount').value, 10) || 0;
     const dateInput = document.getElementById('expense-input-date').value;
     const category = document.getElementById('expense-input-category').value;
-    
+
     // Format date string (e.g., "11. 24 (금) 12:30")
     const dateObj = dateInput ? new Date(dateInput) : new Date();
     const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -1864,7 +1864,7 @@ const App = {
 
     // Add to state
     this.state.finance.expenses[cardFilter].unshift(newExpense);
-    
+
     // Re-render
     this.renderExpenses();
     this.closeFinanceModal('expense');
@@ -1874,7 +1874,7 @@ const App = {
   submitReportWrite(isDraft = false) {
     const title = document.getElementById('report-input-title').value;
     const approver = document.getElementById('report-input-approver').value;
-    
+
     const today = new Date();
     const todayStr = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
 
@@ -2042,18 +2042,18 @@ const App = {
   openScheduleModal(selectedDate = null) {
     const modalEl = document.getElementById('modal-schedule-write');
     if (!modalEl) return;
-    
+
     modalEl.classList.remove('hidden');
     modalEl.classList.add('active');
-    
+
     const startDateEl = document.getElementById('schedule-input-start-date');
     const endDateEl = document.getElementById('schedule-input-end-date');
-    
+
     const year = this.state.calYear || 2026;
     const month = String(this.state.calMonth || 8).padStart(2, '0');
     const day = String(this.state.calSelectedDay || 12).padStart(2, '0');
     const dateStr = selectedDate || `${year}-${month}-${day}`;
-    
+
     if (startDateEl) startDateEl.value = dateStr;
     if (endDateEl) endDateEl.value = dateStr;
   },
@@ -2064,7 +2064,7 @@ const App = {
       modalEl.classList.add('hidden');
       modalEl.classList.remove('active');
     }
-    
+
     const formEl = document.getElementById('form-schedule-write');
     if (formEl) formEl.reset();
   },
@@ -2073,10 +2073,10 @@ const App = {
     this.state.directoryPickerTarget = targetType;
     const modalEl = document.getElementById('modal-directory-picker');
     if (!modalEl) return;
-    
+
     const searchInput = document.getElementById('directory-picker-search');
     if (searchInput) searchInput.value = '';
-    
+
     modalEl.classList.remove('hidden');
     modalEl.classList.add('active');
     this.renderDirectoryPickerList();
@@ -2099,10 +2099,10 @@ const App = {
     if (!container) return;
 
     const query = (document.getElementById('directory-picker-search')?.value || '').toLowerCase().trim();
-    const filtered = (this.state.employees || []).filter(emp => 
-      !query || 
-      emp.name.toLowerCase().includes(query) || 
-      emp.dept.toLowerCase().includes(query) || 
+    const filtered = (this.state.employees || []).filter(emp =>
+      !query ||
+      emp.name.toLowerCase().includes(query) ||
+      emp.dept.toLowerCase().includes(query) ||
       emp.role.toLowerCase().includes(query)
     );
 
@@ -2152,7 +2152,7 @@ const App = {
         }
       }
     }
-    
+
     this.showToast(`👤 ${memberLabel} 님이 주소록에서 선택되었습니다.`);
     this.closeDirectoryPicker();
   },
@@ -2180,13 +2180,13 @@ const App = {
     const startDateEl = document.getElementById('schedule-input-start-date');
     const typeEl = document.getElementById('schedule-input-type');
     const badgeRadioEl = document.querySelector('input[name="schedule_type_radio"]:checked');
-    
+
     const title = (titleEl?.value || '').trim() || '신규 일정';
     const startDate = startDateEl?.value || '2026-08-12';
     const badge = badgeRadioEl ? badgeRadioEl.value : '일정';
-    
+
     const [year, month, day] = startDate.split('-').map(Number);
-    
+
     if (!this.mockDynamicSchedules) {
       this.mockDynamicSchedules = {};
     }
@@ -2194,7 +2194,7 @@ const App = {
     if (!this.mockDynamicSchedules[key]) {
       this.mockDynamicSchedules[key] = [];
     }
-    
+
     this.mockDynamicSchedules[key].push({
       title: title,
       time: '종일',
@@ -2203,10 +2203,10 @@ const App = {
       author: '이재광',
       avatar: 'profile.png'
     });
-    
+
     this.showToast(`✨ 일정 '${title}' 등록이 완료되었습니다!`);
     this.closeScheduleModal();
-    
+
     this.renderCalendar();
     this.renderTodayData();
   },
@@ -2294,7 +2294,7 @@ const App = {
     const nationalHol = this.getNationalHoliday(year, month, day);
     const solarTerm = this.getSolarTerm(year, month, day);
     const observance = this.getObservanceDay(year, month, day);
-    
+
     let combined = [];
     if (nationalHol) {
       combined.push(nationalHol);
@@ -2334,7 +2334,7 @@ const App = {
     const convertSingleTime = (t) => {
       if (!t) return '';
       t = t.trim();
-      
+
       const match = t.match(/(\d{1,2}):(\d{2})/);
       if (!match) return t;
 
@@ -2542,7 +2542,7 @@ const App = {
     // 구분 칩 동적 생성 (각 구분 고유 색상 적용)
     if (chipsEl) {
       let chipsHtml = `<button type="button" onclick="App.filterDateDetailCategory('all', this)" class="date-detail-chip px-4 py-1.5 rounded-full font-bold bg-primary text-on-primary shadow-xs transition-all active:scale-95 whitespace-nowrap active">전체</button>`;
-      
+
       const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '절기', '기념일'];
       categoryOrder.forEach(cat => {
         if (availableCategories.has(cat)) {
@@ -2924,7 +2924,7 @@ const App = {
   getWeekDays(year, month, day) {
     const current = new Date(year, month - 1, day);
     const dayOfWeek = current.getDay(); // 0: Sun, 1: Mon... 6: Sat
-    
+
     // Start of week (Sunday)
     const sunday = new Date(current);
     sunday.setDate(current.getDate() - dayOfWeek);
@@ -3503,9 +3503,9 @@ const App = {
       const infoText = (statusInfo.text || '').toLowerCase();
       const schedText = (statusInfo.todaySchedule || '').toLowerCase();
 
-      const matchQuery = !query || 
-        empName.includes(query) || 
-        empDept.includes(query) || 
+      const matchQuery = !query ||
+        empName.includes(query) ||
+        empDept.includes(query) ||
         empRole.includes(query) ||
         empStatusText.includes(query) ||
         infoText.includes(query) ||
@@ -3533,7 +3533,7 @@ const App = {
       const statusInfo = this.getEmployeeStatusInfo(emp);
       const isOff = statusInfo.type === 'offwork';
       const opacityClass = isOff ? 'opacity-75' : '';
-      
+
       let avatarHtml = '';
       const dotHtml = `
         <div class="absolute bottom-0 right-0 h-3.5 w-3.5 ${statusInfo.dotColor} rounded-full border-2 border-surface-container-lowest z-10 ${statusInfo.pulse ? 'ring-2 ring-emerald-400/30' : ''}"></div>
@@ -3575,8 +3575,8 @@ const App = {
       let todayScheduleBadge = '';
       if (statusInfo.todaySchedule) {
         const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
-        const schedBadgeClass = isVacationSchedule 
-          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20' 
+        const schedBadgeClass = isVacationSchedule
+          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
           : 'bg-sky-500/10 text-sky-700 border border-sky-500/20';
         const schedIcon = isVacationSchedule ? 'event_upcoming' : 'directions_car';
 
@@ -3600,8 +3600,8 @@ const App = {
       }
 
       // Birthday Highlight Card Style
-      const birthdayCardStyle = emp.isBirthdayThisMonth 
-        ? 'border-2 border-pink-500/30 shadow-[0_4px_16px_rgba(236,72,153,0.08)] bg-gradient-to-r from-pink-500/[0.04] to-transparent' 
+      const birthdayCardStyle = emp.isBirthdayThisMonth
+        ? 'border-2 border-pink-500/30 shadow-[0_4px_16px_rgba(236,72,153,0.08)] bg-gradient-to-r from-pink-500/[0.04] to-transparent'
         : 'shadow-[0_2px_12px_rgba(35,44,81,0.04)]';
 
       return `
@@ -3702,8 +3702,8 @@ const App = {
       let extraHtml = '';
       if (statusInfo.todaySchedule) {
         const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
-        const schedBadgeClass = isVacationSchedule 
-          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20' 
+        const schedBadgeClass = isVacationSchedule
+          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
           : 'bg-sky-500/10 text-sky-700 border border-sky-500/20';
         const schedIcon = isVacationSchedule ? 'event_upcoming' : 'directions_car';
 
@@ -3741,8 +3741,8 @@ const App = {
       let scheduleSubBadge = '';
       if (statusInfo.todaySchedule) {
         const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
-        const schedBadgeClass = isVacationSchedule 
-          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20' 
+        const schedBadgeClass = isVacationSchedule
+          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
           : 'bg-sky-500/10 text-sky-700 border border-sky-500/20';
         scheduleSubBadge = `
           <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${schedBadgeClass}">
@@ -4171,8 +4171,8 @@ const App = {
 
     if (!startEl || !endEl || !countEl) return;
 
-    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value || 
-                         document.querySelector('input[name="modal_leave_type"]:checked')?.value || '연차';
+    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value ||
+      document.querySelector('input[name="modal_leave_type"]:checked')?.value || '연차';
 
     if (selectedType === '반차(오전)' || selectedType === '반차(오후)') {
       countEl.innerText = '총 0.5일';
@@ -4208,8 +4208,8 @@ const App = {
   },
 
   submitRequest() {
-    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value || 
-                         document.querySelector('input[name="modal_leave_type"]:checked')?.value || '연차';
+    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value ||
+      document.querySelector('input[name="modal_leave_type"]:checked')?.value || '연차';
     const startDate = document.getElementById('leave-start-date')?.value || '';
     const endDate = document.getElementById('leave-end-date')?.value || '';
     const reason = document.getElementById('leave-reason-text')?.value || '개인 사유';
@@ -4234,7 +4234,7 @@ const App = {
     this.saveState();
     this.closeRequestModal();
     this.showToast(`✅ [${selectedType}] ${countText} 신청서가 성공적으로 제출되었습니다.`);
-    
+
     if (this.state.activeTab === 'screen-logs') {
       this.renderLogs();
     }
@@ -4501,8 +4501,8 @@ const App = {
       panel.classList.add('scale-100', 'opacity-100');
 
       if (FramerMotion) {
-        FramerMotion.animate(panel, 
-          { opacity: [0, 1], transform: ['scale(0.92) translateY(12px)', 'scale(1) translateY(0)'] }, 
+        FramerMotion.animate(panel,
+          { opacity: [0, 1], transform: ['scale(0.92) translateY(12px)', 'scale(1) translateY(0)'] },
           { duration: 0.32, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
         );
       }
@@ -4542,53 +4542,53 @@ const App = {
     if (FramerMotion) {
       step2.style.zIndex = '15';
       if (effect === 'glass-blur') {
-        FramerMotion.animate(step1, { 
-          opacity: [1, 0], 
-          filter: ['blur(0px)', 'blur(14px)'], 
-          transform: ['scale(1) translateY(0)', 'scale(0.92) translateY(-10px)'] 
+        FramerMotion.animate(step1, {
+          opacity: [1, 0],
+          filter: ['blur(0px)', 'blur(14px)'],
+          transform: ['scale(1) translateY(0)', 'scale(0.92) translateY(-10px)']
         }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
 
-        FramerMotion.animate(step2, { 
-          opacity: [0, 0.9, 1], 
-          filter: ['blur(16px) saturate(180%)', 'blur(3px)', 'blur(0px)'], 
-          transform: ['scale(0.94) translateY(14px)', 'scale(1.015) translateY(-2px)', 'scale(1) translateY(0)'] 
+        FramerMotion.animate(step2, {
+          opacity: [0, 0.9, 1],
+          filter: ['blur(16px) saturate(180%)', 'blur(3px)', 'blur(0px)'],
+          transform: ['scale(0.94) translateY(14px)', 'scale(1.015) translateY(-2px)', 'scale(1) translateY(0)']
         }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
 
       } else if (effect === 'smooth-zoom') {
-        FramerMotion.animate(step1, { 
-          opacity: [1, 0], 
-          transform: ['scale(1)', 'scale(0.85)'], 
-          filter: ['blur(0px)', 'blur(10px)'] 
+        FramerMotion.animate(step1, {
+          opacity: [1, 0],
+          transform: ['scale(1)', 'scale(0.85)'],
+          filter: ['blur(0px)', 'blur(10px)']
         }, { duration: 0.38, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
 
-        FramerMotion.animate(step2, { 
-          opacity: [0, 0.95, 1], 
+        FramerMotion.animate(step2, {
+          opacity: [0, 0.95, 1],
           transform: ['scale(0.86) translateY(16px)', 'scale(1.025) translateY(-3px)', 'scale(1) translateY(0)'],
           filter: ['blur(8px)', 'blur(0px)', 'blur(0px)']
         }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
 
       } else if (effect === 'slide-up') {
-        FramerMotion.animate(step1, { 
-          opacity: [1, 0], 
+        FramerMotion.animate(step1, {
+          opacity: [1, 0],
           transform: ['translateY(0) scale(1)', 'translateY(-40px) scale(0.92)'],
           filter: ['blur(0px)', 'blur(8px)']
         }, { duration: 0.38, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
 
-        FramerMotion.animate(step2, { 
-          opacity: [0, 1, 1], 
+        FramerMotion.animate(step2, {
+          opacity: [0, 1, 1],
           transform: ['translateY(45px) scale(0.96)', 'translateY(-4px) scale(1.008)', 'translateY(0) scale(1)'],
           filter: ['blur(8px)', 'blur(0px)', 'blur(0px)']
         }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
 
       } else if (effect === 'expanding-reveal') {
-        FramerMotion.animate(step1, { 
-          opacity: [1, 0], 
-          transform: ['scale(1)', 'scale(0.85)'], 
-          filter: ['blur(0px)', 'blur(10px)'] 
+        FramerMotion.animate(step1, {
+          opacity: [1, 0],
+          transform: ['scale(1)', 'scale(0.85)'],
+          filter: ['blur(0px)', 'blur(10px)']
         }, { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
 
-        FramerMotion.animate(step2, { 
-          opacity: [0, 0.95, 1], 
+        FramerMotion.animate(step2, {
+          opacity: [0, 0.95, 1],
           clipPath: ['circle(0% at 50% 50%)', 'circle(90% at 50% 50%)', 'circle(160% at 50% 50%)'],
           transform: ['scale(0.90)', 'scale(1.02)', 'scale(1)'],
           filter: ['blur(12px)', 'blur(1px)', 'blur(0px)']
@@ -4600,8 +4600,8 @@ const App = {
     clearTimeout(this._modalPreviewResetTimer);
     this._modalPreviewResetTimer = setTimeout(() => {
       if (step1 && step2) {
-        step1.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-10 transition-opacity duration-300 opacity-100';
-        step2.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-0 transition-opacity duration-300 opacity-0';
+        step1.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-md p-3 flex flex-col justify-between shadow-lg z-10 transition-opacity duration-300 opacity-100';
+        step2.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-md p-3 flex flex-col justify-between shadow-lg z-0 transition-opacity duration-300 opacity-0';
       }
     }, 2600);
   },
@@ -4626,7 +4626,7 @@ const App = {
 
     try {
       localStorage.setItem('wordncode_transition_effect', effect);
-    } catch (e) {}
+    } catch (e) { }
 
     const effectNames = {
       'glass-blur': '글래스 블러 & 크로스페이드',
@@ -4664,7 +4664,7 @@ const App = {
 
   selectColorTheme(themeIdx) {
     this.applyTheme(themeIdx);
-    
+
     // Save to state & LocalStorage
     this.state.settings.themeIdx = themeIdx;
     this.saveState();
@@ -4677,7 +4677,7 @@ const App = {
         btn.classList.remove('active');
       }
     });
-    
+
     this.closePaletteModal();
     this.showToast(`🎨 테마 ${themeIdx}(으)로 사이트 포인트 색상이 변경되었습니다.`);
   },
@@ -4724,7 +4724,7 @@ const App = {
 
     const selectedTheme = themes[themeIdx] || themes[3];
     const root = document.documentElement;
-    
+
     // Set custom CSS variables on documentElement
     for (const [key, value] of Object.entries(selectedTheme)) {
       root.style.setProperty(key, value);
@@ -4823,8 +4823,8 @@ const App = {
 
     // 2. Search Query Filter
     if (query) {
-      list = list.filter(t => 
-        t.title.toLowerCase().includes(query) || 
+      list = list.filter(t =>
+        t.title.toLowerCase().includes(query) ||
         (t.project && t.project.toLowerCase().includes(query)) ||
         (t.notes && t.notes.toLowerCase().includes(query))
       );
@@ -4876,21 +4876,21 @@ const App = {
         container.innerHTML = `
           ${backHeaderHtml}
           ${projectTodos.map(t => {
-            const isDone = t.status === 'done';
-            const checkIcon = isDone ? 'check_circle' : 'radio_button_unchecked';
-            const checkColor = isDone ? 'text-primary' : 'text-on-surface-variant';
-            const isDoneClass = isDone ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
+          const isDone = t.status === 'done';
+          const checkIcon = isDone ? 'check_circle' : 'radio_button_unchecked';
+          const checkColor = isDone ? 'text-primary' : 'text-on-surface-variant';
+          const isDoneClass = isDone ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
 
-            let priorityDot = `<span class="w-2 h-2 rounded-full bg-tertiary shrink-0"></span>`;
-            if (t.priority === 'high') priorityDot = `<span class="w-2 h-2 rounded-full bg-error shrink-0"></span>`;
-            else if (t.priority === 'low') priorityDot = `<span class="w-2 h-2 rounded-full bg-outline shrink-0"></span>`;
+          let priorityDot = `<span class="w-2 h-2 rounded-full bg-tertiary shrink-0"></span>`;
+          if (t.priority === 'high') priorityDot = `<span class="w-2 h-2 rounded-full bg-error shrink-0"></span>`;
+          else if (t.priority === 'low') priorityDot = `<span class="w-2 h-2 rounded-full bg-outline shrink-0"></span>`;
 
-            let statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">대기</span>`;
-            if (t.status === 'in_progress') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold shrink-0">진행 중</span>`;
-            else if (t.status === 'done') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold shrink-0">완료</span>`;
-            else if (t.status === 'draft') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">임시저장</span>`;
+          let statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">대기</span>`;
+          if (t.status === 'in_progress') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold shrink-0">진행 중</span>`;
+          else if (t.status === 'done') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold shrink-0">완료</span>`;
+          else if (t.status === 'draft') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">임시저장</span>`;
 
-            return `
+          return `
               <div class="flex items-center gap-3 bg-surface-container-lowest rounded-xl px-4 py-3 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openTodoDetailModal(${t.id})">
                 <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${t.id});" class="shrink-0 ${checkColor} hover:text-primary transition-colors">
                   <span class="material-symbols-outlined text-xl">${checkIcon}</span>
@@ -4906,7 +4906,7 @@ const App = {
                 </button>
               </div>
             `;
-          }).join('')}
+        }).join('')}
         `;
         return;
       }
@@ -5442,8 +5442,8 @@ const App = {
     const actionBtnText = document.getElementById('todo-detail-action-btn-text');
     if (!modal || !container) return;
 
-    const todo = (this.state.todos || []).find(t => t.id === todoId) || 
-                 (this.state.trashedTodos || []).find(t => t.id === todoId);
+    const todo = (this.state.todos || []).find(t => t.id === todoId) ||
+      (this.state.trashedTodos || []).find(t => t.id === todoId);
     if (!todo) return;
 
     this.state.currentDetailTodoId = todo.id;
@@ -5952,7 +5952,7 @@ const App = {
 
     // 2. 통합 검색 필터링
     if (query) {
-      list = list.filter(p => 
+      list = list.filter(p =>
         (p.title && p.title.toLowerCase().includes(query)) ||
         (p.projectId && p.projectId.toLowerCase().includes(query)) ||
         (p.siteName && p.siteName.toLowerCase().includes(query)) ||
@@ -6092,7 +6092,7 @@ const App = {
     if (!modal || !container) return;
 
     const p = (this.state.projects || []).find(item => item.id === projectId) ||
-              ((window.MockData && window.MockData.projects) || []).find(item => item.id === projectId);
+      ((window.MockData && window.MockData.projects) || []).find(item => item.id === projectId);
     if (!p) return;
 
     this.state.currentDetailProjectId = p.id;
@@ -6412,7 +6412,7 @@ const App = {
   // ==================== WORK REPORT METHODS ====================
   switchWorkReportTab(tab) {
     this.state.workReportTab = tab;
-    
+
     // Update Tab Buttons UI (지출결의서 탭 규격 100% 통일)
     const tabBtns = document.querySelectorAll('.report-nav-tab');
     tabBtns.forEach(btn => {
@@ -6525,8 +6525,8 @@ const App = {
 
       const chipsHtml = teams.map(t => {
         const isActive = currentTeam === t;
-        const activeClass = isActive 
-          ? 'bg-primary text-on-primary active' 
+        const activeClass = isActive
+          ? 'bg-primary text-on-primary active'
           : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-highest';
         return `
           <button class="whitespace-nowrap px-4 py-2 rounded-full font-label text-xs font-bold transition-all active:scale-95 report-team-chip ${activeClass}" onclick="App.selectReportTeam('${t}', this)">${teamLabels[t]}</button>
@@ -6576,7 +6576,7 @@ const App = {
       if (!sections || sections.length === 0) return '';
       return sections.map((sec, idx) => {
         const divider = idx > 0 ? `<div class="h-px w-full bg-outline-variant/15 my-1"></div>` : '';
-        
+
         let itemsHtml = '';
         if (sec.items && sec.items.length > 0) {
           itemsHtml = `
