@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>WnC 그룹웨어 - 스마트 근태관리 시스템</title>
-  <meta name="description" content="출퇴근 체크, 연차 신청, 근태 캘린더, 임직원 주소록 및 공지사항을 한눈에 효율적으로 관리하는 통합 스마트 그룹웨어 플랫폼" />
-  <meta name="keywords" content="워드앤코드, WnC, 그룹웨어, 근태관리, 출퇴근관리, 연차신청, 주소록, 공지사항, WnC 그룹웨어, 근태 캘린더" />
+  <meta name="description" content="출퇴근 체크, 연차 신청, 근태일지, 임직원 주소록 및 공지사항을 한눈에 효율적으로 관리하는 통합 스마트 그룹웨어 플랫폼" />
+  <meta name="keywords" content="워드앤코드, WnC, 그룹웨어, 근태관리, 출퇴근관리, 연차신청, 주소록, 공지사항, WnC 그룹웨어, 근태일지" />
   <meta name="author" content="WnC 그룹웨어" />
   <meta name="theme-color" content="#0052D0" />
 
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://lebass98.github.io/groupware/" />
   <meta property="og:title" content="WnC 그룹웨어 - 스마트 근태관리 시스템" />
-  <meta property="og:description" content="출퇴근 체크, 연차 신청, 근태 캘린더, 임직원 주소록 및 공지사항을 한눈에 관리하는 통합 스마트 WnC 그룹웨어" />
+  <meta property="og:description" content="출퇴근 체크, 연차 신청, 근태일지, 임직원 주소록 및 공지사항을 한눈에 관리하는 통합 스마트 WnC 그룹웨어" />
   <meta property="og:image" content="https://lebass98.github.io/groupware/resource/image/og_image.png?v=20260820_logo" />
   <meta property="og:image:secure_url" content="https://lebass98.github.io/groupware/resource/image/og_image.png?v=20260820_logo" />
   <meta property="og:image:type" content="image/png" />
@@ -24,7 +24,7 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:url" content="https://lebass98.github.io/groupware/" />
   <meta name="twitter:title" content="WnC 그룹웨어 - 스마트 근태관리 시스템" />
-  <meta name="twitter:description" content="출퇴근 체크, 연차 신청, 근태 캘린더, 임직원 주소록 및 공지사항을 한눈에 관리하는 통합 스마트 WnC 그룹웨어" />
+  <meta name="twitter:description" content="출퇴근 체크, 연차 신청, 근태일지, 임직원 주소록 및 공지사항을 한눈에 관리하는 통합 스마트 WnC 그룹웨어" />
   <meta name="twitter:image" content="https://lebass98.github.io/groupware/resource/image/og_image.png?v=20260820_logo" />
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
@@ -272,7 +272,7 @@
             <span class="font-label font-bold text-on-surface text-sm">출퇴근 체크</span>
           </button>
 
-          <!-- Card 2: Calendar -->
+          <!-- Card 2: Attendance Log (근태일지) -->
           <button type="button" data-id="screen-calendar" onclick="App.switchTab('screen-calendar')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -284,7 +284,7 @@
                 <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
               </svg>
             </div>
-            <span class="font-label font-bold text-on-surface text-sm">캘린더</span>
+            <span class="font-label font-bold text-on-surface text-sm">근태일지</span>
           </button>
 
           <!-- Card 3: Leave Request -->
@@ -1274,13 +1274,13 @@
       </main>
     </section>
 
-    <!-- SCREEN 10: CALENDAR / MONTHLY SCHEDULE (Unified App Layout) -->
+    <!-- SCREEN 10: ATTENDANCE LOG / MONTHLY SCHEDULE (Unified App Layout) -->
     <section class="screen-view" id="screen-calendar">
       <main class="flex-1 flex flex-col gap-5 w-full text-left py-2 pb-24">
         <!-- Header -->
         <section class="flex flex-col gap-1">
-          <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">캘린더</h2>
-          <p class="text-on-surface-variant font-body text-xs">월간, 주간, 일간 일정을 확인하고 관리하세요.</p>
+          <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">근태일지</h2>
+          <p class="text-on-surface-variant font-body text-xs">월간, 주간, 일간 근태 및 일정을 확인하고 관리하세요.</p>
         </section>
 
         <!-- Calendar Controls Card -->

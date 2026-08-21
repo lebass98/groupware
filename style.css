@@ -178,7 +178,7 @@ body.dark [class*="border-outline-variant"] {
 }
 
 /* =========================================
-   DARK MODE: 캘린더 컨테이너
+   DARK MODE: 근태일지 컨테이너
    ========================================= */
 body.dark [class*="bg-surface-container-low"][class*="rounded-2xl"] {
   background-color: var(--surface-container-low) !important;

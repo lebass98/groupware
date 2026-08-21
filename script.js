@@ -2694,7 +2694,7 @@ const App = {
       };
     }
 
-    // 2. Determine Today's Scheduled Event (금일 캘린더 일정 및 예정 뱃지 실시간 동기화)
+    // 2. Determine Today's Scheduled Event (금일 근태일지 일정 및 예정 뱃지 실시간 동기화)
     let rawSched = '';
 
     // 오늘 날짜 계산 (시스템 현재 날짜 기준: 2026-8-21 등)
