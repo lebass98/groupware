@@ -136,6 +136,9 @@ const App = {
     // Auto-fetch real GPS location on init
     this.updateRealGPSLocation(false);
 
+    // Initialize Scroll Effects (Header Notice & Dock Menu)
+    this.initScrollEffects();
+
     this.renderUI();
   },
 
@@ -534,8 +537,14 @@ const App = {
     const nav = document.getElementById('bottom-nav');
     const ticker = document.getElementById('notice-ticker');
     if (header) header.style.display = 'none';
-    if (nav) nav.style.display = 'none';
-    if (ticker) ticker.style.display = 'none';
+    if (nav) {
+      nav.style.display = 'none';
+      nav.classList.remove('nav-hidden');
+    }
+    if (ticker) {
+      ticker.style.display = 'none';
+      ticker.classList.remove('ticker-hidden');
+    }
     this.stopNoticeTicker();
   },
 
@@ -544,13 +553,84 @@ const App = {
     const nav = document.getElementById('bottom-nav');
     const ticker = document.getElementById('notice-ticker');
     if (header) header.style.display = 'flex';
-    if (nav) nav.style.display = 'flex';
-    if (ticker) ticker.style.display = 'flex';
+    if (nav) {
+      nav.style.display = 'flex';
+      nav.classList.remove('nav-hidden');
+    }
+    if (ticker) {
+      ticker.style.display = 'flex';
+      ticker.classList.remove('ticker-hidden');
+    }
     this.startNoticeTicker();
 
     const startTab = this.state.activeTab || 'screen-today';
     history.replaceState({ activeTab: startTab }, '', `#${startTab}`);
     this.switchTab(startTab, null, true);
+  },
+
+  // =========================================
+  // 스크롤 인터랙션: 최상단 공지 노출 / 아래 스크롤 숨김 & 독메뉴 위/아래 방향 슬라이드
+  // =========================================
+  initScrollEffects() {
+    let lastScrollY = window.scrollY || window.pageYOffset || 0;
+    let isTicking = false;
+    const SCROLL_THRESHOLD = 6; // 스크롤 진동/떨림 방지 임계값
+
+    const handleScroll = () => {
+      if (!this.state.isLoggedIn) {
+        isTicking = false;
+        return;
+      }
+
+      const currentScrollY = Math.max(0, window.scrollY || window.pageYOffset || 0);
+      const ticker = document.getElementById('notice-ticker');
+      const nav = document.getElementById('bottom-nav');
+      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      const clientHeight = window.innerHeight || document.documentElement.clientHeight;
+      const isAtBottom = (currentScrollY + clientHeight) >= (scrollHeight - 20);
+
+      // 1. 공지사항 티커: 스크롤이 최상단(<= 20px)에 닿았을 때만 나타나고, 아래로 내리면 슬라이드 업되어 숨김
+      if (ticker && ticker.style.display !== 'none') {
+        if (currentScrollY <= 20) {
+          ticker.classList.remove('ticker-hidden');
+        } else {
+          ticker.classList.add('ticker-hidden');
+        }
+      }
+
+      // 2. 하단 독 메뉴: 스크롤을 위로 올릴 때 나타나고, 아래로 내릴 때는 슬라이드 다운되어 숨김
+      if (nav && nav.style.display !== 'none') {
+        if (currentScrollY <= 20 || isAtBottom) {
+          // 최상단 또는 페이지 맨 끝에 도달했을 때는 항상 독메뉴 표시
+          nav.classList.remove('nav-hidden');
+        } else if (Math.abs(currentScrollY - lastScrollY) >= SCROLL_THRESHOLD) {
+          if (currentScrollY > lastScrollY) {
+            // 아래로 스크롤 (Scroll Down) -> 독메뉴 숨김
+            nav.classList.add('nav-hidden');
+          } else {
+            // 위로 스크롤 (Scroll Up) -> 독메뉴 표시
+            nav.classList.remove('nav-hidden');
+          }
+        }
+      }
+
+      lastScrollY = currentScrollY;
+      isTicking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!isTicking) {
+        window.requestAnimationFrame(handleScroll);
+        isTicking = true;
+      }
+    }, { passive: true });
+  },
+
+  resetScrollEffects() {
+    const ticker = document.getElementById('notice-ticker');
+    const nav = document.getElementById('bottom-nav');
+    if (ticker) ticker.classList.remove('ticker-hidden');
+    if (nav) nav.classList.remove('nav-hidden');
   },
 
   // =========================================
@@ -633,6 +713,10 @@ const App = {
     this.state.activeTab = targetId;
     this.showScreen(targetId);
     this.saveState(); // 탭 이동 시 상태를 저장하여 새로고침 시 화면 복원
+
+    // 탭 전환 시 화면 스크롤 최상단 이동 및 공지/독메뉴 표시 상태 리셋
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    this.resetScrollEffects();
 
     // popstate(뒤로가기)에 의한 탭 전환이 아닐 때만 히스토리 스택에 push
     if (!isPopState) {
