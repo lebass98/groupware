@@ -297,6 +297,19 @@ body {
   font-variation-settings: 'FILL' 1, 'wght' 500;
 }
 
+.svg-icon {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  vertical-align: middle;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.svg-icon.filled {
+  fill: currentColor;
+}
+
 /* App Layout Frame */
 .app-container {
   width: 100%;
@@ -1462,7 +1475,8 @@ body.dark .nav-item.active {
   color: var(--primary);
 }
 
-.nav-item.active .material-symbols-outlined {
+.nav-item.active .material-symbols-outlined,
+.nav-item.active .svg-icon {
   font-variation-settings: 'FILL' 1;
   color: var(--primary);
   transform: translateY(-1px);
