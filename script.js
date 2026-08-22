@@ -4536,8 +4536,8 @@ const App = {
     // 1. 초기 상태로 강제 리셋
     step1.style.zIndex = '10';
     step2.style.zIndex = '0';
-    step1.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-10';
-    step2.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-xl p-3 flex flex-col justify-between shadow-lg z-0 opacity-0';
+    step1.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-md p-3 flex flex-col justify-between shadow-lg z-10';
+    step2.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-md p-3 flex flex-col justify-between shadow-lg z-0 opacity-0';
 
     if (FramerMotion) {
       step2.style.zIndex = '15';
