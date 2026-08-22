@@ -1,0 +1,1746 @@
+{
+  "_meta": {
+    "projectName": "lebass98/groupware",
+    "exportedAt": "2026-08-14T10:11:45+09:00",
+    "description": "Firebase Firestore 원클릭 시딩 및 연동 전용 통합 mock 데이터셋",
+    "version": "1.0.0"
+  },
+  "employees": [
+    {
+      "id": 1,
+      "name": "김경현",
+      "dept": "경영지원팀",
+      "role": "대표",
+      "phone": "010-8885-5177",
+      "tel": "070-7711-4823",
+      "email": "abc@wordncode.com",
+      "avatar": "./resource/image/profile_abc.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 2,
+      "name": "오은주",
+      "dept": "경영지원팀",
+      "role": "차장",
+      "phone": "010-3712-7932",
+      "tel": "070-7711-4819",
+      "email": "sky@wordncode.com",
+      "avatar": "./resource/image/profile_sky.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 3,
+      "name": "김종규",
+      "dept": "기획팀",
+      "role": "팀장",
+      "phone": "010-4781-7808",
+      "tel": "070-8805-1647",
+      "email": "john@wordncode.com",
+      "avatar": "./resource/image/profile_john.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 4,
+      "name": "박규태",
+      "dept": "기획팀",
+      "role": "대리",
+      "phone": "010-3230-1573",
+      "tel": "070-8805-1647",
+      "email": "green@wordncode.com",
+      "avatar": "./resource/image/profile_green.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": "오후 반차"
+    },
+    {
+      "id": 5,
+      "name": "한상희",
+      "dept": "기획팀",
+      "role": "사원",
+      "phone": "010-2635-9110",
+      "tel": "070-7711-4815",
+      "email": "star@wordncode.com",
+      "avatar": "./resource/image/profile_star_20250326.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 6,
+      "name": "장현아",
+      "dept": "기획팀",
+      "role": "수습",
+      "phone": "010-4562-3633",
+      "tel": "070-7711-4809",
+      "email": "you@wordncode.com",
+      "avatar": "./resource/image/profile_janghyunah.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 7,
+      "name": "윤익수",
+      "dept": "디자인팀",
+      "role": "부장",
+      "phone": "010-2707-5681",
+      "tel": "070-8805-1646",
+      "email": "blue@wordncode.com",
+      "avatar": "./resource/image/profile_blue.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": "반반차"
+    },
+    {
+      "id": 8,
+      "name": "최지영",
+      "dept": "디자인팀",
+      "role": "과장",
+      "phone": "010-8632-0944",
+      "tel": "070-7711-4821",
+      "email": "white@wordncode.com",
+      "avatar": "./resource/image/profile_white.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 9,
+      "name": "신현우",
+      "dept": "디자인팀",
+      "role": "주임",
+      "phone": "010-8337-0176",
+      "tel": "070-7711-4810",
+      "email": "pink@wordncode.com",
+      "avatar": "./resource/image/profile_pink____________.png",
+      "status": "offwork",
+      "statusText": "퇴근",
+      "todaySchedule": ""
+    },
+    {
+      "id": 10,
+      "name": "명희진",
+      "dept": "디자인팀",
+      "role": "주임",
+      "phone": "010-2607-5235",
+      "tel": "070-7711-4812",
+      "email": "gray@wordncode.com",
+      "avatar": "./resource/image/profile_gray_20240502__.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 11,
+      "name": "이재광",
+      "dept": "퍼블리싱팀",
+      "role": "차장",
+      "phone": "010-5244-1251",
+      "tel": "070-7711-4808",
+      "email": "yellow@wordncode.com",
+      "avatar": "profile.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": "",
+      "isBirthdayThisMonth": true,
+      "birthday": "08.21"
+    },
+    {
+      "id": 12,
+      "name": "조지혜",
+      "dept": "퍼블리싱팀",
+      "role": "과장",
+      "phone": "010-2362-0263",
+      "tel": "070-7711-4806",
+      "email": "red@wordncode.com",
+      "avatar": "./resource/image/profile_red_20260602.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 13,
+      "name": "손석호",
+      "dept": "퍼블리싱팀",
+      "role": "주임",
+      "phone": "010-6565-4215",
+      "tel": "070-7711-4811",
+      "email": "pub@wordncode.com",
+      "avatar": "./resource/image/profile_pub.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 14,
+      "name": "최우석",
+      "dept": "개발팀",
+      "role": "과장",
+      "phone": "010-2887-1810",
+      "tel": "070-8805-1648",
+      "email": "mobile@wordncode.com",
+      "avatar": "./resource/image/profile_mobile.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 15,
+      "name": "안영재",
+      "dept": "개발팀",
+      "role": "대리",
+      "phone": "010-9776-1309",
+      "tel": "070-7711-4805",
+      "email": "pro@wordncode.com",
+      "avatar": "./resource/image/profile_pro.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 16,
+      "name": "곽재훈",
+      "dept": "개발팀",
+      "role": "대리",
+      "phone": "010-8479-8729",
+      "tel": "070-7711-1653",
+      "email": "spring@wordncode.com",
+      "avatar": "./resource/image/profile_spring.png",
+      "status": "offwork",
+      "statusText": "퇴근",
+      "todaySchedule": ""
+    },
+    {
+      "id": 17,
+      "name": "유종현",
+      "dept": "개발팀",
+      "role": "주임",
+      "phone": "010-7455-4047",
+      "tel": "070-7711-4820",
+      "email": "jsp@wordncode.com",
+      "avatar": "./resource/image/profile_jsp.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 18,
+      "name": "남기현",
+      "dept": "전략본부",
+      "role": "본부장",
+      "phone": "010-5578-9436",
+      "tel": "070-7711-4804",
+      "email": "help@wordncode.com",
+      "avatar": "./resource/image/profile_help.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": "외근"
+    },
+    {
+      "id": 19,
+      "name": "윤진성",
+      "dept": "전략본부",
+      "role": "과장",
+      "phone": "010-2889-3274",
+      "tel": "070-7711-4822",
+      "email": "apple@wordncode.com",
+      "avatar": "./resource/image/profile_apple_20250611.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 20,
+      "name": "김종규",
+      "dept": "수행본부",
+      "role": "본부장",
+      "phone": "010-4781-7808",
+      "tel": "070-8805-1647",
+      "email": "john@wordncode.com",
+      "avatar": "./resource/image/profile_john_.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": ""
+    },
+    {
+      "id": 21,
+      "name": "이채원",
+      "dept": "수행본부",
+      "role": "사원",
+      "phone": "010-3533-1662",
+      "tel": "070-4210-6134",
+      "email": "cool@wordncode.com",
+      "avatar": "./resource/image/profile_cool_20241224_lee.png",
+      "status": "work",
+      "statusText": "근무중",
+      "todaySchedule": "오후 반차"
+    }
+  ],
+  "notices": [
+    {
+      "id": 1,
+      "title": "2024년 하반기 전사 워크샵 일정 안내",
+      "category": "인사",
+      "date": "2024.10.24",
+      "isPinned": true,
+      "isNew": true,
+      "author": "경영지원팀 오은주 차장",
+      "summary": "2024년 하반기 전사 워크샵 일정을 아래와 같이 안내합니다.",
+      "content": "<p class=\"mb-3\">안녕하십니까, 임직원 여러분.</p><p class=\"mb-3\">2024년도 하반기 전사 워크샵 일정을 아래와 같이 안내드리오니, 부서별 일정을 확인하시어 준비해 주시기 바랍니다. 소통과 단합을 위한 다양하고 유익한 프로그램이 준비되어 있습니다.</p><div class=\"bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary\"><h3 class=\"font-headline font-bold text-primary mb-2 text-sm\">워크샵 주요 일정</h3><ul class=\"list-disc list-inside space-y-1.5 text-xs text-on-surface-variant\"><li><strong>일시:</strong> 2024년 11월 14일(목) ~ 11월 15일(금) [1박 2일]</li><li><strong>장소:</strong> 강원도 속초 리조트 메인 홀</li><li><strong>참석 대상:</strong> 전 임직원</li><li><strong>집결:</strong> 사옥 전면 주차장 08:30 대형버스 탑승</li></ul></div><p>상세 안내 자료 및 세부 편성표는 첨부파일을 확인해 주시기 바랍니다. 문의사항은 인사팀으로 연락 부탁드립니다.</p>",
+      "fileName": "2024_하반기_워크샵_세부안내.pdf",
+      "fileSize": "3.8 MB"
+    },
+    {
+      "id": 2,
+      "title": "임직원 건강검진 제휴 병원 추가 안내",
+      "category": "복지",
+      "date": "2024.10.22",
+      "isPinned": false,
+      "isNew": true,
+      "author": "경영지원팀 오은주 차장",
+      "summary": "2024년 임직원 종합 건강검진 신규 제휴 병원이 추가되었습니다.",
+      "content": "<p class=\"mb-3\">안녕하세요, 경영지원팀입니다.</p><p class=\"mb-3\">임직원분들의 편의 증진을 위해 2024년도 종합 건강검진 지정 제휴 병원을 추가 지정하였습니다.</p><div class=\"bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary\"><h3 class=\"font-headline font-bold text-primary mb-2 text-sm\">신규 제휴 병원 안내</h3><ul class=\"list-disc list-inside space-y-1.5 text-xs text-on-surface-variant\"><li>강남 세브란스 검진센터 (서울)</li><li>분당 서울대병원 건강증진센터 (경기)</li><li>예약 방법: 사내 복지 포털 로그인 후 온라인 신청</li></ul></div>",
+      "fileName": "2024_건강검진_제휴병원_목록.pdf",
+      "fileSize": "1.2 MB"
+    },
+    {
+      "id": 3,
+      "title": "사내 네트워크 정기 점검에 따른 서비스 일시 중단",
+      "category": "시스템",
+      "date": "2024.10.20",
+      "isPinned": false,
+      "isNew": false,
+      "author": "개발팀 최우석 과장",
+      "summary": "사내 서버 네트워크 인프라 정기 점검이 진행될 예정입니다.",
+      "content": "<p class=\"mb-3\">안녕하세요, 개발팀입니다.</p><p class=\"mb-3\">안정적인 사내 그룹웨어 서비스 제공을 위한 정기 네트워크 점검 작업이 진행됩니다.</p><div class=\"bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary\"><h3 class=\"font-headline font-bold text-primary mb-2 text-sm\">작업 일시 및 영향</h3><ul class=\"list-disc list-inside space-y-1.5 text-xs text-on-surface-variant\"><li><strong>점검 시간:</strong> 2024년 10월 27일(일) 02:00 ~ 06:00 (4시간)</li><li><strong>영향 범위:</strong> 그룹웨어, 전자결재, 출퇴근 관리 서비스 접근 불가</li></ul></div>",
+      "fileName": "네트워크_점검_안내.pdf",
+      "fileSize": "850 KB"
+    },
+    {
+      "id": 4,
+      "title": "10월 우수 사원 포상 결과 발표",
+      "category": "인사",
+      "date": "2024.10.15",
+      "isPinned": false,
+      "isNew": false,
+      "author": "경영지원팀 김경현 대표",
+      "summary": "10월 이달의 우수 사원 수상자를 발표합니다.",
+      "content": "<p class=\"mb-3\">축하합니다!</p><p class=\"mb-3\">10월 한 달간 뛰어난 성과와 헌신을 보여준 이달의 우수 사원 수상자를 발표합니다.</p><p class=\"text-xs text-on-surface-variant\">수상자 분들께는 개별 소정의 포상금과 수당이 지급됩니다.</p>",
+      "fileName": "10월_우수사원_수상자_명단.pdf",
+      "fileSize": "1.5 MB"
+    },
+    {
+      "id": 5,
+      "title": "사옥 주차장 이용 수칙 변경 안내",
+      "category": "공통",
+      "date": "2024.10.10",
+      "isPinned": false,
+      "isNew": false,
+      "author": "경영지원팀 오은주 차장",
+      "summary": "사옥 지하 주차장 등록 차량 주차 수칙 변경 사항입니다.",
+      "content": "<p class=\"mb-3\">안녕하세요, 경영지원팀입니다.</p><p class=\"mb-3\">사옥 주차 공간 효율화를 위해 주차등록 수칙이 일부 변경됩니다.</p>",
+      "fileName": "주차장_이용수칙_안내문.pdf",
+      "fileSize": "920 KB"
+    },
+    {
+      "id": 6,
+      "title": "2024년 연말 정산 안내",
+      "category": "인사",
+      "date": "2023.12.01",
+      "isPinned": false,
+      "isNew": false,
+      "author": "경영지원팀 오은주 차장",
+      "summary": "2024년도 귀속 연말정산 일정 및 관련 제출 서류 안내입니다.",
+      "content": "<p class=\"mb-3\">안녕하십니까, 임직원 여러분.</p><p class=\"mb-3\">2024년도 귀속 연말정산 일정을 아래와 같이 안내드리오니, 기한 내에 관련 서류를 제출하여 주시기 바랍니다. 올해부터 변경되는 세법 적용 사항이 있으니 첨부된 가이드라인을 반드시 확인해주시길 부탁드립니다.</p><div class=\"bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary\"><h3 class=\"font-headline font-semibold text-primary mb-2 text-sm\">주요 일정</h3><ul class=\"list-disc list-inside space-y-1.5 text-xs text-on-surface-variant\"><li>국세청 간소화 서비스 오픈: 2024.01.15</li><li>서류 제출 마감: 2024.01.31 (수) 18:00까지</li><li>예상 환급금 조회: 2024.02.15 이후</li></ul></div><p>기타 문의사항은 인사팀(내선 1234)으로 연락 주시기 바랍니다. 감사합니다.</p>",
+      "fileName": "2024_연말정산_가이드라인.pdf",
+      "fileSize": "2.4 MB"
+    }
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "title": "Q3 Performance Review UI Updates",
+      "project": "그룹웨어 고도화",
+      "status": "in_progress",
+      "priority": "high",
+      "dueDate": "오늘, 17:00",
+      "assignees": [
+        {
+          "name": "이재광",
+          "avatar": "profile.png",
+          "dept": "퍼블리싱팀",
+          "role": "차장"
+        },
+        {
+          "name": "명희진",
+          "avatar": "./resource/image/profile_gray_20240502__.png",
+          "dept": "디자인팀",
+          "role": "주임"
+        }
+      ],
+      "isOverdue": false,
+      "isMine": true,
+      "notes": "3분기 평가 UI 디자인 시스템 반응형 레이아웃 반영"
+    },
+    {
+      "id": 2,
+      "title": "API Integration for Attendance Log",
+      "project": "근태관리 시스템",
+      "status": "todo",
+      "priority": "medium",
+      "dueDate": "내일, 12:00",
+      "assignees": [
+        {
+          "name": "최우석",
+          "avatar": "./resource/image/profile_mobile.png",
+          "dept": "개발팀",
+          "role": "과장"
+        },
+        {
+          "name": "안영재",
+          "avatar": "./resource/image/profile_pro.png",
+          "dept": "개발팀",
+          "role": "대리"
+        }
+      ],
+      "isOverdue": false,
+      "isMine": false,
+      "notes": "근태 기록 1초 단위 타이머 백엔드 동기화 API 연동"
+    },
+    {
+      "id": 3,
+      "title": "Update Weekly Status Report Template",
+      "project": "경영지원 / 재무",
+      "status": "done",
+      "priority": "low",
+      "dueDate": "2026-08-12, 18:00",
+      "assignees": [
+        {
+          "name": "이재광",
+          "avatar": "profile.png",
+          "dept": "퍼블리싱팀",
+          "role": "차장"
+        }
+      ],
+      "isOverdue": false,
+      "isMine": true,
+      "notes": "주간 보고서 신규 템플릿 마크다운 양식 가이드 전달"
+    }
+  ],
+  "trashedTodos": [
+    {
+      "id": 101,
+      "title": "Q3 Performance Review UI Updates (삭제됨)",
+      "project": "그룹웨어 고도화",
+      "status": "draft",
+      "priority": "high",
+      "deletedAt": "2026-08-12",
+      "notes": "휴지통 이동 예시 항목"
+    },
+    {
+      "id": 102,
+      "title": "Finalize Q4 Marketing Assets (삭제됨)",
+      "project": "경영지원 / 재무",
+      "status": "draft",
+      "priority": "medium",
+      "deletedAt": "2026-08-11",
+      "notes": "마케팅 에셋 최종 검토 예시"
+    }
+  ],
+  "schedules": {
+    "2026-8-3": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      }
+    ],
+    "2026-8-4": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      },
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "최우석 과장",
+        "avatar": "./resource/image/profile_mobile.png"
+      },
+      {
+        "title": "반차(오후)",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "손석호 주임",
+        "avatar": "./resource/image/profile_pub.png"
+      }
+    ],
+    "2026-8-5": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      },
+      {
+        "title": "반반차 [09:00~11:00]",
+        "time": "09:00 ~ 11:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "윤익수 부장",
+        "avatar": "./resource/image/profile_blue.png"
+      },
+      {
+        "title": "외근(오후) [건강가정진흥원] 남기현 오후 건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
+    ],
+    "2026-8-6": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      },
+      {
+        "title": "외근(오전) [한국건강가정진흥원] 주간회의",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오전) [한국건강가정진흥원] 주간회의",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "외근(오전) [한국건강가정진흥원] 주간회의",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "외근(종일) [인천공항테크마켓] API 확인 작업",
+        "time": "09:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "안영재 대리",
+        "avatar": "./resource/image/profile_pro.png"
+      },
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "유종현 주임",
+        "avatar": "./resource/image/profile_jsp.png"
+      },
+      {
+        "title": "외근(오전) [한가원] 주간보고",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      },
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "error",
+        "badge": "연차",
+        "author": "조지혜 과장",
+        "avatar": "./resource/image/profile_red_20260602.png"
+      }
+    ],
+    "2026-8-7": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "반차(오후)",
+        "time": "13:00 ~ 18:00",
+        "type": "error",
+        "badge": "반차",
+        "author": "이재광 차장",
+        "avatar": "profile.png"
+      },
+      {
+        "title": "반차(오후)",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "신현우 주임",
+        "avatar": "./resource/image/profile_pink____________.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "time": "16:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오후) [비트라이스 외] 남기현 오후 비트라이스, 고양시스템 외근",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
+    ],
+    "2026-8-10": [
+      {
+        "title": "반차(오후)",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "반차(오후)",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "손석호 주임",
+        "avatar": "./resource/image/profile_pub.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "time": "16:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "조지혜 과장",
+        "avatar": "./resource/image/profile_red_20260602.png"
+      }
+    ],
+    "2026-8-11": [
+      {
+        "title": "외근(오후) [한국수소연합] 수소포탈 업무 미팅",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "외근(오후) [한국수소연합] 규제개선 미팅",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "외근(오후) [수소연합] 남기현 오후 수소연합 방문",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
+    ],
+    "2026-8-12": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "외근(오전) [건강가정진흥원] 남기현 오전 건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) [유비디시즌] 남기현 오후 유비디시즌",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) [한국건강가정진흥원] 월간회의",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "외근(오후) [한국건강가정진흥원] 월간회의",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오후) [한국건강가정진흥원] 월간회의",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "외근(오후) [한가원] 월간보고",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      },
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "error",
+        "badge": "연차",
+        "author": "조지혜 과장",
+        "avatar": "./resource/image/profile_red_20260602.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "time": "16:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "윤익수 부장",
+        "avatar": "./resource/image/profile_blue.png"
+      }
+    ],
+    "2026-8-13": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "명희진 주임",
+        "avatar": "./resource/image/profile_gray_20240502__.png"
+      },
+      {
+        "title": "외근(오전) [라마카롱 소프트] 남기현 오전 라마카롱소프트 미팅",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) [퓨처누리] 남기현 오후 퓨처누리 방문",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
+    ],
+    "2026-8-14": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "명희진 주임",
+        "avatar": "./resource/image/profile_gray_20240502__.png"
+      },
+      {
+        "title": "외근(오후) [인천공항] 남기현 오후 인천공항 방문",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(종일) [인천공항테크마켓] IDC 센터 방문",
+        "time": "09:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "안영재 대리",
+        "avatar": "./resource/image/profile_pro.png"
+      },
+      {
+        "title": "외근(오전) [프로젝트 궁리 방문] 남기현 오전 프로젝트 궁리 방문",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
+    ],
+    "2026-8-18": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "error",
+        "badge": "연차",
+        "author": "이재광 차장",
+        "avatar": "profile.png"
+      }
+    ],
+    "2026-8-19": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "error",
+        "badge": "연차",
+        "author": "이재광 차장",
+        "avatar": "profile.png"
+      },
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "한상희 사원",
+        "avatar": "./resource/image/profile_star_20250326.png"
+      },
+      {
+        "title": "외근(오전) [한국건강가정진흥원] 주간회의",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오전) [한국건강가정진흥원] 주간회의",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "외근(오전) [한가원] 주간보고",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      }
+    ],
+    "2026-8-20": [
+      {
+        "title": "연차(오후)",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "연차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      },
+      {
+        "title": "외근(오후) [이스엠디] 남기현 경성 이스엠디 미팅",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "time": "16:00 ~ 18:00",
+        "type": "error",
+        "badge": "반반차",
+        "author": "이재광 차장",
+        "avatar": "profile.png"
+      }
+    ],
+    "2026-8-21": [
+      {
+        "title": "반차(오후)",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "반차(오후)",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오후) [지티시큐] 남기현 오후 지티씨큐 방문",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "time": "16:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "윤익수 부장",
+        "avatar": "./resource/image/profile_blue.png"
+      }
+    ],
+    "2026-8-24": [
+      {
+        "title": "반차(오전)",
+        "time": "09:00 ~ 13:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "안영재 대리",
+        "avatar": "./resource/image/profile_pro.png"
+      },
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "곽재훈 대리",
+        "avatar": "./resource/image/profile_spring.png"
+      }
+    ],
+    "2026-8-25": [
+      {
+        "title": "외근(오후) [동인문화원] 남기현, 이채원 동인문화원 방문",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) [동인디지털기록관] 회의",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      }
+    ],
+    "2026-8-27": [
+      {
+        "title": "외근(종일) [지역고용정보네트워크] 업무미팅 (세종) / 예정",
+        "time": "09:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      }
+    ],
+    "2026-8-31": [
+      {
+        "title": "연차",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "최지영 과장",
+        "avatar": "./resource/image/profile_white.png"
+      }
+    ]
+  },
+  "attendance": {
+    "officeLocation": {
+      "name": "서울 금천구 벚꽃로 298",
+      "address": "서울특별시 금천구 벚꽃로 298 (가산동)",
+      "lat": 37.4812,
+      "lng": 126.8837,
+      "allowedRadiusMeters": 500
+    },
+    "logs": [
+      {
+        "id": 1,
+        "monthStr": "10월",
+        "dayNum": "24",
+        "dayName": "목요일",
+        "statusText": "출근 • 8시간 12분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:54",
+        "checkOutTimeStr": "오후 05:06",
+        "durationSec": 29520
+      },
+      {
+        "id": 2,
+        "monthStr": "10월",
+        "dayNum": "23",
+        "dayName": "수요일",
+        "statusText": "출근 • 7시간 45분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 09:15",
+        "checkOutTimeStr": "오후 05:00",
+        "durationSec": 27900
+      },
+      {
+        "id": 3,
+        "monthStr": "10월",
+        "dayNum": "22",
+        "dayName": "화요일",
+        "statusText": "재택 • 8시간 00분",
+        "statusType": "remote",
+        "checkInTimeStr": "오전 09:00",
+        "checkOutTimeStr": "오후 05:00",
+        "durationSec": 28800
+      },
+      {
+        "id": 4,
+        "monthStr": "10월",
+        "dayNum": "21",
+        "dayName": "월요일",
+        "statusText": "출근 • 9시간 02분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:48",
+        "checkOutTimeStr": "오후 05:50",
+        "durationSec": 32520
+      },
+      {
+        "id": 5,
+        "monthStr": "10월",
+        "dayNum": "18",
+        "dayName": "금요일",
+        "statusText": "연차 • 휴가",
+        "statusType": "remote",
+        "checkInTimeStr": "-",
+        "checkOutTimeStr": "-",
+        "durationSec": 28800
+      }
+    ]
+  },
+  "finance": {
+    "expenses": {
+      "corp": [
+        {
+          "id": 1,
+          "type": "restaurant",
+          "date": "11. 24 (금) 12:30",
+          "title": "(주)맛있는식당 강남점",
+          "amount": 85000,
+          "status": "unresolved"
+        },
+        {
+          "id": 2,
+          "type": "taxi",
+          "date": "11. 23 (목) 20:15",
+          "title": "카카오T택시",
+          "amount": 18500,
+          "status": "unresolved"
+        },
+        {
+          "id": 3,
+          "type": "coffee",
+          "date": "11. 22 (수) 14:00",
+          "title": "스타벅스 코엑스점",
+          "amount": 21000,
+          "status": "completed"
+        }
+      ],
+      "personal": [
+        {
+          "id": 4,
+          "type": "shopping",
+          "date": "11. 25 (토) 10:10",
+          "title": "교보문고 강남점 (도서)",
+          "amount": 34000,
+          "status": "unresolved"
+        },
+        {
+          "id": 5,
+          "type": "coffee",
+          "date": "11. 21 (화) 15:45",
+          "title": "폴바셋 가산점",
+          "amount": 6500,
+          "status": "completed"
+        }
+      ]
+    }
+  },
+  "projects": [
+    {
+      "id": 370,
+      "no": 370,
+      "title": "2026 한국메세나협회 문화기업업무추진비",
+      "projectId": "p_mecenat26",
+      "siteName": "한국메세나협회 문화기업업무추진비",
+      "siteId": "s_mecenat26",
+      "pm": "-",
+      "period": "-",
+      "periodStart": "",
+      "periodEnd": "",
+      "devLang": "-",
+      "author": "장현아",
+      "authorDept": "기획팀",
+      "authorRole": "수습",
+      "date": "2026-08-04",
+      "views": 31,
+      "status": "in_progress",
+      "statusText": "진행중",
+      "category": "문화/예술"
+    },
+    {
+      "id": 369,
+      "no": 369,
+      "title": "2026 국민취업지원제도 홈페이지 유지보수",
+      "projectId": "p_2026coaching",
+      "siteName": "2026 국민취업지원제도 홈페이지 유지보수",
+      "siteId": "s_2026coaching",
+      "pm": "-",
+      "period": "07-28 ~ 12-31",
+      "periodStart": "2026-07-28",
+      "periodEnd": "2026-12-31",
+      "devLang": "-",
+      "author": "한상희",
+      "authorDept": "기획팀",
+      "authorRole": "사원",
+      "date": "2026-07-28",
+      "views": 19,
+      "status": "maintenance",
+      "statusText": "유지보수",
+      "category": "공공/취업"
+    },
+    {
+      "id": 368,
+      "no": 368,
+      "title": "2026 수소기술사업화 지원 플랫폼 구축",
+      "projectId": "p_h2hubtc",
+      "siteName": "2026 수소기술사업화 지원 플랫폼 구축",
+      "siteId": "s_h2hubtc",
+      "pm": "남기현",
+      "period": "06-26 ~ 12-11",
+      "periodStart": "2026-06-26",
+      "periodEnd": "2026-12-11",
+      "devLang": "-",
+      "author": "장현아",
+      "authorDept": "기획팀",
+      "authorRole": "수습",
+      "date": "2026-07-08",
+      "views": 78,
+      "status": "build",
+      "statusText": "구축중",
+      "category": "에너지/플랫폼"
+    },
+    {
+      "id": 367,
+      "no": 367,
+      "title": "2026년 가족서비스방식혁신시스템 고도화 사업",
+      "projectId": "p_2026fckhf_1",
+      "siteName": "2026 가족서비스방식혁신시스템 고도화",
+      "siteId": "s_2026fckhf_1",
+      "pm": "-",
+      "period": "06-30 ~ 12-24",
+      "periodStart": "2026-06-30",
+      "periodEnd": "2026-12-24",
+      "devLang": "-",
+      "author": "이채원",
+      "authorDept": "수행본부",
+      "authorRole": "사원",
+      "date": "2026-07-03",
+      "views": 88,
+      "status": "build",
+      "statusText": "고도화",
+      "category": "가족/공공"
+    },
+    {
+      "id": 366,
+      "no": 366,
+      "title": "2026년 용인디지털기록관 홈페이지 개선",
+      "projectId": "p_yiarchive",
+      "siteName": "2026_용인디지털기록관",
+      "siteId": "s_yiarchive",
+      "pm": "남기현",
+      "period": "-",
+      "periodStart": "",
+      "periodEnd": "",
+      "devLang": "-",
+      "author": "이채원",
+      "authorDept": "수행본부",
+      "authorRole": "사원",
+      "date": "2026-06-26",
+      "views": 74,
+      "status": "in_progress",
+      "statusText": "개선사업",
+      "category": "지자체/아카이브"
+    },
+    {
+      "id": 365,
+      "no": 365,
+      "title": "가족서비스방식시스템 행복e음 연계데이터 개선",
+      "projectId": "p_ekihf",
+      "siteName": "가족서비스방식시스템 행복e음 연계데이터 개선",
+      "siteId": "s_ekihf",
+      "pm": "남기현",
+      "period": "05-29 ~ 09-30",
+      "periodStart": "2026-05-29",
+      "periodEnd": "2026-09-30",
+      "devLang": "-",
+      "author": "장현아",
+      "authorDept": "기획팀",
+      "authorRole": "수습",
+      "date": "2026-06-19",
+      "views": 44,
+      "status": "in_progress",
+      "statusText": "연계개선",
+      "category": "데이터연계"
+    },
+    {
+      "id": 364,
+      "no": 364,
+      "title": "2026 국외소재문화유산재단 홈페이지 유지관리",
+      "projectId": "s_2026okchf",
+      "siteName": "2026_국외소재문화유산재단",
+      "siteId": "s_2026okchf",
+      "pm": "-",
+      "period": "12-01 ~ 11-30",
+      "periodStart": "2025-12-01",
+      "periodEnd": "2026-11-30",
+      "devLang": "-",
+      "author": "한상희",
+      "authorDept": "기획팀",
+      "authorRole": "사원",
+      "date": "2026-06-17",
+      "views": 37,
+      "status": "maintenance",
+      "statusText": "유지관리",
+      "category": "문화유산"
+    },
+    {
+      "id": 363,
+      "no": 363,
+      "title": "2026 서울국제작가축제 웹사이트 유지보수 용역",
+      "projectId": "p_2026festival",
+      "siteName": "2026 서울국제작가축제",
+      "siteId": "s_2026festival",
+      "pm": "남기현",
+      "period": "04-22 ~ 12-31",
+      "periodStart": "2026-04-22",
+      "periodEnd": "2026-12-31",
+      "devLang": "-",
+      "author": "한상희",
+      "authorDept": "기획팀",
+      "authorRole": "사원",
+      "date": "2026-05-14",
+      "views": 118,
+      "status": "maintenance",
+      "statusText": "유지보수",
+      "category": "문화/축제"
+    },
+    {
+      "id": 362,
+      "no": 362,
+      "title": "2026년 장애인문화예술정보시스템 이음 온라인 운영 용역",
+      "projectId": "p_2026ieum",
+      "siteName": "2025_이음온라인",
+      "siteId": "s_2025ieum",
+      "pm": "-",
+      "period": "04-21 ~ 12-31",
+      "periodStart": "2026-04-21",
+      "periodEnd": "2026-12-31",
+      "devLang": "-",
+      "author": "박규태",
+      "authorDept": "기획팀",
+      "authorRole": "대리",
+      "date": "2026-05-12",
+      "views": 51,
+      "status": "maintenance",
+      "statusText": "운영용역",
+      "category": "문화/복지"
+    },
+    {
+      "id": 361,
+      "no": 361,
+      "title": "2026년 수소경제 종합정보시스템 유지보수",
+      "projectId": "p_2026h2hub",
+      "siteName": "2025_수소경제종합정보포털",
+      "siteId": "s_2025h2hub",
+      "pm": "-",
+      "period": "05-07 ~ 12-31",
+      "periodStart": "2026-05-07",
+      "periodEnd": "2026-12-31",
+      "devLang": "-",
+      "author": "박규태",
+      "authorDept": "기획팀",
+      "authorRole": "대리",
+      "date": "2026-05-12",
+      "views": 65,
+      "status": "maintenance",
+      "statusText": "유지보수",
+      "category": "에너지/공공"
+    }
+  ],
+  "workReports": [
+    {
+      "id": 1,
+      "client": "한국메세나협회",
+      "title": "2026 한국메세나협회 문화기업업무추진비 지원사업 시스템 구축",
+      "period": "2026-07-06 ~ 2026-08-14",
+      "status": "completed",
+      "statusColor": "#00693f",
+      "year": 2026,
+      "month": 8,
+      "week": 3,
+      "weekLabel": "2026년 8월 3주차",
+      "date": "2026-08-21",
+      "primaryDept": "개발팀",
+      "prevWeekSections": [
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "전주",
+          "items": [
+            "관리자 권한별 통계 대시보드 및 엑셀 다운로드 API 구현",
+            "사용자 지원사업 신청 폼 1차 단위 테스트 및 데이터 검증 로직 작성"
+          ]
+        },
+        {
+          "dept": "기획팀",
+          "deptColor": "text-tertiary",
+          "label": "전주",
+          "items": [
+            "사용자 / 관리자 시스템 운영 매뉴얼 초안 작성 완료"
+          ]
+        }
+      ],
+      "thisWeekSections": [
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "금주",
+          "items": [
+            "사용자 / 관리자 페이지 전체 구현 완료",
+            "내부 디버깅 처리 완료",
+            "운영 배포 대기 중 (최종 보안 점검 완료)"
+          ]
+        },
+        {
+          "dept": "기획팀",
+          "deptColor": "text-tertiary",
+          "label": "기획팀_장현아",
+          "items": [],
+          "comment": "이메일 | 개발일정 문의 → 개발서버 전달 완료 (8/14)"
+        }
+      ],
+      "sections": [
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "작업내역",
+          "items": [
+            "사용자 / 관리자 페이지 전체 구현 완료",
+            "내부 디버깅 처리 완료",
+            "운영 배포 대기 중"
+          ]
+        },
+        {
+          "dept": "기획팀",
+          "deptColor": "text-tertiary",
+          "label": "기획팀_장현아",
+          "items": [],
+          "comment": "이메일 | 개발일정 문의 → 개발서버 전달 완료 (8/14)"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "client": "사단법인 한국능률협회",
+      "title": "2026 국민취업지원제도 홈페이지 유지보수 및 기능 개선",
+      "period": "2026-07-28 ~ 2026-12-31",
+      "status": "in_progress",
+      "statusColor": "#785500",
+      "year": 2026,
+      "month": 8,
+      "week": 3,
+      "weekLabel": "2026년 8월 3주차",
+      "date": "2026-08-21",
+      "primaryDept": "개발팀",
+      "prevWeekSections": [
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "전주",
+          "items": [
+            "사후역량점검 테이블 스키마 최적화 및 인덱스 튜닝",
+            "월간 운영 데이터 통계 보고서 작성 및 고객사 담당자 확인 완료"
+          ]
+        }
+      ],
+      "thisWeekSections": [
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "금주",
+          "items": [
+            "사후역량점검 완료 분기 로직 추가, 관련 alert 수정, 테스트서버/운영서버 반영",
+            "회원가입 본인인증 모듈 취약점 패치 및 예외처리 적용"
+          ]
+        },
+        {
+          "dept": "기획팀",
+          "deptColor": "text-tertiary",
+          "label": "기획팀_박규태 대리",
+          "items": [
+            "8월 2차 정기 기능 개선 요구사항 접수 및 개발 일정 조율 완료"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "작업내역",
+          "items": [
+            "사후역량점검 완료 분기 로직 추가, 관련 alert 수정, 테스트서버/운영서버 반영",
+            "회원가입 본인인증 모듈 취약점 패치 및 예외처리 적용"
+          ]
+        },
+        {
+          "dept": "기획팀",
+          "deptColor": "text-tertiary",
+          "label": "기획팀_박규태 대리",
+          "items": [
+            "월간 운영 데이터 통계 보고서 작성 및 고객사 담당자 확인 완료"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "client": "수소융합얼라이언스",
+      "title": "2026 수소기술사업화 지원 플랫폼 구축 및 포털 개발",
+      "period": "2026-06-26 ~ 2026-12-11",
+      "status": "completed",
+      "statusColor": "#00693f",
+      "year": 2026,
+      "month": 8,
+      "week": 3,
+      "weekLabel": "2026년 8월 3주차",
+      "date": "2026-08-21",
+      "primaryDept": "디자인팀",
+      "prevWeekSections": [
+        {
+          "dept": "기획팀",
+          "deptColor": "text-tertiary",
+          "label": "전주",
+          "items": [
+            "수소 충전소 실시간 현황 맵 레이아웃 요구사항 정의",
+            "[국내_운영중_수소시험평가센터_조사양식_항목정의.xlsx] DB 양식 PPT 정리"
+          ]
+        },
+        {
+          "dept": "디자인팀",
+          "deptColor": "text-primary-dim",
+          "label": "전주",
+          "items": [
+            "메인 구성관련 회의 및 정보구조도(IA) 확정",
+            "메인시안관련 A, B, C안 스케치 및 레퍼런스 정리"
+          ]
+        }
+      ],
+      "thisWeekSections": [
+        {
+          "dept": "디자인팀",
+          "deptColor": "text-primary-dim",
+          "label": "금주",
+          "items": [
+            "메인 시안 반응형 웹 디자인 작업 완료 (데스크탑 / 모바일)",
+            "디자인 시안 4종 내부 확인 및 피드백 반영 완료"
+          ]
+        },
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "금주",
+          "items": [
+            "실시간 충전소 유가 및 충전 대기 차량 데이터 연계 API 설계 착수"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "dept": "디자인팀",
+          "deptColor": "text-primary-dim",
+          "label": "디자인",
+          "items": [
+            "메인 구성관련 회의 및 정보구조도(IA) 확정",
+            "메인시안관련 A, B, C안 스케치 및 레퍼런스 정리",
+            "메인 시안 반응형 웹 디자인 작업 (데스크탑 / 모바일)"
+          ]
+        },
+        {
+          "dept": "기획팀",
+          "deptColor": "text-tertiary",
+          "label": "프로젝트 진행 중",
+          "items": [
+            "[국내_운영중_수소시험평가센터_조사양식_항목정의.xlsx] DB 양식 PPT 정리",
+            "메인 디자인 시안 4종 내부 확인 → 수정사항 디자인팀에게 전달"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "client": "한국건강가정진흥원",
+      "title": "2026 한국건강가정진흥원 통합 포털 사이트 UI/UX 고도화",
+      "period": "2026-05-02 ~ 2026-10-31",
+      "status": "in_progress",
+      "statusColor": "#785500",
+      "year": 2026,
+      "month": 8,
+      "week": 3,
+      "weekLabel": "2026년 8월 3주차",
+      "date": "2026-08-21",
+      "primaryDept": "퍼블리싱팀",
+      "prevWeekSections": [
+        {
+          "dept": "기획팀",
+          "deptColor": "text-tertiary",
+          "label": "전주",
+          "items": [
+            "가족상담 신청 프로세스 IA(정보구조) 설계 및 와이어프레임 작성 완료"
+          ]
+        },
+        {
+          "dept": "디자인팀",
+          "deptColor": "text-primary-dim",
+          "label": "전주",
+          "items": [
+            "메인 대시보드 및 서브페이지 UI 스타일 가이드 시안 2종 도출"
+          ]
+        }
+      ],
+      "thisWeekSections": [
+        {
+          "dept": "퍼블리싱팀",
+          "deptColor": "text-primary",
+          "label": "금주",
+          "items": [
+            "가족상담 신청 폼 반응형 웹 접근성(A11y) 마크업 가이드 준수 작업",
+            "서브페이지 12종 HTML/CSS 템플릿 검수 및 모바일 깨짐 수정"
+          ]
+        },
+        {
+          "dept": "디자인팀",
+          "deptColor": "text-primary-dim",
+          "label": "금주",
+          "items": [
+            "메인 배너 및 카드 일러스트 에셋 8종 최종 납품 완료"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "dept": "퍼블리싱팀",
+          "deptColor": "text-primary",
+          "label": "퍼블리싱_이재광 차장, 조지혜 과장",
+          "items": [
+            "가족상담 신청 폼 반응형 웹 접근성(A11y) 마크업 가이드 준수 작업",
+            "서브페이지 12종 HTML/CSS 템플릿 검수 및 모바일 깨짐 수정"
+          ]
+        },
+        {
+          "dept": "디자인팀",
+          "deptColor": "text-primary-dim",
+          "label": "디자인_명희진 주임",
+          "items": [
+            "메인 배너 및 카드 일러스트 에셋 8종 최종 납품 완료"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "client": "인천국제공항공사",
+      "title": "2026 인천공항테크마켓 플랫폼 API 연동 및 IDC 작업",
+      "period": "2026-08-01 ~ 2026-09-30",
+      "status": "completed",
+      "statusColor": "#00693f",
+      "year": 2026,
+      "month": 8,
+      "week": 3,
+      "weekLabel": "2026년 8월 3주차",
+      "date": "2026-08-21",
+      "primaryDept": "개발팀",
+      "prevWeekSections": [
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "전주",
+          "items": [
+            "화물 터미널 실시간 반출입 모니터링 웹소켓 세션 안정화",
+            "오라클 DB 쿼리 튜닝 및 느린 쿼리 알림 임계치 재설정"
+          ]
+        }
+      ],
+      "thisWeekSections": [
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "금주",
+          "items": [
+            "인천공항 IDC 센터 방문 및 연계 서버 API 프로토콜 점검",
+            "인증 토큰 갱신 배치 스케줄러 안정화 및 모니터링 적용"
+          ]
+        },
+        {
+          "dept": "전략본부",
+          "deptColor": "text-tertiary",
+          "label": "전략_남기현 본부장",
+          "items": [],
+          "comment": "고객사 IT운영팀 실무 미팅 진행 및 3단계 추가 요구사항 조율 완료"
+        }
+      ],
+      "sections": [
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "개발_안영재 대리",
+          "items": [
+            "인천공항 IDC 센터 방문 및 연계 서버 API 프로토콜 점검",
+            "인증 토큰 갱신 배치 스케줄러 안정화 및 모니터링 적용"
+          ]
+        },
+        {
+          "dept": "전략본부",
+          "deptColor": "text-tertiary",
+          "label": "전략_남기현 본부장",
+          "items": [],
+          "comment": "고객사 IT운영팀 실무 미팅 진행 및 3단계 추가 요구사항 조율 완료"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "client": "주식회사 워드앤코드",
+      "title": "2026 WnC 스마트 그룹웨어 리뉴얼 및 모바일 하이브리드 앱 구축",
+      "period": "2026-08-01 ~ 2026-08-31",
+      "status": "completed",
+      "statusColor": "#00693f",
+      "year": 2026,
+      "month": 8,
+      "week": 3,
+      "weekLabel": "2026년 8월 3주차",
+      "date": "2026-08-21",
+      "primaryDept": "퍼블리싱팀",
+      "prevWeekSections": [
+        {
+          "dept": "개발팀",
+          "deptColor": "text-primary",
+          "label": "전주",
+          "items": [
+            "GPS 기반 원클릭 출퇴근 및 오프라인 로컬 캐싱 동기화 구조 개발",
+            "전자결재 및 지출결의서/품의서 폼 인터랙션 개발"
+          ]
+        },
+        {
+          "dept": "디자인팀",
+          "deptColor": "text-primary-dim",
+          "label": "전주",
+          "items": [
+            "Glassmorphism & Bento Grid UI 테마 시스템 및 4대 컬러 모드 정립"
+          ]
+        }
+      ],
+      "thisWeekSections": [
+        {
+          "dept": "퍼블리싱팀",
+          "deptColor": "text-primary",
+          "label": "금주",
+          "items": [
+            "팀별·주간·일간 업무보고 뷰페이지 및 전주/금주 비교 레이아웃 구현",
+            "전사 상단 탭 지출결의서 규격 100% 통일화",
+            "100% 순수 인라인 SVG 벡터 아이콘 전환 및 최적화"
+          ]
+        },
+        {
+          "dept": "경영지원팀",
+          "deptColor": "text-secondary",
+          "label": "경영지원_오은주 차장",
+          "items": [
+            "전사 임직원 21명 계정 및 8월 근태/휴가 데이터 정합성 검증 완료"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "dept": "퍼블리싱팀",
+          "deptColor": "text-primary",
+          "label": "퍼블리싱_이재광 차장, 손석호 주임",
+          "items": [
+            "M3 Material Design 및 Glassmorphism UI 전면 적용",
+            "10대 비즈니스 기능(투데이, 근태일지, 주소록, 재무, 할일, 프로젝트, 업무보고 등) 구현",
+            "100% 순수 인라인 SVG 벡터 아이콘 전환 및 최적화"
+          ]
+        },
+        {
+          "dept": "경영지원팀",
+          "deptColor": "text-secondary",
+          "label": "경영지원_오은주 차장",
+          "items": [
+            "전사 임직원 21명 계정 및 8월 근태/휴가 데이터 정합성 검증 완료"
+          ]
+        }
+      ]
+    }
+  ]
+}

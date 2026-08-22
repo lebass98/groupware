@@ -1,0 +1,74 @@
+{
+  "recentProjects": [
+    "그룹웨어 고도화",
+    "근태관리 시스템",
+    "디자인 시스템 (M3)",
+    "경영지원 / 재무"
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "title": "Q3 Performance Review UI Updates",
+      "project": "그룹웨어 고도화",
+      "status": "in_progress",
+      "priority": "high",
+      "dueDate": "오늘, 17:00",
+      "assignees": [
+        { "name": "이재광", "avatar": "profile.png", "dept": "퍼블리싱팀", "role": "차장" },
+        { "name": "명희진", "avatar": "./resource/image/profile_gray_20240502__.png", "dept": "디자인팀", "role": "주임" }
+      ],
+      "isOverdue": false,
+      "isMine": true,
+      "notes": "3분기 평가 UI 디자인 시스템 반응형 레이아웃 반영"
+    },
+    {
+      "id": 2,
+      "title": "API Integration for Attendance Log",
+      "project": "근태관리 시스템",
+      "status": "todo",
+      "priority": "medium",
+      "dueDate": "내일, 12:00",
+      "assignees": [
+        { "name": "최우석", "avatar": "./resource/image/profile_mobile.png", "dept": "개발팀", "role": "과장" },
+        { "name": "안영재", "avatar": "./resource/image/profile_pro.png", "dept": "개발팀", "role": "대리" }
+      ],
+      "isOverdue": false,
+      "isMine": false,
+      "notes": "근태 기록 1초 단위 타이머 백엔드 동기화 API 연동"
+    },
+    {
+      "id": 3,
+      "title": "Update Weekly Status Report Template",
+      "project": "경영지원 / 재무",
+      "status": "done",
+      "priority": "low",
+      "dueDate": "2026-08-12, 18:00",
+      "assignees": [
+        { "name": "이재광", "avatar": "profile.png", "dept": "퍼블리싱팀", "role": "차장" }
+      ],
+      "isOverdue": false,
+      "isMine": true,
+      "notes": "주간 보고서 신규 템플릿 마크다운 양식 가이드 전달"
+    }
+  ],
+  "trashedTodos": [
+    {
+      "id": 101,
+      "title": "Q3 Performance Review UI Updates (삭제됨)",
+      "project": "그룹웨어 고도화",
+      "status": "draft",
+      "priority": "high",
+      "deletedAt": "2026-08-12",
+      "notes": "휴지통 이동 예시 항목"
+    },
+    {
+      "id": 102,
+      "title": "Finalize Q4 Marketing Assets (삭제됨)",
+      "project": "경영지원 / 재무",
+      "status": "draft",
+      "priority": "medium",
+      "deletedAt": "2026-08-11",
+      "notes": "마케팅 에셋 최종 검토 예시"
+    }
+  ]
+}
