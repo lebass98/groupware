@@ -138,8 +138,7 @@ const App = {
       notif: true,
       dark: false,
       gps: true,
-      themeIdx: 3,
-      transitionEffect: 'glass-blur'
+      themeIdx: 3
     },
     user: {
       id: 11,
@@ -339,10 +338,6 @@ const App = {
           const validIds = ALL_DOCK_MENU_ITEMS.map(item => item.id);
           const sanitized = parsed.dockMenus.filter(id => validIds.includes(id) && id !== 'screen-profile');
           this.state.dockMenus = sanitized.length > 0 ? sanitized.slice(0, 4) : ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'];
-        }
-        const savedEffect = localStorage.getItem('wordncode_transition_effect');
-        if (savedEffect) {
-          this.state.settings.transitionEffect = savedEffect;
         }
       }
     } catch (e) {
@@ -633,122 +628,44 @@ const App = {
     const nav = document.getElementById('bottom-nav');
     const ticker = document.getElementById('notice-ticker');
 
-    const effect = this.state.settings.transitionEffect || 'glass-blur';
+    this.state.isLoggedIn = true;
+    this.state.activeTab = startTab;
+    this.saveState();
+    history.replaceState({ activeTab: startTab }, '', `#${startTab}`);
 
-    // 1. Framer Motion 엔진 또는 CSS 클래스를 통한 로그인 화면 퇴장 애니메이션
+    // 로그인 화면 숨김 및 활성 스크린 전환
     if (loginScreen) {
-      if (FramerMotion.engine) {
-        if (effect === 'glass-blur') {
-          FramerMotion.animate(loginScreen, { opacity: [1, 0], filter: ['blur(0px)', 'blur(14px)'], transform: ['scale(1)', 'scale(0.94) translateY(-8px)'] }, { duration: 0.36, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-        } else if (effect === 'smooth-zoom') {
-          FramerMotion.animate(loginScreen, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.9)'] }, { duration: 0.32, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-        } else if (effect === 'slide-up') {
-          FramerMotion.animate(loginScreen, { opacity: [1, 0], transform: ['translateY(0)', 'translateY(-40px)'] }, { duration: 0.32, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-        } else if (effect === 'expanding-reveal') {
-          FramerMotion.animate(loginScreen, { opacity: [1, 0], transform: ['scale(1)', 'scale(0.85)'], filter: ['blur(0px)', 'blur(8px)'] }, { duration: 0.3, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-        }
-      } else {
-        const exitClass = effect === 'smooth-zoom' ? 'login-exit-zoom'
-          : effect === 'slide-up' ? 'login-exit-slide'
-            : effect === 'expanding-reveal' ? 'login-exit-reveal'
-              : 'login-exit-blur';
-        loginScreen.classList.add(exitClass);
-      }
+      loginScreen.classList.remove('active');
     }
 
-    setTimeout(() => {
-      this.state.isLoggedIn = true;
-      this.state.activeTab = startTab;
-      this.saveState();
-      history.replaceState({ activeTab: startTab }, '', `#${startTab}`);
+    const screens = document.querySelectorAll('.screen-view');
+    screens.forEach(s => s.classList.remove('active'));
 
-      // 2. 로그인 화면 정리
-      if (loginScreen) {
-        loginScreen.classList.remove('active', 'login-exit-blur', 'login-exit-zoom', 'login-exit-slide', 'login-exit-reveal');
-        loginScreen.style.opacity = '';
-        loginScreen.style.filter = '';
-        loginScreen.style.transform = '';
-      }
+    if (targetScreen) {
+      targetScreen.classList.add('active');
+    }
 
-      // 3. 메인 투데이 화면 활성화 및 Framer Motion 진입 애니메이션
-      const screens = document.querySelectorAll('.screen-view');
-      screens.forEach(s => s.classList.remove('active', 'login-enter-crossfade', 'login-enter-zoom', 'login-enter-slide', 'login-enter-reveal'));
+    // 상단 헤더, 티커, 하단 독 노출
+    if (header) {
+      header.style.display = 'flex';
+    }
+    if (nav) {
+      nav.style.display = 'flex';
+      nav.classList.remove('nav-hidden');
+    }
+    if (ticker) {
+      ticker.style.display = 'flex';
+      ticker.classList.remove('ticker-hidden');
+    }
 
-      if (targetScreen) {
-        targetScreen.classList.add('active');
-        if (FramerMotion) {
-          if (effect === 'glass-blur') {
-            FramerMotion.animate(targetScreen, {
-              opacity: [0, 0.85, 1],
-              filter: ['blur(20px) saturate(180%)', 'blur(4px) saturate(140%)', 'blur(0px) saturate(100%)'],
-              transform: ['scale(0.96) translateY(16px)', 'scale(1.012) translateY(-2px)', 'scale(1) translateY(0)']
-            }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-          } else if (effect === 'smooth-zoom') {
-            FramerMotion.animate(targetScreen, {
-              opacity: [0, 0.95, 1],
-              transform: ['scale(0.88) translateY(24px)', 'scale(1.025) translateY(-4px)', 'scale(1) translateY(0)'],
-              filter: ['blur(10px)', 'blur(0px)', 'blur(0px)']
-            }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-          } else if (effect === 'slide-up') {
-            FramerMotion.animate(targetScreen, {
-              opacity: [0, 1, 1],
-              transform: ['translateY(65px) scale(0.96)', 'translateY(-5px) scale(1.008)', 'translateY(0) scale(1)'],
-              filter: ['blur(10px)', 'blur(0px)', 'blur(0px)']
-            }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-          } else if (effect === 'expanding-reveal') {
-            FramerMotion.animate(targetScreen, {
-              opacity: [0, 0.95, 1],
-              clipPath: ['circle(0% at 50% 45%)', 'circle(85% at 50% 45%)', 'circle(160% at 50% 45%)'],
-              transform: ['scale(0.92)', 'scale(1.02)', 'scale(1)'],
-              filter: ['blur(14px) brightness(1.2)', 'blur(1px) brightness(1.05)', 'blur(0px) brightness(1)']
-            }, { duration: 0.56, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-          }
+    this.startNoticeTicker();
+    this.resetScrollEffects();
+    window.scrollTo({ top: 0, behavior: 'instant' });
 
-          // 하위 카드 순차 등장 (Staggered Children Reveal)
-          setTimeout(() => {
-            FramerMotion.staggerChildren(targetScreen);
-          }, 80);
-        }
-      }
+    // 하단 독 활성 탭 갱신
+    this.renderBottomNav();
 
-      // 4. 상단 헤더, 티커, 하단 독 페이드인 노출
-      if (header) {
-        header.style.display = 'flex';
-        if (FramerMotion) {
-          FramerMotion.animate(header, { opacity: [0, 1], transform: ['translateY(-6px)', 'translateY(0)'] }, { duration: 0.38, easing: 'ease-out' });
-        }
-      }
-      if (nav) {
-        nav.style.display = 'flex';
-        nav.classList.remove('nav-hidden');
-        if (FramerMotion) {
-          FramerMotion.animate(nav, { opacity: [0, 1], transform: ['translate(-50%, 15px)', 'translate(-50%, 0)'] }, { duration: 0.42, easing: FramerMotion.spring({ stiffness: 350, damping: 26 }) });
-        }
-      }
-      if (ticker) {
-        ticker.style.display = 'flex';
-        ticker.classList.remove('ticker-hidden');
-        if (FramerMotion) {
-          FramerMotion.animate(ticker, { opacity: [0, 1], transform: ['translate(-50%, -6px)', 'translate(-50%, 0)'] }, { duration: 0.38, easing: 'ease-out' });
-        }
-      }
-
-      this.startNoticeTicker();
-      this.resetScrollEffects();
-      window.scrollTo({ top: 0, behavior: 'instant' });
-
-      // 하단 독 활성 탭 갱신
-      const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-      navItems.forEach(item => {
-        if (item.getAttribute('data-target') === startTab) {
-          item.classList.add('active');
-        } else {
-          item.classList.remove('active');
-        }
-      });
-
-      if (typeof onComplete === 'function') onComplete();
-    }, 280);
+    if (typeof onComplete === 'function') onComplete();
   },
 
   login() {
@@ -900,7 +817,6 @@ const App = {
       'modal-expense-write',
       'modal-report-write',
       'modal-theme-select',
-      'modal-transition-preview',
       'modal-dock-customizer',
       'modal-schedule-write',
       'modal-directory-picker',
@@ -1648,54 +1564,13 @@ const App = {
 
   showScreen(screenId) {
     const screens = document.querySelectorAll('.screen-view');
-    const effectClasses = ['page-enter-blur', 'page-enter-zoom', 'page-enter-slide', 'page-enter-reveal', 'login-enter-crossfade', 'login-enter-zoom', 'login-enter-slide', 'login-enter-reveal'];
-
     screens.forEach(s => {
-      s.classList.remove('active', ...effectClasses);
+      s.classList.remove('active');
     });
 
     const target = document.getElementById(screenId);
     if (target) {
       target.classList.add('active');
-
-      // 로그인된 상태에서 일반 페이지 전환 시 Framer Motion 또는 CSS 키프레임 전환 전역 적용
-      if (screenId !== 'screen-login' && this.state.isLoggedIn) {
-        const effect = (this.state.settings && this.state.settings.transitionEffect) || 'glass-blur';
-
-        if (FramerMotion) {
-          if (effect === 'glass-blur') {
-            FramerMotion.animate(target, {
-              opacity: [0, 0.9, 1],
-              filter: ['blur(16px) saturate(160%)', 'blur(3px)', 'blur(0px)'],
-              transform: ['scale(0.97) translateY(14px)', 'scale(1.01) translateY(-2px)', 'scale(1) translateY(0)']
-            }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-          } else if (effect === 'smooth-zoom') {
-            FramerMotion.animate(target, {
-              opacity: [0, 0.95, 1],
-              transform: ['scale(0.90) translateY(16px)', 'scale(1.02) translateY(-2px)', 'scale(1) translateY(0)'],
-              filter: ['blur(8px)', 'blur(0px)', 'blur(0px)']
-            }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-          } else if (effect === 'slide-up') {
-            FramerMotion.animate(target, {
-              opacity: [0, 1, 1],
-              transform: ['translateY(42px) scale(0.98)', 'translateY(-3px) scale(1.005)', 'translateY(0) scale(1)'],
-              filter: ['blur(6px)', 'blur(0px)', 'blur(0px)']
-            }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-          } else if (effect === 'expanding-reveal') {
-            FramerMotion.animate(target, {
-              opacity: [0, 0.95, 1],
-              clipPath: ['circle(0% at 50% 50%)', 'circle(90% at 50% 50%)', 'circle(160% at 50% 50%)'],
-              transform: ['scale(0.94)', 'scale(1.015)', 'scale(1)'],
-              filter: ['blur(10px)', 'blur(1px)', 'blur(0px)']
-            }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-          }
-
-          // 화면 내부 주요 카드 순차 등장
-          setTimeout(() => {
-            FramerMotion.staggerChildren(target);
-          }, 60);
-        }
-      }
     }
   },
 
@@ -4424,16 +4299,6 @@ const App = {
       }
     }
 
-    // 4. 화면 전환 효과 옵션 활성 상태 갱신
-    const currentEffect = (this.state.settings && this.state.settings.transitionEffect) || 'glass-blur';
-    document.querySelectorAll('.transition-effect-btn').forEach(btn => {
-      if (btn.getAttribute('data-effect') === currentEffect) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-
     // 드로어 노출
     drawer.classList.remove('hidden');
     backdrop.classList.remove('opacity-0');
@@ -4471,170 +4336,6 @@ const App = {
     } else {
       setTimeout(() => drawer.classList.add('hidden'), 300);
     }
-  },
-
-  // =========================================
-  // 화면 전환 효과 팝업 미리보기 모달 제어
-  // =========================================
-  openTransitionPreviewModal(effect) {
-    this._modalPreviewEffect = effect || (this.state.settings && this.state.settings.transitionEffect) || 'glass-blur';
-
-    const modal = document.getElementById('modal-transition-preview');
-    const panel = document.getElementById('transition-preview-modal-panel');
-    const nameEl = document.getElementById('modal-preview-effect-name');
-    const descEl = document.getElementById('modal-preview-effect-desc');
-
-    const effectInfo = {
-      'glass-blur': { name: '글래스 블러', desc: '블러 & 크로스페이드' },
-      'smooth-zoom': { name: '부드러운 줌', desc: '스케일 줌 & 페이드' },
-      'slide-up': { name: '슬라이드 업', desc: '네이티브 상승 모션' },
-      'expanding-reveal': { name: '확장 펄스', desc: '원형 펄스 리빌' }
-    };
-
-    const cur = effectInfo[this._modalPreviewEffect] || effectInfo['glass-blur'];
-    if (nameEl) nameEl.innerText = cur.name;
-    if (descEl) descEl.innerText = cur.desc;
-
-    if (modal && panel) {
-      modal.classList.remove('hidden');
-      panel.classList.remove('scale-95', 'opacity-0');
-      panel.classList.add('scale-100', 'opacity-100');
-
-      if (FramerMotion) {
-        FramerMotion.animate(panel,
-          { opacity: [0, 1], transform: ['scale(0.92) translateY(12px)', 'scale(1) translateY(0)'] },
-          { duration: 0.32, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
-        );
-      }
-      setTimeout(() => {
-        this.runModalTransitionAnimation(this._modalPreviewEffect);
-      }, 100);
-    }
-  },
-
-  closeTransitionPreviewModal() {
-    const modal = document.getElementById('modal-transition-preview');
-    const panel = document.getElementById('transition-preview-modal-panel');
-    if (modal && panel) {
-      panel.classList.remove('scale-100', 'opacity-100');
-      panel.classList.add('scale-95', 'opacity-0');
-      setTimeout(() => {
-        modal.classList.add('hidden');
-      }, 200);
-    }
-  },
-
-  replayTransitionModal() {
-    this.runModalTransitionAnimation(this._modalPreviewEffect || (this.state.settings && this.state.settings.transitionEffect) || 'glass-blur');
-  },
-
-  runModalTransitionAnimation(effect) {
-    const step1 = document.getElementById('modal-screen-step1');
-    const step2 = document.getElementById('modal-screen-step2');
-    if (!step1 || !step2) return;
-
-    // 1. 초기 상태로 강제 리셋
-    step1.style.zIndex = '10';
-    step2.style.zIndex = '0';
-    step1.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-md p-3 flex flex-col justify-between shadow-lg z-10';
-    step2.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-md p-3 flex flex-col justify-between shadow-lg z-0 opacity-0';
-
-    if (FramerMotion) {
-      step2.style.zIndex = '15';
-      if (effect === 'glass-blur') {
-        FramerMotion.animate(step1, {
-          opacity: [1, 0],
-          filter: ['blur(0px)', 'blur(14px)'],
-          transform: ['scale(1) translateY(0)', 'scale(0.92) translateY(-10px)']
-        }, { duration: 0.44, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-
-        FramerMotion.animate(step2, {
-          opacity: [0, 0.9, 1],
-          filter: ['blur(16px) saturate(180%)', 'blur(3px)', 'blur(0px)'],
-          transform: ['scale(0.94) translateY(14px)', 'scale(1.015) translateY(-2px)', 'scale(1) translateY(0)']
-        }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-
-      } else if (effect === 'smooth-zoom') {
-        FramerMotion.animate(step1, {
-          opacity: [1, 0],
-          transform: ['scale(1)', 'scale(0.85)'],
-          filter: ['blur(0px)', 'blur(10px)']
-        }, { duration: 0.38, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-
-        FramerMotion.animate(step2, {
-          opacity: [0, 0.95, 1],
-          transform: ['scale(0.86) translateY(16px)', 'scale(1.025) translateY(-3px)', 'scale(1) translateY(0)'],
-          filter: ['blur(8px)', 'blur(0px)', 'blur(0px)']
-        }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-
-      } else if (effect === 'slide-up') {
-        FramerMotion.animate(step1, {
-          opacity: [1, 0],
-          transform: ['translateY(0) scale(1)', 'translateY(-40px) scale(0.92)'],
-          filter: ['blur(0px)', 'blur(8px)']
-        }, { duration: 0.38, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-
-        FramerMotion.animate(step2, {
-          opacity: [0, 1, 1],
-          transform: ['translateY(45px) scale(0.96)', 'translateY(-4px) scale(1.008)', 'translateY(0) scale(1)'],
-          filter: ['blur(8px)', 'blur(0px)', 'blur(0px)']
-        }, { duration: 0.48, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-
-      } else if (effect === 'expanding-reveal') {
-        FramerMotion.animate(step1, {
-          opacity: [1, 0],
-          transform: ['scale(1)', 'scale(0.85)'],
-          filter: ['blur(0px)', 'blur(10px)']
-        }, { duration: 0.35, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-
-        FramerMotion.animate(step2, {
-          opacity: [0, 0.95, 1],
-          clipPath: ['circle(0% at 50% 50%)', 'circle(90% at 50% 50%)', 'circle(160% at 50% 50%)'],
-          transform: ['scale(0.90)', 'scale(1.02)', 'scale(1)'],
-          filter: ['blur(12px)', 'blur(1px)', 'blur(0px)']
-        }, { duration: 0.52, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
-      }
-    }
-
-    // 3. 2.6초 후 자동으로 다시 화면 1로 초기화 (반복 시연 대비)
-    clearTimeout(this._modalPreviewResetTimer);
-    this._modalPreviewResetTimer = setTimeout(() => {
-      if (step1 && step2) {
-        step1.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-md p-3 flex flex-col justify-between shadow-lg z-10 transition-opacity duration-300 opacity-100';
-        step2.className = 'absolute inset-3 top-6 bg-surface-container-lowest rounded-md p-3 flex flex-col justify-between shadow-lg z-0 transition-opacity duration-300 opacity-0';
-      }
-    }, 2600);
-  },
-
-  applyTransitionEffectFromModal() {
-    const effect = this._modalPreviewEffect || 'glass-blur';
-    this.setTransitionEffect(effect);
-    this.closeTransitionPreviewModal();
-  },
-
-  setTransitionEffect(effect) {
-    this.state.settings.transitionEffect = effect;
-    this.saveState();
-
-    document.querySelectorAll('.transition-effect-btn').forEach(btn => {
-      if (btn.getAttribute('data-effect') === effect) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-
-    try {
-      localStorage.setItem('wordncode_transition_effect', effect);
-    } catch (e) { }
-
-    const effectNames = {
-      'glass-blur': '글래스 블러 & 크로스페이드',
-      'smooth-zoom': '부드러운 줌 & 페이드',
-      'slide-up': '슬라이드 업 & 라이징',
-      'expanding-reveal': '확장 펄스 리빌'
-    };
-    this.showToast(`✨ '${effectNames[effect] || effect}' 화면 전환 효과가 적용되었습니다.`);
   },
 
   // Palette Theme Select Methods
