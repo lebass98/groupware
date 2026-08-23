@@ -654,7 +654,6 @@ body.dark .ticker-label {
 .screen-view {
   display: none !important;
   padding: 1.5rem;
-  animation: fadeIn 0.3s ease forwards;
 }
 
 .screen-view:not(#screen-login) {
@@ -673,11 +672,6 @@ body.dark .ticker-label {
   min-height: calc(100vh - 40px);
   padding: 1.5rem 1rem;
   box-sizing: border-box;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 
@@ -1643,6 +1637,11 @@ body.modal-open {
 .modal-overlay.active {
   display: flex;
   animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-card {
