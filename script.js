@@ -2854,13 +2854,25 @@ const App = {
     this.state.weeklyMonth = month;
     this.state.weeklyDay = day;
     this.renderWeeklyScheduleView();
+
+    // 상단 날짜 클릭 시 해당 일자의 일정 카드로 부드럽게 스크롤 및 하이라이트 포커스
+    setTimeout(() => {
+      const targetCard = document.getElementById(`weekly-day-section-${year}-${month}-${day}`);
+      if (targetCard) {
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        targetCard.classList.add('ring-2', 'ring-primary', 'bg-primary/5');
+        setTimeout(() => {
+          targetCard.classList.remove('ring-2', 'ring-primary', 'bg-primary/5');
+        }, 1200);
+      }
+    }, 50);
   },
 
   toggleWeeklyAllDays() {
     this.state.weeklyShowAllDays = !this.state.weeklyShowAllDays;
     const btn = document.getElementById('weekly-toggle-all-btn');
     if (btn) {
-      btn.innerText = this.state.weeklyShowAllDays ? '선택일 보기' : '주간 전체 보기';
+      btn.innerText = this.state.weeklyShowAllDays ? '선택일만 보기' : '주간 전체 보기';
     }
     this.renderWeeklyScheduleView();
   },
@@ -2881,6 +2893,9 @@ const App = {
     this.state.weeklyYear = curYear;
     this.state.weeklyMonth = curMonth;
     this.state.weeklyDay = curDay;
+    if (this.state.weeklyShowAllDays === undefined) {
+      this.state.weeklyShowAllDays = true; // 주간 보기에서는 기본으로 주별 일정이 일자별로 전부 나오도록 설정
+    }
 
     const weekDays = this.getWeekDays(curYear, curMonth, curDay);
     const weekNum = Math.ceil(curDay / 7);
@@ -2892,11 +2907,13 @@ const App = {
     const dayNamesKr = ['일', '월', '화', '수', '목', '금', '토'];
 
     // 1. Render Upper 7-Day Grid Card (Matching Monthly View grid card layout)
+    let totalWeekScheduleCount = 0;
     let gridCellsHtml = '';
     weekDays.forEach(w => {
       const isToday = (w.year === today.getFullYear() && w.month === (today.getMonth() + 1) && w.day === today.getDate());
       const isSelected = (w.day === curDay && w.month === curMonth);
       const schedules = this.getMockSchedules(w.year, w.month, w.day) || [];
+      totalWeekScheduleCount += schedules.length;
 
       let dayTextClass = 'text-on-surface-variant font-semibold';
       if (w.dayOfWeek === 0) dayTextClass = 'text-error font-bold';
@@ -2969,59 +2986,83 @@ const App = {
       </div>
     `;
 
-    // 2. Render Lower Schedule List Card (Matching Monthly View schedule list card layout)
-    const selDateObj = new Date(curYear, curMonth - 1, curDay);
-    const selDayOfWeekName = dayNamesKr[selDateObj.getDay()];
-    const selFormattedDate = `${String(curMonth).padStart(2, '0')}.${String(curDay).padStart(2, '0')} (${selDayOfWeekName})`;
-
+    // 2. Render Lower Schedule List Card (주간 일별 일정 전체 렌더링)
     const toggleBtn = document.getElementById('weekly-toggle-all-btn');
     if (toggleBtn) {
-      toggleBtn.innerText = this.state.weeklyShowAllDays ? '선택일 보기' : '주간 전체 보기';
+      toggleBtn.innerText = this.state.weeklyShowAllDays ? '선택일만 보기' : '주간 전체 보기';
     }
 
     if (this.state.weeklyShowAllDays) {
-      if (scheduleTitleEl) scheduleTitleEl.innerText = `${curMonth}월 ${weekNum}주차 전체 일정`;
+      if (scheduleTitleEl) {
+        scheduleTitleEl.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span>${curMonth}월 ${weekNum}주차 주간 일정</span>
+            <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">총 ${totalWeekScheduleCount}건</span>
+          </div>
+        `;
+      }
+
       let allDaysHtml = '';
       weekDays.forEach(w => {
         const isToday = (w.year === today.getFullYear() && w.month === (today.getMonth() + 1) && w.day === today.getDate());
+        const isSelected = (w.day === curDay && w.month === curMonth);
         const schedules = this.getMockSchedules(w.year, w.month, w.day) || [];
 
         let dayTitleClass = 'text-on-surface';
-        if (w.dayOfWeek === 0) dayTitleClass = 'text-error';
-        else if (w.dayOfWeek === 6) dayTitleClass = 'text-primary';
+        let dayBadgeClass = 'bg-surface-container text-on-surface-variant';
+        if (w.dayOfWeek === 0) {
+          dayTitleClass = 'text-error';
+          dayBadgeClass = 'bg-error/10 text-error';
+        } else if (w.dayOfWeek === 6) {
+          dayTitleClass = 'text-primary';
+          dayBadgeClass = 'bg-primary/10 text-primary';
+        }
 
         let cardsContentHtml = '';
         if (schedules.length === 0) {
-          cardsContentHtml = `<div class="text-center py-4 text-on-surface-variant/60 font-body text-xs font-medium">등록된 일정이 없습니다.</div>`;
+          cardsContentHtml = `<div class="text-center py-2.5 text-on-surface-variant/50 font-body text-xs font-medium">등록된 일정이 없습니다.</div>`;
         } else {
-          cardsContentHtml = `<div class="space-y-3">` + schedules.map(s => this.renderScheduleCardItem(s)).join('') + `</div>`;
+          cardsContentHtml = `<div class="space-y-2.5">` + schedules.map(s => this.renderWeeklyDayCardItem(s)).join('') + `</div>`;
         }
 
+        const dateFormatted = `${String(w.month).padStart(2, '0')}.${String(w.day).padStart(2, '0')}`;
+        const dayName = dayNamesKr[w.dayOfWeek];
+
         allDaysHtml += `
-          <div class="bg-surface-container-low border border-outline-variant/15 rounded-2xl p-4 relative mb-3">
-            ${isToday ? '<div class="absolute -left-1 top-6 w-2.5 h-2.5 rounded-full bg-secondary shadow-xs"></div>' : ''}
-            <div class="flex items-baseline gap-4 mb-3">
-              <h4 class="font-headline text-base font-bold ${dayTitleClass} w-24">${String(w.month).padStart(2, '0')}.${String(w.day).padStart(2, '0')} (${dayNamesKr[w.dayOfWeek]})</h4>
-              <div class="h-[1px] bg-outline-variant/15 flex-1"></div>
+          <!-- Daily Schedule Section for ${dateFormatted} (${dayName}) -->
+          <div id="weekly-day-section-${w.year}-${w.month}-${w.day}" class="bg-surface-container-lowest border ${isSelected ? 'border-primary/40 shadow-xs' : 'border-outline-variant/15'} rounded-2xl p-4 transition-all mb-3 relative">
+            ${isToday ? '<div class="absolute -left-1 top-5 w-2 h-6 rounded-r-md bg-primary shadow-xs"></div>' : ''}
+            <div class="flex items-center justify-between gap-3 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded-md text-xs font-bold ${dayBadgeClass}">${dayName}요일</span>
+                <h4 class="font-headline text-sm sm:text-base font-bold ${dayTitleClass}">${w.month}월 ${w.day}일 (${dayName})</h4>
+                ${isToday ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary text-on-primary shadow-2xs">오늘</span>' : ''}
+              </div>
+              <span class="text-xs font-semibold text-on-surface-variant">${schedules.length > 0 ? `<span class="text-primary font-bold">${schedules.length}건</span>` : '<span class="text-on-surface-variant/60">일정 없음</span>'}</span>
             </div>
             ${cardsContentHtml}
           </div>
         `;
       });
+
       logsContainerEl.innerHTML = allDaysHtml;
     } else {
+      const selDateObj = new Date(curYear, curMonth - 1, curDay);
+      const selDayOfWeekName = dayNamesKr[selDateObj.getDay()];
+      const selFormattedDate = `${String(curMonth).padStart(2, '0')}.${String(curDay).padStart(2, '0')} (${selDayOfWeekName})`;
+
       if (scheduleTitleEl) scheduleTitleEl.innerText = `${selFormattedDate} 주간 일정`;
       const schedules = this.getMockSchedules(curYear, curMonth, curDay) || [];
       if (schedules.length === 0) {
         logsContainerEl.innerHTML = `
-          <div class="text-center py-8 text-on-surface-variant font-medium">
-            <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
-            <p class="font-bold text-on-surface text-base">등록된 일정이 없습니다.</p>
+          <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium border border-outline-variant/10 shadow-xs">
+            <div class="w-10 h-10 text-outline mb-2 mx-auto flex items-center justify-center">${getSvgIcon('event_available', 'w-8 h-8')}</div>
+            <p class="font-bold text-on-surface text-sm">등록된 일정이 없습니다.</p>
             <p class="text-xs text-on-surface-variant/70 mt-1">상단 주간 달력에서 날짜를 클릭하여 일정을 확인해보세요.</p>
           </div>
         `;
       } else {
-        logsContainerEl.innerHTML = `<div class="space-y-3">` + schedules.map(s => this.renderScheduleCardItem(s)).join('') + `</div>`;
+        logsContainerEl.innerHTML = `<div class="space-y-3">` + schedules.map(s => this.renderWeeklyDayCardItem(s)).join('') + `</div>`;
       }
     }
   },
