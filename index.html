@@ -1437,27 +1437,31 @@
         </section>
 
         <!-- Calendar Controls Card -->
-        <div class="flex items-center justify-between bg-surface-container-lowest border border-outline-variant/15 rounded-2xl px-4 py-3 shadow-sm">
-          <!-- Segmented View Switcher (월 / 주 / 일) -->
-          <div class="flex items-center bg-surface-container p-0.5 rounded-full shrink-0">
-            <button type="button" onclick="App.setCalendarView('month')" class="px-3.5 py-1 rounded-full font-bold text-xs bg-surface-container-lowest text-primary shadow-xs transition-all">월</button>
-            <button type="button" onclick="App.setCalendarView('week')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">주</button>
-            <button type="button" onclick="App.setCalendarView('day')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">일</button>
+        <div class="flex flex-col gap-3 bg-surface-container-lowest border border-outline-variant/15 rounded-2xl p-4 shadow-sm">
+          <!-- Top Row: Date Navigation & Today Button -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <button onclick="App.prevMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 rounded-lg hover:bg-surface-container active:scale-90" aria-label="이전 달">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+              </button>
+              <h3 id="cal-header-month-text" class="font-headline font-bold text-lg text-on-surface whitespace-nowrap">2026년 8월</h3>
+              <button onclick="App.nextMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 rounded-lg hover:bg-surface-container active:scale-90" aria-label="다음 달">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                </svg>
+              </button>
+            </div>
+            <button onclick="App.resetCalendarToToday()" class="px-3.5 py-1.5 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high hover:text-primary transition-all active:scale-95">오늘</button>
           </div>
-          <div class="flex items-center space-x-2">
-            <button onclick="App.prevMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-              </svg>
-            </button>
-            <h3 id="cal-header-month-text" class="font-headline font-bold text-base text-on-surface">2026년 8월</h3>
-            <button onclick="App.nextMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-              </svg>
-            </button>
+
+          <!-- Bottom Row: Segmented View Switcher (월 / 주 / 일) -->
+          <div class="flex items-center bg-surface-container p-1 rounded-xl w-full">
+            <button type="button" onclick="App.setCalendarView('month')" class="flex-1 py-1.5 rounded-lg font-bold text-xs bg-surface-container-lowest text-primary shadow-xs transition-all text-center">월</button>
+            <button type="button" onclick="App.setCalendarView('week')" class="flex-1 py-1.5 rounded-lg font-bold text-xs text-on-surface-variant hover:text-primary transition-all text-center">주</button>
+            <button type="button" onclick="App.setCalendarView('day')" class="flex-1 py-1.5 rounded-lg font-bold text-xs text-on-surface-variant hover:text-primary transition-all text-center">일</button>
           </div>
-          <button onclick="App.resetCalendarToToday()" class="px-3.5 py-1 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high transition-all active:scale-95">오늘</button>
         </div>
         
         <!-- Calendar Grid Card -->
@@ -1506,27 +1510,31 @@
         </section>
 
         <!-- Weekly Controls Card -->
-        <div class="flex items-center justify-between bg-surface-container-lowest border border-outline-variant/15 rounded-2xl px-4 py-3 shadow-sm">
-          <!-- Segmented View Switcher (월 / 주 / 일) -->
-          <div class="flex items-center bg-surface-container p-0.5 rounded-full shrink-0">
-            <button type="button" onclick="App.setCalendarView('month')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">월</button>
-            <button type="button" onclick="App.setCalendarView('week')" class="px-3.5 py-1 rounded-full font-bold text-xs bg-surface-container-lowest text-primary shadow-xs transition-all">주</button>
-            <button type="button" onclick="App.setCalendarView('day')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">일</button>
+        <div class="flex flex-col gap-3 bg-surface-container-lowest border border-outline-variant/15 rounded-2xl p-4 shadow-sm">
+          <!-- Top Row: Date Navigation & Today Button -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <button onclick="App.prevWeek()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 rounded-lg hover:bg-surface-container active:scale-90" aria-label="이전 주">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+              </button>
+              <h3 id="weekly-view-header-title" class="font-headline font-bold text-lg text-on-surface whitespace-nowrap">2026년 8월 2주차</h3>
+              <button onclick="App.nextWeek()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 rounded-lg hover:bg-surface-container active:scale-90" aria-label="다음 주">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                </svg>
+              </button>
+            </div>
+            <button onclick="App.resetWeeklyToToday()" class="px-3.5 py-1.5 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high hover:text-primary transition-all active:scale-95">오늘</button>
           </div>
-          <div class="flex items-center space-x-2">
-            <button onclick="App.prevWeek()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-              </svg>
-            </button>
-            <h3 id="weekly-view-header-title" class="font-headline font-bold text-base text-on-surface">2026년 8월 2주차</h3>
-            <button onclick="App.nextWeek()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-              </svg>
-            </button>
+
+          <!-- Bottom Row: Segmented View Switcher (월 / 주 / 일) -->
+          <div class="flex items-center bg-surface-container p-1 rounded-xl w-full">
+            <button type="button" onclick="App.setCalendarView('month')" class="flex-1 py-1.5 rounded-lg font-bold text-xs text-on-surface-variant hover:text-primary transition-all text-center">월</button>
+            <button type="button" onclick="App.setCalendarView('week')" class="flex-1 py-1.5 rounded-lg font-bold text-xs bg-surface-container-lowest text-primary shadow-xs transition-all text-center">주</button>
+            <button type="button" onclick="App.setCalendarView('day')" class="flex-1 py-1.5 rounded-lg font-bold text-xs text-on-surface-variant hover:text-primary transition-all text-center">일</button>
           </div>
-          <button onclick="App.resetWeeklyToToday()" class="px-3.5 py-1 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high transition-all active:scale-95">오늘</button>
         </div>
 
         <!-- Weekly Grid Card (Layout identical to Monthly View grid card) -->
@@ -1564,27 +1572,31 @@
         </section>
 
         <!-- Daily Controls Card -->
-        <div class="flex items-center justify-between bg-surface-container-lowest border border-outline-variant/15 rounded-2xl px-4 py-3 shadow-sm">
-          <!-- Segmented View Switcher (월 / 주 / 일) -->
-          <div class="flex items-center bg-surface-container p-0.5 rounded-full shrink-0">
-            <button type="button" onclick="App.setCalendarView('month')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">월</button>
-            <button type="button" onclick="App.setCalendarView('week')" class="px-3.5 py-1 rounded-full font-bold text-xs text-on-surface-variant hover:text-primary transition-all">주</button>
-            <button type="button" onclick="App.setCalendarView('day')" class="px-3.5 py-1 rounded-full font-bold text-xs bg-surface-container-lowest text-primary shadow-xs transition-all">일</button>
+        <div class="flex flex-col gap-3 bg-surface-container-lowest border border-outline-variant/15 rounded-2xl p-4 shadow-sm">
+          <!-- Top Row: Date Navigation & Today Button -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <button onclick="App.prevDailyMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 rounded-lg hover:bg-surface-container active:scale-90" aria-label="이전 달">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+              </button>
+              <h3 id="daily-header-title" class="font-headline font-bold text-lg text-on-surface whitespace-nowrap">2026년 8월</h3>
+              <button onclick="App.nextDailyMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 rounded-lg hover:bg-surface-container active:scale-90" aria-label="다음 달">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                </svg>
+              </button>
+            </div>
+            <button onclick="App.resetDailyToToday()" class="px-3.5 py-1.5 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high hover:text-primary transition-all active:scale-95">오늘</button>
           </div>
-          <div class="flex items-center space-x-2">
-            <button onclick="App.prevDailyMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-              </svg>
-            </button>
-            <h3 id="daily-header-title" class="font-headline font-bold text-base text-on-surface">2026년 8월</h3>
-            <button onclick="App.nextDailyMonth()" class="text-on-surface-variant hover:text-primary transition-colors flex items-center p-1 active:scale-90">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-              </svg>
-            </button>
+
+          <!-- Bottom Row: Segmented View Switcher (월 / 주 / 일) -->
+          <div class="flex items-center bg-surface-container p-1 rounded-xl w-full">
+            <button type="button" onclick="App.setCalendarView('month')" class="flex-1 py-1.5 rounded-lg font-bold text-xs text-on-surface-variant hover:text-primary transition-all text-center">월</button>
+            <button type="button" onclick="App.setCalendarView('week')" class="flex-1 py-1.5 rounded-lg font-bold text-xs text-on-surface-variant hover:text-primary transition-all text-center">주</button>
+            <button type="button" onclick="App.setCalendarView('day')" class="flex-1 py-1.5 rounded-lg font-bold text-xs bg-surface-container-lowest text-primary shadow-xs transition-all text-center">일</button>
           </div>
-          <button onclick="App.resetDailyToToday()" class="px-3.5 py-1 bg-surface-container text-on-surface-variant font-bold text-xs rounded-full hover:bg-surface-container-high transition-all active:scale-95">오늘</button>
         </div>
 
         <!-- Date Picker (Scrollable 1-Month Strip) Card -->
