@@ -94,13 +94,20 @@ html, body {
   overflow-x: hidden;
 }
 
-/* 최소 글씨 크기 16px 강제 보장 규칙 및 font-bold 600 표준화 */
+/* 최소 글씨 크기 16px 강제 보장 규칙 및 font-weight 700 상한선 표준화 */
 .pc-layout-wrapper {
   font-size: 16px;
 }
 
-.font-bold {
-  font-weight: 600 !important;
+.font-bold,
+b,
+strong {
+  font-weight: 700 !important;
+}
+
+.font-extrabold,
+.font-black {
+  font-weight: 700 !important;
 }
 
 /* Custom Scrollbar */
@@ -165,7 +172,7 @@ html, body {
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-weight: 900;
+  font-weight: 700;
   font-size: 20px;
   letter-spacing: -0.5px;
   box-shadow: var(--shadow-primary);
@@ -591,7 +598,7 @@ html, body {
 
 .pc-card-title {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--on-surface);
   display: flex;
   align-items: center;
@@ -642,7 +649,7 @@ html, body {
 }
 .pc-profile-name {
   font-size: 20px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--on-surface);
   margin-bottom: 4px;
 }
@@ -675,7 +682,7 @@ html, body {
 }
 .pc-counter-num {
   font-size: 20px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--primary);
 }
 .pc-counter-label {
@@ -699,7 +706,7 @@ html, body {
 }
 .pc-leave-val {
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--primary);
   margin-bottom: 2px;
 }
@@ -756,12 +763,12 @@ html, body {
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 10px;
 }
 .pc-notice-title {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 6px;
   cursor: pointer;
   transition: color 0.2s ease;
@@ -830,7 +837,7 @@ html, body {
 }
 .pc-cal-title {
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--on-surface);
 }
 
@@ -839,7 +846,7 @@ html, body {
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--on-surface-variant);
   margin-bottom: 12px;
 }
@@ -916,7 +923,7 @@ html, body {
 
 .pc-cal-cell.today .pc-cal-date-num {
   color: var(--primary);
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .pc-cal-header-row {
@@ -929,14 +936,14 @@ html, body {
 
 .pc-cal-date-num {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--on-surface);
   line-height: 1;
 }
 
 .pc-cal-count-badge {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   padding: 1px 6px;
   border-radius: 20px;
   background: rgba(0, 106, 106, 0.1);
@@ -968,7 +975,7 @@ html, body {
 
 .pc-cal-more-tag {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--on-surface-variant);
   padding-left: 2px;
   line-height: 1;
@@ -987,7 +994,7 @@ html, body {
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   background: var(--surface-container-high);
   color: var(--on-surface-variant);
 }
@@ -1003,7 +1010,7 @@ html, body {
 }
 .pc-commute-big-time {
   font-size: 32px;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: -1px;
   color: var(--on-surface);
 }
@@ -1017,7 +1024,7 @@ html, body {
   padding: 12px;
   border-radius: 12px;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   border: none;
   cursor: pointer;
   display: flex;
@@ -1086,7 +1093,7 @@ html, body {
 }
 .pc-quick-label {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--on-surface);
 }
 
@@ -1123,7 +1130,7 @@ html, body {
 }
 .pc-todo-priority {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   padding: 2px 8px;
   border-radius: 6px;
 }

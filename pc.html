@@ -69,7 +69,15 @@
             sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
           },
           fontWeight: {
-            bold: '600',
+            thin: '100',
+            extralight: '200',
+            light: '300',
+            normal: '400',
+            medium: '500',
+            semibold: '600',
+            bold: '700',
+            extrabold: '700',
+            black: '700',
           }
         }
       }
@@ -77,7 +85,7 @@
   </script>
 
   <!-- Core Stylesheet -->
-  <link rel="stylesheet" href="./pc.css?v=20260824_6" />
+  <link rel="stylesheet" href="./pc.css?v=20260824_7" />
 </head>
 <body class="bg-surface text-on-surface select-none">
   
@@ -203,7 +211,7 @@
       <section class="pc-screen-view p-8" id="pc-screen-directory">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
-            <h2 class="text-2xl font-black text-on-surface">임직원 주소록</h2>
+            <h2 class="text-2xl font-bold text-on-surface">임직원 주소록</h2>
             <p class="text-base text-on-surface-variant font-medium">워드앤코드 전사 조직도 및 21명 임직원 연락망</p>
           </div>
           <div class="flex gap-2">
@@ -229,7 +237,7 @@
       <section class="pc-screen-view p-8" id="pc-screen-notice">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
-            <h2 class="text-2xl font-black text-on-surface">전사 공지사항</h2>
+            <h2 class="text-2xl font-bold text-on-surface">전사 공지사항</h2>
             <p class="text-base text-on-surface-variant font-medium">사내 주요 공지 및 업무 안내 게시판</p>
           </div>
         </div>
@@ -242,7 +250,7 @@
       <section class="pc-screen-view p-8" id="pc-screen-work-report">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
-            <h2 class="text-2xl font-black text-on-surface">주간 업무보고</h2>
+            <h2 class="text-2xl font-bold text-on-surface">주간 업무보고</h2>
             <p class="text-base text-on-surface-variant font-medium">전 부서별 주간 실적 및 차주 계획 현황 (전주 vs 금주 비교)</p>
           </div>
         </div>
@@ -254,7 +262,7 @@
       <!-- SCREEN 5: CHECK-IN & LOGS VIEW -->
       <section class="pc-screen-view p-8" id="pc-screen-checkin">
         <div class="mb-6 pb-4 border-b border-outline">
-          <h2 class="text-2xl font-black text-on-surface">근태 & 출/퇴근 관리</h2>
+          <h2 class="text-2xl font-bold text-on-surface">근태 & 출/퇴근 관리</h2>
           <p class="text-base text-on-surface-variant font-medium">실시간 출석 체크인 및 출퇴근 상세 기록 로그</p>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -262,7 +270,7 @@
             <div class="pc-bento-card">
               <h3 class="font-bold text-xl text-on-surface mb-4">원클릭 출퇴근</h3>
               <div class="text-center py-8 bg-surface-container-low rounded-2xl mb-5">
-                <span class="text-4xl font-black text-primary block mb-3" id="pc-checkin-live-time">09:42:15</span>
+                <span class="text-4xl font-bold text-primary block mb-3" id="pc-checkin-live-time">09:42:15</span>
                 <span class="text-base font-bold px-4 py-1.5 bg-secondary-container text-secondary rounded-full">GPS 본사 인증 (500m 이내)</span>
               </div>
               <div class="grid grid-cols-2 gap-3">
@@ -299,7 +307,7 @@
       <section class="pc-screen-view p-8" id="pc-screen-calendar">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
-            <h2 class="text-2xl font-black text-on-surface">근태일지 & 사내 캘린더</h2>
+            <h2 class="text-2xl font-bold text-on-surface">근태일지 & 사내 캘린더</h2>
             <p class="text-base text-on-surface-variant font-medium">월간/주간/일간 전사 일정 및 휴가/외근/회의 현황</p>
           </div>
           <div class="flex items-center gap-3">
@@ -346,7 +354,7 @@
       <section class="pc-screen-view p-8" id="pc-screen-finance">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
-            <h2 class="text-2xl font-black text-on-surface">재무 / 경비 관리</h2>
+            <h2 class="text-2xl font-bold text-on-surface">재무 / 경비 관리</h2>
             <p class="text-base text-on-surface-variant font-medium">법인카드 및 개인영수증 지출결의서 관리</p>
           </div>
           <button class="px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-base" onclick="PCApp.openQuickModal('expense')">+ 지출결의서 작성</button>
@@ -354,15 +362,15 @@
         <div class="grid grid-cols-3 gap-6 mb-6">
           <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline">
             <span class="text-base font-bold text-on-surface-variant block mb-1">8월 승인 총액</span>
-            <span class="text-3xl font-black text-primary">1,480,000원</span>
+            <span class="text-3xl font-bold text-primary">1,480,000원</span>
           </div>
           <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline">
             <span class="text-base font-bold text-on-surface-variant block mb-1">결재 대기</span>
-            <span class="text-3xl font-black text-tertiary">1건</span>
+            <span class="text-3xl font-bold text-tertiary">1건</span>
           </div>
           <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline">
             <span class="text-base font-bold text-on-surface-variant block mb-1">반려</span>
-            <span class="text-3xl font-black text-error">0건</span>
+            <span class="text-3xl font-bold text-error">0건</span>
           </div>
         </div>
       </section>
@@ -371,7 +379,7 @@
       <section class="pc-screen-view p-8" id="pc-screen-todo">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
-            <h2 class="text-2xl font-black text-on-surface">할 일 관리 (To-Do)</h2>
+            <h2 class="text-2xl font-bold text-on-surface">할 일 관리 (To-Do)</h2>
             <p class="text-base text-on-surface-variant font-medium">프로젝트별 업무 태스크 및 개인 우선순위 관리</p>
           </div>
         </div>
@@ -389,7 +397,7 @@
       <!-- SCREEN 9: PROJECTS VIEW -->
       <section class="pc-screen-view p-8" id="pc-screen-project">
         <div class="mb-6 pb-4 border-b border-outline">
-          <h2 class="text-2xl font-black text-on-surface">프로젝트 관리</h2>
+          <h2 class="text-2xl font-bold text-on-surface">프로젝트 관리</h2>
           <p class="text-base text-on-surface-variant font-medium">진행 중인 6대 핵심 구축 프로젝트 진척도</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -418,7 +426,7 @@
       <!-- SCREEN 10: REQUEST FORM VIEW -->
       <section class="pc-screen-view p-8" id="pc-screen-request">
         <div class="mb-6 pb-4 border-b border-outline">
-          <h2 class="text-2xl font-black text-on-surface">휴가 & 외근 신청</h2>
+          <h2 class="text-2xl font-bold text-on-surface">휴가 & 외근 신청</h2>
           <p class="text-base text-on-surface-variant font-medium">전자결재 연동 근태 및 출장 신청서</p>
         </div>
         <div class="grid grid-cols-2 gap-6 text-base">

@@ -721,7 +721,7 @@ const PCApp = {
         html += `
           <div class="pc-cal-cell ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}" onclick="PCApp.selectDate('${key}')">
             <div class="pc-cal-header-row">
-              <span class="pc-cal-date-num ${isToday ? 'text-primary font-black' : ''}">${d}</span>
+              <span class="pc-cal-date-num ${isToday ? 'text-primary font-bold' : ''}">${d}</span>
               ${daySchedules.length > 0 ? `<span class="pc-cal-count-badge">${daySchedules.length}건</span>` : ''}
             </div>
             <div class="pc-cal-events-wrap">
