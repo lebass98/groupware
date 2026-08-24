@@ -3,7 +3,7 @@
 
 /* ==========================================================================
    WnC PC Desktop Groupware Theme Tokens & Stylesheet (pc.css)
-   Minimum Font-Size: 16px Guaranteed
+   Minimum Font-Size: 13px Guaranteed
    ========================================================================== */
 
 :root {
@@ -87,16 +87,24 @@ html, body {
   background-color: var(--surface);
   color: var(--on-surface);
   font-family: var(--font-family);
-  font-size: 16px; /* 기본 폰트 16px 고정 */
+  font-size: 15px; /* 기본 본문 폰트 15px */
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-/* 최소 글씨 크기 16px 강제 보장 규칙 및 font-weight 700 상한선 표준화 */
+/* 최소 글씨 크기 13px 강제 보장 규칙 및 font-weight 700 상한선 표준화 */
 .pc-layout-wrapper {
-  font-size: 16px;
+  font-size: 15px;
+}
+
+.text-xs, 
+.text-2xs, 
+[class*="text-[10px]"], 
+[class*="text-[11px]"], 
+[class*="text-[12px]"] {
+  font-size: 13px !important;
 }
 
 .font-bold,
@@ -942,7 +950,7 @@ strong {
 }
 
 .pc-cal-count-badge {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   padding: 1px 6px;
   border-radius: 20px;
@@ -974,7 +982,7 @@ strong {
 }
 
 .pc-cal-more-tag {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--on-surface-variant);
   padding-left: 2px;
