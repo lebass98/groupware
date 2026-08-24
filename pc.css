@@ -263,8 +263,7 @@ strong {
   align-items: center;
   list-style: none;
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
 }
 
 .pc-nav-item {
@@ -488,25 +487,25 @@ strong {
 }
 
 
-/* Floating Tooltip (16px) */
+/* Floating Tooltip */
 .pc-nav-btn .pc-tooltip {
   position: absolute;
   left: calc(100% + 14px);
   top: 50%;
-  transform: translateY(-50%) scale(0.9);
-  background: #1e293b;
+  transform: translateY(-50%) scale(0.92);
+  background: #0f172a;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  padding: 8px 14px;
-  border-radius: 10px;
+  padding: 7px 14px;
+  border-radius: 9px;
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: var(--shadow-md);
-  z-index: 200;
+  transition: opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.15s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
 }
 .pc-nav-btn .pc-tooltip::before {
   content: '';
@@ -514,8 +513,8 @@ strong {
   right: 100%;
   top: 50%;
   transform: translateY(-50%);
-  border: 6px solid transparent;
-  border-right-color: #1e293b;
+  border: 5px solid transparent;
+  border-right-color: #0f172a;
 }
 .pc-nav-btn:hover .pc-tooltip {
   opacity: 1;

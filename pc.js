@@ -462,7 +462,7 @@ const PCApp = {
 
     navListEl.innerHTML = navItems.map(item => `
       <li class="pc-nav-item">
-        <button type="button" class="pc-nav-btn ${this.state.activeScreen === item.id ? 'active' : ''}" data-screen="${item.id}" onclick="PCApp.switchScreen('${item.id}')" title="${item.name}">
+        <button type="button" class="pc-nav-btn ${this.state.activeScreen === item.id ? 'active' : ''}" data-screen="${item.id}" onclick="PCApp.switchScreen('${item.id}')">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
             ${item.icon}
           </svg>
