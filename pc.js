@@ -41,6 +41,7 @@ const PCApp = {
     this.startClock();
     this.renderSidebar();
     this.renderDashboard();
+    this.startNoticeTicker();
     this.bindGlobalEvents();
     console.log('🚀 WnC PC Groupware Engine Initialized');
   },
@@ -85,6 +86,79 @@ const PCApp = {
     };
     update();
     setInterval(update, 1000);
+  },
+
+  // 2-1. Fixed Header Notice Flip Ticker Banner
+  startNoticeTicker() {
+    const track = document.getElementById('pc-ticker-track');
+    if (!track) return;
+
+    this.stopNoticeTicker();
+
+    const notices = (this.state.notices && this.state.notices.length > 0)
+      ? this.state.notices
+      : (window.MockData && window.MockData.notices) || [];
+
+    if (!notices || notices.length === 0) return;
+
+    const items = notices.slice(0, 6).map((n, idx) => ({
+      idx: idx,
+      id: n.id || idx + 1,
+      title: n.pinned ? `📌 [필독] ${n.title}` : `📢 ${n.title}`,
+      date: n.date || '2026.08.24'
+    }));
+
+    track.innerHTML = '';
+
+    let currentIdx = 0;
+    const initialEl = document.createElement('div');
+    initialEl.className = 'pc-ticker-item static';
+    initialEl.textContent = items[0].title;
+    initialEl.setAttribute('title', '공지사항 상세 보기');
+    initialEl.onclick = () => this.openNoticeModal(items[0].idx);
+    track.appendChild(initialEl);
+
+    if (items.length <= 1) return;
+
+    this._pcTickerInterval = setInterval(() => {
+      const existingNodes = Array.from(track.querySelectorAll('.pc-ticker-item'));
+      if (existingNodes.length > 1) {
+        existingNodes.slice(0, existingNodes.length - 1).forEach(el => el.remove());
+      }
+
+      const activeEl = track.querySelector('.pc-ticker-item');
+      if (!activeEl) return;
+
+      const nextIdx = (currentIdx + 1) % items.length;
+      const nextItem = items[nextIdx];
+
+      // 1. 퇴장 애니메이션
+      activeEl.className = 'pc-ticker-item flip-out';
+
+      // 2. 신규 등장 노드
+      const nextEl = document.createElement('div');
+      nextEl.className = 'pc-ticker-item flip-in';
+      nextEl.textContent = nextItem.title;
+      nextEl.setAttribute('title', '공지사항 상세 보기');
+      nextEl.onclick = () => this.openNoticeModal(nextItem.idx);
+      track.appendChild(nextEl);
+
+      // 3. 퇴장 노드 안전 제거
+      setTimeout(() => {
+        if (activeEl && activeEl.parentNode === track) {
+          track.removeChild(activeEl);
+        }
+      }, 450);
+
+      currentIdx = nextIdx;
+    }, 3800);
+  },
+
+  stopNoticeTicker() {
+    if (this._pcTickerInterval) {
+      clearInterval(this._pcTickerInterval);
+      this._pcTickerInterval = null;
+    }
   },
 
   // 3. Navigation & Screen Switching

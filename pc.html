@@ -77,7 +77,7 @@
   </script>
 
   <!-- Core Stylesheet -->
-  <link rel="stylesheet" href="./pc.css?v=20260824_5" />
+  <link rel="stylesheet" href="./pc.css?v=20260824_6" />
 </head>
 <body class="bg-surface text-on-surface select-none">
   
@@ -125,13 +125,33 @@
       
       <!-- Global Top Header (GNB) -->
       <header class="pc-gnb">
-        <!-- Left: Unified Search Bar -->
+        <!-- Left: Unified Search Bar & Fixed Notice Flip Ticker -->
         <div class="pc-gnb-left">
           <div class="pc-gnb-search">
             <svg class="w-5 h-5 pc-gnb-search-icon" viewBox="0 0 24 24" fill="currentColor">
               <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
             </svg>
             <input type="text" placeholder="임직원, 공지사항, 일정, 결재문서 통합 검색..." onkeyup="if(event.key==='Enter') alert(`'${this.value}' 검색 결과를 조회합니다.`)" />
+          </div>
+
+          <!-- Fixed Notice Flip Ticker Banner -->
+          <div class="pc-header-ticker" id="pc-header-ticker">
+            <div class="pc-ticker-badge">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 11.03C18 7.37 15.53 4.3 12.14 3.32L11.5 5.34C14.1 6.13 16 8.36 16 11.03C16 13.7 14.1 15.93 11.5 16.72L12.14 18.74C15.53 17.76 18 14.69 18 11.03ZM20 11.03C20 6.18 16.72 2.11 12.28.84L11.72 2.76C15.34 3.84 18 7.14 18 11.03C18 14.92 15.34 18.22 11.72 19.3L12.28 21.22C16.72 19.95 20 15.88 20 11.03ZM6 9H2V15H6L11 20V4L6 9Z"/>
+              </svg>
+              <span>공지</span>
+            </div>
+            <div class="pc-ticker-viewport" title="공지사항 상세 보기">
+              <div class="pc-ticker-track" id="pc-ticker-track">
+                <!-- Dynamically Animated by pc.js -->
+              </div>
+            </div>
+            <button class="pc-ticker-action-btn" onclick="PCApp.switchScreen('notice')" title="공지사항 전체 목록 이동">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+              </svg>
+            </button>
           </div>
         </div>
 
