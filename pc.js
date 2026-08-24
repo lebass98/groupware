@@ -259,13 +259,13 @@ const PCApp = {
               </svg>
               8월 생일자 🎂
             </span>
-            <span class="text-xs font-semibold text-primary">1명</span>
+            <span class="text-base font-bold text-primary">1명</span>
           </div>
-          <div class="flex items-center gap-3 p-2 bg-surface-container-low rounded-xl">
-            <img src="./profile.png" class="w-10 h-10 rounded-full object-cover border border-outline" />
+          <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl">
+            <img src="./profile.png" class="w-12 h-12 rounded-full object-cover border border-outline" />
             <div>
-              <p class="font-bold text-on-surface text-sm">이재광 차장 (퍼블리싱팀)</p>
-              <p class="text-xs text-on-surface-variant">08월 11일 · 축하메시지 전송</p>
+              <p class="font-bold text-on-surface text-base">이재광 차장 (퍼블리싱팀)</p>
+              <p class="text-base text-on-surface-variant">08월 11일 · 축하메시지 전송</p>
             </div>
           </div>
         </div>
@@ -282,7 +282,7 @@ const PCApp = {
         <div class="pc-notice-banner">
           <div>
             <span class="pc-notice-tag">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
               전사 공지사항
             </span>
             <h3 class="pc-notice-title" onclick="PCApp.switchScreen('notice')">${topNotice.title}</h3>
@@ -314,7 +314,7 @@ const PCApp = {
         <div class="pc-bento-card">
           <div class="pc-card-header">
             <span class="pc-card-title whitespace-nowrap">
-              <svg class="w-4.5 h-4.5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
               </svg>
               주간 업무보고 (금주 실적 & 전주 대비)
@@ -322,29 +322,29 @@ const PCApp = {
             <button class="pc-card-action" onclick="PCApp.switchScreen('work-report')">전체보기</button>
           </div>
 
-          <div class="space-y-3">
+          <div class="space-y-4">
             <div class="p-4 bg-surface-container-low rounded-xl border border-outline/50">
               <div class="flex items-center justify-between mb-3">
-                <span class="font-bold text-on-surface text-sm flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                <span class="font-bold text-on-surface text-base flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-primary"></span>
                   ${primaryReport.client} - ${primaryReport.title}
                 </span>
-                <span class="text-xs font-bold px-2.5 py-0.5 rounded-md bg-primary/10 text-primary">진행중</span>
+                <span class="text-base font-bold px-3 py-1 rounded-md bg-primary/10 text-primary">진행중</span>
               </div>
-              <div class="grid grid-cols-2 gap-3 text-xs">
-                <div class="p-3 bg-surface-container-lowest rounded-lg">
-                  <span class="font-bold text-on-surface-variant block mb-1.5 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
+              <div class="grid grid-cols-2 gap-3 text-base">
+                <div class="p-3.5 bg-surface-container-lowest rounded-lg">
+                  <span class="font-bold text-on-surface-variant block mb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
                     전주 실적
                   </span>
                   <p class="text-on-surface leading-relaxed">${prevItems[0]}</p>
                 </div>
-                <div class="p-3 bg-surface-container-lowest rounded-lg border-l-2 border-primary">
-                  <span class="font-bold text-primary block mb-1.5 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                <div class="p-3.5 bg-surface-container-lowest rounded-lg border-l-3 border-primary">
+                  <span class="font-bold text-primary block mb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span>
                     금주 계획
                   </span>
-                  <p class="text-on-surface font-medium leading-relaxed">${thisItems[0]}</p>
+                  <p class="text-on-surface font-semibold leading-relaxed">${thisItems[0]}</p>
                 </div>
               </div>
             </div>
@@ -352,26 +352,26 @@ const PCApp = {
             ${reports[1] ? `
             <div class="p-4 bg-surface-container-low rounded-xl border border-outline/50">
               <div class="flex items-center justify-between mb-3">
-                <span class="font-bold text-on-surface text-sm flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                <span class="font-bold text-on-surface text-base flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-secondary"></span>
                   ${reports[1].client} - ${reports[1].title}
                 </span>
-                <span class="text-xs font-bold px-2.5 py-0.5 rounded-md bg-secondary/10 text-secondary">진행중</span>
+                <span class="text-base font-bold px-3 py-1 rounded-md bg-secondary/10 text-secondary">진행중</span>
               </div>
-              <div class="grid grid-cols-2 gap-3 text-xs">
-                <div class="p-3 bg-surface-container-lowest rounded-lg">
-                  <span class="font-bold text-on-surface-variant block mb-1.5 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
+              <div class="grid grid-cols-2 gap-3 text-base">
+                <div class="p-3.5 bg-surface-container-lowest rounded-lg">
+                  <span class="font-bold text-on-surface-variant block mb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
                     전주 실적
                   </span>
                   <p class="text-on-surface leading-relaxed">${(reports[1].prevWeekSections && reports[1].prevWeekSections[0]?.items[0]) || '중간 검수 완료'}</p>
                 </div>
-                <div class="p-3 bg-surface-container-lowest rounded-lg border-l-2 border-secondary">
-                  <span class="font-bold text-secondary block mb-1.5 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                <div class="p-3.5 bg-surface-container-lowest rounded-lg border-l-3 border-secondary">
+                  <span class="font-bold text-secondary block mb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-secondary"></span>
                     금주 계획
                   </span>
-                  <p class="text-on-surface font-medium leading-relaxed">${(reports[1].thisWeekSections && reports[1].thisWeekSections[0]?.items[0]) || '템플릿 배포 및 검수'}</p>
+                  <p class="text-on-surface font-semibold leading-relaxed">${(reports[1].thisWeekSections && reports[1].thisWeekSections[0]?.items[0]) || '템플릿 배포 및 검수'}</p>
                 </div>
               </div>
             </div>
@@ -417,38 +417,38 @@ const PCApp = {
     if (commuteWrap) {
       commuteWrap.innerHTML = `
         <div class="pc-bento-card pc-commute-card">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-bold text-sm text-on-surface">근태 & 출/퇴근</span>
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-bold text-base text-on-surface">근태 & 출/퇴근</span>
             <span class="pc-commute-status-pill ${this.state.isCheckedIn ? 'checked-in' : ''}">
-              <span class="w-2 h-2 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
+              <span class="w-2.5 h-2.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
               ${this.state.isCheckedIn ? '근무 중 (정상)' : '출근 전'}
             </span>
           </div>
 
           <div class="pc-commute-time-display">
             <div>
-              <span class="text-xs text-on-surface-variant block">출근 시간</span>
+              <span class="text-base text-on-surface-variant block">출근 시간</span>
               <span class="pc-commute-big-time text-primary">${this.state.checkInTime}</span>
             </div>
-            <span class="text-on-surface-variant text-xl font-bold">→</span>
+            <span class="text-on-surface-variant text-2xl font-bold">→</span>
             <div>
-              <span class="text-xs text-on-surface-variant block">퇴근 시간</span>
+              <span class="text-base text-on-surface-variant block">퇴근 시간</span>
               <span class="pc-commute-big-time ${this.state.checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${this.state.checkOutTime}</span>
             </div>
           </div>
 
-          <div class="mb-3">
-            <div class="flex justify-between text-xs font-semibold text-on-surface-variant mb-1">
+          <div class="mb-4">
+            <div class="flex justify-between text-base font-bold text-on-surface-variant mb-1.5">
               <span>주 누적 근무시간</span>
               <span class="text-primary font-bold">38시간 45분 / 40시간</span>
             </div>
-            <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+            <div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
               <div class="h-full bg-primary rounded-full" style="width: 96%;"></div>
             </div>
           </div>
 
-          <div class="flex items-center gap-1.5 text-xs text-on-surface-variant mb-2">
-            <svg class="w-4 h-4 text-secondary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          <div class="flex items-center gap-2 text-base text-on-surface-variant mb-3">
+            <svg class="w-5 h-5 text-secondary shrink-0" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
             </svg>
             <span class="truncate">위치 인증: <strong>${this.state.user.location}</strong></span>
@@ -456,11 +456,11 @@ const PCApp = {
 
           <div class="pc-commute-btn-group">
             <button class="pc-commute-btn pc-commute-btn-in" onclick="PCApp.handleCheckIn()">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
               출근하기
             </button>
             <button class="pc-commute-btn pc-commute-btn-out" onclick="PCApp.handleCheckOut()">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
               퇴근하기
             </button>
           </div>
@@ -588,7 +588,7 @@ const PCApp = {
           ${daySchedules.slice(0, 1).map(s => `
             <span class="pc-cal-event-dot ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}">${s.title || s.badge}</span>
           `).join('')}
-          ${daySchedules.length > 1 ? `<span class="text-[10px] text-on-surface-variant font-bold">+${daySchedules.length - 1}</span>` : ''}
+          ${daySchedules.length > 1 ? `<span class="text-base text-on-surface-variant font-bold">+${daySchedules.length - 1}</span>` : ''}
         </div>
       `;
     }
@@ -620,21 +620,21 @@ const PCApp = {
     });
 
     container.innerHTML = filtered.map(m => `
-      <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all">
+      <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all text-base">
         <div class="flex items-center gap-4 mb-4">
-          <img src="${m.avatar || './profile.png'}" class="w-14 h-14 rounded-full object-cover border-2 border-primary/20" />
+          <img src="${m.avatar || './profile.png'}" class="w-16 h-16 rounded-full object-cover border-2 border-primary/20" />
           <div>
-            <h4 class="font-bold text-base text-on-surface">${m.name} <span class="text-xs font-normal text-on-surface-variant">${m.role}</span></h4>
-            <p class="text-xs font-semibold text-primary">${m.dept}</p>
+            <h4 class="font-bold text-lg text-on-surface">${m.name} <span class="text-base font-normal text-on-surface-variant">${m.role}</span></h4>
+            <p class="text-base font-bold text-primary">${m.dept}</p>
           </div>
         </div>
-        <div class="space-y-1.5 text-xs text-on-surface-variant pt-3 border-t border-outline">
-          <p class="flex items-center gap-2">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        <div class="space-y-2 text-base text-on-surface-variant pt-3 border-t border-outline">
+          <p class="flex items-center gap-2.5">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             ${m.email || 'user@wordncode.com'}
           </p>
-          <p class="flex items-center gap-2">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          <p class="flex items-center gap-2.5">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
             ${m.phone || '010-0000-0000'}
           </p>
         </div>
@@ -647,16 +647,16 @@ const PCApp = {
     if (!listWrap) return;
 
     listWrap.innerHTML = (this.state.notices || []).map((n, idx) => `
-      <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary transition-all cursor-pointer" onclick="PCApp.openNoticeModal(${idx})">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-bold px-2.5 py-1 rounded-full ${n.pinned ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">
+      <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary transition-all cursor-pointer text-base" onclick="PCApp.openNoticeModal(${idx})">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-base font-bold px-3 py-1 rounded-full ${n.pinned ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">
             ${n.pinned ? '필독 공지' : '일반 공지'}
           </span>
-          <span class="text-xs text-on-surface-variant">${n.date}</span>
+          <span class="text-base text-on-surface-variant font-medium">${n.date}</span>
         </div>
-        <h3 class="font-bold text-base text-on-surface mb-2">${n.title}</h3>
-        <p class="text-xs text-on-surface-variant line-clamp-2">${n.preview || '본문 내용을 확인하려면 클릭하세요.'}</p>
-        <div class="mt-3 pt-3 border-t border-outline/50 flex items-center justify-between text-xs text-on-surface-variant">
+        <h3 class="font-bold text-lg text-on-surface mb-2">${n.title}</h3>
+        <p class="text-base text-on-surface-variant line-clamp-2 leading-relaxed">${n.preview || '본문 내용을 확인하려면 클릭하세요.'}</p>
+        <div class="mt-4 pt-3 border-t border-outline/50 flex items-center justify-between text-base text-on-surface-variant font-medium">
           <span>작성자: ${n.author || '경영지원팀'}</span>
           <span>조회수 ${n.views || 42}</span>
         </div>
@@ -670,27 +670,27 @@ const PCApp = {
 
     const reports = (window.MockData && window.MockData.workReports) || [];
     wrap.innerHTML = reports.map(r => `
-      <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline mb-6">
+      <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline mb-6 text-base">
         <div class="flex items-center justify-between pb-4 mb-4 border-b border-outline">
-          <h3 class="text-lg font-bold text-on-surface flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-primary"></span>
+          <h3 class="text-xl font-bold text-on-surface flex items-center gap-2.5">
+            <span class="w-3.5 h-3.5 rounded-full bg-primary"></span>
             ${r.dept} 주간 업무보고
           </h3>
-          <span class="text-xs font-semibold px-3 py-1 bg-surface-container rounded-full text-on-surface-variant">2026년 8월 4주차</span>
+          <span class="text-base font-bold px-3.5 py-1 bg-surface-container rounded-full text-on-surface-variant">2026년 8월 4주차</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           ${(r.projects || []).map(p => `
-            <div class="p-4 bg-surface-container-low rounded-xl">
-              <h4 class="font-bold text-sm text-primary mb-3">${p.name}</h4>
-              <div class="space-y-2 text-xs">
-                <div class="p-2.5 bg-surface-container-lowest rounded-lg">
-                  <span class="font-bold text-on-surface-variant block mb-1">전주 실적</span>
-                  <p class="text-on-surface">${p.prevWeek || p.lastWeek || '업무 진행'}</p>
+            <div class="p-5 bg-surface-container-low rounded-xl">
+              <h4 class="font-bold text-base text-primary mb-3">${p.name}</h4>
+              <div class="space-y-3 text-base">
+                <div class="p-3.5 bg-surface-container-lowest rounded-lg">
+                  <span class="font-bold text-on-surface-variant block mb-1.5">전주 실적</span>
+                  <p class="text-on-surface leading-relaxed">${p.prevWeek || p.lastWeek || '업무 진행'}</p>
                 </div>
-                <div class="p-2.5 bg-surface-container-lowest rounded-lg border-l-2 border-primary">
-                  <span class="font-bold text-primary block mb-1">금주 계획</span>
-                  <p class="text-on-surface font-medium">${p.thisWeek || p.plan || '계획 수립'}</p>
+                <div class="p-3.5 bg-surface-container-lowest rounded-lg border-l-3 border-primary">
+                  <span class="font-bold text-primary block mb-1.5">금주 계획</span>
+                  <p class="text-on-surface font-semibold leading-relaxed">${p.thisWeek || p.plan || '계획 수립'}</p>
                 </div>
               </div>
             </div>
@@ -734,73 +734,73 @@ const PCApp = {
 
     if (type === 'leave') {
       modalBody.innerHTML = `
-        <h3 class="text-xl font-bold text-on-surface mb-4">휴가 신청서 기안</h3>
-        <div class="space-y-4 text-sm">
+        <h3 class="text-2xl font-bold text-on-surface mb-5">휴가 신청서 기안</h3>
+        <div class="space-y-5 text-base">
           <div>
-            <label class="block font-bold text-on-surface-variant mb-1">휴가 종류</label>
-            <select class="w-full p-2.5 bg-surface-container-low border border-outline rounded-xl">
+            <label class="block font-bold text-on-surface mb-2">휴가 종류</label>
+            <select class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base">
               <option>연차 (종일)</option>
               <option>오전 반차</option>
               <option>오후 반차</option>
               <option>경조 휴가</option>
             </select>
           </div>
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block font-bold text-on-surface-variant mb-1">시작일</label>
-              <input type="date" value="2026-08-25" class="w-full p-2.5 bg-surface-container-low border border-outline rounded-xl" />
+              <label class="block font-bold text-on-surface mb-2">시작일</label>
+              <input type="date" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base" value="2026-08-24" />
             </div>
             <div>
-              <label class="block font-bold text-on-surface-variant mb-1">종료일</label>
-              <input type="date" value="2026-08-25" class="w-full p-2.5 bg-surface-container-low border border-outline rounded-xl" />
+              <label class="block font-bold text-on-surface mb-2">종료일</label>
+              <input type="date" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base" value="2026-08-24" />
             </div>
           </div>
           <div>
-            <label class="block font-bold text-on-surface-variant mb-1">휴가 사유</label>
-            <textarea rows="3" placeholder="사유를 입력하세요" class="w-full p-2.5 bg-surface-container-low border border-outline rounded-xl"></textarea>
+            <label class="block font-bold text-on-surface mb-2">휴가 사유</label>
+            <textarea class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base" rows="3" placeholder="상세 사유를 입력하세요..."></textarea>
           </div>
-          <div class="flex justify-end gap-2 pt-4">
-            <button class="px-4 py-2 rounded-xl bg-surface-container font-semibold" onclick="PCApp.closeModal()">취소</button>
-            <button class="px-5 py-2 rounded-xl bg-primary text-white font-bold" onclick="alert('휴가 신청서가 기안되었습니다.'); PCApp.closeModal();">신청하기</button>
+          <div class="flex justify-end gap-3 pt-4 border-t border-outline">
+            <button class="px-5 py-2.5 rounded-xl border border-outline font-bold text-base" onclick="PCApp.closeModal()">취소</button>
+            <button class="px-6 py-2.5 rounded-xl bg-primary text-white font-bold text-base" onclick="alert('신청이 접수되었습니다.'); PCApp.closeModal();">신청하기</button>
           </div>
         </div>
       `;
     } else if (type === 'outwork') {
       modalBody.innerHTML = `
-        <h3 class="text-xl font-bold text-on-surface mb-4">외근 신청서 기안</h3>
-        <div class="space-y-4 text-sm">
+        <h3 class="text-2xl font-bold text-on-surface mb-5">외근 신청서 기안</h3>
+        <div class="space-y-5 text-base">
           <div>
-            <label class="block font-bold text-on-surface-variant mb-1">방문처 / 고객사</label>
-            <input type="text" placeholder="예: 한국건강가정진흥원 본원" class="w-full p-2.5 bg-surface-container-low border border-outline rounded-xl" />
+            <label class="block font-bold text-on-surface mb-2">방문처 / 고객사</label>
+            <input type="text" placeholder="예: 한국건강가정진흥원 본원" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base" />
           </div>
           <div>
-            <label class="block font-bold text-on-surface-variant mb-1">외근 목적</label>
-            <input type="text" placeholder="예: 프로젝트 중간 검수 회의" class="w-full p-2.5 bg-surface-container-low border border-outline rounded-xl" />
+            <label class="block font-bold text-on-surface mb-2">외근 목적</label>
+            <input type="text" placeholder="예: 프로젝트 중간 검수 회의" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base" />
           </div>
-          <div class="flex justify-end gap-2 pt-4">
-            <button class="px-4 py-2 rounded-xl bg-surface-container font-semibold" onclick="PCApp.closeModal()">취소</button>
-            <button class="px-5 py-2 rounded-xl bg-primary text-white font-bold" onclick="alert('외근 신청이 완료되었습니다.'); PCApp.closeModal();">신청하기</button>
+          <div class="flex justify-end gap-3 pt-4 border-t border-outline">
+            <button class="px-5 py-2.5 rounded-xl border border-outline font-bold text-base" onclick="PCApp.closeModal()">취소</button>
+            <button class="px-6 py-2.5 rounded-xl bg-primary text-white font-bold text-base" onclick="alert('외근 신청이 완료되었습니다.'); PCApp.closeModal();">신청하기</button>
           </div>
         </div>
       `;
     } else if (type === 'expense') {
       modalBody.innerHTML = `
-        <h3 class="text-xl font-bold text-on-surface mb-4">지출결의서 기안</h3>
-        <div class="space-y-4 text-sm">
+        <h3 class="text-2xl font-bold text-on-surface mb-5">지출결의서 기안</h3>
+        <div class="space-y-5 text-base">
           <div>
-            <label class="block font-bold text-on-surface-variant mb-1">결의 유형</label>
-            <select class="w-full p-2.5 bg-surface-container-low border border-outline rounded-xl">
+            <label class="block font-bold text-on-surface mb-2">결의 유형</label>
+            <select class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base">
               <option>법인카드 사용 내역</option>
               <option>개인영수증 경비 청구</option>
             </select>
           </div>
           <div>
-            <label class="block font-bold text-on-surface-variant mb-1">금액</label>
-            <input type="text" placeholder="0원" class="w-full p-2.5 bg-surface-container-low border border-outline rounded-xl" />
+            <label class="block font-bold text-on-surface mb-2">금액</label>
+            <input type="text" placeholder="0원" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base" />
           </div>
-          <div class="flex justify-end gap-2 pt-4">
-            <button class="px-4 py-2 rounded-xl bg-surface-container font-semibold" onclick="PCApp.closeModal()">취소</button>
-            <button class="px-5 py-2 rounded-xl bg-primary text-white font-bold" onclick="alert('지출결의서가 기안되었습니다.'); PCApp.closeModal();">기안하기</button>
+          <div class="flex justify-end gap-3 pt-4 border-t border-outline">
+            <button class="px-5 py-2.5 rounded-xl border border-outline font-bold text-base" onclick="PCApp.closeModal()">취소</button>
+            <button class="px-6 py-2.5 rounded-xl bg-primary text-white font-bold text-base" onclick="alert('지출결의서가 기안되었습니다.'); PCApp.closeModal();">기안하기</button>
           </div>
         </div>
       `;
@@ -822,15 +822,15 @@ const PCApp = {
     if (!modal || !modalBody) return;
 
     modalBody.innerHTML = `
-      <div class="flex items-center justify-between pb-3 border-b border-outline mb-4">
-        <h3 class="text-xl font-bold text-on-surface">${n.title}</h3>
-        <span class="text-xs text-on-surface-variant">${n.date} · ${n.author}</span>
+      <div class="flex items-center justify-between pb-4 border-b border-outline mb-4">
+        <h3 class="text-2xl font-bold text-on-surface">${n.title}</h3>
+        <span class="text-base text-on-surface-variant font-medium">${n.date} · ${n.author}</span>
       </div>
-      <div class="text-sm text-on-surface leading-relaxed whitespace-pre-line py-2">
+      <div class="text-base text-on-surface leading-relaxed whitespace-pre-line py-3">
         ${n.content || n.preview || '상세 공지 내용입니다.'}
       </div>
-      <div class="flex justify-end pt-6">
-        <button class="px-5 py-2 rounded-xl bg-primary text-white font-bold" onclick="PCApp.closeModal()">닫기</button>
+      <div class="flex justify-end pt-6 border-t border-outline mt-4">
+        <button class="px-6 py-2.5 rounded-xl bg-primary text-white font-bold text-base" onclick="PCApp.closeModal()">닫기</button>
       </div>
     `;
     modal.classList.add('active');

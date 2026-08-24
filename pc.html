@@ -163,20 +163,20 @@
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
             <h2 class="text-2xl font-black text-on-surface">임직원 주소록</h2>
-            <p class="text-sm text-on-surface-variant">워드앤코드 전사 조직도 및 21명 임직원 연락망</p>
+            <p class="text-base text-on-surface-variant font-medium">워드앤코드 전사 조직도 및 21명 임직원 연락망</p>
           </div>
           <div class="flex gap-2">
-            <input type="text" placeholder="사원명 또는 부서명 검색..." class="px-4 py-2 bg-surface-container-low border border-outline rounded-xl text-sm" oninput="PCApp.state.directorySearch = this.value; PCApp.renderDirectoryView();" />
+            <input type="text" placeholder="사원명 또는 부서명 검색..." class="px-4 py-2.5 bg-surface-container-low border border-outline rounded-xl text-base" oninput="PCApp.state.directorySearch = this.value; PCApp.renderDirectoryView();" />
           </div>
         </div>
 
         <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
-          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-primary text-white" onclick="PCApp.state.directoryCategory='all'; PCApp.renderDirectoryView();">전체</button>
-          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='퍼블리싱팀'; PCApp.renderDirectoryView();">퍼블리싱팀</button>
-          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='개발팀'; PCApp.renderDirectoryView();">개발팀</button>
-          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='디자인팀'; PCApp.renderDirectoryView();">디자인팀</button>
-          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='기획팀'; PCApp.renderDirectoryView();">기획팀</button>
-          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='경영지원팀'; PCApp.renderDirectoryView();">경영지원팀</button>
+          <button class="px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white" onclick="PCApp.state.directoryCategory='all'; PCApp.renderDirectoryView();">전체</button>
+          <button class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='퍼블리싱팀'; PCApp.renderDirectoryView();">퍼블리싱팀</button>
+          <button class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='개발팀'; PCApp.renderDirectoryView();">개발팀</button>
+          <button class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='디자인팀'; PCApp.renderDirectoryView();">디자인팀</button>
+          <button class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='기획팀'; PCApp.renderDirectoryView();">기획팀</button>
+          <button class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='경영지원팀'; PCApp.renderDirectoryView();">경영지원팀</button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="pc-directory-grid">
@@ -189,10 +189,10 @@
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
             <h2 class="text-2xl font-black text-on-surface">전사 공지사항</h2>
-            <p class="text-sm text-on-surface-variant">사내 주요 공지 및 업무 안내 게시판</p>
+            <p class="text-base text-on-surface-variant font-medium">사내 주요 공지 및 업무 안내 게시판</p>
           </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="pc-notice-full-list">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="pc-notice-full-list">
           <!-- Rendered by pc.js -->
         </div>
       </section>
@@ -202,7 +202,7 @@
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
             <h2 class="text-2xl font-black text-on-surface">주간 업무보고</h2>
-            <p class="text-sm text-on-surface-variant">전 부서별 주간 실적 및 차주 계획 현황 (전주 vs 금주 비교)</p>
+            <p class="text-base text-on-surface-variant font-medium">전 부서별 주간 실적 및 차주 계획 현황 (전주 vs 금주 비교)</p>
           </div>
         </div>
         <div id="pc-workreport-full-container">
@@ -214,39 +214,39 @@
       <section class="pc-screen-view p-8" id="pc-screen-checkin">
         <div class="mb-6 pb-4 border-b border-outline">
           <h2 class="text-2xl font-black text-on-surface">근태 & 출/퇴근 관리</h2>
-          <p class="text-sm text-on-surface-variant">실시간 출석 체크인 및 출퇴근 상세 기록 로그</p>
+          <p class="text-base text-on-surface-variant font-medium">실시간 출석 체크인 및 출퇴근 상세 기록 로그</p>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="lg:col-span-1">
             <div class="pc-bento-card">
-              <h3 class="font-bold text-lg text-on-surface mb-4">원클릭 출퇴근</h3>
-              <div class="text-center py-6 bg-surface-container-low rounded-2xl mb-4">
-                <span class="text-3xl font-black text-primary block mb-2" id="pc-checkin-live-time">09:42:15</span>
-                <span class="text-xs font-semibold px-3 py-1 bg-secondary-container text-secondary rounded-full">GPS 본사 인증 (500m 이내)</span>
+              <h3 class="font-bold text-xl text-on-surface mb-4">원클릭 출퇴근</h3>
+              <div class="text-center py-8 bg-surface-container-low rounded-2xl mb-5">
+                <span class="text-4xl font-black text-primary block mb-3" id="pc-checkin-live-time">09:42:15</span>
+                <span class="text-base font-bold px-4 py-1.5 bg-secondary-container text-secondary rounded-full">GPS 본사 인증 (500m 이내)</span>
               </div>
               <div class="grid grid-cols-2 gap-3">
-                <button class="py-3.5 bg-secondary text-white font-bold rounded-xl" onclick="PCApp.handleCheckIn()">출근하기</button>
-                <button class="py-3.5 bg-error text-white font-bold rounded-xl" onclick="PCApp.handleCheckOut()">퇴근하기</button>
+                <button class="py-4 bg-secondary text-white font-bold rounded-xl text-base" onclick="PCApp.handleCheckIn()">출근하기</button>
+                <button class="py-4 bg-error text-white font-bold rounded-xl text-base" onclick="PCApp.handleCheckOut()">퇴근하기</button>
               </div>
             </div>
           </div>
           <div class="lg:col-span-2">
             <div class="pc-bento-card">
-              <h3 class="font-bold text-lg text-on-surface mb-4">이번 주 출퇴근 상세 기록</h3>
-              <table class="w-full text-xs text-left border-collapse">
+              <h3 class="font-bold text-xl text-on-surface mb-4">이번 주 출퇴근 상세 기록</h3>
+              <table class="w-full text-base text-left border-collapse">
                 <thead>
                   <tr class="bg-surface-container border-b border-outline text-on-surface-variant font-bold">
-                    <th class="p-3">일자</th>
-                    <th class="p-3">출근시간</th>
-                    <th class="p-3">퇴근시간</th>
-                    <th class="p-3">총 근무시간</th>
-                    <th class="p-3">상태</th>
+                    <th class="p-3.5">일자</th>
+                    <th class="p-3.5">출근시간</th>
+                    <th class="p-3.5">퇴근시간</th>
+                    <th class="p-3.5">총 근무시간</th>
+                    <th class="p-3.5">상태</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-outline">
-                  <tr><td class="p-3 font-semibold">2026-08-24 (월)</td><td class="p-3 text-primary font-bold">08:55</td><td class="p-3 text-on-surface-variant">18:00 (예정)</td><td class="p-3">8시간 5분</td><td class="p-3"><span class="px-2 py-0.5 bg-secondary-container text-secondary rounded-md font-bold">정상출근</span></td></tr>
-                  <tr><td class="p-3 font-semibold">2026-08-21 (금)</td><td class="p-3 text-primary font-bold">08:50</td><td class="p-3 text-on-surface">18:05</td><td class="p-3">8시간 15분</td><td class="p-3"><span class="px-2 py-0.5 bg-secondary-container text-secondary rounded-md font-bold">정상근무</span></td></tr>
-                  <tr><td class="p-3 font-semibold">2026-08-20 (목)</td><td class="p-3 text-primary font-bold">08:52</td><td class="p-3 text-on-surface">18:10</td><td class="p-3">8시간 18분</td><td class="p-3"><span class="px-2 py-0.5 bg-secondary-container text-secondary rounded-md font-bold">정상근무</span></td></tr>
+                  <tr><td class="p-3.5 font-bold">2026-08-24 (월)</td><td class="p-3.5 text-primary font-bold">08:55</td><td class="p-3.5 text-on-surface-variant">18:00 (예정)</td><td class="p-3.5">8시간 5분</td><td class="p-3.5"><span class="px-2.5 py-1 bg-secondary-container text-secondary rounded-md font-bold">정상출근</span></td></tr>
+                  <tr><td class="p-3.5 font-bold">2026-08-21 (금)</td><td class="p-3.5 text-primary font-bold">08:50</td><td class="p-3.5 text-on-surface">18:05</td><td class="p-3.5">8시간 15분</td><td class="p-3.5"><span class="px-2.5 py-1 bg-secondary-container text-secondary rounded-md font-bold">정상근무</span></td></tr>
+                  <tr><td class="p-3.5 font-bold">2026-08-20 (목)</td><td class="p-3.5 text-primary font-bold">08:52</td><td class="p-3.5 text-on-surface">18:10</td><td class="p-3.5">8시간 18분</td><td class="p-3.5"><span class="px-2.5 py-1 bg-secondary-container text-secondary rounded-md font-bold">정상근무</span></td></tr>
                 </tbody>
               </table>
             </div>
@@ -258,7 +258,7 @@
       <section class="pc-screen-view p-8" id="pc-screen-calendar">
         <div class="mb-6 pb-4 border-b border-outline">
           <h2 class="text-2xl font-black text-on-surface">근태일지 & 사내 캘린더</h2>
-          <p class="text-sm text-on-surface-variant">월간/주간/일간 전사 일정 및 휴가/외근 현황</p>
+          <p class="text-base text-on-surface-variant font-medium">월간/주간/일간 전사 일정 및 휴가/외근 현황</p>
         </div>
         <div class="pc-bento-card">
           <div class="pc-cal-weekdays">
@@ -275,22 +275,22 @@
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
             <h2 class="text-2xl font-black text-on-surface">재무 / 경비 관리</h2>
-            <p class="text-sm text-on-surface-variant">법인카드 및 개인영수증 지출결의서 관리</p>
+            <p class="text-base text-on-surface-variant font-medium">법인카드 및 개인영수증 지출결의서 관리</p>
           </div>
-          <button class="px-4 py-2 bg-primary text-white font-bold rounded-xl text-sm" onclick="PCApp.openQuickModal('expense')">+ 지출결의서 작성</button>
+          <button class="px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-base" onclick="PCApp.openQuickModal('expense')">+ 지출결의서 작성</button>
         </div>
         <div class="grid grid-cols-3 gap-6 mb-6">
-          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline">
-            <span class="text-xs font-semibold text-on-surface-variant block mb-1">8월 승인 총액</span>
-            <span class="text-2xl font-black text-primary">1,480,000원</span>
+          <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline">
+            <span class="text-base font-bold text-on-surface-variant block mb-1">8월 승인 총액</span>
+            <span class="text-3xl font-black text-primary">1,480,000원</span>
           </div>
-          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline">
-            <span class="text-xs font-semibold text-on-surface-variant block mb-1">결재 대기</span>
-            <span class="text-2xl font-black text-tertiary">1건</span>
+          <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline">
+            <span class="text-base font-bold text-on-surface-variant block mb-1">결재 대기</span>
+            <span class="text-3xl font-black text-tertiary">1건</span>
           </div>
-          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline">
-            <span class="text-xs font-semibold text-on-surface-variant block mb-1">반려</span>
-            <span class="text-2xl font-black text-error">0건</span>
+          <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline">
+            <span class="text-base font-bold text-on-surface-variant block mb-1">반려</span>
+            <span class="text-3xl font-black text-error">0건</span>
           </div>
         </div>
       </section>
@@ -300,13 +300,13 @@
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
           <div>
             <h2 class="text-2xl font-black text-on-surface">할 일 관리 (To-Do)</h2>
-            <p class="text-sm text-on-surface-variant">프로젝트별 업무 태스크 및 개인 우선순위 관리</p>
+            <p class="text-base text-on-surface-variant font-medium">프로젝트별 업무 태스크 및 개인 우선순위 관리</p>
           </div>
         </div>
         <div class="pc-bento-card">
-          <div class="flex gap-2 mb-4">
-            <input type="text" id="pc-new-todo-input" placeholder="새로운 할 일을 입력하세요..." class="flex-1 p-3 bg-surface-container-low border border-outline rounded-xl text-sm" onkeyup="if(event.key==='Enter'&&this.value){ PCApp.state.todos.unshift({title:this.value,completed:false,priority:'medium'}); this.value=''; PCApp.renderDashboard(); PCApp.switchScreen('todo'); }" />
-            <button class="px-5 py-3 bg-primary text-white font-bold rounded-xl text-sm" onclick="const input = document.getElementById('pc-new-todo-input'); if(input.value){ PCApp.state.todos.unshift({title:input.value,completed:false,priority:'medium'}); input.value=''; PCApp.renderDashboard(); PCApp.switchScreen('todo'); }">등록</button>
+          <div class="flex gap-3 mb-5">
+            <input type="text" id="pc-new-todo-input" placeholder="새로운 할 일을 입력하세요..." class="flex-1 p-3.5 bg-surface-container-low border border-outline rounded-xl text-base" onkeyup="if(event.key==='Enter'&&this.value){ PCApp.state.todos.unshift({title:this.value,completed:false,priority:'medium'}); this.value=''; PCApp.renderDashboard(); PCApp.switchScreen('todo'); }" />
+            <button class="px-6 py-3.5 bg-primary text-white font-bold rounded-xl text-base" onclick="const input = document.getElementById('pc-new-todo-input'); if(input.value){ PCApp.state.todos.unshift({title:input.value,completed:false,priority:'medium'}); input.value=''; PCApp.renderDashboard(); PCApp.switchScreen('todo'); }">등록</button>
           </div>
           <div class="pc-todo-list" id="pc-full-todo-list">
             <!-- Dynamically Rendered -->
@@ -318,27 +318,27 @@
       <section class="pc-screen-view p-8" id="pc-screen-project">
         <div class="mb-6 pb-4 border-b border-outline">
           <h2 class="text-2xl font-black text-on-surface">프로젝트 관리</h2>
-          <p class="text-sm text-on-surface-variant">진행 중인 6대 핵심 구축 프로젝트 진척도</p>
+          <p class="text-base text-on-surface-variant font-medium">진행 중인 6대 핵심 구축 프로젝트 진척도</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:shadow-md transition-all">
-            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-primary/10 text-primary mb-2 inline-block">워드앤코드</span>
-            <h3 class="font-bold text-base text-on-surface mb-2">그룹웨어 고도화 및 PC 포털</h3>
-            <p class="text-xs text-on-surface-variant mb-4">M3 디자인 시스템 & 풀 와이드 Bento 대시보드 구축</p>
-            <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden mb-2">
+          <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:shadow-md transition-all text-base">
+            <span class="text-base font-bold px-3 py-1 rounded-full bg-primary/10 text-primary mb-2.5 inline-block">워드앤코드</span>
+            <h3 class="font-bold text-lg text-on-surface mb-2">그룹웨어 고도화 및 PC 포털</h3>
+            <p class="text-base text-on-surface-variant mb-4">M3 디자인 시스템 & 풀 와이드 Bento 대시보드 구축</p>
+            <div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden mb-2.5">
               <div class="h-full bg-primary rounded-full" style="width: 95%;"></div>
             </div>
-            <span class="text-xs font-bold text-primary">진척률 95%</span>
+            <span class="text-base font-bold text-primary">진척률 95%</span>
           </div>
 
-          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:shadow-md transition-all">
-            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary mb-2 inline-block">한국건강가정진흥원</span>
-            <h3 class="font-bold text-base text-on-surface mb-2">FCES 대표 웹사이트 개편</h3>
-            <p class="text-xs text-on-surface-variant mb-4">서브페이지 반응형 퍼블리싱 및 웹접근성 품질인증</p>
-            <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden mb-2">
+          <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:shadow-md transition-all text-base">
+            <span class="text-base font-bold px-3 py-1 rounded-full bg-secondary/10 text-secondary mb-2.5 inline-block">한국건강가정진흥원</span>
+            <h3 class="font-bold text-lg text-on-surface mb-2">FCES 대표 웹사이트 개편</h3>
+            <p class="text-base text-on-surface-variant mb-4">서브페이지 반응형 퍼블리싱 및 웹접근성 품질인증</p>
+            <div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden mb-2.5">
               <div class="h-full bg-secondary rounded-full" style="width: 80%;"></div>
             </div>
-            <span class="text-xs font-bold text-secondary">진척률 80%</span>
+            <span class="text-base font-bold text-secondary">진척률 80%</span>
           </div>
         </div>
       </section>
@@ -347,16 +347,16 @@
       <section class="pc-screen-view p-8" id="pc-screen-request">
         <div class="mb-6 pb-4 border-b border-outline">
           <h2 class="text-2xl font-black text-on-surface">휴가 & 외근 신청</h2>
-          <p class="text-sm text-on-surface-variant">전자결재 연동 근태 및 출장 신청서</p>
+          <p class="text-base text-on-surface-variant font-medium">전자결재 연동 근태 및 출장 신청서</p>
         </div>
-        <div class="grid grid-cols-2 gap-6">
+        <div class="grid grid-cols-2 gap-6 text-base">
           <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary cursor-pointer transition-all" onclick="PCApp.openQuickModal('leave')">
-            <h3 class="text-lg font-bold text-primary mb-2">휴가 신청서 작성</h3>
-            <p class="text-xs text-on-surface-variant">연차, 오전반차, 오후반차, 경조휴가 신청</p>
+            <h3 class="text-xl font-bold text-primary mb-2">휴가 신청서 작성</h3>
+            <p class="text-base text-on-surface-variant">연차, 오전반차, 오후반차, 경조휴가 신청</p>
           </div>
           <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary cursor-pointer transition-all" onclick="PCApp.openQuickModal('outwork')">
-            <h3 class="text-lg font-bold text-secondary mb-2">외근 / 출장 신청서 작성</h3>
-            <p class="text-xs text-on-surface-variant">고객사 미팅 및 원격/현장 지원 출장 신청</p>
+            <h3 class="text-xl font-bold text-secondary mb-2">외근 / 출장 신청서 작성</h3>
+            <p class="text-base text-on-surface-variant">고객사 미팅 및 원격/현장 지원 출장 신청</p>
           </div>
         </div>
       </section>
