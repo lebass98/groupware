@@ -142,7 +142,7 @@ strong {
   background: var(--surface);
 }
 
-/* 1. Left Slim Icon Sidebar (Icon-Only LNB) */
+/* 1. Left Sidebar (Collapsible / Expandable LNB) */
 .pc-sidebar {
   width: 76px;
   min-width: 76px;
@@ -156,60 +156,124 @@ strong {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 0;
+  padding: 16px 0;
   z-index: 100;
   box-shadow: 2px 0 12px rgba(0,0,0,0.03);
+  transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1), min-width 0.22s cubic-bezier(0.16, 1, 0.3, 1), padding 0.22s ease;
+}
+
+/* Sidebar Header (Logo & Toggle Arrow) */
+.pc-sidebar-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0 12px;
+  margin-bottom: 12px;
 }
 
 .pc-sidebar-logo {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 10px;
   text-decoration: none;
   cursor: pointer;
-  margin-bottom: 20px;
 }
 
 .pc-sidebar-logo-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 12px;
   background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 19px;
   letter-spacing: -0.5px;
   box-shadow: var(--shadow-primary);
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .pc-sidebar-logo:hover .pc-sidebar-logo-icon {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
+.pc-sidebar-logo-text {
+  display: none;
+  flex-direction: column;
+  line-height: 1.2;
+  text-align: left;
+  overflow: hidden;
+}
+
+.pc-sidebar-brand-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--on-surface);
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+
+.pc-sidebar-brand-sub {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* Toggle Arrow Button (헤더와 사이드 중간 화살표) */
+.pc-sidebar-toggle-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--outline);
+  background: var(--surface-container-low);
+  color: var(--on-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.pc-sidebar-toggle-btn:hover {
+  background: var(--surface-container-high);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.pc-sidebar-toggle-btn .pc-toggle-arrow {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Nav Item & Button */
 .pc-nav-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   align-items: center;
   list-style: none;
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .pc-nav-item {
   position: relative;
   width: 50px;
-  height: 50px;
+  height: 48px;
+  transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .pc-nav-btn {
   width: 50px;
-  height: 50px;
-  border-radius: 14px;
+  height: 48px;
+  border-radius: 12px;
   background: transparent;
   border: none;
   display: flex;
@@ -222,9 +286,17 @@ strong {
 }
 
 .pc-nav-btn svg {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
   transition: transform 0.2s ease;
+}
+
+.pc-nav-btn .pc-nav-label {
+  display: none;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .pc-nav-btn:hover {
@@ -232,7 +304,7 @@ strong {
   color: var(--primary);
 }
 .pc-nav-btn:hover svg {
-  transform: scale(1.12);
+  transform: scale(1.1);
 }
 
 .pc-nav-btn.active {
@@ -248,10 +320,173 @@ strong {
   top: 50%;
   transform: translateY(-50%);
   width: 5px;
-  height: 26px;
+  height: 24px;
   border-radius: 0 4px 4px 0;
   background: var(--primary);
 }
+
+/* Sidebar Footer (Slim Mode) */
+.pc-sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.pc-footer-btn-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.pc-footer-btn-label {
+  display: none;
+}
+
+.pc-expanded-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 4px;
+  transition: all 0.2s ease;
+}
+
+.pc-expanded-profile-info {
+  display: none;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.pc-profile-info-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.pc-profile-info-dept {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* ==========================================================================
+   EXPANDED SIDEBAR MODE (확장 모드: 메뉴명이 다 나오는 와이드 사이드바)
+   ========================================================================== */
+.pc-sidebar.expanded {
+  width: 220px;
+  min-width: 220px;
+  align-items: stretch;
+  padding: 16px 0;
+}
+
+.pc-sidebar.expanded .pc-sidebar-header {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.pc-sidebar.expanded .pc-sidebar-logo-text {
+  display: flex;
+}
+
+.pc-sidebar.expanded .pc-sidebar-toggle-btn {
+  margin-top: 0;
+}
+
+.pc-sidebar.expanded .pc-sidebar-toggle-btn .pc-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.pc-sidebar.expanded .pc-nav-list {
+  align-items: stretch;
+  padding: 0 10px;
+}
+
+.pc-sidebar.expanded .pc-nav-item {
+  width: 100%;
+  height: 44px;
+}
+
+.pc-sidebar.expanded .pc-nav-btn {
+  width: 100%;
+  height: 44px;
+  justify-content: flex-start;
+  padding: 0 14px;
+  gap: 12px;
+}
+
+.pc-sidebar.expanded .pc-nav-btn .pc-nav-label {
+  display: inline-block;
+}
+
+.pc-sidebar.expanded .pc-nav-btn.active::before {
+  display: none;
+}
+
+.pc-sidebar.expanded .pc-nav-btn .pc-tooltip {
+  display: none;
+}
+
+.pc-sidebar.expanded .pc-sidebar-footer {
+  width: 100%;
+  padding: 0 12px;
+  gap: 8px;
+}
+
+.pc-sidebar.expanded .pc-sidebar-footer .pc-expanded-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline);
+  border-radius: 12px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 6px;
+  transition: all 0.2s ease;
+}
+
+.pc-sidebar.expanded .pc-sidebar-footer .pc-expanded-profile:hover {
+  background: var(--surface-container);
+  border-color: var(--primary);
+}
+
+.pc-sidebar.expanded .pc-sidebar-footer .pc-expanded-profile-info {
+  display: flex;
+}
+
+.pc-sidebar.expanded .pc-sidebar-footer .pc-footer-btn-row {
+  flex-direction: row;
+  width: 100%;
+  gap: 6px;
+}
+
+.pc-sidebar.expanded .pc-sidebar-footer .pc-footer-btn-row .pc-nav-btn {
+  flex: 1;
+  height: 38px;
+  justify-content: center;
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline);
+  border-radius: 10px;
+  font-size: 12px;
+  gap: 6px;
+}
+
+.pc-sidebar.expanded .pc-sidebar-footer .pc-footer-btn-row .pc-footer-btn-label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 
 /* Floating Tooltip (16px) */
 .pc-nav-btn .pc-tooltip {

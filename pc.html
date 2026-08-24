@@ -85,45 +85,67 @@
   </script>
 
   <!-- Core Stylesheet -->
-  <link rel="stylesheet" href="./pc.css?v=20260824_1643" />
+  <link rel="stylesheet" href="./pc.css?v=20260824_1651" />
 </head>
 <body class="bg-surface text-on-surface select-none">
   
   <div class="pc-layout-wrapper">
     
-    <!-- 1. LEFT SLIM ICON SIDEBAR (Icon-Only LNB) -->
-    <aside class="pc-sidebar" aria-label="사이드 네비게이션">
-      <!-- Top Logo Embleme -->
-      <a href="javascript:void(0)" onclick="PCApp.switchScreen('dashboard')" class="pc-sidebar-logo" title="워드앤코드 그룹웨어 홈">
-        <div class="pc-sidebar-logo-icon">W</div>
-      </a>
+    <!-- 1. LEFT SIDEBAR (Collapsible / Expandable LNB) -->
+    <aside class="pc-sidebar" id="pc-sidebar" aria-label="사이드 네비게이션">
+      <!-- Top Logo & Expand/Collapse Toggle Arrow Header -->
+      <div class="pc-sidebar-header">
+        <a href="javascript:void(0)" onclick="PCApp.switchScreen('dashboard')" class="pc-sidebar-logo" title="워드앤코드 그룹웨어 홈">
+          <div class="pc-sidebar-logo-icon">W</div>
+          <div class="pc-sidebar-logo-text">
+            <span class="pc-sidebar-brand-title">워드앤코드</span>
+            <span class="pc-sidebar-brand-sub">WnC Smart GW</span>
+          </div>
+        </a>
 
-      <!-- 10 Core Service Icon Nav -->
+        <!-- Expand / Collapse Arrow Toggle Button -->
+        <button type="button" class="pc-sidebar-toggle-btn" id="pc-sidebar-toggle-btn" onclick="PCApp.toggleSidebar()" title="사이드바 메뉴 펼치기/접기">
+          <svg class="w-4 h-4 pc-toggle-arrow" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- 10 Core Service Icon & Label Nav -->
       <ul class="pc-nav-list" id="pc-sidebar-nav">
         <!-- Dynamically Rendered by pc.js -->
       </ul>
 
       <!-- Sidebar Footer (Theme, Mobile Switcher, Profile) -->
-      <div class="pc-sidebar-footer">
-        <!-- Theme Toggle -->
-        <button type="button" class="pc-nav-btn" id="pc-theme-icon" onclick="PCApp.toggleTheme()" title="다크/라이트 모드 전환">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
-          </svg>
-          <span class="pc-tooltip">테마 전환</span>
-        </button>
+      <div class="pc-sidebar-footer" id="pc-sidebar-footer">
+        <!-- Action Buttons Row -->
+        <div class="pc-footer-btn-row">
+          <!-- Theme Toggle -->
+          <button type="button" class="pc-nav-btn" id="pc-theme-icon" onclick="PCApp.toggleTheme()" title="다크/라이트 모드 전환">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+            </svg>
+            <span class="pc-footer-btn-label">테마</span>
+            <span class="pc-tooltip">테마 전환</span>
+          </button>
 
-        <!-- Mobile View Switcher -->
-        <a href="./index.html?view=mobile" onclick="sessionStorage.setItem('forceView', 'mobile');" class="pc-nav-btn" title="모바일 뷰 전환" target="_self">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/>
-          </svg>
-          <span class="pc-tooltip">모바일 앱 뷰</span>
-        </a>
+          <!-- Mobile View Switcher -->
+          <a href="./index.html?view=mobile" onclick="sessionStorage.setItem('forceView', 'mobile');" class="pc-nav-btn" title="모바일 뷰 전환" target="_self">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/>
+            </svg>
+            <span class="pc-footer-btn-label">모바일</span>
+            <span class="pc-tooltip">모바일 앱 뷰</span>
+          </a>
+        </div>
 
-        <!-- User Profile Avatar -->
-        <div class="pc-avatar-btn" onclick="PCApp.switchScreen('directory')" title="내 정보 / 주소록">
-          <img src="./profile.png" alt="이재광 차장" />
+        <!-- User Profile Avatar & Info Card -->
+        <div class="pc-expanded-profile" onclick="PCApp.switchScreen('directory')" title="내 정보 / 주소록">
+          <img src="./profile.png" alt="이재광 차장" class="w-9 h-9 rounded-full object-cover border border-outline shrink-0" />
+          <div class="pc-expanded-profile-info">
+            <span class="pc-profile-info-name">이재광 차장</span>
+            <span class="pc-profile-info-dept">퍼블리싱팀</span>
+          </div>
         </div>
       </div>
     </aside>
@@ -712,6 +734,6 @@
   <script src="./data/svgIcons.js"></script>
   <script src="./data/mockData.js"></script>
   <!-- PC Core Controller -->
-  <script src="./pc.js?v=20260824_1648"></script>
+  <script src="./pc.js?v=20260824_1651"></script>
 </body>
 </html>

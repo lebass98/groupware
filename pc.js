@@ -37,6 +37,7 @@ const PCApp = {
     selectedProject: null, // null: Project List View, string: Project Kanban/Detail View
     projectFilter: 'all',
     requestTab: 'leave',
+    isSidebarExpanded: false,
     todos: [
       {
         id: 1,
@@ -221,6 +222,7 @@ const PCApp = {
 
   init() {
     this.bindTheme();
+    this.bindSidebarState();
     this.startClock();
     this.renderSidebar();
 
@@ -238,7 +240,30 @@ const PCApp = {
     console.log('🚀 WnC PC Groupware Engine Initialized with Web History Routing');
   },
 
-  // 1. Theme Management
+  // 1. Sidebar Expand / Collapse Toggle
+  toggleSidebar(forceState) {
+    const isExpanded = (forceState !== undefined) ? forceState : !this.state.isSidebarExpanded;
+    this.state.isSidebarExpanded = isExpanded;
+    localStorage.setItem('wnc_pc_sidebar_expanded', isExpanded ? 'true' : 'false');
+
+    const sidebar = document.getElementById('pc-sidebar');
+    if (sidebar) {
+      if (isExpanded) {
+        sidebar.classList.add('expanded');
+      } else {
+        sidebar.classList.remove('expanded');
+      }
+    }
+  },
+
+  bindSidebarState() {
+    const saved = localStorage.getItem('wnc_pc_sidebar_expanded');
+    if (saved === 'true') {
+      this.toggleSidebar(true);
+    }
+  },
+
+  // 1-1. Theme Management
   bindTheme() {
     const savedTheme = localStorage.getItem('wnc_pc_theme') || 'light';
     this.setTheme(savedTheme);
@@ -435,6 +460,7 @@ const PCApp = {
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
             ${item.icon}
           </svg>
+          <span class="pc-nav-label">${item.name}</span>
           <span class="pc-tooltip">${item.name}</span>
         </button>
       </li>
