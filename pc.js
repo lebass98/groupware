@@ -677,7 +677,103 @@ const PCApp = {
       `;
     }
 
-    // 3. Monthly Calendar Grid
+    // 3. Today's Schedule Card (모바일 투데이 Parity 독립 카드)
+    const todaySchedWrap = document.getElementById('pc-widget-today-schedule');
+    if (todaySchedWrap) {
+      const todayYear = 2026;
+      const todayMonth = 8;
+      const todayDay = 24;
+      const todaySchedules = this.getSchedulesForDay(todayYear, todayMonth, todayDay) || [];
+
+      todaySchedWrap.innerHTML = `
+        <div class="pc-bento-card">
+          <div class="pc-card-header">
+            <div class="flex items-center gap-2">
+              <span class="pc-card-title">
+                <svg class="w-4.5 h-4.5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+                </svg>
+                오늘의 일정
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary">8월 24일 (월) · ${todaySchedules.length}건</span>
+            </div>
+            <button class="pc-card-action" onclick="PCApp.selectDate('2026-8-24'); PCApp.switchScreen('calendar');">전체보기</button>
+          </div>
+
+          <div class="space-y-2.5">
+            ${todaySchedules.length > 0 ? todaySchedules.map(s => {
+              const isHoliday = (
+                s.badge === '공휴일' ||
+                s.badge === '기념일' ||
+                s.badge === '절기' ||
+                s.title.includes('공휴일') ||
+                s.title.includes('기념일') ||
+                s.title.includes('절기') ||
+                s.author === '공휴일' ||
+                s.author === '기념일' ||
+                s.author === '24절기' ||
+                s.author === '대한민국 공휴일' ||
+                s.author === '회사공지'
+              );
+
+              let dotClass = 'bg-secondary';
+              let badgeBg = 'bg-secondary-container text-secondary';
+              const titleStr = s.title || '';
+              const badgeStr = s.badge || '';
+
+              if (isHoliday) {
+                dotClass = 'bg-error';
+                badgeBg = 'bg-error-container text-error';
+              } else if (titleStr.includes('반차') || badgeStr.includes('반차')) {
+                dotClass = 'bg-tertiary';
+                badgeBg = 'bg-tertiary-container text-tertiary';
+              } else if (titleStr.includes('외근') || badgeStr.includes('외근')) {
+                dotClass = 'bg-primary';
+                badgeBg = 'bg-primary-container text-primary';
+              } else if (titleStr.includes('연차') || badgeStr.includes('연차')) {
+                dotClass = 'bg-secondary';
+                badgeBg = 'bg-secondary-container text-secondary';
+              }
+
+              const imgHtml = isHoliday ? '' : `<img src="${s.avatar || './profile.png'}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 border border-outline/30" />`;
+              const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-on-surface mr-1.5">${s.author || '이재광 차장'}</span>`;
+              const cleanTitle = this.formatScheduleCleanLabel(s);
+
+              return `
+                <div class="p-3 bg-surface-container-low rounded-xl border border-outline hover:border-primary hover:shadow-xs transition-all flex items-center justify-between gap-3 cursor-pointer group" onclick="PCApp.selectDate('2026-8-24'); PCApp.switchScreen('calendar');">
+                  <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <div class="w-2.5 h-2.5 rounded-full ${dotClass} shrink-0"></div>
+                    ${imgHtml}
+                    <div class="min-w-0 flex-1 text-left">
+                      <div class="flex items-center gap-1.5 mb-0.5">
+                        ${authorText}
+                        <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${badgeBg}">${s.badge || '일정'}</span>
+                      </div>
+                      <h4 class="font-bold text-sm text-on-surface truncate leading-snug">${cleanTitle}</h4>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <span class="text-xs font-bold text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-lg">${s.time || '종일'}</span>
+                    <svg class="w-4 h-4 text-on-surface-variant/70 group-hover:text-primary group-hover:translate-x-0.5 transition-all" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                    </svg>
+                  </div>
+                </div>
+              `;
+            }).join('') : `
+              <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-xl">
+                <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                </svg>
+                <p class="font-bold text-sm text-on-surface">오늘 등록된 일정이 없습니다.</p>
+              </div>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    // 4. Monthly Calendar Grid
     const calWrap = document.getElementById('pc-widget-calendar');
     if (calWrap) {
       calWrap.innerHTML = `
