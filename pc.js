@@ -223,10 +223,19 @@ const PCApp = {
     this.bindTheme();
     this.startClock();
     this.renderSidebar();
-    this.renderDashboard();
+
+    // 1. Initial Hash / Screen Route Resolution
+    const hash = (window.location.hash || '').replace(/^#screen-/, '').replace(/^#/, '');
+    const validScreens = ['dashboard', 'directory', 'notice', 'calendar', 'finance', 'todo', 'project', 'work-report', 'checkin', 'request'];
+    const initialScreen = validScreens.includes(hash) ? hash : 'dashboard';
+
+    // 2. Initial History State
+    history.replaceState({ screen: initialScreen, modalOpen: false }, '', `#screen-${initialScreen}`);
+    this.switchScreen(initialScreen, true);
+
     this.startNoticeTicker();
     this.bindGlobalEvents();
-    console.log('🚀 WnC PC Groupware Engine Initialized');
+    console.log('🚀 WnC PC Groupware Engine Initialized with Web History Routing');
   },
 
   // 1. Theme Management
@@ -349,7 +358,14 @@ const PCApp = {
   },
 
   // 3. Navigation & Screen Switching
-  switchScreen(screenId) {
+  switchScreen(screenId, isPopState = false) {
+    // 1. Close active modal if open
+    const modal = document.getElementById('pc-global-modal');
+    if (modal && modal.classList.contains('active')) {
+      modal.classList.remove('active');
+    }
+    this._isModalOpen = false;
+
     this.state.activeScreen = screenId;
     
     // Update active class on sidebar buttons
@@ -371,6 +387,14 @@ const PCApp = {
         s.classList.remove('active');
       }
     });
+
+    // 2. History Push / Replace Management
+    if (!isPopState) {
+      const targetHash = `#screen-${screenId}`;
+      if (window.location.hash !== targetHash) {
+        history.pushState({ screen: screenId, modalOpen: false }, '', targetHash);
+      }
+    }
 
     // Screen specific renderers
     if (screenId === 'dashboard') this.renderDashboard();
@@ -2210,17 +2234,7 @@ const PCApp = {
 
   // 8. Modals
   openModal(html) {
-    const modal = document.getElementById('pc-global-modal');
-    const modalBody = document.getElementById('pc-modal-content');
-    if (!modal || !modalBody) return;
-    modalBody.innerHTML = html;
-    modal.classList.add('active');
-  },
-
-  closeModal() {
-    const modal = document.getElementById('pc-global-modal');
-    if (modal) modal.classList.remove('active');
-    this.state.currentDetailTodoId = null;
+    this.showModal(html);
   },
 
   openQuickModal(type) {
@@ -2307,7 +2321,7 @@ const PCApp = {
       `;
     }
 
-    modal.classList.add('active');
+    this.showModal();
   },
 
   submitExpenseModal() {
@@ -2341,9 +2355,8 @@ const PCApp = {
     const member = this.state.members.find(m => m.id === memberId);
     if (!member) return;
 
-    const modal = document.getElementById('pc-global-modal');
     const modalBody = document.getElementById('pc-modal-content');
-    if (!modal || !modalBody) return;
+    if (!modalBody) return;
 
     modalBody.innerHTML = `
       <div class="flex items-center justify-between pb-4 border-b border-outline mb-4">
@@ -2372,15 +2385,14 @@ const PCApp = {
       </div>
     `;
 
-    modal.classList.add('active');
+    this.showModal();
   },
 
   openNoticeModal(idx) {
     const n = this.state.notices[idx];
     if (!n) return;
-    const modal = document.getElementById('pc-global-modal');
     const modalBody = document.getElementById('pc-modal-content');
-    if (!modal || !modalBody) return;
+    if (!modalBody) return;
 
     modalBody.innerHTML = `
       <div class="flex items-center justify-between pb-4 border-b border-outline mb-4">
@@ -2411,19 +2423,18 @@ const PCApp = {
       ` : ''}
 
       <div class="flex justify-end pt-5 border-t border-outline mt-5">
-        <button class="px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-bold text-base" onclick="PCApp.closeModal()">닫기</button>
+        <button class="px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-bold text-base hover:bg-surface-container-highest" onclick="PCApp.closeModal()">닫기</button>
       </div>
     `;
-    modal.classList.add('active');
+    this.showModal();
   },
 
   openProjectModal(projectId) {
     const p = this.state.projects.find(proj => proj.id === projectId);
     if (!p) return;
 
-    const modal = document.getElementById('pc-global-modal');
     const modalBody = document.getElementById('pc-modal-content');
-    if (!modal || !modalBody) return;
+    if (!modalBody) return;
 
     modalBody.innerHTML = `
       <div class="flex items-center justify-between pb-4 border-b border-outline mb-4">
@@ -2467,16 +2478,45 @@ const PCApp = {
       </div>
 
       <div class="flex justify-end pt-5 border-t border-outline mt-5">
-        <button class="px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-bold text-base" onclick="PCApp.closeModal()">닫기</button>
+        <button class="px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-bold text-base hover:bg-surface-container-highest" onclick="PCApp.closeModal()">닫기</button>
       </div>
     `;
 
-    modal.classList.add('active');
+    this.showModal();
   },
 
-  closeModal() {
+  showModal(contentHtml) {
     const modal = document.getElementById('pc-global-modal');
-    if (modal) modal.classList.remove('active');
+    const modalBody = document.getElementById('pc-modal-content');
+    if (!modal) return;
+
+    if (contentHtml && modalBody) {
+      modalBody.innerHTML = contentHtml;
+    }
+
+    modal.classList.add('active');
+
+    // Push modal state into browser history if not already open
+    if (!this._isModalOpen) {
+      this._isModalOpen = true;
+      history.pushState({ screen: this.state.activeScreen, modalOpen: true }, '', window.location.href);
+    }
+  },
+
+  closeModal(isFromPopState = false) {
+    const modal = document.getElementById('pc-global-modal');
+    if (!modal) return;
+
+    const wasActive = modal.classList.contains('active') || this._isModalOpen;
+    modal.classList.remove('active');
+    this._isModalOpen = false;
+
+    // 만약 UI 버튼(취소, 닫기, 배경 클릭)으로 닫은 경우 히스토리 스택 복원
+    if (!isFromPopState && wasActive) {
+      if (history.state && history.state.modalOpen) {
+        history.back();
+      }
+    }
   },
 
   showToast(msg) {
@@ -2500,8 +2540,44 @@ const PCApp = {
   },
 
   bindGlobalEvents() {
+    // 1. ESC Key Modal Close
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') this.closeModal();
+    });
+
+    // 2. Browser History Back / Forward (popstate)
+    window.addEventListener('popstate', (event) => {
+      const modal = document.getElementById('pc-global-modal');
+      const isModalActive = (modal && modal.classList.contains('active')) || this._isModalOpen;
+
+      // 만약 모달이 열려있던 상태에서 뒤로가기를 누른 경우 모달만 닫기
+      if (isModalActive) {
+        if (modal) modal.classList.remove('active');
+        this._isModalOpen = false;
+        if (event.state && event.state.screen && event.state.screen !== this.state.activeScreen) {
+          this.switchScreen(event.state.screen, true);
+        }
+        return;
+      }
+
+      // 화면 복원
+      if (event.state && event.state.screen) {
+        this.switchScreen(event.state.screen, true);
+      } else {
+        const hash = (window.location.hash || '').replace(/^#screen-/, '').replace(/^#/, '');
+        const validScreens = ['dashboard', 'directory', 'notice', 'calendar', 'finance', 'todo', 'project', 'work-report', 'checkin', 'request'];
+        const targetScreen = validScreens.includes(hash) ? hash : 'dashboard';
+        this.switchScreen(targetScreen, true);
+      }
+    });
+
+    // 3. Hash Change Fallback
+    window.addEventListener('hashchange', () => {
+      const hash = (window.location.hash || '').replace(/^#screen-/, '').replace(/^#/, '');
+      const validScreens = ['dashboard', 'directory', 'notice', 'calendar', 'finance', 'todo', 'project', 'work-report', 'checkin', 'request'];
+      if (validScreens.includes(hash) && this.state.activeScreen !== hash) {
+        this.switchScreen(hash, true);
+      }
     });
   }
 };
