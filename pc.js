@@ -34,9 +34,179 @@ const PCApp = {
     financeFilter: 'all',
     todoFilter: 'all',
     todoViewMode: 'card', // 'card' or 'list'
+    selectedProject: null, // null: Project List View, string: Project Kanban/Detail View
     projectFilter: 'all',
     requestTab: 'leave',
-    todos: (window.MockData && window.MockData.todos) ? JSON.parse(JSON.stringify(window.MockData.todos)) : [],
+    todos: [
+      {
+        id: 1,
+        title: 'Q3 Performance Review UI Updates',
+        project: '그룹웨어 고도화',
+        status: 'in_progress',
+        priority: 'high',
+        dueDate: '오늘, 17:00',
+        assignees: [
+          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '차장' },
+          { name: '명희진', avatar: './resource/image/profile_gray_20240502__.png', dept: '디자인팀', role: '주임' }
+        ],
+        isOverdue: false,
+        isMine: true,
+        notes: '3분기 평가 UI 디자인 시스템 반응형 레이아웃 반영 및 웹접근성 마크업 최적화',
+        hasAttachment: true
+      },
+      {
+        id: 2,
+        title: '모바일 웹 접근성 품질 인증 마크업 검수',
+        project: '그룹웨어 고도화',
+        status: 'todo',
+        priority: 'medium',
+        dueDate: '2026-08-28',
+        assignees: [
+          { name: '손석호', avatar: './resource/image/profile_pub.png', dept: '퍼블리싱팀', role: '주임' }
+        ],
+        isOverdue: false,
+        isMine: true,
+        notes: '스크린리더 ARIA 라벨링 및 키보드 초점 이동 순서 전수 검증',
+        hasAttachment: false
+      },
+      {
+        id: 3,
+        title: 'PC Bento 대시보드 3열 레이아웃 구축',
+        project: '그룹웨어 고도화',
+        status: 'done',
+        priority: 'high',
+        dueDate: '2026-08-24',
+        assignees: [
+          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '차장' }
+        ],
+        isOverdue: false,
+        isMine: true,
+        notes: 'Figma 와이드 Bento Grid 및 Glassmorphism 디자인 시스템 완성',
+        hasAttachment: true
+      },
+      {
+        id: 4,
+        title: '국문 서브페이지 32종 반응형 퍼블리싱',
+        project: 'FCES 대표 웹사이트 개편',
+        status: 'todo',
+        priority: 'high',
+        dueDate: '2026-08-30',
+        assignees: [
+          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '차장' },
+          { name: '손석호', avatar: './resource/image/profile_pub.png', dept: '퍼블리싱팀', role: '주임' }
+        ],
+        isOverdue: false,
+        isMine: true,
+        notes: '반응형 미디어쿼리 및 모바일 전용 UI 템플릿 제작',
+        hasAttachment: true
+      },
+      {
+        id: 5,
+        title: '헤더 GNB 메가메뉴 키보드 접근성 연동',
+        project: 'FCES 대표 웹사이트 개편',
+        status: 'in_progress',
+        priority: 'medium',
+        dueDate: '2026-08-27',
+        assignees: [
+          { name: '손석호', avatar: './resource/image/profile_pub.png', dept: '퍼블리싱팀', role: '주임' }
+        ],
+        isOverdue: false,
+        isMine: false,
+        notes: 'Tab 키 네비게이션 및 ESC 닫기 키이벤트 처리',
+        hasAttachment: false
+      },
+      {
+        id: 6,
+        title: '메인 비주얼 슬라이더 모션 및 테마 적용',
+        project: 'FCES 대표 웹사이트 개편',
+        status: 'done',
+        priority: 'medium',
+        dueDate: '2026-08-20',
+        assignees: [
+          { name: '명희진', avatar: './resource/image/profile_gray_20240502__.png', dept: '디자인팀', role: '주임' }
+        ],
+        isOverdue: false,
+        isMine: false,
+        notes: '스와이퍼 슬라이더 인터랙션 및 오토플레이 제어 버튼 구현',
+        hasAttachment: true
+      },
+      {
+        id: 7,
+        title: 'API Integration for Attendance Log',
+        project: '근태관리 시스템',
+        status: 'todo',
+        priority: 'medium',
+        dueDate: '내일, 12:00',
+        assignees: [
+          { name: '최우석', avatar: './resource/image/profile_mobile.png', dept: '개발팀', role: '과장' },
+          { name: '안영재', avatar: './resource/image/profile_pro.png', dept: '개발팀', role: '대리' }
+        ],
+        isOverdue: false,
+        isMine: false,
+        notes: '근태 기록 1초 단위 타이머 백엔드 동기화 API 연동',
+        hasAttachment: false
+      },
+      {
+        id: 8,
+        title: '외근/출장 전자결재 승인 프로세스 연동',
+        project: '근태관리 시스템',
+        status: 'in_progress',
+        priority: 'high',
+        dueDate: '2026-08-26',
+        assignees: [
+          { name: '안영재', avatar: './resource/image/profile_pro.png', dept: '개발팀', role: '대리' }
+        ],
+        isOverdue: false,
+        isMine: false,
+        notes: '결재선 지정 및 승인 완료 시 캘린더 자동 등록 로직 구현',
+        hasAttachment: true
+      },
+      {
+        id: 9,
+        title: '1초 단위 실시간 디지털 시계 위젯 구현',
+        project: '근태관리 시스템',
+        status: 'done',
+        priority: 'low',
+        dueDate: '2026-08-22',
+        assignees: [
+          { name: '최우석', avatar: './resource/image/profile_mobile.png', dept: '개발팀', role: '과장' }
+        ],
+        isOverdue: false,
+        isMine: false,
+        notes: '출근/퇴근 실시간 타임스탬프 기록 엔진 개발',
+        hasAttachment: false
+      },
+      {
+        id: 10,
+        title: 'Update Weekly Status Report Template',
+        project: '경영지원 / 재무',
+        status: 'done',
+        priority: 'low',
+        dueDate: '2026-08-12, 18:00',
+        assignees: [
+          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '차장' }
+        ],
+        isOverdue: false,
+        isMine: true,
+        notes: '주간 보고서 신규 템플릿 마크다운 양식 가이드 전달',
+        hasAttachment: true
+      },
+      {
+        id: 11,
+        title: '8월 법인카드 지출결의서 정산 마감',
+        project: '경영지원 / 재무',
+        status: 'todo',
+        priority: 'medium',
+        dueDate: '2026-08-31',
+        assignees: [
+          { name: '오은주', avatar: './resource/image/profile_sky.png', dept: '경영지원팀', role: '차장' }
+        ],
+        isOverdue: false,
+        isMine: false,
+        notes: '영수증 증빙 확인 및 부서별 예산 집행 승인 처리',
+        hasAttachment: true
+      }
+    ],
     notices: (window.MockData && window.MockData.notices) ? JSON.parse(JSON.stringify(window.MockData.notices)) : [],
     members: (window.MockData && window.MockData.employees) ? JSON.parse(JSON.stringify(window.MockData.employees)) : [],
     projects: (window.MockData && window.MockData.projects) ? JSON.parse(JSON.stringify(window.MockData.projects)) : [],
@@ -1161,28 +1331,203 @@ const PCApp = {
     this.renderTodoView();
   },
 
+  selectProject(projectName) {
+    this.state.selectedProject = projectName;
+    this.renderTodoView();
+    this.showToast(`📁 '${projectName}' 프로젝트가 선택되었습니다.`);
+  },
+
+  clearSelectedProject() {
+    this.state.selectedProject = null;
+    this.renderTodoView();
+  },
+
   quickAddTodo(title) {
     if (!title || !title.trim()) return;
-    this.state.todos.unshift({
+    const projName = this.state.selectedProject || '일반 업무';
+    const newTodo = {
       id: Date.now(),
       title: title.trim(),
+      project: projName,
       completed: false,
       priority: 'medium',
       status: 'in_progress',
-      project: '일반 업무',
       dueDate: '2026-08-24',
-      isMine: true
-    });
+      isMine: true,
+      assignees: [
+        { name: this.state.user.name, avatar: this.state.user.avatar, dept: this.state.user.dept, role: this.state.user.role }
+      ],
+      notes: '새로 등록된 태스크 항목입니다.',
+      hasAttachment: false
+    };
+    this.state.todos.unshift(newTodo);
     this.renderTodoView();
     this.renderRightCol();
     this.showToast('새로운 할 일이 등록되었습니다.');
   },
 
-  deleteTodo(idx) {
-    this.state.todos.splice(idx, 1);
+  toggleTodoStatus(todoId) {
+    const todo = (this.state.todos || []).find(t => t.id === todoId);
+    if (!todo) return;
+    if (todo.status === 'done' || todo.completed) {
+      todo.status = 'in_progress';
+      todo.completed = false;
+      this.showToast('할 일이 진행 중 상태로 전환되었습니다.');
+    } else {
+      todo.status = 'done';
+      todo.completed = true;
+      this.showToast('🎉 할 일이 완료 처리되었습니다!');
+    }
     this.renderTodoView();
     this.renderRightCol();
-    this.showToast('할 일이 삭제되었습니다.');
+
+    // If detail modal is open, refresh its content
+    const modalEl = document.getElementById('pc-global-modal');
+    if (modalEl && modalEl.classList.contains('active') && this.state.currentDetailTodoId === todoId) {
+      this.openTodoDetailModal(todoId);
+    }
+  },
+
+  deleteTodoById(todoId) {
+    if (confirm('해당 할 일을 삭제하시겠습니까?')) {
+      this.state.todos = (this.state.todos || []).filter(t => t.id !== todoId);
+      this.closeModal();
+      this.renderTodoView();
+      this.renderRightCol();
+      this.showToast('할 일이 삭제되었습니다.');
+    }
+  },
+
+  // 할 일 상세 모달 (Mobile Parity Detail Modal)
+  openTodoDetailModal(todoId) {
+    const todo = (this.state.todos || []).find(t => t.id === todoId);
+    if (!todo) return;
+
+    this.state.currentDetailTodoId = todo.id;
+    const isDone = todo.status === 'done' || todo.completed;
+
+    // Status Badge
+    let statusBadgeHtml = '';
+    if (todo.status === 'in_progress') {
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold">진행 중</span>`;
+    } else if (isDone) {
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-container text-secondary text-xs font-bold">완료</span>`;
+    } else {
+      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-bold">${todo.status || '대기'}</span>`;
+    }
+
+    // Priority Badge
+    let priorityBadgeHtml = '';
+    if (todo.priority === 'high') {
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-error-container text-error text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-error mr-1.5"></span>높음</span>`;
+    } else if (todo.priority === 'low') {
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-bold">낮음</span>`;
+    } else {
+      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary-container text-tertiary text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-tertiary mr-1.5"></span>보통</span>`;
+    }
+
+    // Assignees Stack
+    const assigneesHtml = (todo.assignees || [
+      { name: this.state.user.name, avatar: this.state.user.avatar, dept: this.state.user.dept, role: this.state.user.role }
+    ]).map((a) => `
+      <div class="flex items-center gap-2 bg-surface-container-low px-3.5 py-1.5 rounded-xl border border-outline">
+        <img src="${a.avatar || './profile.png'}" class="w-7 h-7 rounded-full object-cover border border-outline/30" />
+        <span class="text-xs font-bold text-on-surface">${a.name} ${a.role || ''}</span>
+        ${a.dept ? `<span class="text-[11px] text-on-surface-variant font-medium">(${a.dept})</span>` : ''}
+      </div>
+    `).join('');
+
+    const modalHtml = `
+      <div class="p-2 text-left">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between pb-4 border-b border-outline mb-5">
+          <div class="flex items-center gap-2 flex-wrap">
+            ${statusBadgeHtml}
+            ${priorityBadgeHtml}
+            <span class="text-xs font-bold bg-primary/10 text-primary px-3 py-1 rounded-full"># ${todo.project || '일반 업무'}</span>
+          </div>
+          <button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-xl transition-all" onclick="PCApp.closeModal()">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+
+        <!-- Title -->
+        <h2 class="text-2xl font-bold text-on-surface leading-snug mb-5 ${isDone ? 'line-through opacity-60' : ''}">
+          ${todo.title}
+        </h2>
+
+        <!-- Meta Grid Card -->
+        <div class="bg-surface-container-low rounded-2xl p-5 border border-outline space-y-4 mb-5">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-on-surface-variant block">마감 일자</span>
+              <span class="text-base font-bold text-on-surface mt-0.5">${todo.dueDate || '마감일 미정'}</span>
+            </div>
+          </div>
+
+          <div class="h-px bg-outline/60"></div>
+
+          <div>
+            <span class="text-xs font-bold text-on-surface-variant block mb-2.5">담당자</span>
+            <div class="flex items-center gap-2 flex-wrap">
+              ${assigneesHtml}
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline mb-5">
+          <h4 class="text-xs font-bold text-on-surface-variant mb-2">세부 내용 / 업무 메모</h4>
+          <p class="text-base text-on-surface leading-relaxed whitespace-pre-wrap">${todo.notes || '작성된 세부 메모가 없습니다.'}</p>
+        </div>
+
+        <!-- Attachments Section -->
+        <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline mb-6">
+          <h4 class="text-xs font-bold text-on-surface-variant mb-3 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5a2.5 2.5 0 0 1 5 0v10.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5V6H9v9.5a3 3 0 0 0 6 0V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>
+            첨부파일 (${todo.hasAttachment ? 1 : 0})
+          </h4>
+          ${todo.hasAttachment ? `
+            <div class="flex items-center justify-between p-3.5 bg-surface-container-low rounded-xl border border-outline hover:border-primary transition-all cursor-pointer group" onclick="PCApp.showToast('📥 [${todo.title}_관련자료.pdf] 첨부파일 다운로드가 시작되었습니다.')">
+              <div class="flex items-center gap-3 min-w-0">
+                <svg class="w-6 h-6 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                <div class="truncate">
+                  <span class="text-sm font-bold text-on-surface block truncate group-hover:text-primary transition-colors">${todo.title}_기획문서.pdf</span>
+                  <span class="text-xs text-on-surface-variant font-medium">1.8 MB · 업무 기획자료</span>
+                </div>
+              </div>
+              <button class="w-9 h-9 rounded-xl bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shrink-0 ml-3">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+              </button>
+            </div>
+          ` : `
+            <p class="text-xs text-on-surface-variant text-center py-2">등록된 첨부파일이 없습니다.</p>
+          `}
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="flex items-center justify-between pt-4 border-t border-outline">
+          <button class="px-4 py-2.5 rounded-xl text-error hover:bg-error/10 font-bold text-sm flex items-center gap-1.5 transition-all" onclick="PCApp.deleteTodoById(${todo.id})">
+            <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            삭제
+          </button>
+          <div class="flex items-center gap-3">
+            <button class="px-5 py-2.5 rounded-xl bg-surface-container text-on-surface font-bold text-sm hover:bg-surface-container-high transition-all" onclick="PCApp.closeModal()">
+              닫기
+            </button>
+            <button class="px-6 py-2.5 rounded-xl ${isDone ? 'bg-surface-container-high text-on-surface' : 'bg-primary text-white'} font-bold text-sm hover:opacity-90 transition-all flex items-center gap-2 shadow-xs" onclick="PCApp.toggleTodoStatus(${todo.id})">
+              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              ${isDone ? '진행 중으로 변경' : '할 일 완료 처리'}
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    this.openModal(modalHtml);
   },
 
   renderTodoView() {
@@ -1196,61 +1541,291 @@ const PCApp = {
       return true;
     });
 
-    if (filtered.length === 0) {
+    // -----------------------------------------------------------------
+    // CASE A: 특정 프로젝트 내부 뷰 (선택된 프로젝트의 대기/진행중/완료 리스트)
+    // -----------------------------------------------------------------
+    if (this.state.selectedProject) {
+      const projName = this.state.selectedProject;
+      const projTodos = filtered.filter(t => (t.project || '일반 업무') === projName);
+
+      const todoList = projTodos.filter(t => t.status === 'todo' || t.status === 'draft');
+      const inProgressList = projTodos.filter(t => t.status === 'in_progress' && !t.completed);
+      const doneList = projTodos.filter(t => t.status === 'done' || t.completed);
+
+      // 상단 뒤로가기 네비게이션 헤더 바
+      const backHeaderHtml = `
+        <div class="w-full flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-outline shadow-2xs mb-6">
+          <button type="button" onclick="PCApp.clearSelectedProject()" class="flex items-center gap-2 text-sm font-bold text-primary hover:underline active:scale-95 transition-transform">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <span>전체 프로젝트 목록으로</span>
+          </button>
+          <div class="flex items-center gap-3">
+            <span class="font-bold text-base text-on-surface"># ${projName}</span>
+            <span class="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full">${projTodos.length}개 업무</span>
+            <button type="button" onclick="PCApp.openQuickModal('todo')" class="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold flex items-center gap-1.5 hover:opacity-90 active:scale-95 transition-all shadow-xs">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              <span>할 일 추가</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      const renderCardItem = (t) => {
+        const isDone = t.status === 'done' || t.completed;
+        const assigneesHtml = (t.assignees || [
+          { name: this.state.user.name, avatar: this.state.user.avatar }
+        ]).map((a, idx) => `
+          <img alt="${a.name}" src="${a.avatar || './profile.png'}" class="w-6 h-6 rounded-full border-2 border-surface-container-lowest object-cover" title="${a.name}" />
+        `).join('');
+
+        return `
+          <div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between" onclick="PCApp.openTodoDetailModal(${t.id})">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold ${t.priority === 'high' ? 'bg-error-container text-error' : (t.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-tertiary-container text-tertiary')}">
+                  ${t.priority === 'high' ? '높음' : (t.priority === 'low' ? '낮음' : '보통')}
+                </span>
+                <span class="text-xs text-on-surface-variant font-medium">📅 ${t.dueDate || '오늘까지'}</span>
+              </div>
+              <div class="flex items-start gap-3 mb-2.5">
+                <input type="checkbox" ${isDone ? 'checked' : ''} onclick="event.stopPropagation(); PCApp.toggleTodoStatus(${t.id});" class="w-5 h-5 accent-primary rounded cursor-pointer mt-0.5 shrink-0" />
+                <h4 class="font-bold text-base text-on-surface leading-snug group-hover:text-primary transition-colors break-words ${isDone ? 'line-through opacity-50' : ''}">
+                  ${t.title}
+                </h4>
+              </div>
+              ${t.notes ? `<p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed mb-3 pl-8">${t.notes}</p>` : ''}
+            </div>
+
+            <div class="pt-3 border-t border-outline/50 flex items-center justify-between text-xs mt-2">
+              <span class="text-[11px] text-on-surface-variant font-medium">클릭하여 상세 보기</span>
+              <div class="flex -space-x-2 items-center">
+                ${assigneesHtml}
+              </div>
+            </div>
+          </div>
+        `;
+      };
+
+      const renderListItem = (t) => {
+        const isDone = t.status === 'done' || t.completed;
+        return `
+          <div class="flex items-center justify-between p-4 hover:bg-surface-container-low transition-all cursor-pointer group" onclick="PCApp.openTodoDetailModal(${t.id})">
+            <div class="flex items-center gap-3.5 flex-1 min-w-0 mr-4">
+              <input type="checkbox" ${isDone ? 'checked' : ''} onclick="event.stopPropagation(); PCApp.toggleTodoStatus(${t.id});" class="w-5 h-5 accent-primary rounded cursor-pointer shrink-0" />
+              <div class="min-w-0 flex-1">
+                <span class="text-base text-on-surface font-bold truncate block group-hover:text-primary transition-colors ${isDone ? 'line-through opacity-50' : ''}">${t.title}</span>
+                <div class="flex items-center gap-2 mt-1 text-xs text-on-surface-variant">
+                  <span>📅 ${t.dueDate || '오늘까지'}</span>
+                  ${t.notes ? `<span>·</span><span class="truncate max-w-xs">${t.notes}</span>` : ''}
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold ${t.priority === 'high' ? 'bg-error-container text-error' : 'bg-surface-container text-on-surface-variant'}">
+                ${t.priority === 'high' ? '높음' : '보통'}
+              </span>
+              <svg class="w-5 h-5 text-on-surface-variant group-hover:text-primary group-hover:translate-x-0.5 transition-all" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+            </div>
+          </div>
+        `;
+      };
+
+      listEl.className = 'w-full';
+
+      if (this.state.todoViewMode === 'card') {
+        // 칸반 3열 그리드 레이아웃
+        listEl.innerHTML = `
+          ${backHeaderHtml}
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Col 1: 대기 (To-Do) -->
+            <div class="flex flex-col gap-3.5 bg-surface-container-low/60 p-5 rounded-2xl border border-outline">
+              <div class="flex items-center justify-between pb-2 border-b border-outline">
+                <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-outline"></span>
+                  대기
+                  <span class="bg-surface-container text-on-surface-variant text-xs font-bold px-2.5 py-0.5 rounded-full">${todoList.length}</span>
+                </h3>
+              </div>
+              <div class="flex flex-col gap-3.5">
+                ${todoList.length > 0 ? todoList.map(renderCardItem).join('') : `
+                  <div class="p-8 text-center bg-surface-container-lowest rounded-2xl border border-dashed border-outline text-xs text-on-surface-variant">
+                    대기 중인 할 일이 없습니다.
+                  </div>
+                `}
+              </div>
+            </div>
+
+            <!-- Col 2: 진행 중 (In Progress) -->
+            <div class="flex flex-col gap-3.5 bg-surface-container-low/60 p-5 rounded-2xl border border-outline">
+              <div class="flex items-center justify-between pb-2 border-b border-outline">
+                <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-primary"></span>
+                  진행 중
+                  <span class="bg-primary/10 text-primary text-xs font-bold px-2.5 py-0.5 rounded-full">${inProgressList.length}</span>
+                </h3>
+              </div>
+              <div class="flex flex-col gap-3.5">
+                ${inProgressList.length > 0 ? inProgressList.map(renderCardItem).join('') : `
+                  <div class="p-8 text-center bg-surface-container-lowest rounded-2xl border border-dashed border-outline text-xs text-on-surface-variant">
+                    진행 중인 할 일이 없습니다.
+                  </div>
+                `}
+              </div>
+            </div>
+
+            <!-- Col 3: 완료 (Done) -->
+            <div class="flex flex-col gap-3.5 bg-surface-container-low/60 p-5 rounded-2xl border border-outline">
+              <div class="flex items-center justify-between pb-2 border-b border-outline">
+                <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-secondary"></span>
+                  완료
+                  <span class="bg-secondary-container text-secondary text-xs font-bold px-2.5 py-0.5 rounded-full">${doneList.length}</span>
+                </h3>
+              </div>
+              <div class="flex flex-col gap-3.5">
+                ${doneList.length > 0 ? doneList.map(renderCardItem).join('') : `
+                  <div class="p-8 text-center bg-surface-container-lowest rounded-2xl border border-dashed border-outline text-xs text-on-surface-variant">
+                    완료된 할 일이 없습니다.
+                  </div>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        // 한줄 리스트 레이아웃
+        listEl.innerHTML = `
+          ${backHeaderHtml}
+          <div class="space-y-6">
+            <!-- 대기 섹션 -->
+            <div class="pc-bento-card">
+              <div class="px-5 py-3.5 border-b border-outline flex items-center justify-between">
+                <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-outline"></span>
+                  대기
+                  <span class="bg-surface-container text-on-surface-variant text-xs font-bold px-2.5 py-0.5 rounded-full">${todoList.length}</span>
+                </h3>
+              </div>
+              <div class="divide-y divide-outline">
+                ${todoList.length > 0 ? todoList.map(renderListItem).join('') : `
+                  <p class="text-xs text-on-surface-variant text-center py-6">대기 중인 할 일이 없습니다.</p>
+                `}
+              </div>
+            </div>
+
+            <!-- 진행 중 섹션 -->
+            <div class="pc-bento-card">
+              <div class="px-5 py-3.5 border-b border-outline flex items-center justify-between">
+                <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-primary"></span>
+                  진행 중
+                  <span class="bg-primary/10 text-primary text-xs font-bold px-2.5 py-0.5 rounded-full">${inProgressList.length}</span>
+                </h3>
+              </div>
+              <div class="divide-y divide-outline">
+                ${inProgressList.length > 0 ? inProgressList.map(renderListItem).join('') : `
+                  <p class="text-xs text-on-surface-variant text-center py-6">진행 중인 할 일이 없습니다.</p>
+                `}
+              </div>
+            </div>
+
+            <!-- 완료 섹션 -->
+            <div class="pc-bento-card">
+              <div class="px-5 py-3.5 border-b border-outline flex items-center justify-between">
+                <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-secondary"></span>
+                  완료
+                  <span class="bg-secondary-container text-secondary text-xs font-bold px-2.5 py-0.5 rounded-full">${doneList.length}</span>
+                </h3>
+              </div>
+              <div class="divide-y divide-outline">
+                ${doneList.length > 0 ? doneList.map(renderListItem).join('') : `
+                  <p class="text-xs text-on-surface-variant text-center py-6">완료된 할 일이 없습니다.</p>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    // -----------------------------------------------------------------
+    // CASE B: 전체 프로젝트 목록 뷰 (프로젝트별 그룹핑 메인 뷰)
+    // -----------------------------------------------------------------
+    const projectsMap = {};
+    filtered.forEach(t => {
+      const projName = t.project || '일반 업무';
+      if (!projectsMap[projName]) projectsMap[projName] = [];
+      projectsMap[projName].push(t);
+    });
+
+    const projectNames = Object.keys(projectsMap);
+
+    if (projectNames.length === 0) {
       listEl.className = 'pc-bento-card text-center py-12';
       listEl.innerHTML = `
         <div class="flex flex-col items-center justify-center text-on-surface-variant">
           <svg class="w-12 h-12 text-on-surface-variant/50 mb-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
-          <h4 class="font-bold text-lg text-on-surface mb-1">등록된 할 일이 없습니다</h4>
+          <h4 class="font-bold text-lg text-on-surface mb-1">등록된 프로젝트 및 할 일이 없습니다</h4>
           <p class="text-sm">상단 등록창을 통해 새로운 할 일을 추가해보세요.</p>
         </div>
       `;
       return;
     }
 
-    const isCardMode = (this.state.todoViewMode === 'card');
-
-    if (isCardMode) {
-      // 1. 카드형 모드 (Card Mode)
+    if (this.state.todoViewMode === 'card') {
+      // 1. 카드형 모드 (Card Mode): 프로젝트별 대형 Bento 카드
       listEl.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5';
-      listEl.innerHTML = filtered.map((t, idx) => {
-        const isDone = t.completed || t.status === 'done';
+      listEl.innerHTML = projectNames.map(projName => {
+        const items = projectsMap[projName];
+        const todoCount = items.filter(t => t.status === 'todo' || t.status === 'draft').length;
+        const inProgressCount = items.filter(t => t.status === 'in_progress' && !t.completed).length;
+        const doneCount = items.filter(t => t.status === 'done' || t.completed).length;
+
+        // 미리보기용 최근 2개 업무
+        const previewItemsHtml = items.slice(0, 2).map(t => {
+          const isDone = t.status === 'done' || t.completed;
+          return `
+            <div class="flex items-center justify-between text-xs py-1.5 border-b border-outline/40 last:border-none">
+              <span class="font-medium text-on-surface truncate ${isDone ? 'line-through opacity-50' : ''}">${t.title}</span>
+              <span class="text-[11px] text-on-surface-variant shrink-0 ml-2">${t.dueDate || ''}</span>
+            </div>
+          `;
+        }).join('');
+
         return `
-          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all flex flex-col justify-between group text-base">
+          <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline hover:border-primary hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between text-left" onclick="PCApp.selectProject('${projName.replace(/'/g, "\\'")}')">
             <div>
-              <!-- Header: Status/Priority Badges + Delete Action -->
-              <div class="flex items-center justify-between gap-2 mb-3.5">
-                <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 rounded-md text-xs font-bold ${isDone ? 'bg-secondary-container text-secondary' : 'bg-primary-container text-primary'}">
-                    ${isDone ? '완료' : '진행중'}
-                  </span>
-                  <span class="px-2.5 py-0.5 rounded-md text-xs font-bold ${t.priority === 'high' ? 'bg-error-container text-error' : 'bg-surface-container text-on-surface-variant'}">
-                    ${t.priority === 'high' ? '높음' : (t.priority === 'low' ? '낮음' : '보통')}
-                  </span>
+              <!-- Header: Folder Icon + Title + Count -->
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-105 group-hover:bg-primary group-hover:text-white transition-all shrink-0">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+                  </div>
+                  <h3 class="font-bold text-lg text-on-surface group-hover:text-primary transition-colors truncate">${projName}</h3>
                 </div>
-                <button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-surface-container rounded-lg transition-all" onclick="PCApp.deleteTodo(${idx})" title="삭제">
-                  <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
+                <span class="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full shrink-0">${items.length}개 업무</span>
               </div>
 
-              <!-- Title & Checkbox -->
-              <div class="flex items-start gap-3 mb-3">
-                <input type="checkbox" ${isDone ? 'checked' : ''} onchange="PCApp.toggleTodo(${idx}); PCApp.renderTodoView();" class="w-5 h-5 accent-primary rounded cursor-pointer mt-0.5 shrink-0" />
-                <h4 class="font-bold text-base text-on-surface leading-snug break-words ${isDone ? 'line-through opacity-50' : ''}">
-                  ${t.title}
-                </h4>
+              <!-- Status Progress Chips -->
+              <div class="flex items-center gap-2 mb-4 flex-wrap">
+                <span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-xs font-bold">대기 ${todoCount}</span>
+                <span class="px-2.5 py-1 rounded-md bg-primary/10 text-primary text-xs font-bold">진행 중 ${inProgressCount}</span>
+                <span class="px-2.5 py-1 rounded-md bg-secondary-container text-secondary text-xs font-bold">완료 ${doneCount}</span>
               </div>
 
-              ${t.notes ? `<p class="text-sm text-on-surface-variant line-clamp-2 leading-relaxed mb-3 pl-8">${t.notes}</p>` : ''}
+              <!-- Recent Tasks Preview -->
+              <div class="bg-surface-container-low p-3.5 rounded-xl border border-outline/50 flex flex-col">
+                <span class="text-[11px] font-bold text-on-surface-variant mb-1.5">최근 등록 업무</span>
+                ${previewItemsHtml || '<p class="text-xs text-on-surface-variant py-1">등록된 업무가 없습니다.</p>'}
+              </div>
             </div>
 
-            <!-- Footer: Project Name & Due Date -->
-            <div class="pt-3 border-t border-outline/50 flex items-center justify-between text-xs text-on-surface-variant mt-2">
-              <span class="font-bold text-primary truncate max-w-[160px]"># ${t.project || '일반 업무'}</span>
-              <div class="flex items-center gap-1.5 shrink-0">
-                <svg class="w-4 h-4 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
-                <span class="font-medium">${t.dueDate || '오늘까지'}</span>
-              </div>
+            <!-- Footer Action -->
+            <div class="pt-4 border-t border-outline/50 flex items-center justify-between text-xs text-primary font-bold mt-4">
+              <span>상세 업무 목록 열기</span>
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
             </div>
           </div>
         `;
@@ -1258,31 +1833,31 @@ const PCApp = {
     } else {
       // 2. 한줄 리스트형 모드 (List Mode)
       listEl.className = 'pc-bento-card divide-y divide-outline';
-      listEl.innerHTML = filtered.map((t, idx) => {
-        const isDone = t.completed || t.status === 'done';
+      listEl.innerHTML = projectNames.map(projName => {
+        const items = projectsMap[projName];
+        const todoCount = items.filter(t => t.status === 'todo' || t.status === 'draft').length;
+        const inProgressCount = items.filter(t => t.status === 'in_progress' && !t.completed).length;
+        const doneCount = items.filter(t => t.status === 'done' || t.completed).length;
+
         return `
-          <div class="flex items-center justify-between p-4 hover:bg-surface-container-low transition-all text-base group">
-            <div class="flex items-center gap-3.5 flex-1 min-w-0 mr-4">
-              <input type="checkbox" ${isDone ? 'checked' : ''} onchange="PCApp.toggleTodo(${idx}); PCApp.renderTodoView();" class="w-5 h-5 accent-primary rounded cursor-pointer shrink-0" />
-              <div class="min-w-0 flex-1">
-                <span class="text-base text-on-surface font-bold truncate block ${isDone ? 'line-through opacity-50' : ''}">${t.title}</span>
-                <div class="flex items-center gap-2 mt-1 text-xs text-on-surface-variant">
-                  <span class="font-bold text-primary"># ${t.project || '일반 업무'}</span>
-                  <span>·</span>
-                  <span>📅 ${t.dueDate || '오늘까지'}</span>
-                </div>
+          <div class="flex items-center justify-between p-5 hover:bg-surface-container-low transition-all cursor-pointer group text-left" onclick="PCApp.selectProject('${projName.replace(/'/g, "\\'")}')">
+            <div class="flex items-center gap-3.5 min-w-0 flex-1 mr-4">
+              <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+              </div>
+              <div class="truncate">
+                <h3 class="font-bold text-base text-on-surface group-hover:text-primary transition-colors truncate">${projName}</h3>
+                <span class="text-xs text-on-surface-variant font-medium">총 ${items.length}개의 업무 태스크</span>
               </div>
             </div>
+
             <div class="flex items-center gap-3 shrink-0">
-              <span class="px-2.5 py-1 rounded-md text-xs font-bold ${isDone ? 'bg-secondary-container text-secondary' : 'bg-primary-container text-primary'}">
-                ${isDone ? '완료' : '진행중'}
-              </span>
-              <span class="px-2.5 py-1 rounded-md text-xs font-bold ${t.priority === 'high' ? 'bg-error-container text-error' : 'bg-surface-container text-on-surface-variant'}">
-                ${t.priority === 'high' ? '높음' : '보통'}
-              </span>
-              <button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-surface-container rounded-lg transition-all" onclick="PCApp.deleteTodo(${idx})" title="삭제">
-                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-              </button>
+              <div class="flex items-center gap-2 text-xs font-bold">
+                <span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant">대기 ${todoCount}</span>
+                <span class="px-2.5 py-1 rounded-md bg-primary/10 text-primary">진행 중 ${inProgressCount}</span>
+                <span class="px-2.5 py-1 rounded-md bg-secondary-container text-secondary">완료 ${doneCount}</span>
+              </div>
+              <svg class="w-5 h-5 text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-transform ml-1" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
             </div>
           </div>
         `;
@@ -1454,6 +2029,20 @@ const PCApp = {
   },
 
   // 8. Modals
+  openModal(html) {
+    const modal = document.getElementById('pc-global-modal');
+    const modalBody = document.getElementById('pc-modal-content');
+    if (!modal || !modalBody) return;
+    modalBody.innerHTML = html;
+    modal.classList.add('active');
+  },
+
+  closeModal() {
+    const modal = document.getElementById('pc-global-modal');
+    if (modal) modal.classList.remove('active');
+    this.state.currentDetailTodoId = null;
+  },
+
   openQuickModal(type) {
     const modal = document.getElementById('pc-global-modal');
     const modalBody = document.getElementById('pc-modal-content');
