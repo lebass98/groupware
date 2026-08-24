@@ -56,7 +56,7 @@
       "avatar": "./resource/image/profile_green.png",
       "status": "work",
       "statusText": "근무중",
-      "todaySchedule": "오후 반차"
+      "todaySchedule": ""
     },
     {
       "id": 5,
@@ -95,7 +95,7 @@
       "avatar": "./resource/image/profile_blue.png",
       "status": "work",
       "statusText": "근무중",
-      "todaySchedule": "반반차"
+      "todaySchedule": ""
     },
     {
       "id": 8,
@@ -201,7 +201,7 @@
       "avatar": "./resource/image/profile_pro.png",
       "status": "work",
       "statusText": "근무중",
-      "todaySchedule": ""
+      "todaySchedule": "연차"
     },
     {
       "id": 16,
@@ -214,7 +214,7 @@
       "avatar": "./resource/image/profile_spring.png",
       "status": "offwork",
       "statusText": "퇴근",
-      "todaySchedule": ""
+      "todaySchedule": "연차"
     },
     {
       "id": 17,
@@ -240,7 +240,7 @@
       "avatar": "./resource/image/profile_help.png",
       "status": "work",
       "statusText": "근무중",
-      "todaySchedule": "외근"
+      "todaySchedule": "오전 반차"
     },
     {
       "id": 19,
@@ -279,7 +279,7 @@
       "avatar": "./resource/image/profile_cool_20241224_lee.png",
       "status": "work",
       "statusText": "근무중",
-      "todaySchedule": "오후 반차"
+      "todaySchedule": ""
     }
   ],
   "notices": [

@@ -3375,9 +3375,7 @@ const App = {
       if (match) {
         rawSched = match.title;
       }
-    }
-
-    if (!rawSched && emp.todaySchedule) {
+    } else if (emp.todaySchedule) {
       rawSched = emp.todaySchedule;
     }
 
