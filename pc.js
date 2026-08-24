@@ -696,14 +696,12 @@ const PCApp = {
       html += `<div class="pc-cal-cell empty"></div>`;
     }
 
-    const schedulesMap = (window.MockData && window.MockData.schedules) || {};
-
     // Days
     for (let d = 1; d <= lastDate; d++) {
       const key = `${year}-${month + 1}-${d}`;
       const isToday = (d === 24 && month === 7 && year === 2026);
       
-      const daySchedules = schedulesMap[key] || [];
+      const daySchedules = this.getSchedulesForDay(year, month + 1, d);
 
       html += `
         <div class="pc-cal-cell ${isToday ? 'today' : ''}" onclick="PCApp.selectDate('${key}'); PCApp.switchScreen('calendar');">
@@ -713,7 +711,7 @@ const PCApp = {
           </div>
           <div class="pc-cal-events-wrap">
             ${daySchedules.map(s => `
-              <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}" title="${this.formatScheduleCleanLabel(s)}">
+              <span class="pc-cal-event-tag ${this.getScheduleTagClass(s)}" title="${this.formatScheduleCleanLabel(s)}">
                 ${this.formatScheduleCleanLabel(s)}
               </span>
             `).join('')}
@@ -1122,7 +1120,6 @@ const PCApp = {
       const month = this.state.calMonth - 1;
       const firstDay = new Date(year, month, 1).getDay();
       const lastDate = new Date(year, month + 1, 0).getDate();
-      const schedulesMap = (window.MockData && window.MockData.schedules) || {};
 
       let html = '';
       for (let i = 0; i < firstDay; i++) {
@@ -1133,7 +1130,7 @@ const PCApp = {
         const key = `${year}-${month + 1}-${d}`;
         const isToday = (d === 24 && month === 7 && year === 2026);
         const isSelected = (this.state.selectedDate === key);
-        const daySchedules = schedulesMap[key] || [];
+        const daySchedules = this.getSchedulesForDay(year, month + 1, d);
 
         html += `
           <div class="pc-cal-cell ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}" onclick="PCApp.selectDate('${key}')">
@@ -1143,7 +1140,7 @@ const PCApp = {
             </div>
             <div class="pc-cal-events-wrap">
               ${daySchedules.map(s => `
-                <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}" title="${this.formatScheduleCleanLabel(s)}">
+                <span class="pc-cal-event-tag ${this.getScheduleTagClass(s)}" title="${this.formatScheduleCleanLabel(s)}">
                   ${this.formatScheduleCleanLabel(s)}
                 </span>
               `).join('')}
@@ -1158,15 +1155,13 @@ const PCApp = {
     const dailyPanel = document.getElementById('pc-cal-daily-panel');
     if (dailyPanel) {
       let selectedKey = this.state.selectedDate || '2026-8-24';
-      const schedulesMap = (window.MockData && window.MockData.schedules) || {};
-      let list = schedulesMap[selectedKey];
-      if (!list) {
-        const altKey = selectedKey.includes('-0') ? selectedKey.replace(/-0([1-9])/g, '-$1') : selectedKey.replace(/-([1-9])(?!\d)/g, '-0$1');
-        list = schedulesMap[altKey] || [];
-      }
+      const parts = selectedKey.split('-').map(Number);
+      const selYear = parts[0] || 2026;
+      const selMonth = parts[1] || 8;
+      const selDay = parts[2] || 24;
 
-      const parts = selectedKey.split('-');
-      const formatted = `${parts[0]}년 ${parts[1]}월 ${parts[2]}일`;
+      const list = this.getSchedulesForDay(selYear, selMonth, selDay);
+      const formatted = `${selYear}년 ${selMonth}월 ${selDay}일`;
 
       dailyPanel.innerHTML = `
         <div class="flex items-center justify-between pb-4 border-b border-outline mb-4">
@@ -1174,7 +1169,7 @@ const PCApp = {
             <h4 class="font-bold text-lg text-on-surface">${formatted}</h4>
             <p class="text-xs text-primary font-bold mt-0.5">총 ${list.length}건의 일정</p>
           </div>
-          <button class="px-3 py-1.5 bg-primary text-white font-bold rounded-xl text-xs" onclick="PCApp.openQuickModal('leave')">+ 추가</button>
+          <button class="px-3 py-1.5 bg-primary text-white font-bold rounded-xl text-xs hover:bg-primary-dim transition-colors" onclick="PCApp.openQuickModal('leave')">+ 추가</button>
         </div>
 
         <div class="space-y-2.5 max-h-[600px] overflow-y-auto pr-1">
@@ -1189,16 +1184,146 @@ const PCApp = {
     }
   },
 
+  getNationalHoliday(year, month, day) {
+    // Fixed Solar National Holidays
+    if (month === 1 && day === 1) return { title: "신정", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 3 && day === 1) return { title: "3·1절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 5 && day === 5) return { title: "어린이날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 6 && day === 6) return { title: "현충일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 8 && day === 15) return { title: "광복절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 10 && day === 3) return { title: "개천절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 10 && day === 9) return { title: "한글날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    if (month === 12 && day === 25) return { title: "성탄절", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+
+    // 2026 Specific Lunar & Substitute Holidays
+    if (year === 2026) {
+      if (month === 2 && (day === 16 || day === 18)) return { title: "설날 연휴", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 2 && day === 17) return { title: "설날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 3 && day === 2) return { title: "3·1절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 5 && day === 24) return { title: "부처님오신날", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 5 && day === 25) return { title: "부처님오신날 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 8 && day === 17) return { title: "광복절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 9 && (day === 24 || day === 26)) return { title: "추석 연휴", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 9 && day === 25) return { title: "추석", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+      if (month === 10 && day === 5) return { title: "개천절 대체공휴일", time: "종일", type: "error", badge: "공휴일", author: "공휴일", avatar: "" };
+    }
+    return null;
+  },
+
+  getObservanceDay(year, month, day) {
+    const observances = (window.MockData && (window.MockData.observances || window.MockData.observances2026)) || {};
+    const key = `${month}-${day}`;
+    const obs = observances[key];
+    if (obs) {
+      return {
+        title: obs.title,
+        obsName: obs.name,
+        time: "종일",
+        type: "secondary",
+        badge: "기념일",
+        author: "기념일",
+        avatar: ""
+      };
+    }
+    return null;
+  },
+
+  getSolarTerm(year, month, day) {
+    const terms = (window.MockData && (window.MockData.solarTerms || window.MockData.solarTerms2026)) || {};
+    const key = `${month}-${day}`;
+    const t = terms[key];
+    if (t) {
+      return {
+        title: `${t.title} - ${t.desc}`,
+        termName: t.title.split(' ')[0],
+        time: "종일",
+        type: "info",
+        badge: "절기",
+        author: "24절기",
+        avatar: ""
+      };
+    }
+    return null;
+  },
+
+  getSchedulesForDay(year, month, day) {
+    const key = `${year}-${month}-${day}`;
+    const altKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const defaultData = (window.MockData && window.MockData.schedules) || {};
+
+    const defaults = defaultData[key] || defaultData[altKey] || [];
+    const nationalHol = this.getNationalHoliday(year, month, day);
+    const solarTerm = this.getSolarTerm(year, month, day);
+    const observance = this.getObservanceDay(year, month, day);
+
+    let combined = [];
+    if (nationalHol) {
+      combined.push(nationalHol);
+    }
+    if (solarTerm && !combined.some(s => s.title.includes(solarTerm.termName))) {
+      combined.push(solarTerm);
+    }
+    if (observance && !combined.some(s => s.title.includes(observance.obsName) || (nationalHol && nationalHol.title.includes(observance.obsName)))) {
+      combined.push(observance);
+    }
+    defaults.forEach(s => {
+      if (!combined.some(existing => existing.title === s.title && existing.author === s.author)) {
+        combined.push(s);
+      }
+    });
+
+    const userAdded = (window.App && window.App.mockDynamicSchedules && window.App.mockDynamicSchedules[key]) || [];
+    combined = [...combined, ...userAdded];
+    return combined;
+  },
+
+  getScheduleTagClass(s) {
+    const titleStr = s.title || '';
+    const badgeStr = s.badge || '';
+    const authorStr = s.author || '';
+
+    const isHoliday = (badgeStr === '공휴일' || titleStr.includes('공휴일') || authorStr === '공휴일' || authorStr === '대한민국 공휴일' || authorStr === '회사공지');
+    const isSolarTerm = (badgeStr === '절기' || authorStr === '24절기');
+    const isObservance = (badgeStr === '기념일' || authorStr === '기념일');
+
+    if (isHoliday) return 'bg-[#fee2e2] text-[#c5221f] font-bold';
+    if (isSolarTerm) return 'bg-[#e6f4ea] text-[#137333] font-bold';
+    if (isObservance) return 'bg-[#f0f4f9] text-[#3c4043] font-bold';
+    if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('연차')) {
+      return (s.type === 'error' || authorStr.includes('이재광') || authorStr.includes('조지혜')) ? 'bg-[#fee2e2] text-[#c5221f]' : 'bg-[#e3fcef] text-[#00693f]';
+    }
+    if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) return 'bg-[#fef7e0] text-[#b06000]';
+    if (titleStr.includes('외근') || titleStr.includes('미팅') || titleStr.includes('출장') || badgeStr.includes('외근')) return 'bg-[#e8f0fe] text-[#1a73e8]';
+    if (titleStr.includes('회의') || titleStr.includes('보고')) return 'bg-[#f3e8fd] text-[#7627bb]';
+    return 'bg-primary/10 text-primary';
+  },
+
   getScheduleCardHtml(item) {
-    const avatarUrl = item.avatar || './resource/image/profile_abc.png';
     let dotClass = 'bg-[#00693f]';
     let badgeBg = 'bg-[#e3fcef] text-[#00693f] border border-[#00693f]/25';
     let categoryKey = '연차';
 
     const titleStr = (item.title || '');
     const badgeStr = (item.badge || '');
+    const authorStr = (item.author || '');
 
-    if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) {
+    const isHoliday = (badgeStr === '공휴일' || titleStr.includes('공휴일') || authorStr === '공휴일' || authorStr === '대한민국 공휴일' || authorStr === '회사공지');
+    const isSolarTerm = (badgeStr === '절기' || authorStr === '24절기');
+    const isObservance = (badgeStr === '기념일' || authorStr === '기념일');
+
+    if (isHoliday) {
+      categoryKey = '공휴일';
+      dotClass = 'bg-[#ef4444]';
+      badgeBg = 'bg-[#fee2e2] text-[#c5221f] border border-[#c5221f]/25';
+    } else if (isSolarTerm) {
+      categoryKey = '절기';
+      dotClass = 'bg-[#10b981]';
+      badgeBg = 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/25';
+    } else if (isObservance) {
+      categoryKey = '기념일';
+      dotClass = 'bg-[#64748b]';
+      badgeBg = 'bg-[#f0f4f9] text-[#3c4043] border border-[#3c4043]/25';
+    } else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) {
       categoryKey = '반차';
       dotClass = 'bg-[#b06000]';
       badgeBg = 'bg-[#fef7e0] text-[#b06000] border border-[#b06000]/25';
@@ -1212,9 +1337,10 @@ const PCApp = {
       badgeBg = 'bg-[#f3e8fd] text-[#7627bb] border border-[#7627bb]/25';
     }
 
-    const isSpecial = item.author === '공휴일' || item.author === '대한민국 공휴일' || item.author === '회사공지';
+    const isSpecial = isHoliday || isSolarTerm || isObservance || authorStr === '회사공지';
+    const avatarUrl = item.avatar || (window.MockData && window.MockData.myProfile ? window.MockData.myProfile.avatar : './resource/image/profile_abc.png');
     const avatarHtml = isSpecial ? '' : `<img src="${avatarUrl}" alt="${item.author || '담당자'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline/30 shadow-xs mr-2.5" />`;
-    const authorHtml = isSpecial ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap">${item.author || '이재광 차장'}</span>`;
+    const authorHtml = isSpecial ? `<span class="font-bold text-xs text-on-surface-variant whitespace-nowrap">${item.badge || categoryKey}</span>` : `<span class="font-bold text-xs text-primary font-bold whitespace-nowrap">${item.author || '이재광 차장'}</span>`;
     const displayTitle = this.formatScheduleCleanLabel(item);
 
     return `
