@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WnC Smart Groupware | PC Desktop</title>
+  <meta name="description" content="워드앤코드 통합 스마트 그룹웨어 PC 데스크톱 와이드 포털" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--primary)',
+            'primary-dim': 'var(--primary-dim)',
+            'primary-container': 'var(--primary-container)',
+            'on-primary': 'var(--on-primary)',
+            secondary: 'var(--secondary)',
+            'secondary-container': 'var(--secondary-container)',
+            tertiary: 'var(--tertiary)',
+            'tertiary-container': 'var(--tertiary-container)',
+            surface: 'var(--surface)',
+            'surface-container-lowest': 'var(--surface-container-lowest)',
+            'surface-container-low': 'var(--surface-container-low)',
+            'surface-container': 'var(--surface-container)',
+            'surface-container-high': 'var(--surface-container-high)',
+            'surface-container-highest': 'var(--surface-container-highest)',
+            'on-surface': 'var(--on-surface)',
+            'on-surface-variant': 'var(--on-surface-variant)',
+            outline: 'var(--outline)',
+            'outline-variant': 'var(--outline-variant)',
+            error: 'var(--error)',
+            'error-container': 'var(--error-container)'
+          },
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="./pc.css" />
+</head>
+<body class="bg-surface text-on-surface select-none">
+  
+  <div class="pc-layout-wrapper">
+    
+    <!-- 1. LEFT SLIM ICON SIDEBAR (Icon-Only LNB) -->
+    <aside class="pc-sidebar" aria-label="사이드 네비게이션">
+      <!-- Top Logo Embleme -->
+      <a href="javascript:void(0)" onclick="PCApp.switchScreen('dashboard')" class="pc-sidebar-logo" title="워드앤코드 그룹웨어 홈">
+        <div class="pc-sidebar-logo-icon">W</div>
+      </a>
+
+      <!-- 10 Core Service Icon Nav -->
+      <ul class="pc-nav-list" id="pc-sidebar-nav">
+        <!-- Dynamically Rendered by pc.js -->
+      </ul>
+
+      <!-- Sidebar Footer (Theme, Mobile Switcher, Profile) -->
+      <div class="pc-sidebar-footer">
+        <!-- Theme Toggle -->
+        <button type="button" class="pc-nav-btn" id="pc-theme-icon" onclick="PCApp.toggleTheme()" title="다크/라이트 모드 전환">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+          </svg>
+          <span class="pc-tooltip">테마 전환</span>
+        </button>
+
+        <!-- Mobile View Switcher -->
+        <a href="./index.html" class="pc-nav-btn" title="모바일 뷰 전환" target="_self">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/>
+          </svg>
+          <span class="pc-tooltip">모바일 앱 뷰</span>
+        </a>
+
+        <!-- User Profile Avatar -->
+        <div class="pc-avatar-btn" onclick="PCApp.switchScreen('directory')" title="내 정보 / 주소록">
+          <img src="./profile.png" alt="이재광 차장" />
+        </div>
+      </div>
+    </aside>
+
+    <!-- 2. MAIN CONTENT AREA -->
+    <main class="pc-main-wrapper">
+      
+      <!-- Global Top Header (GNB) -->
+      <header class="pc-gnb">
+        <!-- Left: Dashboard Switcher -->
+        <div class="pc-gnb-left">
+          <div class="pc-tabs-switcher">
+            <button class="pc-tab-pill active" data-tab="company" onclick="PCApp.setDashboardTab('company')">전사 대시보드</button>
+            <button class="pc-tab-pill" data-tab="my" onclick="PCApp.setDashboardTab('my')">내 대시보드</button>
+          </div>
+
+          <div class="pc-gnb-search">
+            <svg class="w-4 h-4 pc-gnb-search-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <input type="text" placeholder="임직원, 공지사항, 결재문서 통합 검색..." onkeyup="if(event.key==='Enter') alert(`'${this.value}' 검색 결과를 조회합니다.`)" />
+          </div>
+        </div>
+
+        <!-- Right: Real-time clock & Quick actions -->
+        <div class="pc-gnb-right">
+          <div class="pc-live-clock-badge" id="pc-gnb-clock">
+            <!-- Dynamic Realtime Clock -->
+          </div>
+
+          <button class="pc-quick-write-btn" onclick="PCApp.openQuickModal('leave')">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            기안 작성
+          </button>
+
+          <!-- Notifications Button -->
+          <button class="pc-icon-action-btn" onclick="alert('새로운 알림 3건이 있습니다.\n1. 공지: 그룹웨어 신규 데스크톱 뷰 오픈\n2. 결재: 8월 지출결의서 승인 완료\n3. 일정: 15:00 퍼블리싱팀 주간 회의')" title="알림 센터">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+            </svg>
+            <span class="pc-badge-dot"></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- SCREEN 1: BENTO MAIN DASHBOARD -->
+      <section class="pc-screen-view active" id="pc-screen-dashboard">
+        <div class="pc-dashboard-container">
+          
+          <!-- Column 1: Left Widgets (280px ~ 320px) -->
+          <div class="pc-col-left">
+            <div id="pc-widget-profile"></div>
+            <div id="pc-widget-leave"></div>
+            <div id="pc-widget-birthday"></div>
+          </div>
+
+          <!-- Column 2: Center Feed (Flex-1) -->
+          <div class="pc-col-center">
+            <div id="pc-widget-notice-banner"></div>
+            <div id="pc-widget-work-report"></div>
+            <div id="pc-widget-calendar"></div>
+          </div>
+
+          <!-- Column 3: Right Widgets (320px ~ 360px) -->
+          <div class="pc-col-right">
+            <div id="pc-widget-commute"></div>
+            <div id="pc-widget-quick-menu"></div>
+            <div id="pc-widget-todo"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SCREEN 2: DIRECTORY VIEW (주소록 전용 와이드 뷰) -->
+      <section class="pc-screen-view p-8" id="pc-screen-directory">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
+          <div>
+            <h2 class="text-2xl font-black text-on-surface">임직원 주소록</h2>
+            <p class="text-sm text-on-surface-variant">워드앤코드 전사 조직도 및 21명 임직원 연락망</p>
+          </div>
+          <div class="flex gap-2">
+            <input type="text" placeholder="사원명 또는 부서명 검색..." class="px-4 py-2 bg-surface-container-low border border-outline rounded-xl text-sm" oninput="PCApp.state.directorySearch = this.value; PCApp.renderDirectoryView();" />
+          </div>
+        </div>
+
+        <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-primary text-white" onclick="PCApp.state.directoryCategory='all'; PCApp.renderDirectoryView();">전체</button>
+          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='퍼블리싱팀'; PCApp.renderDirectoryView();">퍼블리싱팀</button>
+          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='개발팀'; PCApp.renderDirectoryView();">개발팀</button>
+          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='디자인팀'; PCApp.renderDirectoryView();">디자인팀</button>
+          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='기획팀'; PCApp.renderDirectoryView();">기획팀</button>
+          <button class="px-4 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="PCApp.state.directoryCategory='경영지원팀'; PCApp.renderDirectoryView();">경영지원팀</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="pc-directory-grid">
+          <!-- Rendered by pc.js -->
+        </div>
+      </section>
+
+      <!-- SCREEN 3: NOTICES VIEW (공지사항 전용 뷰) -->
+      <section class="pc-screen-view p-8" id="pc-screen-notice">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
+          <div>
+            <h2 class="text-2xl font-black text-on-surface">전사 공지사항</h2>
+            <p class="text-sm text-on-surface-variant">사내 주요 공지 및 업무 안내 게시판</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="pc-notice-full-list">
+          <!-- Rendered by pc.js -->
+        </div>
+      </section>
+
+      <!-- SCREEN 4: WORK REPORT VIEW (주간 업무보고 전체 뷰) -->
+      <section class="pc-screen-view p-8" id="pc-screen-work-report">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
+          <div>
+            <h2 class="text-2xl font-black text-on-surface">주간 업무보고</h2>
+            <p class="text-sm text-on-surface-variant">전 부서별 주간 실적 및 차주 계획 현황 (전주 vs 금주 비교)</p>
+          </div>
+        </div>
+        <div id="pc-workreport-full-container">
+          <!-- Rendered by pc.js -->
+        </div>
+      </section>
+
+      <!-- SCREEN 5: CHECK-IN & LOGS VIEW -->
+      <section class="pc-screen-view p-8" id="pc-screen-checkin">
+        <div class="mb-6 pb-4 border-b border-outline">
+          <h2 class="text-2xl font-black text-on-surface">근태 & 출/퇴근 관리</h2>
+          <p class="text-sm text-on-surface-variant">실시간 출석 체크인 및 출퇴근 상세 기록 로그</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-1">
+            <div class="pc-bento-card">
+              <h3 class="font-bold text-lg text-on-surface mb-4">원클릭 출퇴근</h3>
+              <div class="text-center py-6 bg-surface-container-low rounded-2xl mb-4">
+                <span class="text-3xl font-black text-primary block mb-2" id="pc-checkin-live-time">09:42:15</span>
+                <span class="text-xs font-semibold px-3 py-1 bg-secondary-container text-secondary rounded-full">GPS 본사 인증 (500m 이내)</span>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <button class="py-3.5 bg-secondary text-white font-bold rounded-xl" onclick="PCApp.handleCheckIn()">출근하기</button>
+                <button class="py-3.5 bg-error text-white font-bold rounded-xl" onclick="PCApp.handleCheckOut()">퇴근하기</button>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-2">
+            <div class="pc-bento-card">
+              <h3 class="font-bold text-lg text-on-surface mb-4">이번 주 출퇴근 상세 기록</h3>
+              <table class="w-full text-xs text-left border-collapse">
+                <thead>
+                  <tr class="bg-surface-container border-b border-outline text-on-surface-variant font-bold">
+                    <th class="p-3">일자</th>
+                    <th class="p-3">출근시간</th>
+                    <th class="p-3">퇴근시간</th>
+                    <th class="p-3">총 근무시간</th>
+                    <th class="p-3">상태</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-outline">
+                  <tr><td class="p-3 font-semibold">2026-08-24 (월)</td><td class="p-3 text-primary font-bold">08:55</td><td class="p-3 text-on-surface-variant">18:00 (예정)</td><td class="p-3">8시간 5분</td><td class="p-3"><span class="px-2 py-0.5 bg-secondary-container text-secondary rounded-md font-bold">정상출근</span></td></tr>
+                  <tr><td class="p-3 font-semibold">2026-08-21 (금)</td><td class="p-3 text-primary font-bold">08:50</td><td class="p-3 text-on-surface">18:05</td><td class="p-3">8시간 15분</td><td class="p-3"><span class="px-2 py-0.5 bg-secondary-container text-secondary rounded-md font-bold">정상근무</span></td></tr>
+                  <tr><td class="p-3 font-semibold">2026-08-20 (목)</td><td class="p-3 text-primary font-bold">08:52</td><td class="p-3 text-on-surface">18:10</td><td class="p-3">8시간 18분</td><td class="p-3"><span class="px-2 py-0.5 bg-secondary-container text-secondary rounded-md font-bold">정상근무</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6: CALENDAR VIEW -->
+      <section class="pc-screen-view p-8" id="pc-screen-calendar">
+        <div class="mb-6 pb-4 border-b border-outline">
+          <h2 class="text-2xl font-black text-on-surface">근태일지 & 사내 캘린더</h2>
+          <p class="text-sm text-on-surface-variant">월간/주간/일간 전사 일정 및 휴가/외근 현황</p>
+        </div>
+        <div class="pc-bento-card">
+          <div class="pc-cal-weekdays">
+            <span>일요일</span><span>월요일</span><span>화요일</span><span>수요일</span><span>목요일</span><span>금요일</span><span>토요일</span>
+          </div>
+          <div class="pc-cal-grid" style="grid-template-rows: repeat(5, minmax(90px, 1fr));">
+            <!-- Full Month View -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 7: FINANCE & EXPENSES -->
+      <section class="pc-screen-view p-8" id="pc-screen-finance">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
+          <div>
+            <h2 class="text-2xl font-black text-on-surface">재무 / 경비 관리</h2>
+            <p class="text-sm text-on-surface-variant">법인카드 및 개인영수증 지출결의서 관리</p>
+          </div>
+          <button class="px-4 py-2 bg-primary text-white font-bold rounded-xl text-sm" onclick="PCApp.openQuickModal('expense')">+ 지출결의서 작성</button>
+        </div>
+        <div class="grid grid-cols-3 gap-6 mb-6">
+          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline">
+            <span class="text-xs font-semibold text-on-surface-variant block mb-1">8월 승인 총액</span>
+            <span class="text-2xl font-black text-primary">1,480,000원</span>
+          </div>
+          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline">
+            <span class="text-xs font-semibold text-on-surface-variant block mb-1">결재 대기</span>
+            <span class="text-2xl font-black text-tertiary">1건</span>
+          </div>
+          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline">
+            <span class="text-xs font-semibold text-on-surface-variant block mb-1">반려</span>
+            <span class="text-2xl font-black text-error">0건</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 8: TO-DO VIEW -->
+      <section class="pc-screen-view p-8" id="pc-screen-todo">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
+          <div>
+            <h2 class="text-2xl font-black text-on-surface">할 일 관리 (To-Do)</h2>
+            <p class="text-sm text-on-surface-variant">프로젝트별 업무 태스크 및 개인 우선순위 관리</p>
+          </div>
+        </div>
+        <div class="pc-bento-card">
+          <div class="flex gap-2 mb-4">
+            <input type="text" id="pc-new-todo-input" placeholder="새로운 할 일을 입력하세요..." class="flex-1 p-3 bg-surface-container-low border border-outline rounded-xl text-sm" onkeyup="if(event.key==='Enter'&&this.value){ PCApp.state.todos.unshift({title:this.value,completed:false,priority:'medium'}); this.value=''; PCApp.renderDashboard(); PCApp.switchScreen('todo'); }" />
+            <button class="px-5 py-3 bg-primary text-white font-bold rounded-xl text-sm" onclick="const input = document.getElementById('pc-new-todo-input'); if(input.value){ PCApp.state.todos.unshift({title:input.value,completed:false,priority:'medium'}); input.value=''; PCApp.renderDashboard(); PCApp.switchScreen('todo'); }">등록</button>
+          </div>
+          <div class="pc-todo-list" id="pc-full-todo-list">
+            <!-- Dynamically Rendered -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 9: PROJECTS VIEW -->
+      <section class="pc-screen-view p-8" id="pc-screen-project">
+        <div class="mb-6 pb-4 border-b border-outline">
+          <h2 class="text-2xl font-black text-on-surface">프로젝트 관리</h2>
+          <p class="text-sm text-on-surface-variant">진행 중인 6대 핵심 구축 프로젝트 진척도</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:shadow-md transition-all">
+            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-primary/10 text-primary mb-2 inline-block">워드앤코드</span>
+            <h3 class="font-bold text-base text-on-surface mb-2">그룹웨어 고도화 및 PC 포털</h3>
+            <p class="text-xs text-on-surface-variant mb-4">M3 디자인 시스템 & 풀 와이드 Bento 대시보드 구축</p>
+            <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden mb-2">
+              <div class="h-full bg-primary rounded-full" style="width: 95%;"></div>
+            </div>
+            <span class="text-xs font-bold text-primary">진척률 95%</span>
+          </div>
+
+          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:shadow-md transition-all">
+            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary mb-2 inline-block">한국건강가정진흥원</span>
+            <h3 class="font-bold text-base text-on-surface mb-2">FCES 대표 웹사이트 개편</h3>
+            <p class="text-xs text-on-surface-variant mb-4">서브페이지 반응형 퍼블리싱 및 웹접근성 품질인증</p>
+            <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden mb-2">
+              <div class="h-full bg-secondary rounded-full" style="width: 80%;"></div>
+            </div>
+            <span class="text-xs font-bold text-secondary">진척률 80%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 10: REQUEST FORM VIEW -->
+      <section class="pc-screen-view p-8" id="pc-screen-request">
+        <div class="mb-6 pb-4 border-b border-outline">
+          <h2 class="text-2xl font-black text-on-surface">휴가 & 외근 신청</h2>
+          <p class="text-sm text-on-surface-variant">전자결재 연동 근태 및 출장 신청서</p>
+        </div>
+        <div class="grid grid-cols-2 gap-6">
+          <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary cursor-pointer transition-all" onclick="PCApp.openQuickModal('leave')">
+            <h3 class="text-lg font-bold text-primary mb-2">휴가 신청서 작성</h3>
+            <p class="text-xs text-on-surface-variant">연차, 오전반차, 오후반차, 경조휴가 신청</p>
+          </div>
+          <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary cursor-pointer transition-all" onclick="PCApp.openQuickModal('outwork')">
+            <h3 class="text-lg font-bold text-secondary mb-2">외근 / 출장 신청서 작성</h3>
+            <p class="text-xs text-on-surface-variant">고객사 미팅 및 원격/현장 지원 출장 신청</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Global Modal Container -->
+  <div class="pc-modal-backdrop" id="pc-global-modal" onclick="if(event.target===this) PCApp.closeModal()">
+    <div class="pc-modal-box">
+      <div id="pc-modal-content">
+        <!-- Injected by pc.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Master Shared Data Layer -->
+  <script src="./data/svgIcons.js"></script>
+  <script src="./data/mockData.js"></script>
+  <!-- PC Core Controller -->
+  <script src="./pc.js"></script>
+</body>
+</html>
