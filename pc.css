@@ -1264,6 +1264,16 @@ strong {
   line-height: 1;
 }
 
+/* Side Daily Schedule Panel Sticky (Fixed while Calendar scrolls) */
+#pc-cal-daily-panel {
+  position: sticky;
+  top: 86px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  align-self: start;
+  z-index: 10;
+}
+
 /* Right Column Widgets */
 /* 1. Check-In & Commute Card */
 .pc-commute-card {

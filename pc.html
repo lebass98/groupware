@@ -416,7 +416,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
           <!-- Calendar Main Grid (8 Cols on XL) -->
           <div class="xl:col-span-8 pc-bento-card">
             <div class="pc-calendar-header">
@@ -443,8 +443,8 @@
             </div>
           </div>
 
-          <!-- Side: Selected Date Daily Schedule List (4 Cols on XL) -->
-          <div class="xl:col-span-4 pc-bento-card" id="pc-cal-daily-panel">
+          <!-- Side: Selected Date Daily Schedule List (4 Cols on XL, Sticky) -->
+          <div class="xl:col-span-4 pc-bento-card sticky top-[86px] max-h-[calc(100vh-120px)] overflow-y-auto" id="pc-cal-daily-panel">
             <!-- Dynamically Rendered by pc.js -->
           </div>
         </div>
