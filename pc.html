@@ -85,7 +85,7 @@
   </script>
 
   <!-- Core Stylesheet -->
-  <link rel="stylesheet" href="./pc.css?v=20260824_1652" />
+  <link rel="stylesheet" href="./pc.css?v=20260824_1654" />
 </head>
 <body class="bg-surface text-on-surface select-none">
   
@@ -93,7 +93,14 @@
     
     <!-- 1. LEFT SIDEBAR (Collapsible / Expandable LNB) -->
     <aside class="pc-sidebar" id="pc-sidebar" aria-label="사이드 네비게이션">
-      <!-- Top Logo & Expand/Collapse Toggle Arrow Header -->
+      <!-- Floating Circular Toggle Button (사이드바와 헤더 중간 경계 위치) -->
+      <button type="button" class="pc-sidebar-toggle-btn" id="pc-sidebar-toggle-btn" onclick="PCApp.toggleSidebar()" title="사이드바 메뉴 펼치기/접기">
+        <svg class="w-3.5 h-3.5 pc-toggle-arrow" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+        </svg>
+      </button>
+
+      <!-- Top Logo Header -->
       <div class="pc-sidebar-header">
         <a href="javascript:void(0)" onclick="PCApp.switchScreen('dashboard')" class="pc-sidebar-logo" title="워드앤코드 그룹웨어 홈">
           <div class="pc-sidebar-logo-icon">W</div>
@@ -102,13 +109,6 @@
             <span class="pc-sidebar-brand-sub">WnC Smart GW</span>
           </div>
         </a>
-
-        <!-- Expand / Collapse Arrow Toggle Button -->
-        <button type="button" class="pc-sidebar-toggle-btn" id="pc-sidebar-toggle-btn" onclick="PCApp.toggleSidebar()" title="사이드바 메뉴 펼치기/접기">
-          <svg class="w-4 h-4 pc-toggle-arrow" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-          </svg>
-        </button>
       </div>
 
       <!-- 10 Core Service Icon & Label Nav -->

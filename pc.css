@@ -162,15 +162,13 @@ strong {
   transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1), min-width 0.22s cubic-bezier(0.16, 1, 0.3, 1), padding 0.22s ease;
 }
 
-/* Sidebar Header (Logo & Toggle Arrow) */
+/* Sidebar Header */
 .pc-sidebar-header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   width: 100%;
-  padding: 0 12px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .pc-sidebar-logo {
@@ -224,26 +222,32 @@ strong {
   white-space: nowrap;
 }
 
-/* Toggle Arrow Button (헤더와 사이드 중간 화살표) */
+/* Floating Circular Toggle Button (사이드바와 헤더 중간 경계 위치) */
 .pc-sidebar-toggle-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  position: absolute;
+  right: -13px;
+  top: 24px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
   border: 1px solid var(--outline);
-  background: var(--surface-container-low);
+  background: var(--surface-container-lowest);
   color: var(--on-surface-variant);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 4px;
+  z-index: 120;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .pc-sidebar-toggle-btn:hover {
-  background: var(--surface-container-high);
-  color: var(--primary);
+  background: var(--primary);
+  color: #ffffff;
   border-color: var(--primary);
+  transform: scale(1.12);
+  box-shadow: 0 4px 12px rgba(0, 82, 208, 0.35);
 }
 
 .pc-sidebar-toggle-btn .pc-toggle-arrow {
@@ -386,19 +390,15 @@ strong {
 }
 
 .pc-sidebar.expanded .pc-sidebar-header {
-  flex-direction: row;
-  justify-content: space-between;
+  display: flex;
   align-items: center;
+  justify-content: flex-start;
   padding: 0 16px;
   margin-bottom: 16px;
 }
 
 .pc-sidebar.expanded .pc-sidebar-logo-text {
   display: flex;
-}
-
-.pc-sidebar.expanded .pc-sidebar-toggle-btn {
-  margin-top: 0;
 }
 
 .pc-sidebar.expanded .pc-sidebar-toggle-btn .pc-toggle-arrow {
