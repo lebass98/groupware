@@ -1351,7 +1351,7 @@ const PCApp = {
           <button class="px-3 py-1.5 bg-primary text-white font-bold rounded-xl text-xs hover:bg-primary-dim transition-colors" onclick="PCApp.openQuickModal('leave')">+ 추가</button>
         </div>
 
-        <div class="space-y-2.5 max-h-[600px] overflow-y-auto pr-1">
+        <div class="space-y-2.5">
           ${list.length > 0 ? list.map(item => this.getScheduleCardHtml(item)).join('') : `
             <div class="text-center py-10 text-on-surface-variant">
               <p class="text-base font-bold mb-1">등록된 일정이 없습니다.</p>
