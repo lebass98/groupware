@@ -606,9 +606,175 @@ const PCApp = {
       this.state.calYear--;
     }
     this.renderCenterCol();
+    if (this.state.activeScreen === 'calendar') {
+      this.renderCalendarView();
+    }
+  },
+
+  goToTodayCal() {
+    this.state.calYear = 2026;
+    this.state.calMonth = 8;
+    this.state.selectedDate = '2026-8-24';
+    this.renderCenterCol();
+    if (this.state.activeScreen === 'calendar') {
+      this.renderCalendarView();
+    }
+  },
+
+  selectDate(key) {
+    this.state.selectedDate = key;
+    this.renderCalendarView();
   },
 
   // 6. Sub-View Renderers (Full Width Screen Mode)
+  renderCalendarView() {
+    const titleEl = document.getElementById('pc-full-cal-title');
+    if (titleEl) titleEl.textContent = `${this.state.calYear}년 ${this.state.calMonth}월`;
+
+    const gridEl = document.getElementById('pc-full-calendar-grid');
+    if (gridEl) {
+      const year = this.state.calYear;
+      const month = this.state.calMonth - 1;
+      const firstDay = new Date(year, month, 1).getDay();
+      const lastDate = new Date(year, month + 1, 0).getDate();
+      const schedulesMap = (window.MockData && window.MockData.schedules) || {};
+
+      let html = '';
+      for (let i = 0; i < firstDay; i++) {
+        html += `<div class="p-3 bg-surface-container-low/30 rounded-xl opacity-30 min-h-[90px]"></div>`;
+      }
+
+      for (let d = 1; d <= lastDate; d++) {
+        const key = `${year}-${month + 1}-${d}`;
+        const isToday = (d === 24 && month === 7 && year === 2026);
+        const isSelected = (this.state.selectedDate === key);
+        const daySchedules = schedulesMap[key] || [];
+
+        html += `
+          <div class="p-3 rounded-xl border transition-all cursor-pointer min-h-[100px] flex flex-col justify-between ${isSelected ? 'border-primary bg-primary-container/20 shadow-md ring-2 ring-primary/30' : isToday ? 'border-primary/50 bg-primary-container/10' : 'border-outline bg-surface-container-low hover:border-primary/40'}" onclick="PCApp.selectDate('${key}')">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-base font-black ${isToday ? 'text-primary' : 'text-on-surface'}">${d}</span>
+              ${daySchedules.length > 0 ? `<span class="text-xs font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary">${daySchedules.length}건</span>` : ''}
+            </div>
+            <div class="space-y-1 overflow-hidden">
+              ${daySchedules.slice(0, 2).map(s => `
+                <div class="text-xs font-bold p-1 rounded-md truncate ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}">
+                  ${s.title || s.badge}
+                </div>
+              `).join('')}
+              ${daySchedules.length > 2 ? `<span class="text-xs font-bold text-on-surface-variant block">+${daySchedules.length - 2}개 더보기</span>` : ''}
+            </div>
+          </div>
+        `;
+      }
+      gridEl.innerHTML = html;
+    }
+
+    // Side Daily Schedule Panel
+    const dailyPanel = document.getElementById('pc-cal-daily-panel');
+    if (dailyPanel) {
+      let selectedKey = this.state.selectedDate || '2026-8-24';
+      const schedulesMap = (window.MockData && window.MockData.schedules) || {};
+      let list = schedulesMap[selectedKey];
+      if (!list) {
+        // Fallback for padded or non-padded format
+        const altKey = selectedKey.includes('-0') ? selectedKey.replace(/-0([1-9])/g, '-$1') : selectedKey.replace(/-([1-9])(?!\d)/g, '-0$1');
+        list = schedulesMap[altKey] || [];
+      }
+      
+      const cleanKey = selectedKey.replace(/-0([1-9])/g, '-$1');
+      const parts = cleanKey.split('-');
+      const formattedDate = `${parts[0]}년 ${parts[1]}월 ${parts[2]}일`;
+
+      dailyPanel.innerHTML = `
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-outline">
+          <div>
+            <h4 class="font-bold text-lg text-on-surface">${formattedDate}</h4>
+            <p class="text-base text-primary font-bold">일정 ${list.length}건</p>
+          </div>
+          <button class="pc-card-action" onclick="PCApp.openDateDetail('${cleanKey}')">상세 팝업</button>
+        </div>
+
+        <div class="space-y-3 overflow-y-auto max-h-[500px] pr-1">
+          ${list.length > 0 ? list.map(item => `
+            <div class="p-4 bg-surface-container-low rounded-xl border border-outline/60 hover:border-primary transition-all">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${item.type === 'primary' ? 'bg-primary-container text-primary' : item.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary-container text-secondary'}">
+                  ${item.badge || '일정'}
+                </span>
+                <span class="text-xs text-on-surface-variant font-bold">${item.time || '종일'}</span>
+              </div>
+              <h5 class="font-bold text-base text-on-surface mb-1">${item.title}</h5>
+              ${item.author ? `<p class="text-xs text-on-surface-variant mb-1 font-semibold">담당: ${item.author}</p>` : ''}
+              ${item.desc ? `<p class="text-xs text-on-surface-variant leading-relaxed">${item.desc}</p>` : ''}
+              ${item.location ? `<p class="text-xs text-primary font-medium mt-2 flex items-center gap-1">📍 ${item.location}</p>` : ''}
+            </div>
+          `).join('') : `
+            <div class="text-center py-12 text-on-surface-variant">
+              <p class="text-base font-bold mb-1">등록된 일정이 없습니다.</p>
+              <p class="text-xs">상단 '+ 일정 등록' 버튼으로 등록해보세요.</p>
+            </div>
+          `}
+        </div>
+      `;
+    }
+  },
+
+  openDateDetail(dateStr) {
+    const schedulesMap = (window.MockData && window.MockData.schedules) || {};
+    let list = schedulesMap[dateStr];
+    if (!list) {
+      const altKey = (dateStr || '').includes('-0') ? (dateStr || '').replace(/-0([1-9])/g, '-$1') : (dateStr || '').replace(/-([1-9])(?!\d)/g, '-0$1');
+      list = schedulesMap[altKey] || [];
+    }
+
+    const cleanKey = (dateStr || '2026-8-24').replace(/-0([1-9])/g, '-$1');
+    const parts = cleanKey.split('-');
+    const formatted = `${parts[0]}년 ${parts[1]}월 ${parts[2]}일`;
+
+    const modal = document.getElementById('pc-global-modal');
+    const modalBody = document.getElementById('pc-modal-content');
+    if (!modal || !modalBody) return;
+
+    modalBody.innerHTML = `
+      <div class="flex items-center justify-between pb-4 border-b border-outline mb-5">
+        <div>
+          <h3 class="text-2xl font-bold text-on-surface">${formatted} 전체 일정</h3>
+          <p class="text-base text-primary font-bold mt-1">총 ${list.length}건의 일정 및 근태 현황</p>
+        </div>
+        <button class="px-4 py-2 bg-primary text-white font-bold rounded-xl text-base" onclick="PCApp.openQuickModal('leave')">+ 신청 / 추가</button>
+      </div>
+
+      <div class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+        ${list.length > 0 ? list.map(item => `
+          <div class="p-5 bg-surface-container-low rounded-2xl border border-outline">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-base font-bold px-3 py-1 rounded-full ${item.type === 'primary' ? 'bg-primary-container text-primary' : item.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary-container text-secondary'}">
+                ${item.badge || '일정'}
+              </span>
+              <span class="text-base text-on-surface-variant font-bold">${item.time || '종일'}</span>
+            </div>
+            <h4 class="text-lg font-bold text-on-surface mb-1">${item.title}</h4>
+            ${item.author ? `<p class="text-base text-on-surface-variant font-semibold mb-2">👤 ${item.author}</p>` : ''}
+            ${item.desc ? `<p class="text-base text-on-surface-variant leading-relaxed mb-2">${item.desc}</p>` : ''}
+            ${item.location ? `<p class="text-base text-primary font-semibold flex items-center gap-1.5">📍 장소: ${item.location}</p>` : ''}
+          </div>
+        `).join('') : `
+          <div class="text-center py-12 text-on-surface-variant">
+            <p class="text-lg font-bold mb-2">등록된 일정이 없습니다.</p>
+            <p class="text-base">휴가, 외근 또는 팀 회의 일정을 등록해보세요.</p>
+          </div>
+        `}
+      </div>
+
+      <div class="flex justify-end pt-6 border-t border-outline mt-5">
+        <button class="px-6 py-2.5 bg-surface-container-high text-on-surface font-bold text-base rounded-xl" onclick="PCApp.closeModal()">닫기</button>
+      </div>
+    `;
+
+    modal.classList.add('active');
+  },
+
   renderDirectoryView() {
     const container = document.getElementById('pc-directory-grid');
     if (!container) return;
@@ -698,6 +864,30 @@ const PCApp = {
         </div>
       </div>
     `).join('');
+  },
+
+  renderFinanceView() {
+    console.log('Finance view rendered');
+  },
+
+  renderTodoView() {
+    const listEl = document.getElementById('pc-full-todo-list');
+    if (!listEl) return;
+    listEl.innerHTML = (this.state.todos || []).map((t, idx) => `
+      <div class="pc-todo-item">
+        <input type="checkbox" class="pc-todo-checkbox" ${t.completed ? 'checked' : ''} onchange="PCApp.toggleTodo(${idx}); PCApp.renderTodoView();">
+        <span class="pc-todo-title ${t.completed ? 'line-through opacity-50' : ''}">${t.title}</span>
+        <span class="pc-todo-priority ${t.priority === 'high' ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">${t.priority === 'high' ? '높음' : '보통'}</span>
+      </div>
+    `).join('');
+  },
+
+  renderProjectView() {
+    console.log('Project view rendered');
+  },
+
+  renderCheckinView() {
+    console.log('Checkin view rendered');
   },
 
   // 7. Commute Check In/Out Actions

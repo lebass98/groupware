@@ -284,18 +284,49 @@
         </div>
       </section>
 
-      <!-- SCREEN 6: CALENDAR VIEW -->
+      <!-- SCREEN 6: CALENDAR VIEW (근태일지 & 전체 일정표) -->
       <section class="pc-screen-view p-8" id="pc-screen-calendar">
-        <div class="mb-6 pb-4 border-b border-outline">
-          <h2 class="text-2xl font-black text-on-surface">근태일지 & 사내 캘린더</h2>
-          <p class="text-base text-on-surface-variant font-medium">월간/주간/일간 전사 일정 및 휴가/외근 현황</p>
-        </div>
-        <div class="pc-bento-card">
-          <div class="pc-cal-weekdays">
-            <span>일요일</span><span>월요일</span><span>화요일</span><span>수요일</span><span>목요일</span><span>금요일</span><span>토요일</span>
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
+          <div>
+            <h2 class="text-2xl font-black text-on-surface">근태일지 & 사내 캘린더</h2>
+            <p class="text-base text-on-surface-variant font-medium">월간/주간/일간 전사 일정 및 휴가/외근/회의 현황</p>
           </div>
-          <div class="pc-cal-grid" style="grid-template-rows: repeat(5, minmax(90px, 1fr));">
-            <!-- Full Month View -->
+          <div class="flex items-center gap-3">
+            <button class="px-4 py-2 bg-surface-container hover:bg-surface-container-high rounded-xl text-base font-bold text-on-surface" onclick="PCApp.goToTodayCal()">오늘</button>
+            <button class="px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-base" onclick="PCApp.openQuickModal('leave')">+ 일정 / 휴가 등록</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+          <!-- Calendar Main Grid (3 Cols on XL) -->
+          <div class="xl:col-span-3 pc-bento-card">
+            <div class="pc-calendar-header">
+              <div class="pc-cal-nav-group">
+                <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(-1)">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <h3 class="pc-cal-title text-xl" id="pc-full-cal-title">2026년 8월</h3>
+                <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(1)">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-base font-bold">월간 뷰</span>
+              </div>
+            </div>
+
+            <div class="pc-cal-weekdays">
+              <span>일요일</span><span>월요일</span><span>화요일</span><span>수요일</span><span>목요일</span><span>금요일</span><span>토요일</span>
+            </div>
+
+            <div class="pc-cal-grid" id="pc-full-calendar-grid" style="grid-template-rows: repeat(5, minmax(100px, 1fr));">
+              <!-- Dynamically Rendered by pc.js -->
+            </div>
+          </div>
+
+          <!-- Side: Selected Date Daily Schedule List (1 Col on XL) -->
+          <div class="xl:col-span-1 pc-bento-card" id="pc-cal-daily-panel">
+            <!-- Dynamically Rendered by pc.js -->
           </div>
         </div>
       </section>
