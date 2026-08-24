@@ -2748,78 +2748,78 @@ const PCApp = {
 
           <div class="flex flex-col gap-2.5 text-xs">
             <!-- 프로젝트 주소 -->
-            <div class="flex items-center justify-between py-2 border-b border-outline/30 gap-2">
-              <span class="text-on-surface-variant font-bold shrink-0 w-28">• 프로젝트 주소</span>
-              <div class="flex items-center gap-2 flex-1 min-w-0 justify-end">
-                <a href="${p.projectUrl || '#'}" target="_blank" class="text-primary font-mono text-xs hover:underline truncate max-w-[420px] flex items-center gap-1">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between py-2 border-b border-outline/30 gap-2">
+              <span class="text-on-surface-variant font-bold shrink-0 w-32">• 프로젝트 주소</span>
+              <div class="flex items-center gap-2 flex-1 min-w-0 justify-between sm:justify-end">
+                <a href="${p.projectUrl || '#'}" target="_blank" class="text-primary font-mono text-xs hover:underline truncate max-w-[480px] flex items-center gap-1">
                   <span>${p.projectUrl || 'http://sitegate.co.kr'}</span>
                   <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
                 </a>
-                <button type="button" onclick="PCApp.copyProjectUrl('${p.projectUrl || ''}')" class="px-2 py-1 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-all shrink-0 flex items-center gap-1 font-bold text-[11px]" title="주소 복사">
+                <button type="button" onclick="PCApp.copyProjectUrl('${p.projectUrl || ''}')" class="px-2.5 py-1 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-all shrink-0 flex items-center gap-1 font-bold text-[11px]" title="주소 복사">
                   <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
                   <span>복사</span>
                 </button>
               </div>
             </div>
 
-            <!-- 클라이언트 ID & 사이트 ID -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 py-2 border-b border-outline/30">
-              <div class="flex items-center justify-between">
-                <span class="text-on-surface-variant font-bold w-28">• 클라이언트 ID</span>
-                <span class="font-medium text-on-surface">${p.clientName || '-'} <span class="font-mono text-primary font-bold">(${p.clientId || '-'})</span></span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-on-surface-variant font-bold w-28">• 사이트 ID</span>
-                <div class="flex items-center gap-2">
-                  <span class="font-medium text-on-surface truncate">${p.siteName || '-'}</span>
-                  <span class="font-mono text-primary font-bold">(${p.siteId || '-'})</span>
-                  <span class="bg-primary/10 text-primary text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0">낙찰정보(${p.bidCount || 0})</span>
-                </div>
+            <!-- 클라이언트 ID (단독 줄) -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between py-2 border-b border-outline/30 gap-1">
+              <span class="text-on-surface-variant font-bold shrink-0 w-32">• 클라이언트 ID</span>
+              <span class="font-medium text-on-surface text-left sm:text-right">${p.clientName || '-'} <span class="font-mono text-primary font-bold">(${p.clientId || '-'})</span></span>
+            </div>
+
+            <!-- 사이트 ID (단독 줄) -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between py-2 border-b border-outline/30 gap-1">
+              <span class="text-on-surface-variant font-bold shrink-0 w-32">• 사이트 ID</span>
+              <div class="flex items-center gap-2 flex-wrap justify-start sm:justify-end">
+                <span class="font-medium text-on-surface">${p.siteName || '-'}</span>
+                <span class="font-mono text-primary font-bold">(${p.siteId || '-'})</span>
+                <span class="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full shrink-0">낙찰정보(${p.bidCount || 0})</span>
               </div>
             </div>
 
-            <!-- PM 및 직군별 담당자 그리드 -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 py-2 border-b border-outline/30">
+            <!-- PM 및 직군별 담당자 그리드 (2열 넉넉한 배치) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2.5 py-2 border-b border-outline/30">
               <div class="flex items-center justify-between">
-                <span class="text-on-surface-variant font-bold w-24">• PM</span>
-                <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.pm)}</span>
+                <span class="text-on-surface-variant font-bold shrink-0 w-28">• PM</span>
+                <span class="font-medium text-on-surface text-right truncate">${this.formatEmployeeWithRole(p.pm)}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-on-surface-variant font-bold w-24">• 담당자(기획)</span>
-                <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.planner)}</span>
+                <span class="text-on-surface-variant font-bold shrink-0 w-28">• 담당자(기획)</span>
+                <span class="font-medium text-on-surface text-right truncate">${this.formatEmployeeWithRole(p.planner)}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-on-surface-variant font-bold w-24">• 담당자(디자인)</span>
-                <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.designer)}</span>
+                <span class="text-on-surface-variant font-bold shrink-0 w-28">• 담당자(디자인)</span>
+                <span class="font-medium text-on-surface text-right truncate">${this.formatEmployeeWithRole(p.designer)}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-on-surface-variant font-bold w-24">• 담당자(코딩)</span>
-                <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.publisher)}</span>
+                <span class="text-on-surface-variant font-bold shrink-0 w-28">• 담당자(코딩)</span>
+                <span class="font-medium text-on-surface text-right truncate">${this.formatEmployeeWithRole(p.publisher)}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-on-surface-variant font-bold w-24">• 담당자(개발)</span>
-                <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.developer)}</span>
+                <span class="text-on-surface-variant font-bold shrink-0 w-28">• 담당자(개발)</span>
+                <span class="font-medium text-on-surface text-right truncate">${this.formatEmployeeWithRole(p.developer)}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-on-surface-variant font-bold w-24">• 개발 언어</span>
-                <span class="font-medium text-on-surface">${p.devLang || '-'}</span>
+                <span class="text-on-surface-variant font-bold shrink-0 w-28">• 개발 언어</span>
+                <span class="font-medium text-on-surface text-right truncate">${p.devLang || '-'}</span>
               </div>
             </div>
 
-            <!-- 프로젝트 기간 & 진행상태 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 py-2 border-b border-outline/30">
-              <div class="flex items-center justify-between">
-                <span class="text-on-surface-variant font-bold w-28">• 프로젝트 기간</span>
-                <span class="font-mono font-bold text-on-surface">${p.period || '-'}</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-on-surface-variant font-bold w-28">• 진행상태</span>
-                <span class="font-bold text-primary">${p.statusText || '진행 중'}</span>
-              </div>
+            <!-- 프로젝트 기간 (단독 줄) -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between py-2 border-b border-outline/30 gap-1">
+              <span class="text-on-surface-variant font-bold shrink-0 w-32">• 프로젝트 기간</span>
+              <span class="font-mono font-bold text-on-surface text-left sm:text-right">${p.period || '-'}</span>
+            </div>
+
+            <!-- 진행상태 (단독 줄) -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between py-2 border-b border-outline/30 gap-1">
+              <span class="text-on-surface-variant font-bold shrink-0 w-32">• 진행상태</span>
+              <span class="font-bold text-primary text-left sm:text-right">${p.statusText || '진행 중'}</span>
             </div>
 
             <!-- 고객사 담당자 목록 -->
-            <div class="flex flex-col gap-2 pt-2">
+            <div class="flex flex-col gap-2.5 pt-2">
               <span class="text-on-surface-variant font-bold">• 고객사 담당자 (${clientContacts.length})</span>
               ${clientContactsHtml}
             </div>
