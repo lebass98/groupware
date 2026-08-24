@@ -6285,7 +6285,7 @@ const App = {
           </button>
           <div class="text-center">
             <h3 class="font-headline font-bold text-base text-primary">${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 (${dayName})</h3>
-            <p class="font-body text-[11px] text-secondary font-bold mt-0.5">금일 전사 업무 진행 현황</p>
+            <p class="font-body text-[11px] text-secondary font-bold mt-0.5">금일 업무 진행 현황</p>
           </div>
           <button type="button" onclick="App.changeReportDate(1)" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors active:scale-95" title="다음 날">
             ${getSvgIcon('chevron_right', 'w-5 h-5')}
