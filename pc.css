@@ -916,15 +916,15 @@ strong {
 }
 
 .pc-cal-grid .pc-cal-cell, #pc-dashboard-cal-grid .pc-cal-cell {
-  height: 72px !important;
   min-height: 72px !important;
-  max-height: 72px !important;
+  height: auto !important;
+  max-height: none !important;
 }
 
 .pc-full-cal-grid .pc-cal-cell, #pc-full-calendar-grid .pc-cal-cell {
-  height: 115px !important;
   min-height: 115px !important;
-  max-height: 115px !important;
+  height: auto !important;
+  max-height: none !important;
 }
 
 .pc-cal-cell {
@@ -938,7 +938,7 @@ strong {
   cursor: pointer;
   transition: all 0.15s ease;
   border: 1px solid var(--outline);
-  overflow: hidden;
+  overflow: visible;
   box-sizing: border-box;
   width: 100%;
 }
@@ -1003,7 +1003,7 @@ strong {
   flex-direction: column;
   gap: 3px;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .pc-cal-event-tag {

@@ -2665,7 +2665,7 @@ const App = {
       let barsHtml = '';
       if (schedules && schedules.length > 0) {
         barsHtml = '<div class="w-full flex flex-col gap-1 mt-1 z-10">';
-        schedules.slice(0, 2).forEach(s => {
+        schedules.forEach(s => {
           const isHoliday = (s.badge === '공휴일' || s.title.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지');
           const isSolarTerm = (s.badge === '절기' || s.author === '24절기');
           const isObservance = (s.badge === '기념일' || s.author === '기념일');
@@ -2694,15 +2694,12 @@ const App = {
             </div>
           `;
         });
-        if (schedules.length > 2) {
-          barsHtml += `<div class="text-[10px] font-black text-on-surface-variant/70 text-center leading-none mt-0.5 tracking-widest select-none">...</div>`;
-        }
         barsHtml += '</div>';
       }
 
       gridHtml += `
-        <div class="flex flex-col items-center justify-start min-h-[58px] relative cursor-pointer group py-1 px-0.5 rounded-xl hover:bg-surface-container-high/40 transition-colors" onclick="App.selectCalendarDate(${d})">
-          <span class="w-7 h-7 flex items-center justify-center rounded-full text-xs ${isSelected ? 'bg-primary text-on-primary font-bold shadow-md' : textClass}">${d}</span>
+        <div class="flex flex-col items-center justify-start min-h-[64px] h-auto relative cursor-pointer group py-1 px-0.5 rounded-xl hover:bg-surface-container-high/40 transition-colors" onclick="App.selectCalendarDate(${d})">
+          <span class="w-7 h-7 flex items-center justify-center rounded-full text-xs shrink-0 ${isSelected ? 'bg-primary text-on-primary font-bold shadow-md' : textClass}">${d}</span>
           ${barsHtml}
         </div>
       `;
@@ -2962,7 +2959,7 @@ const App = {
       let chipsHtml = '';
       if (schedules.length > 0) {
         chipsHtml = '<div class="w-full flex flex-col gap-1 mt-1.5 z-10">';
-        schedules.slice(0, 2).forEach(s => {
+        schedules.forEach(s => {
           const isHoliday = (s.badge === '공휴일' || s.title.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지');
           const isSolarTerm = (s.badge === '절기' || s.author === '24절기');
           const isObservance = (s.badge === '기념일' || s.author === '기념일');
@@ -2990,9 +2987,6 @@ const App = {
             </div>
           `;
         });
-        if (schedules.length > 2) {
-          chipsHtml += `<div class="text-[10px] font-black text-on-surface-variant/70 text-center leading-none mt-0.5 select-none">...</div>`;
-        }
         chipsHtml += '</div>';
       }
 

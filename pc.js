@@ -712,7 +712,7 @@ const PCApp = {
             ${daySchedules.length > 0 ? `<span class="pc-cal-count-badge">+${daySchedules.length}</span>` : ''}
           </div>
           <div class="pc-cal-events-wrap">
-            ${daySchedules.slice(0, 2).map(s => `
+            ${daySchedules.map(s => `
               <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}" title="${this.formatScheduleCleanLabel(s)}">
                 ${this.formatScheduleCleanLabel(s)}
               </span>
@@ -1142,12 +1142,11 @@ const PCApp = {
               ${daySchedules.length > 0 ? `<span class="pc-cal-count-badge">${daySchedules.length}건</span>` : ''}
             </div>
             <div class="pc-cal-events-wrap">
-              ${daySchedules.slice(0, 2).map(s => `
+              ${daySchedules.map(s => `
                 <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}" title="${this.formatScheduleCleanLabel(s)}">
                   ${this.formatScheduleCleanLabel(s)}
                 </span>
               `).join('')}
-              ${daySchedules.length > 2 ? `<span class="pc-cal-more-tag">+${daySchedules.length - 2}개 더보기</span>` : ''}
             </div>
           </div>
         `;
