@@ -457,19 +457,19 @@ html, body {
   border: 2px solid var(--surface-container-lowest);
 }
 
-/* 3. Full-Width Bento Dashboard (Figma Inspired 3-Column Layout) */
+/* 3. Full-Width Bento Dashboard (Col 1 유지, Col 2 & Col 3 균등 1fr 1fr) */
 .pc-dashboard-container {
   padding: 28px 36px 56px 36px;
   width: 100%;
   display: grid;
-  grid-template-columns: 320px 1fr 360px;
+  grid-template-columns: 320px 1fr 1fr;
   gap: 28px;
   align-items: start;
 }
 
 @media (max-width: 1560px) {
   .pc-dashboard-container {
-    grid-template-columns: 290px 1fr 330px;
+    grid-template-columns: 290px 1fr 1fr;
     gap: 22px;
     padding: 24px 28px;
   }
@@ -477,7 +477,7 @@ html, body {
 
 @media (max-width: 1280px) {
   .pc-dashboard-container {
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: 1fr 1fr;
   }
   .pc-col-left {
     display: none;
