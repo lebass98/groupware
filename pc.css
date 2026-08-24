@@ -1473,7 +1473,10 @@ strong {
   width: 840px;
   max-width: 94vw;
   max-height: 88vh;
-  padding: 32px;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .pc-modal-backdrop.active .pc-modal-box {
   transform: scale(1);
