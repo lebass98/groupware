@@ -30,6 +30,12 @@ const PCApp = {
     directorySearch: '',
     noticeCategory: 'all',
     noticeSearch: '',
+    workReportTab: 'weekly',
+    workReportYear: 2026,
+    workReportMonth: 8,
+    workReportWeek: 3,
+    workReportDate: '2026-08-21',
+    workReportTeam: 'all',
     workReportDept: 'all',
     financeFilter: 'all',
     todoFilter: 'all',
@@ -1168,62 +1174,287 @@ const PCApp = {
     `).join('');
   },
 
-  // 6-3. Work Report Screen
-  setWorkReportDept(dept, btn) {
-    this.state.workReportDept = dept;
-    const tabs = document.querySelectorAll('#pc-workreport-dept-tabs button');
-    tabs.forEach(t => {
-      t.className = 'px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0';
+  // 6-3. Work Report Screen (팀별 / 주간 / 일간 업무보고)
+  switchWorkReportTab(tab) {
+    this.state.workReportTab = tab;
+    const tabBtns = document.querySelectorAll('.pc-report-nav-tab');
+    tabBtns.forEach(btn => {
+      btn.className = 'flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-on-surface-variant hover:bg-surface-container-high transition-all text-center pc-report-nav-tab';
     });
-    if (btn) btn.className = 'px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0';
+    const activeBtn = document.getElementById(`pc-tab-btn-report-${tab}`);
+    if (activeBtn) {
+      activeBtn.className = 'flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-white bg-primary shadow-xs transition-all text-center pc-report-nav-tab active';
+    }
+    this.renderWorkReportControls();
     this.renderWorkReportView();
   },
 
+  changeReportWeek(delta) {
+    let week = (this.state.workReportWeek || 3) + delta;
+    if (week < 1) week = 1;
+    if (week > 5) week = 5;
+    this.state.workReportWeek = week;
+    this.renderWorkReportControls();
+    this.renderWorkReportView();
+  },
+
+  changeReportDate(delta) {
+    const curr = new Date(this.state.workReportDate || '2026-08-21');
+    curr.setDate(curr.getDate() + delta);
+    const y = curr.getFullYear();
+    const m = String(curr.getMonth() + 1).padStart(2, '0');
+    const d = String(curr.getDate()).padStart(2, '0');
+    this.state.workReportDate = `${y}-${m}-${d}`;
+    this.renderWorkReportControls();
+    this.renderWorkReportView();
+  },
+
+  selectReportTeam(dept, chipEl) {
+    this.state.workReportTeam = dept;
+    const chips = document.querySelectorAll('.pc-report-team-chip');
+    chips.forEach(c => {
+      c.className = 'px-4 py-2 rounded-xl text-sm font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 transition-all pc-report-team-chip';
+    });
+    if (chipEl) {
+      chipEl.className = 'px-4 py-2 rounded-xl text-sm font-bold bg-primary text-white shrink-0 shadow-xs transition-all pc-report-team-chip active';
+    }
+    this.renderWorkReportView();
+  },
+
+  setWorkReportDept(dept, btn) {
+    this.selectReportTeam(dept, btn);
+  },
+
+  renderWorkReportControls() {
+    const container = document.getElementById('pc-work-report-sub-controls');
+    if (!container) return;
+
+    const tab = this.state.workReportTab || 'weekly';
+
+    if (tab === 'weekly') {
+      const year = this.state.workReportYear || 2026;
+      const month = this.state.workReportMonth || 8;
+      const week = this.state.workReportWeek || 3;
+
+      container.innerHTML = `
+        <div class="flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-outline/40 shadow-xs max-w-xl">
+          <button type="button" onclick="PCApp.changeReportWeek(-1)" class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl transition-all active:scale-95" title="이전 주">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <div class="text-center">
+            <h3 class="font-bold text-lg text-primary">${year}년 ${month}월 ${week}주차</h3>
+            <p class="text-xs text-on-surface-variant font-medium mt-0.5">${month}월 ${10 + (week - 1) * 7}일(월) ~ ${month}월 ${14 + (week - 1) * 7}일(금)</p>
+          </div>
+          <button type="button" onclick="PCApp.changeReportWeek(1)" class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl transition-all active:scale-95" title="다음 주">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+        </div>
+      `;
+    } else if (tab === 'daily') {
+      const dateStr = this.state.workReportDate || '2026-08-21';
+      const d = new Date(dateStr);
+      const days = ['일', '월', '화', '수', '목', '금', '토'];
+      const dayName = days[d.getDay()];
+
+      container.innerHTML = `
+        <div class="flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-outline/40 shadow-xs max-w-xl">
+          <button type="button" onclick="PCApp.changeReportDate(-1)" class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl transition-all active:scale-95" title="이전 날">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <div class="text-center">
+            <h3 class="font-bold text-lg text-primary">${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 (${dayName})</h3>
+            <p class="text-xs text-secondary font-bold mt-0.5">금일 업무 진행 현황</p>
+          </div>
+          <button type="button" onclick="PCApp.changeReportDate(1)" class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl transition-all active:scale-95" title="다음 날">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+        </div>
+      `;
+    } else if (tab === 'team') {
+      const currentTeam = this.state.workReportTeam || 'all';
+      const teams = ['all', '경영지원팀', '기획팀', '디자인팀', '퍼블리싱팀', '개발팀', '전략본부', '수행본부'];
+      const teamLabels = {
+        all: '전체',
+        경영지원팀: '경영지원',
+        기획팀: '기획',
+        디자인팀: '디자인',
+        퍼블리싱팀: '퍼블리싱',
+        개발팀: '개발',
+        전략본부: '전략본부',
+        수행본부: '수행본부'
+      };
+
+      const chipsHtml = teams.map(t => {
+        const isActive = currentTeam === t;
+        const activeClass = isActive
+          ? 'bg-primary text-white shadow-xs active'
+          : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high';
+        return `
+          <button class="px-4 py-2 rounded-xl text-sm font-bold transition-all active:scale-95 pc-report-team-chip ${activeClass}" onclick="PCApp.selectReportTeam('${t}', this)">${teamLabels[t]}</button>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <div class="flex gap-2 overflow-x-auto pb-1" id="pc-report-team-chips">
+          ${chipsHtml}
+        </div>
+      `;
+    }
+  },
+
   renderWorkReportView() {
+    this.renderWorkReportControls();
+
     const wrap = document.getElementById('pc-workreport-full-container');
     if (!wrap) return;
 
-    const reports = (window.MockData && window.MockData.workReports) || [];
-    const filtered = reports.filter(r => {
-      return this.state.workReportDept === 'all' || r.primaryDept === this.state.workReportDept;
-    });
+    const tab = this.state.workReportTab || 'weekly';
+    const allReports = (this.state.workReports && this.state.workReports.length > 0)
+      ? this.state.workReports
+      : ((window.MockData && window.MockData.workReports) || []);
 
-    wrap.innerHTML = filtered.map(r => `
-      <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline text-base shadow-2xs">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-4 border-b border-outline">
-          <div class="flex items-center gap-3">
-            <span class="w-3.5 h-3.5 rounded-full bg-primary shrink-0"></span>
-            <div>
-              <h3 class="text-xl font-bold text-on-surface">${r.client} - ${r.title}</h3>
-              <p class="text-sm text-on-surface-variant font-medium mt-0.5">기간: ${r.period} · 주관: ${r.primaryDept}</p>
+    let filtered = [...allReports];
+
+    if (tab === 'team') {
+      const selectedTeam = this.state.workReportTeam || 'all';
+      if (selectedTeam !== 'all') {
+        filtered = filtered.filter(r => {
+          return r.primaryDept === selectedTeam || (r.sections && r.sections.some(s => s.dept === selectedTeam));
+        });
+      }
+    }
+
+    if (filtered.length === 0) {
+      wrap.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-12 text-center text-on-surface-variant font-medium shadow-xs border border-outline/40 flex flex-col items-center justify-center">
+          <svg class="w-12 h-12 text-outline mb-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          <p class="text-base font-bold text-on-surface mb-1">등록된 업무보고 내역이 없습니다.</p>
+          <p class="text-xs text-on-surface-variant">선택하신 조건에 해당하는 보고서가 존재하지 않습니다.</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Helper for rendering section items
+    const renderSectionBlock = (sections) => {
+      if (!sections || sections.length === 0) return '<p class="text-xs text-on-surface-variant italic">등록된 내역이 없습니다.</p>';
+      return sections.map((sec, idx) => {
+        const divider = idx > 0 ? `<div class="h-px w-full bg-outline-variant/15 my-2"></div>` : '';
+
+        let itemsHtml = '';
+        if (sec.items && sec.items.length > 0) {
+          itemsHtml = `
+            <ul class="text-xs text-on-surface-variant space-y-1.5 pl-1 list-disc list-inside mt-1 leading-relaxed">
+              ${sec.items.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          `;
+        }
+
+        let commentHtml = '';
+        if (sec.comment) {
+          commentHtml = `
+            <p class="text-xs text-error-dim pl-1 mt-1.5 font-semibold leading-relaxed">
+              ${sec.comment}
+            </p>
+          `;
+        }
+
+        const isGenericLabel = !sec.label || ['전주', '금주', '전주 실적', '금주 진행', '작업내역', '디자인', '개발', '기획', '퍼블리싱', '프로젝트 진행 중'].includes(sec.label.trim());
+        const labelHtml = isGenericLabel ? '' : `<span class="text-xs font-semibold text-on-surface ml-1.5">(${sec.label})</span>`;
+
+        return `
+          ${divider}
+          <div class="text-left">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="text-xs font-bold ${sec.deptColor || 'text-primary'}">${sec.dept}</span>
+              ${labelHtml}
+            </div>
+            ${itemsHtml}
+            ${commentHtml}
+          </div>
+        `;
+      }).join('');
+    };
+
+    // Alternating Themes
+    const alternatingThemes = [
+      {
+        borderLeft: 'border-l-[5px] border-l-primary',
+        badgeBg: 'bg-primary/10 text-primary border border-primary/20'
+      },
+      {
+        borderLeft: 'border-l-[5px] border-l-[#00693f]',
+        badgeBg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border border-[#00693f]/20'
+      }
+    ];
+
+    wrap.innerHTML = filtered.map((report, rIdx) => {
+      const theme = alternatingThemes[rIdx % alternatingThemes.length];
+      const prevSections = report.prevWeekSections || [];
+      const thisSections = report.thisWeekSections || report.sections || [];
+
+      let contentHtml = '';
+
+      if (prevSections.length > 0) {
+        contentHtml = `
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <!-- 1. [전주] 주간 업무 내용 (좌측 박스) -->
+            <div class="space-y-2 flex flex-col">
+              <div class="flex items-center gap-1.5 px-0.5">
+                <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-surface-container-highest text-on-surface flex items-center gap-1.5 shadow-2xs">
+                  <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                  <span>전주 실적 (Last Week)</span>
+                </span>
+              </div>
+              <div class="bg-surface-container-lowest rounded-xl p-4 flex-1 flex flex-col gap-2.5 shadow-xs border border-outline/40">
+                ${renderSectionBlock(prevSections)}
+              </div>
+            </div>
+
+            <!-- 2. [금주] 주간 업무 내용 (우측 박스) -->
+            <div class="space-y-2 flex flex-col">
+              <div class="flex items-center gap-1.5 px-0.5">
+                <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-primary/10 text-primary flex items-center gap-1.5 shadow-2xs border border-primary/20">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                  <span>금주 계획 및 진행 (This Week)</span>
+                </span>
+              </div>
+              <div class="bg-surface-container-lowest rounded-xl p-4 flex-1 flex flex-col gap-2.5 shadow-xs border border-outline/40">
+                ${renderSectionBlock(thisSections)}
+              </div>
             </div>
           </div>
-          <span class="text-sm font-bold px-3.5 py-1 bg-surface-container rounded-full text-on-surface-variant shrink-0 self-start sm:self-auto">${r.weekLabel || '2026년 8월 3주차'}</span>
-        </div>
+        `;
+      } else {
+        contentHtml = `
+          <div class="bg-surface-container-lowest rounded-xl p-4 flex flex-col gap-2.5 shadow-xs border border-outline/40">
+            ${renderSectionBlock(thisSections)}
+          </div>
+        `;
+      }
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="p-5 bg-surface-container-low rounded-xl">
-            <h4 class="font-bold text-base text-on-surface mb-3 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
-              전주 실적 (Last Week)
-            </h4>
-            <ul class="space-y-2 text-base text-on-surface-variant list-disc list-inside">
-              ${(r.prevWeekSections || []).flatMap(s => s.items).map(item => `<li>${item}</li>`).join('') || '<li>업무 정상 진행</li>'}
-            </ul>
+      return `
+        <article class="bg-surface-container-low rounded-2xl p-6 flex flex-col gap-4 shadow-2xs hover:shadow-xs transition-all duration-200 text-left border border-outline/40 ${theme.borderLeft}">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-outline/30">
+            <div class="min-w-0">
+              <span class="text-xs font-semibold ${theme.badgeBg} px-2.5 py-0.5 rounded-md mb-1.5 inline-block shadow-2xs">${report.client}</span>
+              <h3 class="font-bold text-on-surface text-lg hover:text-primary transition-colors">${report.title}</h3>
+              <p class="text-xs text-on-surface-variant mt-1 font-medium flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                <span>${report.period}</span>
+                <span class="text-outline">·</span>
+                <span>주관: <strong>${report.primaryDept || '수행본부'}</strong></span>
+              </p>
+            </div>
+            <span class="text-xs font-bold px-3 py-1 bg-surface-container-high rounded-full text-on-surface-variant shrink-0 self-start sm:self-auto">${report.weekLabel || '2026년 8월 3주차'}</span>
           </div>
 
-          <div class="p-5 bg-surface-container-low rounded-xl border-l-4 border-primary">
-            <h4 class="font-bold text-base text-primary mb-3 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
-              금주 계획 (This Week)
-            </h4>
-            <ul class="space-y-2 text-base text-on-surface font-semibold list-disc list-inside">
-              ${(r.thisWeekSections || []).flatMap(s => s.items).map(item => `<li>${item}</li>`).join('') || '<li>계획 수립 및 실행</li>'}
-            </ul>
+          <div>
+            ${contentHtml}
           </div>
-        </div>
-      </div>
-    `).join('');
+        </article>
+      `;
+    }).join('');
   },
 
   // 6-4. Check-in & Logs Screen

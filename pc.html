@@ -155,21 +155,8 @@
       
       <!-- Global Top Header (GNB) -->
       <header class="pc-gnb">
-        <!-- Left: Unified Search Bar, Web Navigation & Fixed Notice Flip Ticker -->
+        <!-- Left: Unified Search Bar & Fixed Notice Flip Ticker -->
         <div class="pc-gnb-left">
-          <!-- Web Browser History Navigation Buttons (뒤로가기 / 앞으로가기) -->
-          <div class="flex items-center gap-1 shrink-0 mr-1">
-            <button type="button" class="w-8 h-8 rounded-xl flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60 transition-colors" onclick="window.history.back()" title="뒤로가기 (Alt+←)">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-              </svg>
-            </button>
-            <button type="button" class="w-8 h-8 rounded-xl flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60 transition-colors" onclick="window.history.forward()" title="앞으로가기 (Alt+→)">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-              </svg>
-            </button>
-          </div>
 
           <div class="pc-gnb-search">
             <svg class="w-5 h-5 pc-gnb-search-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -307,32 +294,43 @@
         </div>
       </section>
 
-      <!-- SCREEN 4: WORK REPORT VIEW (주간 업무보고 전체 뷰) -->
+      <!-- SCREEN 4: WORK REPORT VIEW (업무보고 전체 뷰 - 팀별/주간/일간) -->
       <section class="pc-screen-view p-8" id="pc-screen-work-report">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-outline">
           <div>
-            <h2 class="text-2xl font-bold text-on-surface">주간 업무보고</h2>
-            <p class="text-base text-on-surface-variant font-medium mt-1">전 부서별 주간 실적 및 차주 계획 현황 (전주 vs 금주 비교)</p>
+            <h2 class="text-2xl font-bold text-on-surface">업무보고</h2>
+            <p class="text-base text-on-surface-variant font-medium mt-1">팀별 주간·일간 업무 진행 상황을 확인하세요.</p>
           </div>
           <div class="flex items-center gap-3">
-            <button class="px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-base flex items-center gap-2 shadow-xs" onclick="PCApp.openQuickModal('report')">
+            <span class="px-3.5 py-1 bg-primary/10 text-primary font-bold text-xs rounded-full whitespace-nowrap">실시간 공유</span>
+            <button class="px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-base flex items-center gap-2 shadow-xs hover:bg-primary-dim transition-colors" onclick="PCApp.openQuickModal('report')">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
               주간 업무보고 작성
             </button>
           </div>
         </div>
 
-        <div class="flex gap-2 mb-6 overflow-x-auto pb-2" id="pc-workreport-dept-tabs">
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0" onclick="PCApp.setWorkReportDept('all', this)">전체</button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setWorkReportDept('퍼블리싱팀', this)">퍼블리싱팀</button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setWorkReportDept('개발팀', this)">개발팀</button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setWorkReportDept('기획팀', this)">기획팀</button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setWorkReportDept('디자인팀', this)">디자인팀</button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setWorkReportDept('경영지원팀', this)">경영지원팀</button>
+        <!-- 3-Segment Top Tabs (팀별 업무보고 / 주간 업무보고 / 일간 업무보고) -->
+        <div class="bg-surface-container-low p-1.5 rounded-2xl flex gap-2 mb-4 w-full max-w-xl shadow-2xs border border-outline/30">
+          <button type="button" id="pc-tab-btn-report-team" onclick="PCApp.switchWorkReportTab('team')" class="flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-on-surface-variant hover:bg-surface-container-high transition-all text-center pc-report-nav-tab">
+            팀별 업무보고
+          </button>
+          <button type="button" id="pc-tab-btn-report-weekly" onclick="PCApp.switchWorkReportTab('weekly')" class="flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-white bg-primary shadow-xs transition-all text-center pc-report-nav-tab active">
+            주간 업무보고
+          </button>
+          <button type="button" id="pc-tab-btn-report-daily" onclick="PCApp.switchWorkReportTab('daily')" class="flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-on-surface-variant hover:bg-surface-container-high transition-all text-center pc-report-nav-tab">
+            일간 업무보고
+          </button>
         </div>
 
+        <!-- Dynamic Sub-Controller Bar (Weekly / Daily / Team) -->
+        <div id="pc-work-report-sub-controls" class="mb-6">
+          <!-- Dynamically populated by PCApp.renderWorkReportControls() -->
+        </div>
+
+        <!-- Report List Container -->
         <div class="space-y-6" id="pc-workreport-full-container">
-          <!-- Rendered by pc.js -->
+          <!-- Dynamically rendered by PCApp.renderWorkReportView() -->
         </div>
       </section>
 
