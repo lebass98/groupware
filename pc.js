@@ -1237,7 +1237,7 @@ const PCApp = {
       const week = this.state.workReportWeek || 3;
 
       container.innerHTML = `
-        <div class="flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-outline/40 shadow-xs max-w-xl">
+        <div class="flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-outline/40 shadow-xs w-full max-w-xl mx-auto">
           <button type="button" onclick="PCApp.changeReportWeek(-1)" class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl transition-all active:scale-95" title="이전 주">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
           </button>
@@ -1257,7 +1257,7 @@ const PCApp = {
       const dayName = days[d.getDay()];
 
       container.innerHTML = `
-        <div class="flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-outline/40 shadow-xs max-w-xl">
+        <div class="flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-outline/40 shadow-xs w-full max-w-xl mx-auto">
           <button type="button" onclick="PCApp.changeReportDate(-1)" class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl transition-all active:scale-95" title="이전 날">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
           </button>
