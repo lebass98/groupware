@@ -689,21 +689,8 @@ const PCApp = {
           <button class="pc-card-action" onclick="PCApp.openDateDetail('${cleanKey}')">상세 팝업</button>
         </div>
 
-        <div class="space-y-3 overflow-y-auto max-h-[500px] pr-1">
-          ${list.length > 0 ? list.map(item => `
-            <div class="p-4 bg-surface-container-low rounded-xl border border-outline/60 hover:border-primary transition-all">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${item.type === 'primary' ? 'bg-primary-container text-primary' : item.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary-container text-secondary'}">
-                  ${item.badge || '일정'}
-                </span>
-                <span class="text-xs text-on-surface-variant font-bold">${item.time || '종일'}</span>
-              </div>
-              <h5 class="font-bold text-base text-on-surface mb-1">${item.title}</h5>
-              ${item.author ? `<p class="text-xs text-on-surface-variant mb-1 font-semibold">담당: ${item.author}</p>` : ''}
-              ${item.desc ? `<p class="text-xs text-on-surface-variant leading-relaxed">${item.desc}</p>` : ''}
-              ${item.location ? `<p class="text-xs text-primary font-medium mt-2 flex items-center gap-1">📍 ${item.location}</p>` : ''}
-            </div>
-          `).join('') : `
+        <div class="space-y-3 overflow-y-auto max-h-[520px] pr-1">
+          ${list.length > 0 ? list.map(item => this.getScheduleCardHtml(item)).join('') : `
             <div class="text-center py-12 text-on-surface-variant">
               <p class="text-base font-bold mb-1">등록된 일정이 없습니다.</p>
               <p class="text-xs">상단 '+ 일정 등록' 버튼으로 등록해보세요.</p>
@@ -712,6 +699,66 @@ const PCApp = {
         </div>
       `;
     }
+  },
+
+  getScheduleCardHtml(item) {
+    let avatarUrl = item.avatar;
+    if (item.author) {
+      const authorFirstName = item.author.split(' ')[0];
+      const found = (this.state.members || []).find(m => m.name === authorFirstName);
+      if (found && found.avatar) avatarUrl = found.avatar;
+    }
+    if (!avatarUrl) avatarUrl = './profile.png';
+
+    const titleStr = item.title || '';
+    const badgeStr = item.badge || '';
+    let categoryKey = badgeStr || titleStr;
+    let dotClass = 'bg-primary';
+    let badgeBg = 'bg-primary-container text-primary border border-primary/20';
+
+    if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) {
+      categoryKey = '연차';
+      dotClass = 'bg-[#10b981]';
+      badgeBg = 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/25';
+    } else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) {
+      categoryKey = titleStr.includes('반반차') ? '반반차' : '반차';
+      dotClass = 'bg-[#f59e0b]';
+      badgeBg = 'bg-[#fef7e0] text-[#b06000] border border-[#b06000]/25';
+    } else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) {
+      categoryKey = '외근';
+      dotClass = 'bg-[#3b82f6]';
+      badgeBg = 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/25';
+    } else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) {
+      categoryKey = '회의';
+      dotClass = 'bg-[#8b5cf6]';
+      badgeBg = 'bg-[#f3e8fd] text-[#7627bb] border border-[#7627bb]/25';
+    } else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) {
+      categoryKey = '공휴일';
+      dotClass = 'bg-[#ef4444]';
+      badgeBg = 'bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25';
+    }
+
+    const isSpecial = categoryKey === '공휴일' || item.author === '공휴일' || item.author === '대한민국 공휴일' || item.author === '회사공지';
+    const avatarHtml = isSpecial ? '' : `<img src="${avatarUrl}" alt="${item.author || '담당자'}" class="w-10 h-10 rounded-full object-cover shrink-0 border border-outline/30 shadow-xs mr-3" />`;
+    const authorHtml = isSpecial ? '' : `<span class="font-bold text-sm text-primary whitespace-nowrap">${item.author || '이재광 차장'}</span>`;
+
+    return `
+      <div class="flex items-center p-3.5 bg-surface-container-low rounded-2xl border border-outline/70 hover:border-primary transition-all shadow-2xs">
+        <div class="w-2.5 h-2.5 rounded-full ${dotClass} shrink-0 mr-2.5"></div>
+        ${avatarHtml}
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-1.5 mb-1">
+            <div class="flex items-center gap-1.5 shrink-0">
+              ${authorHtml}
+              <span class="px-2 py-0.5 rounded-md text-xs font-bold ${badgeBg}">${item.badge || categoryKey}</span>
+            </div>
+            <span class="text-xs text-on-surface-variant font-medium whitespace-nowrap ml-auto">${item.time || '종일'}</span>
+          </div>
+          <div class="text-base text-on-surface font-bold leading-snug break-words">${item.title}</div>
+          ${item.location ? `<p class="text-xs text-primary font-medium mt-1 flex items-center gap-1">📍 ${item.location}</p>` : ''}
+        </div>
+      </div>
+    `;
   },
 
   openDateDetail(dateStr) {
@@ -740,20 +787,7 @@ const PCApp = {
       </div>
 
       <div class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
-        ${list.length > 0 ? list.map(item => `
-          <div class="p-5 bg-surface-container-low rounded-2xl border border-outline">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-base font-bold px-3 py-1 rounded-full ${item.type === 'primary' ? 'bg-primary-container text-primary' : item.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary-container text-secondary'}">
-                ${item.badge || '일정'}
-              </span>
-              <span class="text-base text-on-surface-variant font-bold">${item.time || '종일'}</span>
-            </div>
-            <h4 class="text-lg font-bold text-on-surface mb-1">${item.title}</h4>
-            ${item.author ? `<p class="text-base text-on-surface-variant font-semibold mb-2">👤 ${item.author}</p>` : ''}
-            ${item.desc ? `<p class="text-base text-on-surface-variant leading-relaxed mb-2">${item.desc}</p>` : ''}
-            ${item.location ? `<p class="text-base text-primary font-semibold flex items-center gap-1.5">📍 장소: ${item.location}</p>` : ''}
-          </div>
-        `).join('') : `
+        ${list.length > 0 ? list.map(item => this.getScheduleCardHtml(item)).join('') : `
           <div class="text-center py-12 text-on-surface-variant">
             <p class="text-lg font-bold mb-2">등록된 일정이 없습니다.</p>
             <p class="text-base">휴가, 외근 또는 팀 회의 일정을 등록해보세요.</p>
