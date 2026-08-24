@@ -125,16 +125,6 @@ const PCApp = {
     window.scrollTo({ top: 0, behavior: 'instant' });
   },
 
-  setDashboardTab(tab) {
-    this.state.dashboardTab = tab;
-    const tabBtns = document.querySelectorAll('.pc-tab-pill');
-    tabBtns.forEach(btn => {
-      if (btn.getAttribute('data-tab') === tab) btn.classList.add('active');
-      else btn.classList.remove('active');
-    });
-    this.renderDashboard();
-  },
-
   // 4. Render Sidebar
   renderSidebar() {
     const navItems = [
