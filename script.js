@@ -2724,61 +2724,70 @@ const App = {
     const schedules = this.getMockSchedules(year, month, day);
 
     if (schedules && schedules.length > 0) {
-      const groupMap = {};
-      const categoryOrder = ['공휴일', '절기', '기념일', '휴가', '외근', '반차', '회의', '기타'];
-
-      schedules.forEach(s => {
-        const titleStr = s.title || '';
-        const badgeStr = s.badge || '';
-        let key = '기타';
-        if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) key = '공휴일';
-        else if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') key = '절기';
-        else if (titleStr.includes('기념일') || badgeStr.includes('기념일') || s.author === '기념일') key = '기념일';
-        else if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) key = '휴가';
-        else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) key = '외근';
-        else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) key = '반차';
-        else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) key = '회의';
-
-        if (!groupMap[key]) groupMap[key] = [];
-        groupMap[key].push(s);
-      });
-
-      let finalHtml = '';
-      let groupCount = 0;
-
-      categoryOrder.forEach(gKey => {
-        const items = groupMap[gKey];
-        if (items && items.length > 0) {
-          groupCount++;
-          const colorInfo = this.getCategoryColorStyle(gKey);
-          let sectionDivider = groupCount > 1 ? '<div class="my-2.5 border-t border-outline-variant/20"></div>' : '';
-
-          finalHtml += `
-            ${sectionDivider}
-            <div class="flex items-center justify-between pt-1 pb-1 text-xs font-bold text-on-surface select-none">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass}"></span>
-                <span class="font-headline font-bold text-sm">${gKey === '휴가' ? '연차/휴가' : gKey}</span>
-              </div>
-              <span class="text-[11px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">${items.length}건</span>
-            </div>
-            <div class="flex flex-col gap-2.5">
-              ${items.map(item => this.renderScheduleCardItem(item)).join('')}
-            </div>
-          `;
-        }
-      });
-
-      logsContainer.innerHTML = finalHtml;
+      logsContainer.innerHTML = this.renderGroupedScheduleList(schedules);
     } else {
       logsContainer.innerHTML = `
         <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium border border-outline-variant/10 shadow-xs">
-          <span class="material-symbols-outlined text-4xl text-outline mb-2">event_available</span>
+          <div class="w-10 h-10 text-outline mb-2 mx-auto flex items-center justify-center">${getSvgIcon('event_available', 'w-8 h-8')}</div>
           <p class="font-bold text-on-surface text-sm">선택한 날짜에 등록된 일정이 없습니다.</p>
           <p class="text-xs text-on-surface-variant/70 mt-1">상단 달력에서 다른 날짜를 선택해 보세요.</p>
         </div>
       `;
     }
+  },
+
+  // 월간 일정 및 주간 일자별 일정 공통 카테고리·건수별 렌더러 (월/주간 디자인 100% 일치)
+  renderGroupedScheduleList(schedules) {
+    if (!schedules || schedules.length === 0) {
+      return `<div class="text-center py-3 text-on-surface-variant/50 font-body text-xs font-medium">등록된 일정이 없습니다.</div>`;
+    }
+
+    const groupMap = {};
+    const categoryOrder = ['공휴일', '절기', '기념일', '휴가', '외근', '반차', '회의', '기타'];
+
+    schedules.forEach(s => {
+      const titleStr = s.title || '';
+      const badgeStr = s.badge || '';
+      let key = '기타';
+      if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) key = '공휴일';
+      else if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') key = '절기';
+      else if (titleStr.includes('기념일') || badgeStr.includes('기념일') || s.author === '기념일') key = '기념일';
+      else if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) key = '휴가';
+      else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) key = '외근';
+      else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) key = '반차';
+      else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) key = '회의';
+
+      if (!groupMap[key]) groupMap[key] = [];
+      groupMap[key].push(s);
+    });
+
+    let finalHtml = '';
+    let groupCount = 0;
+
+    categoryOrder.forEach(gKey => {
+      const items = groupMap[gKey];
+      if (items && items.length > 0) {
+        groupCount++;
+        const colorInfo = this.getCategoryColorStyle(gKey);
+        let sectionDivider = groupCount > 1 ? '<div class="my-2.5 border-t border-outline-variant/20"></div>' : '';
+
+        finalHtml += `
+          ${sectionDivider}
+          <div class="flex items-center justify-between pt-1 pb-1 text-xs font-bold text-on-surface select-none">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass}"></span>
+              <span class="font-headline font-bold text-sm">${gKey === '휴가' ? '연차/휴가' : gKey}</span>
+            </div>
+            <span class="text-[11px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">${items.length}건</span>
+          </div>
+          <div class="flex flex-col gap-2.5">
+            ${items.map(item => this.renderScheduleCardItem(item)).join('')}
+          </div>
+        `;
+      }
+    });
+
+    return finalHtml;
   },
 
   // 3-Mode Calendar Views (월 / 주 / 일)
@@ -3018,12 +3027,7 @@ const App = {
           dayBadgeClass = 'bg-primary/10 text-primary';
         }
 
-        let cardsContentHtml = '';
-        if (schedules.length === 0) {
-          cardsContentHtml = `<div class="text-center py-2.5 text-on-surface-variant/50 font-body text-xs font-medium">등록된 일정이 없습니다.</div>`;
-        } else {
-          cardsContentHtml = `<div class="space-y-2.5">` + schedules.map(s => this.renderWeeklyDayCardItem(s)).join('') + `</div>`;
-        }
+        let cardsContentHtml = this.renderGroupedScheduleList(schedules);
 
         const dateFormatted = `${String(w.month).padStart(2, '0')}.${String(w.day).padStart(2, '0')}`;
         const dayName = dayNamesKr[w.dayOfWeek];
@@ -3038,7 +3042,7 @@ const App = {
                 <h4 class="font-headline text-sm sm:text-base font-bold ${dayTitleClass}">${w.month}월 ${w.day}일 (${dayName})</h4>
                 ${isToday ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary text-on-primary shadow-2xs">오늘</span>' : ''}
               </div>
-              <span class="text-xs font-semibold text-on-surface-variant">${schedules.length > 0 ? `<span class="text-primary font-bold">${schedules.length}건</span>` : '<span class="text-on-surface-variant/60">일정 없음</span>'}</span>
+              <span class="text-xs font-semibold text-on-surface-variant">${schedules.length > 0 ? `<span class="text-primary font-bold">총 ${schedules.length}건</span>` : '<span class="text-on-surface-variant/60">일정 없음</span>'}</span>
             </div>
             ${cardsContentHtml}
           </div>
@@ -3062,7 +3066,7 @@ const App = {
           </div>
         `;
       } else {
-        logsContainerEl.innerHTML = `<div class="space-y-3">` + schedules.map(s => this.renderWeeklyDayCardItem(s)).join('') + `</div>`;
+        logsContainerEl.innerHTML = this.renderGroupedScheduleList(schedules);
       }
     }
   },
