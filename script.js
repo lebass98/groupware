@@ -1481,30 +1481,46 @@ const App = {
         todosContainer.innerHTML = displayTodos.map(todo => {
           const isDone = todo.status === 'done';
           const priorityDotColor = todo.priority === 'high' ? 'bg-error' : (todo.priority === 'medium' ? 'bg-tertiary-container' : 'bg-primary');
+          const prioBgClass = todo.priority === 'high' ? 'bg-[#ffdad6] text-[#410002]' : (todo.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-[#ffe088] text-[#533a00]');
+          const prioText = todo.priority === 'high' ? '높음' : (todo.priority === 'low' ? '낮음' : '보통');
           const statusBgClass = isDone
-            ? 'bg-secondary/10 text-secondary'
-            : (todo.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
+            ? 'bg-[#61fbab] text-[#004729]'
+            : (todo.status === 'in_progress' ? 'bg-[#d8e2ff] text-[#001a41]' : 'bg-surface-container text-on-surface-variant');
           const statusText = isDone ? '완료' : (todo.status === 'in_progress' ? '진행 중' : '할 일');
+          const assignee = (todo.assignees && todo.assignees[0]) || { name: (this.state.myProfile && this.state.myProfile.name) || '이재광', avatar: (this.state.myProfile && this.state.myProfile.avatar) || './profile.png' };
 
           return `
-            <div class="flex items-center justify-between bg-surface-container-lowest p-3.5 rounded-2xl border border-outline-variant/10 shadow-2xs hover:bg-surface-container-low transition-colors cursor-pointer" onclick="App.openTodoDetailModal(${todo.id})">
-              <div class="flex items-center gap-3 min-w-0 flex-1 mr-2">
-                <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${todo.id});" class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${isDone ? 'bg-secondary border-secondary text-white' : 'border-outline-variant hover:border-primary'}">
-                  ${isDone ? '<span class="material-symbols-outlined text-sm font-bold">check</span>' : ''}
-                </button>
-                <div class="flex flex-col min-w-0 flex-1 text-left">
-                  <div class="flex items-center gap-2 mb-0.5">
-                    <span class="w-2 h-2 rounded-full ${priorityDotColor} shrink-0"></span>
-                    <span class="text-xs text-on-surface-variant font-medium truncate">${todo.project || '일반 업무'}</span>
-                  </div>
-                  <h4 class="font-headline text-sm font-bold text-on-surface truncate ${isDone ? 'line-through opacity-60' : ''}">${todo.title}</h4>
+            <div class="p-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-2xs hover:shadow-xs hover:border-primary/30 transition-all flex flex-col gap-2.5 cursor-pointer text-left" onclick="App.openTodoDetailModal(${todo.id})">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-label font-bold ${statusBgClass}">
+                    ${statusText}
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-label font-bold ${prioBgClass}">
+                    ${prioText}
+                  </span>
+                  <span class="text-xs font-bold text-primary truncate max-w-[140px]"># ${todo.project || '일반 업무'}</span>
                 </div>
+                <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${todo.id});" class="w-6 h-6 rounded-lg border flex items-center justify-center transition-colors shrink-0 ${isDone ? 'bg-secondary border-secondary text-white' : 'border-outline-variant hover:border-primary bg-surface-container-low'}" title="${isDone ? '미완료로 변경' : '완료 처리'}">
+                  ${isDone ? '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
+                </button>
               </div>
-              <div class="flex items-center gap-2 shrink-0">
-                <span class="px-2.5 py-1 rounded-full text-[11px] font-label font-bold ${statusBgClass}">
-                  ${statusText}
-                </span>
-                <span class="material-symbols-outlined text-outline-variant text-base">chevron_right</span>
+
+              <h4 class="font-headline text-sm font-bold text-on-surface line-clamp-2 leading-snug ${isDone ? 'line-through opacity-60' : ''}">
+                ${todo.title}
+              </h4>
+
+              <div class="flex items-center justify-between text-xs text-on-surface-variant pt-2 border-t border-outline-variant/10">
+                <div class="flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-on-surface-variant/70 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                  </svg>
+                  <span class="font-medium text-[11px]">${todo.dueDate || '마감일 미지정'}</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <img src="${assignee.avatar || './profile.png'}" class="w-5 h-5 rounded-full object-cover border border-outline-variant/20" alt="${assignee.name}" />
+                  <span class="text-[11px] font-bold text-on-surface">${assignee.name}</span>
+                </div>
               </div>
             </div>
           `;
@@ -1512,7 +1528,7 @@ const App = {
       } else {
         todosContainer.innerHTML = `
           <div class="bg-surface-container-lowest rounded-2xl p-6 text-center text-on-surface-variant font-medium border border-outline-variant/10">
-            <span class="material-symbols-outlined text-3xl text-outline mb-1">checklist_rtl</span>
+            <svg class="w-8 h-8 text-outline mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor"><path d="M22 5.18L10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM19.79 10.22C19.92 10.79 20 11.39 20 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8c1.66 0 3.2.51 4.48 1.39l1.45-1.45C16.19 2.7 14.19 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z"/></svg>
             <p class="font-bold text-on-surface text-sm">등록된 오늘의 할 일이 없습니다.</p>
           </div>
         `;

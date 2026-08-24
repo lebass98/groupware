@@ -866,7 +866,7 @@ const PCApp = {
       `;
     }
 
-    // 3. To-Do Widget
+    // 3. To-Do Widget (카드 형태 최근 3개 렌더링)
     const todoWrap = document.getElementById('pc-widget-todo');
     if (todoWrap) {
       const topTodos = (this.state.todos || []).slice(0, 3);
@@ -882,14 +882,47 @@ const PCApp = {
             <button class="pc-card-action" onclick="PCApp.switchScreen('todo')">전체보기</button>
           </div>
 
-          <div class="pc-todo-list">
-            ${topTodos.length > 0 ? topTodos.map((t, idx) => `
-              <div class="pc-todo-item">
-                <input type="checkbox" class="pc-todo-checkbox" ${t.completed ? 'checked' : ''} onchange="PCApp.toggleTodo(${idx})">
-                <span class="pc-todo-title ${t.completed ? 'line-through opacity-50' : ''}">${t.title}</span>
-                <span class="pc-todo-priority ${t.priority === 'high' ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">${t.priority === 'high' ? '높음' : '보통'}</span>
-              </div>
-            `).join('') : '<p class="text-xs text-on-surface-variant text-center py-4">등록된 할 일이 없습니다.</p>'}
+          <div class="space-y-3">
+            ${topTodos.length > 0 ? topTodos.map((t, idx) => {
+              const isDone = t.status === 'done' || t.completed;
+              const statusBg = isDone ? 'bg-secondary-container text-secondary' : (t.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
+              const statusText = isDone ? '완료' : (t.status === 'in_progress' ? '진행 중' : '대기');
+              const prioBg = t.priority === 'high' ? 'bg-error-container text-error' : (t.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-tertiary-container text-tertiary');
+              const prioText = t.priority === 'high' ? '높음' : (t.priority === 'low' ? '낮음' : '보통');
+              const assignee = (t.assignees && t.assignees[0]) || { name: this.state.user.name, avatar: this.state.user.avatar };
+
+              return `
+                <div class="p-3.5 bg-surface-container-low rounded-xl border border-outline hover:border-primary hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between gap-2.5" onclick="PCApp.openTodoDetailModal(${t.id})">
+                  <div class="flex items-center justify-between gap-1.5">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${statusBg}">${statusText}</span>
+                      <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${prioBg}">${prioText}</span>
+                      <span class="text-[11px] font-bold text-primary truncate max-w-[120px]"># ${t.project || '일반 업무'}</span>
+                    </div>
+                    <button type="button" onclick="event.stopPropagation(); PCApp.toggleTodo(${idx});" class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 ${isDone ? 'bg-secondary border-secondary text-white' : 'border-outline hover:border-primary bg-surface-container-lowest'}" title="${isDone ? '미완료로 변경' : '완료 처리'}">
+                      ${isDone ? '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
+                    </button>
+                  </div>
+
+                  <h4 class="font-bold text-sm text-on-surface line-clamp-2 leading-snug ${isDone ? 'line-through opacity-50' : ''}">
+                    ${t.title}
+                  </h4>
+
+                  <div class="flex items-center justify-between text-xs text-on-surface-variant pt-2 border-t border-outline/50">
+                    <div class="flex items-center gap-1.5">
+                      <svg class="w-3.5 h-3.5 text-on-surface-variant/70 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                      </svg>
+                      <span class="font-medium text-[11px]">${t.dueDate || '마감일 미지정'}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                      <img src="${assignee.avatar || './profile.png'}" class="w-5 h-5 rounded-full object-cover border border-outline/30 shrink-0" alt="${assignee.name}" />
+                      <span class="text-[11px] font-bold text-on-surface">${assignee.name}</span>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('') : '<p class="text-xs text-on-surface-variant text-center py-4">등록된 할 일이 없습니다.</p>'}
           </div>
         </div>
       `;
