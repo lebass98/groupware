@@ -2584,66 +2584,371 @@ const PCApp = {
     this.showModal();
   },
 
+  // 주소록 연동 헬퍼: 이름으로 임직원 정보 조회
+  getEmployeeByName(name) {
+    if (!name || name === '-' || name === '.') return null;
+    const cleanName = String(name).trim();
+    const list = this.state.members || (window.MockData && window.MockData.employees) || [];
+    return list.find(e => e.name === cleanName || cleanName.includes(e.name)) || null;
+  },
+
+  // 주소록 기반 이름 + 직책 포맷팅 (예: "장현아 수습", "남기현 본부장")
+  formatEmployeeWithRole(name) {
+    if (!name || name === '-' || name === '.') return '-';
+    const emp = this.getEmployeeByName(name);
+    if (emp) {
+      return `${emp.name} ${emp.role}`;
+    }
+    return name;
+  },
+
   openProjectModal(projectId) {
-    const p = this.state.projects.find(proj => proj.id === projectId);
+    const p = (this.state.projects || []).find(proj => proj.id === projectId) ||
+      ((window.MockData && window.MockData.projects) || []).find(proj => proj.id === projectId);
     if (!p) return;
 
+    this.state.currentDetailProjectId = p.id;
     const modalBody = document.getElementById('pc-modal-content');
     if (!modalBody) return;
 
-    modalBody.innerHTML = `
-      <div class="flex items-center justify-between pb-4 border-b border-outline mb-4">
-        <div>
-          <span class="text-xs font-bold px-3 py-1 rounded-full bg-primary/10 text-primary mr-2">${p.clientName}</span>
-          <h3 class="text-2xl font-bold text-on-surface inline align-middle">${p.title}</h3>
+    const formattedDate = (p.date || '').replace(/-/g, '.');
+    const formattedDateFull = p.dateFull ? p.dateFull.replace(/-/g, '.') : formattedDate;
+
+    // Status badge style
+    let statusBadgeClass = 'bg-primary/10 text-primary border border-primary/20';
+    if (p.status === 'maintenance') statusBadgeClass = 'bg-secondary/10 text-secondary border border-secondary/20';
+    else if (p.status === 'build') statusBadgeClass = 'bg-tertiary-container/30 text-tertiary border border-tertiary/20';
+
+    // Author mapping with address book
+    const authorEmp = this.getEmployeeByName(p.author);
+    const authorDept = authorEmp ? authorEmp.dept : (p.authorDept || '기획팀');
+    const authorRole = authorEmp ? authorEmp.role : (p.authorRole || '사원');
+    const authorName = authorEmp ? authorEmp.name : p.author;
+
+    // 1. 첨부파일 목록 렌더링
+    const attachments = p.attachments || [];
+    const attachmentsHtml = attachments.length > 0 ? attachments.map(att => `
+      <div class="flex items-center justify-between bg-surface-container-low hover:bg-surface-container transition-all rounded-xl p-3.5 border border-outline/40 group cursor-pointer" onclick="PCApp.downloadProjectAttachment('${att.name.replace(/'/g, "\\'")}')">
+        <div class="flex items-center gap-3 truncate">
+          <div class="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          </div>
+          <div class="flex flex-col truncate text-left">
+            <span class="text-sm font-bold text-on-surface truncate">${att.name}</span>
+            <span class="text-xs text-on-surface-variant font-medium">${att.size} • 다운로드 ${att.downloads || 0}회 • ${att.date || ''}</span>
+          </div>
         </div>
-        <span class="px-3 py-1 bg-secondary-container text-secondary rounded-full font-bold text-xs">${p.statusText || '진행중'}</span>
+        <button type="button" class="px-3 py-1.5 bg-primary text-white font-bold rounded-lg text-xs hover:bg-primary-dim transition-colors shrink-0 flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          <span>다운로드</span>
+        </button>
       </div>
-
-      <div class="space-y-4 text-base max-h-[60vh] overflow-y-auto pr-1">
-        <div class="p-4 bg-surface-container-low rounded-xl">
-          <h4 class="font-bold text-sm text-on-surface mb-2">프로젝트 개요</h4>
-          <p class="text-sm text-on-surface-variant leading-relaxed">${p.content || '프로젝트 상세 설명 및 구축 범위입니다.'}</p>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 text-sm">
-          <div class="p-3 bg-surface-container-low rounded-xl">
-            <span class="text-xs text-on-surface-variant block mb-1">사업 기간</span>
-            <strong class="text-on-surface">${p.period || '-'}</strong>
-          </div>
-          <div class="p-3 bg-surface-container-low rounded-xl">
-            <span class="text-xs text-on-surface-variant block mb-1">담당 기획자</span>
-            <strong class="text-on-surface">${p.planner || p.author || '-'}</strong>
-          </div>
-        </div>
-
-        ${p.attachments && p.attachments.length > 0 ? `
-          <div>
-            <h4 class="font-bold text-sm text-on-surface mb-2">첨부 산출물</h4>
-            <div class="space-y-2">
-              ${p.attachments.map(att => `
-                <div class="p-3 bg-surface-container-low rounded-xl flex items-center justify-between text-xs">
-                  <span class="font-medium text-on-surface line-clamp-1">📄 ${att.name} (${att.size})</span>
-                  <button class="text-primary font-bold shrink-0 ml-2" onclick="PCApp.showToast('파일 다운로드가 시작되었습니다.')">다운로드</button>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        ` : ''}
-      </div>
-
-      <div class="flex justify-end pt-5 border-t border-outline mt-5">
-        <button class="px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-bold text-base hover:bg-surface-container-highest" onclick="PCApp.closeModal()">닫기</button>
+    `).join('') : `
+      <div class="bg-surface-container-low rounded-xl p-5 border border-dashed border-outline/60 text-xs text-on-surface-variant flex items-center justify-center text-center min-h-[60px]">
+        등록된 첨부파일이 없습니다.
       </div>
     `;
 
-    this.showModal();
+    // 2. 고객사 담당자 목록 렌더링
+    const clientContacts = p.clientContacts || [];
+    const clientContactsHtml = clientContacts.length > 0 ? clientContacts.map(c => `
+      <div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline/50 text-xs flex flex-col gap-2 shadow-2xs">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-primary font-mono">${c.label || '담당자 1'}</span>
+            <span class="font-mono text-xs text-on-surface-variant">[${c.date || ''}]</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            ${c.mobile ? `<a href="tel:${c.mobile}" class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-primary hover:text-white text-primary transition-all font-bold flex items-center gap-1" title="전화걸기"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg><span>전화</span></a>` : ''}
+            ${c.email ? `<a href="mailto:${c.email}" class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-primary hover:text-white text-primary transition-all font-bold flex items-center gap-1" title="이메일 보내기"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg><span>메일</span></a>` : ''}
+          </div>
+        </div>
+        <div class="text-on-surface leading-relaxed flex flex-wrap items-center gap-x-2 gap-y-1 pt-1 border-t border-outline/30">
+          <span class="font-bold text-sm text-on-surface">${c.name || '-'}</span>
+          <span class="text-outline">|</span>
+          <span class="text-on-surface-variant font-medium">${c.position || '-'}</span>
+          <span class="text-outline">|</span>
+          <span class="text-on-surface-variant">전화 ${c.tel || '-'}</span>
+          <span class="text-outline">|</span>
+          <span class="text-on-surface-variant">팩스 ${c.fax || '-'}</span>
+          <span class="text-outline">|</span>
+          <span class="font-mono text-primary font-bold">휴대폰 ${c.mobile || '-'}</span>
+          <span class="text-outline">|</span>
+          <span class="font-mono text-on-surface-variant">${c.email || '-'}</span>
+        </div>
+      </div>
+    `).join('') : `
+      <div class="p-3.5 bg-surface-container-lowest rounded-xl border border-outline/40 text-xs text-on-surface-variant">
+        <span class="font-bold text-on-surface">담당자 1 :</span> 등록된 고객사 담당자 정보가 없습니다.
+      </div>
+    `;
+
+    // 3. 댓글 / 작업 히스토리 렌더링
+    const comments = p.comments || [];
+    const commentsHtml = comments.length > 0 ? comments.map(cm => {
+      const cEmp = this.getEmployeeByName(cm.author);
+      const cDept = cEmp ? cEmp.dept : (cm.authorDept || '기획팀');
+      const cRole = cEmp ? ` ${cEmp.role}` : '';
+      return `
+        <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline/50 flex flex-col gap-2 shadow-2xs text-left">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center">
+                ${(cm.author || '사')[0]}
+              </div>
+              <span class="font-bold text-sm text-on-surface">${cm.author}${cRole}</span>
+              <span class="text-xs text-on-surface-variant font-medium">(${cDept})</span>
+            </div>
+            <span class="font-mono text-xs text-on-surface-variant">${cm.date}</span>
+          </div>
+          <div class="bg-surface-container-low p-3.5 rounded-lg text-xs font-mono text-on-surface leading-relaxed whitespace-pre-line select-text border border-outline/30">
+            ${cm.content}
+          </div>
+        </div>
+      `;
+    }).join('') : `
+      <div class="p-5 bg-surface-container-lowest rounded-xl border border-dashed border-outline/50 text-center text-on-surface-variant text-xs">
+        등록된 댓글 및 작업 메모가 없습니다.
+      </div>
+    `;
+
+    modalBody.innerHTML = `
+      <!-- Header Area -->
+      <div class="flex items-start justify-between pb-4 border-b border-outline mb-5">
+        <div class="text-left flex-1 mr-4">
+          <div class="flex items-center gap-2 mb-2 flex-wrap">
+            <span class="text-xs font-bold px-3 py-1 rounded-full bg-primary/10 text-primary">${p.category || '프로젝트'}</span>
+            <span class="text-xs font-bold px-3 py-1 rounded-full bg-surface-container text-on-surface-variant">${p.clientName || '고객사'}</span>
+            <span class="text-xs font-medium text-on-surface-variant font-mono">${formattedDateFull || formattedDate}</span>
+          </div>
+          <h2 class="text-2xl font-bold text-on-surface leading-snug">${p.title}</h2>
+          <div class="flex items-center gap-2 text-xs text-on-surface-variant mt-2.5">
+            <div class="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-[10px]">
+              ${(authorName || '사')[0]}
+            </div>
+            <span>${authorDept} <strong>${authorName}</strong> (${authorRole})</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          <span class="px-3.5 py-1.5 rounded-full font-bold text-xs ${statusBadgeClass}">${p.statusText || '진행 중'}</span>
+          <button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all" onclick="PCApp.closeModal()">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable Body -->
+      <div class="space-y-5 text-left max-h-[68vh] overflow-y-auto pr-1">
+        <!-- 1. 프로젝트 기본 정보 테이블 -->
+        <section class="bg-surface-container-low rounded-2xl p-5 border border-outline/50 flex flex-col gap-3.5">
+          <h3 class="font-bold text-sm text-on-surface flex items-center gap-2">
+            <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>프로젝트 기본 정보</span>
+          </h3>
+
+          <div class="flex flex-col gap-2.5 text-xs">
+            <!-- 프로젝트 주소 -->
+            <div class="flex items-center justify-between py-2 border-b border-outline/30 gap-2">
+              <span class="text-on-surface-variant font-bold shrink-0 w-28">• 프로젝트 주소</span>
+              <div class="flex items-center gap-2 flex-1 min-w-0 justify-end">
+                <a href="${p.projectUrl || '#'}" target="_blank" class="text-primary font-mono text-xs hover:underline truncate max-w-[420px] flex items-center gap-1">
+                  <span>${p.projectUrl || 'http://sitegate.co.kr'}</span>
+                  <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+                <button type="button" onclick="PCApp.copyProjectUrl('${p.projectUrl || ''}')" class="px-2 py-1 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-all shrink-0 flex items-center gap-1 font-bold text-[11px]" title="주소 복사">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                  <span>복사</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 클라이언트 ID & 사이트 ID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 py-2 border-b border-outline/30">
+              <div class="flex items-center justify-between">
+                <span class="text-on-surface-variant font-bold w-28">• 클라이언트 ID</span>
+                <span class="font-medium text-on-surface">${p.clientName || '-'} <span class="font-mono text-primary font-bold">(${p.clientId || '-'})</span></span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-on-surface-variant font-bold w-28">• 사이트 ID</span>
+                <div class="flex items-center gap-2">
+                  <span class="font-medium text-on-surface truncate">${p.siteName || '-'}</span>
+                  <span class="font-mono text-primary font-bold">(${p.siteId || '-'})</span>
+                  <span class="bg-primary/10 text-primary text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0">낙찰정보(${p.bidCount || 0})</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- PM 및 직군별 담당자 그리드 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 py-2 border-b border-outline/30">
+              <div class="flex items-center justify-between">
+                <span class="text-on-surface-variant font-bold w-24">• PM</span>
+                <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.pm)}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-on-surface-variant font-bold w-24">• 담당자(기획)</span>
+                <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.planner)}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-on-surface-variant font-bold w-24">• 담당자(디자인)</span>
+                <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.designer)}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-on-surface-variant font-bold w-24">• 담당자(코딩)</span>
+                <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.publisher)}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-on-surface-variant font-bold w-24">• 담당자(개발)</span>
+                <span class="font-medium text-on-surface">${this.formatEmployeeWithRole(p.developer)}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-on-surface-variant font-bold w-24">• 개발 언어</span>
+                <span class="font-medium text-on-surface">${p.devLang || '-'}</span>
+              </div>
+            </div>
+
+            <!-- 프로젝트 기간 & 진행상태 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 py-2 border-b border-outline/30">
+              <div class="flex items-center justify-between">
+                <span class="text-on-surface-variant font-bold w-28">• 프로젝트 기간</span>
+                <span class="font-mono font-bold text-on-surface">${p.period || '-'}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-on-surface-variant font-bold w-28">• 진행상태</span>
+                <span class="font-bold text-primary">${p.statusText || '진행 중'}</span>
+              </div>
+            </div>
+
+            <!-- 고객사 담당자 목록 -->
+            <div class="flex flex-col gap-2 pt-2">
+              <span class="text-on-surface-variant font-bold">• 고객사 담당자 (${clientContacts.length})</span>
+              ${clientContactsHtml}
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. 첨부파일 섹션 -->
+        <section class="bg-surface-container-low rounded-2xl p-5 border border-outline/50 flex flex-col gap-3">
+          <h3 class="font-bold text-sm text-on-surface flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5a2.5 2.5 0 0 1 5 0v10.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5V6H9v9.5a3 3 0 0 0 6 0V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>
+              <span>첨부 산출물 및 파일 (${attachments.length})</span>
+            </span>
+          </h3>
+          <div class="flex flex-col gap-2">
+            ${attachmentsHtml}
+          </div>
+        </section>
+
+        <!-- 3. 상세 내용 본문 -->
+        <section class="bg-surface-container-low rounded-2xl p-5 border border-outline/50 flex flex-col gap-2.5">
+          <h3 class="font-bold text-sm text-on-surface flex items-center gap-2">
+            <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M14 17H4v-2h10v2zm6-8H4V7h16v2zm0 4H4v-2h16v2zm0 4h-4v-2h4v2z"/></svg>
+            <span>상세 내용</span>
+          </h3>
+          ${p.content && p.content !== '.' ? `
+            <div class="bg-surface-container-lowest rounded-xl p-4 text-xs text-on-surface leading-relaxed min-h-[60px] whitespace-pre-line border border-outline/40 select-text">
+              ${p.content}
+            </div>
+          ` : `
+            <div class="bg-surface-container-lowest rounded-xl p-4 text-xs text-on-surface-variant flex items-center justify-center text-center min-h-[60px] border border-dashed border-outline/40">
+              별도 등록된 본문 텍스트가 없습니다.
+            </div>
+          `}
+        </section>
+
+        <!-- 4. 댓글 및 작업 메모 -->
+        <section class="bg-surface-container-low rounded-2xl p-5 border border-outline/50 flex flex-col gap-3">
+          <h3 class="font-bold text-sm text-on-surface flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/></svg>
+              <span>댓글 및 작업 메모 (${comments.length})</span>
+            </span>
+          </h3>
+
+          <div class="flex flex-col gap-2.5" id="pc-project-comments-list">
+            ${commentsHtml}
+          </div>
+
+          <!-- 새 댓글 작성 폼 -->
+          <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline/50 flex flex-col gap-2.5 mt-1">
+            <span class="text-xs font-bold text-on-surface">새 댓글 / 작업 메모 작성</span>
+            <textarea id="pc-project-new-comment-input" class="w-full p-3 bg-surface-container-low rounded-lg text-xs text-on-surface border border-outline/40 focus:ring-2 focus:ring-primary focus:outline-none resize-none font-mono" placeholder="서버 정보, 개발 링크, 진행 사항 등을 자유롭게 입력하세요..." rows="3"></textarea>
+            <div class="flex justify-end">
+              <button type="button" onclick="PCApp.submitProjectComment(${p.id})" class="px-4 py-2 bg-primary text-white font-bold text-xs rounded-xl hover:bg-primary-dim active:scale-95 transition-all shadow-xs flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                <span>작성 완료</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="flex justify-end pt-4 border-t border-outline mt-4">
+        <button class="px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-bold text-base hover:bg-surface-container-highest transition-all" onclick="PCApp.closeModal()">닫기</button>
+      </div>
+    `;
+
+    this.showModal(null, true);
   },
 
-  showModal(contentHtml) {
+  copyProjectUrl(url) {
+    if (url) {
+      navigator.clipboard.writeText(url);
+      this.showToast('🔗 프로젝트 주소가 클립보드에 복사되었습니다.');
+    } else {
+      this.showToast('🔗 복사할 프로젝트 주소가 없습니다.');
+    }
+  },
+
+  downloadProjectAttachment(fileName) {
+    this.showToast(`📥 [${fileName}] 첨부파일 다운로드를 시작합니다.`);
+  },
+
+  submitProjectComment(projectId) {
+    const input = document.getElementById('pc-project-new-comment-input');
+    if (!input || !input.value.trim()) {
+      this.showToast('댓글 내용을 입력해주세요.');
+      return;
+    }
+
+    const p = (this.state.projects || []).find(item => item.id === projectId) ||
+      ((window.MockData && window.MockData.projects) || []).find(item => item.id === projectId);
+    if (p) {
+      if (!p.comments) p.comments = [];
+      const now = new Date();
+      const yr = String(now.getFullYear()).slice(-2);
+      const mo = String(now.getMonth() + 1).padStart(2, '0');
+      const da = String(now.getDate()).padStart(2, '0');
+      const ho = String(now.getHours()).padStart(2, '0');
+      const mi = String(now.getMinutes()).padStart(2, '0');
+
+      p.comments.push({
+        id: Date.now(),
+        author: this.state.user?.name || '이재광',
+        authorDept: this.state.user?.dept || '수행본부',
+        date: `${yr}-${mo}-${da} ${ho}:${mi}`,
+        content: input.value.trim()
+      });
+
+      this.openProjectModal(projectId);
+      this.showToast('💬 새로운 댓글 및 작업 메모가 등록되었습니다.');
+    }
+  },
+
+  showModal(contentHtml, isLarge = false) {
     const modal = document.getElementById('pc-global-modal');
     const modalBody = document.getElementById('pc-modal-content');
+    const modalBox = modal ? modal.querySelector('.pc-modal-box') : null;
     if (!modal) return;
+
+    if (modalBox) {
+      if (isLarge) {
+        modalBox.classList.add('pc-modal-lg');
+      } else {
+        modalBox.classList.remove('pc-modal-lg');
+      }
+    }
 
     if (contentHtml && modalBody) {
       modalBody.innerHTML = contentHtml;
@@ -2661,6 +2966,9 @@ const PCApp = {
   closeModal(isFromPopState = false) {
     const modal = document.getElementById('pc-global-modal');
     if (!modal) return;
+
+    const modalBox = modal.querySelector('.pc-modal-box');
+    if (modalBox) modalBox.classList.remove('pc-modal-lg');
 
     const wasActive = modal.classList.contains('active') || this._isModalOpen;
     modal.classList.remove('active');
