@@ -1,7 +1,7 @@
 /**
  * ==========================================================================
  * WnC PC Desktop Groupware Core Controller (pc.js)
- * High-Performance Full-Width Groupware Engine (Figma Bento Grid Inspired)
+ * Figma Bento Grid Inspired Full-Width Desktop Engine
  * ==========================================================================
  */
 
@@ -255,68 +255,73 @@ const PCApp = {
 
   // 5-1. Left Column
   renderLeftCol() {
-    // 1. Profile Widget
-    const profileEl = document.getElementById('pc-widget-profile');
-    if (profileEl) {
-      profileEl.innerHTML = `
+    // 1. Profile Card
+    const profileWrap = document.getElementById('pc-widget-profile');
+    if (profileWrap) {
+      profileWrap.innerHTML = `
         <div class="pc-bento-card pc-profile-card">
           <div class="pc-profile-avatar-wrap">
-            <img src="./profile.png" alt="이재광 차장" class="pc-profile-avatar" />
+            <img src="${this.state.user.avatar}" class="pc-profile-avatar" alt="사용자 프로필" />
           </div>
-          <h3 class="pc-profile-name">이재광 차장</h3>
-          <p class="pc-profile-role">퍼블리싱팀 · 워드앤코드</p>
-          <div class="pc-profile-stats">
-            <div class="pc-stat-item" onclick="PCApp.switchScreen('calendar')">
-              <span class="pc-stat-value text-primary">2</span>
-              <span class="pc-stat-label">오늘 일정</span>
+          <h2 class="pc-profile-name">${this.state.user.name} ${this.state.user.role}</h2>
+          <p class="pc-profile-dept">${this.state.user.dept} | 워드앤코드</p>
+          
+          <div class="pc-profile-counters">
+            <div class="pc-counter-item" onclick="PCApp.switchScreen('calendar')">
+              <span class="pc-counter-num">2</span>
+              <span class="pc-counter-label">오늘 일정</span>
             </div>
-            <div class="pc-stat-item" onclick="PCApp.switchScreen('work-report')">
-              <span class="pc-stat-value text-primary">1</span>
-              <span class="pc-stat-label">작성할 보고</span>
+            <div class="pc-counter-item" onclick="PCApp.switchScreen('work-report')">
+              <span class="pc-counter-num">1</span>
+              <span class="pc-counter-label">작성할 보고</span>
             </div>
-            <div class="pc-stat-item" onclick="PCApp.switchScreen('finance')">
-              <span class="pc-stat-value text-primary">0</span>
-              <span class="pc-stat-label">결재 대기</span>
+            <div class="pc-counter-item" onclick="PCApp.switchScreen('finance')">
+              <span class="pc-counter-num">0</span>
+              <span class="pc-counter-label">결재 대기</span>
             </div>
           </div>
         </div>
       `;
     }
 
-    // 2. Annual Leave Widget
-    const leaveEl = document.getElementById('pc-widget-leave');
-    if (leaveEl) {
-      leaveEl.innerHTML = `
+    // 2. Leave / Vacation Widget
+    const leaveWrap = document.getElementById('pc-widget-leave');
+    if (leaveWrap) {
+      leaveWrap.innerHTML = `
         <div class="pc-bento-card">
-          <div class="flex items-center justify-between mb-4">
-            <h4 class="font-bold text-base text-on-surface flex items-center gap-2">
-              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/></svg>
+          <div class="pc-card-header">
+            <span class="pc-card-title whitespace-nowrap">
+              <svg class="w-4.5 h-4.5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/>
+              </svg>
               연차 / 휴가 현황
-            </h4>
-            <button class="text-sm font-bold text-primary hover:underline" onclick="PCApp.switchScreen('request')">신청</button>
+            </span>
+            <button class="pc-card-action" onclick="PCApp.switchScreen('request')">신청</button>
           </div>
-          <div class="grid grid-cols-3 gap-2.5 text-center mb-4">
-            <div class="p-3 bg-surface-container-low rounded-xl">
-              <span class="text-primary font-bold text-lg block">9.0<span class="text-sm font-normal">일</span></span>
-              <span class="text-sm text-on-surface-variant font-medium">잔여 연차</span>
+          
+          <div class="pc-leave-stat-grid">
+            <div class="pc-leave-stat-box">
+              <div class="pc-leave-val text-primary">9.0일</div>
+              <div class="pc-leave-lbl">잔여 연차</div>
             </div>
-            <div class="p-3 bg-surface-container-low rounded-xl">
-              <span class="text-on-surface font-bold text-lg block">26.0<span class="text-sm font-normal">일</span></span>
-              <span class="text-sm text-on-surface-variant font-medium">사용 연차</span>
+            <div class="pc-leave-stat-box">
+              <div class="pc-leave-val text-on-surface">26.0일</div>
+              <div class="pc-leave-lbl">사용 연차</div>
             </div>
-            <div class="p-3 bg-surface-container-low rounded-xl">
-              <span class="text-on-surface font-bold text-lg block">35.0<span class="text-sm font-normal">일</span></span>
-              <span class="text-sm text-on-surface-variant font-medium">총 연차</span>
+            <div class="pc-leave-stat-box">
+              <div class="pc-leave-val text-on-surface-variant">35.0일</div>
+              <div class="pc-leave-lbl">총 연차</div>
             </div>
           </div>
-          <div class="space-y-2 text-sm text-on-surface-variant">
-            <div class="flex justify-between items-center p-2 rounded-lg bg-surface-container-low">
+
+          <div class="pc-leave-history-list">
+            <div class="pc-leave-history-item">
               <span class="font-bold text-on-surface">연차 (종일)</span>
-              <span class="text-xs text-on-surface-variant">2026-08-19</span>
+              <span class="text-on-surface-variant">2026-08-19</span>
             </div>
-            <div class="flex justify-between items-center p-2 rounded-lg bg-surface-container-low">
+            <div class="pc-leave-history-item">
               <span class="font-bold text-secondary">반차 (오후)</span>
-              <span class="text-xs text-on-surface-variant">2026-08-21</span>
+              <span class="text-on-surface-variant">2026-08-21</span>
             </div>
           </div>
         </div>
@@ -324,21 +329,24 @@ const PCApp = {
     }
 
     // 3. Birthday Widget
-    const bdayEl = document.getElementById('pc-widget-birthday');
-    if (bdayEl) {
-      bdayEl.innerHTML = `
+    const birthWrap = document.getElementById('pc-widget-birthday');
+    if (birthWrap) {
+      birthWrap.innerHTML = `
         <div class="pc-bento-card">
-          <div class="flex items-center justify-between mb-3">
-            <h4 class="font-bold text-base text-on-surface flex items-center gap-2">
-              🎂 8월 생일자 🍰
-            </h4>
-            <span class="text-sm font-bold text-primary">1명</span>
+          <div class="pc-card-header">
+            <span class="pc-card-title whitespace-nowrap">
+              <svg class="w-4.5 h-4.5 text-tertiary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 6c1.11 0 2-.9 2-2 0-.38-.1-.73-.29-1.03L12 0l-1.71 2.97c-.19.3-.29.65-.29 1.03 0 1.1.9 2 2 2zm4.6 9.99l-1.07-1.07-1.08 1.07c-1.3 1.3-3.58 1.3-4.89 0l-1.07-1.07-1.09 1.07C6.75 16.64 5.88 17 4.96 17c-.73 0-1.4-.23-1.96-.64V21c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-4.64c-.56.41-1.23.64-1.96.64-.92 0-1.79-.36-2.44-1.01zM18 9h-5V7h-2v2H6c-1.66 0-3 1.34-3 3v1.54c0 1.08.88 1.96 1.96 1.96.52 0 1.02-.2 1.38-.57l2.14-2.13 2.13 2.13c.74.74 2.03.74 2.77 0l2.14-2.13 2.13 2.13c.37.37.86.57 1.39.57 1.08 0 1.96-.88 1.96-1.96V12c0-1.66-1.34-3-3-3z"/>
+              </svg>
+              8월 생일자 🎂
+            </span>
+            <span class="text-base font-bold text-primary">1명</span>
           </div>
           <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl">
-            <img src="./profile.png" alt="이재광 차장" class="w-10 h-10 rounded-full object-cover border border-primary/30" />
-            <div class="flex-1">
-              <h5 class="font-bold text-sm text-on-surface">이재광 차장 (퍼블리싱팀)</h5>
-              <p class="text-xs text-on-surface-variant">08월 11일 · 축하메시지 전송</p>
+            <img src="./profile.png" class="w-12 h-12 rounded-full object-cover border border-outline" />
+            <div>
+              <p class="font-bold text-on-surface text-base">이재광 차장 (퍼블리싱팀)</p>
+              <p class="text-base text-on-surface-variant">08월 11일 · 축하메시지 전송</p>
             </div>
           </div>
         </div>
@@ -349,185 +357,235 @@ const PCApp = {
   // 5-2. Center Column
   renderCenterCol() {
     // 1. Notice Hero Banner
-    const noticeEl = document.getElementById('pc-widget-notice-banner');
-    if (noticeEl) {
-      noticeEl.innerHTML = `
-        <div class="pc-notice-banner-hero" onclick="PCApp.openNoticeModal(0)">
-          <div class="flex items-center justify-between mb-3">
-            <span class="pc-notice-badge">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    const noticeWrap = document.getElementById('pc-widget-notice-banner');
+    if (noticeWrap) {
+      const topNotice = (this.state.notices && this.state.notices[0]) || { title: '2024년 하반기 전사 워크샵 일정 안내', author: '경영지원팀 오은주 차장', date: '2024.10.24' };
+      noticeWrap.innerHTML = `
+        <div class="pc-notice-banner" onclick="PCApp.openNoticeModal(0)">
+          <div>
+            <span class="pc-notice-tag">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
               전사 공지사항
             </span>
-            <span class="text-xs text-white/80 flex items-center gap-1">공지 전체보기 <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>
+            <h3 class="pc-notice-title">${topNotice.title}</h3>
+            <p class="pc-notice-meta">${topNotice.author} · ${topNotice.date}</p>
           </div>
-          <h3 class="text-xl font-bold text-white mb-2">2024년 하반기 전사 워크샵 일정 안내</h3>
-          <p class="text-sm text-white/80 line-clamp-1">경영지원팀 오은주 차장 · 2024.10.24</p>
+          <button class="pc-quick-write-btn" onclick="event.stopPropagation(); PCApp.switchScreen('notice')">
+            공지 전체보기
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+          </button>
         </div>
       `;
     }
 
-    // 2. Weekly Work Report Widget
-    const reportEl = document.getElementById('pc-widget-work-report');
-    if (reportEl) {
-      reportEl.innerHTML = `
+    // 2. Weekly Work Reports
+    const reportWrap = document.getElementById('pc-widget-work-report');
+    if (reportWrap) {
+      const reports = (window.MockData && window.MockData.workReports) || [];
+      const primaryReport = reports[0] || {
+        client: '한국메세나협회',
+        title: '2026 한국메세나협회 문화기업업무추진비 지원사업 시스템 구축',
+        prevWeekSections: [{ dept: '기획팀', items: ['관리자 권한별 통계 대시보드 및 엑셀 다운로드 API 구현'] }],
+        thisWeekSections: [{ dept: '퍼블리싱팀', items: ['사용자 / 관리자 페이지 전체 구현 완료'] }]
+      };
+
+      const prevItems = (primaryReport.prevWeekSections && primaryReport.prevWeekSections[0]?.items) || ['관리자 권한별 통계 대시보드 및 엑셀 다운로드 API 구현'];
+      const thisItems = (primaryReport.thisWeekSections && primaryReport.thisWeekSections[0]?.items) || ['사용자 / 관리자 페이지 전체 구현 완료'];
+
+      reportWrap.innerHTML = `
         <div class="pc-bento-card">
-          <div class="flex items-center justify-between mb-4">
-            <h4 class="font-bold text-base text-on-surface flex items-center gap-2">
-              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          <div class="pc-card-header">
+            <span class="pc-card-title whitespace-nowrap">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+              </svg>
               주간 업무보고 (금주 실적 & 전주 대비)
-            </h4>
-            <button class="text-sm font-bold text-primary hover:underline" onclick="PCApp.switchScreen('work-report')">전체보기</button>
+            </span>
+            <button class="pc-card-action" onclick="PCApp.switchScreen('work-report')">전체보기</button>
           </div>
-          <div class="space-y-3.5">
-            <div class="p-4 rounded-xl bg-surface-container-low border border-outline/60">
-              <div class="flex items-center justify-between mb-2">
-                <span class="font-bold text-sm text-on-surface flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-primary"></span>
-                  한국메세나협회 - 2026 한국메세나협회 문화기업업무추진비 지원사업 시스템 구축
+
+          <div class="space-y-4">
+            <div class="p-4 bg-surface-container-low rounded-xl border border-outline/50">
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-bold text-on-surface text-base flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-primary"></span>
+                  ${primaryReport.client} - ${primaryReport.title}
                 </span>
-                <span class="text-xs px-2 py-0.5 rounded-md bg-primary-container text-primary font-bold">진행중</span>
+                <span class="text-base font-bold px-3 py-1 rounded-md bg-primary/10 text-primary">진행중</span>
               </div>
-              <div class="grid grid-cols-2 gap-3 text-xs text-on-surface-variant">
-                <div class="bg-surface-container-lowest p-2.5 rounded-lg">
-                  <strong class="text-on-surface block mb-1">● 전주 실적</strong>
-                  관리자 권한별 통계 대시보드 및 엑셀 다운로드 API 구현
+              <div class="grid grid-cols-2 gap-3 text-base">
+                <div class="p-3.5 bg-surface-container-lowest rounded-lg">
+                  <span class="font-bold text-on-surface-variant block mb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
+                    전주 실적
+                  </span>
+                  <p class="text-on-surface leading-relaxed">${prevItems[0]}</p>
                 </div>
-                <div class="bg-surface-container-lowest p-2.5 rounded-lg">
-                  <strong class="text-primary block mb-1">● 금주 계획</strong>
-                  사용자 / 관리자 페이지 전체 구현 완료
+                <div class="p-3.5 bg-surface-container-lowest rounded-lg border-l-3 border-primary">
+                  <span class="font-bold text-primary block mb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span>
+                    금주 계획
+                  </span>
+                  <p class="text-on-surface font-semibold leading-relaxed">${thisItems[0]}</p>
                 </div>
               </div>
             </div>
-            <div class="p-4 rounded-xl bg-surface-container-low border border-outline/60">
-              <div class="flex items-center justify-between mb-2">
-                <span class="font-bold text-sm text-on-surface flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-secondary"></span>
-                  사단법인 한국능률협회 - 2026 국민취업지원제도 홈페이지 유지보수 및 기능 개선
+
+            ${reports[1] ? `
+            <div class="p-4 bg-surface-container-low rounded-xl border border-outline/50">
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-bold text-on-surface text-base flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-secondary"></span>
+                  ${reports[1].client} - ${reports[1].title}
                 </span>
-                <span class="text-xs px-2 py-0.5 rounded-md bg-secondary-container text-secondary font-bold">진행중</span>
+                <span class="text-base font-bold px-3 py-1 rounded-md bg-secondary/10 text-secondary">진행중</span>
               </div>
-              <div class="grid grid-cols-2 gap-3 text-xs text-on-surface-variant">
-                <div class="bg-surface-container-lowest p-2.5 rounded-lg">
-                  <strong class="text-on-surface block mb-1">● 전주 실적</strong>
-                  사후역량점검 테이블 스키마 최적화 및 인덱스 튜닝
+              <div class="grid grid-cols-2 gap-3 text-base">
+                <div class="p-3.5 bg-surface-container-lowest rounded-lg">
+                  <span class="font-bold text-on-surface-variant block mb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
+                    전주 실적
+                  </span>
+                  <p class="text-on-surface leading-relaxed">${(reports[1].prevWeekSections && reports[1].prevWeekSections[0]?.items[0]) || '사후역량점검 테이블 스키마 최적화 및 인덱스 튜닝'}</p>
                 </div>
-                <div class="bg-surface-container-lowest p-2.5 rounded-lg">
-                  <strong class="text-secondary block mb-1">● 금주 계획</strong>
-                  사후역량점검 완료 분기 로직 추가, 관련 alert 수정, 테스트서버/운영서버 반영
+                <div class="p-3.5 bg-surface-container-lowest rounded-lg border-l-3 border-secondary">
+                  <span class="font-bold text-secondary block mb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                    금주 계획
+                  </span>
+                  <p class="text-on-surface font-semibold leading-relaxed">${(reports[1].thisWeekSections && reports[1].thisWeekSections[0]?.items[0]) || '사후역량점검 완료 분기 로직 추가, 관련 alert 수정'}</p>
                 </div>
               </div>
             </div>
+            ` : ''}
           </div>
         </div>
       `;
     }
 
-    // 3. Mini Calendar Widget
-    const calWidgetEl = document.getElementById('pc-widget-calendar');
-    if (calWidgetEl) {
-      calWidgetEl.innerHTML = `
+    // 3. Monthly Calendar Grid
+    const calWrap = document.getElementById('pc-widget-calendar');
+    if (calWrap) {
+      calWrap.innerHTML = `
         <div class="pc-bento-card">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-3">
-              <button class="p-1 hover:bg-surface-container rounded-lg" onclick="PCApp.changeCalMonth(-1)">
-                <svg class="w-4 h-4 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          <div class="pc-calendar-header">
+            <div class="pc-cal-nav-group">
+              <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(-1)">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
               </button>
-              <h4 class="font-bold text-base text-on-surface" id="pc-dash-cal-title">2026년 8월</h4>
-              <button class="p-1 hover:bg-surface-container rounded-lg" onclick="PCApp.changeCalMonth(1)">
-                <svg class="w-4 h-4 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+              <h3 class="pc-cal-title">${this.state.calYear}년 ${this.state.calMonth}월</h3>
+              <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(1)">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
               </button>
             </div>
-            <button class="text-sm font-bold text-primary hover:underline" onclick="PCApp.switchScreen('calendar')">전체 일정표</button>
+            <button class="pc-card-action" onclick="PCApp.switchScreen('calendar')">전체 일정표</button>
           </div>
-          <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-on-surface-variant mb-2">
-            <span class="text-error">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span class="text-primary">토</span>
+
+          <div class="pc-cal-weekdays">
+            <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
           </div>
-          <div class="grid grid-cols-7 gap-1 text-center text-sm" id="pc-dash-mini-cal-grid">
-            <!-- Rendered by pc.js -->
+
+          <div class="pc-cal-grid" id="pc-dashboard-cal-grid">
+            ${this.generateCalGridHTML()}
           </div>
         </div>
       `;
-      this.renderMiniCalGrid();
     }
   },
 
-  renderMiniCalGrid() {
-    const grid = document.getElementById('pc-dash-mini-cal-grid');
-    if (!grid) return;
-
+  // Calendar Grid Generator (Dashboard Widget)
+  generateCalGridHTML() {
     const year = this.state.calYear;
-    const month = this.state.calMonth - 1;
+    const month = this.state.calMonth - 1; // 0-indexed
     const firstDay = new Date(year, month, 1).getDay();
     const lastDate = new Date(year, month + 1, 0).getDate();
-    const schedulesMap = (window.MockData && window.MockData.schedules) || {};
 
     let html = '';
+    // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
-      html += `<div class="p-2 opacity-0"></div>`;
+      html += `<div class="pc-cal-cell empty"></div>`;
     }
 
+    const schedulesMap = (window.MockData && window.MockData.schedules) || {};
+
+    // Days
     for (let d = 1; d <= lastDate; d++) {
       const key = `${year}-${month + 1}-${d}`;
       const isToday = (d === 24 && month === 7 && year === 2026);
-      const isSelected = (this.state.selectedDate === key);
+      
       const daySchedules = schedulesMap[key] || [];
 
       html += `
-        <div class="p-2 rounded-xl transition-all cursor-pointer relative hover:bg-surface-container ${isSelected ? 'bg-primary text-white font-bold' : isToday ? 'border border-primary font-bold text-primary' : 'text-on-surface'}" onclick="PCApp.selectDate('${key}'); PCApp.switchScreen('calendar');">
-          <span>${d}</span>
-          ${daySchedules.length > 0 ? `
-            <span class="absolute top-1 right-1 px-1 rounded-full text-[10px] leading-tight font-bold ${isSelected ? 'bg-white text-primary' : 'bg-primary/20 text-primary'}">+${daySchedules.length}</span>
-          ` : ''}
+        <div class="pc-cal-cell ${isToday ? 'today' : ''}" onclick="PCApp.selectDate('${key}'); PCApp.switchScreen('calendar');">
+          <div class="pc-cal-header-row">
+            <span class="pc-cal-date-num">${d}</span>
+            ${daySchedules.length > 0 ? `<span class="pc-cal-count-badge">+${daySchedules.length}</span>` : ''}
+          </div>
+          <div class="pc-cal-events-wrap">
+            ${daySchedules.slice(0, 2).map(s => `
+              <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}">
+                ${s.badge || s.title}
+              </span>
+            `).join('')}
+          </div>
         </div>
       `;
     }
-    grid.innerHTML = html;
+
+    return html;
   },
 
   // 5-3. Right Column
   renderRightCol() {
-    // 1. Commute Widget
-    const commuteEl = document.getElementById('pc-widget-commute');
-    if (commuteEl) {
-      commuteEl.innerHTML = `
-        <div class="pc-bento-card">
+    // 1. Check-In & Commute Card (Figma Style)
+    const commuteWrap = document.getElementById('pc-widget-commute');
+    if (commuteWrap) {
+      commuteWrap.innerHTML = `
+        <div class="pc-bento-card pc-commute-card">
           <div class="flex items-center justify-between mb-3">
-            <h4 class="font-bold text-sm text-on-surface">근태 & 출/퇴근</h4>
-            <span class="text-xs font-bold px-2.5 py-1 rounded-full ${this.state.isCheckedIn ? 'bg-secondary-container text-secondary' : 'bg-surface-container text-on-surface-variant'}">
-              ● ${this.state.isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}
+            <span class="font-bold text-base text-on-surface">근태 & 출/퇴근</span>
+            <span class="pc-commute-status-pill ${this.state.isCheckedIn ? 'checked-in' : ''}">
+              <span class="w-2.5 h-2.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
+              ${this.state.isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}
             </span>
           </div>
-          <div class="flex items-center justify-around py-3 bg-surface-container-low rounded-xl mb-3">
-            <div class="text-center">
-              <span class="text-xs text-on-surface-variant block mb-1">출근 시간</span>
-              <span class="font-bold text-lg text-primary">${this.state.checkInTime}</span>
+
+          <div class="pc-commute-time-display">
+            <div>
+              <span class="text-base text-on-surface-variant block">출근 시간</span>
+              <span class="pc-commute-big-time text-primary">${this.state.checkInTime}</span>
             </div>
-            <div class="w-[1px] h-8 bg-outline"></div>
-            <div class="text-center">
-              <span class="text-xs text-on-surface-variant block mb-1">퇴근 시간</span>
-              <span class="font-bold text-lg text-on-surface-variant">${this.state.checkOutTime}</span>
+            <span class="text-on-surface-variant text-2xl font-bold">→</span>
+            <div>
+              <span class="text-base text-on-surface-variant block">퇴근 시간</span>
+              <span class="pc-commute-big-time ${this.state.checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${this.state.checkOutTime}</span>
             </div>
           </div>
-          <div class="mb-3">
-            <div class="flex justify-between text-xs text-on-surface-variant mb-1">
+
+          <div class="mb-4">
+            <div class="flex justify-between text-base font-bold text-on-surface-variant mb-1.5">
               <span>주 누적 근무시간</span>
-              <span class="font-bold text-primary">38시간 45분 / 40시간</span>
+              <span class="text-primary font-bold">38시간 45분 / 40시간</span>
             </div>
-            <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
-              <div class="h-full bg-primary rounded-full" style="width: 88%;"></div>
+            <div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
+              <div class="h-full bg-primary rounded-full" style="width: 96%;"></div>
             </div>
           </div>
-          <p class="text-xs text-on-surface-variant flex items-center gap-1 mb-3">
-            <svg class="w-3.5 h-3.5 text-secondary" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            위치 인증: 서울 금천구 벚꽃로 298
-          </p>
-          <div class="grid grid-cols-2 gap-2">
-            <button class="py-2.5 bg-secondary text-white font-bold rounded-xl text-sm hover:opacity-90 transition-all flex items-center justify-center gap-1.5" onclick="PCApp.handleCheckIn()">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+
+          <div class="flex items-center gap-2 text-base text-on-surface-variant mb-3">
+            <svg class="w-5 h-5 text-secondary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <span class="truncate">위치 인증: <strong>${this.state.user.location}</strong></span>
+          </div>
+
+          <div class="pc-commute-btn-group">
+            <button class="pc-commute-btn pc-commute-btn-in" onclick="PCApp.handleCheckIn()">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
               출근하기
             </button>
-            <button class="py-2.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-1.5" onclick="PCApp.handleCheckOut()">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.92 6.92 0 0 1 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-1.93.78-3.68 2.05-4.95L5.64 5.64A8.96 8.96 0 0 0 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.48-1.01-4.73-2.67-6.33z"/></svg>
+            <button class="pc-commute-btn pc-commute-btn-out" onclick="PCApp.handleCheckOut()">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
               퇴근하기
             </button>
           </div>
@@ -535,74 +593,100 @@ const PCApp = {
       `;
     }
 
-    // 2. Quick Menu Widget
-    const quickEl = document.getElementById('pc-widget-quick-menu');
-    if (quickEl) {
-      quickEl.innerHTML = `
+    // 2. Quick Menu Grid (Figma Style)
+    const quickWrap = document.getElementById('pc-widget-quick-menu');
+    if (quickWrap) {
+      quickWrap.innerHTML = `
         <div class="pc-bento-card">
-          <h4 class="font-bold text-sm text-on-surface mb-3 flex items-center gap-2">
-            <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
-            Quick Action
-          </h4>
-          <div class="grid grid-cols-3 gap-2 text-center text-xs">
-            <button class="p-3 bg-surface-container-low hover:bg-surface-container rounded-xl transition-all flex flex-col items-center gap-1.5" onclick="PCApp.switchScreen('request')">
-              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/></svg>
-              <span class="font-bold text-on-surface">휴가신청</span>
-            </button>
-            <button class="p-3 bg-surface-container-low hover:bg-surface-container rounded-xl transition-all flex flex-col items-center gap-1.5" onclick="PCApp.switchScreen('request')">
-              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.1-.9-2-2-2zm-6 0h-4V4h4v2z"/></svg>
-              <span class="font-bold text-on-surface">외근신청</span>
-            </button>
-            <button class="p-3 bg-surface-container-low hover:bg-surface-container rounded-xl transition-all flex flex-col items-center gap-1.5" onclick="PCApp.openQuickModal('expense')">
-              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-              <span class="font-bold text-on-surface">지출결의</span>
-            </button>
-            <button class="p-3 bg-surface-container-low hover:bg-surface-container rounded-xl transition-all flex flex-col items-center gap-1.5" onclick="PCApp.openQuickModal('report')">
-              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-              <span class="font-bold text-on-surface">보고작성</span>
-            </button>
-            <button class="p-3 bg-surface-container-low hover:bg-surface-container rounded-xl transition-all flex flex-col items-center gap-1.5" onclick="PCApp.switchScreen('directory')">
-              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M19 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V17z"/></svg>
-              <span class="font-bold text-on-surface">주소록</span>
-            </button>
-            <button class="p-3 bg-surface-container-low hover:bg-surface-container rounded-xl transition-all flex flex-col items-center gap-1.5" onclick="PCApp.openQuickModal('todo')">
-              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-              <span class="font-bold text-on-surface">할일등록</span>
-            </button>
+          <div class="pc-card-header">
+            <span class="pc-card-title">
+              <svg class="w-4.5 h-4.5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.05.5-9 4.77-9 9.95 0 5.52 4.48 10 10 10 2.44 0 4.67-.88 6.43-2.33l-2.02-2.02c-1.25.86-2.77 1.35-4.41 1.35z"/>
+              </svg>
+              Quick Action
+            </span>
+          </div>
+
+          <div class="pc-quick-grid">
+            <div class="pc-quick-item" onclick="PCApp.switchScreen('request'); PCApp.switchRequestTab('leave');">
+              <div class="pc-quick-icon">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/></svg>
+              </div>
+              <span class="pc-quick-label">휴가신청</span>
+            </div>
+
+            <div class="pc-quick-item" onclick="PCApp.switchScreen('request'); PCApp.switchRequestTab('outwork');">
+              <div class="pc-quick-icon">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.1-.9-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+              </div>
+              <span class="pc-quick-label">외근신청</span>
+            </div>
+
+            <div class="pc-quick-item" onclick="PCApp.openQuickModal('expense')">
+              <div class="pc-quick-icon">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+              </div>
+              <span class="pc-quick-label">지출결의</span>
+            </div>
+
+            <div class="pc-quick-item" onclick="PCApp.openQuickModal('report')">
+              <div class="pc-quick-icon">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+              </div>
+              <span class="pc-quick-label">보고작성</span>
+            </div>
+
+            <div class="pc-quick-item" onclick="PCApp.switchScreen('directory')">
+              <div class="pc-quick-icon">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V17z"/></svg>
+              </div>
+              <span class="pc-quick-label">주소록</span>
+            </div>
+
+            <div class="pc-quick-item" onclick="PCApp.openQuickModal('todo')">
+              <div class="pc-quick-icon">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              </div>
+              <span class="pc-quick-label">할일등록</span>
+            </div>
           </div>
         </div>
       `;
     }
 
     // 3. To-Do Widget
-    const todoEl = document.getElementById('pc-widget-todo');
-    if (todoEl) {
-      todoEl.innerHTML = `
+    const todoWrap = document.getElementById('pc-widget-todo');
+    if (todoWrap) {
+      const topTodos = (this.state.todos || []).slice(0, 3);
+      todoWrap.innerHTML = `
         <div class="pc-bento-card">
-          <div class="flex items-center justify-between mb-3">
-            <h4 class="font-bold text-sm text-on-surface flex items-center gap-2">
-              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          <div class="pc-card-header">
+            <span class="pc-card-title">
+              <svg class="w-4.5 h-4.5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22 5.18L10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM19.79 10.22C19.92 10.79 20 11.39 20 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8c1.66 0 3.2.51 4.48 1.39l1.45-1.45C16.19 2.7 14.19 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z"/>
+              </svg>
               To-Do 할 일 목록
-            </h4>
-            <button class="text-xs font-bold text-primary hover:underline" onclick="PCApp.switchScreen('todo')">전체보기</button>
+            </span>
+            <button class="pc-card-action" onclick="PCApp.switchScreen('todo')">전체보기</button>
           </div>
-          <div class="space-y-2.5">
-            ${this.state.todos.slice(0, 3).map((t, idx) => `
-              <div class="flex items-center gap-2.5 p-2 rounded-lg hover:bg-surface-container-low transition-all">
-                <input type="checkbox" ${t.completed || t.status === 'done' ? 'checked' : ''} onchange="PCApp.toggleTodo(${idx})" class="w-4 h-4 accent-primary rounded cursor-pointer" />
-                <span class="text-xs text-on-surface font-medium flex-1 line-clamp-1 ${t.completed || t.status === 'done' ? 'line-through opacity-50' : ''}">${t.title}</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded font-bold ${t.priority === 'high' ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">${t.priority === 'high' ? '높음' : '보통'}</span>
+
+          <div class="pc-todo-list">
+            ${topTodos.length > 0 ? topTodos.map((t, idx) => `
+              <div class="pc-todo-item">
+                <input type="checkbox" class="pc-todo-checkbox" ${t.completed ? 'checked' : ''} onchange="PCApp.toggleTodo(${idx})">
+                <span class="pc-todo-title ${t.completed ? 'line-through opacity-50' : ''}">${t.title}</span>
+                <span class="pc-todo-priority ${t.priority === 'high' ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">${t.priority === 'high' ? '높음' : '보통'}</span>
               </div>
-            `).join('')}
+            `).join('') : '<p class="text-xs text-on-surface-variant text-center py-4">등록된 할 일이 없습니다.</p>'}
           </div>
         </div>
       `;
     }
   },
 
-  // 6. Detailed Screen Renderers
+  // 6. Detailed Sub-Screen Renderers
 
-  // 6-1. Directory Screen (8 Core Department Tabs Fixed)
+  // 6-1. Directory Screen
   setDirectoryDept(dept, btn) {
     this.state.directoryCategory = dept;
     const tabs = document.querySelectorAll('#pc-dir-dept-tabs button');
@@ -825,11 +909,8 @@ const PCApp = {
     const titleEl = document.getElementById('pc-full-cal-title');
     if (titleEl) titleEl.textContent = `${this.state.calYear}년 ${this.state.calMonth}월`;
 
-    const dashTitle = document.getElementById('pc-dash-cal-title');
-    if (dashTitle) dashTitle.textContent = `${this.state.calYear}년 ${this.state.calMonth}월`;
-
     this.renderCalendarView();
-    this.renderMiniCalGrid();
+    this.renderCenterCol();
   },
 
   goToTodayCal() {
@@ -842,7 +923,6 @@ const PCApp = {
   selectDate(key) {
     this.state.selectedDate = key;
     this.renderCalendarView();
-    this.renderMiniCalGrid();
   },
 
   renderCalendarView() {
@@ -1234,7 +1314,7 @@ const PCApp = {
     this.switchScreen('calendar');
   },
 
-  // 7. Commute Actions
+  // 7. Commute Check In/Out Actions
   handleCheckIn() {
     const now = new Date();
     const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -1262,7 +1342,7 @@ const PCApp = {
     }
   },
 
-  // 8. Modals & Popups
+  // 8. Modals
   openQuickModal(type) {
     const modal = document.getElementById('pc-global-modal');
     const modalBody = document.getElementById('pc-modal-content');
