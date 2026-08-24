@@ -356,24 +356,43 @@ const PCApp = {
 
   // 5-2. Center Column
   renderCenterCol() {
-    // 1. Notice Hero Banner
+    // 1. Notice Card Widget (최근 5개 공지사항 카드 UI)
     const noticeWrap = document.getElementById('pc-widget-notice-banner');
     if (noticeWrap) {
-      const topNotice = (this.state.notices && this.state.notices[0]) || { title: '2024년 하반기 전사 워크샵 일정 안내', author: '경영지원팀 오은주 차장', date: '2024.10.24' };
+      const notices = (this.state.notices && this.state.notices.length > 0)
+        ? this.state.notices.slice(0, 5)
+        : (window.MockData && window.MockData.notices ? window.MockData.notices.slice(0, 5) : []);
+
       noticeWrap.innerHTML = `
-        <div class="pc-notice-banner" onclick="PCApp.openNoticeModal(0)">
-          <div>
-            <span class="pc-notice-tag">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <div class="pc-bento-card">
+          <div class="pc-card-header mb-3">
+            <span class="pc-card-title flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+              </svg>
               전사 공지사항
             </span>
-            <h3 class="pc-notice-title">${topNotice.title}</h3>
-            <p class="pc-notice-meta">${topNotice.author} · ${topNotice.date}</p>
+            <button class="pc-card-action" onclick="PCApp.switchScreen('notice')">전체보기</button>
           </div>
-          <button class="pc-quick-write-btn" onclick="event.stopPropagation(); PCApp.switchScreen('notice')">
-            공지 전체보기
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-          </button>
+
+          <div class="space-y-1">
+            ${notices.length > 0 ? notices.map((n, idx) => `
+              <div class="flex items-center justify-between gap-3 p-2.5 rounded-xl hover:bg-surface-container-low transition-all cursor-pointer border border-transparent hover:border-outline/50 group" onclick="PCApp.openNoticeModal(${idx})">
+                <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                  <span class="px-2.5 py-0.5 rounded-md text-xs font-bold shrink-0 ${n.isPinned || n.pinned ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">
+                    ${n.isPinned || n.pinned ? '필독' : (n.category || '공통')}
+                  </span>
+                  <span class="text-base font-bold text-on-surface group-hover:text-primary transition-colors truncate">
+                    ${n.title}
+                  </span>
+                </div>
+                <div class="flex items-center gap-2 shrink-0 text-sm text-on-surface-variant">
+                  ${n.fileName ? '<span class="text-xs text-primary" title="첨부파일 있음">📎</span>' : ''}
+                  <span class="font-medium whitespace-nowrap">${n.date}</span>
+                </div>
+              </div>
+            `).join('') : '<p class="text-xs text-on-surface-variant text-center py-4">등록된 공지사항이 없습니다.</p>'}
+          </div>
         </div>
       `;
     }
