@@ -559,7 +559,7 @@ const PCApp = {
     }
   },
 
-  // Calendar Grid Generator
+  // Calendar Grid Generator (Dashboard Widget)
   generateCalGridHTML() {
     const year = this.state.calYear;
     const month = this.state.calMonth - 1; // 0-indexed
@@ -569,7 +569,7 @@ const PCApp = {
     let html = '';
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
-      html += `<div class="pc-cal-cell opacity-30"></div>`;
+      html += `<div class="pc-cal-cell empty"></div>`;
     }
 
     const schedulesMap = (window.MockData && window.MockData.schedules) || {};
@@ -584,11 +584,15 @@ const PCApp = {
 
       html += `
         <div class="pc-cal-cell ${isToday ? 'today' : ''}" onclick="PCApp.openDateDetail('${key}')">
-          <span class="pc-cal-date-num">${d}</span>
-          ${daySchedules.slice(0, 1).map(s => `
-            <span class="pc-cal-event-dot ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}">${s.title || s.badge}</span>
-          `).join('')}
-          ${daySchedules.length > 1 ? `<span class="text-base text-on-surface-variant font-bold">+${daySchedules.length - 1}</span>` : ''}
+          <div class="pc-cal-header-row">
+            <span class="pc-cal-date-num">${d}</span>
+            ${daySchedules.length > 1 ? `<span class="pc-cal-count-badge">+${daySchedules.length - 1}</span>` : ''}
+          </div>
+          <div class="pc-cal-events-wrap">
+            ${daySchedules.slice(0, 1).map(s => `
+              <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}" title="${s.title || s.badge}">${s.title || s.badge}</span>
+            `).join('')}
+          </div>
         </div>
       `;
     }
@@ -641,7 +645,7 @@ const PCApp = {
 
       let html = '';
       for (let i = 0; i < firstDay; i++) {
-        html += `<div class="p-3 bg-surface-container-low/30 rounded-xl opacity-30 min-h-[90px]"></div>`;
+        html += `<div class="pc-cal-cell empty"></div>`;
       }
 
       for (let d = 1; d <= lastDate; d++) {
@@ -651,18 +655,18 @@ const PCApp = {
         const daySchedules = schedulesMap[key] || [];
 
         html += `
-          <div class="p-3 rounded-xl border transition-all cursor-pointer min-h-[100px] flex flex-col justify-between ${isSelected ? 'border-primary bg-primary-container/20 shadow-md ring-2 ring-primary/30' : isToday ? 'border-primary/50 bg-primary-container/10' : 'border-outline bg-surface-container-low hover:border-primary/40'}" onclick="PCApp.selectDate('${key}')">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="text-base font-black ${isToday ? 'text-primary' : 'text-on-surface'}">${d}</span>
-              ${daySchedules.length > 0 ? `<span class="text-xs font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary">${daySchedules.length}건</span>` : ''}
+          <div class="pc-cal-cell ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}" onclick="PCApp.selectDate('${key}')">
+            <div class="pc-cal-header-row">
+              <span class="pc-cal-date-num ${isToday ? 'text-primary font-black' : ''}">${d}</span>
+              ${daySchedules.length > 0 ? `<span class="pc-cal-count-badge">${daySchedules.length}건</span>` : ''}
             </div>
-            <div class="space-y-1 overflow-hidden">
+            <div class="pc-cal-events-wrap">
               ${daySchedules.slice(0, 2).map(s => `
-                <div class="text-xs font-bold p-1 rounded-md truncate ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}">
+                <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}" title="${s.title || s.badge}">
                   ${s.title || s.badge}
-                </div>
+                </span>
               `).join('')}
-              ${daySchedules.length > 2 ? `<span class="text-xs font-bold text-on-surface-variant block">+${daySchedules.length - 2}개 더보기</span>` : ''}
+              ${daySchedules.length > 2 ? `<span class="pc-cal-more-tag">+${daySchedules.length - 2}개 더보기</span>` : ''}
             </div>
           </div>
         `;
