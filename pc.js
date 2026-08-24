@@ -713,8 +713,8 @@ const PCApp = {
           </div>
           <div class="pc-cal-events-wrap">
             ${daySchedules.slice(0, 2).map(s => `
-              <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}">
-                ${s.badge || s.title}
+              <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}" title="${this.formatScheduleCleanLabel(s)}">
+                ${this.formatScheduleCleanLabel(s)}
               </span>
             `).join('')}
           </div>
@@ -1143,8 +1143,8 @@ const PCApp = {
             </div>
             <div class="pc-cal-events-wrap">
               ${daySchedules.slice(0, 2).map(s => `
-                <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}" title="${s.title || s.badge}">
-                  ${s.title || s.badge}
+                <span class="pc-cal-event-tag ${s.type === 'primary' ? 'bg-primary/10 text-primary' : s.type === 'error' ? 'bg-error-container text-error' : 'bg-secondary/10 text-secondary'}" title="${this.formatScheduleCleanLabel(s)}">
+                  ${this.formatScheduleCleanLabel(s)}
                 </span>
               `).join('')}
               ${daySchedules.length > 2 ? `<span class="pc-cal-more-tag">+${daySchedules.length - 2}개 더보기</span>` : ''}
@@ -1216,6 +1216,7 @@ const PCApp = {
     const isSpecial = item.author === '공휴일' || item.author === '대한민국 공휴일' || item.author === '회사공지';
     const avatarHtml = isSpecial ? '' : `<img src="${avatarUrl}" alt="${item.author || '담당자'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline/30 shadow-xs mr-2.5" />`;
     const authorHtml = isSpecial ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap">${item.author || '이재광 차장'}</span>`;
+    const displayTitle = this.formatScheduleCleanLabel(item);
 
     return `
       <div class="flex items-center p-3 bg-surface-container-low rounded-xl border border-outline/70 hover:border-primary transition-all">
@@ -1229,10 +1230,64 @@ const PCApp = {
             </div>
             <span class="text-[10px] text-on-surface-variant font-medium whitespace-nowrap ml-auto">${item.time || '종일'}</span>
           </div>
-          <div class="text-sm text-on-surface font-bold leading-snug break-words">${item.title}</div>
+          <div class="text-sm text-on-surface font-bold leading-snug break-words">${displayTitle}</div>
         </div>
       </div>
     `;
+  },
+
+  // Schedule Clean Title Helper (대괄호 제거 및 '이름 외근', '이름 연차', '이름 오후반차' 표준화)
+  formatScheduleCleanLabel(s) {
+    if (!s) return '';
+    let titleStr = (s.title || '').trim();
+    let badgeStr = (s.badge || '').trim();
+    let authorName = (s.author || '').split(' ')[0] || '';
+
+    // 1. 공휴일, 절기, 기념일, 회사공지
+    const isHoliday = (s.badge === '공휴일' || titleStr.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지');
+    const isSolarTerm = (s.badge === '절기' || s.author === '24절기');
+    const isObservance = (s.badge === '기념일' || s.author === '기념일');
+
+    if (isHoliday) {
+      return (s.holidayName || titleStr).replace(/\s*\(공휴일\)/g, '').replace(/[\[\]]/g, '').trim();
+    }
+    if (isSolarTerm) {
+      return (s.termName || titleStr.split(' ')[0]).replace(/[\[\]]/g, '').trim();
+    }
+    if (isObservance) {
+      return (s.obsName || titleStr.split(' ')[0]).replace(/[\[\]]/g, '').trim();
+    }
+
+    // 2. 대괄호 [ ... ] 및 불필요 괄호 제거
+    let cleanTitle = titleStr.replace(/\s*\(공휴일\)/g, '').replace(/\[.*?\]/g, '').replace(/[\[\]]/g, '').trim();
+
+    // 3. 만약 cleanTitle이 이미 `이름 유형` 형태(예: '오은주 연차', '남기현 외근')이면 그대로 반환
+    if (authorName && cleanTitle.startsWith(authorName)) {
+      return cleanTitle;
+    }
+
+    // 4. 유형 파악 (오후반차, 오전반차, 반반차, 연차, 외근 등)
+    let typeStr = '';
+    if (cleanTitle.includes('오후 반차') || cleanTitle.includes('반차(오후)') || cleanTitle.includes('오후반차')) {
+      typeStr = '오후반차';
+    } else if (cleanTitle.includes('오전 반차') || cleanTitle.includes('반차(오전)') || cleanTitle.includes('오전반차')) {
+      typeStr = '오전반차';
+    } else if (cleanTitle.includes('반반차')) {
+      typeStr = '반반차';
+    } else if (cleanTitle.includes('연차') || cleanTitle.includes('휴가') || badgeStr.includes('연차') || badgeStr.includes('휴가')) {
+      typeStr = '연차';
+    } else if (cleanTitle.includes('외근') || cleanTitle.includes('출장') || badgeStr.includes('외근')) {
+      typeStr = '외근';
+    } else if (cleanTitle.includes('회의') || cleanTitle.includes('보고') || badgeStr.includes('회의')) {
+      typeStr = '회의';
+    } else {
+      typeStr = cleanTitle || badgeStr || '일정';
+    }
+
+    if (authorName) {
+      return `${authorName} ${typeStr}`;
+    }
+    return cleanTitle;
   },
 
   // 6-6. Finance & Expenses Screen

@@ -1456,7 +1456,7 @@ const App = {
                   <span class="font-bold text-xs text-primary">${authorText}${s.badge}</span>
                   <span class="text-[11px] text-on-surface-variant font-medium">${s.time}</span>
                 </div>
-                <div class="text-sm text-on-surface font-bold font-headline leading-snug truncate">${s.title}</div>
+                <div class="text-sm text-on-surface font-bold font-headline leading-snug truncate">${this.formatScheduleCleanLabel(s)}</div>
               </div>
             </div>
           `;
@@ -2686,17 +2686,7 @@ const App = {
           }
 
           let spanStyle = 'rounded-md w-full';
-          let cleanTitle = (s.title || '').replace(/\s*\(공휴일\)/g, '').trim();
-          let labelText = s.title;
-          if (isHoliday) {
-            labelText = cleanTitle;
-          } else if (isSolarTerm) {
-            labelText = s.termName || s.title.split(' ')[0];
-          } else if (isObservance) {
-            labelText = s.obsName || s.title.split(' ')[0];
-          } else if (s.author) {
-            labelText = `[${s.author.split(' ')[0]}] ${s.title}`;
-          }
+          let labelText = this.formatScheduleCleanLabel(s);
 
           barsHtml += `
             <div class="text-[10px] font-bold px-1 py-0.5 ${spanStyle} ${colorClass} truncate text-center leading-tight shadow-2xs">
@@ -2992,12 +2982,7 @@ const App = {
             colorClass = 'bg-[#f0f4f9] text-[#3c4043] font-bold';
           }
 
-          let cleanTitle = (s.title || '').replace(/\s*\(공휴일\)/g, '').trim();
-          let labelText = s.title;
-          if (isHoliday) labelText = cleanTitle;
-          else if (isSolarTerm) labelText = s.termName || s.title.split(' ')[0];
-          else if (isObservance) labelText = s.obsName || s.title.split(' ')[0];
-          else if (s.author) labelText = `[${s.author.split(' ')[0]}] ${s.title}`;
+          let labelText = this.formatScheduleCleanLabel(s);
 
           chipsHtml += `
             <div class="text-[10px] font-bold px-1 py-0.5 rounded-md ${colorClass} truncate text-center leading-tight shadow-2xs">
@@ -3142,13 +3127,14 @@ const App = {
     const showAvatar = !(isHoliday || isSolarTerm || isObservance);
     const avatarImg = showAvatar ? `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover border-2 border-surface-container-lowest shadow-2xs" />` : '';
     const authorTextHtml = showAvatar ? `${s.author || '이재광 차장'} • ` : '';
+    const displayTitle = this.formatScheduleCleanLabel(s);
 
     return `
       <div class="bg-surface-container-lowest rounded-xl p-4 flex gap-4 items-center shadow-2xs border border-outline-variant/10 hover:shadow-xs transition-all">
         <div class="w-1.5 self-stretch ${colorInfo.dotClass} rounded-full"></div>
         <div class="flex-1 min-w-0 text-left">
           <div class="flex items-center gap-2 mb-1 flex-wrap">
-            <h4 class="font-headline font-bold text-sm text-on-surface truncate">${s.title}</h4>
+            <h4 class="font-headline font-bold text-sm text-on-surface truncate">${displayTitle}</h4>
             ${categoryBadgeHtml}
           </div>
           <p class="text-on-surface-variant text-xs font-medium">${authorTextHtml}${s.time}</p>
@@ -3287,14 +3273,16 @@ const App = {
             bgStyle = 'bg-[#ffe088]/30 text-[#533a00] border-l-4 border-l-[#785500]';
           }
 
+          const displayTitle = this.formatScheduleCleanLabel(s);
+
           eventsHtml += `
             <div class="mb-3 ${bgStyle} rounded-2xl p-4 shadow-xs flex justify-between items-center transition-all border border-outline-variant/10">
               <div class="flex-1">
                 <span class="text-xs font-bold font-label text-primary">${s.time} • ${s.badge}</span>
-                <h4 class="text-base font-bold font-headline text-on-surface mt-1">${s.title}</h4>
+                <h4 class="text-base font-bold font-headline text-on-surface mt-1">${displayTitle}</h4>
                 <p class="text-xs text-on-surface-variant mt-1">작성자: ${s.author || '이재광'}</p>
               </div>
-              <button onclick="App.showToast('${s.title} 상세 보기')" class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors shadow-2xs">
+              <button onclick="App.showToast('${displayTitle} 상세 보기')" class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors shadow-2xs">
                 <span class="material-symbols-outlined text-xl">chevron_right</span>
               </button>
             </div>
@@ -3311,6 +3299,60 @@ const App = {
         `;
       }
     }
+  },
+
+  // Schedule Clean Title Helper (대괄호 제거 및 '이름 외근', '이름 연차', '이름 오후반차' 표준화)
+  formatScheduleCleanLabel(s) {
+    if (!s) return '';
+    let titleStr = (s.title || '').trim();
+    let badgeStr = (s.badge || '').trim();
+    let authorName = (s.author || '').split(' ')[0] || '';
+
+    // 1. 공휴일, 절기, 기념일, 회사공지
+    const isHoliday = (s.badge === '공휴일' || titleStr.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지');
+    const isSolarTerm = (s.badge === '절기' || s.author === '24절기');
+    const isObservance = (s.badge === '기념일' || s.author === '기념일');
+
+    if (isHoliday) {
+      return (s.holidayName || titleStr).replace(/\s*\(공휴일\)/g, '').replace(/[\[\]]/g, '').trim();
+    }
+    if (isSolarTerm) {
+      return (s.termName || titleStr.split(' ')[0]).replace(/[\[\]]/g, '').trim();
+    }
+    if (isObservance) {
+      return (s.obsName || titleStr.split(' ')[0]).replace(/[\[\]]/g, '').trim();
+    }
+
+    // 2. 대괄호 [ ... ] 및 불필요 괄호 제거
+    let cleanTitle = titleStr.replace(/\s*\(공휴일\)/g, '').replace(/\[.*?\]/g, '').replace(/[\[\]]/g, '').trim();
+
+    // 3. 만약 cleanTitle이 이미 `이름 유형` 형태(예: '오은주 연차', '남기현 외근')이면 그대로 반환
+    if (authorName && cleanTitle.startsWith(authorName)) {
+      return cleanTitle;
+    }
+
+    // 4. 유형 파악 (오후반차, 오전반차, 반반차, 연차, 외근 등)
+    let typeStr = '';
+    if (cleanTitle.includes('오후 반차') || cleanTitle.includes('반차(오후)') || cleanTitle.includes('오후반차')) {
+      typeStr = '오후반차';
+    } else if (cleanTitle.includes('오전 반차') || cleanTitle.includes('반차(오전)') || cleanTitle.includes('오전반차')) {
+      typeStr = '오전반차';
+    } else if (cleanTitle.includes('반반차')) {
+      typeStr = '반반차';
+    } else if (cleanTitle.includes('연차') || cleanTitle.includes('휴가') || badgeStr.includes('연차') || badgeStr.includes('휴가')) {
+      typeStr = '연차';
+    } else if (cleanTitle.includes('외근') || cleanTitle.includes('출장') || badgeStr.includes('외근')) {
+      typeStr = '외근';
+    } else if (cleanTitle.includes('회의') || cleanTitle.includes('보고') || badgeStr.includes('회의')) {
+      typeStr = '회의';
+    } else {
+      typeStr = cleanTitle || badgeStr || '일정';
+    }
+
+    if (authorName) {
+      return `${authorName} ${typeStr}`;
+    }
+    return cleanTitle;
   },
 
   // Employee Status & Schedule Helper
