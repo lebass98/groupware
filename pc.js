@@ -1179,11 +1179,11 @@ const PCApp = {
     this.state.workReportTab = tab;
     const tabBtns = document.querySelectorAll('.pc-report-nav-tab');
     tabBtns.forEach(btn => {
-      btn.className = 'flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-on-surface-variant hover:bg-surface-container-high transition-all text-center pc-report-nav-tab';
+      btn.className = 'flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab';
     });
     const activeBtn = document.getElementById(`pc-tab-btn-report-${tab}`);
     if (activeBtn) {
-      activeBtn.className = 'flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-white bg-primary shadow-xs transition-all text-center pc-report-nav-tab active';
+      activeBtn.className = 'flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-primary text-white shadow-xs pc-report-nav-tab active';
     }
     this.renderWorkReportControls();
     this.renderWorkReportView();

@@ -310,16 +310,16 @@
           </div>
         </div>
 
-        <!-- 3-Segment Top Tabs (팀별 업무보고 / 주간 업무보고 / 일간 업무보고) -->
-        <div class="bg-surface-container-low p-1.5 rounded-2xl flex gap-2 mb-4 w-full max-w-xl shadow-2xs border border-outline/30">
-          <button type="button" id="pc-tab-btn-report-team" onclick="PCApp.switchWorkReportTab('team')" class="flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-on-surface-variant hover:bg-surface-container-high transition-all text-center pc-report-nav-tab">
-            팀별 업무보고
+        <!-- 3-Segment Top Tabs (팀별 / 주간 / 일간 업무보고 - 휴가/외근 신청 탭 스타일과 100% 동일 적용) -->
+        <div class="flex gap-3 mb-6">
+          <button type="button" id="pc-tab-btn-report-team" onclick="PCApp.switchWorkReportTab('team')" class="flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab">
+            👥 팀별 업무보고
           </button>
-          <button type="button" id="pc-tab-btn-report-weekly" onclick="PCApp.switchWorkReportTab('weekly')" class="flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-white bg-primary shadow-xs transition-all text-center pc-report-nav-tab active">
-            주간 업무보고
+          <button type="button" id="pc-tab-btn-report-weekly" onclick="PCApp.switchWorkReportTab('weekly')" class="flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-primary text-white shadow-xs pc-report-nav-tab active">
+            📅 주간 업무보고
           </button>
-          <button type="button" id="pc-tab-btn-report-daily" onclick="PCApp.switchWorkReportTab('daily')" class="flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-on-surface-variant hover:bg-surface-container-high transition-all text-center pc-report-nav-tab">
-            일간 업무보고
+          <button type="button" id="pc-tab-btn-report-daily" onclick="PCApp.switchWorkReportTab('daily')" class="flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab">
+            📝 일간 업무보고
           </button>
         </div>
 
