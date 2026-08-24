@@ -94,9 +94,13 @@ html, body {
   overflow-x: hidden;
 }
 
-/* 최소 글씨 크기 16px 강제 보장 규칙 */
+/* 최소 글씨 크기 16px 강제 보장 규칙 및 font-bold 600 표준화 */
 .pc-layout-wrapper {
   font-size: 16px;
+}
+
+.font-bold {
+  font-weight: 600 !important;
 }
 
 /* Custom Scrollbar */
