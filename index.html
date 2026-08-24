@@ -270,7 +270,7 @@
                 <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/>
               </svg>
             </div>
-            <span class="font-label font-bold text-on-surface text-sm">출퇴근 체크</span>
+            <span class="font-label font-bold text-on-surface text-sm">출/퇴근</span>
           </button>
 
           <!-- Card 2: Attendance Log (근태일지) -->
@@ -591,147 +591,164 @@
       </main>
     </section>
 
-    <!-- SCREEN 3: CHECK-IN HOME -->
+    <!-- SCREEN 3: CHECK-IN & ATTENDANCE LOGS (출/퇴근 & 출석 기록 통합 페이지) -->
     <section class="screen-view" id="screen-checkin">
-      <!-- Greeting Section -->
-      <div class="greeting-section">
-        <div>
-          <p class="greeting-text">좋은 아침입니다, <span id="user-greeting-name">이재광</span>님</p>
-          <div class="live-time">
-            <span id="live-clock">09:42</span>
-            <span class="ampm" id="live-ampm">오전</span>
-          </div>
-        </div>
-        <div class="date-badge">
-          <p class="day" id="live-day">월요일</p>
-          <p class="full-date" id="live-date">2026년 8월 11일</p>
-        </div>
+      <!-- Top Segmented Tabs: [출/퇴근 체크] | [출석 기록] (지출결의서/업무보고 표준 규격) -->
+      <div class="bg-surface-container-low p-1.5 rounded-xl flex gap-1 mb-4 w-full shadow-sm">
+        <button type="button" id="tab-btn-commute-checkin" onclick="App.switchCommuteTab('checkin')" class="flex-1 py-2.5 px-3 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center">
+          출/퇴근 체크
+        </button>
+        <button type="button" id="tab-btn-commute-logs" onclick="App.switchCommuteTab('logs')" class="flex-1 py-2.5 px-3 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center">
+          출석 기록
+        </button>
       </div>
 
-      <!-- Bento Status Card -->
-      <div class="status-card" id="status-card">
-        <div class="status-info">
-          <div class="status-icon-wrapper" id="status-icon-wrap">
-            <svg class="w-6 h-6" id="status-icon" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17 12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm1.65 7.35L16 16.7V14h1.5v2.09l2.21 2.21-1.06 1.05zM18 3h-3.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H6c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h5.11c-.07-.33-.11-.66-.11-1 0-3.31 2.69-6 6-6 .34 0 .67.04 1 .11V5c0-1.1-.9-2-2-2zm-6 2c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+      <!-- Tab 1 Content: 출/퇴근 체크 -->
+      <div id="tab-content-commute-checkin" class="flex flex-col gap-4">
+        <!-- Greeting Section -->
+        <div class="greeting-section">
+          <div>
+            <p class="greeting-text">좋은 아침입니다, <span id="user-greeting-name">이재광</span>님</p>
+            <div class="live-time">
+              <span id="live-clock">09:42</span>
+              <span class="ampm" id="live-ampm">오전</span>
+            </div>
+          </div>
+          <div class="date-badge">
+            <p class="day" id="live-day">월요일</p>
+            <p class="full-date" id="live-date">2026년 8월 11일</p>
+          </div>
+        </div>
+
+        <!-- Bento Status Card -->
+        <div class="status-card" id="status-card">
+          <div class="status-info">
+            <div class="status-icon-wrapper" id="status-icon-wrap">
+              <svg class="w-6 h-6" id="status-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17 12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm1.65 7.35L16 16.7V14h1.5v2.09l2.21 2.21-1.06 1.05zM18 3h-3.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H6c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h5.11c-.07-.33-.11-.66-.11-1 0-3.31 2.69-6 6-6 .34 0 .67.04 1 .11V5c0-1.1-.9-2-2-2zm-6 2c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="status-label">오늘의 상태</p>
+              <h3 class="status-title" id="status-title">아직 출근 전입니다</h3>
+            </div>
+          </div>
+          <span class="status-badge" id="status-badge">업무 종료</span>
+        </div>
+
+        <!-- Check-In Pulse Component -->
+        <div class="pulse-section">
+          <div class="pulse-ring-outer"></div>
+          <div class="pulse-ring-inner"></div>
+
+          <button class="pulse-btn" id="pulse-btn" onclick="App.toggleCheckIn()">
+            <div class="pulse-animation"></div>
+            <svg class="w-9 h-9 pulse-icon" id="pulse-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.02-.24-.02-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.43 1.06.43h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/>
+            </svg>
+            <span class="pulse-text" id="pulse-text">출석 체크</span>
+            <span class="pulse-subtext" id="pulse-subtext">탭하여 출근</span>
+          </button>
+
+          <div class="location-indicator" id="location-indicator" onclick="App.refreshLocation()">
+            <svg class="w-4 h-4 loc-icon shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <span>현재 위치: <strong id="location-text">서울 금천구 벚꽃로 298</strong></span>
+            <svg class="w-4 h-4 shrink-0 opacity-60" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
             </svg>
           </div>
-          <div>
-            <p class="status-label">오늘의 상태</p>
-            <h3 class="status-title" id="status-title">아직 출근 전입니다</h3>
-          </div>
-        </div>
-        <span class="status-badge" id="status-badge">업무 종료</span>
-      </div>
-
-      <!-- Check-In Pulse Component -->
-      <div class="pulse-section">
-        <div class="pulse-ring-outer"></div>
-        <div class="pulse-ring-inner"></div>
-
-        <button class="pulse-btn" id="pulse-btn" onclick="App.toggleCheckIn()">
-          <div class="pulse-animation"></div>
-          <svg class="w-9 h-9 pulse-icon" id="pulse-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.02-.24-.02-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.43 1.06.43h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/>
-          </svg>
-          <span class="pulse-text" id="pulse-text">출석 체크</span>
-          <span class="pulse-subtext" id="pulse-subtext">탭하여 출근</span>
-        </button>
-
-        <div class="location-indicator" id="location-indicator" onclick="App.refreshLocation()">
-          <svg class="w-4 h-4 loc-icon shrink-0" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg>
-          <span>현재 위치: <strong id="location-text">서울 금천구 벚꽃로 298</strong></span>
-          <svg class="w-4 h-4 shrink-0 opacity-60" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-          </svg>
-        </div>
-        <div id="location-match-badge" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-top: 6px; transition: all 0.3s ease;">
-          <svg class="w-3.5 h-3.5" id="location-match-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
-          <span id="location-match-text">출근 체크 가능</span>
-        </div>
-      </div>
-
-      <!-- Stats Grid -->
-      <div class="stats-grid">
-        <div class="stat-box">
-          <span class="stat-box-title">오늘 근무 시간</span>
-          <span class="stat-box-value" id="today-work-time">0시간 0분 00초</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-box-title">주간 평균 근무</span>
-          <span class="stat-box-value" id="weekly-avg-time">8.4시간</span>
-        </div>
-      </div>
-
-      <!-- Schedule Section -->
-      <div style="margin-top: 1rem;">
-        <h4 class="section-title">오늘의 근무 일정</h4>
-        <div class="schedule-card-group">
-          <div class="schedule-item">
-            <div class="schedule-left">
-              <div class="schedule-bar"></div>
-              <div>
-                <p class="schedule-name">오전 근무</p>
-                <p class="schedule-time">09:00 AM - 01:00 PM</p>
-              </div>
-            </div>
-            <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+          <div id="location-match-badge" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-top: 6px; transition: all 0.3s ease;">
+            <svg class="w-3.5 h-3.5" id="location-match-icon" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>
+            <span id="location-match-text">출근 체크 가능</span>
           </div>
-          <div class="schedule-item disabled">
-            <div class="schedule-left">
-              <div class="schedule-bar alt"></div>
-              <div>
-                <p class="schedule-name">오후 근무</p>
-                <p class="schedule-time">02:00 PM - 06:00 PM</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-box">
+            <span class="stat-box-title">오늘 근무 시간</span>
+            <span class="stat-box-value" id="today-work-time">0시간 0분 00초</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-box-title">주간 평균 근무</span>
+            <span class="stat-box-value" id="weekly-avg-time">8.4시간</span>
+          </div>
+        </div>
+
+        <!-- Schedule Section -->
+        <div style="margin-top: 0.5rem;">
+          <h4 class="section-title">오늘의 근무 일정</h4>
+          <div class="schedule-card-group">
+            <div class="schedule-item">
+              <div class="schedule-left">
+                <div class="schedule-bar"></div>
+                <div>
+                  <p class="schedule-name">오전 근무</p>
+                  <p class="schedule-time">09:00 AM - 01:00 PM</p>
+                </div>
               </div>
+              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
             </div>
-            <svg class="w-5 h-5 text-outline-variant" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-            </svg>
+            <div class="schedule-item disabled">
+              <div class="schedule-left">
+                <div class="schedule-bar alt"></div>
+                <div>
+                  <p class="schedule-name">오후 근무</p>
+                  <p class="schedule-time">02:00 PM - 06:00 PM</p>
+                </div>
+              </div>
+              <svg class="w-5 h-5 text-outline-variant" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+              </svg>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Tab 2 Content: 출석 기록 (출/퇴근 내 탭 통합) -->
+      <div id="tab-content-commute-logs" class="hidden flex flex-col gap-4">
+        <div class="logs-hero">
+          <div class="logs-hero-card">
+            <span class="logs-hero-title">이번 주 총 기록 시간</span>
+            <span class="logs-hero-value" id="logs-total-hours">38시간 45분</span>
+          </div>
+          <div class="logs-score-card">
+            <svg class="w-7 h-7 mb-1" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+            </svg>
+            <span class="score-num">98%</span>
+            <span class="score-label">근태 점수</span>
+          </div>
+        </div>
+
+        <div class="logs-filter-bar">
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="App.setLogFilter('all', this)">전체</button>
+            <button class="filter-pill" onclick="App.setLogFilter('week', this)">이번 주</button>
+            <button class="filter-pill" onclick="App.setLogFilter('month', this)">이번 달</button>
+          </div>
+          <button class="add-log-btn" onclick="App.openRequestModal()">
+            <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            <span>신청</span>
+          </button>
+        </div>
+
+        <div class="logs-list" id="logs-list-container">
+          <!-- Log items dynamically injected by JS -->
         </div>
       </div>
     </section>
 
-    <!-- SCREEN 3: ATTENDANCE LOGS -->
-    <section class="screen-view" id="screen-logs">
-      <div class="logs-hero">
-        <div class="logs-hero-card">
-          <span class="logs-hero-title">이번 주 총 기록 시간</span>
-          <span class="logs-hero-value" id="logs-total-hours">38시간 45분</span>
-        </div>
-        <div class="logs-score-card">
-          <svg class="w-7 h-7 mb-1" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
-          </svg>
-          <span class="score-num">98%</span>
-          <span class="score-label">근태 점수</span>
-        </div>
-      </div>
-
-      <div class="logs-filter-bar">
-        <div class="filter-pills">
-          <button class="filter-pill active" onclick="App.setLogFilter('all', this)">전체</button>
-          <button class="filter-pill" onclick="App.setLogFilter('week', this)">이번 주</button>
-          <button class="filter-pill" onclick="App.setLogFilter('month', this)">이번 달</button>
-        </div>
-        <button class="add-log-btn" onclick="App.openRequestModal()">
-          <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-          </svg>
-          <span>신청</span>
-        </button>
-      </div>
-
-      <div class="logs-list" id="logs-list-container">
-        <!-- Log items dynamically injected by JS -->
-      </div>
+    <!-- SCREEN 3 (LEGACY ALIAS): ATTENDANCE LOGS (Redirects to screen-checkin logs tab) -->
+    <section class="screen-view hidden" id="screen-logs">
     </section>
 
     <!-- SCREEN 4: USER PROFILE -->

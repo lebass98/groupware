@@ -89,12 +89,11 @@ const FramerMotion = {
 const ALL_DOCK_MENU_ITEMS = [
   { id: 'screen-home', name: '메뉴', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>' },
   { id: 'screen-today', name: '투데이', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>' },
-  { id: 'screen-checkin', name: '출퇴근', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg>' },
+  { id: 'screen-checkin', name: '출/퇴근', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg>' },
   { id: 'screen-calendar', name: '근태일지', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>' },
   { id: 'screen-request', name: '휴가/외근', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/></svg>' },
   { id: 'screen-notice-list', name: '공지사항', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>' },
   { id: 'screen-directory', name: '주소록', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V17z"/></svg>' },
-  { id: 'screen-logs', name: '출석기록', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h10v2H7zm0 4h7v2H7z"/></svg>' },
   { id: 'screen-todo', name: '할 일', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M22 5.18L10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM19.79 10.22C19.92 10.79 20 11.39 20 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8c1.66 0 3.2.51 4.48 1.39l1.45-1.45C16.19 2.7 14.19 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z"/></svg>' },
   { id: 'screen-project-list', name: '프로젝트', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6 10H6v-2h8v2zm4-4H6v-2h12v2z"/></svg>' },
   { id: 'screen-finance', name: '재무/경비', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>' },
@@ -118,6 +117,7 @@ const App = {
     trashedTodos: (window.MockData && window.MockData.trashedTodos) || [],
     todos: (window.MockData && window.MockData.todos) || [],
     finance: (window.MockData && window.MockData.finance) || { activeTab: 'expense', cardFilter: 'corp', reportFilter: 'all', expenses: { corp: [], personal: [] } },
+    commuteTab: 'checkin',
     isCheckedIn: false,
     checkInTime: null,
     todaySeconds: 0,
@@ -1231,7 +1231,11 @@ const App = {
     });
 
     if (targetId === 'screen-logs') {
-      this.renderLogs();
+      this.switchTab('screen-checkin');
+      this.switchCommuteTab('logs');
+      return;
+    } else if (targetId === 'screen-checkin') {
+      this.switchCommuteTab(this.state.commuteTab || 'checkin');
     } else if (targetId === 'screen-notice-list') {
       this.renderNotices();
     } else if (targetId === 'screen-directory') {
@@ -1276,6 +1280,33 @@ const App = {
       this.switchRequestType(this.state.currentRequestType || 'leave');
     } else if (targetId === 'screen-home' || targetId === 'screen-today') {
       this.renderTodayData();
+    }
+  },
+
+  // 출/퇴근 페이지 상단 세그먼트 탭 전환 (출/퇴근 체크 ↔ 출석 기록)
+  switchCommuteTab(tab = 'checkin') {
+    this.state.commuteTab = tab;
+    const checkinBtn = document.getElementById('tab-btn-commute-checkin');
+    const logsBtn = document.getElementById('tab-btn-commute-logs');
+    const checkinContent = document.getElementById('tab-content-commute-checkin');
+    const logsContent = document.getElementById('tab-content-commute-logs');
+
+    if (!checkinBtn || !logsBtn || !checkinContent || !logsContent) return;
+
+    const activeBtnClass = 'flex-1 py-2.5 px-3 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center';
+    const inactiveBtnClass = 'flex-1 py-2.5 px-3 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center';
+
+    if (tab === 'logs') {
+      checkinBtn.className = inactiveBtnClass;
+      logsBtn.className = activeBtnClass;
+      checkinContent.classList.add('hidden');
+      logsContent.classList.remove('hidden');
+      this.renderLogs();
+    } else {
+      checkinBtn.className = activeBtnClass;
+      logsBtn.className = inactiveBtnClass;
+      checkinContent.classList.remove('hidden');
+      logsContent.classList.add('hidden');
     }
   },
 
