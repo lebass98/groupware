@@ -308,17 +308,18 @@ html, body {
 
 /* Global Top Header (GNB) */
 .pc-gnb {
-  height: 84px;
+  min-height: 100px;
   background: var(--surface-container-lowest);
   border-bottom: 1px solid var(--outline);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 44px;
+  padding: 24px 48px;
   position: sticky;
   top: 0;
   z-index: 50;
   backdrop-filter: blur(16px);
+  box-sizing: border-box;
 }
 
 .pc-gnb-left {
@@ -413,7 +414,7 @@ html, body {
 
 /* 3. Full-Width Bento Dashboard (Col 1 유지, Col 2 & Col 3 균등 1fr 1fr) */
 .pc-dashboard-container {
-  padding: 28px 36px 56px 36px;
+  padding: 36px 48px 64px 48px;
   width: 100%;
   display: grid;
   grid-template-columns: 320px 1fr 1fr;
