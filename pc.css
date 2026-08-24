@@ -736,7 +736,7 @@ strong {
 .pc-counter-label {
   font-size: 13px;
   color: var(--on-surface-variant);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 /* 2. Leave / Vacation Widget */
@@ -759,9 +759,9 @@ strong {
   margin-bottom: 2px;
 }
 .pc-leave-lbl {
-  font-size: 16px;
+  font-size: 13px;
   color: var(--on-surface-variant);
-  font-weight: 700;
+  font-weight: 500;
 }
 .pc-leave-history-list {
   display: flex;

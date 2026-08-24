@@ -85,7 +85,7 @@
   </script>
 
   <!-- Core Stylesheet -->
-  <link rel="stylesheet" href="./pc.css?v=20260824_11" />
+  <link rel="stylesheet" href="./pc.css?v=20260824_12" />
 </head>
 <body class="bg-surface text-on-surface select-none">
   
@@ -464,25 +464,46 @@
             <h2 class="text-2xl font-bold text-on-surface">할 일 관리 (To-Do)</h2>
             <p class="text-base text-on-surface-variant font-medium mt-1">프로젝트별 업무 태스크 및 개인 우선순위 관리</p>
           </div>
-          <button class="px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-base flex items-center gap-2 shadow-xs" onclick="PCApp.openQuickModal('todo')">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-            할 일 추가
-          </button>
-        </div>
-
-        <div class="flex gap-2 mb-6 overflow-x-auto pb-2" id="pc-todo-filter-tabs">
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0" onclick="PCApp.setTodoFilter('all', this)">전체</button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setTodoFilter('mine', this)">내 할 일</button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setTodoFilter('in_progress', this)">진행중</button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setTodoFilter('done', this)">완료</button>
-        </div>
-
-        <div class="pc-bento-card">
-          <div class="flex gap-3 mb-5">
-            <input type="text" id="pc-new-todo-input" placeholder="새로운 할 일을 입력하세요..." class="flex-1 p-3.5 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" onkeyup="if(event.key==='Enter'&&this.value){ PCApp.quickAddTodo(this.value); this.value=''; }" />
-            <button class="px-6 py-3.5 bg-primary text-white font-bold rounded-xl text-base" onclick="const input = document.getElementById('pc-new-todo-input'); if(input.value){ PCApp.quickAddTodo(input.value); input.value=''; }">등록</button>
+          <div class="flex items-center gap-3">
+            <!-- View Mode Toggle (Card vs List) - Same as Mobile Design -->
+            <div class="flex items-center bg-surface-container rounded-xl p-1 border border-outline" id="pc-todo-view-toggle">
+              <button type="button" onclick="PCApp.setTodoViewMode('card', this)" class="pc-todo-view-btn w-9 h-9 flex items-center justify-center rounded-lg bg-primary text-white transition-all active:scale-95" title="카드형 보기">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                </svg>
+              </button>
+              <button type="button" onclick="PCApp.setTodoViewMode('list', this)" class="pc-todo-view-btn w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95" title="한줄 리스트형 보기">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z"/>
+                </svg>
+              </button>
+            </div>
+            <button class="px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-base flex items-center gap-2 shadow-xs" onclick="PCApp.openQuickModal('todo')">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              할 일 추가
+            </button>
           </div>
-          <div class="pc-todo-list divide-y divide-outline" id="pc-full-todo-list">
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <!-- Filter Tabs -->
+          <div class="flex gap-2 overflow-x-auto pb-1" id="pc-todo-filter-tabs">
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0" onclick="PCApp.setTodoFilter('all', this)">전체</button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setTodoFilter('mine', this)">내 할 일</button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setTodoFilter('in_progress', this)">진행중</button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setTodoFilter('done', this)">완료</button>
+          </div>
+
+          <!-- Quick Inline Add Input -->
+          <div class="flex gap-2 max-w-md w-full">
+            <input type="text" id="pc-new-todo-input" placeholder="새로운 할 일을 입력하세요..." class="flex-1 p-2.5 px-4 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" onkeyup="if(event.key==='Enter'&&this.value){ PCApp.quickAddTodo(this.value); this.value=''; }" />
+            <button class="px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-base shrink-0" onclick="const input = document.getElementById('pc-new-todo-input'); if(input.value){ PCApp.quickAddTodo(input.value); input.value=''; }">등록</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Content (Card Grid vs List View) -->
+        <div id="pc-full-todo-container">
+          <div id="pc-full-todo-list">
             <!-- Dynamically Rendered by pc.js -->
           </div>
         </div>

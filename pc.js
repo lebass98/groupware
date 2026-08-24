@@ -33,6 +33,7 @@ const PCApp = {
     workReportDept: 'all',
     financeFilter: 'all',
     todoFilter: 'all',
+    todoViewMode: 'card', // 'card' or 'list'
     projectFilter: 'all',
     requestTab: 'leave',
     todos: (window.MockData && window.MockData.todos) ? JSON.parse(JSON.stringify(window.MockData.todos)) : [],
@@ -1136,6 +1137,20 @@ const PCApp = {
   },
 
   // 6-7. To-Do Screen
+  setTodoViewMode(mode, btn) {
+    this.state.todoViewMode = mode;
+    const toggleContainer = document.getElementById('pc-todo-view-toggle');
+    if (toggleContainer) {
+      toggleContainer.querySelectorAll('.pc-todo-view-btn').forEach(b => {
+        b.className = 'pc-todo-view-btn w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95';
+      });
+    }
+    if (btn) {
+      btn.className = 'pc-todo-view-btn w-9 h-9 flex items-center justify-center rounded-lg bg-primary text-white transition-all active:scale-95';
+    }
+    this.renderTodoView();
+  },
+
   setTodoFilter(filter, btn) {
     this.state.todoFilter = filter;
     const tabs = document.querySelectorAll('#pc-todo-filter-tabs button');
@@ -1154,6 +1169,8 @@ const PCApp = {
       completed: false,
       priority: 'medium',
       status: 'in_progress',
+      project: '일반 업무',
+      dueDate: '2026-08-24',
       isMine: true
     });
     this.renderTodoView();
@@ -1179,23 +1196,98 @@ const PCApp = {
       return true;
     });
 
-    listEl.innerHTML = filtered.map((t, idx) => `
-      <div class="flex items-center justify-between p-4 hover:bg-surface-container-low transition-all">
-        <div class="flex items-center gap-3 flex-1">
-          <input type="checkbox" ${t.completed || t.status === 'done' ? 'checked' : ''} onchange="PCApp.toggleTodo(${idx}); PCApp.renderTodoView();" class="w-5 h-5 accent-primary rounded cursor-pointer" />
-          <div>
-            <span class="text-base text-on-surface font-bold ${t.completed || t.status === 'done' ? 'line-through opacity-50' : ''}">${t.title}</span>
-            ${t.project ? `<span class="text-xs text-on-surface-variant block mt-0.5">${t.project} · ${t.dueDate || '오늘까지'}</span>` : ''}
+    if (filtered.length === 0) {
+      listEl.className = 'pc-bento-card text-center py-12';
+      listEl.innerHTML = `
+        <div class="flex flex-col items-center justify-center text-on-surface-variant">
+          <svg class="w-12 h-12 text-on-surface-variant/50 mb-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+          <h4 class="font-bold text-lg text-on-surface mb-1">등록된 할 일이 없습니다</h4>
+          <p class="text-sm">상단 등록창을 통해 새로운 할 일을 추가해보세요.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const isCardMode = (this.state.todoViewMode === 'card');
+
+    if (isCardMode) {
+      // 1. 카드형 모드 (Card Mode)
+      listEl.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5';
+      listEl.innerHTML = filtered.map((t, idx) => {
+        const isDone = t.completed || t.status === 'done';
+        return `
+          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all flex flex-col justify-between group text-base">
+            <div>
+              <!-- Header: Status/Priority Badges + Delete Action -->
+              <div class="flex items-center justify-between gap-2 mb-3.5">
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-xs font-bold ${isDone ? 'bg-secondary-container text-secondary' : 'bg-primary-container text-primary'}">
+                    ${isDone ? '완료' : '진행중'}
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-md text-xs font-bold ${t.priority === 'high' ? 'bg-error-container text-error' : 'bg-surface-container text-on-surface-variant'}">
+                    ${t.priority === 'high' ? '높음' : (t.priority === 'low' ? '낮음' : '보통')}
+                  </span>
+                </div>
+                <button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-surface-container rounded-lg transition-all" onclick="PCApp.deleteTodo(${idx})" title="삭제">
+                  <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+              </div>
+
+              <!-- Title & Checkbox -->
+              <div class="flex items-start gap-3 mb-3">
+                <input type="checkbox" ${isDone ? 'checked' : ''} onchange="PCApp.toggleTodo(${idx}); PCApp.renderTodoView();" class="w-5 h-5 accent-primary rounded cursor-pointer mt-0.5 shrink-0" />
+                <h4 class="font-bold text-base text-on-surface leading-snug break-words ${isDone ? 'line-through opacity-50' : ''}">
+                  ${t.title}
+                </h4>
+              </div>
+
+              ${t.notes ? `<p class="text-sm text-on-surface-variant line-clamp-2 leading-relaxed mb-3 pl-8">${t.notes}</p>` : ''}
+            </div>
+
+            <!-- Footer: Project Name & Due Date -->
+            <div class="pt-3 border-t border-outline/50 flex items-center justify-between text-xs text-on-surface-variant mt-2">
+              <span class="font-bold text-primary truncate max-w-[160px]"># ${t.project || '일반 업무'}</span>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <svg class="w-4 h-4 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+                <span class="font-medium">${t.dueDate || '오늘까지'}</span>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="px-2.5 py-1 rounded-md text-xs font-bold ${t.priority === 'high' ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">${t.priority === 'high' ? '높음' : '보통'}</span>
-          <button class="text-sm text-on-surface-variant hover:text-error" onclick="PCApp.deleteTodo(${idx})">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-          </button>
-        </div>
-      </div>
-    `).join('');
+        `;
+      }).join('');
+    } else {
+      // 2. 한줄 리스트형 모드 (List Mode)
+      listEl.className = 'pc-bento-card divide-y divide-outline';
+      listEl.innerHTML = filtered.map((t, idx) => {
+        const isDone = t.completed || t.status === 'done';
+        return `
+          <div class="flex items-center justify-between p-4 hover:bg-surface-container-low transition-all text-base group">
+            <div class="flex items-center gap-3.5 flex-1 min-w-0 mr-4">
+              <input type="checkbox" ${isDone ? 'checked' : ''} onchange="PCApp.toggleTodo(${idx}); PCApp.renderTodoView();" class="w-5 h-5 accent-primary rounded cursor-pointer shrink-0" />
+              <div class="min-w-0 flex-1">
+                <span class="text-base text-on-surface font-bold truncate block ${isDone ? 'line-through opacity-50' : ''}">${t.title}</span>
+                <div class="flex items-center gap-2 mt-1 text-xs text-on-surface-variant">
+                  <span class="font-bold text-primary"># ${t.project || '일반 업무'}</span>
+                  <span>·</span>
+                  <span>📅 ${t.dueDate || '오늘까지'}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold ${isDone ? 'bg-secondary-container text-secondary' : 'bg-primary-container text-primary'}">
+                ${isDone ? '완료' : '진행중'}
+              </span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold ${t.priority === 'high' ? 'bg-error-container text-error' : 'bg-surface-container text-on-surface-variant'}">
+                ${t.priority === 'high' ? '높음' : '보통'}
+              </span>
+              <button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-surface-container rounded-lg transition-all" onclick="PCApp.deleteTodo(${idx})" title="삭제">
+                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
   },
 
   // 6-8. Projects Screen
