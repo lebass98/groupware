@@ -3371,7 +3371,15 @@ const App = {
 
     if (window.MockData && window.MockData.schedules) {
       const todayList = window.MockData.schedules[todayKey1] || window.MockData.schedules[todayKey2] || [];
-      const match = todayList.find(s => s.author && s.author.includes(emp.name));
+      const match = todayList.find(s => {
+        if (!s.author) return false;
+        if (!s.author.includes(emp.name)) return false;
+        // 동명이인 및 직책 매칭 (예: 기획팀 김종규 팀장 vs 수행본부 김종규 본부장)
+        if (emp.role && (s.author.includes('팀장') || s.author.includes('본부장') || s.author.includes('대표') || s.author.includes('차장') || s.author.includes('과장') || s.author.includes('대리') || s.author.includes('주임') || s.author.includes('사원') || s.author.includes('수습'))) {
+          return s.author.includes(emp.role) || (emp.dept && s.author.includes(emp.dept));
+        }
+        return true;
+      });
       if (match) {
         rawSched = match.title;
       }
