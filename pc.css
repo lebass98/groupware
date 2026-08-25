@@ -1375,10 +1375,9 @@ strong {
   box-shadow: var(--shadow-sm);
 }
 .pc-quick-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--surface-container);
+  width: 32px;
+  height: 32px;
+  background: transparent;
   color: var(--primary);
   display: flex;
   align-items: center;

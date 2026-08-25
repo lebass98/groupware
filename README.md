@@ -303,5 +303,7 @@ Pool/
 - **PC 웹 전역 폰트 굵기(font-weight: 700)를 600(SemiBold)으로 전면 표준화**: 타이틀, 뱃지, 위젯 카드, 헤더, 캘린더, 사이드바 등 PC 전역 스타일시트 및 Tailwind 설정의 700 굵기를 600으로 일괄 조정하여 가독성과 시각적 세련미 개선 완료.
 - **전역 웹폰트 Pretendard Variable(가변 폰트) 전면 교체 적용**: PC 웹 및 모바일 전역 스타일시트(pc.css, style.css)와 HTML Tailwind 설정에서 기존 정적 Pretendard 웹폰트를 공식 Pretendard Variable 가변 폰트로 전면 교체 완료.
 - **모바일·태블릿·PC 전 디바이스 폰트 굵기(font-weight: 600) 표준화 및 Pretendard Variable 가변 폰트 100% 일체화**: 모바일 스타일시트(style.css) 및 HTML Tailwind 전역에서 700/800 굵기를 600으로 클램핑하고 가변 폰트(Pretendard Variable)를 모든 디바이스에 통일 적용 완료.
+- **PC 메인 대시보드 퀵액션(Quick Action) 아이콘 배경 박스 제거 및 미니멀 정돈**: 퀵액션 위젯 각 항목 아이콘의 회색 배경 박스를 제거하고 투명화하여 아이콘 벡터 본연의 심플하고 모던한 인터페이스로 개선 완료.
+
 
 
