@@ -672,7 +672,7 @@ const PCApp = {
                     <span class="w-2 h-2 rounded-full bg-primary"></span>
                     금주 계획
                   </span>
-                  <p class="text-on-surface font-semibold leading-relaxed">${thisItems[0]}</p>
+                  <p class="text-on-surface leading-relaxed">${thisItems[0]}</p>
                 </div>
               </div>
             </div>
@@ -699,7 +699,7 @@ const PCApp = {
                     <span class="w-2 h-2 rounded-full bg-secondary"></span>
                     금주 계획
                   </span>
-                  <p class="text-on-surface font-semibold leading-relaxed">${(reports[1].thisWeekSections && reports[1].thisWeekSections[0]?.items[0]) || '사후역량점검 완료 분기 로직 추가, 관련 alert 수정'}</p>
+                  <p class="text-on-surface leading-relaxed">${(reports[1].thisWeekSections && reports[1].thisWeekSections[0]?.items[0]) || '사후역량점검 완료 분기 로직 추가, 관련 alert 수정'}</p>
                 </div>
               </div>
             </div>
