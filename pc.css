@@ -254,7 +254,6 @@ strong {
   transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Nav Item & Button */
 .pc-nav-list {
   display: flex;
   flex-direction: column;
@@ -271,6 +270,10 @@ strong {
   width: 50px;
   height: 48px;
   transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pc-nav-item:hover {
+  z-index: 50;
 }
 
 .pc-nav-btn {
@@ -407,6 +410,8 @@ strong {
 .pc-sidebar.expanded .pc-nav-list {
   align-items: stretch;
   padding: 0 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .pc-sidebar.expanded .pc-nav-item {
