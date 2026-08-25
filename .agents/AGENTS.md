@@ -31,7 +31,8 @@
 
 ## 파일 시스템 및 환경 관리 규칙 (File System & Environment Guidelines)
 
-- **macOS AppleDouble(`._*`) 메타데이터 파일 생성 즉시 삭제 의무화**:
-  - 외장하드(FAT/exFAT/NTFS/HFS+ 등) 및 macOS 환경 작업 중 생성되는 모든 `._*` (AppleDouble 리소스 포크 파일), `.DS_Store` 등의 임시/메타데이터 파일은 **발견되거나 생성되는 즉시 삭제(`find . -name "._*" -delete` 또는 `dot_clean .`)**합니다.
-  - Git 스테이징 및 커밋 전 항상 `._*` 파일 존재 여부를 점검하고 전량 삭제하여 저장소에 절대 포함되지 않도록 유지합니다.
+- **macOS AppleDouble(`._*`) 메타데이터 파일 생성 즉시 무조건 전량 삭제 의무화 (Zero Tolerance Policy)**:
+  - 외장하드(FAT/exFAT/NTFS/HFS+ 등) 및 macOS 환경 작업 중 생성되는 모든 `._*` (AppleDouble 리소스 포크 파일), `.DS_Store` 등의 임시/메타데이터 파일은 **생성되는 즉시 또는 매 작업(파일 생성/수정/빌드/Git 작업 전후) 직후 반드시 자동 삭제(`find . -name "._*" -delete` 또는 `dot_clean .`)**합니다.
+  - 어떠한 경우에도 작업 디렉토리 내에 `._*` 파일이 잔류하지 않도록 철저히 관리하며, Git 스테이징 및 커밋 전 항상 전수 점검하여 100% 삭제 상태를 유지합니다.
+
 
