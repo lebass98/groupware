@@ -278,6 +278,14 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
+.font-bold,
+b,
+strong,
+.font-extrabold,
+.font-black {
+  font-weight: 600 !important;
+}
+
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
@@ -485,7 +493,7 @@ body.dark .notice-ticker {
   gap: 0.35rem;
   padding: 0.2rem 0.65rem;
   font-size: 0.75rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #38bdf8 !important;
   white-space: nowrap;
   background: rgba(56, 189, 248, 0.2) !important;
@@ -521,7 +529,7 @@ body.dark .ticker-label {
 
 .ticker-item {
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #ffffff !important;
   padding: 0 0.5rem;
   white-space: nowrap;
@@ -594,7 +602,7 @@ body.dark .ticker-label {
 .brand-title {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--on-surface);
   display: flex;
@@ -770,7 +778,7 @@ body.dark .menu-col-toggle-btn.active {
 .live-time {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 2.5rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -0.03em;
   color: var(--on-surface);
   line-height: 1.1;
@@ -779,7 +787,7 @@ body.dark .menu-col-toggle-btn.active {
 .live-time .ampm {
   font-size: 1.1rem;
   color: var(--primary);
-  font-weight: 700;
+  font-weight: 600;
   margin-left: 0.3rem;
 }
 
@@ -788,7 +796,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .date-badge .day {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface);
 }
 
@@ -840,13 +848,13 @@ body.dark .menu-col-toggle-btn.active {
 
 .status-title {
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface);
 }
 
 .status-badge {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   padding: 0.35rem 0.85rem;
   border-radius: var(--radius-full);
   background: var(--surface-container);
@@ -944,13 +952,13 @@ body.dark .menu-col-toggle-btn.active {
 .pulse-text {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .pulse-subtext {
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 600;
   opacity: 0.8;
   letter-spacing: 0.05em;
   margin-top: 0.25rem;
@@ -997,7 +1005,7 @@ body.dark .menu-col-toggle-btn.active {
 
 .stat-box-title {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface-variant);
   text-transform: uppercase;
 }
@@ -1005,7 +1013,7 @@ body.dark .menu-col-toggle-btn.active {
 .stat-box-value {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 1.4rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--on-surface);
 }
 
@@ -1013,7 +1021,7 @@ body.dark .menu-col-toggle-btn.active {
 .section-title {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 600;
   margin-bottom: 0.85rem;
   color: var(--on-surface);
 }
@@ -1058,7 +1066,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .schedule-name {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.95rem;
   color: var(--on-surface);
 }
@@ -1090,7 +1098,7 @@ body.dark .menu-col-toggle-btn.active {
 
 .logs-hero-title {
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface-variant);
   text-transform: uppercase;
 }
@@ -1098,7 +1106,7 @@ body.dark .menu-col-toggle-btn.active {
 .logs-hero-value {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 1.8rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--primary);
   margin-top: 0.25rem;
 }
@@ -1118,7 +1126,7 @@ body.dark .menu-col-toggle-btn.active {
 .score-num {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 1.6rem;
-  font-weight: 800;
+  font-weight: 600;
   font-style: italic;
 }
 
@@ -1158,7 +1166,7 @@ body.dark .menu-col-toggle-btn.active {
 .filter-pill.active {
   background: var(--surface-container-lowest);
   color: var(--primary);
-  font-weight: 700;
+  font-weight: 600;
   box-shadow: var(--shadow-sm);
 }
 
@@ -1169,7 +1177,7 @@ body.dark .menu-col-toggle-btn.active {
   background: var(--primary-container);
   color: var(--on-primary-container);
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1216,7 +1224,7 @@ body.dark .menu-col-toggle-btn.active {
 
 .log-month {
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface-variant);
   text-transform: uppercase;
 }
@@ -1224,7 +1232,7 @@ body.dark .menu-col-toggle-btn.active {
 .log-day {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--primary);
   line-height: 1;
 }
@@ -1235,7 +1243,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .log-day-name {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.95rem;
   color: var(--on-surface);
 }
@@ -1277,7 +1285,7 @@ body.dark .menu-col-toggle-btn.active {
 
 .log-time-label {
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface-variant);
   text-transform: uppercase;
 }
@@ -1285,7 +1293,7 @@ body.dark .menu-col-toggle-btn.active {
 .log-time-val {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface);
 }
 
@@ -1346,7 +1354,7 @@ body.dark .menu-col-toggle-btn.active {
 .profile-name {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--on-surface);
   margin-top: 0.75rem;
 }
@@ -1365,7 +1373,7 @@ body.dark .menu-col-toggle-btn.active {
 
 .meta-tag {
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 600;
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-full);
   background: var(--surface-container-high);
@@ -1425,7 +1433,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .setting-title {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.95rem;
   color: var(--on-surface);
 }
@@ -1487,7 +1495,7 @@ input:checked + .slider:before {
   color: var(--error);
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1570,7 +1578,7 @@ body.dark .bottom-nav {
 .nav-item.active {
   background: transparent !important;
   color: var(--primary);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 body.dark .nav-item.active {
@@ -1665,7 +1673,7 @@ body.modal-open {
 .modal-title {
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--on-surface);
 }
 
@@ -1683,7 +1691,7 @@ body.modal-open {
   border-radius: var(--radius-full);
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1731,7 +1739,7 @@ body.modal-open {
   background: var(--primary-container);
   color: var(--on-primary-container);
   border-color: var(--primary);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* Toast Notifications */
