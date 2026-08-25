@@ -110,12 +110,12 @@ html, body {
 .font-bold,
 b,
 strong {
-  font-weight: 700 !important;
+  font-weight: 600 !important;
 }
 
 .font-extrabold,
 .font-black {
-  font-weight: 700 !important;
+  font-weight: 600 !important;
 }
 
 /* Custom Scrollbar */
@@ -189,7 +189,7 @@ strong {
   align-items: center;
   justify-content: center;
   color: var(--primary);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 26px;
   letter-spacing: -0.5px;
   box-shadow: none;
@@ -209,7 +209,7 @@ strong {
 
 .pc-sidebar-brand-title {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface);
   letter-spacing: -0.3px;
   white-space: nowrap;
@@ -302,7 +302,7 @@ strong {
   display: none;
   white-space: nowrap;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .pc-nav-btn:hover {
@@ -371,7 +371,7 @@ strong {
 
 .pc-profile-info-name {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface);
 }
 
@@ -488,7 +488,7 @@ strong {
 .pc-sidebar.expanded .pc-sidebar-footer .pc-footer-btn-row .pc-footer-btn-label {
   display: inline-block;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 
@@ -501,7 +501,7 @@ strong {
   background: #0f172a;
   color: #ffffff;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 7px 14px;
   border-radius: 9px;
   white-space: nowrap;
@@ -645,7 +645,7 @@ strong {
   padding: 4px 8px;
   border-radius: 8px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   flex-shrink: 0;
   border: 1px solid rgba(0, 82, 208, 0.18);
 }
@@ -746,7 +746,7 @@ strong {
   background: var(--surface-container-low);
   padding: 6px 18px;
   border-radius: 12px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 16px;
   color: var(--on-surface);
   border: 1px solid var(--outline);
@@ -872,7 +872,7 @@ strong {
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(8px);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: #ffffff;
 }
 
@@ -885,7 +885,7 @@ strong {
 
 .pc-card-title {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface);
   display: flex;
   align-items: center;
@@ -901,7 +901,7 @@ strong {
 
 .pc-card-action {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--primary);
   text-decoration: none;
   cursor: pointer;
@@ -936,7 +936,7 @@ strong {
 }
 .pc-profile-name {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface);
   margin-bottom: 4px;
 }
@@ -969,7 +969,7 @@ strong {
 }
 .pc-counter-num {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--primary);
 }
 .pc-counter-label {
@@ -993,7 +993,7 @@ strong {
 }
 .pc-leave-val {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--primary);
   margin-bottom: 2px;
 }
@@ -1050,12 +1050,12 @@ strong {
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 10px;
 }
 .pc-notice-title {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 6px;
   cursor: pointer;
   transition: color 0.2s ease;
@@ -1124,7 +1124,7 @@ strong {
 }
 .pc-cal-title {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface);
 }
 
@@ -1133,7 +1133,7 @@ strong {
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface-variant);
   margin-bottom: 12px;
 }
@@ -1210,7 +1210,7 @@ strong {
 
 .pc-cal-cell.today .pc-cal-date-num {
   color: var(--primary);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .pc-cal-header-row {
@@ -1223,14 +1223,14 @@ strong {
 
 .pc-cal-date-num {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface);
   line-height: 1;
 }
 
 .pc-cal-count-badge {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 1px 6px;
   border-radius: 20px;
   background: rgba(0, 106, 106, 0.1);
@@ -1253,7 +1253,7 @@ strong {
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 2px 6px;
   border-radius: 6px;
   line-height: 1.3;
@@ -1262,7 +1262,7 @@ strong {
 
 .pc-cal-more-tag {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface-variant);
   padding-left: 2px;
   line-height: 1;
@@ -1291,7 +1291,7 @@ strong {
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   background: var(--surface-container-high);
   color: var(--on-surface-variant);
 }
@@ -1307,7 +1307,7 @@ strong {
 }
 .pc-commute-big-time {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -1px;
   color: var(--on-surface);
 }
@@ -1321,7 +1321,7 @@ strong {
   padding: 12px;
   border-radius: 12px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   border: none;
   cursor: pointer;
   display: flex;
@@ -1390,7 +1390,7 @@ strong {
 }
 .pc-quick-label {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--on-surface);
 }
 
@@ -1427,7 +1427,7 @@ strong {
 }
 .pc-todo-priority {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 2px 8px;
   border-radius: 6px;
 }
