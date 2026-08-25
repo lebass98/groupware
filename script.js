@@ -6607,7 +6607,7 @@ const App = {
         `).join('');
 
         const projectCards = team.projects.map(p => `
-          <div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/15 shadow-xs flex flex-col gap-2">
+          <div class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/15 shadow-xs flex flex-col gap-2">
             <div class="flex items-center justify-between gap-2 flex-wrap">
               <span class="text-xs font-bold text-primary">${p.client}</span>
               <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary">${p.status} (${p.progress})</span>
