@@ -1,6 +1,210 @@
 [
   {
+    "id": 101,
+    "type": "weekly",
+    "client": "한국메세나협회",
+    "title": "2026 한국메세나협회 문화기업업무추진비 지원사업 시스템 구축",
+    "period": "2026-07-06 ~ 2026-08-14",
+    "status": "completed",
+    "statusColor": "#00693f",
+    "year": 2026,
+    "month": 8,
+    "week": 1,
+    "weekLabel": "2026년 8월 1주차",
+    "date": "2026-08-07",
+    "primaryDept": "개발팀",
+    "prevWeekSections": [
+      {
+        "dept": "개발팀",
+        "deptColor": "text-primary",
+        "label": "개발_최우석 과장",
+        "items": [
+          "문화기업 지원사업 신청서 접수 및 심사 프로세스 DB 스키마 설계",
+          "회원사 인증 및 사업자번호 유효성 검증 API 1차 모듈 개발"
+        ]
+      },
+      {
+        "dept": "기획팀",
+        "deptColor": "text-tertiary",
+        "label": "기획_장현아 수습",
+        "items": [
+          "지원사업 신청 폼 화면설계서(SB) 1차 검수 및 고객사 피드백 취합"
+        ]
+      }
+    ],
+    "thisWeekSections": [
+      {
+        "dept": "개발팀",
+        "deptColor": "text-primary",
+        "label": "개발_안영재 대리",
+        "items": [
+          "관리자 심사위원 배정 및 가산점 산출 알고리즘 모듈 구현",
+          "첨부 증빙서류 암호화 업로드 및 대용량 PDF 뷰어 연동"
+        ]
+      },
+      {
+        "dept": "디자인팀",
+        "deptColor": "text-primary-dim",
+        "label": "디자인_신현우 주임",
+        "items": [
+          "신청 페이지 메인 그래픽 에셋 및 단계별 인디케이터 UI 시안 도출"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 102,
+    "type": "weekly",
+    "client": "사단법인 한국능률협회",
+    "title": "2026 국민취업지원제도 홈페이지 유지보수 및 기능 개선",
+    "period": "2026-07-28 ~ 2026-12-31",
+    "status": "in_progress",
+    "statusColor": "#785500",
+    "year": 2026,
+    "month": 8,
+    "week": 1,
+    "weekLabel": "2026년 8월 1주차",
+    "date": "2026-08-07",
+    "primaryDept": "개발팀",
+    "prevWeekSections": [
+      {
+        "dept": "개발팀",
+        "deptColor": "text-primary",
+        "label": "개발_유종현 주임",
+        "items": [
+          "7월 정기 보안 취약점 패치 및 웹 방화벽(WAF) 룰셋 갱신 완료",
+          "고용노동부 연계 배치 오류 로그 모니터링 및 알림봇 구축"
+        ]
+      }
+    ],
+    "thisWeekSections": [
+      {
+        "dept": "개발팀",
+        "deptColor": "text-primary",
+        "label": "개발_유종현 주임",
+        "items": [
+          "사후역량점검 엑셀 일괄 업로드 파서 개발 및 유효성 검사 로직 작성",
+          "상담사 배정 페이지 페이징 처리 및 검색 속도 개선"
+        ]
+      },
+      {
+        "dept": "기획팀",
+        "deptColor": "text-tertiary",
+        "label": "기획_박규태 대리",
+        "items": [
+          "8월 기능 개선 요구사항 정의서(SRS) 작성 및 고객사 담당자 확인"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 201,
+    "type": "weekly",
+    "client": "수소융합얼라이언스",
+    "title": "2026 수소기술사업화 지원 플랫폼 구축 및 포털 개발",
+    "period": "2026-06-26 ~ 2026-12-11",
+    "status": "in_progress",
+    "statusColor": "#785500",
+    "year": 2026,
+    "month": 8,
+    "week": 2,
+    "weekLabel": "2026년 8월 2주차",
+    "date": "2026-08-14",
+    "primaryDept": "디자인팀",
+    "prevWeekSections": [
+      {
+        "dept": "기획팀",
+        "deptColor": "text-tertiary",
+        "label": "기획_한상희 사원",
+        "items": [
+          "전국 수소충전소 실시간 현황 맵 요구사항 정의서 작성",
+          "기술분류체계(수소생산, 저장, 운송, 모빌리티) 메타데이터 정립"
+        ]
+      },
+      {
+        "dept": "디자인팀",
+        "deptColor": "text-primary-dim",
+        "label": "디자인_최지영 과장",
+        "items": [
+          "포털 메인 비주얼 콘셉트 3종(미래지향, 친환경, 데이터중심) 스케치"
+        ]
+      }
+    ],
+    "thisWeekSections": [
+      {
+        "dept": "디자인팀",
+        "deptColor": "text-primary-dim",
+        "label": "디자인_최지영 과장",
+        "items": [
+          "메인 시안 반응형 웹 디자인 작업 (데스크탑 / 태블릿 / 모바일)",
+          "디자인 시안 4종 내부 검토 및 고객사 중간보고자료 작성"
+        ]
+      },
+      {
+        "dept": "개발팀",
+        "deptColor": "text-primary",
+        "label": "개발_곽재훈 대리",
+        "items": [
+          "공공데이터포털 수소충전소 실시간 API 키 발급 및 연계 테스트 완료"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 202,
+    "type": "weekly",
+    "client": "한국건강가정진흥원",
+    "title": "2026 한국건강가정진흥원 통합 포털 사이트 UI/UX 고도화",
+    "period": "2026-05-02 ~ 2026-10-31",
+    "status": "in_progress",
+    "statusColor": "#785500",
+    "year": 2026,
+    "month": 8,
+    "week": 2,
+    "weekLabel": "2026년 8월 2주차",
+    "date": "2026-08-14",
+    "primaryDept": "퍼블리싱팀",
+    "prevWeekSections": [
+      {
+        "dept": "기획팀",
+        "deptColor": "text-tertiary",
+        "label": "기획_김종규 팀장",
+        "items": [
+          "가족상담 및 교육 신청 프로세스 IA(정보구조) 최종 확정"
+        ]
+      },
+      {
+        "dept": "퍼블리싱팀",
+        "deptColor": "text-primary",
+        "label": "퍼블리싱_조지혜 과장",
+        "items": [
+          "웹표준 및 웹접근성(KWCAG 2.2) 준수 템플릿 베이스라인 수립"
+        ]
+      }
+    ],
+    "thisWeekSections": [
+      {
+        "dept": "퍼블리싱팀",
+        "deptColor": "text-primary",
+        "label": "퍼블리싱_이재광 차장, 조지혜 과장",
+        "items": [
+          "가족상담 신청 폼 반응형 웹 마크업 및 접근성 검수",
+          "서브페이지 12종 HTML/CSS 템플릿 1차 코딩 완료"
+        ]
+      },
+      {
+        "dept": "디자인팀",
+        "deptColor": "text-primary-dim",
+        "label": "디자인_명희진 주임",
+        "items": [
+          "서브페이지 배너 및 아이콘 에셋 16종 납품 완료"
+        ]
+      }
+    ]
+  },
+  {
     "id": 1,
+    "type": "weekly",
     "client": "한국메세나협회",
     "title": "2026 한국메세나협회 문화기업업무추진비 지원사업 시스템 구축",
     "period": "2026-07-06 ~ 2026-08-14",
@@ -16,7 +220,7 @@
       {
         "dept": "개발팀",
         "deptColor": "text-primary",
-        "label": "전주",
+        "label": "개발_최우석 과장",
         "items": [
           "관리자 권한별 통계 대시보드 및 엑셀 다운로드 API 구현",
           "사용자 지원사업 신청 폼 1차 단위 테스트 및 데이터 검증 로직 작성"
@@ -25,7 +229,7 @@
       {
         "dept": "기획팀",
         "deptColor": "text-tertiary",
-        "label": "전주",
+        "label": "기획_장현아 수습",
         "items": [
           "사용자 / 관리자 시스템 운영 매뉴얼 초안 작성 완료"
         ]
@@ -35,43 +239,26 @@
       {
         "dept": "개발팀",
         "deptColor": "text-primary",
-        "label": "금주",
+        "label": "개발_최우석 과장, 안영재 대리",
         "items": [
           "사용자 / 관리자 페이지 전체 구현 완료",
-          "내부 디버깅 처리 완료",
-          "운영 배포 대기 중 (최종 보안 점검 완료)"
+          "내부 디버깅 및 보안 취약점 점검 완료",
+          "운영 서버 배포 대기 중 (최종 오픈 검수 준비)"
         ]
       },
       {
         "dept": "기획팀",
         "deptColor": "text-tertiary",
-        "label": "기획팀_장현아",
-        "items": [],
-        "comment": "이메일 | 개발일정 문의 → 개발서버 전달 완료 (8/14)"
-      }
-    ],
-    "sections": [
-      {
-        "dept": "개발팀",
-        "deptColor": "text-primary",
-        "label": "작업내역",
+        "label": "기획_장현아 수습",
         "items": [
-          "사용자 / 관리자 페이지 전체 구현 완료",
-          "내부 디버깅 처리 완료",
-          "운영 배포 대기 중"
+          "고객사 실무자 시스템 오픈 일정 조율 및 개발서버 전달 완료 (8/14)"
         ]
-      },
-      {
-        "dept": "기획팀",
-        "deptColor": "text-tertiary",
-        "label": "기획팀_장현아",
-        "items": [],
-        "comment": "이메일 | 개발일정 문의 → 개발서버 전달 완료 (8/14)"
       }
     ]
   },
   {
     "id": 2,
+    "type": "weekly",
     "client": "사단법인 한국능률협회",
     "title": "2026 국민취업지원제도 홈페이지 유지보수 및 기능 개선",
     "period": "2026-07-28 ~ 2026-12-31",
@@ -87,7 +274,7 @@
       {
         "dept": "개발팀",
         "deptColor": "text-primary",
-        "label": "전주",
+        "label": "개발_안영재 대리",
         "items": [
           "사후역량점검 테이블 스키마 최적화 및 인덱스 튜닝",
           "월간 운영 데이터 통계 보고서 작성 및 고객사 담당자 확인 완료"
@@ -98,43 +285,25 @@
       {
         "dept": "개발팀",
         "deptColor": "text-primary",
-        "label": "금주",
+        "label": "개발_안영재 대리",
         "items": [
-          "사후역량점검 완료 분기 로직 추가, 관련 alert 수정, 테스트서버/운영서버 반영",
+          "사후역량점검 완료 분기 로직 추가, 관련 alert 수정, 테스트/운영서버 반영",
           "회원가입 본인인증 모듈 취약점 패치 및 예외처리 적용"
         ]
       },
       {
         "dept": "기획팀",
         "deptColor": "text-tertiary",
-        "label": "기획팀_박규태 대리",
+        "label": "기획_박규태 대리",
         "items": [
           "8월 2차 정기 기능 개선 요구사항 접수 및 개발 일정 조율 완료"
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "dept": "개발팀",
-        "deptColor": "text-primary",
-        "label": "작업내역",
-        "items": [
-          "사후역량점검 완료 분기 로직 추가, 관련 alert 수정, 테스트서버/운영서버 반영",
-          "회원가입 본인인증 모듈 취약점 패치 및 예외처리 적용"
-        ]
-      },
-      {
-        "dept": "기획팀",
-        "deptColor": "text-tertiary",
-        "label": "기획팀_박규태 대리",
-        "items": [
-          "월간 운영 데이터 통계 보고서 작성 및 고객사 담당자 확인 완료"
         ]
       }
     ]
   },
   {
     "id": 3,
+    "type": "weekly",
     "client": "수소융합얼라이언스",
     "title": "2026 수소기술사업화 지원 플랫폼 구축 및 포털 개발",
     "period": "2026-06-26 ~ 2026-12-11",
@@ -150,16 +319,16 @@
       {
         "dept": "기획팀",
         "deptColor": "text-tertiary",
-        "label": "전주",
+        "label": "기획_한상희 사원",
         "items": [
           "수소 충전소 실시간 현황 맵 레이아웃 요구사항 정의",
-          "[국내_운영중_수소시험평가센터_조사양식_항목정의.xlsx] DB 양식 PPT 정리"
+          "[국내_운영중_수소시험평가센터_조사양식_항목정의.xlsx] DB 양식 정리"
         ]
       },
       {
         "dept": "디자인팀",
         "deptColor": "text-primary-dim",
-        "label": "전주",
+        "label": "디자인_윤익수 부장, 최지영 과장",
         "items": [
           "메인 구성관련 회의 및 정보구조도(IA) 확정",
           "메인시안관련 A, B, C안 스케치 및 레퍼런스 정리"
@@ -170,7 +339,7 @@
       {
         "dept": "디자인팀",
         "deptColor": "text-primary-dim",
-        "label": "금주",
+        "label": "디자인_최지영 과장, 신현우 주임",
         "items": [
           "메인 시안 반응형 웹 디자인 작업 완료 (데스크탑 / 모바일)",
           "디자인 시안 4종 내부 확인 및 피드백 반영 완료"
@@ -179,36 +348,16 @@
       {
         "dept": "개발팀",
         "deptColor": "text-primary",
-        "label": "금주",
+        "label": "개발_곽재훈 대리",
         "items": [
           "실시간 충전소 유가 및 충전 대기 차량 데이터 연계 API 설계 착수"
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "dept": "디자인팀",
-        "deptColor": "text-primary-dim",
-        "label": "디자인",
-        "items": [
-          "메인 구성관련 회의 및 정보구조도(IA) 확정",
-          "메인시안관련 A, B, C안 스케치 및 레퍼런스 정리",
-          "메인 시안 반응형 웹 디자인 작업 (데스크탑 / 모바일)"
-        ]
-      },
-      {
-        "dept": "기획팀",
-        "deptColor": "text-tertiary",
-        "label": "프로젝트 진행 중",
-        "items": [
-          "[국내_운영중_수소시험평가센터_조사양식_항목정의.xlsx] DB 양식 PPT 정리",
-          "메인 디자인 시안 4종 내부 확인 → 수정사항 디자인팀에게 전달"
         ]
       }
     ]
   },
   {
     "id": 4,
+    "type": "weekly",
     "client": "한국건강가정진흥원",
     "title": "2026 한국건강가정진흥원 통합 포털 사이트 UI/UX 고도화",
     "period": "2026-05-02 ~ 2026-10-31",
@@ -224,7 +373,7 @@
       {
         "dept": "기획팀",
         "deptColor": "text-tertiary",
-        "label": "전주",
+        "label": "기획_김종규 팀장",
         "items": [
           "가족상담 신청 프로세스 IA(정보구조) 설계 및 와이어프레임 작성 완료"
         ]
@@ -232,32 +381,13 @@
       {
         "dept": "디자인팀",
         "deptColor": "text-primary-dim",
-        "label": "전주",
+        "label": "디자인_명희진 주임",
         "items": [
           "메인 대시보드 및 서브페이지 UI 스타일 가이드 시안 2종 도출"
         ]
       }
     ],
     "thisWeekSections": [
-      {
-        "dept": "퍼블리싱팀",
-        "deptColor": "text-primary",
-        "label": "금주",
-        "items": [
-          "가족상담 신청 폼 반응형 웹 접근성(A11y) 마크업 가이드 준수 작업",
-          "서브페이지 12종 HTML/CSS 템플릿 검수 및 모바일 깨짐 수정"
-        ]
-      },
-      {
-        "dept": "디자인팀",
-        "deptColor": "text-primary-dim",
-        "label": "금주",
-        "items": [
-          "메인 배너 및 카드 일러스트 에셋 8종 최종 납품 완료"
-        ]
-      }
-    ],
-    "sections": [
       {
         "dept": "퍼블리싱팀",
         "deptColor": "text-primary",
@@ -279,6 +409,7 @@
   },
   {
     "id": 5,
+    "type": "weekly",
     "client": "인천국제공항공사",
     "title": "2026 인천공항테크마켓 플랫폼 API 연동 및 IDC 작업",
     "period": "2026-08-01 ~ 2026-09-30",
@@ -294,7 +425,7 @@
       {
         "dept": "개발팀",
         "deptColor": "text-primary",
-        "label": "전주",
+        "label": "개발_안영재 대리",
         "items": [
           "화물 터미널 실시간 반출입 모니터링 웹소켓 세션 안정화",
           "오라클 DB 쿼리 튜닝 및 느린 쿼리 알림 임계치 재설정"
@@ -302,24 +433,6 @@
       }
     ],
     "thisWeekSections": [
-      {
-        "dept": "개발팀",
-        "deptColor": "text-primary",
-        "label": "금주",
-        "items": [
-          "인천공항 IDC 센터 방문 및 연계 서버 API 프로토콜 점검",
-          "인증 토큰 갱신 배치 스케줄러 안정화 및 모니터링 적용"
-        ]
-      },
-      {
-        "dept": "전략본부",
-        "deptColor": "text-tertiary",
-        "label": "전략_남기현 본부장",
-        "items": [],
-        "comment": "고객사 IT운영팀 실무 미팅 진행 및 3단계 추가 요구사항 조율 완료"
-      }
-    ],
-    "sections": [
       {
         "dept": "개발팀",
         "deptColor": "text-primary",
@@ -333,13 +446,15 @@
         "dept": "전략본부",
         "deptColor": "text-tertiary",
         "label": "전략_남기현 본부장",
-        "items": [],
-        "comment": "고객사 IT운영팀 실무 미팅 진행 및 3단계 추가 요구사항 조율 완료"
+        "items": [
+          "고객사 IT운영팀 실무 미팅 진행 및 3단계 추가 요구사항 조율 완료"
+        ]
       }
     ]
   },
   {
     "id": 6,
+    "type": "weekly",
     "client": "주식회사 워드앤코드",
     "title": "2026 WnC 스마트 그룹웨어 리뉴얼 및 모바일 하이브리드 앱 구축",
     "period": "2026-08-01 ~ 2026-08-31",
@@ -355,7 +470,7 @@
       {
         "dept": "개발팀",
         "deptColor": "text-primary",
-        "label": "전주",
+        "label": "개발_최우석 과장, 안영재 대리",
         "items": [
           "GPS 기반 원클릭 출퇴근 및 오프라인 로컬 캐싱 동기화 구조 개발",
           "전자결재 및 지출결의서/품의서 폼 인터랙션 개발"
@@ -364,7 +479,7 @@
       {
         "dept": "디자인팀",
         "deptColor": "text-primary-dim",
-        "label": "전주",
+        "label": "디자인_윤익수 부장",
         "items": [
           "Glassmorphism & Bento Grid UI 테마 시스템 및 4대 컬러 모드 정립"
         ]
@@ -374,7 +489,7 @@
       {
         "dept": "퍼블리싱팀",
         "deptColor": "text-primary",
-        "label": "금주",
+        "label": "퍼블리싱_이재광 차장, 손석호 주임",
         "items": [
           "팀별·주간·일간 업무보고 뷰페이지 및 전주/금주 비교 레이아웃 구현",
           "전사 상단 탭 지출결의서 규격 100% 통일화",
@@ -389,24 +504,95 @@
           "전사 임직원 21명 계정 및 8월 근태/휴가 데이터 정합성 검증 완료"
         ]
       }
+    ]
+  },
+  {
+    "id": 301,
+    "type": "weekly",
+    "client": "사단법인 한국능률협회",
+    "title": "2026 국민취업지원제도 홈페이지 유지보수 및 기능 개선",
+    "period": "2026-07-28 ~ 2026-12-31",
+    "status": "in_progress",
+    "statusColor": "#785500",
+    "year": 2026,
+    "month": 8,
+    "week": 4,
+    "weekLabel": "2026년 8월 4주차",
+    "date": "2026-08-28",
+    "primaryDept": "개발팀",
+    "prevWeekSections": [
+      {
+        "dept": "개발팀",
+        "deptColor": "text-primary",
+        "label": "개발_안영재 대리",
+        "items": [
+          "사후역량점검 분기 로직 및 회원가입 본인인증 예외처리 반영 완료",
+          "월간 운영 통계 리포트 생성 스크립트 최적화"
+        ]
+      }
     ],
-    "sections": [
+    "thisWeekSections": [
+      {
+        "dept": "개발팀",
+        "deptColor": "text-primary",
+        "label": "개발_안영재 대리, 유종현 주임",
+        "items": [
+          "상담 이력 관리 데이터 암호화 적용 및 열람 권한 감사 로그 강화",
+          "모바일 웹 취약점 대응 및 크로스 브라우징 QA 테스트 진행"
+        ]
+      },
+      {
+        "dept": "기획팀",
+        "deptColor": "text-tertiary",
+        "label": "기획_박규태 대리",
+        "items": [
+          "9월 고용노동부 연계 개편안 검토 및 추가 과업 범위 협의"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 302,
+    "type": "weekly",
+    "client": "주식회사 워드앤코드",
+    "title": "2026 WnC 스마트 그룹웨어 리뉴얼 및 모바일 하이브리드 앱 구축",
+    "period": "2026-08-01 ~ 2026-08-31",
+    "status": "completed",
+    "statusColor": "#00693f",
+    "year": 2026,
+    "month": 8,
+    "week": 4,
+    "weekLabel": "2026년 8월 4주차",
+    "date": "2026-08-28",
+    "primaryDept": "퍼블리싱팀",
+    "prevWeekSections": [
+      {
+        "dept": "퍼블리싱팀",
+        "deptColor": "text-primary",
+        "label": "퍼블리싱_이재광 차장",
+        "items": [
+          "PC 전용 풀 와이드 웹 그룹웨어 포털(pc.html) 독립 신규 구축",
+          "모바일 & PC 10대 핵심 서비스 와이드 UI 및 인터랙티브 엔진 연동"
+        ]
+      }
+    ],
+    "thisWeekSections": [
       {
         "dept": "퍼블리싱팀",
         "deptColor": "text-primary",
         "label": "퍼블리싱_이재광 차장, 손석호 주임",
         "items": [
-          "M3 Material Design 및 Glassmorphism UI 전면 적용",
-          "10대 비즈니스 기능(투데이, 근태일지, 주소록, 재무, 할일, 프로젝트, 업무보고 등) 구현",
-          "100% 순수 인라인 SVG 벡터 아이콘 전환 및 최적화"
+          "팀별·주간·일간 업무보고 전 디바이스 독립 데이터 및 전용 뷰 렌더러 분리",
+          "PC 사이드바 접힘 모드 호버 툴팁 오버플로우 최적화",
+          "Android 릴리즈 APK 패키징 및 최종 검수 배포"
         ]
       },
       {
-        "dept": "경영지원팀",
-        "deptColor": "text-secondary",
-        "label": "경영지원_오은주 차장",
+        "dept": "수행본부",
+        "deptColor": "text-tertiary",
+        "label": "수행_김종규 본부장, 이채원 사원",
         "items": [
-          "전사 임직원 21명 계정 및 8월 근태/휴가 데이터 정합성 검증 완료"
+          "전사 임직원 21명 대상 실서비스 시범 운영 및 UX 사용성 피드백 수렴"
         ]
       }
     ]

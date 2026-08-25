@@ -6266,14 +6266,14 @@ const App = {
   changeReportWeek(delta) {
     let week = (this.state.workReportWeek || 3) + delta;
     if (week < 1) week = 1;
-    if (week > 5) week = 5;
+    if (week > 4) week = 4;
     this.state.workReportWeek = week;
     this.renderWorkReportControls();
     this.renderWorkReports();
   },
 
   changeReportDate(delta) {
-    const curr = new Date(this.state.workReportDate || '2026-08-21');
+    const curr = new Date(this.state.workReportDate || '2026-08-25');
     curr.setDate(curr.getDate() + delta);
     const y = curr.getFullYear();
     const m = String(curr.getMonth() + 1).padStart(2, '0');
@@ -6307,16 +6307,23 @@ const App = {
       const year = this.state.workReportYear || 2026;
       const month = this.state.workReportMonth || 8;
       const week = this.state.workReportWeek || 3;
+      const weekDateRanges = {
+        1: `${month}월 3일(월) ~ ${month}월 7일(금)`,
+        2: `${month}월 10일(월) ~ ${month}월 14일(금)`,
+        3: `${month}월 17일(월) ~ ${month}월 21일(금)`,
+        4: `${month}월 24일(월) ~ ${month}월 28일(금)`
+      };
+      const rangeText = weekDateRanges[week] || `${month}월 ${week}주차`;
 
       container.innerHTML = `
-        <!-- Weekly Selector (Exact Stitch Design) -->
+        <!-- Weekly Selector -->
         <div class="flex items-center justify-between bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/10 shadow-xs">
           <button type="button" onclick="App.changeReportWeek(-1)" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors active:scale-95" title="이전 주">
             ${getSvgIcon('chevron_left', 'w-5 h-5')}
           </button>
           <div class="text-center">
             <h3 class="font-headline font-bold text-base text-primary">${year}년 ${month}월 ${week}주차</h3>
-            <p class="font-body text-[11px] text-on-surface-variant font-medium mt-0.5">${month}월 17일(월) ~ ${month}월 21일(금)</p>
+            <p class="font-body text-[11px] text-on-surface-variant font-medium mt-0.5">${rangeText}</p>
           </div>
           <button type="button" onclick="App.changeReportWeek(1)" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors active:scale-95" title="다음 주">
             ${getSvgIcon('chevron_right', 'w-5 h-5')}
@@ -6324,7 +6331,7 @@ const App = {
         </div>
       `;
     } else if (tab === 'daily') {
-      const dateStr = this.state.workReportDate || '2026-08-21';
+      const dateStr = this.state.workReportDate || '2026-08-25';
       const d = new Date(dateStr);
       const days = ['일', '월', '화', '수', '목', '금', '토'];
       const dayName = days[d.getDay()];
@@ -6337,7 +6344,7 @@ const App = {
           </button>
           <div class="text-center">
             <h3 class="font-headline font-bold text-base text-primary">${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 (${dayName})</h3>
-            <p class="font-body text-[11px] text-secondary font-bold mt-0.5">금일 업무 진행 현황</p>
+            <p class="font-body text-[11px] text-secondary font-bold mt-0.5">금일 일일 업무 진행 현황</p>
           </div>
           <button type="button" onclick="App.changeReportDate(1)" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors active:scale-95" title="다음 날">
             ${getSvgIcon('chevron_right', 'w-5 h-5')}
@@ -6346,14 +6353,14 @@ const App = {
       `;
     } else if (tab === 'team') {
       const currentTeam = this.state.workReportTeam || 'all';
-      const teams = ['all', '경영지원팀', '기획팀', '디자인팀', '퍼블리싱팀', '개발팀', '전략본부', '수행본부'];
+      const teams = ['all', '개발팀', '퍼블리싱팀', '디자인팀', '기획팀', '경영지원팀', '전략본부', '수행본부'];
       const teamLabels = {
         all: '전체',
-        경영지원팀: '경영지원',
-        기획팀: '기획',
-        디자인팀: '디자인',
-        퍼블리싱팀: '퍼블리싱',
         개발팀: '개발',
+        퍼블리싱팀: '퍼블리싱',
+        디자인팀: '디자인',
+        기획팀: '기획',
+        경영지원팀: '경영지원',
         전략본부: '전략본부',
         수행본부: '수행본부'
       };
@@ -6381,148 +6388,269 @@ const App = {
     if (!container) return;
 
     const tab = this.state.workReportTab || 'weekly';
-    const allReports = (this.state.workReports && this.state.workReports.length > 0)
-      ? this.state.workReports
-      : ((window.MockData && window.MockData.workReports) || []);
 
-    let filtered = [...allReports];
+    // 1. 주간 업무보고 탭
+    if (tab === 'weekly') {
+      const week = this.state.workReportWeek || 3;
+      const allReports = (this.state.workReports && this.state.workReports.length > 0)
+        ? this.state.workReports
+        : ((window.MockData && window.MockData.workReports) || []);
 
-    if (tab === 'team') {
-      const selectedTeam = this.state.workReportTeam || 'all';
-      if (selectedTeam !== 'all') {
-        filtered = filtered.filter(r => {
-          return r.primaryDept === selectedTeam || (r.sections && r.sections.some(s => s.dept === selectedTeam));
-        });
+      const filtered = allReports.filter(r => r.week === week || (!r.week && week === 3));
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-xs">
+            ${getSvgIcon('assignment', 'w-10 h-10 text-outline mb-2 mx-auto')}
+            <p class="font-bold text-on-surface">선택하신 8월 ${week}주차에 등록된 주간 업무보고가 없습니다.</p>
+            <p class="text-xs text-on-surface-variant mt-1">상단 화살표를 눌러 다른 주차를 확인해 보세요.</p>
+          </div>
+        `;
+        return;
       }
-    }
 
-    if (filtered.length === 0) {
-      container.innerHTML = `
-        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-xs">
-          ${getSvgIcon('assignment', 'w-10 h-10 text-outline mb-2 mx-auto')}
-          <p>등록된 업무보고 내역이 없습니다.</p>
-        </div>
-      `;
+      const renderSectionBlock = (sections) => {
+        if (!sections || sections.length === 0) return '';
+        return sections.map((sec, idx) => {
+          const divider = idx > 0 ? `<div class="h-px w-full bg-outline-variant/15 my-1"></div>` : '';
+
+          let itemsHtml = '';
+          if (sec.items && sec.items.length > 0) {
+            itemsHtml = `
+              <ul class="text-xs sm:text-sm text-on-surface-variant space-y-1 pl-1 list-disc list-inside mt-1 font-body leading-relaxed">
+                ${sec.items.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            `;
+          }
+
+          let commentHtml = '';
+          if (sec.comment) {
+            commentHtml = `
+              <p class="text-xs sm:text-sm text-error-dim pl-1 mt-1 font-medium font-body leading-relaxed">
+                ${sec.comment}
+              </p>
+            `;
+          }
+
+          const isGenericLabel = !sec.label || ['전주', '금주', '전주 실적', '금주 진행', '작업내역', '디자인', '개발', '기획', '퍼블리싱', '프로젝트 진행 중'].includes(sec.label.trim());
+          const labelHtml = isGenericLabel ? '' : `<span class="text-xs font-semibold text-on-surface">${sec.label}</span>`;
+
+          return `
+            ${divider}
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="text-xs font-bold ${sec.deptColor || 'text-primary'}">${sec.dept}</span>
+                ${labelHtml}
+              </div>
+              ${itemsHtml}
+              ${commentHtml}
+            </div>
+          `;
+        }).join('');
+      };
+
+      const alternatingThemes = [
+        {
+          borderLeft: 'border-l-[5px] border-l-primary',
+          badgeBg: 'bg-primary/10 text-primary border border-primary/20'
+        },
+        {
+          borderLeft: 'border-l-[5px] border-l-[#00693f]',
+          badgeBg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border border-[#00693f]/20'
+        }
+      ];
+
+      container.innerHTML = filtered.map((report, rIdx) => {
+        const theme = alternatingThemes[rIdx % alternatingThemes.length];
+        const prevSections = report.prevWeekSections || [];
+        const thisSections = report.thisWeekSections || report.sections || [];
+
+        return `
+          <article class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.04)] hover:-translate-y-0.5 transition-all duration-200 text-left ${theme.borderLeft}">
+            <div class="min-w-0">
+              <span class="text-xs font-semibold ${theme.badgeBg} px-2.5 py-1 rounded-md mb-2 inline-block shadow-xs">${report.client}</span>
+              <h3 class="font-headline font-bold text-on-surface leading-snug text-base sm:text-lg hover:text-primary transition-colors">${report.title}</h3>
+              <p class="text-xs text-on-surface-variant mt-1.5 font-medium flex items-center gap-1">
+                ${getSvgIcon('schedule', 'w-3.5 h-3.5 text-outline')}
+                <span>${report.period}</span>
+              </p>
+            </div>
+
+            <div class="flex flex-col gap-3.5">
+              <!-- 1. [전주] 실적 박스 -->
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-1.5 px-0.5">
+                  <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-surface-container-highest text-on-surface flex items-center gap-1 shadow-2xs">
+                    ${getSvgIcon('history', 'w-3.5 h-3.5 text-outline')}
+                    <span>전주 실적</span>
+                  </span>
+                </div>
+                <div class="bg-surface-container-lowest rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/15">
+                  ${renderSectionBlock(prevSections)}
+                </div>
+              </div>
+
+              <!-- 2. [금주] 계획 및 진행 박스 -->
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-1.5 px-0.5">
+                  <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-primary/10 text-primary border border-primary/20 flex items-center gap-1 shadow-2xs">
+                    ${getSvgIcon('trending_up', 'w-3.5 h-3.5 text-primary')}
+                    <span>금주 계획 및 진행</span>
+                  </span>
+                </div>
+                <div class="bg-surface-container-lowest rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/15">
+                  ${renderSectionBlock(thisSections)}
+                </div>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
       return;
     }
 
-    // Helper for rendering section items (팀별 전주/금주 중복 표기 제거)
-    const renderSectionBlock = (sections) => {
-      if (!sections || sections.length === 0) return '';
-      return sections.map((sec, idx) => {
-        const divider = idx > 0 ? `<div class="h-px w-full bg-outline-variant/15 my-1"></div>` : '';
+    // 2. 일간 업무보고 탭
+    if (tab === 'daily') {
+      const dateStr = this.state.workReportDate || '2026-08-25';
+      const dailyList = (window.MockData && window.MockData.dailyWorkReports) || [];
+      const filtered = dailyList.filter(d => d.date === dateStr);
 
-        let itemsHtml = '';
-        if (sec.items && sec.items.length > 0) {
-          itemsHtml = `
-            <ul class="text-xs sm:text-sm text-on-surface-variant space-y-1 pl-1 list-disc list-inside mt-1 font-body leading-relaxed">
-              ${sec.items.map(item => `<li>${item}</li>`).join('')}
-            </ul>
-          `;
-        }
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-xs">
+            ${getSvgIcon('event_note', 'w-10 h-10 text-outline mb-2 mx-auto')}
+            <p class="font-bold text-on-surface">${dateStr} 일자에 등록된 일간 업무보고가 없습니다.</p>
+            <p class="text-xs text-on-surface-variant mt-1">상단 날짜 변경 버튼으로 8월 25일, 24일, 21일 등을 확인해 보세요.</p>
+          </div>
+        `;
+        return;
+      }
 
-        let commentHtml = '';
-        if (sec.comment) {
-          commentHtml = `
-            <p class="text-xs sm:text-sm text-error-dim pl-1 mt-1 font-medium font-body leading-relaxed">
-              ${sec.comment}
-            </p>
-          `;
-        }
-
-        // '전주', '금주', '전주 실적', '금주 진행', '작업내역' 등 중복 라벨은 제거하고 의미있는 담당자/업무명만 표시
-        const isGenericLabel = !sec.label || ['전주', '금주', '전주 실적', '금주 진행', '작업내역', '디자인', '개발', '기획', '퍼블리싱', '프로젝트 진행 중'].includes(sec.label.trim());
-        const labelHtml = isGenericLabel ? '' : `<span class="text-xs font-semibold text-on-surface">${sec.label}</span>`;
+      container.innerHTML = filtered.map(item => {
+        const isDone = item.status === 'completed';
+        const statusBadge = isDone
+          ? `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border border-[#00693f]/20">완료</span>`
+          : `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-primary/10 text-primary border border-primary/20">진행중</span>`;
 
         return `
-          ${divider}
-          <div>
-            <div class="flex items-center gap-2 mb-0.5">
-              <span class="text-xs font-bold ${sec.deptColor || 'text-primary'}">${sec.dept}</span>
-              ${labelHtml}
+          <article class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.04)] border-l-[5px] border-l-primary text-left">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-semibold bg-surface-container-highest text-on-surface px-2.5 py-1 rounded-md shadow-xs">${item.client}</span>
+                  <span class="text-xs font-bold text-primary px-2 py-0.5 bg-primary/10 rounded-md">${item.primaryDept}</span>
+                  ${statusBadge}
+                </div>
+                <h3 class="font-headline font-bold text-on-surface text-base sm:text-lg leading-snug">${item.project}</h3>
+                <p class="text-xs text-on-surface-variant mt-1 flex items-center gap-1 font-medium">
+                  ${getSvgIcon('person', 'w-3.5 h-3.5 text-outline')}
+                  <span>작성자/담당: <strong class="text-on-surface">${item.author}</strong></span>
+                </p>
+              </div>
             </div>
-            ${itemsHtml}
-            ${commentHtml}
-          </div>
+
+            <!-- 금일 수행 업무 박스 -->
+            <div class="bg-surface-container-lowest rounded-xl p-4 shadow-xs border border-outline-variant/15 flex flex-col gap-2">
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="w-2 h-2 rounded-full bg-primary"></span>
+                <h4 class="text-xs font-bold text-primary">금일 수행 업무 (Today)</h4>
+              </div>
+              <ul class="text-xs sm:text-sm text-on-surface-variant space-y-1.5 pl-2 list-disc list-inside font-body leading-relaxed">
+                ${item.todayTasks.map(t => `<li>${t}</li>`).join('')}
+              </ul>
+            </div>
+
+            <!-- 명일 예정 업무 박스 -->
+            <div class="bg-surface-container-lowest rounded-xl p-4 shadow-xs border border-outline-variant/15 flex flex-col gap-2">
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="w-2 h-2 rounded-full bg-[#00693f]"></span>
+                <h4 class="text-xs font-bold text-[#00693f] dark:text-emerald-300">명일 예정 업무 (Tomorrow Plan)</h4>
+              </div>
+              <ul class="text-xs sm:text-sm text-on-surface-variant space-y-1.5 pl-2 list-disc list-inside font-body leading-relaxed">
+                ${item.tomorrowTasks.map(t => `<li>${t}</li>`).join('')}
+              </ul>
+            </div>
+
+            ${item.note ? `
+              <div class="text-[11px] text-on-surface-variant bg-surface-container p-2.5 rounded-lg flex items-center gap-1.5">
+                ${getSvgIcon('info', 'w-3.5 h-3.5 text-outline shrink-0')}
+                <span>${item.note}</span>
+              </div>
+            ` : ''}
+          </article>
         `;
       }).join('');
-    };
+      return;
+    }
 
-    // 프로젝트 교차(Alternating) 테마 컬러 매핑 (블루 ↔ 그린 교차 패턴)
-    const alternatingThemes = [
-      { // Theme A: WnC Primary Deep Blue
-        borderLeft: 'border-l-[5px] border-l-primary',
-        badgeBg: 'bg-primary/10 text-primary border border-primary/20'
-      },
-      { // Theme B: WnC Secondary Forest Green
-        borderLeft: 'border-l-[5px] border-l-[#00693f]',
-        badgeBg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border border-[#00693f]/20'
-      }
-    ];
+    // 3. 팀별 업무보고 탭
+    if (tab === 'team') {
+      const selectedTeam = this.state.workReportTeam || 'all';
+      const teamList = (window.MockData && window.MockData.teamWorkReports) || [];
+      const filtered = selectedTeam === 'all' ? teamList : teamList.filter(t => t.dept === selectedTeam || t.deptName === selectedTeam);
 
-    container.innerHTML = filtered.map((report, rIdx) => {
-      const theme = alternatingThemes[rIdx % alternatingThemes.length];
-      const prevSections = report.prevWeekSections || [];
-      const thisSections = report.thisWeekSections || report.sections || [];
-
-      let contentHtml = '';
-
-      if (prevSections.length > 0) {
-        // 전주 & 금주 주간업무 (완벽히 통일된 Bento 박스 및 뱃지 규격)
-        contentHtml = `
-          <!-- 1. [전주] 주간 업무 내용 (상단 박스) -->
-          <div class="space-y-1.5">
-            <div class="flex items-center gap-1.5 px-0.5">
-              <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-surface-container-highest text-on-surface flex items-center gap-1 shadow-2xs">
-                ${getSvgIcon('history', 'w-3.5 h-3.5 text-outline')}
-                <span>전주</span>
-              </span>
-            </div>
-            <div class="bg-surface-container-lowest rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/15">
-              ${renderSectionBlock(prevSections)}
-            </div>
-          </div>
-
-          <!-- 2. [금주] 주간 업무 내용 (하단 박스 - 전주와 100% 동일 규격) -->
-          <div class="space-y-1.5">
-            <div class="flex items-center gap-1.5 px-0.5">
-              <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-surface-container-highest text-on-surface flex items-center gap-1 shadow-2xs">
-                ${getSvgIcon('trending_up', 'w-3.5 h-3.5 text-outline')}
-                <span>금주</span>
-              </span>
-            </div>
-            <div class="bg-surface-container-lowest rounded-md p-3.5 flex flex-col gap-2.5 shadow-xs border border-outline-variant/15">
-              ${renderSectionBlock(thisSections)}
-            </div>
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-xs">
+            ${getSvgIcon('group', 'w-10 h-10 text-outline mb-2 mx-auto')}
+            <p class="font-bold text-on-surface">선택하신 부서(${selectedTeam})의 등록된 업무보고가 없습니다.</p>
           </div>
         `;
-      } else {
-        // 단일 섹션
-        contentHtml = `
-          <div class="bg-surface-container-lowest rounded-md p-4 flex flex-col gap-3 shadow-xs border border-outline-variant/15">
-            ${renderSectionBlock(thisSections)}
-          </div>
-        `;
+        return;
       }
 
-      return `
-        <!-- Work Report Card (프로젝트 좌측 액센트 바 & 교차 색상 Bento Card) -->
-        <article class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.04)] hover:-translate-y-0.5 transition-all duration-200 text-left ${theme.borderLeft}">
-          <div class="min-w-0">
-            <span class="text-xs font-semibold ${theme.badgeBg} px-2.5 py-1 rounded-md mb-2 inline-block shadow-xs">${report.client}</span>
-            <h3 class="font-headline font-bold text-on-surface leading-snug text-base sm:text-lg hover:text-primary transition-colors">${report.title}</h3>
-            <p class="text-xs text-on-surface-variant mt-1.5 font-medium flex items-center gap-1">
-              ${getSvgIcon('schedule', 'w-3.5 h-3.5 text-outline')}
-              <span>${report.period}</span>
-            </p>
-          </div>
+      container.innerHTML = filtered.map(team => {
+        const membersBadges = team.members.map(m => `
+          <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container-highest text-on-surface shadow-2xs">
+            ${m.name} ${m.role}
+          </span>
+        `).join('');
 
-          <div class="flex flex-col gap-3.5">
-            ${contentHtml}
+        const projectCards = team.projects.map(p => `
+          <div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/15 shadow-xs flex flex-col gap-2">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="text-xs font-bold text-primary">${p.client}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary">${p.status} (${p.progress})</span>
+            </div>
+            <h5 class="font-bold text-sm text-on-surface">${p.title}</h5>
+            <ul class="text-xs text-on-surface-variant space-y-1 pl-2 list-disc list-inside leading-relaxed mt-1 font-body">
+              ${p.tasks.map(t => `<li>${t}</li>`).join('')}
+            </ul>
           </div>
-        </article>
-      `;
-    }).join('');
+        `).join('');
+
+        return `
+          <article class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-4 shadow-[0_2px_12px_rgba(35,44,81,0.04)] border-l-[5px] border-l-primary text-left">
+            <div class="flex items-start justify-between gap-2 flex-wrap">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <h3 class="font-headline font-bold text-lg text-primary">${team.deptName}</h3>
+                  <span class="text-xs font-bold text-on-surface-variant">팀장: ${team.leader}</span>
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap mt-2">
+                  ${membersBadges}
+                </div>
+              </div>
+            </div>
+
+            <!-- 팀 총괄 요약 브리핑 박스 -->
+            <div class="bg-primary/5 rounded-2xl p-3.5 border border-primary/15 flex items-start gap-2">
+              ${getSvgIcon('assignment', 'w-4 h-4 text-primary shrink-0 mt-0.5')}
+              <p class="text-xs sm:text-sm font-medium text-on-surface leading-relaxed">${team.summary}</p>
+            </div>
+
+            <!-- 전담 프로젝트별 업무 현황 리스트 -->
+            <div class="space-y-3">
+              <h4 class="text-xs font-bold text-on-surface-variant flex items-center gap-1 px-0.5">
+                ${getSvgIcon('folder', 'w-3.5 h-3.5 text-outline')}
+                <span>진행 프로젝트 및 세부 업무 (${team.projects.length}건)</span>
+              </h4>
+              ${projectCards}
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
   },
 
   // Toast System
