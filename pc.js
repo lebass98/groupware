@@ -733,7 +733,7 @@ const PCApp = {
               근태 & 출/퇴근
             </span>
             <span class="pc-commute-status-pill ${this.state.isCheckedIn ? 'checked-in' : ''}">
-              <span class="w-2.5 h-2.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
+              <span class="w-1.5 h-1.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
               ${this.state.isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}
             </span>
           </div>
