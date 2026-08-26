@@ -711,7 +711,7 @@ const PCApp = {
       `;
     }
 
-    // 3. Today's Schedule Card (모바일 투데이 Parity 독립 카드)
+    // 3. Today's Schedule Card (근태일지 페이지와 100% 동일한 폼 및 데이터 바인딩)
     const todaySchedWrap = document.getElementById('pc-widget-today-schedule');
     if (todaySchedWrap) {
       const now = new Date();
@@ -740,76 +740,7 @@ const PCApp = {
           </div>
 
           <div class="space-y-2.5">
-            ${todaySchedules.length > 0 ? todaySchedules.map(s => {
-              const isHoliday = (
-                s.badge === '공휴일' ||
-                s.badge === '기념일' ||
-                s.badge === '절기' ||
-                s.title.includes('공휴일') ||
-                s.title.includes('기념일') ||
-                s.title.includes('절기') ||
-                s.author === '공휴일' ||
-                s.author === '기념일' ||
-                s.author === '24절기' ||
-                s.author === '대한민국 공휴일' ||
-                s.author === '회사공지'
-              );
-
-              let dotClass = 'bg-secondary';
-              let badgeBg = 'bg-secondary-container text-secondary';
-              const titleStr = s.title || '';
-              const badgeStr = s.badge || '';
-              const locationStr = (s.location || '').trim();
-
-              if (isHoliday) {
-                dotClass = 'bg-error';
-                badgeBg = 'bg-error-container text-error';
-              } else if (titleStr.includes('반차') || badgeStr.includes('반차')) {
-                dotClass = 'bg-tertiary';
-                badgeBg = 'bg-tertiary-container text-tertiary';
-              } else if (titleStr.includes('외근') || badgeStr.includes('외근')) {
-                dotClass = 'bg-primary';
-                badgeBg = 'bg-primary-container text-primary';
-              } else if (titleStr.includes('연차') || badgeStr.includes('연차')) {
-                dotClass = 'bg-secondary';
-                badgeBg = 'bg-secondary-container text-secondary';
-              }
-
-              const imgHtml = isHoliday ? '' : `<img src="${s.avatar || './profile.png'}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 border border-outline/30" />`;
-              const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-on-surface leading-none flex items-center shrink-0">${s.author || '이재광 차장'}</span>`;
-              const locationBadgeHtml = locationStr ? `
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
-                  <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                  <span>${locationStr}</span>
-                </span>
-              ` : '';
-              const cleanTitle = this.formatScheduleCleanLabel(s);
-
-              return `
-                <div class="p-3 bg-surface-container-low rounded-xl border border-outline hover:border-primary hover:shadow-xs transition-all flex items-center justify-between gap-3 cursor-pointer group" onclick="PCApp.selectDate('${todayDateKey}'); PCApp.switchScreen('calendar');">
-                  <div class="flex items-center gap-3 min-w-0 flex-1">
-                    <div class="flex items-center gap-2 shrink-0">
-                      <div class="w-2.5 h-2.5 rounded-full ${dotClass} shrink-0"></div>
-                      ${imgHtml}
-                    </div>
-                    <div class="min-w-0 flex-1 text-left flex flex-col justify-center">
-                      <div class="flex items-center gap-1.5 mb-1 flex-wrap min-w-0">
-                        ${authorText}
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold leading-none shrink-0 ${badgeBg}">${s.badge || '일정'}</span>
-                        ${locationBadgeHtml}
-                      </div>
-                      <h4 class="font-bold text-sm text-on-surface truncate leading-snug">${cleanTitle}</h4>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-2 shrink-0">
-                    <span class="text-xs font-bold text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-lg leading-none shrink-0">${s.time || '종일'}</span>
-                    <svg class="w-4 h-4 text-on-surface-variant/70 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-                    </svg>
-                  </div>
-                </div>
-              `;
-            }).join('') : `
+            ${todaySchedules.length > 0 ? todaySchedules.map(s => this.getScheduleCardHtml({ ...s, dateKey: todayDateKey })).join('') : `
               <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-xl">
                 <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
