@@ -978,91 +978,139 @@ const PCApp = {
     }
   },
 
-  // 5-2. Top Full-Span Company Schedule Widget (2열+3열 상단 통합 회사 일정 위젯)
+  // 5-2. Top Center Column: Simplified Attendance Calendar Widget (2열 최상단 근태일지 간소화 달력 위젯)
   renderCompanyScheduleWidget() {
     const schedWrap = document.getElementById('pc-widget-company-schedule');
-    if (schedWrap) {
-      const now = new Date();
-      const todayYear = now.getFullYear();
-      const todayMonth = now.getMonth() + 1;
-      const todayDay = now.getDate();
-      const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-      const dayOfWeekStr = dayNames[now.getDay()];
-      const todayDateKey = `${todayYear}-${todayMonth}-${todayDay}`;
+    if (!schedWrap) return;
 
-      const todaySchedules = this.getSchedulesForDay(todayYear, todayMonth, todayDay) || [];
+    const year = this.state.calYear || 2026;
+    const month = this.state.calMonth || 8;
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    const lastDate = new Date(year, month, 0).getDate();
+    const now = new Date();
 
-      schedWrap.innerHTML = `
-        <div class="pc-bento-card">
-          <div class="pc-card-header mb-3.5">
-            <div class="flex items-center gap-2.5">
-              <span class="pc-card-title flex items-center gap-2">
-                <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
-                </svg>
-                회사 일정
-              </span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${todayMonth}월 ${todayDay}일 (${dayOfWeekStr}) · 총 ${todaySchedules.length}건</span>
-            </div>
-            <button class="pc-card-action flex items-center gap-1" onclick="PCApp.switchScreen('request')">
-              <span>+ 일정 신청</span>
-            </button>
+    // Calculate monthly total
+    let monthTotalScheds = 0;
+    for (let d = 1; d <= lastDate; d++) {
+      const schs = this.getSchedulesForDay(year, month, d) || [];
+      monthTotalScheds += schs.length;
+    }
+
+    schedWrap.innerHTML = `
+      <div class="pc-bento-card">
+        <div class="pc-card-header mb-3">
+          <div class="flex items-center gap-2.5">
+            <span class="pc-card-title flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+              </svg>
+              근태일지
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${year}년 ${month}월 · 총 ${monthTotalScheds}건</span>
           </div>
 
-          <div class="space-y-2.5">
-            ${todaySchedules.length > 0 ? todaySchedules.map(s => this.getScheduleCardHtml({ ...s, dateKey: todayDateKey })).join('') : `
-              <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-xl">
-                <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
-                </svg>
-                <p class="font-bold text-sm text-on-surface">오늘 등록된 회사 일정이 없습니다.</p>
-              </div>
-            `}
+          <!-- Month Controls & Action Buttons -->
+          <div class="flex items-center gap-2">
+            <div class="flex items-center bg-surface-container-low border border-outline rounded-lg p-0.5">
+              <button type="button" class="p-1 hover:bg-surface-container rounded text-on-surface transition-colors" onclick="PCApp.changeDashboardCalMonth(-1)" title="이전 달">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              </button>
+              <span class="px-2 font-bold text-xs text-on-surface min-w-[70px] text-center">${year}.${String(month).padStart(2, '0')}</span>
+              <button type="button" class="p-1 hover:bg-surface-container rounded text-on-surface transition-colors" onclick="PCApp.changeDashboardCalMonth(1)" title="다음 달">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+              </button>
+            </div>
+            <button class="pc-card-action text-xs" onclick="PCApp.switchScreen('calendar')">전체보기</button>
           </div>
         </div>
-      `;
-    }
+
+        <!-- Simplified Calendar Grid in Dashboard Card -->
+        <div>
+          <!-- Day of week header -->
+          <div class="grid grid-cols-7 gap-1.5 mb-1.5 text-center font-bold text-xs select-none">
+            <div class="py-1 rounded bg-red-500/10 text-red-600 dark:text-red-400">일</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">월</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">화</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">수</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">목</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">금</div>
+            <div class="py-1 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">토</div>
+          </div>
+
+          <!-- Calendar Days Grid -->
+          <div class="grid grid-cols-7 gap-1.5">
+            ${this.generateDashboardCalGridHTML(year, month, firstDay, lastDate, now)}
+          </div>
+        </div>
+      </div>
+    `;
   },
 
   // Calendar Grid Generator (Dashboard Widget)
-  generateCalGridHTML() {
-    const year = this.state.calYear;
-    const month = this.state.calMonth - 1; // 0-indexed
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDate = new Date(year, month + 1, 0).getDate();
-    const now = new Date();
-
+  generateDashboardCalGridHTML(year, month, firstDay, lastDate, now) {
     let html = '';
+
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
-      html += `<div class="pc-cal-cell empty"></div>`;
+      html += `<div class="min-h-[64px] p-1.5 bg-surface-container-lowest/40 border border-outline/30 rounded-lg opacity-40"></div>`;
     }
 
     // Days
     for (let d = 1; d <= lastDate; d++) {
-      const key = `${year}-${month + 1}-${d}`;
-      const isToday = (d === now.getDate() && (month + 1) === (now.getMonth() + 1) && year === now.getFullYear());
-      
-      const daySchedules = this.getSchedulesForDay(year, month + 1, d);
+      const key = `${year}-${month}-${d}`;
+      const isToday = (d === now.getDate() && month === (now.getMonth() + 1) && year === now.getFullYear());
+      const dayOfWeek = (firstDay + d - 1) % 7;
+      const isSunday = (dayOfWeek === 0);
+      const isSaturday = (dayOfWeek === 6);
+
+      const daySchedules = this.getSchedulesForDay(year, month, d) || [];
+      const topScheds = daySchedules.slice(0, 2);
+      const extraCount = daySchedules.length - topScheds.length;
+
+      let dateNumClass = 'text-on-surface';
+      if (isSunday) dateNumClass = 'text-red-500 font-bold';
+      else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
 
       html += `
-        <div class="pc-cal-cell ${isToday ? 'today' : ''}" onclick="PCApp.openDateScheduleModal('${key}')">
-          <div class="pc-cal-header-row">
-            <span class="pc-cal-date-num">${d}</span>
-            ${daySchedules.length > 0 ? `<span class="pc-cal-count-badge">+${daySchedules.length}</span>` : ''}
+        <div class="min-h-[64px] p-1.5 bg-surface-container-low border border-outline/70 hover:border-primary hover:bg-primary/5 hover:shadow-2xs rounded-lg transition-all cursor-pointer flex flex-col justify-between group ${isToday ? 'ring-2 ring-primary bg-primary/10' : ''}" onclick="PCApp.openDateScheduleModal('${key}')" title="클릭하여 ${month}월 ${d}일 일정 상세 보기">
+          <div class="flex items-center justify-between mb-0.5">
+            <span class="text-xs font-extrabold ${dateNumClass} ${isToday ? 'w-4 h-4 rounded-full bg-primary text-white flex items-center justify-center text-[10px]' : ''}">${d}</span>
+            ${daySchedules.length > 0 ? `<span class="text-[9px] font-bold px-1 rounded-full bg-surface-container text-on-surface-variant group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}</span>` : ''}
           </div>
-          <div class="pc-cal-events-wrap">
-            ${daySchedules.map(s => `
-              <span class="pc-cal-event-tag ${this.getScheduleTagClass(s)}" title="${this.formatScheduleCleanLabel(s)}">
-                ${this.formatScheduleCleanLabel(s)}
-              </span>
-            `).join('')}
+
+          <div class="space-y-0.5 flex-1 overflow-hidden">
+            ${topScheds.map(s => {
+              const tagClass = this.getScheduleTagClass(s);
+              const cleanLabel = this.formatScheduleCleanLabel(s);
+              return `
+                <div class="text-[9px] px-1 py-0.2 rounded truncate font-medium ${tagClass}" title="${cleanLabel}">
+                  ${cleanLabel}
+                </div>
+              `;
+            }).join('')}
+            ${extraCount > 0 ? `<div class="text-[8px] text-on-surface-variant font-bold px-0.5">+${extraCount}건</div>` : ''}
           </div>
         </div>
       `;
     }
 
     return html;
+  },
+
+  changeDashboardCalMonth(offset) {
+    let y = this.state.calYear || 2026;
+    let m = this.state.calMonth || 8;
+    m += offset;
+    if (m < 1) {
+      m = 12;
+      y--;
+    } else if (m > 12) {
+      m = 1;
+      y++;
+    }
+    this.state.calYear = y;
+    this.state.calMonth = m;
+    this.renderCompanyScheduleWidget();
   },
 
   // 5-3. Right Column (하단 서브 3열)
