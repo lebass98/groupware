@@ -785,19 +785,19 @@ strong {
   border: 2px solid var(--surface-container-lowest);
 }
 
-/* 3. Full-Width Bento Dashboard (3 Columns: 320px 1fr 340px) */
+/* 3. Full-Width Bento Dashboard (3 Columns: 320px 1fr 1fr - 2열과 3열 동일 너비) */
 .pc-dashboard-container {
   padding: 24px 36px 48px 36px;
   width: 100%;
   display: grid;
-  grid-template-columns: 320px 1fr 340px;
+  grid-template-columns: 320px 1fr 1fr;
   gap: 24px;
   align-items: start;
 }
 
 @media (max-width: 1560px) {
   .pc-dashboard-container {
-    grid-template-columns: 290px 1fr 320px;
+    grid-template-columns: 290px 1fr 1fr;
     gap: 20px;
     padding: 24px 28px;
   }
