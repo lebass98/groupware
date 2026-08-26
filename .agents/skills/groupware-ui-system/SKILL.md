@@ -81,7 +81,7 @@ const iconHtml = getSvgIcon('notifications', 'w-5 h-5 text-primary');
 1. **메뉴 (`screen-home`)**: `grid_view`
 2. **투데이 (`screen-today`)**: `today`
 3. **주소록 (`screen-directory`)**: `contact_page`
-4. **공지사항 (`screen-notice-list`)**: `notifications` (알림 벨)
+4. **공지사항 (`screen-notice-list`)**: `campaign` (확성기 - 비활성 시 Outlined, 활성 시 Filled)
 5. **내 정보 (`screen-profile`)**: `person`
 
 ---
