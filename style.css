@@ -1890,7 +1890,6 @@ body.modal-open {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid var(--surface, #ffffff);
   box-shadow: 0 2px 5px rgba(232, 53, 56, 0.4);
   z-index: 10;
   pointer-events: none;

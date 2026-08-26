@@ -418,11 +418,8 @@ const PCApp = {
               </div>
             </div>
             <p class="text-sm text-on-surface font-medium leading-relaxed mb-2 break-words">${item.message}</p>
-            <div class="flex items-center justify-between text-xs text-on-surface-variant">
-              <span class="font-medium">${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
-              <span class="text-primary font-bold hover:underline flex items-center gap-1">
-                화면으로 이동 &rarr;
-              </span>
+            <div class="text-xs text-on-surface-variant font-medium">
+              <span>${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
             </div>
           </div>
         </div>
@@ -450,12 +447,11 @@ const PCApp = {
     const notif = (this.state.notifications || []).find(n => n.id === id);
     if (!notif) return;
 
-    notif.isRead = true;
+    notif.isRead = !notif.isRead;
     this.updateNotificationBadge();
-    this.closeModal();
-
-    if (notif.pcScreen) {
-      this.switchScreen(notif.pcScreen);
+    const container = document.getElementById('pc-notification-list-container');
+    if (container) {
+      container.innerHTML = this.getNotificationListHtml();
     }
   },
 

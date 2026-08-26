@@ -778,13 +778,9 @@ const App = {
     const notif = (this.state.notifications || []).find(n => n.id === id);
     if (!notif) return;
 
-    notif.isRead = true;
+    notif.isRead = !notif.isRead;
     this.updateNotificationBadge();
-    this.closeNotificationModal();
-
-    if (notif.targetScreen) {
-      this.switchTab(notif.targetScreen);
-    }
+    this.renderNotifications();
   },
 
   renderNotifications() {
@@ -846,9 +842,8 @@ const App = {
               </div>
             </div>
             <p class="text-xs text-on-surface font-medium leading-relaxed mb-1.5 break-words">${item.message}</p>
-            <div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+            <div class="text-[11px] text-on-surface-variant font-medium">
               <span>${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
-              <span class="text-primary font-bold hover:underline">상세보기 &rarr;</span>
             </div>
           </div>
         </div>
