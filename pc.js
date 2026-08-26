@@ -1975,28 +1975,30 @@ const PCApp = {
 
     const isSpecial = isHoliday || isSolarTerm || isObservance || authorStr === '회사공지';
     const avatarUrl = item.avatar || (window.MockData && window.MockData.myProfile ? window.MockData.myProfile.avatar : './resource/image/profile_abc.png');
-    const avatarHtml = isSpecial ? '' : `<img src="${avatarUrl}" alt="${item.author || '담당자'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline/30 shadow-xs mr-2.5" />`;
-    const authorHtml = isSpecial ? `<span class="font-bold text-xs text-on-surface-variant whitespace-nowrap">${item.badge || categoryKey}</span>` : `<span class="font-bold text-xs text-primary font-bold whitespace-nowrap">${item.author || '이재광 차장'}</span>`;
+    const avatarHtml = isSpecial ? '' : `<img src="${avatarUrl}" alt="${item.author || '담당자'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline/30 shadow-xs" />`;
+    const authorHtml = isSpecial ? `<span class="font-bold text-xs text-on-surface-variant whitespace-nowrap leading-none flex items-center shrink-0">${item.badge || categoryKey}</span>` : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${item.author || '이재광 차장'}</span>`;
     const locationBadgeHtml = locationStr ? `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
-        <svg class="w-3 h-3 text-sky-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
+        <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <span>${locationStr}</span>
       </span>
     ` : '';
     const displayTitle = this.formatScheduleCleanLabel(item);
 
     return `
-      <div class="flex items-center p-3 bg-surface-container-low rounded-xl border border-outline/70 hover:border-primary transition-all">
-        <div class="w-2 h-2 rounded-full ${dotClass} shrink-0 mr-2"></div>
-        ${avatarHtml}
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center justify-between gap-1 mb-1 flex-wrap">
-            <div class="flex items-center gap-1.5 shrink-0 flex-wrap">
+      <div class="flex items-center p-3 bg-surface-container-low rounded-xl border border-outline/70 hover:border-primary transition-all gap-2.5">
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="w-2 h-2 rounded-full ${dotClass} shrink-0"></div>
+          ${avatarHtml}
+        </div>
+        <div class="flex-1 min-w-0 flex flex-col justify-center text-left">
+          <div class="flex items-center justify-between gap-1.5 mb-1 min-w-0">
+            <div class="flex items-center gap-1.5 flex-wrap min-w-0">
               ${authorHtml}
-              <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${badgeBg}">${item.badge || categoryKey}</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold leading-none shrink-0 ${badgeBg}">${item.badge || categoryKey}</span>
               ${locationBadgeHtml}
             </div>
-            <span class="text-[10px] text-on-surface-variant font-medium whitespace-nowrap ml-auto">${item.time || '종일'}</span>
+            <span class="text-[10px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${item.time || '종일'}</span>
           </div>
           <div class="text-sm text-on-surface font-bold leading-snug break-words">${displayTitle}</div>
         </div>

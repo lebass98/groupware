@@ -1444,17 +1444,29 @@ const App = {
             s.author === '국경일/기념일'
           );
           const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
-          const imgHtml = isHoliday ? '' : `<img src="${s.avatar || 'profile.png'}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
-          const authorText = isHoliday ? '' : `${s.author || '이재광 차장'} • `;
+          const imgHtml = isHoliday ? '' : `<img src="${s.avatar || 'profile.png'}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline-variant/15 shadow-2xs" />`;
+          const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 차장'}</span>`;
+          const locationBadgeHtml = s.location ? `
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
+              <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              <span>${s.location}</span>
+            </span>
+          ` : '';
 
           return `
-            <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs">
-              <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0 mr-3"></div>
-              ${imgHtml}
-              <div class="flex-1 text-left min-w-0">
-                <div class="flex items-center justify-between gap-1 mb-0.5">
-                  <span class="font-bold text-xs text-primary">${authorText}${s.badge}</span>
-                  <span class="text-[11px] text-on-surface-variant font-medium">${s.time}</span>
+            <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs transition-all gap-3">
+              <div class="flex items-center gap-2 shrink-0">
+                <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
+                ${imgHtml}
+              </div>
+              <div class="flex-1 text-left min-w-0 flex flex-col justify-center">
+                <div class="flex items-center justify-between gap-2 mb-1.5 min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap min-w-0">
+                    ${authorText}
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none shrink-0 ${colorInfo.badgeHtml.includes('class=\"') ? colorInfo.badgeHtml.match(/class=\"(.*?)\"/)[1] : ''}">${s.badge}</span>
+                    ${locationBadgeHtml}
+                  </div>
+                  <span class="text-[11px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
                 </div>
                 <div class="text-sm text-on-surface font-bold font-headline leading-snug truncate">${this.formatScheduleCleanLabel(s)}</div>
               </div>
@@ -2292,7 +2304,7 @@ const App = {
       case '연차':
         return {
           chipClass: 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/30 font-bold shadow-xs',
-          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">연차</span>',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">연차</span>',
           dotClass: 'bg-[#137333]',
           cardBgClass: 'bg-[#f2f9f4] border-[#137333]/25 hover:bg-[#e6f4ea]/60'
         };
@@ -2301,7 +2313,7 @@ const App = {
       case '미팅':
         return {
           chipClass: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 font-bold shadow-xs',
-          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/25 whitespace-nowrap shrink-0">외근</span>',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/25 whitespace-nowrap shrink-0">외근</span>',
           dotClass: 'bg-[#1a73e8]',
           cardBgClass: 'bg-[#f0f5fe] border-[#1a73e8]/25 hover:bg-[#e8f0fe]/60'
         };
@@ -2309,7 +2321,7 @@ const App = {
       case '반반차':
         return {
           chipClass: 'bg-[#fef7e0] text-[#b06000] border border-[#b06000]/30 font-bold shadow-xs',
-          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fef7e0] text-[#b06000] border border-[#b06000]/25 whitespace-nowrap shrink-0">${category}</span>`,
+          badgeHtml: `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#fef7e0] text-[#b06000] border border-[#b06000]/25 whitespace-nowrap shrink-0">${category}</span>`,
           dotClass: 'bg-[#b06000]',
           cardBgClass: 'bg-[#fffdf5] border-[#b06000]/25 hover:bg-[#fef7e0]/60'
         };
@@ -2317,21 +2329,21 @@ const App = {
       case '보고':
         return {
           chipClass: 'bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/30 font-bold shadow-xs',
-          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/25 whitespace-nowrap shrink-0">${category}</span>`,
+          badgeHtml: `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/25 whitespace-nowrap shrink-0">${category}</span>`,
           dotClass: 'bg-[#6b21a8]',
           cardBgClass: 'bg-[#fbf7ff] border-[#6b21a8]/25 hover:bg-[#f3e8ff]/60'
         };
       case '공휴일':
         return {
           chipClass: 'bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/30 font-bold shadow-xs',
-          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25 whitespace-nowrap shrink-0">공휴일</span>',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25 whitespace-nowrap shrink-0">공휴일</span>',
           dotClass: 'bg-[#c5221f]',
           cardBgClass: 'bg-[#fff5f5] border-[#c5221f]/25 hover:bg-[#fce8e6]/60'
         };
       case '절기':
         return {
           chipClass: 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/30 font-bold shadow-xs',
-          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">절기</span>',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">절기</span>',
           dotClass: 'bg-[#137333]',
           cardBgClass: 'bg-[#f4fbf7] border-[#137333]/25 hover:bg-[#e6f4ea]/60'
         };
@@ -2339,14 +2351,14 @@ const App = {
       case '명절':
         return {
           chipClass: 'bg-[#f0f4f9] text-[#3c4043] border border-[#3c4043]/30 font-bold shadow-xs',
-          badgeHtml: '<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#f0f4f9] text-[#3c4043] border border-[#3c4043]/20 whitespace-nowrap shrink-0">기념일</span>',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#f0f4f9] text-[#3c4043] border border-[#3c4043]/20 whitespace-nowrap shrink-0">기념일</span>',
           dotClass: 'bg-[#5f6368]',
           cardBgClass: 'bg-[#f8f9fa] border-[#3c4043]/20 hover:bg-[#f0f4f9]/60'
         };
       default:
         return {
           chipClass: 'bg-primary/15 text-primary border border-primary/25 font-bold shadow-xs',
-          badgeHtml: `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-primary/15 text-primary border border-primary/20 whitespace-nowrap shrink-0">${category || '일정'}</span>`,
+          badgeHtml: `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-primary/15 text-primary border border-primary/20 whitespace-nowrap shrink-0">${category || '일정'}</span>`,
           dotClass: 'bg-primary',
           cardBgClass: 'bg-surface-container-low border-outline-variant/15 hover:bg-surface-container-high'
         };
@@ -2385,36 +2397,38 @@ const App = {
 
     const cleanTitle = titleStr.replace(/\s*\(공휴일\)/g, '').trim();
     if (isHoliday) {
-      categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25 whitespace-nowrap shrink-0">${cleanTitle}</span>`;
+      categoryBadgeHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25 whitespace-nowrap shrink-0">${cleanTitle}</span>`;
     } else if (isSolarTerm) {
       const termName = s.termName || titleStr.split(' ')[0];
-      categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">${termName}</span>`;
+      categoryBadgeHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">${termName}</span>`;
     } else if (isObservance) {
       const obsName = s.obsName || titleStr.split(' ')[0];
-      categoryBadgeHtml = `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#f0f4f9] text-[#3c4043] border border-[#3c4043]/20 whitespace-nowrap shrink-0">${obsName}</span>`;
+      categoryBadgeHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#f0f4f9] text-[#3c4043] border border-[#3c4043]/20 whitespace-nowrap shrink-0">${obsName}</span>`;
     }
 
-    const avatarHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
-    const authorTextHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap">${s.author || '이재광 차장'}</span>`;
+    const avatarHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline-variant/15 shadow-2xs" />`;
+    const authorTextHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 차장'}</span>`;
     const locationBadgeHtml = s.location ? `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
-        <svg class="w-3 h-3 text-sky-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
+        <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <span>${s.location}</span>
       </span>
     ` : '';
 
     return `
-      <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border shadow-2xs transition-all">
-        <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0 mr-2.5"></div>
-        ${avatarHtml}
-        <div class="flex-1 text-left min-w-0">
-          <div class="flex items-center justify-between gap-1.5 mb-1 flex-wrap sm:flex-nowrap">
-            <div class="flex items-center gap-1.5 flex-wrap shrink-0">
+      <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs transition-all gap-3">
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
+          ${avatarHtml}
+        </div>
+        <div class="flex-1 text-left min-w-0 flex flex-col justify-center">
+          <div class="flex items-center justify-between gap-2 mb-1.5 min-w-0">
+            <div class="flex items-center gap-1.5 flex-wrap min-w-0">
               ${authorTextHtml}
               ${categoryBadgeHtml}
               ${locationBadgeHtml}
             </div>
-            <span class="text-[11px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 ml-auto">${s.time}</span>
+            <span class="text-[11px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
           </div>
           <div class="text-sm text-on-surface font-bold font-headline leading-snug break-words">${s.title}</div>
         </div>
