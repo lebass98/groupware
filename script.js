@@ -85,19 +85,19 @@ const FramerMotion = {
   }
 };
 
-// 전체 독 메뉴 메타데이터 정의 (100% SVG 벡터 아이콘)
+// 전체 독 메뉴 메타데이터 정의 (100% SVG 벡터 아이콘 - Outlined & Filled 동적 변환)
 const ALL_DOCK_MENU_ITEMS = [
-  { id: 'screen-home', name: '메뉴', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>' },
-  { id: 'screen-today', name: '투데이', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>' },
-  { id: 'screen-checkin', name: '출/퇴근', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg>' },
-  { id: 'screen-calendar', name: '근태일지', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>' },
-  { id: 'screen-request', name: '휴가/외근', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/></svg>' },
-  { id: 'screen-notice-list', name: '공지사항', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>' },
-  { id: 'screen-directory', name: '주소록', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V17z"/></svg>' },
-  { id: 'screen-todo', name: '할 일', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M22 5.18L10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM19.79 10.22C19.92 10.79 20 11.39 20 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8c1.66 0 3.2.51 4.48 1.39l1.45-1.45C16.19 2.7 14.19 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z"/></svg>' },
-  { id: 'screen-project-list', name: '프로젝트', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6 10H6v-2h8v2zm4-4H6v-2h12v2z"/></svg>' },
-  { id: 'screen-finance', name: '재무/경비', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>' },
-  { id: 'screen-work-report', name: '업무보고', iconSvg: '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>' }
+  { id: 'screen-home', name: '메뉴', iconName: 'grid_view' },
+  { id: 'screen-today', name: '투데이', iconName: 'today' },
+  { id: 'screen-checkin', name: '출/퇴근', iconName: 'login' },
+  { id: 'screen-calendar', name: '근태일지', iconName: 'calendar_month' },
+  { id: 'screen-request', name: '휴가/외근', iconName: 'flight_takeoff' },
+  { id: 'screen-notice-list', name: '공지사항', iconName: 'campaign' },
+  { id: 'screen-directory', name: '주소록', iconName: 'contact_page' },
+  { id: 'screen-todo', name: '할 일', iconName: 'task_alt' },
+  { id: 'screen-project-list', name: '프로젝트', iconName: 'folder_managed' },
+  { id: 'screen-finance', name: '재무/경비', iconName: 'account_balance_wallet' },
+  { id: 'screen-work-report', name: '업무보고', iconName: 'assignment' }
 ];
 
 const App = {
@@ -903,9 +903,13 @@ const App = {
       const item = ALL_DOCK_MENU_ITEMS.find(m => m.id === menuId);
       if (!item) return;
       const isActive = (currentTab === item.id);
+      const iconSvg = typeof getSvgIcon === 'function'
+        ? getSvgIcon(item.iconName, 'w-6 h-6', '', isActive)
+        : `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>`;
+
       html += `
         <a class="nav-item ${isActive ? 'active' : ''}" data-target="${item.id}" onclick="App.switchTab('${item.id}', this)" title="${item.name}">
-          ${item.iconSvg}
+          ${iconSvg}
           <span>${item.name}</span>
         </a>
       `;
@@ -914,9 +918,7 @@ const App = {
     // 독 마지막 슬롯: 설정 버튼 고정 렌더링
     html += `
       <a class="nav-item nav-item-add" id="nav-item-dock-add" onclick="App.openSettingsDrawer()" title="환경설정">
-        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
-        </svg>
+        ${typeof getSvgIcon === 'function' ? getSvgIcon('settings', 'w-6 h-6') : '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>'}
         <span>설정</span>
       </a>
     `;
@@ -967,11 +969,15 @@ const App = {
         const item = ALL_DOCK_MENU_ITEMS.find(m => m.id === menuId);
         if (!item) return;
         const isFixed = this.FIXED_DOCK_MENUS.includes(menuId);
+        const iconSvg = typeof getSvgIcon === 'function'
+          ? getSvgIcon(item.iconName, 'w-4 h-4')
+          : '<circle cx="12" cy="12" r="8"/>';
+
         currentHtml += `
           <div class="flex items-center justify-between p-2.5 rounded-2xl ${isFixed ? 'bg-primary/5 border border-primary/25' : 'bg-surface-container-low dark:bg-[#1f2937] border border-outline-variant/20'} shadow-2xs transition-all">
             <div class="flex items-center gap-2 text-on-surface font-label text-xs font-bold truncate">
               <div class="w-7 h-7 rounded-xl ${isFixed ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'} flex items-center justify-center shrink-0">
-                ${item.iconSvg}
+                ${iconSvg}
               </div>
               <span class="truncate">${item.name}</span>
               ${isFixed ? `<span class="flex items-center gap-0.5 text-[10px] font-semibold text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded-md shrink-0">
@@ -1021,10 +1027,14 @@ const App = {
       } else {
         let availableHtml = '';
         availableMenus.forEach(item => {
+          const iconSvg = typeof getSvgIcon === 'function'
+            ? getSvgIcon(item.iconName, 'w-6 h-6')
+            : '<circle cx="12" cy="12" r="8"/>';
+
           availableHtml += `
             <button type="button" onclick="App.addDockMenu('${item.id}')" class="group relative flex flex-col items-center justify-center gap-2 p-3.5 rounded-2xl bg-surface-container-low dark:bg-[#1f2937] hover:bg-primary/10 dark:hover:bg-primary/20 border border-outline-variant/15 hover:border-primary/40 transition-all active:scale-95 text-center cursor-pointer shadow-2xs">
               <div class="w-10 h-10 rounded-xl bg-surface-container-lowest dark:bg-[#111827] text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all flex items-center justify-center shadow-xs">
-                ${item.iconSvg}
+                ${iconSvg}
               </div>
               <span class="font-label font-bold text-xs text-on-surface group-hover:text-primary transition-colors">${item.name}</span>
               <div class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white flex items-center justify-center text-[11px] font-bold transition-all">
@@ -1218,17 +1228,7 @@ const App = {
     }
 
     // Update bottom nav active state & filled icon
-    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-    navItems.forEach(item => {
-      const icon = item.querySelector('.svg-icon, .material-symbols-outlined');
-      if (item.getAttribute('data-target') === targetId) {
-        item.classList.add('active');
-        if (icon && icon.classList.contains('material-symbols-outlined')) icon.style.fontVariationSettings = "'FILL' 1";
-      } else {
-        item.classList.remove('active');
-        if (icon && icon.classList.contains('material-symbols-outlined')) icon.style.fontVariationSettings = "'FILL' 0";
-      }
-    });
+    this.renderDockNav();
 
     if (targetId === 'screen-logs') {
       this.switchTab('screen-checkin');

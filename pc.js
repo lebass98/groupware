@@ -398,16 +398,7 @@ const PCApp = {
     this._isModalOpen = false;
 
     this.state.activeScreen = screenId;
-    
-    // Update active class on sidebar buttons
-    const navBtns = document.querySelectorAll('.pc-nav-btn');
-    navBtns.forEach(btn => {
-      if (btn.getAttribute('data-screen') === screenId) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
+    this.renderSidebar();
 
     // Update screen views
     const screens = document.querySelectorAll('.pc-screen-view');
@@ -444,31 +435,36 @@ const PCApp = {
   // 4. Render Sidebar (9 Core Service Icons & Labels)
   renderSidebar() {
     const navItems = [
-      { id: 'dashboard', name: '대시보드', icon: '<path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>' },
-      { id: 'checkin', name: '출/퇴근', icon: '<path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/>' },
-      { id: 'request', name: '휴가/외근', icon: '<path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/>' },
-      { id: 'directory', name: '주소록', icon: '<path d="M19 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V17z"/>' },
-      { id: 'notice', name: '공지사항', icon: '<path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>' },
-      { id: 'finance', name: '재무/경비', icon: '<path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>' },
-      { id: 'todo', name: '할 일', icon: '<path d="M22 5.18L10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM19.79 10.22C19.92 10.79 20 11.39 20 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8c1.66 0 3.2.51 4.48 1.39l1.45-1.45C16.19 2.7 14.19 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z"/>' },
-      { id: 'project', name: '프로젝트', icon: '<path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6 10H6v-2h8v2zm4-4H6v-2h12v2z"/>' },
-      { id: 'work-report', name: '업무보고', icon: '<path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>' }
+      { id: 'dashboard', name: '대시보드', iconName: 'grid_view' },
+      { id: 'checkin', name: '출/퇴근', iconName: 'login' },
+      { id: 'request', name: '휴가/외근', iconName: 'flight_takeoff' },
+      { id: 'directory', name: '주소록', iconName: 'contact_page' },
+      { id: 'notice', name: '공지사항', iconName: 'campaign' },
+      { id: 'finance', name: '재무/경비', iconName: 'account_balance_wallet' },
+      { id: 'todo', name: '할 일', iconName: 'task_alt' },
+      { id: 'project', name: '프로젝트', iconName: 'folder_managed' },
+      { id: 'work-report', name: '업무보고', iconName: 'assignment' }
     ];
 
     const navListEl = document.getElementById('pc-sidebar-nav');
     if (!navListEl) return;
 
-    navListEl.innerHTML = navItems.map(item => `
-      <li class="pc-nav-item">
-        <button type="button" class="pc-nav-btn ${this.state.activeScreen === item.id ? 'active' : ''}" data-screen="${item.id}" onclick="PCApp.switchScreen('${item.id}')">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            ${item.icon}
-          </svg>
-          <span class="pc-nav-label">${item.name}</span>
-          <span class="pc-tooltip">${item.name}</span>
-        </button>
-      </li>
-    `).join('');
+    navListEl.innerHTML = navItems.map(item => {
+      const isActive = (this.state.activeScreen === item.id);
+      const iconSvg = typeof getSvgIcon === 'function' 
+        ? getSvgIcon(item.iconName, 'w-5 h-5', '', isActive)
+        : `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>`;
+
+      return `
+        <li class="pc-nav-item">
+          <button type="button" class="pc-nav-btn ${isActive ? 'active' : ''}" data-screen="${item.id}" onclick="PCApp.switchScreen('${item.id}')">
+            ${iconSvg}
+            <span class="pc-nav-label">${item.name}</span>
+            <span class="pc-tooltip">${item.name}</span>
+          </button>
+        </li>
+      `;
+    }).join('');
   },
 
   // 5. Render Main Full-Width Bento Dashboard (3-Column Layout)
