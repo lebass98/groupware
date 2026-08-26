@@ -1670,17 +1670,17 @@ const App = {
         notiContainer.innerHTML = displayNotifs.map(item => {
           let typeBadge = '';
           if (item.type === 'commute') {
-            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300">출/퇴근</span>';
+            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300">출/퇴근</span>';
           } else if (item.type === 'approval') {
-            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300">전자결재</span>';
+            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300">전자결재</span>';
           } else if (item.type === 'business') {
-            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-500/10 text-sky-600 dark:text-sky-300">외근/출장</span>';
+            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-sky-500/10 text-sky-600 dark:text-sky-300">외근/출장</span>';
           } else {
-            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-500/10 text-rose-600 dark:text-rose-300">공지/일정</span>';
+            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-rose-500/10 text-rose-600 dark:text-rose-300">공지/일정</span>';
           }
 
           const unreadBadge = !item.isRead
-            ? '<span class="w-2.5 h-2.5 rounded-full bg-[#e83538] shrink-0" title="읽지 않음"></span>'
+            ? '<span class="w-2 h-2 rounded-full bg-[#e83538] shrink-0" title="읽지 않음"></span>'
             : '';
 
           const unreadBg = !item.isRead
@@ -1692,15 +1692,15 @@ const App = {
               <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-1.5 min-w-0">
                   ${typeBadge}
-                  <span class="font-bold text-xs text-on-surface truncate">${item.title}</span>
+                  <span class="font-bold text-sm text-on-surface truncate">${item.title}</span>
                 </div>
                 <div class="flex items-center gap-1.5 shrink-0">
-                  <span class="text-[11px] text-on-surface-variant font-medium">${item.time}</span>
+                  <span class="text-xs text-on-surface-variant font-medium">${item.time}</span>
                   ${unreadBadge}
                 </div>
               </div>
-              <p class="text-xs text-on-surface font-medium leading-relaxed break-words">${item.message}</p>
-              <div class="text-[11px] text-on-surface-variant font-medium">
+              <p class="text-xs text-on-surface-variant font-medium leading-relaxed break-words">${item.message}</p>
+              <div class="text-xs text-on-surface-variant/80 font-medium">
                 <span>${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
               </div>
             </div>
@@ -1761,7 +1761,7 @@ const App = {
                     <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none shrink-0 ${colorInfo.badgeHtml.includes('class=\"') ? colorInfo.badgeHtml.match(/class=\"(.*?)\"/)[1] : ''}">${s.badge}</span>
                     ${locationBadgeHtml}
                   </div>
-                  <span class="text-[11px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
+                  <span class="text-xs text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
                 </div>
                 <div class="text-sm text-on-surface font-bold font-headline leading-snug truncate">${this.formatScheduleCleanLabel(s)}</div>
               </div>
@@ -1787,29 +1787,28 @@ const App = {
       if (displayTodos.length > 0) {
         todosContainer.innerHTML = displayTodos.map(todo => {
           const isDone = todo.status === 'done';
-          const priorityDotColor = todo.priority === 'high' ? 'bg-error' : (todo.priority === 'medium' ? 'bg-tertiary-container' : 'bg-primary');
-          const prioBgClass = todo.priority === 'high' ? 'bg-[#ffdad6] text-[#410002]' : (todo.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-[#ffe088] text-[#533a00]');
+          const prioBgClass = todo.priority === 'high' ? 'bg-error-container text-error' : (todo.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-tertiary-container text-tertiary');
           const prioText = todo.priority === 'high' ? '높음' : (todo.priority === 'low' ? '낮음' : '보통');
           const statusBgClass = isDone
-            ? 'bg-[#61fbab] text-[#004729]'
-            : (todo.status === 'in_progress' ? 'bg-[#d8e2ff] text-[#001a41]' : 'bg-surface-container text-on-surface-variant');
-          const statusText = isDone ? '완료' : (todo.status === 'in_progress' ? '진행 중' : '할 일');
+            ? 'bg-secondary-container text-secondary'
+            : (todo.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
+          const statusText = isDone ? '완료' : (todo.status === 'in_progress' ? '진행 중' : '대기');
           const assignee = (todo.assignees && todo.assignees[0]) || { name: (this.state.myProfile && this.state.myProfile.name) || '이재광', avatar: (this.state.myProfile && this.state.myProfile.avatar) || './profile.png' };
 
           return `
-            <div class="p-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-2xs hover:shadow-xs hover:border-primary/30 transition-all flex flex-col gap-2.5 cursor-pointer text-left" onclick="App.openTodoDetailModal(${todo.id})">
+            <div class="p-3.5 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-2xs hover:shadow-xs hover:border-primary/30 transition-all flex flex-col gap-2.5 cursor-pointer text-left" onclick="App.openTodoDetailModal(${todo.id})">
               <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-label font-bold ${statusBgClass}">
+                  <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${statusBgClass}">
                     ${statusText}
                   </span>
-                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-label font-bold ${prioBgClass}">
+                  <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${prioBgClass}">
                     ${prioText}
                   </span>
                   <span class="text-xs font-bold text-primary truncate max-w-[140px]"># ${todo.project || '일반 업무'}</span>
                 </div>
-                <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${todo.id});" class="w-6 h-6 rounded-lg border flex items-center justify-center transition-colors shrink-0 ${isDone ? 'bg-secondary border-secondary text-white' : 'border-outline-variant hover:border-primary bg-surface-container-low'}" title="${isDone ? '미완료로 변경' : '완료 처리'}">
-                  ${isDone ? '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
+                <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${todo.id});" class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 ${isDone ? 'bg-secondary border-secondary text-white' : 'border-outline-variant hover:border-primary bg-surface-container-low'}" title="${isDone ? '미완료로 변경' : '완료 처리'}">
+                  ${isDone ? '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
                 </button>
               </div>
 
@@ -1822,10 +1821,10 @@ const App = {
                   <svg class="w-3.5 h-3.5 text-on-surface-variant/70 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
                   </svg>
-                  <span class="font-medium text-[11px]">${todo.dueDate || '마감일 미지정'}</span>
+                  <span class="font-medium text-xs">${todo.dueDate || '마감일 미지정'}</span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <span class="text-[11px] font-bold text-on-surface">${assignee.name}</span>
+                  <span class="text-xs font-bold text-on-surface">${assignee.name}</span>
                 </div>
               </div>
             </div>
@@ -1846,7 +1845,7 @@ const App = {
     const bentoRemainEl = document.getElementById('bento-remain-days');
     if (leaveDaysEl) {
       const remainText = bentoRemainEl ? bentoRemainEl.innerText.trim() : '12일';
-      leaveDaysEl.innerHTML = `${remainText.replace('일', '')} <span class="text-sm font-normal text-on-surface-variant">일</span>`;
+      leaveDaysEl.innerHTML = `${remainText.replace('일', '')} <span class="text-xs font-medium text-on-surface-variant">일</span>`;
     }
 
     const upcomingLeaveEl = document.getElementById('today-summary-upcoming-leave');
@@ -1871,23 +1870,25 @@ const App = {
       const unresolvedPersonal = (this.state.finance.expenses.personal || []).filter(e => e.status === 'unresolved');
       const allUnresolved = [...unresolvedCorp, ...unresolvedPersonal];
 
-      unbilledCountEl.innerHTML = `${allUnresolved.length} <span class="text-sm font-normal text-on-surface-variant">건</span>`;
+      unbilledCountEl.innerHTML = `${allUnresolved.length} <span class="text-xs font-medium text-on-surface-variant">건</span>`;
 
       if (allUnresolved.length > 0) {
         expenseListEl.innerHTML = allUnresolved.slice(0, 2).map(e => `
-          <div class="flex justify-between items-center bg-surface p-3 rounded-2xl">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 bg-surface-container rounded-full flex items-center justify-center text-on-surface-variant">
-                <span class="material-symbols-outlined text-[16px]">${e.type === 'taxi' ? 'local_taxi' : e.type === 'restaurant' ? 'restaurant' : 'credit_card'}</span>
+          <div class="flex justify-between items-center bg-surface p-3 rounded-xl">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 bg-surface-container rounded-full flex items-center justify-center text-on-surface-variant">
+                <svg class="w-4 h-4 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.1-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                </svg>
               </div>
-              <span class="font-label text-xs font-semibold text-on-surface">${e.title}</span>
+              <span class="font-bold text-xs text-on-surface">${e.title}</span>
             </div>
-            <span class="font-body text-sm font-bold text-on-surface">${e.amount.toLocaleString()}원</span>
+            <span class="font-bold text-sm text-primary">${e.amount.toLocaleString()}원</span>
           </div>
         `).join('');
       } else {
         expenseListEl.innerHTML = `
-          <div class="text-xs text-on-surface-variant py-2 text-center">미청구된 경비 내역이 없습니다.</div>
+          <div class="text-xs text-on-surface-variant py-2 text-center font-medium">미청구된 경비 내역이 없습니다.</div>
         `;
       }
     }
@@ -1898,18 +1899,17 @@ const App = {
     if (pendingCountEl && pendingListEl) {
       pendingCountEl.innerText = '1건';
       pendingListEl.innerHTML = `
-        <div class="bg-surface-container-lowest rounded-2xl p-4 flex justify-between items-center hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="App.switchTab('screen-finance'); App.switchFinanceTab('report');">
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-on-surface-variant">description</span>
+        <div class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/15 flex justify-between items-center cursor-pointer hover:bg-surface-container-low transition-colors" onclick="App.switchTab('screen-finance')">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
             </div>
-            <div>
-              <p class="font-label text-[10px] text-tertiary-fixed-dim font-bold mb-0.5">기안 대기</p>
-              <h4 class="font-body text-sm font-semibold text-on-surface mb-1">2026년 3분기 비품 구매 품의서</h4>
-              <p class="font-label text-xs text-on-surface-variant">퍼블리싱팀 · 이재광 팀장</p>
+            <div class="text-left">
+              <p class="font-bold text-sm text-on-surface truncate max-w-[180px]">8월 4주차 UI/UX 라이선스 구매 품의</p>
+              <p class="text-xs text-on-surface-variant font-medium mt-0.5">기안일: 2026.08.25 · 손석호 대리</p>
             </div>
           </div>
-          <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
+          <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300 shrink-0">결재대기</span>
         </div>
       `;
     }

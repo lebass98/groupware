@@ -889,7 +889,7 @@ strong {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .pc-card-title {
@@ -903,18 +903,18 @@ strong {
 }
 
 .pc-card-title svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
 }
 
 .pc-card-action {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--primary);
   text-decoration: none;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
   transition: opacity 0.2s ease;
@@ -1026,7 +1026,7 @@ strong {
   padding: 10px 14px;
   border-radius: 10px;
   background: var(--surface-container-low);
-  font-size: 16px;
+  font-size: 14px;
 }
 
 /* Center Column Widgets */
@@ -1401,7 +1401,7 @@ strong {
   height: 24px;
 }
 .pc-quick-label {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--on-surface);
 }

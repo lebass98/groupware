@@ -826,18 +826,18 @@ const PCApp = {
 
           <div class="pc-commute-time-display">
             <div>
-              <span class="text-base text-on-surface-variant block">출근 시간</span>
+              <span class="text-xs text-on-surface-variant block mb-0.5 font-medium">출근 시간</span>
               <span class="pc-commute-big-time text-primary">${this.state.checkInTime}</span>
             </div>
-            <span class="text-on-surface-variant text-2xl font-bold">→</span>
+            <span class="text-on-surface-variant text-xl font-bold">→</span>
             <div>
-              <span class="text-base text-on-surface-variant block">퇴근 시간</span>
+              <span class="text-xs text-on-surface-variant block mb-0.5 font-medium">퇴근 시간</span>
               <span class="pc-commute-big-time ${this.state.checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${this.state.checkOutTime}</span>
             </div>
           </div>
 
           <div class="mb-4">
-            <div class="flex justify-between text-base font-bold text-on-surface-variant mb-1.5">
+            <div class="flex justify-between text-xs font-bold text-on-surface-variant mb-1.5">
               <span>주 누적 근무시간</span>
               <span class="text-primary font-bold">38시간 45분 / 40시간</span>
             </div>
@@ -846,20 +846,20 @@ const PCApp = {
             </div>
           </div>
 
-          <div class="flex items-center gap-2 text-base text-on-surface-variant mb-3">
-            <svg class="w-5 h-5 text-secondary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          <div class="flex items-center gap-1.5 text-xs text-on-surface-variant mb-3 font-medium">
+            <svg class="w-4 h-4 text-secondary shrink-0" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
             </svg>
-            <span class="truncate">위치 인증: <strong>${this.state.user.location}</strong></span>
+            <span class="truncate">위치 인증: <strong class="font-bold text-on-surface">${this.state.user.location}</strong></span>
           </div>
 
           <div class="pc-commute-btn-group">
             <button class="pc-commute-btn pc-commute-btn-in" onclick="PCApp.handleCheckIn()">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
               출근하기
             </button>
             <button class="pc-commute-btn pc-commute-btn-out" onclick="PCApp.handleCheckOut()">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
               퇴근하기
             </button>
           </div>
@@ -874,7 +874,7 @@ const PCApp = {
         <div class="pc-bento-card">
           <div class="pc-card-header">
             <span class="pc-card-title whitespace-nowrap">
-              <svg class="w-4.5 h-4.5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/>
               </svg>
               연차 / 휴가 현황
@@ -899,12 +899,12 @@ const PCApp = {
 
           <div class="pc-leave-history-list">
             <div class="pc-leave-history-item">
-              <span class="font-bold text-on-surface">연차 (종일)</span>
-              <span class="text-on-surface-variant">2026-08-19</span>
+              <span class="font-bold text-sm text-on-surface">연차 (종일)</span>
+              <span class="text-xs text-on-surface-variant font-medium">2026-08-19</span>
             </div>
             <div class="pc-leave-history-item">
-              <span class="font-bold text-secondary">반차 (오후)</span>
-              <span class="text-on-surface-variant">2026-08-21</span>
+              <span class="font-bold text-sm text-secondary">반차 (오후)</span>
+              <span class="text-xs text-on-surface-variant font-medium">2026-08-21</span>
             </div>
           </div>
         </div>
@@ -918,18 +918,18 @@ const PCApp = {
         <div class="pc-bento-card">
           <div class="pc-card-header">
             <span class="pc-card-title whitespace-nowrap">
-              <svg class="w-4.5 h-4.5 text-tertiary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <svg class="w-5 h-5 text-tertiary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 6c1.11 0 2-.9 2-2 0-.38-.1-.73-.29-1.03L12 0l-1.71 2.97c-.19.3-.29.65-.29 1.03 0 1.1.9 2 2 2zm4.6 9.99l-1.07-1.07-1.08 1.07c-1.3 1.3-3.58 1.3-4.89 0l-1.07-1.07-1.09 1.07C6.75 16.64 5.88 17 4.96 17c-.73 0-1.4-.23-1.96-.64V21c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-4.64c-.56.41-1.23.64-1.96.64-.92 0-1.79-.36-2.44-1.01zM18 9h-5V7h-2v2H6c-1.66 0-3 1.34-3 3v1.54c0 1.08.88 1.96 1.96 1.96.52 0 1.02-.2 1.38-.57l2.14-2.13 2.13 2.13c.74.74 2.03.74 2.77 0l2.14-2.13 2.13 2.13c.37.37.86.57 1.39.57 1.08 0 1.96-.88 1.96-1.96V12c0-1.66-1.34-3-3-3z"/>
               </svg>
               8월 생일자 🎂
             </span>
-            <span class="text-base font-bold text-primary">1명</span>
+            <span class="text-xs font-bold text-primary">1명</span>
           </div>
           <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl">
-            <img src="./profile.png" class="w-12 h-12 rounded-full object-cover border border-outline" />
+            <img src="./profile.png" class="w-11 h-11 rounded-full object-cover border border-outline" />
             <div>
-              <p class="font-bold text-on-surface text-base">이재광 팀장 (퍼블리싱팀)</p>
-              <p class="text-base text-on-surface-variant">08월 11일 · 축하메시지 전송</p>
+              <p class="font-bold text-on-surface text-sm">이재광 팀장 (퍼블리싱팀)</p>
+              <p class="text-xs text-on-surface-variant font-medium mt-0.5">08월 11일 · 축하메시지 전송</p>
             </div>
           </div>
         </div>
@@ -964,17 +964,17 @@ const PCApp = {
           <div class="space-y-1">
             ${notices.length > 0 ? notices.map((n, idx) => `
               <div class="flex items-center justify-between gap-3 p-2.5 rounded-xl hover:bg-surface-container-low transition-all cursor-pointer border border-transparent hover:border-outline/50 group" onclick="PCApp.openNoticeModal(${idx})">
-                <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                  <span class="px-2.5 py-0.5 rounded-md text-xs font-bold shrink-0 ${n.isPinned || n.pinned ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">
+                <div class="flex items-center gap-2 min-w-0 flex-1">
+                  <span class="px-2 py-0.5 rounded-md text-[11px] font-bold shrink-0 ${n.isPinned || n.pinned ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">
                     ${n.isPinned || n.pinned ? '필독' : (n.category || '공통')}
                   </span>
-                  <span class="text-base font-bold text-on-surface group-hover:text-primary transition-colors truncate">
+                  <span class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
                     ${n.title}
                   </span>
                 </div>
-                <div class="flex items-center gap-2 shrink-0 text-sm text-on-surface-variant">
+                <div class="flex items-center gap-2 shrink-0 text-xs text-on-surface-variant font-medium">
                   ${n.fileName ? '<span class="text-xs text-primary" title="첨부파일 있음">📎</span>' : ''}
-                  <span class="font-medium whitespace-nowrap">${n.date}</span>
+                  <span class="whitespace-nowrap">${n.date}</span>
                 </div>
               </div>
             `).join('') : '<p class="text-xs text-on-surface-variant text-center py-4">등록된 공지사항이 없습니다.</p>'}
@@ -1009,56 +1009,56 @@ const PCApp = {
             <button class="pc-card-action" onclick="PCApp.switchScreen('work-report')">전체보기</button>
           </div>
 
-          <div class="space-y-4">
-            <div class="p-4 bg-surface-container-low rounded-xl border border-outline/50">
-              <div class="flex items-center justify-between mb-3">
-                <span class="font-bold text-on-surface text-base flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-primary"></span>
-                  ${primaryReport.client} - ${primaryReport.title}
+          <div class="space-y-3.5">
+            <div class="p-3.5 bg-surface-container-low rounded-xl border border-outline/50">
+              <div class="flex items-center justify-between mb-2.5">
+                <span class="font-bold text-on-surface text-sm flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0"></span>
+                  <span class="truncate">${primaryReport.client} - ${primaryReport.title}</span>
                 </span>
-                <span class="text-base font-bold px-3 py-1 rounded-md bg-primary/10 text-primary">진행중</span>
+                <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-primary/10 text-primary shrink-0">진행중</span>
               </div>
-              <div class="grid grid-cols-2 gap-3 text-base">
-                <div class="p-3.5 bg-surface-container-lowest rounded-lg">
-                  <span class="font-bold text-on-surface-variant block mb-1.5 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
+              <div class="grid grid-cols-2 gap-2.5 text-xs">
+                <div class="p-3 bg-surface-container-lowest rounded-lg">
+                  <span class="font-bold text-on-surface-variant block mb-1 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
                     전주 실적
                   </span>
-                  <p class="text-on-surface leading-relaxed">${prevItems[0]}</p>
+                  <p class="text-on-surface leading-relaxed text-xs">${prevItems[0]}</p>
                 </div>
-                <div class="p-3.5 bg-surface-container-lowest rounded-lg border-l-3 border-primary">
-                  <span class="font-bold text-primary block mb-1.5 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-primary"></span>
+                <div class="p-3 bg-surface-container-lowest rounded-lg border-l-3 border-primary">
+                  <span class="font-bold text-primary block mb-1 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
                     금주 계획
                   </span>
-                  <p class="text-on-surface leading-relaxed">${thisItems[0]}</p>
+                  <p class="text-on-surface leading-relaxed text-xs">${thisItems[0]}</p>
                 </div>
               </div>
             </div>
 
             ${reports[1] ? `
-            <div class="p-4 bg-surface-container-low rounded-xl border border-outline/50">
-              <div class="flex items-center justify-between mb-3">
-                <span class="font-bold text-on-surface text-base flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-secondary"></span>
-                  ${reports[1].client} - ${reports[1].title}
+            <div class="p-3.5 bg-surface-container-low rounded-xl border border-outline/50">
+              <div class="flex items-center justify-between mb-2.5">
+                <span class="font-bold text-on-surface text-sm flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-secondary shrink-0"></span>
+                  <span class="truncate">${reports[1].client} - ${reports[1].title}</span>
                 </span>
-                <span class="text-base font-bold px-3 py-1 rounded-md bg-secondary/10 text-secondary">진행중</span>
+                <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-secondary/10 text-secondary shrink-0">진행중</span>
               </div>
-              <div class="grid grid-cols-2 gap-3 text-base">
-                <div class="p-3.5 bg-surface-container-lowest rounded-lg">
-                  <span class="font-bold text-on-surface-variant block mb-1.5 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
+              <div class="grid grid-cols-2 gap-2.5 text-xs">
+                <div class="p-3 bg-surface-container-lowest rounded-lg">
+                  <span class="font-bold text-on-surface-variant block mb-1 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
                     전주 실적
                   </span>
-                  <p class="text-on-surface leading-relaxed">${(reports[1].prevWeekSections && reports[1].prevWeekSections[0]?.items[0]) || '사후역량점검 테이블 스키마 최적화 및 인덱스 튜닝'}</p>
+                  <p class="text-on-surface leading-relaxed text-xs">${(reports[1].prevWeekSections && reports[1].prevWeekSections[0]?.items[0]) || '사후역량점검 테이블 스키마 최적화 및 인덱스 튜닝'}</p>
                 </div>
-                <div class="p-3.5 bg-surface-container-lowest rounded-lg border-l-3 border-secondary">
-                  <span class="font-bold text-secondary block mb-1.5 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                <div class="p-3 bg-surface-container-lowest rounded-lg border-l-3 border-secondary">
+                  <span class="font-bold text-secondary block mb-1 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
                     금주 계획
                   </span>
-                  <p class="text-on-surface leading-relaxed">${(reports[1].thisWeekSections && reports[1].thisWeekSections[0]?.items[0]) || '사후역량점검 완료 분기 로직 추가, 관련 alert 수정'}</p>
+                  <p class="text-on-surface leading-relaxed text-xs">${(reports[1].thisWeekSections && reports[1].thisWeekSections[0]?.items[0]) || '사후역량점검 완료 분기 로직 추가, 관련 alert 수정'}</p>
                 </div>
               </div>
             </div>
@@ -1280,7 +1280,7 @@ const PCApp = {
         <div class="pc-bento-card">
           <div class="pc-card-header">
             <span class="pc-card-title">
-              <svg class="w-4.5 h-4.5 text-primary" viewBox="0 -960 960 960" fill="currentColor">
+              <svg class="w-5 h-5 text-primary" viewBox="0 -960 960 960" fill="currentColor">
                 <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/>
               </svg>
               실시간 알림
@@ -1303,7 +1303,7 @@ const PCApp = {
               }
 
               const unreadBadge = !item.isRead
-                ? '<span class="w-2.5 h-2.5 rounded-full bg-[#e83538] shrink-0" title="읽지 않음"></span>'
+                ? '<span class="w-2 h-2 rounded-full bg-[#e83538] shrink-0" title="읽지 않음"></span>'
                 : '';
 
               const unreadBg = !item.isRead
@@ -1315,15 +1315,15 @@ const PCApp = {
                   <div class="flex items-center justify-between gap-2">
                     <div class="flex items-center gap-1.5 min-w-0">
                       ${typeBadge}
-                      <span class="font-bold text-xs text-on-surface truncate">${item.title}</span>
+                      <span class="font-bold text-sm text-on-surface truncate">${item.title}</span>
                     </div>
                     <div class="flex items-center gap-1.5 shrink-0">
-                      <span class="text-[11px] text-on-surface-variant font-medium">${item.time}</span>
+                      <span class="text-xs text-on-surface-variant font-medium">${item.time}</span>
                       ${unreadBadge}
                     </div>
                   </div>
-                  <p class="text-xs text-on-surface font-medium leading-snug line-clamp-2">${item.message}</p>
-                  <div class="text-[11px] text-on-surface-variant font-medium">
+                  <p class="text-xs text-on-surface-variant font-medium leading-relaxed line-clamp-2">${item.message}</p>
+                  <div class="text-xs text-on-surface-variant/80 font-medium">
                     <span>${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
                   </div>
                 </div>
@@ -1349,7 +1349,7 @@ const PCApp = {
         <div class="pc-bento-card">
           <div class="pc-card-header">
             <span class="pc-card-title">
-              <svg class="w-4.5 h-4.5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22 5.18L10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM19.79 10.22C19.92 10.79 20 11.39 20 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8c1.66 0 3.2.51 4.48 1.39l1.45-1.45C16.19 2.7 14.19 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z"/>
               </svg>
               To-Do 할 일 목록
@@ -1372,7 +1372,7 @@ const PCApp = {
                     <div class="flex items-center gap-1.5 flex-wrap">
                       <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${statusBg}">${statusText}</span>
                       <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${prioBg}">${prioText}</span>
-                      <span class="text-[11px] font-bold text-primary truncate max-w-[120px]"># ${t.project || '일반 업무'}</span>
+                      <span class="text-xs font-bold text-primary truncate max-w-[120px]"># ${t.project || '일반 업무'}</span>
                     </div>
                     <button type="button" onclick="event.stopPropagation(); PCApp.toggleTodo(${idx});" class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 ${isDone ? 'bg-secondary border-secondary text-white' : 'border-outline hover:border-primary bg-surface-container-lowest'}" title="${isDone ? '미완료로 변경' : '완료 처리'}">
                       ${isDone ? '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
@@ -1388,11 +1388,11 @@ const PCApp = {
                       <svg class="w-3.5 h-3.5 text-on-surface-variant/70 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
                       </svg>
-                      <span class="font-medium text-[11px]">${t.dueDate || '마감일 미지정'}</span>
+                      <span class="font-medium text-xs">${t.dueDate || '마감일 미지정'}</span>
                     </div>
                     <div class="flex items-center gap-1.5 shrink-0">
                       <img src="${assignee.avatar || './profile.png'}" class="w-5 h-5 rounded-full object-cover border border-outline/30 shrink-0" alt="${assignee.name}" />
-                      <span class="text-[11px] font-bold text-on-surface">${assignee.name}</span>
+                      <span class="text-xs font-bold text-on-surface">${assignee.name}</span>
                     </div>
                   </div>
                 </div>
