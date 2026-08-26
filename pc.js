@@ -3917,42 +3917,106 @@ const PCApp = {
     this.showModal();
   },
 
-  openNoticeModal(idx) {
-    const n = this.state.notices[idx];
+  openNoticeModal(idxOrId) {
+    let n = null;
+    if (typeof idxOrId === 'number' && this.state.notices && this.state.notices[idxOrId]) {
+      n = this.state.notices[idxOrId];
+    } else {
+      n = (this.state.notices || []).find(item => item.id === idxOrId) || (this.state.notices && this.state.notices[0]);
+    }
     if (!n) return;
+
     const modalBody = document.getElementById('pc-modal-content');
     if (!modalBody) return;
 
+    const isPinned = n.isPinned || n.pinned;
+    const isNew = n.isNew;
+    const formattedDate = (n.date || '').replace(/-/g, '.');
+
+    // 카테고리/구분 뱃지 태그
+    const pinnedBadge = isPinned
+      ? '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-error/10 text-error border border-error/20 flex items-center gap-1 shrink-0"><svg class="w-3 h-3 text-error" viewBox="0 0 24 24" fill="currentColor"><path d="M16 9V4l1 0c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1l1 0v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg><span>필독</span></span>'
+      : '';
+    const newBadge = isNew
+      ? '<span class="px-1.5 py-0.5 rounded bg-error text-white font-bold text-[10px] tracking-wider shrink-0">NEW</span>'
+      : '';
+    const categoryBadge = `
+      <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20 shrink-0">
+        ${n.category || '공통'}
+      </span>
+    `;
+
     modalBody.innerHTML = `
-      <div class="flex items-center justify-between pb-4 border-b border-outline mb-4">
-        <div>
-          <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${n.isPinned || n.pinned ? 'bg-error-container text-error' : 'bg-primary-container text-primary'} mr-2">
-            ${n.isPinned || n.pinned ? '필독' : '일반'} · ${n.category || '공통'}
-          </span>
-          <h3 class="text-2xl font-bold text-on-surface inline align-middle">${n.title}</h3>
-        </div>
-        <span class="text-sm text-on-surface-variant font-medium">${n.date}</span>
-      </div>
+      <div class="flex flex-col max-h-[82vh] overflow-hidden text-left">
+        <!-- 1. Header Area (상단 메타 바 / 타이틀 / 작성자 정보 완벽 분리) -->
+        <div class="flex items-start justify-between pb-4 border-b border-outline mb-4 shrink-0">
+          <div class="flex-1 min-w-0 mr-4">
+            <!-- 1-1. 상단 뱃지 및 등록일자 바 -->
+            <div class="flex items-center gap-2 mb-2 flex-wrap">
+              ${pinnedBadge}
+              ${categoryBadge}
+              ${newBadge}
+              <span class="text-xs text-on-surface-variant font-medium ml-auto sm:ml-1 font-mono">${formattedDate}</span>
+            </div>
 
-      <div class="text-base text-on-surface leading-relaxed max-h-[50vh] overflow-y-auto py-2 space-y-3">
-        ${n.content || n.summary || '상세 공지 내용입니다.'}
-      </div>
+            <!-- 1-2. 공지사항 타이틀 (독립 단독 행) -->
+            <h2 class="text-xl font-bold text-on-surface leading-snug break-words">
+              ${n.title}
+            </h2>
 
-      ${n.fileName ? `
-        <div class="mt-4 p-4 bg-surface-container-low rounded-xl border border-outline flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <span class="text-2xl">📎</span>
-            <div>
-              <p class="font-bold text-sm text-on-surface">${n.fileName}</p>
-              <p class="text-xs text-on-surface-variant">${n.fileSize || '1.2 MB'}</p>
+            <!-- 1-3. 작성자 및 공지 메타 정보 -->
+            <div class="flex items-center gap-2 text-xs text-on-surface-variant mt-2.5 pt-2 border-t border-outline/30">
+              <div class="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-[10px] shrink-0">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              </div>
+              <span class="font-medium text-on-surface">${n.author || '경영지원팀 오은주 차장'}</span>
+              <span class="text-outline">|</span>
+              <span class="text-on-surface-variant">공지번호: No.${n.id || 1}</span>
             </div>
           </div>
-          <button class="px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary font-bold rounded-lg text-xs" onclick="PCApp.showToast('파일 다운로드가 시작되었습니다.')">다운로드</button>
-        </div>
-      ` : ''}
 
-      <div class="flex justify-end pt-5 border-t border-outline mt-5">
-        <button class="px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-bold text-base hover:bg-surface-container-highest" onclick="PCApp.closeModal()">닫기</button>
+          <!-- 우측 상단 닫기 X 버튼 -->
+          <button type="button" class="p-1.5 text-on-surface-variant hover:bg-surface-container rounded-lg transition-all shrink-0" onclick="PCApp.closeModal()" title="닫기">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- 2. Scrollable Body Content -->
+        <div class="flex-1 overflow-y-auto pr-1.5 space-y-4 text-sm text-on-surface leading-relaxed select-text">
+          <div class="p-4 bg-surface-container-low/50 rounded-xl border border-outline/30 text-on-surface space-y-3 leading-relaxed">
+            ${n.content || `<p>${n.summary || '상세 공지 내용입니다.'}</p>`}
+          </div>
+
+          <!-- 첨부파일 영역 -->
+          ${n.fileName ? `
+            <div class="p-3.5 bg-surface-container-low rounded-xl border border-outline/50 flex items-center justify-between hover:border-primary/50 transition-all">
+              <div class="flex items-center gap-3 truncate min-w-0 mr-3">
+                <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                  <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                  </svg>
+                </div>
+                <div class="flex flex-col truncate text-left">
+                  <span class="text-xs font-bold text-on-surface truncate">${n.fileName}</span>
+                  <span class="text-[11px] text-on-surface-variant font-medium">${n.fileSize || '1.2 MB'}</span>
+                </div>
+              </div>
+              <button type="button" class="px-3 py-1.5 bg-primary text-white hover:bg-primary-dim font-bold rounded-lg text-xs transition-colors shrink-0 flex items-center gap-1.5" onclick="PCApp.showToast('파일 [${n.fileName}] 다운로드가 시작되었습니다.')">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                <span>다운로드</span>
+              </button>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- 3. Bottom Footer Actions -->
+        <div class="flex justify-end pt-4 border-t border-outline mt-4 shrink-0">
+          <button type="button" class="px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-bold text-sm hover:bg-surface-container-highest transition-colors" onclick="PCApp.closeModal()">닫기</button>
+        </div>
       </div>
     `;
     this.showModal();
