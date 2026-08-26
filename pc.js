@@ -431,7 +431,6 @@ const PCApp = {
     if (screenId === 'dashboard') this.renderDashboard();
     else if (screenId === 'directory') this.renderDirectoryView();
     else if (screenId === 'notice') this.renderNoticeView();
-    else if (screenId === 'calendar') this.renderCalendarView();
     else if (screenId === 'finance') this.renderFinanceView();
     else if (screenId === 'todo') this.renderTodoView();
     else if (screenId === 'project') this.renderProjectView();
@@ -442,12 +441,11 @@ const PCApp = {
     window.scrollTo({ top: 0, behavior: 'instant' });
   },
 
-  // 4. Render Sidebar
+  // 4. Render Sidebar (9 Core Service Icons & Labels)
   renderSidebar() {
     const navItems = [
       { id: 'dashboard', name: '대시보드', icon: '<path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>' },
       { id: 'checkin', name: '출/퇴근', icon: '<path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/>' },
-      { id: 'calendar', name: '근태일지', icon: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>' },
       { id: 'request', name: '휴가/외근', icon: '<path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/>' },
       { id: 'directory', name: '주소록', icon: '<path d="M19 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V17z"/>' },
       { id: 'notice', name: '공지사항', icon: '<path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>' },
@@ -476,7 +474,7 @@ const PCApp = {
   // 5. Render Main Full-Width Bento Dashboard
   renderDashboard() {
     this.renderLeftCol();
-    this.renderCalendarWidget();
+    this.renderCompanyScheduleWidget();
     this.renderCenterCol();
     this.renderRightCol();
   },
@@ -497,7 +495,7 @@ const PCApp = {
           <p class="pc-profile-dept">${this.state.user.dept} | 워드앤코드</p>
           
           <div class="pc-profile-counters">
-            <div class="pc-counter-item" onclick="PCApp.switchScreen('calendar')">
+            <div class="pc-counter-item" onclick="document.getElementById('pc-widget-company-schedule')?.scrollIntoView({ behavior: 'smooth' })">
               <span class="pc-counter-num">${todayScheds.length}</span>
               <span class="pc-counter-label">오늘 일정</span>
             </div>
@@ -767,10 +765,12 @@ const PCApp = {
         </div>
       `;
     }
+  },
 
-    // 3. Today's Schedule Card (근태일지 페이지와 100% 동일한 폼 및 데이터 바인딩)
-    const todaySchedWrap = document.getElementById('pc-widget-today-schedule');
-    if (todaySchedWrap) {
+  // 5-2. Top Full-Span Company Schedule Widget (2열+3열 상단 통합 회사 일정 위젯)
+  renderCompanyScheduleWidget() {
+    const schedWrap = document.getElementById('pc-widget-company-schedule');
+    if (schedWrap) {
       const now = new Date();
       const todayYear = now.getFullYear();
       const todayMonth = now.getMonth() + 1;
@@ -781,19 +781,21 @@ const PCApp = {
 
       const todaySchedules = this.getSchedulesForDay(todayYear, todayMonth, todayDay) || [];
 
-      todaySchedWrap.innerHTML = `
+      schedWrap.innerHTML = `
         <div class="pc-bento-card">
-          <div class="pc-card-header">
-            <div class="flex items-center gap-2">
-              <span class="pc-card-title">
-                <svg class="w-4.5 h-4.5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          <div class="pc-card-header mb-3.5">
+            <div class="flex items-center gap-2.5">
+              <span class="pc-card-title flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
                 </svg>
-                오늘의 일정
+                회사 일정
               </span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${todayMonth}월 ${todayDay}일 (${dayOfWeekStr}) · ${todaySchedules.length}건</span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${todayMonth}월 ${todayDay}일 (${dayOfWeekStr}) · 총 ${todaySchedules.length}건</span>
             </div>
-            <button class="pc-card-action" onclick="PCApp.selectDate('${todayDateKey}'); PCApp.switchScreen('calendar');">전체보기</button>
+            <button class="pc-card-action flex items-center gap-1" onclick="PCApp.switchScreen('request')">
+              <span>+ 일정 신청</span>
+            </button>
           </div>
 
           <div class="space-y-2.5">
@@ -802,55 +804,9 @@ const PCApp = {
                 <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
                 </svg>
-                <p class="font-bold text-sm text-on-surface">오늘 등록된 일정이 없습니다.</p>
+                <p class="font-bold text-sm text-on-surface">오늘 등록된 회사 일정이 없습니다.</p>
               </div>
             `}
-          </div>
-        </div>
-      `;
-    }
-
-  },
-
-  // 5-2. Full-Span Calendar Widget (2열+3열 상단 통합 전체 일정표)
-  renderCalendarWidget() {
-    const calWrap = document.getElementById('pc-widget-calendar');
-    if (calWrap) {
-      calWrap.innerHTML = `
-        <div class="pc-bento-card">
-          <div class="pc-calendar-header">
-            <div class="flex items-center gap-3">
-              <span class="pc-card-title flex items-center gap-2">
-                <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
-                </svg>
-                전체 일정표
-              </span>
-              <div class="pc-cal-nav-group ml-2">
-                <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(-1)" title="이전 달">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-                </button>
-                <h3 class="pc-cal-title font-bold">${this.state.calYear}년 ${this.state.calMonth}월</h3>
-                <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(1)" title="다음 달">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-                </button>
-                <button class="px-2.5 py-1 text-xs font-bold bg-surface-container hover:bg-surface-container-high rounded-lg text-on-surface transition-colors cursor-pointer" onclick="PCApp.goToTodayCal()">오늘</button>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <button class="pc-card-action flex items-center gap-1" onclick="PCApp.switchScreen('calendar')">
-                <span>근태일지 화면 가기</span>
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="pc-cal-weekdays">
-            <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
-          </div>
-
-          <div class="pc-cal-grid" id="pc-dashboard-cal-grid">
-            ${this.generateCalGridHTML()}
           </div>
         </div>
       `;
@@ -2767,7 +2723,7 @@ const PCApp = {
     });
 
     this.showToast(`[신청 완료] ${startDate} ${leaveType} 신청서가 정상 접수되었습니다.`);
-    this.switchScreen('calendar');
+    this.switchScreen('dashboard');
   },
 
   submitOutworkForm() {
@@ -2796,7 +2752,7 @@ const PCApp = {
     });
 
     this.showToast(`[신청 완료] ${date} ${place} 외근 신청서가 정상 접수되었습니다.`);
-    this.switchScreen('calendar');
+    this.switchScreen('dashboard');
   },
 
   // 7. Commute Check In/Out Actions

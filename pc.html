@@ -219,16 +219,15 @@
 
           <!-- Column 2 & 3: Main Feed Wrap (Flex-1) -->
           <div class="pc-col-main-feed">
-            <!-- Top Full-Span: 2열과 3열을 합친 상단 전체 일정표 -->
-            <div id="pc-widget-calendar"></div>
+            <!-- Top Full-Span: 2열과 3열을 합친 상단 회사 일정 위젯 -->
+            <div id="pc-widget-company-schedule"></div>
 
             <!-- Bottom Sub-Columns: 2열과 3열 나란히 배치되는 서브 그리드 -->
             <div class="pc-main-subgrid">
-              <!-- Column 2: Center Feed (공지사항, 주간업무보고, 오늘의 일정) -->
+              <!-- Column 2: Center Feed (공지사항, 주간업무보고) -->
               <div class="pc-col-center">
                 <div id="pc-widget-notice-banner"></div>
                 <div id="pc-widget-work-report"></div>
-                <div id="pc-widget-today-schedule"></div>
               </div>
 
               <!-- Column 3: Right Widgets (퀵액션, 투두) -->
@@ -409,57 +408,7 @@
         </div>
       </section>
 
-      <!-- SCREEN 6: CALENDAR VIEW (근태일지 & 전체 일정표) -->
-      <section class="pc-screen-view p-8" id="pc-screen-calendar">
-        <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline">
-          <div>
-            <h2 class="text-2xl font-bold text-on-surface">근태일지 & 사내 캘린더</h2>
-            <p class="text-base text-on-surface-variant font-medium mt-1">월간/주간/일간 사내 일정 및 휴가/외근/회의 현황</p>
-          </div>
-          <div class="flex items-center gap-3">
-            <button class="px-4 py-2 bg-surface-container hover:bg-surface-container-high rounded-xl text-base font-bold text-on-surface" onclick="PCApp.goToTodayCal()">오늘</button>
-            <button class="px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-base flex items-center gap-2 shadow-xs" onclick="PCApp.openQuickModal('leave')">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-              일정 / 휴가 등록
-            </button>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-          <!-- Calendar Main Grid (8 Cols on XL) -->
-          <div class="xl:col-span-8 pc-bento-card">
-            <div class="pc-calendar-header">
-              <div class="pc-cal-nav-group">
-                <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(-1)">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-                </button>
-                <h3 class="pc-cal-title text-xl" id="pc-full-cal-title">2026년 8월</h3>
-                <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(1)">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-                </button>
-              </div>
-              <div class="flex gap-2">
-                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-base font-bold">월간 뷰</span>
-              </div>
-            </div>
-
-            <div class="pc-cal-weekdays">
-              <span>일요일</span><span>월요일</span><span>화요일</span><span>수요일</span><span>목요일</span><span>금요일</span><span>토요일</span>
-            </div>
-
-            <div class="pc-full-cal-grid" id="pc-full-calendar-grid">
-              <!-- Dynamically Rendered by pc.js -->
-            </div>
-          </div>
-
-          <!-- Side: Selected Date Daily Schedule List (4 Cols on XL, Sticky) -->
-          <div class="xl:col-span-4 pc-bento-card sticky top-[86px] max-h-[calc(100vh-120px)] overflow-y-auto" id="pc-cal-daily-panel">
-            <!-- Dynamically Rendered by pc.js -->
-          </div>
-        </div>
-      </section>
-
-      <!-- SCREEN 7: FINANCE & EXPENSES -->
+      <!-- SCREEN 6: FINANCE & EXPENSES -->
       <section class="pc-screen-view p-8" id="pc-screen-finance">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-outline">
           <div>
