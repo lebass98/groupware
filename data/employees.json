@@ -127,7 +127,7 @@
     "avatar": "./resource/image/profile_gray_20240502__.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "반반차 [16:00~18:00]"
   },
   {
     "id": 11,
@@ -153,9 +153,9 @@
     "tel": "070-7711-4806",
     "email": "red@wordncode.com",
     "avatar": "./resource/image/profile_red_20260602.png",
-    "status": "work",
-    "statusText": "근무중",
-    "todaySchedule": ""
+    "status": "offwork",
+    "statusText": "휴가",
+    "todaySchedule": "연차"
   },
   {
     "id": 13,
@@ -168,7 +168,7 @@
     "avatar": "./resource/image/profile_pub.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "오후 반차"
   },
   {
     "id": 14,

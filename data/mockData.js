@@ -268,19 +268,33 @@ window.MockData = {
       { title: "윤익수 반반차", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "윤익수 부장", avatar: "./resource/image/profile_blue.png" }
     ],
     "2026-8-24": [
-      { title: "남기현 오전반차", time: "09:00 ~ 13:00", type: "warning", badge: "반차", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
       { title: "안영재 연차", time: "종일", type: "secondary", badge: "연차", author: "안영재 대리", avatar: "./resource/image/profile_pro.png" },
-      { title: "곽재훈 연차", time: "종일", type: "secondary", badge: "연차", author: "곽재훈 대리", avatar: "./resource/image/profile_spring.png" }
+      { title: "곽재훈 연차", time: "종일", type: "secondary", badge: "연차", author: "곽재훈 대리", avatar: "./resource/image/profile_spring.png" },
+      { title: "조지혜 연차", time: "종일", type: "error", badge: "연차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" },
+      { title: "남기현 오전반차", time: "09:00 ~ 13:00", type: "warning", badge: "반차", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
+      { title: "명희진 반반차", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "명희진 주임", avatar: "./resource/image/profile_gray_20240502__.png" },
+      { title: "손석호 오후반차", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" }
     ],
     "2026-8-25": [
-      { title: "남기현 외근", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "이채원 외근", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" }
+      { title: "남기현 오전반차", time: "09:00 ~ 13:00", type: "warning", badge: "반차", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
+      { title: "남기현 외근", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+    ],
+    "2026-8-26": [
+      { title: "김종규 외근", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
+      { title: "이채원 외근", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
+      { title: "장현아 외근", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
+      { title: "윤진성 외근", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" }
     ],
     "2026-8-27": [
-      { title: "김종규 외근", time: "09:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" }
+      { title: "김종규 외근", time: "09:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
+      { title: "조지혜 반반차", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" }
+    ],
+    "2026-8-28": [
+      { title: "최우석 연차", time: "종일", type: "secondary", badge: "연차", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" }
     ],
     "2026-8-31": [
-      { title: "최지영 연차", time: "종일", type: "secondary", badge: "연차", author: "최지영 과장", avatar: "./resource/image/profile_white.png" }
+      { title: "최지영 연차", time: "종일", type: "secondary", badge: "연차", author: "최지영 과장", avatar: "./resource/image/profile_white.png" },
+      { title: "신현우 반반차", time: "09:00 ~ 11:00", type: "warning", badge: "반반차", author: "신현우 주임", avatar: "./resource/image/profile_pink____________.png" }
     ]
   },
 
