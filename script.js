@@ -3368,12 +3368,32 @@ const App = {
   // Employee Status & Schedule Helper
   simplifyScheduleText(text) {
     if (!text) return '';
-    const str = String(text);
+    const str = String(text).trim();
     if (str.includes('오후 반차') || str.includes('반차(오후)')) return '오후 반차';
     if (str.includes('오전 반차') || str.includes('반차(오전)')) return '오전 반차';
-    if (str.includes('반반차')) return '반반차';
+    if (str.includes('반반차')) {
+      const timeMatch = str.match(/\[(.*?)\]/);
+      return timeMatch ? `반반차 [${timeMatch[1].trim()}]` : '반반차';
+    }
     if (str.includes('연차')) return '연차';
-    if (str.includes('외근') || str.includes('미팅') || str.includes('회의') || str.includes('방문')) return '외근';
+    if (str.includes('외근') || str.includes('미팅') || str.includes('회의') || str.includes('방문')) {
+      // 1. 이미 '외근 (장소명)' 형식인 경우
+      const alreadyFormatted = str.match(/외근\s*\((.*?)\)/);
+      if (alreadyFormatted && alreadyFormatted[1]) {
+        return `외근 (${alreadyFormatted[1].trim()})`;
+      }
+      // 2. 대괄호 [장소명]이 포함된 경우 (예: 외근(오전) [한국건강가정진흥원] 주간회의)
+      const bracketMatch = str.match(/\[(.*?)\]/);
+      if (bracketMatch && bracketMatch[1]) {
+        return `외근 (${bracketMatch[1].trim()})`;
+      }
+      // 3. 소괄호 (장소명)이 포함된 경우
+      const parenMatch = str.match(/\((.*?)\)/);
+      if (parenMatch && parenMatch[1] && !parenMatch[1].includes('오전') && !parenMatch[1].includes('오후') && !parenMatch[1].includes('종일')) {
+        return `외근 (${parenMatch[1].trim()})`;
+      }
+      return '외근';
+    }
     if (str.includes('휴가') || str.includes('공가') || str.includes('병가')) return '휴가';
     return str.split('(')[0].split('[')[0].trim();
   },
@@ -3394,55 +3414,7 @@ const App = {
     const rawStatus = (emp.status || 'work').toLowerCase();
     const rawText = emp.statusText || '';
 
-    // 1. Determine Primary Live Status (근무중, 외근중, 휴가중, 퇴근)
-    let mainStatus = {
-      type: 'work',
-      text: '근무중',
-      dotColor: 'bg-emerald-500',
-      badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
-      icon: 'laptop_mac',
-      pulse: true
-    };
-
-    if (rawStatus === 'business' || rawText === '외근중') {
-      mainStatus = {
-        type: 'business',
-        text: '외근중',
-        dotColor: 'bg-sky-500',
-        badgeClass: 'bg-sky-500/10 text-sky-600 border border-sky-500/20',
-        icon: 'directions_car',
-        pulse: false
-      };
-    } else if (rawStatus === 'vacation' || rawText === '휴가중' || rawText === '연차') {
-      mainStatus = {
-        type: 'vacation',
-        text: '휴가중',
-        dotColor: 'bg-amber-500',
-        badgeClass: 'bg-amber-500/10 text-amber-600 border border-amber-500/20',
-        icon: 'beach_access',
-        pulse: false
-      };
-    } else if (rawStatus === 'offwork' || rawStatus === 'away' || rawStatus === 'offline' || rawText === '퇴근') {
-      mainStatus = {
-        type: 'offwork',
-        text: '퇴근',
-        dotColor: 'bg-slate-400',
-        badgeClass: 'bg-slate-500/10 text-slate-500 border border-slate-500/20',
-        icon: 'home',
-        pulse: false
-      };
-    } else {
-      mainStatus = {
-        type: 'work',
-        text: '근무중',
-        dotColor: 'bg-emerald-500',
-        badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
-        icon: 'laptop_mac',
-        pulse: true
-      };
-    }
-
-    // 2. Determine Today's Scheduled Event (금일 근태일지 일정 및 예정 뱃지 실시간 동기화)
+    // 1. Determine Today's Scheduled Event (금일 근태일지 일정 및 예정 뱃지 실시간 동기화)
     let rawSched = '';
 
     const now = new Date();
@@ -3470,7 +3442,55 @@ const App = {
       rawSched = emp.todaySchedule;
     }
 
-    const todayScheduleText = this.simplifyScheduleText(rawSched);
+    const todayScheduleText = this.simplifyScheduleText(rawSched || emp.todaySchedule);
+
+    // 2. Determine Primary Live Status (근무중, 외근중, 휴가중, 퇴근)
+    let mainStatus = {
+      type: 'work',
+      text: '근무중',
+      dotColor: 'bg-emerald-500',
+      badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
+      icon: 'laptop_mac',
+      pulse: true
+    };
+
+    if (rawStatus === 'business' || rawText === '외근중' || (todayScheduleText && todayScheduleText.startsWith('외근'))) {
+      mainStatus = {
+        type: 'business',
+        text: '외근중',
+        dotColor: 'bg-sky-500',
+        badgeClass: 'bg-sky-500/10 text-sky-600 border border-sky-500/20',
+        icon: 'directions_car',
+        pulse: false
+      };
+    } else if (rawStatus === 'vacation' || rawText === '휴가중' || rawText === '연차' || (todayScheduleText && todayScheduleText === '연차')) {
+      mainStatus = {
+        type: 'vacation',
+        text: '휴가중',
+        dotColor: 'bg-amber-500',
+        badgeClass: 'bg-amber-500/10 text-amber-600 border border-amber-500/20',
+        icon: 'beach_access',
+        pulse: false
+      };
+    } else if (rawStatus === 'offwork' || rawStatus === 'away' || rawStatus === 'offline' || rawText === '퇴근') {
+      mainStatus = {
+        type: 'offwork',
+        text: '퇴근',
+        dotColor: 'bg-slate-400',
+        badgeClass: 'bg-slate-500/10 text-slate-500 border border-slate-500/20',
+        icon: 'home',
+        pulse: false
+      };
+    } else {
+      mainStatus = {
+        type: 'work',
+        text: '근무중',
+        dotColor: 'bg-emerald-500',
+        badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
+        icon: 'laptop_mac',
+        pulse: true
+      };
+    }
 
     return {
       ...mainStatus,

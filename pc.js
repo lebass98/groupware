@@ -1070,11 +1070,80 @@ const PCApp = {
     this.renderDirectoryView();
   },
 
+  simplifyScheduleText(text) {
+    if (!text) return '';
+    const str = String(text).trim();
+    if (str.includes('오후 반차') || str.includes('반차(오후)')) return '오후 반차';
+    if (str.includes('오전 반차') || str.includes('반차(오전)')) return '오전 반차';
+    if (str.includes('반반차')) {
+      const timeMatch = str.match(/\[(.*?)\]/);
+      return timeMatch ? `반반차 [${timeMatch[1].trim()}]` : '반반차';
+    }
+    if (str.includes('연차')) return '연차';
+    if (str.includes('외근') || str.includes('미팅') || str.includes('회의') || str.includes('방문')) {
+      const alreadyFormatted = str.match(/외근\s*\((.*?)\)/);
+      if (alreadyFormatted && alreadyFormatted[1]) {
+        return `외근 (${alreadyFormatted[1].trim()})`;
+      }
+      const bracketMatch = str.match(/\[(.*?)\]/);
+      if (bracketMatch && bracketMatch[1]) {
+        return `외근 (${bracketMatch[1].trim()})`;
+      }
+      const parenMatch = str.match(/\((.*?)\)/);
+      if (parenMatch && parenMatch[1] && !parenMatch[1].includes('오전') && !parenMatch[1].includes('오후') && !parenMatch[1].includes('종일')) {
+        return `외근 (${parenMatch[1].trim()})`;
+      }
+      return '외근';
+    }
+    if (str.includes('휴가') || str.includes('공가') || str.includes('병가')) return '휴가';
+    return str.split('(')[0].split('[')[0].trim();
+  },
+
   renderDirectoryView() {
     const container = document.getElementById('pc-directory-grid');
     if (!container) return;
 
-    const filtered = (this.state.members || []).filter(m => {
+    const now = new Date();
+    const curYear = now.getFullYear();
+    const curMonth = now.getMonth() + 1;
+    const curDay = now.getDate();
+    const todaySchedules = this.getSchedulesForDay(curYear, curMonth, curDay) || [];
+
+    const membersList = (this.state.members && this.state.members.length) ? this.state.members : ((window.MockData && window.MockData.employees) || []);
+
+    const filtered = membersList.map(m => {
+      let schedText = m.todaySchedule || '';
+      const match = todaySchedules.find(s => {
+        if (!s.author) return false;
+        if (!s.author.includes(m.name)) return false;
+        if (m.role && (s.author.includes('팀장') || s.author.includes('본부장') || s.author.includes('대표') || s.author.includes('차장') || s.author.includes('과장') || s.author.includes('대리') || s.author.includes('주임') || s.author.includes('사원') || s.author.includes('수습'))) {
+          return s.author.includes(m.role) || (m.dept && s.author.includes(m.dept));
+        }
+        return true;
+      });
+      if (match) {
+        schedText = this.simplifyScheduleText(match.title || match.badge);
+      } else if (m.todaySchedule) {
+        schedText = this.simplifyScheduleText(m.todaySchedule);
+      }
+
+      let status = m.status || 'work';
+      let statusText = m.statusText || '근무중';
+      if (schedText && schedText.startsWith('외근')) {
+        status = 'business';
+        statusText = '외근중';
+      } else if (schedText === '연차') {
+        status = 'offwork';
+        statusText = '휴가';
+      }
+
+      return {
+        ...m,
+        status,
+        statusText,
+        todaySchedule: schedText
+      };
+    }).filter(m => {
       const matchCat = this.state.directoryCategory === 'all' || m.dept === this.state.directoryCategory;
       const search = (this.state.directorySearch || '').trim().toLowerCase();
       const matchSearch = !search ||
@@ -1090,8 +1159,9 @@ const PCApp = {
 
     container.innerHTML = filtered.map(m => {
       const isWork = m.status === 'work' || m.statusText === '근무중';
-      const isOff = m.status === 'offwork' || m.statusText === '퇴근';
-      const statusClass = isWork ? 'bg-secondary-container text-secondary' : isOff ? 'bg-surface-container-high text-on-surface-variant' : 'bg-primary-container text-primary';
+      const isOff = m.status === 'offwork' || m.statusText === '퇴근' || m.statusText === '휴가';
+      const isBusiness = m.status === 'business' || m.statusText === '외근중';
+      const statusClass = isBusiness ? 'bg-sky-500/10 text-sky-600 border border-sky-500/20' : isWork ? 'bg-secondary-container text-secondary' : isOff ? 'bg-surface-container-high text-on-surface-variant' : 'bg-primary-container text-primary';
       const todaySched = m.todaySchedule ? `<span class="px-2 py-0.5 rounded-md text-xs font-bold bg-tertiary-container text-tertiary">[예정: ${m.todaySchedule}]</span>` : '';
 
       return `

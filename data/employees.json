@@ -34,9 +34,9 @@
     "tel": "070-8805-1647",
     "email": "john@wordncode.com",
     "avatar": "./resource/image/profile_john.png",
-    "status": "work",
-    "statusText": "근무중",
-    "todaySchedule": ""
+    "status": "business",
+    "statusText": "외근중",
+    "todaySchedule": "외근 (한국건강가정진흥원)"
   },
   {
     "id": 4,
@@ -73,9 +73,9 @@
     "tel": "070-7711-4809",
     "email": "you@wordncode.com",
     "avatar": "./resource/image/profile_janghyunah.png",
-    "status": "work",
-    "statusText": "근무중",
-    "todaySchedule": ""
+    "status": "business",
+    "statusText": "외근중",
+    "todaySchedule": "외근 (한국건강가정진흥원)"
   },
   {
     "id": 7,
@@ -127,7 +127,7 @@
     "avatar": "./resource/image/profile_gray_20240502__.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": "반반차 [16:00~18:00]"
+    "todaySchedule": ""
   },
   {
     "id": 11,
@@ -153,9 +153,9 @@
     "tel": "070-7711-4806",
     "email": "red@wordncode.com",
     "avatar": "./resource/image/profile_red_20260602.png",
-    "status": "offwork",
-    "statusText": "휴가",
-    "todaySchedule": "연차"
+    "status": "work",
+    "statusText": "근무중",
+    "todaySchedule": ""
   },
   {
     "id": 13,
@@ -168,7 +168,7 @@
     "avatar": "./resource/image/profile_pub.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": "오후 반차"
+    "todaySchedule": ""
   },
   {
     "id": 14,
@@ -194,7 +194,7 @@
     "avatar": "./resource/image/profile_pro.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": "연차"
+    "todaySchedule": ""
   },
   {
     "id": 16,
@@ -207,7 +207,7 @@
     "avatar": "./resource/image/profile_spring.png",
     "status": "offwork",
     "statusText": "퇴근",
-    "todaySchedule": "연차"
+    "todaySchedule": ""
   },
   {
     "id": 17,
@@ -233,7 +233,7 @@
     "avatar": "./resource/image/profile_help.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": "오전 반차"
+    "todaySchedule": ""
   },
   {
     "id": 19,
@@ -244,9 +244,9 @@
     "tel": "070-7711-4822",
     "email": "apple@wordncode.com",
     "avatar": "./resource/image/profile_apple_20250611.png",
-    "status": "work",
-    "statusText": "근무중",
-    "todaySchedule": ""
+    "status": "business",
+    "statusText": "외근중",
+    "todaySchedule": "외근 (한가원)"
   },
   {
     "id": 20,
@@ -270,8 +270,8 @@
     "tel": "070-4210-6134",
     "email": "cool@wordncode.com",
     "avatar": "./resource/image/profile_cool_20241224_lee.png",
-    "status": "work",
-    "statusText": "근무중",
-    "todaySchedule": ""
+    "status": "business",
+    "statusText": "외근중",
+    "todaySchedule": "외근 (한국건강가정진흥원)"
   }
 ]
