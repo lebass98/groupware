@@ -10,7 +10,8 @@
     "avatar": "./resource/image/profile_abc.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 2,
@@ -23,7 +24,8 @@
     "avatar": "./resource/image/profile_sky.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 3,
@@ -36,7 +38,8 @@
     "avatar": "./resource/image/profile_john.png",
     "status": "business",
     "statusText": "외근중",
-    "todaySchedule": "외근 (한국건강가정진흥원)"
+    "todaySchedule": "외근",
+    "location": "한국건강가정진흥원"
   },
   {
     "id": 4,
@@ -49,7 +52,8 @@
     "avatar": "./resource/image/profile_green.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 5,
@@ -62,7 +66,8 @@
     "avatar": "./resource/image/profile_star_20250326.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 6,
@@ -75,7 +80,8 @@
     "avatar": "./resource/image/profile_janghyunah.png",
     "status": "business",
     "statusText": "외근중",
-    "todaySchedule": "외근 (한국건강가정진흥원)"
+    "todaySchedule": "외근",
+    "location": "한국건강가정진흥원"
   },
   {
     "id": 7,
@@ -88,7 +94,8 @@
     "avatar": "./resource/image/profile_blue.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 8,
@@ -101,7 +108,8 @@
     "avatar": "./resource/image/profile_white.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 9,
@@ -114,7 +122,8 @@
     "avatar": "./resource/image/profile_pink____________.png",
     "status": "offwork",
     "statusText": "퇴근",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 10,
@@ -127,7 +136,8 @@
     "avatar": "./resource/image/profile_gray_20240502__.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 11,
@@ -141,6 +151,7 @@
     "status": "work",
     "statusText": "근무중",
     "todaySchedule": "",
+    "location": "",
     "isBirthdayThisMonth": true,
     "birthday": "08.21"
   },
@@ -155,7 +166,8 @@
     "avatar": "./resource/image/profile_red_20260602.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 13,
@@ -168,7 +180,8 @@
     "avatar": "./resource/image/profile_pub.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 14,
@@ -181,7 +194,8 @@
     "avatar": "./resource/image/profile_mobile.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 15,
@@ -194,7 +208,8 @@
     "avatar": "./resource/image/profile_pro.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 16,
@@ -207,7 +222,8 @@
     "avatar": "./resource/image/profile_spring.png",
     "status": "offwork",
     "statusText": "퇴근",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 17,
@@ -220,7 +236,8 @@
     "avatar": "./resource/image/profile_jsp.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 18,
@@ -233,7 +250,8 @@
     "avatar": "./resource/image/profile_help.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 19,
@@ -246,7 +264,8 @@
     "avatar": "./resource/image/profile_apple_20250611.png",
     "status": "business",
     "statusText": "외근중",
-    "todaySchedule": "외근 (한가원)"
+    "todaySchedule": "외근",
+    "location": "한가원"
   },
   {
     "id": 20,
@@ -259,7 +278,8 @@
     "avatar": "./resource/image/profile_john_.png",
     "status": "work",
     "statusText": "근무중",
-    "todaySchedule": ""
+    "todaySchedule": "",
+    "location": ""
   },
   {
     "id": 21,
@@ -272,6 +292,7 @@
     "avatar": "./resource/image/profile_cool_20241224_lee.png",
     "status": "business",
     "statusText": "외근중",
-    "todaySchedule": "외근 (한국건강가정진흥원)"
+    "todaySchedule": "외근",
+    "location": "한국건강가정진흥원"
   }
 ]

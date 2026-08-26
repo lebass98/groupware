@@ -1070,9 +1070,11 @@ const PCApp = {
     this.renderDirectoryView();
   },
 
-  simplifyScheduleText(text) {
-    if (!text) return '';
-    const str = String(text).trim();
+  simplifyScheduleText(text, location = '') {
+    if (!text && !location) return '';
+    const loc = String(location || '').trim();
+    const str = String(text || '').trim();
+
     if (str.includes('오후 반차') || str.includes('반차(오후)')) return '오후 반차';
     if (str.includes('오전 반차') || str.includes('반차(오전)')) return '오전 반차';
     if (str.includes('반반차')) {
@@ -1080,7 +1082,10 @@ const PCApp = {
       return timeMatch ? `반반차 [${timeMatch[1].trim()}]` : '반반차';
     }
     if (str.includes('연차')) return '연차';
-    if (str.includes('외근') || str.includes('미팅') || str.includes('회의') || str.includes('방문')) {
+    if (str.includes('외근') || str.includes('미팅') || str.includes('회의') || str.includes('방문') || loc) {
+      if (loc) {
+        return `외근 (${loc})`;
+      }
       const alreadyFormatted = str.match(/외근\s*\((.*?)\)/);
       if (alreadyFormatted && alreadyFormatted[1]) {
         return `외근 (${alreadyFormatted[1].trim()})`;
@@ -1113,6 +1118,7 @@ const PCApp = {
 
     const filtered = membersList.map(m => {
       let schedText = m.todaySchedule || '';
+      let foundLocation = m.location || '';
       const match = todaySchedules.find(s => {
         if (!s.author) return false;
         if (!s.author.includes(m.name)) return false;
@@ -1122,9 +1128,10 @@ const PCApp = {
         return true;
       });
       if (match) {
-        schedText = this.simplifyScheduleText(match.title || match.badge);
+        if (match.location) foundLocation = match.location;
+        schedText = this.simplifyScheduleText(match.title || match.badge, foundLocation);
       } else if (m.todaySchedule) {
-        schedText = this.simplifyScheduleText(m.todaySchedule);
+        schedText = this.simplifyScheduleText(m.todaySchedule, foundLocation);
       }
 
       let status = m.status || 'work';
@@ -1141,6 +1148,7 @@ const PCApp = {
         ...m,
         status,
         statusText,
+        location: foundLocation,
         todaySchedule: schedText
       };
     }).filter(m => {
@@ -1933,6 +1941,7 @@ const PCApp = {
     const titleStr = (item.title || '');
     const badgeStr = (item.badge || '');
     const authorStr = (item.author || '');
+    const locationStr = (item.location || '').trim();
 
     const isHoliday = (badgeStr === '공휴일' || titleStr.includes('공휴일') || authorStr === '공휴일' || authorStr === '대한민국 공휴일' || authorStr === '회사공지');
     const isSolarTerm = (badgeStr === '절기' || authorStr === '24절기');
@@ -1968,6 +1977,12 @@ const PCApp = {
     const avatarUrl = item.avatar || (window.MockData && window.MockData.myProfile ? window.MockData.myProfile.avatar : './resource/image/profile_abc.png');
     const avatarHtml = isSpecial ? '' : `<img src="${avatarUrl}" alt="${item.author || '담당자'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline/30 shadow-xs mr-2.5" />`;
     const authorHtml = isSpecial ? `<span class="font-bold text-xs text-on-surface-variant whitespace-nowrap">${item.badge || categoryKey}</span>` : `<span class="font-bold text-xs text-primary font-bold whitespace-nowrap">${item.author || '이재광 차장'}</span>`;
+    const locationBadgeHtml = locationStr ? `
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
+        <svg class="w-3 h-3 text-sky-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <span>${locationStr}</span>
+      </span>
+    ` : '';
     const displayTitle = this.formatScheduleCleanLabel(item);
 
     return `
@@ -1975,10 +1990,11 @@ const PCApp = {
         <div class="w-2 h-2 rounded-full ${dotClass} shrink-0 mr-2"></div>
         ${avatarHtml}
         <div class="flex-1 min-w-0">
-          <div class="flex items-center justify-between gap-1 mb-1">
-            <div class="flex items-center gap-1.5 shrink-0">
+          <div class="flex items-center justify-between gap-1 mb-1 flex-wrap">
+            <div class="flex items-center gap-1.5 shrink-0 flex-wrap">
               ${authorHtml}
               <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${badgeBg}">${item.badge || categoryKey}</span>
+              ${locationBadgeHtml}
             </div>
             <span class="text-[10px] text-on-surface-variant font-medium whitespace-nowrap ml-auto">${item.time || '종일'}</span>
           </div>
@@ -1988,12 +2004,13 @@ const PCApp = {
     `;
   },
 
-  // Schedule Clean Title Helper (대괄호 제거 및 '이름 외근', '이름 연차', '이름 오후반차' 표준화)
+  // Schedule Clean Title Helper (대괄호 제거 및 '이름 외근 (장소명)', '이름 연차', '이름 오후반차' 표준화)
   formatScheduleCleanLabel(s) {
     if (!s) return '';
     let titleStr = (s.title || '').trim();
     let badgeStr = (s.badge || '').trim();
     let authorName = (s.author || '').split(' ')[0] || '';
+    let locationStr = (s.location || '').trim();
 
     // 1. 공휴일, 절기, 기념일, 회사공지
     const isHoliday = (s.badge === '공휴일' || titleStr.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지');
@@ -2013,8 +2030,11 @@ const PCApp = {
     // 2. 대괄호 [ ... ] 및 불필요 괄호 제거
     let cleanTitle = titleStr.replace(/\s*\(공휴일\)/g, '').replace(/\[.*?\]/g, '').replace(/[\[\]]/g, '').trim();
 
-    // 3. 만약 cleanTitle이 이미 `이름 유형` 형태(예: '오은주 연차', '남기현 외근')이면 그대로 반환
+    // 3. 만약 cleanTitle이 이미 `이름 유형` 형태(예: '오은주 연차')이면 그대로 반환
     if (authorName && cleanTitle.startsWith(authorName)) {
+      if (locationStr && (cleanTitle.includes('외근') || badgeStr.includes('외근')) && !cleanTitle.includes('(')) {
+        return `${cleanTitle} (${locationStr})`;
+      }
       return cleanTitle;
     }
 
@@ -2029,7 +2049,7 @@ const PCApp = {
     } else if (cleanTitle.includes('연차') || cleanTitle.includes('휴가') || badgeStr.includes('연차') || badgeStr.includes('휴가')) {
       typeStr = '연차';
     } else if (cleanTitle.includes('외근') || cleanTitle.includes('출장') || badgeStr.includes('외근')) {
-      typeStr = '외근';
+      typeStr = locationStr ? `외근 (${locationStr})` : '외근';
     } else if (cleanTitle.includes('회의') || cleanTitle.includes('보고') || badgeStr.includes('회의')) {
       typeStr = '회의';
     } else {

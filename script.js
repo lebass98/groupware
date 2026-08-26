@@ -2396,6 +2396,12 @@ const App = {
 
     const avatarHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 mr-3 border border-outline-variant/15 shadow-2xs" />`;
     const authorTextHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap">${s.author || '이재광 차장'}</span>`;
+    const locationBadgeHtml = s.location ? `
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
+        <svg class="w-3 h-3 text-sky-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <span>${s.location}</span>
+      </span>
+    ` : '';
 
     return `
       <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border shadow-2xs transition-all">
@@ -2406,6 +2412,7 @@ const App = {
             <div class="flex items-center gap-1.5 flex-wrap shrink-0">
               ${authorTextHtml}
               ${categoryBadgeHtml}
+              ${locationBadgeHtml}
             </div>
             <span class="text-[11px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 ml-auto">${s.time}</span>
           </div>
@@ -3311,12 +3318,13 @@ const App = {
     }
   },
 
-  // Schedule Clean Title Helper (대괄호 제거 및 '이름 외근', '이름 연차', '이름 오후반차' 표준화)
+  // Schedule Clean Title Helper (대괄호 제거 및 '이름 외근 (장소명)', '이름 연차', '이름 오후반차' 표준화)
   formatScheduleCleanLabel(s) {
     if (!s) return '';
     let titleStr = (s.title || '').trim();
     let badgeStr = (s.badge || '').trim();
     let authorName = (s.author || '').split(' ')[0] || '';
+    let locationStr = (s.location || '').trim();
 
     // 1. 공휴일, 절기, 기념일, 회사공지
     const isHoliday = (s.badge === '공휴일' || titleStr.includes('공휴일') || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지');
@@ -3336,8 +3344,11 @@ const App = {
     // 2. 대괄호 [ ... ] 및 불필요 괄호 제거
     let cleanTitle = titleStr.replace(/\s*\(공휴일\)/g, '').replace(/\[.*?\]/g, '').replace(/[\[\]]/g, '').trim();
 
-    // 3. 만약 cleanTitle이 이미 `이름 유형` 형태(예: '오은주 연차', '남기현 외근')이면 그대로 반환
+    // 3. 만약 cleanTitle이 이미 `이름 유형` 형태(예: '오은주 연차')이면 그대로 반환
     if (authorName && cleanTitle.startsWith(authorName)) {
+      if (locationStr && (cleanTitle.includes('외근') || badgeStr.includes('외근')) && !cleanTitle.includes('(')) {
+        return `${cleanTitle} (${locationStr})`;
+      }
       return cleanTitle;
     }
 
@@ -3352,7 +3363,7 @@ const App = {
     } else if (cleanTitle.includes('연차') || cleanTitle.includes('휴가') || badgeStr.includes('연차') || badgeStr.includes('휴가')) {
       typeStr = '연차';
     } else if (cleanTitle.includes('외근') || cleanTitle.includes('출장') || badgeStr.includes('외근')) {
-      typeStr = '외근';
+      typeStr = locationStr ? `외근 (${locationStr})` : '외근';
     } else if (cleanTitle.includes('회의') || cleanTitle.includes('보고') || badgeStr.includes('회의')) {
       typeStr = '회의';
     } else {
@@ -3366,9 +3377,11 @@ const App = {
   },
 
   // Employee Status & Schedule Helper
-  simplifyScheduleText(text) {
-    if (!text) return '';
-    const str = String(text).trim();
+  simplifyScheduleText(text, location = '') {
+    if (!text && !location) return '';
+    const loc = String(location || '').trim();
+    const str = String(text || '').trim();
+
     if (str.includes('오후 반차') || str.includes('반차(오후)')) return '오후 반차';
     if (str.includes('오전 반차') || str.includes('반차(오전)')) return '오전 반차';
     if (str.includes('반반차')) {
@@ -3376,18 +3389,18 @@ const App = {
       return timeMatch ? `반반차 [${timeMatch[1].trim()}]` : '반반차';
     }
     if (str.includes('연차')) return '연차';
-    if (str.includes('외근') || str.includes('미팅') || str.includes('회의') || str.includes('방문')) {
-      // 1. 이미 '외근 (장소명)' 형식인 경우
+    if (str.includes('외근') || str.includes('미팅') || str.includes('회의') || str.includes('방문') || loc) {
+      if (loc) {
+        return `외근 (${loc})`;
+      }
       const alreadyFormatted = str.match(/외근\s*\((.*?)\)/);
       if (alreadyFormatted && alreadyFormatted[1]) {
         return `외근 (${alreadyFormatted[1].trim()})`;
       }
-      // 2. 대괄호 [장소명]이 포함된 경우 (예: 외근(오전) [한국건강가정진흥원] 주간회의)
       const bracketMatch = str.match(/\[(.*?)\]/);
       if (bracketMatch && bracketMatch[1]) {
         return `외근 (${bracketMatch[1].trim()})`;
       }
-      // 3. 소괄호 (장소명)이 포함된 경우
       const parenMatch = str.match(/\((.*?)\)/);
       if (parenMatch && parenMatch[1] && !parenMatch[1].includes('오전') && !parenMatch[1].includes('오후') && !parenMatch[1].includes('종일')) {
         return `외근 (${parenMatch[1].trim()})`;
@@ -3407,7 +3420,8 @@ const App = {
         badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
         icon: 'laptop_mac',
         pulse: true,
-        todaySchedule: ''
+        todaySchedule: '',
+        location: ''
       };
     }
 
@@ -3416,6 +3430,7 @@ const App = {
 
     // 1. Determine Today's Scheduled Event (금일 근태일지 일정 및 예정 뱃지 실시간 동기화)
     let rawSched = '';
+    let foundLocation = emp.location || '';
 
     const now = new Date();
     const curYear = now.getFullYear();
@@ -3437,12 +3452,13 @@ const App = {
       });
       if (match) {
         rawSched = match.title;
+        if (match.location) foundLocation = match.location;
       }
     } else if (emp.todaySchedule) {
       rawSched = emp.todaySchedule;
     }
 
-    const todayScheduleText = this.simplifyScheduleText(rawSched || emp.todaySchedule);
+    const todayScheduleText = this.simplifyScheduleText(rawSched || emp.todaySchedule, foundLocation);
 
     // 2. Determine Primary Live Status (근무중, 외근중, 휴가중, 퇴근)
     let mainStatus = {
@@ -3494,7 +3510,8 @@ const App = {
 
     return {
       ...mainStatus,
-      todaySchedule: todayScheduleText
+      todaySchedule: todayScheduleText,
+      location: foundLocation
     };
   },
 
