@@ -471,10 +471,9 @@ const PCApp = {
     `).join('');
   },
 
-  // 5. Render Main Full-Width Bento Dashboard
+  // 5. Render Main Full-Width Bento Dashboard (3-Column Layout)
   renderDashboard() {
     this.renderLeftCol();
-    this.renderCompanyScheduleWidget();
     this.renderCenterCol();
     this.renderRightCol();
   },
@@ -638,9 +637,12 @@ const PCApp = {
     }
   },
 
-  // 5-2. Center Column
+  // 5-2. Center Column (2열: 회사 일정 위젯 -> 공지사항 위젯 -> 주간 업무 보고 위젯)
   renderCenterCol() {
-    // 1. Notice Card Widget (최근 5개 공지사항 카드 UI)
+    // 1. Company Schedule Widget (2열 최상단)
+    this.renderCompanyScheduleWidget();
+
+    // 2. Notice Card Widget (최근 5개 공지사항 카드 UI)
     const noticeWrap = document.getElementById('pc-widget-notice-banner');
     if (noticeWrap) {
       const notices = (this.state.notices && this.state.notices.length > 0)

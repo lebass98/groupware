@@ -785,53 +785,35 @@ strong {
   border: 2px solid var(--surface-container-lowest);
 }
 
-/* 3. Full-Width Bento Dashboard (Col 1: 320px, Col 2 & 3 Main Feed: 1fr) */
+/* 3. Full-Width Bento Dashboard (3 Columns: 320px 1fr 340px) */
 .pc-dashboard-container {
   padding: 24px 36px 48px 36px;
   width: 100%;
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 320px 1fr 340px;
   gap: 24px;
   align-items: start;
 }
 
 @media (max-width: 1560px) {
   .pc-dashboard-container {
-    grid-template-columns: 290px 1fr;
-    gap: 22px;
+    grid-template-columns: 290px 1fr 320px;
+    gap: 20px;
     padding: 24px 28px;
   }
 }
 
 @media (max-width: 1280px) {
   .pc-dashboard-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
   .pc-col-left {
     display: none;
   }
 }
 
-/* Main Feed Column (2열 + 3열 상하 복합 영역) */
-.pc-col-main-feed {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  min-width: 0;
-  width: 100%;
-}
-
-/* Bottom Sub Columns (2열과 3열 1:1 그리드) */
-.pc-main-subgrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  align-items: start;
-  width: 100%;
-}
-
-@media (max-width: 1024px) {
-  .pc-main-subgrid {
+@media (max-width: 960px) {
+  .pc-dashboard-container {
     grid-template-columns: 1fr;
   }
 }

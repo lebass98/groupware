@@ -209,7 +209,7 @@
       <section class="pc-screen-view active" id="pc-screen-dashboard">
         <div class="pc-dashboard-container">
           
-          <!-- Column 1: Left Widgets (280px ~ 320px) -->
+          <!-- Column 1: Left Widgets (290px ~ 320px) -->
           <div class="pc-col-left">
             <div id="pc-widget-profile"></div>
             <div id="pc-widget-commute"></div>
@@ -217,25 +217,17 @@
             <div id="pc-widget-birthday"></div>
           </div>
 
-          <!-- Column 2 & 3: Main Feed Wrap (Flex-1) -->
-          <div class="pc-col-main-feed">
-            <!-- Top Full-Span: 2열과 3열을 합친 상단 회사 일정 위젯 -->
+          <!-- Column 2: Center Feed (회사 일정, 공지사항, 주간업무보고) -->
+          <div class="pc-col-center">
             <div id="pc-widget-company-schedule"></div>
+            <div id="pc-widget-notice-banner"></div>
+            <div id="pc-widget-work-report"></div>
+          </div>
 
-            <!-- Bottom Sub-Columns: 2열과 3열 나란히 배치되는 서브 그리드 -->
-            <div class="pc-main-subgrid">
-              <!-- Column 2: Center Feed (공지사항, 주간업무보고) -->
-              <div class="pc-col-center">
-                <div id="pc-widget-notice-banner"></div>
-                <div id="pc-widget-work-report"></div>
-              </div>
-
-              <!-- Column 3: Right Widgets (퀵액션, 투두) -->
-              <div class="pc-col-right">
-                <div id="pc-widget-quick-menu"></div>
-                <div id="pc-widget-todo"></div>
-              </div>
-            </div>
+          <!-- Column 3: Right Widgets (퀵액션, 투두) -->
+          <div class="pc-col-right">
+            <div id="pc-widget-quick-menu"></div>
+            <div id="pc-widget-todo"></div>
           </div>
 
         </div>
