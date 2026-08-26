@@ -150,7 +150,7 @@
       "id": 11,
       "name": "이재광",
       "dept": "퍼블리싱팀",
-      "role": "차장",
+      "role": "팀장",
       "phone": "010-5244-1251",
       "tel": "070-7711-4808",
       "email": "yellow@wordncode.com",
@@ -396,7 +396,7 @@
           "name": "이재광",
           "avatar": "profile.png",
           "dept": "퍼블리싱팀",
-          "role": "차장"
+          "role": "팀장"
         },
         {
           "name": "명희진",
@@ -446,7 +446,7 @@
           "name": "이재광",
           "avatar": "profile.png",
           "dept": "퍼블리싱팀",
-          "role": "차장"
+          "role": "팀장"
         }
       ],
       "isOverdue": false,
@@ -643,7 +643,7 @@
         "time": "13:00 ~ 18:00",
         "type": "error",
         "badge": "반차",
-        "author": "이재광 차장",
+        "author": "이재광 팀장",
         "avatar": "profile.png"
       },
       {
@@ -898,7 +898,7 @@
         "time": "종일",
         "type": "error",
         "badge": "연차",
-        "author": "이재광 차장",
+        "author": "이재광 팀장",
         "avatar": "profile.png"
       }
     ],
@@ -909,7 +909,7 @@
         "time": "종일",
         "type": "error",
         "badge": "연차",
-        "author": "이재광 차장",
+        "author": "이재광 팀장",
         "avatar": "profile.png"
       },
       {
@@ -974,7 +974,7 @@
         "time": "16:00 ~ 18:00",
         "type": "error",
         "badge": "반반차",
-        "author": "이재광 차장",
+        "author": "이재광 팀장",
         "avatar": "profile.png"
       }
     ],
@@ -1771,7 +1771,7 @@
         {
           "dept": "퍼블리싱팀",
           "deptColor": "text-primary",
-          "label": "퍼블리싱_이재광 차장, 조지혜 과장",
+          "label": "퍼블리싱_이재광 팀장, 조지혜 과장",
           "items": [
             "가족상담 신청 폼 반응형 웹 접근성(A11y) 마크업 가이드 준수 작업",
             "서브페이지 12종 HTML/CSS 템플릿 검수 및 모바일 깨짐 수정"
@@ -1904,7 +1904,7 @@
         {
           "dept": "퍼블리싱팀",
           "deptColor": "text-primary",
-          "label": "퍼블리싱_이재광 차장, 손석호 주임",
+          "label": "퍼블리싱_이재광 팀장, 손석호 주임",
           "items": [
             "M3 Material Design 및 Glassmorphism UI 전면 적용",
             "10대 비즈니스 기능(투데이, 근태일지, 주소록, 재무, 할일, 프로젝트, 업무보고 등) 구현",

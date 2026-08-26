@@ -11,7 +11,7 @@ const PCApp = {
     theme: 'light',
     user: (window.MockData && window.MockData.user) || {
       name: '이재광',
-      role: '차장',
+      role: '팀장',
       dept: '퍼블리싱팀',
       email: 'yellow@wordncode.com',
       phone: '010-5244-1251',
@@ -54,7 +54,7 @@ const PCApp = {
         priority: 'high',
         dueDate: '오늘, 17:00',
         assignees: [
-          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '차장' },
+          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '팀장' },
           { name: '명희진', avatar: './resource/image/profile_gray_20240502__.png', dept: '디자인팀', role: '주임' }
         ],
         isOverdue: false,
@@ -85,7 +85,7 @@ const PCApp = {
         priority: 'high',
         dueDate: '2026-08-24',
         assignees: [
-          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '차장' }
+          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '팀장' }
         ],
         isOverdue: false,
         isMine: true,
@@ -100,7 +100,7 @@ const PCApp = {
         priority: 'high',
         dueDate: '2026-08-30',
         assignees: [
-          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '차장' },
+          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '팀장' },
           { name: '손석호', avatar: './resource/image/profile_pub.png', dept: '퍼블리싱팀', role: '주임' }
         ],
         isOverdue: false,
@@ -192,7 +192,7 @@ const PCApp = {
         priority: 'low',
         dueDate: '2026-08-12, 18:00',
         assignees: [
-          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '차장' }
+          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '팀장' }
         ],
         isOverdue: false,
         isMine: true,
@@ -336,7 +336,7 @@ const PCApp = {
         </div>
 
         <!-- Filter Tabs -->
-        <div class="flex items-center gap-2 pb-3 mb-3 border-b border-outline overflow-x-auto" id="pc-notification-filter-tabs">
+        <div class="flex items-center gap-2 pb-3 mb-3 border-b border-outline" id="pc-notification-filter-tabs">
           <button type="button" class="px-4 py-2 rounded-xl text-sm font-bold transition-all ${this.state.notificationFilter === 'all' ? 'bg-primary text-white shadow-xs' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'}" data-filter="all" onclick="PCApp.filterNotifications('all')">
             전체 알림
           </button>
@@ -833,7 +833,7 @@ const PCApp = {
           <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl">
             <img src="./profile.png" class="w-12 h-12 rounded-full object-cover border border-outline" />
             <div>
-              <p class="font-bold text-on-surface text-base">이재광 차장 (퍼블리싱팀)</p>
+              <p class="font-bold text-on-surface text-base">이재광 팀장 (퍼블리싱팀)</p>
               <p class="text-base text-on-surface-variant">08월 11일 · 축하메시지 전송</p>
             </div>
           </div>
@@ -2109,7 +2109,7 @@ const PCApp = {
     const isSpecial = isHoliday || isSolarTerm || isObservance || authorStr === '회사공지';
     const avatarUrl = item.avatar || (window.MockData && window.MockData.myProfile ? window.MockData.myProfile.avatar : './resource/image/profile_abc.png');
     const avatarHtml = isSpecial ? '' : `<img src="${avatarUrl}" alt="${item.author || '담당자'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline/30 shadow-xs" />`;
-    const authorHtml = isSpecial ? `<span class="font-bold text-xs text-on-surface-variant whitespace-nowrap leading-none flex items-center shrink-0">${item.badge || categoryKey}</span>` : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${item.author || '이재광 차장'}</span>`;
+    const authorHtml = isSpecial ? `<span class="font-bold text-xs text-on-surface-variant whitespace-nowrap leading-none flex items-center shrink-0">${item.badge || categoryKey}</span>` : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${item.author || '이재광 팀장'}</span>`;
     const locationBadgeHtml = locationStr ? `
       <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
         <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -2925,7 +2925,7 @@ const PCApp = {
       time: leaveType.includes('반차') ? '13:00 ~ 18:00' : '종일',
       type: 'error',
       badge: leaveType,
-      author: '이재광 차장',
+      author: '이재광 팀장',
       avatar: './profile.png'
     });
 
@@ -2954,7 +2954,7 @@ const PCApp = {
       time: time,
       type: 'primary',
       badge: '외근',
-      author: '이재광 차장',
+      author: '이재광 팀장',
       avatar: './profile.png'
     });
 

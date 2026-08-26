@@ -14,7 +14,7 @@
       "priority": "high",
       "dueDate": "오늘, 17:00",
       "assignees": [
-        { "name": "이재광", "avatar": "profile.png", "dept": "퍼블리싱팀", "role": "차장" },
+        { "name": "이재광", "avatar": "profile.png", "dept": "퍼블리싱팀", "role": "팀장" },
         { "name": "명희진", "avatar": "./resource/image/profile_gray_20240502__.png", "dept": "디자인팀", "role": "주임" }
       ],
       "isOverdue": false,
@@ -44,7 +44,7 @@
       "priority": "low",
       "dueDate": "2026-08-12, 18:00",
       "assignees": [
-        { "name": "이재광", "avatar": "profile.png", "dept": "퍼블리싱팀", "role": "차장" }
+        { "name": "이재광", "avatar": "profile.png", "dept": "퍼블리싱팀", "role": "팀장" }
       ],
       "isOverdue": false,
       "isMine": true,

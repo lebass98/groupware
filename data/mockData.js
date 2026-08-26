@@ -19,7 +19,7 @@ window.MockData = {
     { id: 8, name: "최지영", dept: "디자인팀", role: "과장", phone: "010-8632-0944", tel: "070-7711-4821", email: "white@wordncode.com", avatar: "./resource/image/profile_white.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 9, name: "신현우", dept: "디자인팀", role: "주임", phone: "010-8337-0176", tel: "070-7711-4810", email: "pink@wordncode.com", avatar: "./resource/image/profile_pink____________.png", status: "offwork", statusText: "퇴근", todaySchedule: "", location: "" },
     { id: 10, name: "명희진", dept: "디자인팀", role: "주임", phone: "010-2607-5235", tel: "070-7711-4812", email: "gray@wordncode.com", avatar: "./resource/image/profile_gray_20240502__.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
-    { id: 11, name: "이재광", dept: "퍼블리싱팀", role: "차장", phone: "010-5244-1251", tel: "070-7711-4808", email: "yellow@wordncode.com", avatar: "profile.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", isBirthdayThisMonth: true, birthday: "08.21" },
+    { id: 11, name: "이재광", dept: "퍼블리싱팀", role: "팀장", phone: "010-5244-1251", tel: "070-7711-4808", email: "yellow@wordncode.com", avatar: "profile.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", isBirthdayThisMonth: true, birthday: "08.21" },
     { id: 12, name: "조지혜", dept: "퍼블리싱팀", role: "과장", phone: "010-2362-0263", tel: "070-7711-4806", email: "red@wordncode.com", avatar: "./resource/image/profile_red_20260602.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 13, name: "손석호", dept: "퍼블리싱팀", role: "주임", phone: "010-6565-4215", tel: "070-7711-4811", email: "pub@wordncode.com", avatar: "./resource/image/profile_pub.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 14, name: "최우석", dept: "개발팀", role: "과장", phone: "010-2887-1810", tel: "070-8805-1648", email: "mobile@wordncode.com", avatar: "./resource/image/profile_mobile.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
@@ -125,7 +125,7 @@ window.MockData = {
       priority: 'high',
       dueDate: '오늘, 17:00',
       assignees: [
-        { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '차장' },
+        { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '팀장' },
         { name: '명희진', avatar: './resource/image/profile_gray_20240502__.png', dept: '디자인팀', role: '주임' }
       ],
       isOverdue: false,
@@ -155,7 +155,7 @@ window.MockData = {
       priority: 'low',
       dueDate: '2026-08-12, 18:00',
       assignees: [
-        { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '차장' }
+        { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '팀장' }
       ],
       isOverdue: false,
       isMine: true,
@@ -211,7 +211,7 @@ window.MockData = {
     ],
     "2026-8-7": [
       { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "error", badge: "반차", author: "이재광 차장", avatar: "profile.png" },
+      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "error", badge: "반차", author: "이재광 팀장", avatar: "profile.png" },
       { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "신현우 주임", avatar: "./resource/image/profile_pink____________.png" },
       { title: "반반차 [16:00~18:00]", location: "", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
       { title: "외근(오후) 비트라이스, 고양시스템 외근", location: "비트라이스 외", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
@@ -250,10 +250,10 @@ window.MockData = {
     ],
     "2026-8-18": [
       { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "연차", location: "", time: "종일", type: "error", badge: "연차", author: "이재광 차장", avatar: "profile.png" }
+      { title: "연차", location: "", time: "종일", type: "error", badge: "연차", author: "이재광 팀장", avatar: "profile.png" }
     ],
     "2026-8-19": [
-      { title: "연차", location: "", time: "종일", type: "error", badge: "연차", author: "이재광 차장", avatar: "profile.png" },
+      { title: "연차", location: "", time: "종일", type: "error", badge: "연차", author: "이재광 팀장", avatar: "profile.png" },
       { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "한상희 사원", avatar: "./resource/image/profile_star_20250326.png" },
       { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
       { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
@@ -262,7 +262,7 @@ window.MockData = {
     "2026-8-20": [
       { title: "연차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "연차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" },
       { title: "외근(오후) 경성 이스엠디 미팅", location: "이스엠디", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "반반차 [16:00~18:00]", location: "", time: "16:00 ~ 18:00", type: "error", badge: "반반차", author: "이재광 차장", avatar: "profile.png" }
+      { title: "반반차 [16:00~18:00]", location: "", time: "16:00 ~ 18:00", type: "error", badge: "반반차", author: "이재광 팀장", avatar: "profile.png" }
     ],
     "2026-8-21": [
       { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
@@ -1023,7 +1023,7 @@ window.MockData = {
         {
           dept: "퍼블리싱팀",
           deptColor: "text-primary",
-          label: "퍼블리싱_이재광 차장, 조지혜 과장",
+          label: "퍼블리싱_이재광 팀장, 조지혜 과장",
           items: [
             "가족상담 신청 폼 반응형 웹 마크업 및 접근성 검수",
             "서브페이지 12종 HTML/CSS 템플릿 1차 코딩 완료"
@@ -1228,7 +1228,7 @@ window.MockData = {
         {
           dept: "퍼블리싱팀",
           deptColor: "text-primary",
-          label: "퍼블리싱_이재광 차장, 조지혜 과장",
+          label: "퍼블리싱_이재광 팀장, 조지혜 과장",
           items: [
             "가족상담 신청 폼 반응형 웹 접근성(A11y) 마크업 가이드 준수 작업",
             "서브페이지 12종 HTML/CSS 템플릿 검수 및 모바일 깨짐 수정"
@@ -1326,7 +1326,7 @@ window.MockData = {
         {
           dept: "퍼블리싱팀",
           deptColor: "text-primary",
-          label: "퍼블리싱_이재광 차장, 손석호 주임",
+          label: "퍼블리싱_이재광 팀장, 손석호 주임",
           items: [
             "팀별·주간·일간 업무보고 뷰페이지 및 전주/금주 비교 레이아웃 구현",
             "전사 상단 탭 지출결의서 규격 100% 통일화",
@@ -1406,7 +1406,7 @@ window.MockData = {
         {
           dept: "퍼블리싱팀",
           deptColor: "text-primary",
-          label: "퍼블리싱_이재광 차장",
+          label: "퍼블리싱_이재광 팀장",
           items: [
             "PC 전용 풀 와이드 웹 그룹웨어 포털(pc.html) 독립 신규 구축",
             "모바일 & PC 10대 핵심 서비스 와이드 UI 및 인터랙티브 엔진 연동"
@@ -1417,7 +1417,7 @@ window.MockData = {
         {
           dept: "퍼블리싱팀",
           deptColor: "text-primary",
-          label: "퍼블리싱_이재광 차장, 손석호 주임",
+          label: "퍼블리싱_이재광 팀장, 손석호 주임",
           items: [
             "팀별·주간·일간 업무보고 전 디바이스 독립 데이터 및 전용 뷰 렌더러 분리",
             "PC 사이드바 접힘 모드 호버 툴팁 오버플로우 최적화",
@@ -1444,7 +1444,7 @@ window.MockData = {
       client: "주식회사 워드앤코드",
       project: "2026 WnC 스마트 그룹웨어 리뉴얼 및 모바일 앱 구축",
       primaryDept: "퍼블리싱팀",
-      author: "이재광 차장, 손석호 주임",
+      author: "이재광 팀장, 손석호 주임",
       status: "in_progress",
       statusLabel: "진행중",
       todayTasks: [
@@ -1516,7 +1516,7 @@ window.MockData = {
       client: "주식회사 워드앤코드",
       project: "2026 WnC 스마트 그룹웨어 리뉴얼",
       primaryDept: "퍼블리싱팀",
-      author: "이재광 차장, 조지혜 과장",
+      author: "이재광 팀장, 조지혜 과장",
       status: "completed",
       statusLabel: "완료",
       todayTasks: [
@@ -1552,7 +1552,7 @@ window.MockData = {
       client: "주식회사 워드앤코드",
       project: "2026 WnC 스마트 그룹웨어 리뉴얼",
       primaryDept: "퍼블리싱팀",
-      author: "이재광 차장, 손석호 주임",
+      author: "이재광 팀장, 손석호 주임",
       status: "completed",
       statusLabel: "완료",
       todayTasks: [
@@ -1768,9 +1768,9 @@ window.MockData = {
       deptName: "퍼블리싱팀",
       deptColor: "text-primary",
       badgeColor: "bg-primary/10 text-primary border-primary/20",
-      leader: "이재광 차장",
+      leader: "이재광 팀장",
       members: [
-        { name: "이재광", role: "차장", currentTask: "WnC 스마트 그룹웨어 PC/모바일 듀얼 아키텍처 및 총괄 퍼블리싱" },
+        { name: "이재광", role: "팀장", currentTask: "WnC 스마트 그룹웨어 PC/모바일 듀얼 아키텍처 및 총괄 퍼블리싱" },
         { name: "조지혜", role: "과장", currentTask: "한국건강가정진흥원 통합 포털 반응형 웹 접근성(A11y) 마크업" },
         { name: "손석호", role: "주임", currentTask: "WnC 그룹웨어 인라인 SVG 최적화 및 Android APK 패키징" }
       ],

@@ -147,7 +147,7 @@ const App = {
       name: '이재광',
       fullName: '이재광',
       dept: '퍼블리싱팀',
-      role: '차장',
+      role: '팀장',
       email: 'yellow@wordncode.com',
       phone: '010-5244-1251',
       avatar: 'profile.png'
@@ -1628,7 +1628,7 @@ const App = {
           );
           const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
           const imgHtml = isHoliday ? '' : `<img src="${s.avatar || 'profile.png'}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline-variant/15 shadow-2xs" />`;
-          const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 차장'}</span>`;
+          const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
           const locationBadgeHtml = s.location ? `
             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
               <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -1795,7 +1795,7 @@ const App = {
             <div>
               <p class="font-label text-[10px] text-tertiary-fixed-dim font-bold mb-0.5">기안 대기</p>
               <h4 class="font-body text-sm font-semibold text-on-surface mb-1">2026년 3분기 비품 구매 품의서</h4>
-              <p class="font-label text-xs text-on-surface-variant">퍼블리싱팀 · 이재광 차장</p>
+              <p class="font-label text-xs text-on-surface-variant">퍼블리싱팀 · 이재광 팀장</p>
             </div>
           </div>
           <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
@@ -2590,7 +2590,7 @@ const App = {
     }
 
     const avatarHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline-variant/15 shadow-2xs" />`;
-    const authorTextHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 차장'}</span>`;
+    const authorTextHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
     const locationBadgeHtml = s.location ? `
       <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
         <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -3340,7 +3340,7 @@ const App = {
 
     const showAvatar = !(isHoliday || isSolarTerm || isObservance);
     const avatarImg = showAvatar ? `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover border-2 border-surface-container-lowest shadow-2xs" />` : '';
-    const authorTextHtml = showAvatar ? `${s.author || '이재광 차장'} • ` : '';
+    const authorTextHtml = showAvatar ? `${s.author || '이재광 팀장'} • ` : '';
     const displayTitle = this.formatScheduleCleanLabel(s);
 
     return `
@@ -4529,8 +4529,8 @@ const App = {
     }
 
     // 로그인 사용자 정보
-    const user = this.state.user || { name: '이재광', role: '차장', avatar: 'profile.png' };
-    const authorName = `${user.name} ${user.role || '차장'}`;
+    const user = this.state.user || { name: '이재광', role: '팀장', avatar: 'profile.png' };
+    const authorName = `${user.name} ${user.role || '팀장'}`;
     const avatarUrl = user.avatar ? (user.avatar.startsWith('./') ? user.avatar : `./resource/image/${user.avatar}`) : './resource/image/profile.png';
 
     // 날짜 키 파싱 (YYYY-M-D, unpadded)

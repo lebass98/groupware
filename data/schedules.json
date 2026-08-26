@@ -25,7 +25,7 @@
   ],
   "2026-8-7": [
     { "title": "연차", "location": "", "time": "종일", "type": "secondary", "badge": "연차", "author": "장현아 수습", "avatar": "./resource/image/profile_janghyunah.png" },
-    { "title": "반차(오후)", "location": "", "time": "13:00 ~ 18:00", "type": "error", "badge": "반차", "author": "이재광 차장", "avatar": "profile.png" },
+    { "title": "반차(오후)", "location": "", "time": "13:00 ~ 18:00", "type": "error", "badge": "반차", "author": "이재광 팀장", "avatar": "profile.png" },
     { "title": "반차(오후)", "location": "", "time": "13:00 ~ 18:00", "type": "warning", "badge": "반차", "author": "신현우 주임", "avatar": "./resource/image/profile_pink____________.png" },
     { "title": "반반차 [16:00~18:00]", "location": "", "time": "16:00 ~ 18:00", "type": "warning", "badge": "반반차", "author": "이채원 사원", "avatar": "./resource/image/profile_cool_20241224_lee.png" },
     { "title": "외근(오후) 비트라이스, 고양시스템 외근", "location": "비트라이스 외", "time": "13:00 ~ 18:00", "type": "primary", "badge": "외근", "author": "남기현 본부장", "avatar": "./resource/image/profile_help.png" }
@@ -64,10 +64,10 @@
   ],
   "2026-8-18": [
     { "title": "연차", "location": "", "time": "종일", "type": "secondary", "badge": "연차", "author": "김종규 팀장", "avatar": "./resource/image/profile_john.png" },
-    { "title": "연차", "location": "", "time": "종일", "type": "error", "badge": "연차", "author": "이재광 차장", "avatar": "profile.png" }
+    { "title": "연차", "location": "", "time": "종일", "type": "error", "badge": "연차", "author": "이재광 팀장", "avatar": "profile.png" }
   ],
   "2026-8-19": [
-    { "title": "연차", "location": "", "time": "종일", "type": "error", "badge": "연차", "author": "이재광 차장", "avatar": "profile.png" },
+    { "title": "연차", "location": "", "time": "종일", "type": "error", "badge": "연차", "author": "이재광 팀장", "avatar": "profile.png" },
     { "title": "연차", "location": "", "time": "종일", "type": "secondary", "badge": "연차", "author": "한상희 사원", "avatar": "./resource/image/profile_star_20250326.png" },
     { "title": "외근(오전) 주간회의", "location": "한국건강가정진흥원", "time": "09:00 ~ 12:00", "type": "primary", "badge": "외근", "author": "이채원 사원", "avatar": "./resource/image/profile_cool_20241224_lee.png" },
     { "title": "외근(오전) 주간회의", "location": "한국건강가정진흥원", "time": "09:00 ~ 12:00", "type": "primary", "badge": "외근", "author": "장현아 수습", "avatar": "./resource/image/profile_janghyunah.png" },
@@ -76,7 +76,7 @@
   "2026-8-20": [
     { "title": "연차(오후)", "location": "", "time": "13:00 ~ 18:00", "type": "warning", "badge": "연차", "author": "오은주 차장", "avatar": "./resource/image/profile_sky.png" },
     { "title": "외근(오후) 경성 이스엠디 미팅", "location": "이스엠디", "time": "13:00 ~ 18:00", "type": "primary", "badge": "외근", "author": "남기현 본부장", "avatar": "./resource/image/profile_help.png" },
-    { "title": "반반차 [16:00~18:00]", "location": "", "time": "16:00 ~ 18:00", "type": "error", "badge": "반반차", "author": "이재광 차장", "avatar": "profile.png" }
+    { "title": "반반차 [16:00~18:00]", "location": "", "time": "16:00 ~ 18:00", "type": "error", "badge": "반반차", "author": "이재광 팀장", "avatar": "profile.png" }
   ],
   "2026-8-21": [
     { "title": "반차(오후)", "location": "", "time": "13:00 ~ 18:00", "type": "warning", "badge": "반차", "author": "박규태 대리", "avatar": "./resource/image/profile_green.png" },
