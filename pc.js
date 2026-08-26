@@ -485,6 +485,8 @@ const PCApp = {
     // 1. Profile Card
     const profileWrap = document.getElementById('pc-widget-profile');
     if (profileWrap) {
+      const now = new Date();
+      const todayScheds = this.getSchedulesForDay(now.getFullYear(), now.getMonth() + 1, now.getDate()) || [];
       profileWrap.innerHTML = `
         <div class="pc-bento-card pc-profile-card">
           <div class="pc-profile-avatar-wrap">
@@ -495,7 +497,7 @@ const PCApp = {
           
           <div class="pc-profile-counters">
             <div class="pc-counter-item" onclick="PCApp.switchScreen('calendar')">
-              <span class="pc-counter-num">2</span>
+              <span class="pc-counter-num">${todayScheds.length}</span>
               <span class="pc-counter-label">오늘 일정</span>
             </div>
             <div class="pc-counter-item" onclick="PCApp.switchScreen('work-report')">
@@ -712,9 +714,14 @@ const PCApp = {
     // 3. Today's Schedule Card (모바일 투데이 Parity 독립 카드)
     const todaySchedWrap = document.getElementById('pc-widget-today-schedule');
     if (todaySchedWrap) {
-      const todayYear = 2026;
-      const todayMonth = 8;
-      const todayDay = 24;
+      const now = new Date();
+      const todayYear = now.getFullYear();
+      const todayMonth = now.getMonth() + 1;
+      const todayDay = now.getDate();
+      const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+      const dayOfWeekStr = dayNames[now.getDay()];
+      const todayDateKey = `${todayYear}-${todayMonth}-${todayDay}`;
+
       const todaySchedules = this.getSchedulesForDay(todayYear, todayMonth, todayDay) || [];
 
       todaySchedWrap.innerHTML = `
@@ -722,14 +729,14 @@ const PCApp = {
           <div class="pc-card-header">
             <div class="flex items-center gap-2">
               <span class="pc-card-title">
-                <svg class="w-4.5 h-4.5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                <svg class="w-4.5 h-4.5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
                 </svg>
                 오늘의 일정
               </span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary">8월 24일 (월) · ${todaySchedules.length}건</span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${todayMonth}월 ${todayDay}일 (${dayOfWeekStr}) · ${todaySchedules.length}건</span>
             </div>
-            <button class="pc-card-action" onclick="PCApp.selectDate('2026-8-24'); PCApp.switchScreen('calendar');">전체보기</button>
+            <button class="pc-card-action" onclick="PCApp.selectDate('${todayDateKey}'); PCApp.switchScreen('calendar');">전체보기</button>
           </div>
 
           <div class="space-y-2.5">
@@ -752,6 +759,7 @@ const PCApp = {
               let badgeBg = 'bg-secondary-container text-secondary';
               const titleStr = s.title || '';
               const badgeStr = s.badge || '';
+              const locationStr = (s.location || '').trim();
 
               if (isHoliday) {
                 dotClass = 'bg-error';
@@ -768,25 +776,34 @@ const PCApp = {
               }
 
               const imgHtml = isHoliday ? '' : `<img src="${s.avatar || './profile.png'}" alt="${s.author || '프로필'}" class="w-8 h-8 rounded-full object-cover shrink-0 border border-outline/30" />`;
-              const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-on-surface mr-1.5">${s.author || '이재광 차장'}</span>`;
+              const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-on-surface leading-none flex items-center shrink-0">${s.author || '이재광 차장'}</span>`;
+              const locationBadgeHtml = locationStr ? `
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
+                  <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                  <span>${locationStr}</span>
+                </span>
+              ` : '';
               const cleanTitle = this.formatScheduleCleanLabel(s);
 
               return `
-                <div class="p-3 bg-surface-container-low rounded-xl border border-outline hover:border-primary hover:shadow-xs transition-all flex items-center justify-between gap-3 cursor-pointer group" onclick="PCApp.selectDate('2026-8-24'); PCApp.switchScreen('calendar');">
+                <div class="p-3 bg-surface-container-low rounded-xl border border-outline hover:border-primary hover:shadow-xs transition-all flex items-center justify-between gap-3 cursor-pointer group" onclick="PCApp.selectDate('${todayDateKey}'); PCApp.switchScreen('calendar');">
                   <div class="flex items-center gap-3 min-w-0 flex-1">
-                    <div class="w-2.5 h-2.5 rounded-full ${dotClass} shrink-0"></div>
-                    ${imgHtml}
-                    <div class="min-w-0 flex-1 text-left">
-                      <div class="flex items-center gap-1.5 mb-0.5">
+                    <div class="flex items-center gap-2 shrink-0">
+                      <div class="w-2.5 h-2.5 rounded-full ${dotClass} shrink-0"></div>
+                      ${imgHtml}
+                    </div>
+                    <div class="min-w-0 flex-1 text-left flex flex-col justify-center">
+                      <div class="flex items-center gap-1.5 mb-1 flex-wrap min-w-0">
                         ${authorText}
-                        <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${badgeBg}">${s.badge || '일정'}</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold leading-none shrink-0 ${badgeBg}">${s.badge || '일정'}</span>
+                        ${locationBadgeHtml}
                       </div>
                       <h4 class="font-bold text-sm text-on-surface truncate leading-snug">${cleanTitle}</h4>
                     </div>
                   </div>
                   <div class="flex items-center gap-2 shrink-0">
-                    <span class="text-xs font-bold text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-lg">${s.time || '종일'}</span>
-                    <svg class="w-4 h-4 text-on-surface-variant/70 group-hover:text-primary group-hover:translate-x-0.5 transition-all" viewBox="0 0 24 24" fill="currentColor">
+                    <span class="text-xs font-bold text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-lg leading-none shrink-0">${s.time || '종일'}</span>
+                    <svg class="w-4 h-4 text-on-surface-variant/70 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
                     </svg>
                   </div>
