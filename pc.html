@@ -216,19 +216,27 @@
             <div id="pc-widget-birthday"></div>
           </div>
 
-          <!-- Column 2: Center Feed (Flex-1) -->
-          <div class="pc-col-center">
-            <div id="pc-widget-notice-banner"></div>
-            <div id="pc-widget-work-report"></div>
-            <div id="pc-widget-today-schedule"></div>
+          <!-- Column 2 & 3: Main Feed Wrap (Flex-1) -->
+          <div class="pc-col-main-feed">
+            <!-- Top Full-Span: 2열과 3열을 합친 상단 전체 일정표 -->
             <div id="pc-widget-calendar"></div>
-          </div>
 
-          <!-- Column 3: Right Widgets (320px ~ 360px) -->
-          <div class="pc-col-right">
-            <div id="pc-widget-commute"></div>
-            <div id="pc-widget-quick-menu"></div>
-            <div id="pc-widget-todo"></div>
+            <!-- Bottom Sub-Columns: 2열과 3열 나란히 배치되는 서브 그리드 -->
+            <div class="pc-main-subgrid">
+              <!-- Column 2: Center Feed (공지사항, 주간업무보고, 오늘의 일정) -->
+              <div class="pc-col-center">
+                <div id="pc-widget-notice-banner"></div>
+                <div id="pc-widget-work-report"></div>
+                <div id="pc-widget-today-schedule"></div>
+              </div>
+
+              <!-- Column 3: Right Widgets (근태/출퇴근, 퀵액션, 투두) -->
+              <div class="pc-col-right">
+                <div id="pc-widget-commute"></div>
+                <div id="pc-widget-quick-menu"></div>
+                <div id="pc-widget-todo"></div>
+              </div>
+            </div>
           </div>
 
         </div>

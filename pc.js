@@ -476,6 +476,7 @@ const PCApp = {
   // 5. Render Main Full-Width Bento Dashboard
   renderDashboard() {
     this.renderLeftCol();
+    this.renderCalendarWidget();
     this.renderCenterCol();
     this.renderRightCol();
   },
@@ -753,22 +754,39 @@ const PCApp = {
       `;
     }
 
-    // 4. Monthly Calendar Grid
+  },
+
+  // 5-2. Full-Span Calendar Widget (2열+3열 상단 통합 전체 일정표)
+  renderCalendarWidget() {
     const calWrap = document.getElementById('pc-widget-calendar');
     if (calWrap) {
       calWrap.innerHTML = `
         <div class="pc-bento-card">
           <div class="pc-calendar-header">
-            <div class="pc-cal-nav-group">
-              <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(-1)">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-              </button>
-              <h3 class="pc-cal-title">${this.state.calYear}년 ${this.state.calMonth}월</h3>
-              <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(1)">
+            <div class="flex items-center gap-3">
+              <span class="pc-card-title flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+                </svg>
+                전체 일정표
+              </span>
+              <div class="pc-cal-nav-group ml-2">
+                <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(-1)" title="이전 달">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <h3 class="pc-cal-title font-bold">${this.state.calYear}년 ${this.state.calMonth}월</h3>
+                <button class="pc-cal-nav-btn" onclick="PCApp.changeCalMonth(1)" title="다음 달">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </button>
+                <button class="px-2.5 py-1 text-xs font-bold bg-surface-container hover:bg-surface-container-high rounded-lg text-on-surface transition-colors cursor-pointer" onclick="PCApp.goToTodayCal()">오늘</button>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="pc-card-action flex items-center gap-1" onclick="PCApp.switchScreen('calendar')">
+                <span>근태일지 화면 가기</span>
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
               </button>
             </div>
-            <button class="pc-card-action" onclick="PCApp.switchScreen('calendar')">전체 일정표</button>
           </div>
 
           <div class="pc-cal-weekdays">
@@ -789,6 +807,7 @@ const PCApp = {
     const month = this.state.calMonth - 1; // 0-indexed
     const firstDay = new Date(year, month, 1).getDay();
     const lastDate = new Date(year, month + 1, 0).getDate();
+    const now = new Date();
 
     let html = '';
     // Empty cells before first day
@@ -799,7 +818,7 @@ const PCApp = {
     // Days
     for (let d = 1; d <= lastDate; d++) {
       const key = `${year}-${month + 1}-${d}`;
-      const isToday = (d === 24 && month === 7 && year === 2026);
+      const isToday = (d === now.getDate() && (month + 1) === (now.getMonth() + 1) && year === now.getFullYear());
       
       const daySchedules = this.getSchedulesForDay(year, month + 1, d);
 
@@ -1681,13 +1700,15 @@ const PCApp = {
     if (titleEl) titleEl.textContent = `${this.state.calYear}년 ${this.state.calMonth}월`;
 
     this.renderCalendarView();
+    this.renderCalendarWidget();
     this.renderCenterCol();
   },
 
   goToTodayCal() {
-    this.state.calYear = 2026;
-    this.state.calMonth = 8;
-    this.state.selectedDate = '2026-8-24';
+    const now = new Date();
+    this.state.calYear = now.getFullYear();
+    this.state.calMonth = now.getMonth() + 1;
+    this.state.selectedDate = `${this.state.calYear}-${this.state.calMonth}-${now.getDate()}`;
     this.changeCalMonth(0);
   },
 
@@ -1703,6 +1724,7 @@ const PCApp = {
       const month = this.state.calMonth - 1;
       const firstDay = new Date(year, month, 1).getDay();
       const lastDate = new Date(year, month + 1, 0).getDate();
+      const now = new Date();
 
       let html = '';
       for (let i = 0; i < firstDay; i++) {
@@ -1711,7 +1733,7 @@ const PCApp = {
 
       for (let d = 1; d <= lastDate; d++) {
         const key = `${year}-${month + 1}-${d}`;
-        const isToday = (d === 24 && month === 7 && year === 2026);
+        const isToday = (d === now.getDate() && (month + 1) === (now.getMonth() + 1) && year === now.getFullYear());
         const isSelected = (this.state.selectedDate === key);
         const daySchedules = this.getSchedulesForDay(year, month + 1, d);
 
