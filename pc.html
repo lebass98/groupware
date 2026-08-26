@@ -378,23 +378,33 @@
           <!-- Populated by PCApp.renderCalendarView() -->
         </div>
 
-        <!-- Simplified Calendar Grid Card -->
-        <div class="bg-surface-container-lowest border border-outline rounded-2xl p-6 shadow-xs">
-          <!-- Day of week header -->
-          <div class="grid grid-cols-7 gap-2 mb-3 text-center font-bold text-sm select-none">
-            <div class="py-2 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400">일 (SUN)</div>
-            <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">월 (MON)</div>
-            <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">화 (TUE)</div>
-            <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">수 (WED)</div>
-            <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">목 (THU)</div>
-            <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">금 (FRI)</div>
-            <div class="py-2 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">토 (SAT)</div>
+        <!-- Main Content Area: 2-Column Split Layout (좌측: 간략화 달력 67%, 우측: 오늘의 일정 사이드 패널 33%) -->
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          
+          <!-- Left Column: Simplified Calendar Grid (8 cols / ~67%) -->
+          <div class="xl:col-span-8 bg-surface-container-lowest border border-outline rounded-2xl p-6 shadow-xs flex flex-col">
+            <!-- Day of week header -->
+            <div class="grid grid-cols-7 gap-2 mb-3 text-center font-bold text-sm select-none">
+              <div class="py-2 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400">일 (SUN)</div>
+              <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">월 (MON)</div>
+              <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">화 (TUE)</div>
+              <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">수 (WED)</div>
+              <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">목 (THU)</div>
+              <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">금 (FRI)</div>
+              <div class="py-2 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">토 (SAT)</div>
+            </div>
+
+            <!-- Calendar Days Grid Container -->
+            <div class="grid grid-cols-7 gap-2 flex-1" id="pc-cal-grid-container">
+              <!-- Dynamically Populated by PCApp.renderCalendarGrid() -->
+            </div>
           </div>
 
-          <!-- Calendar Days Grid Container -->
-          <div class="grid grid-cols-7 gap-2" id="pc-cal-grid-container">
-            <!-- Dynamically Populated by PCApp.renderCalendarGrid() -->
+          <!-- Right Column: Today / Selected Date Schedule Side Panel (4 cols / ~33% - 우측 상시 떠있는 패널) -->
+          <div class="xl:col-span-4 bg-surface-container-lowest border border-outline rounded-2xl p-6 shadow-xs flex flex-col max-h-[750px] overflow-hidden" id="pc-cal-side-schedule-panel">
+            <!-- Dynamically Populated by PCApp.renderCalendarSideSchedule() -->
           </div>
+
         </div>
       </section>
 

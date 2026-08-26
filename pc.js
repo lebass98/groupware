@@ -2037,8 +2037,15 @@ const PCApp = {
       `;
     }
 
-    // 3. Render Calendar Grid
+    // 3. Render Calendar Grid & Side Schedule Panel
     this.renderCalendarGrid();
+    this.renderCalendarSideSchedule();
+  },
+
+  selectCalendarDate(key) {
+    this.state.selectedDate = key;
+    this.renderCalendarGrid();
+    this.renderCalendarSideSchedule(key);
   },
 
   renderCalendarGrid() {
@@ -2051,23 +2058,25 @@ const PCApp = {
     const lastDate = new Date(year, month, 0).getDate();
     const now = new Date();
 
+    const selectedKey = this.state.selectedDate || `${year}-${month}-${now.getDate()}`;
+
     let html = '';
 
     // Empty previous month padding cells
     for (let i = 0; i < firstDay; i++) {
-      html += `<div class="min-h-[115px] p-2 bg-surface-container-lowest/40 border border-outline/30 rounded-xl opacity-40"></div>`;
+      html += `<div class="min-h-[105px] p-2 bg-surface-container-lowest/40 border border-outline/30 rounded-xl opacity-40"></div>`;
     }
 
     // Current Month Days
     for (let d = 1; d <= lastDate; d++) {
       const key = `${year}-${month}-${d}`;
       const isToday = (d === now.getDate() && month === (now.getMonth() + 1) && year === now.getFullYear());
+      const isSelected = (selectedKey === key);
       const dayOfWeek = (firstDay + d - 1) % 7;
       const isSunday = (dayOfWeek === 0);
       const isSaturday = (dayOfWeek === 6);
 
       const daySchedules = this.getSchedulesForDay(year, month, d) || [];
-
       const topScheds = daySchedules.slice(0, 3);
       const extraCount = daySchedules.length - topScheds.length;
 
@@ -2075,14 +2084,21 @@ const PCApp = {
       if (isSunday) dateNumClass = 'text-red-500 font-bold';
       else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
 
+      let cellHighlight = '';
+      if (isSelected) {
+        cellHighlight = 'ring-2 ring-primary bg-primary/10 shadow-xs';
+      } else if (isToday) {
+        cellHighlight = 'border-primary/60 bg-primary/5';
+      }
+
       html += `
-        <div class="min-h-[115px] p-2.5 bg-surface-container-low border border-outline/70 hover:border-primary hover:shadow-xs rounded-xl transition-all cursor-pointer flex flex-col justify-between group ${isToday ? 'ring-2 ring-primary bg-primary/5' : ''}" onclick="PCApp.openDateScheduleModal('${key}')">
-          <div class="flex items-center justify-between mb-1.5">
+        <div class="min-h-[105px] p-2 bg-surface-container-low border border-outline/70 hover:border-primary hover:shadow-xs rounded-xl transition-all cursor-pointer flex flex-col justify-between group ${cellHighlight}" onclick="PCApp.selectCalendarDate('${key}')">
+          <div class="flex items-center justify-between mb-1">
             <div class="flex items-center gap-1.5">
-              <span class="text-sm font-extrabold ${dateNumClass} ${isToday ? 'w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs' : ''}">${d}</span>
-              ${isToday ? '<span class="text-[10px] font-bold text-primary px-1.5 py-0.2 bg-primary/10 rounded-full">오늘</span>' : ''}
+              <span class="text-sm font-extrabold ${dateNumClass} ${isToday ? 'w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs' : ''}">${d}</span>
+              ${isToday ? '<span class="text-[9px] font-bold text-primary px-1 py-0.2 bg-primary/15 rounded-full">오늘</span>' : ''}
             </div>
-            ${daySchedules.length > 0 ? `<span class="text-[11px] font-bold px-1.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}건</span>` : ''}
+            ${daySchedules.length > 0 ? `<span class="text-[10px] font-bold px-1.5 py-0.2 rounded-full ${isSelected ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant'} transition-colors">${daySchedules.length}건</span>` : ''}
           </div>
 
           <div class="space-y-1 flex-1 overflow-hidden">
@@ -2090,18 +2106,199 @@ const PCApp = {
               const tagClass = this.getScheduleTagClass(s);
               const cleanLabel = this.formatScheduleCleanLabel(s);
               return `
-                <div class="text-[11px] px-1.5 py-0.5 rounded truncate font-medium ${tagClass}" title="${cleanLabel}">
+                <div class="text-[10px] px-1 py-0.5 rounded truncate font-medium ${tagClass}" title="${cleanLabel}">
                   ${cleanLabel}
                 </div>
               `;
             }).join('')}
-            ${extraCount > 0 ? `<div class="text-[10px] text-on-surface-variant font-bold px-1">+${extraCount}건 더보기</div>` : ''}
+            ${extraCount > 0 ? `<div class="text-[9px] text-on-surface-variant font-bold px-1">+${extraCount}건 더보기</div>` : ''}
           </div>
         </div>
       `;
     }
 
     gridWrap.innerHTML = html;
+  },
+
+  // =========================================================================
+  // 6-1. Calendar Right Column: Today / Selected Date Schedule Panel (우측 상시 떠있는 패널)
+  // =========================================================================
+  stateSideSchedule: {
+    activeFilter: 'all' // 'all', '휴가', '외근', '반차', '회의'
+  },
+
+  setSideScheduleFilter(filterCat) {
+    this.stateSideSchedule.activeFilter = filterCat;
+    this.renderCalendarSideSchedule();
+  },
+
+  navigateSideScheduleDate(offset) {
+    let key = this.state.selectedDate;
+    if (!key) {
+      const now = new Date();
+      key = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    }
+    const parts = key.split('-').map(Number);
+    const d = new Date(parts[0], parts[1] - 1, parts[2]);
+    d.setDate(d.getDate() + offset);
+
+    this.state.selectedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    this.renderCalendarGrid();
+    this.renderCalendarSideSchedule();
+  },
+
+  renderCalendarSideSchedule(dateKey, activeFilter) {
+    const sidePanel = document.getElementById('pc-cal-side-schedule-panel');
+    if (!sidePanel) return;
+
+    if (dateKey) this.state.selectedDate = dateKey;
+    if (activeFilter !== undefined) this.stateSideSchedule.activeFilter = activeFilter;
+
+    let key = this.state.selectedDate;
+    const now = new Date();
+    if (!key) {
+      key = `${this.state.calYear || 2026}-${this.state.calMonth || 8}-${now.getDate()}`;
+      this.state.selectedDate = key;
+    }
+
+    const parts = key.split('-').map(Number);
+    const year = parts[0] || 2026;
+    const month = parts[1] || 8;
+    const day = parts[2] || now.getDate();
+
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+    const dObj = new Date(year, month - 1, day);
+    const dayName = dayNames[dObj.getDay()];
+    const isToday = (day === now.getDate() && month === (now.getMonth() + 1) && year === now.getFullYear());
+
+    const rawSchedules = this.getSchedulesForDay(year, month, day) || [];
+    const filter = this.stateSideSchedule.activeFilter;
+
+    // Filter Chips
+    const filters = [
+      { id: 'all', label: '전체', activeBg: 'bg-[#3b82f6] text-white shadow-xs', inactiveBg: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 hover:bg-[#d8e8fe]' },
+      { id: '휴가', label: '휴가', activeBg: 'bg-[#137333] text-white shadow-xs', inactiveBg: 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/30 hover:bg-[#d4edd9]' },
+      { id: '외근', label: '외근', activeBg: 'bg-[#1a73e8] text-white shadow-xs', inactiveBg: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 hover:bg-[#d8e8fe]' },
+      { id: '반차', label: '반차', activeBg: 'bg-[#b06000] text-white shadow-xs', inactiveBg: 'bg-[#fef7e0] text-[#b06000] border border-[#b06000]/30 hover:bg-[#fdeec4]' },
+      { id: '회의', label: '회의', activeBg: 'bg-[#6b21a8] text-white shadow-xs', inactiveBg: 'bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/30 hover:bg-[#e9d5ff]' }
+    ];
+
+    // Grouping
+    const groupMap = {};
+    const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '절기', '기념일', '기타'];
+
+    rawSchedules.forEach(s => {
+      const titleStr = s.title || '';
+      const badgeStr = s.badge || '';
+      let cat = '기타';
+      if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) cat = '휴가';
+      else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) cat = '외근';
+      else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) cat = '반차';
+      else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) cat = '회의';
+      else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) cat = '공휴일';
+      else if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') cat = '절기';
+      else if (titleStr.includes('기념일') || badgeStr.includes('기념일') || s.author === '기념일') cat = '기념일';
+
+      if (!groupMap[cat]) groupMap[cat] = [];
+      groupMap[cat].push(s);
+    });
+
+    let listHtml = '';
+    let renderedCount = 0;
+
+    categoryOrder.forEach(catKey => {
+      if (filter !== 'all' && filter !== catKey) return;
+
+      const items = groupMap[catKey];
+      if (items && items.length > 0) {
+        renderedCount += items.length;
+        let catTitle = catKey === '휴가' ? '연차/휴가' : catKey;
+        let dotColor = 'bg-[#137333]';
+        let countColor = 'text-[#137333]';
+
+        if (catKey === '외근') {
+          dotColor = 'bg-[#1a73e8]';
+          countColor = 'text-[#1a73e8]';
+        } else if (catKey === '반차') {
+          dotColor = 'bg-[#b06000]';
+          countColor = 'text-[#b06000]';
+        } else if (catKey === '회의') {
+          dotColor = 'bg-[#6b21a8]';
+          countColor = 'text-[#6b21a8]';
+        } else if (catKey === '공휴일') {
+          dotColor = 'bg-[#c5221f]';
+          countColor = 'text-[#c5221f]';
+        }
+
+        const cardsHtml = items.map(s => this.renderDateModalCard(s, catKey)).join('');
+
+        listHtml += `
+          <div class="mb-4">
+            <div class="flex items-center justify-between mb-2 px-1">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full ${dotColor}"></span>
+                <span class="font-bold text-xs text-on-surface">${catTitle}</span>
+              </div>
+              <span class="text-xs font-bold ${countColor}">${items.length}건</span>
+            </div>
+            <div class="space-y-2.5">
+              ${cardsHtml}
+            </div>
+          </div>
+        `;
+      }
+    });
+
+    if (renderedCount === 0) {
+      listHtml = `
+        <div class="py-16 text-center text-on-surface-variant flex flex-col items-center justify-center">
+          <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-outline mb-2">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+          </div>
+          <p class="font-bold text-sm text-on-surface">등록된 일정이 없습니다.</p>
+          <p class="text-xs text-on-surface-variant mt-0.5">휴가, 외근 등 새로운 일정을 등록해보세요.</p>
+        </div>
+      `;
+    }
+
+    sidePanel.innerHTML = `
+      <!-- Side Panel Header with Date Navigation -->
+      <div class="flex items-center justify-between pb-3.5 mb-3 border-b border-outline">
+        <button type="button" class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface transition-colors" onclick="PCApp.navigateSideScheduleDate(-1)" title="이전 날짜">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+
+        <div class="text-center">
+          <h4 class="font-bold text-base text-on-surface flex items-center gap-1.5 justify-center">
+            ${month}월 ${day}일 (${dayName})
+            ${isToday ? '<span class="text-[10px] font-bold text-primary px-1.5 py-0.2 bg-primary/15 rounded-full">오늘</span>' : ''}
+          </h4>
+          <p class="text-xs text-primary font-bold mt-0.5">총 ${rawSchedules.length}건의 일정</p>
+        </div>
+
+        <button type="button" class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface transition-colors" onclick="PCApp.navigateSideScheduleDate(1)" title="다음 날짜">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+      </div>
+
+      <!-- Filter Chips Bar -->
+      <div class="flex items-center gap-1.5 mb-3 overflow-x-auto pb-1 shrink-0">
+        ${filters.map(f => {
+          const isActive = (this.stateSideSchedule.activeFilter === f.id);
+          const btnClass = isActive ? f.activeBg : f.inactiveBg;
+          return `
+            <button type="button" class="px-3 py-1 rounded-full text-[11px] font-bold transition-all shrink-0 ${btnClass}" onclick="PCApp.setSideScheduleFilter('${f.id}')">
+              ${f.label}
+            </button>
+          `;
+        }).join('')}
+      </div>
+
+      <!-- Schedule Cards List (Scrollable Area) -->
+      <div class="flex-1 overflow-y-auto pr-1">
+        ${listHtml}
+      </div>
+    `;
   },
 
   prevMonth() {
@@ -2134,11 +2331,12 @@ const PCApp = {
     const now = new Date();
     this.state.calYear = now.getFullYear();
     this.state.calMonth = now.getMonth() + 1;
+    this.state.selectedDate = `${this.state.calYear}-${this.state.calMonth}-${now.getDate()}`;
     this.renderCalendarView();
   },
 
   // =========================================================================
-  // 6-1. Date Schedule Detail Modal (첨부 모바일 이미지 형태의 일자별 근태/일정 팝업)
+  // 6-2. Date Schedule Detail Modal (모바일 이미지 1:1 일치 단일 다이얼로그 모달)
   // =========================================================================
   stateDateModal: {
     currentDateKey: '2026-8-12',
@@ -2221,15 +2419,15 @@ const PCApp = {
         const cardsHtml = items.map(s => this.renderDateModalCard(s, catKey)).join('');
 
         bodyHtml += `
-          <div class="mb-5">
-            <div class="flex items-center justify-between mb-3 px-1">
+          <div class="mb-4">
+            <div class="flex items-center justify-between mb-2.5 px-1">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full ${dotColor}"></span>
                 <span class="font-bold text-sm text-on-surface">${catTitle}</span>
               </div>
               <span class="text-xs font-bold ${countColor}">${items.length}건</span>
             </div>
-            <div class="space-y-3">
+            <div class="space-y-2.5">
               ${cardsHtml}
             </div>
           </div>
@@ -2239,46 +2437,47 @@ const PCApp = {
 
     if (renderedCount === 0) {
       bodyHtml = `
-        <div class="py-16 text-center text-on-surface-variant flex flex-col items-center justify-center">
-          <div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center text-outline mb-2">
-            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+        <div class="py-14 text-center text-on-surface-variant flex flex-col items-center justify-center">
+          <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-outline mb-2">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
           </div>
           <p class="font-bold text-base text-on-surface">등록된 일정이 없습니다.</p>
-          <p class="text-xs text-on-surface-variant mt-1">해당 날짜에 해당하는 근태/일정 내역이 없습니다.</p>
+          <p class="text-xs text-on-surface-variant mt-1">해당 날짜에 등록된 근태/일정이 없습니다.</p>
         </div>
       `;
     }
 
+    // Single Frame Clean Modal Content (중복 박스/배경/그림자 전면 제거)
     const modalHtml = `
-      <div class="w-full max-w-[480px] bg-surface-container-lowest text-on-surface rounded-3xl p-6 shadow-2xl flex flex-col max-h-[85vh] overflow-hidden border border-outline/40 select-none">
+      <div class="flex flex-col h-full select-none">
         
         <!-- Modal Top Header (< YYYY년 M월 D일 (요일) > + ✕) -->
-        <div class="flex items-center justify-between pb-4 mb-4 border-b border-outline/30">
-          <button type="button" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors" onclick="PCApp.navigateDateModal(-1)" title="이전 날짜">
+        <div class="flex items-center justify-between pb-3.5 mb-3.5 border-b border-outline">
+          <button type="button" class="w-8 h-8 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface transition-colors" onclick="PCApp.navigateDateModal(-1)" title="이전 날짜">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
           </button>
 
-          <h3 class="text-lg sm:text-xl font-bold text-on-surface tracking-tight flex items-center gap-1">
+          <h3 class="text-lg font-bold text-on-surface tracking-tight flex items-center gap-1">
             ${year}년 ${month}월 ${day}일 (${dayName})
           </h3>
 
           <div class="flex items-center gap-1">
-            <button type="button" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors" onclick="PCApp.navigateDateModal(1)" title="다음 날짜">
+            <button type="button" class="w-8 h-8 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface transition-colors" onclick="PCApp.navigateDateModal(1)" title="다음 날짜">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
             </button>
-            <button type="button" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors ml-1" onclick="PCApp.closeModal()" title="닫기">
+            <button type="button" class="w-8 h-8 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors ml-2" onclick="PCApp.closeModal()" title="닫기">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </button>
           </div>
         </div>
 
         <!-- Filter Chips Bar (전체, 휴가, 외근, 반차, 회의) -->
-        <div class="flex items-center gap-2 mb-5 overflow-x-auto pb-1 shrink-0">
+        <div class="flex items-center gap-2 mb-4 overflow-x-auto pb-1 shrink-0">
           ${filters.map(f => {
             const isActive = (this.stateDateModal.activeFilter === f.id);
             const btnClass = isActive ? f.activeBg : f.inactiveBg;
             return `
-              <button type="button" class="px-4 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 ${btnClass}" onclick="PCApp.openDateScheduleModal(null, '${f.id}')">
+              <button type="button" class="px-3.5 py-1 rounded-full text-xs font-bold transition-all shrink-0 ${btnClass}" onclick="PCApp.openDateScheduleModal(null, '${f.id}')">
                 ${f.label}
               </button>
             `;
@@ -2293,7 +2492,7 @@ const PCApp = {
       </div>
     `;
 
-    this.showModal(modalHtml, true);
+    this.showModal(modalHtml, 'date-dialog');
   },
 
   renderDateModalCard(s, catKey) {
@@ -2346,26 +2545,26 @@ const PCApp = {
 
     const showAvatar = !(isHoliday || isSolarTerm || isObservance);
     const avatarHtml = showAvatar ? `
-      <img src="${avatarUrl}" alt="${authorName}" class="w-11 h-11 rounded-full object-cover shrink-0 border border-outline/30 shadow-xs" onerror="this.src='./resource/image/profile_abc.png'" />
+      <img src="${avatarUrl}" alt="${authorName}" class="w-10 h-10 rounded-full object-cover shrink-0 border border-outline/30 shadow-2xs" onerror="this.src='./resource/image/profile_abc.png'" />
     ` : '';
 
     return `
-      <div class="p-4 rounded-2xl ${cardBg} border shadow-2xs transition-all hover:shadow-xs flex items-center justify-between gap-3 text-left">
-        <div class="flex items-center gap-3 min-w-0 flex-1">
-          <span class="w-2.5 h-2.5 rounded-full ${dotClass} shrink-0"></span>
+      <div class="p-3.5 rounded-2xl ${cardBg} border shadow-2xs transition-all hover:shadow-xs flex items-center justify-between gap-3 text-left">
+        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+          <span class="w-2 h-2 rounded-full ${dotClass} shrink-0"></span>
           ${avatarHtml}
           <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-1.5 flex-wrap mb-1">
-              ${showAvatar ? `<span class="font-bold text-sm ${authorClass}">${authorName}</span>` : ''}
-              <span class="px-2 py-0.5 rounded-md text-xs font-bold ${badgeBg} border">${badgeStr || catKey}</span>
+            <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+              ${showAvatar ? `<span class="font-bold text-xs sm:text-sm ${authorClass}">${authorName}</span>` : ''}
+              <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${badgeBg} border">${badgeStr || catKey}</span>
               ${locationStr ? `
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20">
-                  <svg class="w-3 h-3 text-sky-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20">
+                  <svg class="w-2.5 h-2.5 text-sky-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                   <span>${locationStr}</span>
                 </span>
               ` : ''}
             </div>
-            <p class="font-bold text-sm sm:text-base text-on-surface truncate">${cleanTitle}</p>
+            <p class="font-bold text-sm text-on-surface truncate">${cleanTitle}</p>
           </div>
         </div>
         <div class="text-right shrink-0">
@@ -3971,17 +4170,18 @@ const PCApp = {
     }
   },
 
-  showModal(contentHtml, isLarge = false) {
+  showModal(contentHtml, mode = false) {
     const modal = document.getElementById('pc-global-modal');
     const modalBody = document.getElementById('pc-modal-content');
     const modalBox = modal ? modal.querySelector('.pc-modal-box') : null;
     if (!modal) return;
 
     if (modalBox) {
-      if (isLarge) {
+      modalBox.className = 'pc-modal-box';
+      if (mode === true || mode === 'large' || mode === 'lg') {
         modalBox.classList.add('pc-modal-lg');
-      } else {
-        modalBox.classList.remove('pc-modal-lg');
+      } else if (mode === 'date-dialog' || mode === 'calendar') {
+        modalBox.classList.add('pc-modal-date-dialog');
       }
     }
 
@@ -4003,7 +4203,9 @@ const PCApp = {
     if (!modal) return;
 
     const modalBox = modal.querySelector('.pc-modal-box');
-    if (modalBox) modalBox.classList.remove('pc-modal-lg');
+    if (modalBox) {
+      modalBox.className = 'pc-modal-box';
+    }
 
     const wasActive = modal.classList.contains('active') || this._isModalOpen;
     modal.classList.remove('active');

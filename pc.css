@@ -1490,6 +1490,16 @@ strong {
   flex-direction: column;
   overflow: hidden;
 }
+.pc-modal-box.pc-modal-date-dialog {
+  width: 490px;
+  max-width: 92vw;
+  max-height: 85vh;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--outline);
+}
 .pc-modal-backdrop.active .pc-modal-box {
   transform: scale(1);
 }
