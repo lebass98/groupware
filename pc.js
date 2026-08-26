@@ -483,7 +483,7 @@ const PCApp = {
 
   // 5-1. Left Column
   renderLeftCol() {
-    // 1. Profile Card
+    // 1. Profile Widget
     const profileWrap = document.getElementById('pc-widget-profile');
     if (profileWrap) {
       const now = new Date();
@@ -514,7 +514,63 @@ const PCApp = {
       `;
     }
 
-    // 2. Leave / Vacation Widget
+    // 2. Check-In & Commute Widget (Figma Style - 1열 연차현황 위로 배치)
+    const commuteWrap = document.getElementById('pc-widget-commute');
+    if (commuteWrap) {
+      commuteWrap.innerHTML = `
+        <div class="pc-bento-card pc-commute-card">
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-bold text-base text-on-surface">근태 & 출/퇴근</span>
+            <span class="pc-commute-status-pill ${this.state.isCheckedIn ? 'checked-in' : ''}">
+              <span class="w-2.5 h-2.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
+              ${this.state.isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}
+            </span>
+          </div>
+
+          <div class="pc-commute-time-display">
+            <div>
+              <span class="text-base text-on-surface-variant block">출근 시간</span>
+              <span class="pc-commute-big-time text-primary">${this.state.checkInTime}</span>
+            </div>
+            <span class="text-on-surface-variant text-2xl font-bold">→</span>
+            <div>
+              <span class="text-base text-on-surface-variant block">퇴근 시간</span>
+              <span class="pc-commute-big-time ${this.state.checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${this.state.checkOutTime}</span>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <div class="flex justify-between text-base font-bold text-on-surface-variant mb-1.5">
+              <span>주 누적 근무시간</span>
+              <span class="text-primary font-bold">38시간 45분 / 40시간</span>
+            </div>
+            <div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
+              <div class="h-full bg-primary rounded-full" style="width: 96%;"></div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 text-base text-on-surface-variant mb-3">
+            <svg class="w-5 h-5 text-secondary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <span class="truncate">위치 인증: <strong>${this.state.user.location}</strong></span>
+          </div>
+
+          <div class="pc-commute-btn-group">
+            <button class="pc-commute-btn pc-commute-btn-in" onclick="PCApp.handleCheckIn()">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+              출근하기
+            </button>
+            <button class="pc-commute-btn pc-commute-btn-out" onclick="PCApp.handleCheckOut()">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+              퇴근하기
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 3. Leave / Vacation Widget
     const leaveWrap = document.getElementById('pc-widget-leave');
     if (leaveWrap) {
       leaveWrap.innerHTML = `
@@ -558,7 +614,7 @@ const PCApp = {
       `;
     }
 
-    // 3. Birthday Widget
+    // 4. Birthday Widget
     const birthWrap = document.getElementById('pc-widget-birthday');
     if (birthWrap) {
       birthWrap.innerHTML = `
@@ -842,65 +898,9 @@ const PCApp = {
     return html;
   },
 
-  // 5-3. Right Column
+  // 5-3. Right Column (하단 서브 3열)
   renderRightCol() {
-    // 1. Check-In & Commute Card (Figma Style)
-    const commuteWrap = document.getElementById('pc-widget-commute');
-    if (commuteWrap) {
-      commuteWrap.innerHTML = `
-        <div class="pc-bento-card pc-commute-card">
-          <div class="flex items-center justify-between mb-3">
-            <span class="font-bold text-base text-on-surface">근태 & 출/퇴근</span>
-            <span class="pc-commute-status-pill ${this.state.isCheckedIn ? 'checked-in' : ''}">
-              <span class="w-2.5 h-2.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
-              ${this.state.isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}
-            </span>
-          </div>
-
-          <div class="pc-commute-time-display">
-            <div>
-              <span class="text-base text-on-surface-variant block">출근 시간</span>
-              <span class="pc-commute-big-time text-primary">${this.state.checkInTime}</span>
-            </div>
-            <span class="text-on-surface-variant text-2xl font-bold">→</span>
-            <div>
-              <span class="text-base text-on-surface-variant block">퇴근 시간</span>
-              <span class="pc-commute-big-time ${this.state.checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${this.state.checkOutTime}</span>
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <div class="flex justify-between text-base font-bold text-on-surface-variant mb-1.5">
-              <span>주 누적 근무시간</span>
-              <span class="text-primary font-bold">38시간 45분 / 40시간</span>
-            </div>
-            <div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
-              <div class="h-full bg-primary rounded-full" style="width: 96%;"></div>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2 text-base text-on-surface-variant mb-3">
-            <svg class="w-5 h-5 text-secondary shrink-0" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-            </svg>
-            <span class="truncate">위치 인증: <strong>${this.state.user.location}</strong></span>
-          </div>
-
-          <div class="pc-commute-btn-group">
-            <button class="pc-commute-btn pc-commute-btn-in" onclick="PCApp.handleCheckIn()">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
-              출근하기
-            </button>
-            <button class="pc-commute-btn pc-commute-btn-out" onclick="PCApp.handleCheckOut()">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
-              퇴근하기
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    // 2. Quick Menu Grid (Figma Style)
+    // 1. Quick Action Widget (Figma Style)
     const quickWrap = document.getElementById('pc-widget-quick-menu');
     if (quickWrap) {
       quickWrap.innerHTML = `
@@ -2806,7 +2806,7 @@ const PCApp = {
     this.state.isCheckedIn = true;
     this.state.checkInTime = timeStr;
     this.showToast(`[출근 완료] ${timeStr} 정상 출근 처리되었습니다.`);
-    this.renderRightCol();
+    this.renderLeftCol();
     if (this.state.activeScreen === 'checkin') this.renderCheckinView();
   },
 
@@ -2816,7 +2816,7 @@ const PCApp = {
     this.state.isCheckedIn = false;
     this.state.checkOutTime = timeStr;
     this.showToast(`[퇴근 완료] ${timeStr} 정상 퇴근 처리되었습니다. 수고하셨습니다!`);
-    this.renderRightCol();
+    this.renderLeftCol();
     if (this.state.activeScreen === 'checkin') this.renderCheckinView();
   },
 
