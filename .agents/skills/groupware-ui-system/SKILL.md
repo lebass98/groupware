@@ -91,3 +91,25 @@ const iconHtml = getSvgIcon('notifications', 'w-5 h-5 text-primary');
 - 최상위 컨테이너: `max-w-[768px] mx-auto min-h-screen relative`
 - 모바일 세로 모드 및 Galaxy Fold 7 / 태블릿 화면에서 중앙 정렬 및 최적 가독성 폭 유지
 - 하단 고정 독 네비게이션 여백 확보를 위해 각 메인 뷰에 `pb-24` 또는 `pb-28` 패딩 적용
+
+---
+
+## 6. PC 메인 대시보드 위젯(Widget) 명칭 체계
+
+PC 메인 대시보드에 배치된 모든 개별 카드 컴포넌트는 **'위젯(Widget)'**으로 공식 명칭을 통일하여 정의하고 관리합니다.
+
+1. **좌측 열 (1열)**:
+   - `프로필 위젯` (`#pc-widget-profile`)
+   - `연차/휴가 현황 위젯` (`#pc-widget-leave`)
+   - `생일자 위젯` (`#pc-widget-birthday`)
+2. **상단 Full-Span (2열+3열 통합)**:
+   - `전체 일정표 위젯` (`#pc-widget-calendar`)
+3. **하단 서브 그리드 (2열)**:
+   - `공지사항 위젯` (`#pc-widget-notice-banner`)
+   - `주간 업무 보고 위젯` (`#pc-widget-work-report`)
+   - `오늘의 일정 위젯` (`#pc-widget-today-schedule`)
+4. **하단 서브 그리드 (3열)**:
+   - `근태 & 출/퇴근 위젯` (`#pc-widget-commute`)
+   - `Quick Action (퀵메뉴) 위젯` (`#pc-widget-quick-menu`)
+   - `To-Do List (할 일) 위젯` (`#pc-widget-todo`)
+

@@ -29,6 +29,10 @@
   - 앞으로 UI 아이콘을 추가하거나 수정할 때는 웹폰트(`<span class="material-symbols-outlined">`)를 절대 사용하지 않고, 반드시 **인라인 SVG 코드(`<svg ... viewBox="0 0 24 24" fill="currentColor">`)** 또는 `data/svgIcons.js`의 `getSvgIcon()` 헬퍼를 사용하여 구현합니다.
   - 신규 아이콘이 필요한 경우 `data/svgIcons.js`의 `SVGIcons` 딕셔너리에 해당 아이콘의 공식 SVG 경로(path)를 함께 추가 및 등록하여 관리합니다.
 
+- **PC 메인 대시보드 구성요소 명칭 '위젯(Widget)' 표준화**:
+  - PC 메인 대시보드에 배치된 모든 개별 카드 컴포넌트(프로필, 연차/휴가 현황, 생일자, 전체 일정표, 공지사항, 주간 업무 보고, 오늘의 일정, 근태 & 출/퇴근, Quick Action, To-Do List 등)는 공식 명칭을 **'위젯(Widget)'**으로 통일하여 지칭 및 관리합니다.
+
+
 ## 파일 시스템 및 환경 관리 규칙 (File System & Environment Guidelines)
 
 - **macOS AppleDouble(`._*`) 메타데이터 파일 생성 즉시 무조건 전량 삭제 의무화 (Zero Tolerance Policy)**:
