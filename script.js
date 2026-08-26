@@ -259,7 +259,17 @@ const App = {
         this.loadState();
         this.updateNotificationBadge();
         if (this.state.isLoggedIn) {
+          // 출퇴근 타이머 동기화
+          if (this.state.isCheckedIn && !this.state.timerInterval) {
+            this.startWorkTimer();
+          } else if (!this.state.isCheckedIn && this.state.timerInterval) {
+            this.stopWorkTimer();
+          }
+          // 모바일 UI 전면 실시간 갱신
+          this.renderUI();
           this.renderTodayData();
+          if (typeof this.renderLogs === 'function') this.renderLogs();
+          if (typeof this.renderTodos === 'function') this.renderTodos();
           if (this.state.activeTab === 'screen-notice-list') this.renderNotifications();
         }
       }
@@ -330,7 +340,12 @@ const App = {
         const parsed = JSON.parse(saved);
         this.state.isLoggedIn = parsed.isLoggedIn ?? false;
         this.state.isCheckedIn = parsed.isCheckedIn ?? false;
-        this.state.checkInTime = parsed.checkInTime ? new Date(parsed.checkInTime) : null;
+        if (parsed.checkInTime) {
+          const d = new Date(parsed.checkInTime);
+          this.state.checkInTime = isNaN(d.getTime()) ? new Date() : d;
+        } else {
+          this.state.checkInTime = null;
+        }
         this.state.checkInTimeStr = parsed.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : null);
         this.state.settings = { ...this.state.settings, ...parsed.settings };
         this.state.activeTab = parsed.activeTab ?? 'screen-today';

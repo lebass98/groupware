@@ -243,10 +243,18 @@ const PCApp = {
           this.state.checkInTime = match ? match[1] : parsed.checkInTimeStr;
         } else if (parsed.checkInTime) {
           const d = new Date(parsed.checkInTime);
-          this.state.checkInTime = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+          if (!isNaN(d.getTime())) {
+            this.state.checkInTime = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+          }
         }
         if (parsed.logs && Array.isArray(parsed.logs) && parsed.logs.length > 0) {
           this.state.logs = parsed.logs;
+        }
+        if (parsed.todos && Array.isArray(parsed.todos) && parsed.todos.length > 0) {
+          this.state.todos = parsed.todos;
+        }
+        if (parsed.recentProjects && Array.isArray(parsed.recentProjects) && parsed.recentProjects.length > 0) {
+          this.state.recentProjects = parsed.recentProjects;
         }
       }
 
@@ -277,12 +285,18 @@ const PCApp = {
 
       currentState.isCheckedIn = this.state.isCheckedIn;
       if (this.state.isCheckedIn) {
-        currentState.checkInTime = currentState.checkInTime || new Date().toISOString();
-        currentState.checkInTimeStr = `오전 ${this.state.checkInTime}`;
+        const now = new Date();
+        const timePart = this.state.checkInTime || `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        currentState.checkInTime = currentState.checkInTime || now.toISOString();
+        currentState.checkInTimeStr = timePart.includes('오전') || timePart.includes('오후') ? timePart : (parseInt(timePart.split(':')[0], 10) >= 12 ? `오후 ${timePart}` : `오전 ${timePart}`);
       } else {
         currentState.checkInTime = null;
         currentState.checkInTimeStr = null;
       }
+
+      if (this.state.todos) currentState.todos = this.state.todos;
+      if (this.state.logs) currentState.logs = this.state.logs;
+      if (this.state.recentProjects) currentState.recentProjects = this.state.recentProjects;
 
       localStorage.setItem('wordncode_groupware_state', JSON.stringify(currentState));
 
@@ -4413,10 +4427,19 @@ const PCApp = {
       if (e.key === 'wordncode_groupware_state' || e.key === 'wordncode_notifications_read_state') {
         this.loadState();
         this.updateNotificationBadge();
+        // 메인 대시보드 3열 위젯 전면 실시간 갱신
         this.renderLeftCol();
         this.renderCenterCol();
         this.renderRightCol();
+        // 현재 열려있는 활성 서브스크린 실시간 갱신
         if (this.state.activeScreen === 'checkin') this.renderCheckinView();
+        else if (this.state.activeScreen === 'todo') this.renderTodoView();
+        else if (this.state.activeScreen === 'notice') this.renderNoticeView();
+        else if (this.state.activeScreen === 'directory') this.renderDirectoryView();
+        else if (this.state.activeScreen === 'calendar') this.renderCalendarView();
+        else if (this.state.activeScreen === 'work-report') this.renderWorkReportView();
+        else if (this.state.activeScreen === 'finance') this.renderFinanceView();
+        else if (this.state.activeScreen === 'project') this.renderProjectView();
       }
     });
   }
