@@ -97,6 +97,17 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Text Selection Styling (웹 텍스트 드래그 및 복사 지원) */
+::selection {
+  background-color: rgba(0, 82, 208, 0.2);
+  color: var(--primary);
+}
+
+[data-theme="dark"] ::selection {
+  background-color: rgba(94, 139, 255, 0.3);
+  color: #ffffff;
+}
+
 /* 최소 글씨 크기 13px 강제 보장 규칙 및 font-weight 700 상한선 표준화 */
 .pc-layout-wrapper {
   font-size: 15px;

@@ -2588,7 +2588,7 @@ const PCApp = {
 
     // Single Frame Clean Modal Content (중복 박스/배경/그림자 전면 제거)
     const modalHtml = `
-      <div class="flex flex-col h-full select-none">
+      <div class="flex flex-col h-full">
         
         <!-- Modal Top Header (< YYYY년 M월 D일 (요일) > + ✕) -->
         <div class="flex items-center justify-between pb-3.5 mb-3.5 border-b border-outline">
