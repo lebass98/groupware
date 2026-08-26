@@ -937,10 +937,13 @@ const PCApp = {
     }
   },
 
-  // 5-2. Center Column (2열: 회사 일정 위젯 -> 공지사항 위젯 -> 주간 업무 보고 위젯)
+  // 5-2. Center Column (2열: 근태일지 달력 위젯 -> 오늘의 일정 위젯 -> 공지사항 위젯 -> 주간 업무 보고 위젯)
   renderCenterCol() {
-    // 1. Company Schedule Widget (2열 최상단)
+    // 1. Company Schedule Widget (2열 최상단: 근태일지 간소화 달력)
     this.renderCompanyScheduleWidget();
+
+    // 2. Today Schedule Widget (2열: 오늘의 일정 Bento 위젯 - 모바일 1:1 일치)
+    this.renderTodayScheduleWidget();
 
     // 2. Notice Card Widget (최근 5개 공지사항 카드 UI)
     const noticeWrap = document.getElementById('pc-widget-notice-banner');
@@ -1202,6 +1205,145 @@ const PCApp = {
     this.state.calYear = y;
     this.state.calMonth = m;
     this.renderCompanyScheduleWidget();
+  },
+
+  // 2. Today's Schedule Widget (2열: 모바일 투데이와 100% 동일한 오늘의 일정 Bento 위젯)
+  renderTodayScheduleWidget() {
+    const wrap = document.getElementById('pc-widget-today-schedule');
+    if (!wrap) return;
+
+    const now = new Date();
+    const todayYear = now.getFullYear();
+    const todayMonth = now.getMonth() + 1;
+    const todayDay = now.getDate();
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+    const dayOfWeekStr = dayNames[now.getDay()];
+    const todayDateKey = `${todayYear}-${todayMonth}-${todayDay}`;
+
+    const schedules = this.getSchedulesForDay(todayYear, todayMonth, todayDay) || [];
+
+    wrap.innerHTML = `
+      <div class="pc-bento-card">
+        <div class="pc-card-header mb-3">
+          <div class="flex items-center gap-2.5">
+            <span class="pc-card-title flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+              </svg>
+              오늘의 일정
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${todayMonth}월 ${todayDay}일 (${dayOfWeekStr}) · 총 ${schedules.length}건</span>
+          </div>
+          <button class="pc-card-action" onclick="PCApp.switchScreen('calendar')">전체보기</button>
+        </div>
+
+        <div class="space-y-2.5">
+          ${schedules.length > 0 ? schedules.map(s => {
+            const isHoliday = (
+              s.badge === '공휴일' ||
+              s.badge === '기념일' ||
+              s.badge === '절기' ||
+              s.title.includes('공휴일') ||
+              s.title.includes('기념일') ||
+              s.title.includes('대체공휴일') ||
+              s.title.includes('절기') ||
+              s.author === '공휴일' ||
+              s.author === '기념일' ||
+              s.author === '24절기' ||
+              s.author === '대한민국 공휴일' ||
+              s.author === '회사공지' ||
+              s.author === '국경일/기념일'
+            );
+            const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
+            const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
+            const locationBadgeHtml = s.location ? `
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
+                <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span>${s.location}</span>
+              </span>
+            ` : '';
+
+            return `
+              <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-xl border border-outline/30 hover:border-primary/50 transition-all gap-3 cursor-pointer group" onclick="PCApp.openDateScheduleModal('${todayDateKey}')" title="클릭하여 상세 정보 보기">
+                <div class="flex items-center gap-2 shrink-0">
+                  <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
+                </div>
+                <div class="flex-1 text-left min-w-0 flex flex-col justify-center">
+                  <div class="flex items-center justify-between gap-2 mb-1.5 min-w-0">
+                    <div class="flex items-center gap-1.5 flex-wrap min-w-0">
+                      ${authorText}
+                      ${colorInfo.badgeHtml}
+                      ${locationBadgeHtml}
+                    </div>
+                    <span class="text-xs text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
+                  </div>
+                  <div class="text-sm text-on-surface font-bold leading-snug truncate group-hover:text-primary transition-colors">${this.formatScheduleCleanLabel(s)}</div>
+                </div>
+              </div>
+            `;
+          }).join('') : `
+            <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-xl">
+              <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+              </svg>
+              <p class="font-bold text-sm text-on-surface">오늘 등록된 일정이 없습니다.</p>
+            </div>
+          `}
+        </div>
+      </div>
+    `;
+  },
+
+  getCategoryColorStyle(category) {
+    switch (category) {
+      case '휴가':
+      case '연차':
+        return {
+          chipClass: 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/30 font-bold shadow-xs',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">연차</span>',
+          dotClass: 'bg-[#137333]',
+          cardBgClass: 'bg-surface-container-lowest/80 border-[#137333]/25 hover:bg-surface-container-low'
+        };
+      case '외근':
+      case '출장':
+      case '미팅':
+        return {
+          chipClass: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 font-bold shadow-xs',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/25 whitespace-nowrap shrink-0">외근</span>',
+          dotClass: 'bg-[#1a73e8]',
+          cardBgClass: 'bg-surface-container-lowest/80 border-[#1a73e8]/25 hover:bg-surface-container-low'
+        };
+      case '반차':
+      case '반반차':
+        return {
+          chipClass: 'bg-[#fef7e0] text-[#b06000] border border-[#b06000]/30 font-bold shadow-xs',
+          badgeHtml: `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#fef7e0] text-[#b06000] border border-[#b06000]/25 whitespace-nowrap shrink-0">${category}</span>`,
+          dotClass: 'bg-[#b06000]',
+          cardBgClass: 'bg-surface-container-lowest/80 border-[#b06000]/25 hover:bg-surface-container-low'
+        };
+      case '회의':
+      case '보고':
+        return {
+          chipClass: 'bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/30 font-bold shadow-xs',
+          badgeHtml: `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/25 whitespace-nowrap shrink-0">${category}</span>`,
+          dotClass: 'bg-[#6b21a8]',
+          cardBgClass: 'bg-surface-container-lowest/80 border-[#6b21a8]/25 hover:bg-surface-container-low'
+        };
+      case '공휴일':
+        return {
+          chipClass: 'bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/30 font-bold shadow-xs',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25 whitespace-nowrap shrink-0">공휴일</span>',
+          dotClass: 'bg-[#c5221f]',
+          cardBgClass: 'bg-surface-container-lowest/80 border-[#c5221f]/25 hover:bg-surface-container-low'
+        };
+      default:
+        return {
+          chipClass: 'bg-surface-container text-on-surface font-bold',
+          badgeHtml: `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface whitespace-nowrap shrink-0">${category || '일정'}</span>`,
+          dotClass: 'bg-primary',
+          cardBgClass: 'bg-surface-container-lowest/80 border-outline/30 hover:bg-surface-container-low'
+        };
+    }
   },
 
   // 5-3. Right Column (하단 서브 3열)
