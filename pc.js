@@ -227,7 +227,77 @@ const PCApp = {
     ]
   },
 
+  // ==========================================================================
+  // 멀티 디바이스 데이터 동기화 엔진 (Cross-Device LocalStorage Synchronization)
+  // ==========================================================================
+  loadState() {
+    try {
+      const saved = localStorage.getItem('wordncode_groupware_state');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.isCheckedIn !== undefined) {
+          this.state.isCheckedIn = parsed.isCheckedIn;
+        }
+        if (parsed.checkInTimeStr) {
+          const match = parsed.checkInTimeStr.match(/(\d{1,2}:\d{2})/);
+          this.state.checkInTime = match ? match[1] : parsed.checkInTimeStr;
+        } else if (parsed.checkInTime) {
+          const d = new Date(parsed.checkInTime);
+          this.state.checkInTime = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+        }
+        if (parsed.logs && Array.isArray(parsed.logs) && parsed.logs.length > 0) {
+          this.state.logs = parsed.logs;
+        }
+      }
+
+      // Notifications Read State Sync
+      const savedNotifs = localStorage.getItem('wordncode_notifications_read_state');
+      if (savedNotifs) {
+        const readIds = JSON.parse(savedNotifs);
+        if (Array.isArray(readIds) && this.state.notifications) {
+          this.state.notifications.forEach(n => {
+            if (readIds.includes(n.id)) {
+              n.isRead = true;
+            }
+          });
+        }
+      }
+    } catch (e) {
+      console.warn('[PC] LocalStorage load error:', e);
+    }
+  },
+
+  saveState() {
+    try {
+      let currentState = {};
+      const saved = localStorage.getItem('wordncode_groupware_state');
+      if (saved) {
+        try { currentState = JSON.parse(saved); } catch (_) {}
+      }
+
+      currentState.isCheckedIn = this.state.isCheckedIn;
+      if (this.state.isCheckedIn) {
+        currentState.checkInTime = currentState.checkInTime || new Date().toISOString();
+        currentState.checkInTimeStr = `오전 ${this.state.checkInTime}`;
+      } else {
+        currentState.checkInTime = null;
+        currentState.checkInTimeStr = null;
+      }
+
+      localStorage.setItem('wordncode_groupware_state', JSON.stringify(currentState));
+
+      // Save Notifications Read State
+      if (this.state.notifications) {
+        const readIds = this.state.notifications.filter(n => n.isRead).map(n => n.id);
+        localStorage.setItem('wordncode_notifications_read_state', JSON.stringify(readIds));
+      }
+    } catch (e) {
+      console.warn('[PC] LocalStorage save error:', e);
+    }
+  },
+
   init() {
+    this.loadState();
     this.bindTheme();
     this.bindSidebarState();
     this.startClock();
@@ -245,7 +315,7 @@ const PCApp = {
 
     this.startNoticeTicker();
     this.bindGlobalEvents();
-    console.log('🚀 WnC PC Groupware Engine Initialized with Web History Routing');
+    console.log('🚀 WnC PC Groupware Engine Initialized with Cross-Device Data Sync');
   },
 
   // ==========================================================================
@@ -439,6 +509,7 @@ const PCApp = {
         n.isRead = true;
       }
     });
+    this.saveState();
     this.updateNotificationBadge();
     this.renderRightCol();
     this.openNotificationModal();
@@ -449,6 +520,7 @@ const PCApp = {
     if (!notif) return;
 
     notif.isRead = !notif.isRead;
+    this.saveState();
     this.updateNotificationBadge();
     this.renderRightCol();
     const container = document.getElementById('pc-notification-list-container');
@@ -3650,6 +3722,7 @@ const PCApp = {
     const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     this.state.isCheckedIn = true;
     this.state.checkInTime = timeStr;
+    this.saveState();
     this.showToast(`[출근 완료] ${timeStr} 정상 출근 처리되었습니다.`);
     this.renderLeftCol();
     if (this.state.activeScreen === 'checkin') this.renderCheckinView();
@@ -3660,6 +3733,7 @@ const PCApp = {
     const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     this.state.isCheckedIn = false;
     this.state.checkOutTime = timeStr;
+    this.saveState();
     this.showToast(`[퇴근 완료] ${timeStr} 정상 퇴근 처리되었습니다. 수고하셨습니다!`);
     this.renderLeftCol();
     if (this.state.activeScreen === 'checkin') this.renderCheckinView();
@@ -3668,6 +3742,7 @@ const PCApp = {
   toggleTodo(idx) {
     if (this.state.todos[idx]) {
       this.state.todos[idx].completed = !this.state.todos[idx].completed;
+      this.saveState();
       this.renderRightCol();
     }
   },
@@ -4330,6 +4405,18 @@ const PCApp = {
       const validScreens = ['dashboard', 'directory', 'notice', 'calendar', 'finance', 'todo', 'project', 'work-report', 'checkin', 'request'];
       if (validScreens.includes(hash) && this.state.activeScreen !== hash) {
         this.switchScreen(hash, true);
+      }
+    });
+
+    // 4. Cross-Device Cross-Tab Real-time Storage Sync (모바일-PC 실시간 동기화)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'wordncode_groupware_state' || e.key === 'wordncode_notifications_read_state') {
+        this.loadState();
+        this.updateNotificationBadge();
+        this.renderLeftCol();
+        this.renderCenterCol();
+        this.renderRightCol();
+        if (this.state.activeScreen === 'checkin') this.renderCheckinView();
       }
     });
   }

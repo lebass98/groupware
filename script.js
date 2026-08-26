@@ -253,6 +253,18 @@ const App = {
     // Initialize Global Modal Background Scroll Lock Engine
     this.initModalScrollObserver();
 
+    // Cross-Device Cross-Tab Real-time Storage Sync (멀티 디바이스 실시간 데이터 동기화)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'wordncode_groupware_state' || e.key === 'wordncode_notifications_read_state') {
+        this.loadState();
+        this.updateNotificationBadge();
+        if (this.state.isLoggedIn) {
+          this.renderTodayData();
+          if (this.state.activeTab === 'screen-notice-list') this.renderNotifications();
+        }
+      }
+    });
+
     this.renderUI();
   },
 
@@ -343,6 +355,19 @@ const App = {
           this.state.dockMenus = sanitized.length > 0 ? sanitized.slice(0, 4) : ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'];
         }
       }
+
+      // Notifications Read State Sync
+      const savedNotifs = localStorage.getItem('wordncode_notifications_read_state');
+      if (savedNotifs) {
+        const readIds = JSON.parse(savedNotifs);
+        if (Array.isArray(readIds) && this.state.notifications) {
+          this.state.notifications.forEach(n => {
+            if (readIds.includes(n.id)) {
+              n.isRead = true;
+            }
+          });
+        }
+      }
     } catch (e) {
       console.warn('LocalStorage error:', e);
     }
@@ -364,6 +389,12 @@ const App = {
         activeTab: this.state.activeTab,
         menuColumns: this.state.menuColumns
       }));
+
+      // Save Notifications Read State
+      if (this.state.notifications) {
+        const readIds = this.state.notifications.filter(n => n.isRead).map(n => n.id);
+        localStorage.setItem('wordncode_notifications_read_state', JSON.stringify(readIds));
+      }
     } catch (e) {
       console.warn('Save error:', e);
     }
