@@ -20,7 +20,7 @@ description: >-
   - `surface-container-highest`: `#E2E2E8`
   - `on-surface`: `#191C20` / `on-surface-variant`: `#44474F`
   - `outline`: `#74777F` / `outline-variant`: `#C4C6D0`
-- **타이포그래피**: 고선명 `Pretendard`, sans-serif 폰트 패밀리 적용 (`font-headline`, `font-body`, `font-label`).
+- **타이포그래피 (단일 폰트 원칙)**: 숫자, 영문, 국문, PC/모바일/앱 전반에서 오직 **`Pretendard Variable`** 단일 폰트 패밀리만 사용 (`font-headline`, `font-body`, `font-label`, sans-serif). 다른 외부 영문/숫자 웹폰트 사용을 일체 배제.
 
 ---
 
