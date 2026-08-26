@@ -340,6 +340,64 @@
         </div>
       </section>
 
+      <!-- SCREEN: CALENDAR VIEW (근태일지 / 전사 일정표 전용 와이드 뷰) -->
+      <section class="pc-screen-view p-8" id="pc-screen-calendar">
+        <!-- Top Title & Controls Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-outline">
+          <div>
+            <div class="flex items-center gap-3">
+              <h2 class="text-2xl font-bold text-on-surface">근태일지</h2>
+              <span class="px-3 py-1 bg-primary/10 text-primary font-bold rounded-full text-base" id="pc-cal-stat-total">전사 일정</span>
+            </div>
+            <p class="text-base text-on-surface-variant font-medium mt-1">월별 전사 근태·휴가·외근 일정 종합 캘린더</p>
+          </div>
+
+          <!-- Month Selector & Navigation Controls -->
+          <div class="flex items-center gap-3">
+            <div class="flex items-center bg-surface-container-low border border-outline rounded-xl p-1 shadow-2xs">
+              <button type="button" class="p-2 hover:bg-surface-container rounded-lg text-on-surface transition-colors" onclick="PCApp.prevMonth()" title="이전 달">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              </button>
+              <span class="px-4 font-bold text-base text-on-surface min-w-[130px] text-center" id="pc-cal-current-month-label">2026년 8월</span>
+              <button type="button" class="p-2 hover:bg-surface-container rounded-lg text-on-surface transition-colors" onclick="PCApp.nextMonth()" title="다음 달">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+              </button>
+            </div>
+            <button type="button" class="px-4 py-2.5 bg-surface-container-low hover:bg-surface-container border border-outline rounded-xl text-base font-bold text-on-surface transition-all active:scale-[0.98]" onclick="PCApp.goToCurrentMonth()">
+              오늘
+            </button>
+            <button type="button" class="px-4 py-2.5 bg-primary hover:bg-primary-dim text-white rounded-xl text-base font-bold transition-all shadow-xs active:scale-[0.98] flex items-center gap-1.5" onclick="PCApp.switchScreen('request')">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              <span>일정 신청</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Monthly Summary Stat Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" id="pc-cal-monthly-stats">
+          <!-- Populated by PCApp.renderCalendarView() -->
+        </div>
+
+        <!-- Simplified Calendar Grid Card -->
+        <div class="bg-surface-container-lowest border border-outline rounded-2xl p-6 shadow-xs">
+          <!-- Day of week header -->
+          <div class="grid grid-cols-7 gap-2 mb-3 text-center font-bold text-sm select-none">
+            <div class="py-2 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400">일 (SUN)</div>
+            <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">월 (MON)</div>
+            <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">화 (TUE)</div>
+            <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">수 (WED)</div>
+            <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">목 (THU)</div>
+            <div class="py-2 rounded-lg bg-surface-container-low text-on-surface">금 (FRI)</div>
+            <div class="py-2 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">토 (SAT)</div>
+          </div>
+
+          <!-- Calendar Days Grid Container -->
+          <div class="grid grid-cols-7 gap-2" id="pc-cal-grid-container">
+            <!-- Dynamically Populated by PCApp.renderCalendarGrid() -->
+          </div>
+        </div>
+      </section>
+
       <!-- SCREEN 5: CHECK-IN & LOGS VIEW -->
       <section class="pc-screen-view p-8" id="pc-screen-checkin">
         <div class="mb-6 pb-4 border-b border-outline">

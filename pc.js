@@ -631,6 +631,7 @@ const PCApp = {
 
     // Screen specific renderers
     if (screenId === 'dashboard') this.renderDashboard();
+    else if (screenId === 'calendar') this.renderCalendarView();
     else if (screenId === 'directory') this.renderDirectoryView();
     else if (screenId === 'notice') this.renderNoticeView();
     else if (screenId === 'finance') this.renderFinanceView();
@@ -643,10 +644,11 @@ const PCApp = {
     window.scrollTo({ top: 0, behavior: 'instant' });
   },
 
-  // 4. Render Sidebar (9 Core Service Icons & Labels)
+  // 4. Render Sidebar (10 Core Service Icons & Labels)
   renderSidebar() {
     const navItems = [
       { id: 'dashboard', name: '대시보드', iconName: 'grid_view' },
+      { id: 'calendar', name: '근태일지', iconName: 'calendar_month' },
       { id: 'checkin', name: '출/퇴근', iconName: 'login' },
       { id: 'request', name: '휴가/외근', iconName: 'flight_takeoff' },
       { id: 'directory', name: '주소록', iconName: 'contact_page' },
@@ -1044,7 +1046,7 @@ const PCApp = {
       const daySchedules = this.getSchedulesForDay(year, month + 1, d);
 
       html += `
-        <div class="pc-cal-cell ${isToday ? 'today' : ''}" onclick="PCApp.selectDate('${key}'); PCApp.switchScreen('calendar');">
+        <div class="pc-cal-cell ${isToday ? 'today' : ''}" onclick="PCApp.openDateScheduleModal('${key}')">
           <div class="pc-cal-header-row">
             <span class="pc-cal-date-num">${d}</span>
             ${daySchedules.length > 0 ? `<span class="pc-cal-count-badge">+${daySchedules.length}</span>` : ''}
@@ -1953,79 +1955,434 @@ const PCApp = {
 
   selectDate(key) {
     this.state.selectedDate = key;
+    this.openDateScheduleModal(key);
+  },
+
+  // =========================================================================
+  // 6. Calendar View (근태일지 - 간략화된 월간 달력 & 일자별 모달 연동)
+  // =========================================================================
+  renderCalendarView() {
+    const year = this.state.calYear || 2026;
+    const month = this.state.calMonth || 8;
+
+    // 1. Month Label Update
+    const monthLabelEl = document.getElementById('pc-cal-current-month-label');
+    if (monthLabelEl) {
+      monthLabelEl.innerText = `${year}년 ${month}월`;
+    }
+
+    // 2. Calculate Monthly Statistics
+    const lastDate = new Date(year, month, 0).getDate();
+    let totalSchedCount = 0;
+    let vacationCount = 0;
+    let outworkCount = 0;
+    let halfVacationCount = 0;
+
+    for (let d = 1; d <= lastDate; d++) {
+      const dayScheds = this.getSchedulesForDay(year, month, d) || [];
+      totalSchedCount += dayScheds.length;
+      dayScheds.forEach(s => {
+        const titleStr = s.title || '';
+        const badgeStr = s.badge || '';
+        if (titleStr.includes('연차') || titleStr.includes('휴가') || badgeStr.includes('연차') || badgeStr.includes('휴가')) vacationCount++;
+        else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) outworkCount++;
+        else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) halfVacationCount++;
+      });
+    }
+
+    const totalStatBadge = document.getElementById('pc-cal-stat-total');
+    if (totalStatBadge) {
+      totalStatBadge.innerText = `총 ${totalSchedCount}건`;
+    }
+
+    const statsWrap = document.getElementById('pc-cal-monthly-stats');
+    if (statsWrap) {
+      statsWrap.innerHTML = `
+        <div class="p-4 bg-surface-container-low border border-outline rounded-2xl flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-on-surface-variant">월간 전체 일정</p>
+            <h4 class="text-2xl font-extrabold text-on-surface mt-1">${totalSchedCount}<span class="text-sm font-normal text-on-surface-variant ml-1">건</span></h4>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+          </div>
+        </div>
+        <div class="p-4 bg-surface-container-low border border-outline rounded-2xl flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-on-surface-variant">연차 및 휴가</p>
+            <h4 class="text-2xl font-extrabold text-[#137333] mt-1">${vacationCount}<span class="text-sm font-normal text-on-surface-variant ml-1">건</span></h4>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-[#e6f4ea] text-[#137333] flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/></svg>
+          </div>
+        </div>
+        <div class="p-4 bg-surface-container-low border border-outline rounded-2xl flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-on-surface-variant">외근 및 출장</p>
+            <h4 class="text-2xl font-extrabold text-[#1a73e8] mt-1">${outworkCount}<span class="text-sm font-normal text-on-surface-variant ml-1">건</span></h4>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-[#e8f0fe] text-[#1a73e8] flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.1 0 2-.89 2-2V8c0-1.1-.9-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+          </div>
+        </div>
+        <div class="p-4 bg-surface-container-low border border-outline rounded-2xl flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-on-surface-variant">반차 / 반반차</p>
+            <h4 class="text-2xl font-extrabold text-[#b06000] mt-1">${halfVacationCount}<span class="text-sm font-normal text-on-surface-variant ml-1">건</span></h4>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-[#fef7e0] text-[#b06000] flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+          </div>
+        </div>
+      `;
+    }
+
+    // 3. Render Calendar Grid
+    this.renderCalendarGrid();
+  },
+
+  renderCalendarGrid() {
+    const gridWrap = document.getElementById('pc-cal-grid-container');
+    if (!gridWrap) return;
+
+    const year = this.state.calYear || 2026;
+    const month = this.state.calMonth || 8;
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    const lastDate = new Date(year, month, 0).getDate();
+    const now = new Date();
+
+    let html = '';
+
+    // Empty previous month padding cells
+    for (let i = 0; i < firstDay; i++) {
+      html += `<div class="min-h-[115px] p-2 bg-surface-container-lowest/40 border border-outline/30 rounded-xl opacity-40"></div>`;
+    }
+
+    // Current Month Days
+    for (let d = 1; d <= lastDate; d++) {
+      const key = `${year}-${month}-${d}`;
+      const isToday = (d === now.getDate() && month === (now.getMonth() + 1) && year === now.getFullYear());
+      const dayOfWeek = (firstDay + d - 1) % 7;
+      const isSunday = (dayOfWeek === 0);
+      const isSaturday = (dayOfWeek === 6);
+
+      const daySchedules = this.getSchedulesForDay(year, month, d) || [];
+
+      const topScheds = daySchedules.slice(0, 3);
+      const extraCount = daySchedules.length - topScheds.length;
+
+      let dateNumClass = 'text-on-surface';
+      if (isSunday) dateNumClass = 'text-red-500 font-bold';
+      else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
+
+      html += `
+        <div class="min-h-[115px] p-2.5 bg-surface-container-low border border-outline/70 hover:border-primary hover:shadow-xs rounded-xl transition-all cursor-pointer flex flex-col justify-between group ${isToday ? 'ring-2 ring-primary bg-primary/5' : ''}" onclick="PCApp.openDateScheduleModal('${key}')">
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center gap-1.5">
+              <span class="text-sm font-extrabold ${dateNumClass} ${isToday ? 'w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs' : ''}">${d}</span>
+              ${isToday ? '<span class="text-[10px] font-bold text-primary px-1.5 py-0.2 bg-primary/10 rounded-full">오늘</span>' : ''}
+            </div>
+            ${daySchedules.length > 0 ? `<span class="text-[11px] font-bold px-1.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}건</span>` : ''}
+          </div>
+
+          <div class="space-y-1 flex-1 overflow-hidden">
+            ${topScheds.map(s => {
+              const tagClass = this.getScheduleTagClass(s);
+              const cleanLabel = this.formatScheduleCleanLabel(s);
+              return `
+                <div class="text-[11px] px-1.5 py-0.5 rounded truncate font-medium ${tagClass}" title="${cleanLabel}">
+                  ${cleanLabel}
+                </div>
+              `;
+            }).join('')}
+            ${extraCount > 0 ? `<div class="text-[10px] text-on-surface-variant font-bold px-1">+${extraCount}건 더보기</div>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    gridWrap.innerHTML = html;
+  },
+
+  prevMonth() {
+    let y = this.state.calYear || 2026;
+    let m = this.state.calMonth || 8;
+    m--;
+    if (m < 1) {
+      m = 12;
+      y--;
+    }
+    this.state.calYear = y;
+    this.state.calMonth = m;
     this.renderCalendarView();
   },
 
-  renderCalendarView() {
-    const gridEl = document.getElementById('pc-full-calendar-grid');
-    if (gridEl) {
-      const year = this.state.calYear;
-      const month = this.state.calMonth - 1;
-      const firstDay = new Date(year, month, 1).getDay();
-      const lastDate = new Date(year, month + 1, 0).getDate();
-      const now = new Date();
+  nextMonth() {
+    let y = this.state.calYear || 2026;
+    let m = this.state.calMonth || 8;
+    m++;
+    if (m > 12) {
+      m = 1;
+      y++;
+    }
+    this.state.calYear = y;
+    this.state.calMonth = m;
+    this.renderCalendarView();
+  },
 
-      let html = '';
-      for (let i = 0; i < firstDay; i++) {
-        html += `<div class="pc-cal-cell empty"></div>`;
-      }
+  goToCurrentMonth() {
+    const now = new Date();
+    this.state.calYear = now.getFullYear();
+    this.state.calMonth = now.getMonth() + 1;
+    this.renderCalendarView();
+  },
 
-      for (let d = 1; d <= lastDate; d++) {
-        const key = `${year}-${month + 1}-${d}`;
-        const isToday = (d === now.getDate() && (month + 1) === (now.getMonth() + 1) && year === now.getFullYear());
-        const isSelected = (this.state.selectedDate === key);
-        const daySchedules = this.getSchedulesForDay(year, month + 1, d);
+  // =========================================================================
+  // 6-1. Date Schedule Detail Modal (첨부 모바일 이미지 형태의 일자별 근태/일정 팝업)
+  // =========================================================================
+  stateDateModal: {
+    currentDateKey: '2026-8-12',
+    activeFilter: 'all' // 'all', '휴가', '외근', '반차', '회의'
+  },
 
-        html += `
-          <div class="pc-cal-cell ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}" onclick="PCApp.selectDate('${key}')">
-            <div class="pc-cal-header-row">
-              <span class="pc-cal-date-num ${isToday ? 'text-primary font-bold' : ''}">${d}</span>
-              ${daySchedules.length > 0 ? `<span class="pc-cal-count-badge">${daySchedules.length}건</span>` : ''}
+  openDateScheduleModal(dateKey, activeFilter) {
+    if (dateKey) this.stateDateModal.currentDateKey = dateKey;
+    if (activeFilter !== undefined) this.stateDateModal.activeFilter = activeFilter;
+
+    const key = this.stateDateModal.currentDateKey;
+    const parts = key.split('-').map(Number);
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+    const dObj = new Date(year, month - 1, day);
+    const dayName = dayNames[dObj.getDay()];
+
+    const rawSchedules = this.getSchedulesForDay(year, month, day) || [];
+    const filter = this.stateDateModal.activeFilter;
+
+    // Filter Chips
+    const filters = [
+      { id: 'all', label: '전체', activeBg: 'bg-[#3b82f6] text-white shadow-xs', inactiveBg: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 hover:bg-[#d8e8fe]' },
+      { id: '휴가', label: '휴가', activeBg: 'bg-[#137333] text-white shadow-xs', inactiveBg: 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/30 hover:bg-[#d4edd9]' },
+      { id: '외근', label: '외근', activeBg: 'bg-[#1a73e8] text-white shadow-xs', inactiveBg: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 hover:bg-[#d8e8fe]' },
+      { id: '반차', label: '반차', activeBg: 'bg-[#b06000] text-white shadow-xs', inactiveBg: 'bg-[#fef7e0] text-[#b06000] border border-[#b06000]/30 hover:bg-[#fdeec4]' },
+      { id: '회의', label: '회의', activeBg: 'bg-[#6b21a8] text-white shadow-xs', inactiveBg: 'bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/30 hover:bg-[#e9d5ff]' }
+    ];
+
+    // Categorization
+    const groupMap = {};
+    const categoryOrder = ['휴가', '외근', '반차', '회의', '공휴일', '절기', '기념일', '기타'];
+
+    rawSchedules.forEach(s => {
+      const titleStr = s.title || '';
+      const badgeStr = s.badge || '';
+      let cat = '기타';
+      if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) cat = '휴가';
+      else if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) cat = '외근';
+      else if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) cat = '반차';
+      else if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) cat = '회의';
+      else if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) cat = '공휴일';
+      else if (titleStr.includes('절기') || badgeStr.includes('절기') || s.author === '24절기') cat = '절기';
+      else if (titleStr.includes('기념일') || badgeStr.includes('기념일') || s.author === '기념일') cat = '기념일';
+
+      if (!groupMap[cat]) groupMap[cat] = [];
+      groupMap[cat].push(s);
+    });
+
+    let bodyHtml = '';
+    let renderedCount = 0;
+
+    categoryOrder.forEach(catKey => {
+      if (filter !== 'all' && filter !== catKey) return;
+
+      const items = groupMap[catKey];
+      if (items && items.length > 0) {
+        renderedCount += items.length;
+        let catTitle = catKey === '휴가' ? '연차/휴가' : catKey;
+        let dotColor = 'bg-[#137333]';
+        let countColor = 'text-[#137333]';
+
+        if (catKey === '외근') {
+          dotColor = 'bg-[#1a73e8]';
+          countColor = 'text-[#1a73e8]';
+        } else if (catKey === '반차') {
+          dotColor = 'bg-[#b06000]';
+          countColor = 'text-[#b06000]';
+        } else if (catKey === '회의') {
+          dotColor = 'bg-[#6b21a8]';
+          countColor = 'text-[#6b21a8]';
+        } else if (catKey === '공휴일') {
+          dotColor = 'bg-[#c5221f]';
+          countColor = 'text-[#c5221f]';
+        }
+
+        const cardsHtml = items.map(s => this.renderDateModalCard(s, catKey)).join('');
+
+        bodyHtml += `
+          <div class="mb-5">
+            <div class="flex items-center justify-between mb-3 px-1">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full ${dotColor}"></span>
+                <span class="font-bold text-sm text-on-surface">${catTitle}</span>
+              </div>
+              <span class="text-xs font-bold ${countColor}">${items.length}건</span>
             </div>
-            <div class="pc-cal-events-wrap">
-              ${daySchedules.map(s => `
-                <span class="pc-cal-event-tag ${this.getScheduleTagClass(s)}" title="${this.formatScheduleCleanLabel(s)}">
-                  ${this.formatScheduleCleanLabel(s)}
-                </span>
-              `).join('')}
+            <div class="space-y-3">
+              ${cardsHtml}
             </div>
           </div>
         `;
       }
-      gridEl.innerHTML = html;
-    }
+    });
 
-    // Side Daily Schedule Panel
-    const dailyPanel = document.getElementById('pc-cal-daily-panel');
-    if (dailyPanel) {
-      let selectedKey = this.state.selectedDate || '2026-8-24';
-      const parts = selectedKey.split('-').map(Number);
-      const selYear = parts[0] || 2026;
-      const selMonth = parts[1] || 8;
-      const selDay = parts[2] || 24;
-
-      const list = this.getSchedulesForDay(selYear, selMonth, selDay);
-      const formatted = `${selYear}년 ${selMonth}월 ${selDay}일`;
-
-      dailyPanel.innerHTML = `
-        <div class="flex items-center justify-between pb-4 border-b border-outline mb-4">
-          <div>
-            <h4 class="font-bold text-lg text-on-surface">${formatted}</h4>
-            <p class="text-xs text-primary font-bold mt-0.5">총 ${list.length}건의 일정</p>
+    if (renderedCount === 0) {
+      bodyHtml = `
+        <div class="py-16 text-center text-on-surface-variant flex flex-col items-center justify-center">
+          <div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center text-outline mb-2">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
           </div>
-          <button class="px-3 py-1.5 bg-primary text-white font-bold rounded-xl text-xs hover:bg-primary-dim transition-colors" onclick="PCApp.openQuickModal('leave')">+ 추가</button>
-        </div>
-
-        <div class="space-y-2.5">
-          ${list.length > 0 ? list.map(item => this.getScheduleCardHtml(item)).join('') : `
-            <div class="text-center py-10 text-on-surface-variant">
-              <p class="text-base font-bold mb-1">등록된 일정이 없습니다.</p>
-              <p class="text-xs">휴가, 외근 또는 팀 회의 일정을 등록해보세요.</p>
-            </div>
-          `}
+          <p class="font-bold text-base text-on-surface">등록된 일정이 없습니다.</p>
+          <p class="text-xs text-on-surface-variant mt-1">해당 날짜에 해당하는 근태/일정 내역이 없습니다.</p>
         </div>
       `;
     }
+
+    const modalHtml = `
+      <div class="w-full max-w-[480px] bg-surface-container-lowest text-on-surface rounded-3xl p-6 shadow-2xl flex flex-col max-h-[85vh] overflow-hidden border border-outline/40 select-none">
+        
+        <!-- Modal Top Header (< YYYY년 M월 D일 (요일) > + ✕) -->
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-outline/30">
+          <button type="button" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors" onclick="PCApp.navigateDateModal(-1)" title="이전 날짜">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+
+          <h3 class="text-lg sm:text-xl font-bold text-on-surface tracking-tight flex items-center gap-1">
+            ${year}년 ${month}월 ${day}일 (${dayName})
+          </h3>
+
+          <div class="flex items-center gap-1">
+            <button type="button" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors" onclick="PCApp.navigateDateModal(1)" title="다음 날짜">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+            <button type="button" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors ml-1" onclick="PCApp.closeModal()" title="닫기">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Chips Bar (전체, 휴가, 외근, 반차, 회의) -->
+        <div class="flex items-center gap-2 mb-5 overflow-x-auto pb-1 shrink-0">
+          ${filters.map(f => {
+            const isActive = (this.stateDateModal.activeFilter === f.id);
+            const btnClass = isActive ? f.activeBg : f.inactiveBg;
+            return `
+              <button type="button" class="px-4 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 ${btnClass}" onclick="PCApp.openDateScheduleModal(null, '${f.id}')">
+                ${f.label}
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        <!-- Schedule Items List (Scrollable) -->
+        <div class="flex-1 overflow-y-auto pr-1">
+          ${bodyHtml}
+        </div>
+
+      </div>
+    `;
+
+    this.showModal(modalHtml, true);
+  },
+
+  renderDateModalCard(s, catKey) {
+    let authorName = s.author || '임직원';
+    let avatarUrl = s.avatar || './resource/image/profile_abc.png';
+
+    if (authorName && (!avatarUrl || avatarUrl.includes('profile_abc.png'))) {
+      const firstName = authorName.split(' ')[0];
+      const emp = (window.MockData && window.MockData.employees || []).find(e => e.name === firstName);
+      if (emp && emp.avatar) avatarUrl = emp.avatar;
+    }
+
+    const titleStr = s.title || '';
+    const badgeStr = s.badge || '';
+    const locationStr = (s.location || '').trim();
+    const timeStr = s.time || '종일';
+    const cleanTitle = titleStr.replace(/\s*\(공휴일\)/g, '').trim();
+
+    const isHoliday = catKey === '공휴일' || s.author === '공휴일' || s.author === '대한민국 공휴일' || s.author === '회사공지';
+    const isSolarTerm = catKey === '절기' || s.badge === '절기' || s.author === '24절기';
+    const isObservance = catKey === '기념일' || s.badge === '기념일' || s.author === '기념일';
+
+    // Style according to category (Matching User Uploaded Modal Image 1:1)
+    let cardBg = 'bg-[#f0f5fe] border-[#1a73e8]/30';
+    let dotClass = 'bg-[#1a73e8]';
+    let authorClass = 'text-[#1a73e8]';
+    let badgeBg = 'bg-[#e8f0fe] text-[#1a73e8] border-[#1a73e8]/25';
+
+    if (catKey === '휴가') {
+      cardBg = 'bg-[#f2f9f4] border-[#137333]/30';
+      dotClass = 'bg-[#137333]';
+      authorClass = 'text-[#137333]';
+      badgeBg = 'bg-[#e6f4ea] text-[#137333] border-[#137333]/25';
+    } else if (catKey === '반차') {
+      cardBg = 'bg-[#fffdf5] border-[#b06000]/30';
+      dotClass = 'bg-[#b06000]';
+      authorClass = 'text-[#b06000]';
+      badgeBg = 'bg-[#fef7e0] text-[#b06000] border-[#b06000]/25';
+    } else if (catKey === '회의') {
+      cardBg = 'bg-[#fbf7ff] border-[#6b21a8]/30';
+      dotClass = 'bg-[#6b21a8]';
+      authorClass = 'text-[#6b21a8]';
+      badgeBg = 'bg-[#f3e8ff] text-[#6b21a8] border-[#6b21a8]/25';
+    } else if (catKey === '공휴일') {
+      cardBg = 'bg-[#fff5f5] border-[#c5221f]/30';
+      dotClass = 'bg-[#c5221f]';
+      authorClass = 'text-[#c5221f]';
+      badgeBg = 'bg-[#fce8e6] text-[#c5221f] border-[#c5221f]/25';
+    }
+
+    const showAvatar = !(isHoliday || isSolarTerm || isObservance);
+    const avatarHtml = showAvatar ? `
+      <img src="${avatarUrl}" alt="${authorName}" class="w-11 h-11 rounded-full object-cover shrink-0 border border-outline/30 shadow-xs" onerror="this.src='./resource/image/profile_abc.png'" />
+    ` : '';
+
+    return `
+      <div class="p-4 rounded-2xl ${cardBg} border shadow-2xs transition-all hover:shadow-xs flex items-center justify-between gap-3 text-left">
+        <div class="flex items-center gap-3 min-w-0 flex-1">
+          <span class="w-2.5 h-2.5 rounded-full ${dotClass} shrink-0"></span>
+          ${avatarHtml}
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-1.5 flex-wrap mb-1">
+              ${showAvatar ? `<span class="font-bold text-sm ${authorClass}">${authorName}</span>` : ''}
+              <span class="px-2 py-0.5 rounded-md text-xs font-bold ${badgeBg} border">${badgeStr || catKey}</span>
+              ${locationStr ? `
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20">
+                  <svg class="w-3 h-3 text-sky-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                  <span>${locationStr}</span>
+                </span>
+              ` : ''}
+            </div>
+            <p class="font-bold text-sm sm:text-base text-on-surface truncate">${cleanTitle}</p>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="text-xs font-medium text-on-surface-variant">${timeStr}</span>
+        </div>
+      </div>
+    `;
+  },
+
+  navigateDateModal(offset) {
+    const key = this.stateDateModal.currentDateKey;
+    const parts = key.split('-').map(Number);
+    const d = new Date(parts[0], parts[1] - 1, parts[2]);
+    d.setDate(d.getDate() + offset);
+
+    const newKey = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    this.openDateScheduleModal(newKey);
   },
 
   getNationalHoliday(year, month, day) {
