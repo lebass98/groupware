@@ -13,8 +13,9 @@
 - **작업 내역 자동 업데이트 요약 작성 (README.md Changelog Summary Automation)**:
   - 기능 구현, 수정, 스타일 조정 등 사용자 요청 작업 완료 시, `README.md` 하단의 `📅 작업 내역 (Work History)` 섹션에 해당 일자(YYYY-MM-DD)별 작업 내역을 **장황한 설명 없이 최대한 간략하고 명확한 핵심 위주의 1줄 요약 불릿 형태**로 자동 기록/업데이트합니다.
 
-- **자동 커밋, 푸시, 풀다운 자동화**:
+- **자동 커밋, 푸시, 풀다운 자동화 및 동기화 시 ._* 파일 삭제 의무화**:
   - 규칙 추가 또는 기능 구현 명령이 완료되면 변경사항에 대해 한국어로 명확히 번역하여 커밋 메시지를 작성한 후 `git commit`, `git push`, `git pull`을 순서대로 자동 실행하여 저장소 상태를 동기화합니다.
+  - **Git 풀(`git pull`)을 받아 저장소를 동기화할 때나 동기화 직후, 또는 작업 중 어떠한 순간에도 `._*` (AppleDouble) 파일이 발견되거나 생성되면 즉시 무조건 전량 자동 삭제(`find . -name "._*" -delete` 또는 `dot_clean .`)**합니다.
 
 ## UI 및 컴포넌트 정책 규칙 (UI & Component Policy Guidelines)
 
@@ -43,7 +44,8 @@
 ## 파일 시스템 및 환경 관리 규칙 (File System & Environment Guidelines)
 
 - **macOS AppleDouble(`._*`) 메타데이터 파일 생성 즉시 무조건 전량 삭제 의무화 (Zero Tolerance Policy)**:
-  - 외장하드(FAT/exFAT/NTFS/HFS+ 등) 및 macOS 환경 작업 중 생성되는 모든 `._*` (AppleDouble 리소스 포크 파일), `.DS_Store` 등의 임시/메타데이터 파일은 **생성되는 즉시 또는 매 작업(파일 생성/수정/빌드/Git 작업 전후) 직후 반드시 자동 삭제(`find . -name "._*" -delete` 또는 `dot_clean .`)**합니다.
+  - 외장하드(FAT/exFAT/NTFS/HFS+ 등) 및 macOS 환경 작업 중 생성되는 모든 `._*` (AppleDouble 리소스 포크 파일), `.DS_Store` 등의 임시/메타데이터 파일은 **생성되는 즉시 또는 매 작업(파일 생성/수정/빌드/Git 풀 및 동기화 전후) 직후 반드시 자동 삭제(`find . -name "._*" -delete` 또는 `dot_clean .`)**합니다.
+  - 저장소 동기화(`git pull`, `git push` 등) 시 외부 또는 로컬에서 유입되거나 생성된 모든 `._*` 파일 역시 발견 즉시 무조건 100% 삭제합니다.
   - 어떠한 경우에도 작업 디렉토리 내에 `._*` 파일이 잔류하지 않도록 철저히 관리하며, Git 스테이징 및 커밋 전 항상 전수 점검하여 100% 삭제 상태를 유지합니다.
 
 

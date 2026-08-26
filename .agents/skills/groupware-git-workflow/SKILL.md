@@ -39,9 +39,9 @@ description: >-
 ---
 
 ## 3. Git 동기화 자동화 파이프라인
-
-모든 변경 사항 완료 후 `._*` 임시 메타데이터 파일을 전량 삭제한 뒤 아래 순서로 저장소 상태를 동기화합니다.
-
+ 
+모든 변경 사항 완료 전후 및 Git 풀(`git pull`) 시 `._*` 임시 메타데이터 파일을 전량 삭제한 뒤 아래 순서로 저장소 상태를 동기화합니다.
+ 
 ```bash
 # 1. macOS 메타데이터 및 AppleDouble 파일 즉시 삭제
 find . -name "._*" -delete
@@ -52,4 +52,9 @@ git add -A
 git commit -m "접두어: 명확한 한글 커밋 메시지"
 git push origin main
 git pull origin main
+
+# 3. 풀다운(동기화) 직후 유입/생성된 ._* 파일 전량 재삭제
+find . -name "._*" -delete
+dot_clean . 2>/dev/null || true
 ```
+
