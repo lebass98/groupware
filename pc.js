@@ -725,8 +725,13 @@ const PCApp = {
     if (commuteWrap) {
       commuteWrap.innerHTML = `
         <div class="pc-bento-card pc-commute-card">
-          <div class="flex items-center justify-between mb-3">
-            <span class="font-bold text-base text-on-surface">근태 & 출/퇴근</span>
+          <div class="pc-card-header mb-3">
+            <span class="pc-card-title flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+              </svg>
+              근태 & 출/퇴근
+            </span>
             <span class="pc-commute-status-pill ${this.state.isCheckedIn ? 'checked-in' : ''}">
               <span class="w-2.5 h-2.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
               ${this.state.isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}
