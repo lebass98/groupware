@@ -695,12 +695,12 @@ const PCApp = {
       const now = new Date();
       const todayScheds = this.getSchedulesForDay(now.getFullYear(), now.getMonth() + 1, now.getDate()) || [];
       profileWrap.innerHTML = `
-        <div class="pc-bento-card pc-profile-card">
+        <div class="pc-bento-card pc-profile-card text-center">
           <div class="pc-profile-avatar-wrap">
             <img src="${this.state.user.avatar}" class="pc-profile-avatar" alt="사용자 프로필" />
           </div>
-          <h2 class="pc-profile-name">${this.state.user.name} ${this.state.user.role}</h2>
-          <p class="pc-profile-dept">${this.state.user.dept} | 워드앤코드</p>
+          <h2 class="pc-profile-name text-center">${this.state.user.name} ${this.state.user.role}</h2>
+          <p class="pc-profile-dept text-center">${this.state.user.dept} | 워드앤코드</p>
           
           <div class="pc-profile-counters">
             <div class="pc-counter-item" onclick="document.getElementById('pc-widget-company-schedule')?.scrollIntoView({ behavior: 'smooth' })">

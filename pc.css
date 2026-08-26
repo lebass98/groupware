@@ -925,7 +925,8 @@ strong {
 
 /* Left Column Widgets */
 /* 1. Profile Widget */
-.pc-profile-widget {
+.pc-profile-widget,
+.pc-profile-card {
   text-align: center;
   padding: 28px 20px;
 }
@@ -948,12 +949,14 @@ strong {
   font-weight: 600;
   color: var(--on-surface);
   margin-bottom: 4px;
+  text-align: center;
 }
 .pc-profile-dept {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--on-surface-variant);
   font-weight: 600;
   margin-bottom: 20px;
+  text-align: center;
 }
 .pc-profile-counters {
   display: grid;
