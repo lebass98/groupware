@@ -1634,33 +1634,28 @@ const App = {
           }
 
           const unreadBadge = !item.isRead
-            ? '<span class="w-2 h-2 rounded-full bg-[#e83538] shrink-0" title="읽지 않음"></span>'
+            ? '<span class="w-2.5 h-2.5 rounded-full bg-[#e83538] shrink-0" title="읽지 않음"></span>'
             : '';
 
           const unreadBg = !item.isRead
             ? 'bg-primary/5 border border-primary/20'
             : 'bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/10';
 
-          const avatarSrc = item.sender?.avatar || './resource/image/profile_abc.png';
-
           return `
-            <div class="p-3.5 rounded-2xl ${unreadBg} shadow-2xs transition-all active:scale-[0.98] cursor-pointer flex items-start gap-3 relative text-left" onclick="App.onNotificationClick(${item.id})">
-              <img src="${avatarSrc}" alt="${item.sender?.name || '임직원'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline/30 mt-0.5" onerror="this.src='./resource/image/profile_abc.png'" />
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between gap-2 mb-1">
-                  <div class="flex items-center gap-1.5 min-w-0">
-                    ${typeBadge}
-                    <span class="font-bold text-xs text-on-surface truncate">${item.title}</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 shrink-0">
-                    <span class="text-[11px] text-on-surface-variant font-medium">${item.time}</span>
-                    ${unreadBadge}
-                  </div>
+            <div class="p-3.5 rounded-2xl ${unreadBg} shadow-2xs transition-all active:scale-[0.98] cursor-pointer flex flex-col gap-1.5 text-left" onclick="App.onNotificationClick(${item.id})">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  ${typeBadge}
+                  <span class="font-bold text-xs text-on-surface truncate">${item.title}</span>
                 </div>
-                <p class="text-xs text-on-surface font-medium leading-relaxed mb-1 break-words">${item.message}</p>
-                <div class="text-[11px] text-on-surface-variant font-medium">
-                  <span>${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <span class="text-[11px] text-on-surface-variant font-medium">${item.time}</span>
+                  ${unreadBadge}
                 </div>
+              </div>
+              <p class="text-xs text-on-surface font-medium leading-relaxed break-words">${item.message}</p>
+              <div class="text-[11px] text-on-surface-variant font-medium">
+                <span>${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
               </div>
             </div>
           `;
@@ -1700,7 +1695,6 @@ const App = {
             s.author === '국경일/기념일'
           );
           const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
-          const imgHtml = isHoliday ? '' : `<img src="${s.avatar || 'profile.png'}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline-variant/15 shadow-2xs" />`;
           const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
           const locationBadgeHtml = s.location ? `
             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
@@ -1713,7 +1707,6 @@ const App = {
             <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs transition-all gap-3">
               <div class="flex items-center gap-2 shrink-0">
                 <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
-                ${imgHtml}
               </div>
               <div class="flex-1 text-left min-w-0 flex flex-col justify-center">
                 <div class="flex items-center justify-between gap-2 mb-1.5 min-w-0">
@@ -1786,7 +1779,6 @@ const App = {
                   <span class="font-medium text-[11px]">${todo.dueDate || '마감일 미지정'}</span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <img src="${assignee.avatar || './profile.png'}" class="w-5 h-5 rounded-full object-cover border border-outline-variant/20" alt="${assignee.name}" />
                   <span class="text-[11px] font-bold text-on-surface">${assignee.name}</span>
                 </div>
               </div>

@@ -1169,26 +1169,21 @@ const PCApp = {
                 ? 'bg-primary/5 border border-primary/20 shadow-xs'
                 : 'bg-surface-container-low hover:bg-surface-container border border-outline/40';
 
-              const avatarSrc = item.sender?.avatar || './resource/image/profile_abc.png';
-
               return `
-                <div class="p-3 bg-surface-container-low rounded-xl ${unreadBg} hover:border-primary transition-all cursor-pointer flex items-start gap-3" onclick="PCApp.onNotificationClick(${item.id})">
-                  <img src="${avatarSrc}" alt="${item.sender?.name || '임직원'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline/30 mt-0.5" onerror="this.src='./resource/image/profile_abc.png'" />
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-2 mb-1">
-                      <div class="flex items-center gap-1.5 min-w-0">
-                        ${typeBadge}
-                        <span class="font-bold text-xs text-on-surface truncate">${item.title}</span>
-                      </div>
-                      <div class="flex items-center gap-1.5 shrink-0">
-                        <span class="text-[11px] text-on-surface-variant font-medium">${item.time}</span>
-                        ${unreadBadge}
-                      </div>
+                <div class="p-3 bg-surface-container-low rounded-xl ${unreadBg} hover:border-primary transition-all cursor-pointer flex flex-col gap-1.5" onclick="PCApp.onNotificationClick(${item.id})">
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                      ${typeBadge}
+                      <span class="font-bold text-xs text-on-surface truncate">${item.title}</span>
                     </div>
-                    <p class="text-xs text-on-surface font-medium leading-snug mb-1 line-clamp-2">${item.message}</p>
-                    <div class="text-[11px] text-on-surface-variant font-medium">
-                      <span>${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                      <span class="text-[11px] text-on-surface-variant font-medium">${item.time}</span>
+                      ${unreadBadge}
                     </div>
+                  </div>
+                  <p class="text-xs text-on-surface font-medium leading-snug line-clamp-2">${item.message}</p>
+                  <div class="text-[11px] text-on-surface-variant font-medium">
+                    <span>${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
                   </div>
                 </div>
               `;
@@ -2188,8 +2183,6 @@ const PCApp = {
     }
 
     const isSpecial = isHoliday || isSolarTerm || isObservance || authorStr === '회사공지';
-    const avatarUrl = item.avatar || (window.MockData && window.MockData.myProfile ? window.MockData.myProfile.avatar : './resource/image/profile_abc.png');
-    const avatarHtml = isSpecial ? '' : `<img src="${avatarUrl}" alt="${item.author || '담당자'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline/30 shadow-xs" />`;
     const authorHtml = isSpecial ? `<span class="font-bold text-xs text-on-surface-variant whitespace-nowrap leading-none flex items-center shrink-0">${item.badge || categoryKey}</span>` : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${item.author || '이재광 팀장'}</span>`;
     const locationBadgeHtml = locationStr ? `
       <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
@@ -2203,7 +2196,6 @@ const PCApp = {
       <div class="flex items-center p-3 bg-surface-container-low rounded-xl border border-outline/70 hover:border-primary transition-all gap-2.5">
         <div class="flex items-center gap-2 shrink-0">
           <div class="w-2 h-2 rounded-full ${dotClass} shrink-0"></div>
-          ${avatarHtml}
         </div>
         <div class="flex-1 min-w-0 flex flex-col justify-center text-left">
           <div class="flex items-center justify-between gap-1.5 mb-1 min-w-0">
