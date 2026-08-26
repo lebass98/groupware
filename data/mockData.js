@@ -1949,5 +1949,121 @@ window.MockData = {
         }
       ]
     }
+  ],
+
+  // 10. 실시간 알림 데이터 (출근/퇴근/결재/외근/공지 및 팀장 전용 권한)
+  notifications: [
+    {
+      id: 1,
+      type: "commute",
+      subType: "checkin",
+      title: "팀원 출근 알림",
+      message: "퍼블리싱팀 조지혜 과장님이 정상 출근했습니다. (08:52)",
+      time: "방금 전",
+      date: "08:52",
+      sender: { name: "조지혜", role: "과장", dept: "퍼블리싱팀", avatar: "./resource/image/profile_red_20260602.png" },
+      targetScreen: "screen-calendar",
+      pcScreen: "checkin",
+      managerOnly: true, // 팀장/부서장급만 열람 가능
+      isRead: false
+    },
+    {
+      id: 2,
+      type: "approval",
+      subType: "request",
+      title: "전자결재 승인 요청",
+      message: "손석호 주임님이 제출한 [하반기 연차 휴가원] 결재 승인 대기 중입니다.",
+      time: "15분 전",
+      date: "08:40",
+      sender: { name: "손석호", role: "주임", dept: "퍼블리싱팀", avatar: "./resource/image/profile_pub.png" },
+      targetScreen: "screen-request",
+      pcScreen: "request",
+      managerOnly: false,
+      isRead: false
+    },
+    {
+      id: 3,
+      type: "business",
+      subType: "trip",
+      title: "외근 출발 알림",
+      message: "기획팀 김종규 팀장님이 외부 미팅(한국건강가정진흥원)으로 외근 출발했습니다.",
+      time: "30분 전",
+      date: "08:25",
+      sender: { name: "김종규", role: "팀장", dept: "기획팀", avatar: "./resource/image/profile_john.png" },
+      targetScreen: "screen-directory",
+      pcScreen: "directory",
+      managerOnly: false,
+      isRead: false
+    },
+    {
+      id: 4,
+      type: "commute",
+      subType: "checkin",
+      title: "팀원 출근 알림",
+      message: "개발팀 최우석 과장님이 정상 출근했습니다. (08:35)",
+      time: "45분 전",
+      date: "08:35",
+      sender: { name: "최우석", role: "과장", dept: "개발팀", avatar: "./resource/image/profile_mobile.png" },
+      targetScreen: "screen-calendar",
+      pcScreen: "checkin",
+      managerOnly: true, // 팀장/부서장급만 열람 가능
+      isRead: false
+    },
+    {
+      id: 5,
+      type: "approval",
+      subType: "approved",
+      title: "지출결의서 승인 완료",
+      message: "8월 프로젝트 운영비 지출결의서(350,000원) 결재가 최종 승인되었습니다.",
+      time: "1시간 전",
+      date: "08:00",
+      sender: { name: "오은주", role: "차장", dept: "경영지원팀", avatar: "./resource/image/profile_sky.png" },
+      targetScreen: "screen-finance",
+      pcScreen: "finance",
+      managerOnly: false,
+      isRead: true
+    },
+    {
+      id: 6,
+      type: "business",
+      subType: "trip",
+      title: "외근 일정 등록",
+      message: "수행본부 이채원 사원님이 고객사 실무 미팅(판교) 외근 일정을 등록했습니다.",
+      time: "2시간 전",
+      date: "07:15",
+      sender: { name: "이채원", role: "사원", dept: "수행본부", avatar: "./resource/image/profile_cool_20241224_lee.png" },
+      targetScreen: "screen-directory",
+      pcScreen: "directory",
+      managerOnly: false,
+      isRead: true
+    },
+    {
+      id: 7,
+      type: "notice",
+      subType: "notice",
+      title: "신규 공지사항 등록",
+      message: "[필독] 2024년 하반기 워크샵 일정 및 세부 편성 안내가 등록되었습니다.",
+      time: "어제",
+      date: "10.24",
+      sender: { name: "오은주", role: "차장", dept: "경영지원팀", avatar: "./resource/image/profile_sky.png" },
+      targetScreen: "screen-notice-list",
+      pcScreen: "notice",
+      managerOnly: false,
+      isRead: true
+    },
+    {
+      id: 8,
+      type: "commute",
+      subType: "checkout",
+      title: "팀원 퇴근 알림",
+      message: "디자인팀 신현우 주임님이 일일 업무를 마치고 퇴근 체크했습니다.",
+      time: "어제 18:30",
+      date: "18:30",
+      sender: { name: "신현우", role: "주임", dept: "디자인팀", avatar: "./resource/image/profile_pink____________.png" },
+      targetScreen: "screen-calendar",
+      pcScreen: "checkin",
+      managerOnly: true, // 팀장/부서장급만 열람 가능
+      isRead: true
+    }
   ]
 };

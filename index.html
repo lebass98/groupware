@@ -162,7 +162,14 @@
         </svg>
         <span>WnC 그룹웨어</span>
       </div>
-      <div class="header-actions"></div>
+      <div class="header-actions">
+        <button type="button" class="header-notification-btn" id="mobile-notification-btn" onclick="App.openNotificationModal()" title="알림 센터">
+          <svg class="w-5 h-5" viewBox="0 -960 960 960" fill="currentColor">
+            <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/>
+          </svg>
+          <span class="header-notification-badge" id="mobile-notification-badge" style="display: none;">0</span>
+        </button>
+      </div>
     </header>
 
     <!-- ======================================================
@@ -2139,6 +2146,73 @@
       </a>
     </nav>
 
+  </div>
+
+  <!-- ======================================================
+       실시간 알림 센터 모달 팝업 (Notification Center Modal)
+       ====================================================== -->
+  <div class="notification-modal-backdrop" id="notification-modal" onclick="if(event.target===this) App.closeNotificationModal()">
+    <div class="notification-modal-container">
+      
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-5 border-b border-surface-container-high flex items-center justify-between bg-surface-container-lowest sticky top-0 z-10">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+            <svg class="w-5 h-5" viewBox="0 -960 960 960" fill="currentColor">
+              <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <h3 class="font-headline font-bold text-base text-on-surface">알림 센터</h3>
+              <span id="notification-unread-count-badge" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e83538] text-white">0</span>
+            </div>
+            <p class="text-xs text-on-surface-variant">출퇴근, 전자결재, 외근 및 사내 알림</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button type="button" class="text-xs text-primary font-bold px-2.5 py-1.5 rounded-lg hover:bg-surface-container transition-colors" onclick="App.markAllNotificationsRead()">
+            모두 읽음
+          </button>
+          <button type="button" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors" onclick="App.closeNotificationModal()">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="px-4 pt-3 pb-2 border-b border-surface-container-high bg-surface flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="notification-filter-tabs">
+        <button type="button" class="px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-primary text-on-primary shadow-sm" data-filter="all" onclick="App.filterNotifications('all', this)">
+          전체
+        </button>
+        <button type="button" class="px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high" data-filter="commute" onclick="App.filterNotifications('commute', this)">
+          출/퇴근
+        </button>
+        <button type="button" class="px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high" data-filter="approval" onclick="App.filterNotifications('approval', this)">
+          전자결재
+        </button>
+        <button type="button" class="px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high" data-filter="business" onclick="App.filterNotifications('business', this)">
+          외근/출장
+        </button>
+        <button type="button" class="px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high" data-filter="notice" onclick="App.filterNotifications('notice', this)">
+          공지/일정
+        </button>
+      </div>
+
+      <!-- Notification List -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-2.5 max-h-[60vh]" id="notification-list-container">
+        <!-- Rendered by script.js -->
+      </div>
+
+      <!-- Modal Footer (Manager indicator) -->
+      <div class="p-3 bg-surface-container-low border-t border-surface-container-high flex items-center justify-between text-xs text-on-surface-variant">
+        <span id="notification-role-label">팀장 권한: 팀원 출퇴근 알림 연동됨</span>
+        <button type="button" class="font-bold text-primary hover:underline" onclick="App.closeNotificationModal()">닫기</button>
+      </div>
+
+    </div>
   </div>
 
   <!-- Confirmation Modal Popup -->

@@ -1848,3 +1848,92 @@ body.modal-open {
   text-overflow: ellipsis;
   color: #fff;
 }
+
+/* ==========================================================================
+   WnC 알림 센터 & 뱃지 시스템 (Mobile Notification Center & Modal)
+   ========================================================================== */
+.header-notification-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9999px;
+  background-color: var(--surface-container, #f1f5f9);
+  color: var(--on-surface, #232c51);
+  border: 1px solid var(--outline-variant, #cbd5e1);
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.2s ease;
+}
+.header-notification-btn:active {
+  transform: scale(0.92);
+}
+.header-notification-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  background-color: #e83538 !important;
+  color: #ffffff !important;
+  font-family: 'Pretendard Variable', Pretendard, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--surface, #ffffff);
+  box-shadow: 0 2px 6px rgba(232, 53, 56, 0.4);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* 알림 모달 */
+.notification-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.notification-modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+.notification-modal-container {
+  width: 100%;
+  max-width: 520px;
+  background: var(--surface-container-lowest, #ffffff);
+  border-radius: 28px 28px 0 0;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+.notification-modal-backdrop.active .notification-modal-container {
+  transform: translateY(0);
+}
+@media (min-width: 640px) {
+  .notification-modal-backdrop {
+    align-items: center;
+    padding: 20px;
+  }
+  .notification-modal-container {
+    border-radius: 28px;
+    max-height: 80vh;
+  }
+}

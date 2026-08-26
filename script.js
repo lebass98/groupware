@@ -140,6 +140,8 @@ const App = {
       gps: true,
       themeIdx: 3
     },
+    notifications: (window.MockData && window.MockData.notifications) ? JSON.parse(JSON.stringify(window.MockData.notifications)) : [],
+    notificationFilter: 'all',
     user: {
       id: 11,
       name: '이재광',
@@ -181,6 +183,7 @@ const App = {
     this.loadState();
     this.applyTheme(this.state.settings.themeIdx || 3);
     this.startLiveClock();
+    this.updateNotificationBadge();
 
     // Initialize Home Menu Columns (2열 or 3열)
     const savedCols = parseInt(localStorage.getItem('wordncode_menu_columns'), 10) || this.state.menuColumns || 2;
@@ -662,10 +665,195 @@ const App = {
     this.resetScrollEffects();
     window.scrollTo({ top: 0, behavior: 'instant' });
 
-    // 하단 독 활성 탭 갱신
+    // 하단 독 활성 탭 갱신 및 알림 뱃지 갱신
     this.renderBottomNav();
+    this.updateNotificationBadge();
 
     if (typeof onComplete === 'function') onComplete();
+  },
+
+  // ==========================================================================
+  // 실시간 알림 센터 시스템 (Notification Center)
+  // ==========================================================================
+  isManagerRole(roleOrUser) {
+    const role = typeof roleOrUser === 'string' ? roleOrUser : (roleOrUser?.role || this.state.user?.role || '');
+    const managerRoles = ['대표', '이사', '본부장', '부장', '팀장', '차장'];
+    return managerRoles.some(r => role.includes(r));
+  },
+
+  getVisibleNotifications() {
+    const isManager = this.isManagerRole(this.state.user);
+    let list = this.state.notifications || [];
+    
+    // 팀장/부서장이 아닌 경우 팀원 출퇴근 알림(managerOnly) 필터링
+    if (!isManager) {
+      list = list.filter(n => !n.managerOnly);
+    }
+    
+    // 필터 탭 적용
+    if (this.state.notificationFilter && this.state.notificationFilter !== 'all') {
+      list = list.filter(n => n.type === this.state.notificationFilter);
+    }
+    return list;
+  },
+
+  getUnreadNotificationCount() {
+    const isManager = this.isManagerRole(this.state.user);
+    const list = (this.state.notifications || []).filter(n => isManager || !n.managerOnly);
+    return list.filter(n => !n.isRead).length;
+  },
+
+  updateNotificationBadge() {
+    const unreadCount = this.getUnreadNotificationCount();
+    const badgeEl = document.getElementById('mobile-notification-badge');
+    const modalBadgeEl = document.getElementById('notification-unread-count-badge');
+    
+    if (badgeEl) {
+      if (unreadCount > 0) {
+        badgeEl.textContent = unreadCount > 99 ? '99+' : unreadCount;
+        badgeEl.style.display = 'flex';
+      } else {
+        badgeEl.style.display = 'none';
+      }
+    }
+
+    if (modalBadgeEl) {
+      modalBadgeEl.textContent = unreadCount;
+      modalBadgeEl.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+    }
+  },
+
+  openNotificationModal() {
+    const modalEl = document.getElementById('notification-modal');
+    if (!modalEl) return;
+
+    // 팀장 권한 라벨 업데이트
+    const roleLabel = document.getElementById('notification-role-label');
+    if (roleLabel) {
+      const isManager = this.isManagerRole(this.state.user);
+      roleLabel.textContent = isManager 
+        ? `팀장 권한 (${this.state.user.role || '팀장'}): 팀원 출퇴근 알림 연동됨` 
+        : `일반 권한 (${this.state.user.role || '팀원'}): 개인 결재/외근/공지 알림 연동됨`;
+    }
+
+    this.renderNotifications();
+    modalEl.classList.add('active');
+  },
+
+  closeNotificationModal() {
+    const modalEl = document.getElementById('notification-modal');
+    if (modalEl) {
+      modalEl.classList.remove('active');
+    }
+  },
+
+  filterNotifications(filterType, tabEl) {
+    this.state.notificationFilter = filterType || 'all';
+    
+    const tabs = document.querySelectorAll('#notification-filter-tabs button');
+    tabs.forEach(btn => {
+      if (btn.getAttribute('data-filter') === this.state.notificationFilter) {
+        btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-primary text-on-primary shadow-sm';
+      } else {
+        btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high';
+      }
+    });
+
+    this.renderNotifications();
+  },
+
+  markAllNotificationsRead() {
+    const isManager = this.isManagerRole(this.state.user);
+    (this.state.notifications || []).forEach(n => {
+      if (isManager || !n.managerOnly) {
+        n.isRead = true;
+      }
+    });
+    this.updateNotificationBadge();
+    this.renderNotifications();
+    this.showToast('✅ 모든 알림을 읽음 처리했습니다.');
+  },
+
+  onNotificationClick(id) {
+    const notif = (this.state.notifications || []).find(n => n.id === id);
+    if (!notif) return;
+
+    notif.isRead = true;
+    this.updateNotificationBadge();
+    this.closeNotificationModal();
+
+    if (notif.targetScreen) {
+      this.switchTab(notif.targetScreen);
+    }
+  },
+
+  renderNotifications() {
+    const container = document.getElementById('notification-list-container');
+    if (!container) return;
+
+    const list = this.getVisibleNotifications();
+    this.updateNotificationBadge();
+
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="py-12 flex flex-col items-center justify-center text-center text-on-surface-variant">
+          <div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant/50 mb-3">
+            <svg class="w-7 h-7" viewBox="0 -960 960 960" fill="currentColor">
+              <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/>
+            </svg>
+          </div>
+          <p class="text-sm font-bold text-on-surface">새로운 알림이 없습니다.</p>
+          <p class="text-xs text-on-surface-variant mt-1">새로운 업무 변동사항이 생기면 바로 알려드릴게요.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = list.map(item => {
+      let typeBadge = '';
+      if (item.type === 'commute') {
+        typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300">출/퇴근</span>';
+      } else if (item.type === 'approval') {
+        typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300">전자결재</span>';
+      } else if (item.type === 'business') {
+        typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-500/10 text-sky-600 dark:text-sky-300">외근/출장</span>';
+      } else {
+        typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-500/10 text-rose-600 dark:text-rose-300">공지/일정</span>';
+      }
+
+      const unreadBadge = !item.isRead
+        ? '<span class="w-2.5 h-2.5 rounded-full bg-[#e83538] shrink-0" title="읽지 않음"></span>'
+        : '';
+
+      const unreadBg = !item.isRead
+        ? 'bg-primary/5 border border-primary/20'
+        : 'bg-surface-container-low hover:bg-surface-container border border-transparent';
+
+      const avatarSrc = item.sender?.avatar || './resource/image/profile_abc.png';
+
+      return `
+        <div class="p-3.5 rounded-2xl ${unreadBg} transition-all active:scale-[0.98] cursor-pointer flex items-start gap-3 relative" onclick="App.onNotificationClick(${item.id})">
+          <img src="${avatarSrc}" alt="${item.sender?.name || '임직원'}" class="w-10 h-10 rounded-full object-cover shrink-0 border border-outline/30 mt-0.5" onerror="this.src='./resource/image/profile_abc.png'" />
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <div class="flex items-center gap-1.5 min-w-0">
+                ${typeBadge}
+                <span class="font-bold text-xs text-on-surface truncate">${item.title}</span>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span class="text-[11px] text-on-surface-variant font-medium">${item.time}</span>
+                ${unreadBadge}
+              </div>
+            </div>
+            <p class="text-xs text-on-surface font-medium leading-relaxed mb-1.5 break-words">${item.message}</p>
+            <div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+              <span>${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
+              <span class="text-primary font-bold hover:underline">상세보기 &rarr;</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
   },
 
   login() {
