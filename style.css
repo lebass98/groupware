@@ -1584,14 +1584,16 @@ body.dark .nav-item.active {
 }
 
 .nav-item-add {
-  color: var(--primary);
-  opacity: 0.9;
+  color: var(--on-surface-variant);
 }
 
 .nav-item-add:hover {
-  opacity: 1;
-  transform: translateY(-2px);
-  color: var(--primary-dim);
+  color: var(--on-surface);
+  transform: translateY(-1px);
+}
+
+.nav-item-add.active {
+  color: var(--primary);
 }
 
 .nav-item-add svg {
@@ -1599,7 +1601,7 @@ body.dark .nav-item.active {
 }
 
 .nav-item-add:hover svg {
-  transform: rotate(90deg) scale(1.1);
+  transform: rotate(45deg);
 }
 
 /* =========================================
