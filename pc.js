@@ -1055,13 +1055,13 @@ const PCApp = {
     `;
   },
 
-  // Calendar Grid Generator (Dashboard Widget)
+  // Calendar Grid Generator (Dashboard Widget - 날짜 숫자 확대 & 이벤트 수 뱃지만 노출하는 간소화 캘린더)
   generateDashboardCalGridHTML(year, month, firstDay, lastDate, now) {
     let html = '';
 
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
-      html += `<div class="min-h-[64px] p-1.5 bg-surface-container-lowest/40 border border-outline/30 rounded-lg opacity-40"></div>`;
+      html += `<div class="h-11 sm:h-12 p-1 bg-surface-container-lowest/30 border border-outline/20 rounded-xl opacity-30"></div>`;
     }
 
     // Days
@@ -1073,32 +1073,15 @@ const PCApp = {
       const isSaturday = (dayOfWeek === 6);
 
       const daySchedules = this.getSchedulesForDay(year, month, d) || [];
-      const topScheds = daySchedules.slice(0, 2);
-      const extraCount = daySchedules.length - topScheds.length;
 
       let dateNumClass = 'text-on-surface';
       if (isSunday) dateNumClass = 'text-red-500 font-bold';
       else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
 
       html += `
-        <div class="min-h-[64px] p-1.5 bg-surface-container-low border border-outline/70 hover:border-primary hover:bg-primary/5 hover:shadow-2xs rounded-lg transition-all cursor-pointer flex flex-col justify-between group ${isToday ? 'ring-2 ring-primary bg-primary/10' : ''}" onclick="PCApp.openDateScheduleModal('${key}')" title="클릭하여 ${month}월 ${d}일 일정 상세 보기">
-          <div class="flex items-center justify-between mb-0.5">
-            <span class="text-xs font-extrabold ${dateNumClass} ${isToday ? 'w-4 h-4 rounded-full bg-primary text-white flex items-center justify-center text-[10px]' : ''}">${d}</span>
-            ${daySchedules.length > 0 ? `<span class="text-[9px] font-bold px-1 rounded-full bg-surface-container text-on-surface-variant group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}</span>` : ''}
-          </div>
-
-          <div class="space-y-0.5 flex-1 overflow-hidden">
-            ${topScheds.map(s => {
-              const tagClass = this.getScheduleTagClass(s);
-              const cleanLabel = this.formatScheduleCleanLabel(s);
-              return `
-                <div class="text-[9px] px-1 py-0.2 rounded truncate font-medium ${tagClass}" title="${cleanLabel}">
-                  ${cleanLabel}
-                </div>
-              `;
-            }).join('')}
-            ${extraCount > 0 ? `<div class="text-[8px] text-on-surface-variant font-bold px-0.5">+${extraCount}건</div>` : ''}
-          </div>
+        <div class="h-11 sm:h-12 px-2 py-1.5 bg-surface-container-low/70 hover:bg-primary/10 border border-outline/60 hover:border-primary rounded-xl transition-all cursor-pointer flex items-center justify-between group ${isToday ? 'ring-2 ring-primary bg-primary/10' : ''}" onclick="PCApp.openDateScheduleModal('${key}')" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 상세 보기">
+          <span class="text-sm sm:text-base font-bold ${dateNumClass} ${isToday ? 'w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shadow-xs' : ''}">${d}</span>
+          ${daySchedules.length > 0 ? `<span class="min-w-[18px] h-[18px] px-1 rounded-full text-[11px] font-bold flex items-center justify-center bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}</span>` : ''}
         </div>
       `;
     }
