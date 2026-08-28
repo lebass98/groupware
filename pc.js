@@ -1333,26 +1333,26 @@ const PCApp = {
       `;
     }
 
-    // 2. Project Status Donut Chart Widget (참고 이미지 기반 도넛 차트 & 카테고리 현황)
+    // 2. Project Status Donut Chart Widget (Fluid Attendant Design System Spec)
     const summaryWrap = document.getElementById('pc-widget-project-summary');
     if (summaryWrap) {
       const allProjects = (this.state.projects || (window.MockData && window.MockData.projects) || []);
       const totalCount = allProjects.length || 1;
 
-      // 카테고리 정의 및 통계 집계
+      // 카테고리 정의 및 시각 디자인 시스템 컬러 매핑
       const catDefs = [
-        { key: 'operation', name: '운영용역', color: '#0D9488' },
-        { key: 'maintenance', name: '유지보수', color: '#EA580C' },
-        { key: 'improvement', name: '개선사업', color: '#9333EA' },
+        { key: 'operation', name: '운영용역', color: '#EC4899' },
         { key: 'build', name: '구축중', color: '#0052D0' },
-        { key: 'in_progress', name: '진행중', color: '#6366F1' }
+        { key: 'maintenance', name: '유지보수', color: '#F59E0B' },
+        { key: 'improvement', name: '개선사업', color: '#8B5CF6' },
+        { key: 'in_progress', name: '진행중', color: '#10B981' }
       ];
 
       const counts = {
         operation: 0,
+        build: 0,
         maintenance: 0,
         improvement: 0,
-        build: 0,
         in_progress: 0,
         completed: 0
       };
@@ -1369,15 +1369,15 @@ const PCApp = {
         return { ...cat, count, pct: parseFloat(pct) };
       });
 
-      // SVG Donut Chart 연산 (r=50, circumference=314.159)
-      const radius = 50;
-      const circumference = 2 * Math.PI * radius; // 314.159
+      // SVG Donut Chart 연산 (r=40, circumference=251.327)
+      const radius = 40;
+      const circumference = 2 * Math.PI * radius; // 251.327
       let currentOffset = 0;
 
       const svgSegments = activeCategories.filter(c => c.count > 0).map(cat => {
         const ratio = cat.count / allProjects.length;
         const arcLength = ratio * circumference;
-        const gap = activeCategories.filter(c => c.count > 0).length > 1 ? 2.5 : 0;
+        const gap = activeCategories.filter(c => c.count > 0).length > 1 ? 1.5 : 0;
         const visibleDash = Math.max(0, arcLength - gap);
         const dashArray = `${visibleDash.toFixed(2)} ${(circumference - visibleDash).toFixed(2)}`;
         const dashOffset = (-currentOffset).toFixed(2);
@@ -1385,15 +1385,15 @@ const PCApp = {
 
         return `
           <circle 
-            cx="70" 
-            cy="70" 
+            class="donut-segment cursor-pointer transition-all duration-300 hover:opacity-90" 
+            cx="50" 
+            cy="50" 
+            fill="none" 
             r="${radius}" 
-            fill="transparent" 
             stroke="${cat.color}" 
             stroke-width="16" 
             stroke-dasharray="${dashArray}" 
             stroke-dashoffset="${dashOffset}"
-            class="transition-all duration-700 hover:opacity-80 cursor-pointer"
             onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
           >
             <title>${cat.name}: ${cat.count}건 (${cat.pct.toFixed(1)}%)</title>
@@ -1402,18 +1402,23 @@ const PCApp = {
       }).join('');
 
       summaryWrap.innerHTML = `
-        <div class="pc-bento-card">
-          <div class="flex items-center justify-between mb-3.5">
-            <span class="pc-card-title flex items-center gap-2">
-              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-              </svg>
-              전사 프로젝트 현황
-            </span>
+        <div class="bg-surface-container-low rounded-2xl p-6 w-full shadow-[0_8px_32px_rgba(35,44,81,0.06)] relative overflow-hidden border border-outline-variant/15">
+          <!-- Header -->
+          <div class="flex justify-between items-center mb-5 relative z-10">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-headline text-base font-bold text-on-surface leading-tight">Project Status Overview</h3>
+              </div>
+            </div>
             <button 
               type="button" 
-              class="w-7 h-7 rounded-full bg-surface-container hover:bg-primary hover:text-white text-on-surface-variant flex items-center justify-center transition-all cursor-pointer group shadow-2xs" 
-              title="프로젝트 게시판 전체보기"
+              class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary hover:bg-surface-container-highest transition-colors shadow-2xs cursor-pointer group"
+              title="프로젝트 관리 바로가기"
               onclick="PCApp.switchScreen('project')"
             >
               <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="currentColor">
@@ -1422,48 +1427,54 @@ const PCApp = {
             </button>
           </div>
 
-          <div class="grid grid-cols-12 gap-2 items-center">
-            <!-- Left Breakdown Items (7 Cols) -->
-            <div class="col-span-7 space-y-1">
-              ${activeCategories.map(cat => `
-                <div 
-                  class="flex items-center justify-between px-2 py-1.5 rounded-xl hover:bg-surface-container-high/60 transition-all cursor-pointer group"
-                  onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
-                  title="${cat.name} 프로젝트 모아보기"
-                >
-                  <div class="flex items-center gap-2 min-w-0">
-                    <span class="w-2.5 h-2.5 rounded-full shrink-0 shadow-2xs" style="background-color: ${cat.color};"></span>
-                    <span class="text-xs font-bold text-on-surface group-hover:text-primary transition-colors truncate">${cat.name}</span>
-                  </div>
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center relative z-10">
+            <!-- Left Column: Detailed List (7 Cols) -->
+            <div class="md:col-span-7 flex flex-col gap-2">
+              ${activeCategories.map((cat, idx) => {
+                const isActive = idx === 0;
+                const containerClass = isActive
+                  ? 'bg-surface-container-highest rounded-xl p-2.5 flex items-center justify-between group cursor-pointer transition-colors hover:bg-surface-container-lowest shadow-2xs'
+                  : 'rounded-xl p-2.5 flex items-center justify-between group cursor-pointer hover:bg-surface-container transition-colors';
+                const labelClass = isActive ? 'font-bold text-xs text-on-surface' : 'font-medium text-xs text-on-surface-variant group-hover:text-on-surface';
 
-                  <div class="flex items-center gap-2 shrink-0 text-right">
-                    <span class="text-xs font-extrabold text-on-surface font-mono">${cat.count}건</span>
-                    <div class="w-12 text-right">
-                      <span class="text-[11px] font-bold font-mono" style="color: ${cat.color};">${cat.pct.toFixed(1)}%</span>
-                      <div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mt-0.5">
-                        <div class="h-full rounded-full transition-all duration-500" style="width: ${cat.pct}%; background-color: ${cat.color};"></div>
+                return `
+                  <div 
+                    class="${containerClass}"
+                    onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
+                    title="${cat.name} 프로젝트 모아보기"
+                  >
+                    <span class="${labelClass}">${cat.name}</span>
+                    <div class="flex items-center gap-3">
+                      <span class="font-headline font-bold text-sm text-on-surface font-mono">${cat.count}</span>
+                      <div class="flex flex-col items-end gap-1 w-16">
+                        <span class="font-bold text-[11px] font-mono" style="color: ${cat.color};">${cat.pct.toFixed(1)}%</span>
+                        <div class="w-full bg-surface-container-lowest rounded-full h-1.5 overflow-hidden">
+                          <div class="h-full rounded-full transition-all duration-500" style="background-color: ${cat.color}; width: ${cat.pct}%;"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              `).join('')}
+                `;
+              }).join('')}
             </div>
 
-            <!-- Right Donut Chart (5 Cols) -->
-            <div class="col-span-5 flex flex-col items-center justify-center relative">
-              <div class="relative w-32 h-32 flex items-center justify-center">
-                <svg class="w-full h-full -rotate-90 filter drop-shadow-sm" viewBox="0 0 140 140">
-                  <!-- Background track -->
-                  <circle cx="70" cy="70" r="${radius}" fill="transparent" stroke="var(--surface-container)" stroke-width="16"></circle>
+            <!-- Right Column: Donut Chart (5 Cols) -->
+            <div class="md:col-span-5 flex items-center justify-center relative">
+              <!-- Ambient glow behind chart -->
+              <div class="absolute inset-0 bg-primary opacity-[0.04] blur-[30px] rounded-full scale-75"></div>
+              
+              <div class="relative w-40 h-40 flex items-center justify-center">
+                <svg class="w-full h-full -rotate-90 drop-shadow-[0_6px_16px_rgba(0,82,208,0.12)]" viewBox="0 0 100 100">
+                  <!-- Background ring -->
+                  <circle class="opacity-50" cx="50" cy="50" fill="none" r="40" stroke="var(--surface-container-highest, #ffffff)" stroke-width="12"></circle>
                   <!-- Segments -->
                   ${svgSegments}
                 </svg>
 
                 <!-- Center Text -->
-                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
-                  <span class="text-[10px] font-medium text-on-surface-variant leading-tight">총 프로젝트</span>
-                  <span class="text-lg font-black text-on-surface tracking-tight leading-snug">${allProjects.length}</span>
-                  <span class="text-[9.5px] font-bold text-primary leading-tight">개 사업</span>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                  <span class="text-[11px] font-medium text-on-surface-variant">Total Projects</span>
+                  <span class="font-headline text-2xl font-bold text-on-surface mt-0.5">${allProjects.length}</span>
                 </div>
               </div>
             </div>
