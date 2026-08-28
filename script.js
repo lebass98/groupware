@@ -1994,7 +1994,7 @@ const App = {
     }
   },
 
-  // Mobile Today Attendance Log & Schedule Unified Widget
+  // Mobile Main Calendar & Today's Schedule Unified Widget (캘린더 달력 + 구분선 + 선택 일자 일정 통합 위젯)
   renderTodayAttendanceScheduleSummary() {
     const schedWrap = document.getElementById('today-summary-attendance-schedule-container');
     if (!schedWrap) return;
@@ -2012,17 +2012,27 @@ const App = {
       monthTotalScheds += schs.length;
     }
 
-    // Today's schedule data
+    // Today & Selected Date Calculation
     const todayYear = now.getFullYear();
     const todayMonth = now.getMonth() + 1;
     const todayDay = now.getDate();
     const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-    const dayOfWeekStr = dayNames[now.getDay()];
-    const todaySchedules = this.getMockSchedules(todayYear, todayMonth, todayDay) || [];
+
+    const selYear = this.state.selectedCalYear || year;
+    const selMonth = this.state.selectedCalMonth || month;
+    const selDay = (this.state.selectedCalDay !== undefined && this.state.selectedCalDay !== null)
+      ? this.state.selectedCalDay
+      : (selMonth === todayMonth && selYear === todayYear ? todayDay : 1);
+
+    const selDate = new Date(selYear, selMonth - 1, selDay);
+    const selDayOfWeekStr = dayNames[selDate.getDay()];
+    const isSelectedToday = (selYear === todayYear && selMonth === todayMonth && selDay === todayDay);
+    const scheduleTitleLabel = isSelectedToday ? '오늘의 일정' : `${selMonth}월 ${selDay}일 일정`;
+    const selSchedules = this.getMockSchedules(selYear, selMonth, selDay) || [];
 
     schedWrap.innerHTML = `
       <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/15 shadow-2xs">
-        <!-- 1. Top Section: 근태일지 간소화 달력 헤더 -->
+        <!-- 1. Top Section: 캘린더 간소화 달력 헤더 -->
         <div class="flex items-center justify-between gap-2 mb-3">
           <div class="flex items-center gap-2 min-w-0">
             <span class="px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${year}년 ${month}월 · 총 ${monthTotalScheds}건</span>
@@ -2058,25 +2068,25 @@ const App = {
 
           <!-- Calendar Days Grid -->
           <div class="grid grid-cols-7 gap-1">
-            ${this.generateTodayCalGridHTML(year, month, firstDay, lastDate, now)}
+            ${this.generateTodayCalGridHTML(year, month, firstDay, lastDate, now, selDay, selMonth, selYear)}
           </div>
         </div>
 
-        <!-- Divider Line (근태일지와 오늘의 일정 구분선) -->
+        <!-- Divider Line (캘린더와 하단 일정 구분선) -->
         <div class="my-5 border-t border-outline-variant/20"></div>
 
-        <!-- 2. Bottom Section: 오늘의 일정 -->
+        <!-- 2. Bottom Section: 선택 일자 일정 -->
         <div>
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-2">
-              <span class="font-bold text-sm text-on-surface">오늘의 일정</span>
-              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary whitespace-nowrap">${todayMonth}월 ${todayDay}일 (${dayOfWeekStr}) · 총 ${todaySchedules.length}건</span>
+              <span class="font-bold text-sm text-on-surface">${scheduleTitleLabel}</span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary whitespace-nowrap">${selMonth}월 ${selDay}일 (${selDayOfWeekStr}) · 총 ${selSchedules.length}건</span>
             </div>
             <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-calendar')">전체보기</button>
           </div>
 
           <div class="space-y-2.5">
-            ${todaySchedules.length > 0 ? todaySchedules.map(s => {
+            ${selSchedules.length > 0 ? selSchedules.map(s => {
               const isHoliday = (
                 s.badge === '공휴일' ||
                 s.badge === '기념일' ||
@@ -2102,7 +2112,7 @@ const App = {
               ` : '';
 
               return `
-                <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/20 hover:border-primary/50 transition-all gap-2.5 cursor-pointer group" onclick="App.openDateDetailModal(${todayDay})" title="클릭하여 상세 정보 보기">
+                <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/20 hover:border-primary/50 transition-all gap-2.5 cursor-pointer group" onclick="App.switchTab('screen-calendar')" title="클릭하여 캘린더 전체 일정 보기">
                   <div class="flex items-center gap-2 shrink-0">
                     <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
                   </div>
@@ -2121,7 +2131,7 @@ const App = {
               `;
             }).join('') : `
               <div class="p-5 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl">
-                <p class="font-bold text-xs text-on-surface">오늘 등록된 일정이 없습니다.</p>
+                <p class="font-bold text-xs text-on-surface">${selMonth}월 ${selDay}일에 등록된 일정이 없습니다.</p>
               </div>
             `}
           </div>
@@ -2130,7 +2140,7 @@ const App = {
     `;
   },
 
-  generateTodayCalGridHTML(year, month, firstDay, lastDate, now) {
+  generateTodayCalGridHTML(year, month, firstDay, lastDate, now, selDay, selMonth, selYear) {
     let html = '';
 
     // Empty cells before first day
@@ -2141,6 +2151,7 @@ const App = {
     // Days
     for (let d = 1; d <= lastDate; d++) {
       const isToday = (d === now.getDate() && month === (now.getMonth() + 1) && year === now.getFullYear());
+      const isSelected = (d === selDay && month === selMonth && year === selYear);
       const dayOfWeek = (firstDay + d - 1) % 7;
       const isSunday = (dayOfWeek === 0);
       const isSaturday = (dayOfWeek === 6);
@@ -2151,8 +2162,12 @@ const App = {
       if (isSunday) dateNumClass = 'text-red-500 font-bold';
       else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
 
+      const selectedClass = isSelected
+        ? 'bg-primary/15 rounded-xl ring-2 ring-primary shadow-xs font-black'
+        : (isToday ? 'bg-primary/5 rounded-xl ring-1 ring-primary/30' : 'hover:bg-primary/10');
+
       html += `
-        <div class="h-10 sm:h-11 px-1.5 py-1 hover:bg-primary/10 transition-all cursor-pointer flex items-center justify-between group ${isToday ? 'bg-primary/10 rounded-xl ring-1 ring-primary/30' : ''}" onclick="App.openDateDetailModal(${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건)">
+        <div class="h-10 sm:h-11 px-1.5 py-1 transition-all cursor-pointer flex items-center justify-between group ${selectedClass}" onclick="App.selectTodayCalDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
           <span class="text-xs sm:text-sm font-bold ${dateNumClass} ${isToday ? 'w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold shadow-xs' : ''}">${d}</span>
           ${daySchedules.length > 0 ? `<span class="min-w-[16px] h-[16px] px-1 rounded-full text-[10px] font-bold flex items-center justify-center bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}</span>` : ''}
         </div>
@@ -2160,6 +2175,13 @@ const App = {
     }
 
     return html;
+  },
+
+  selectTodayCalDate(year, month, day) {
+    this.state.selectedCalYear = year;
+    this.state.selectedCalMonth = month;
+    this.state.selectedCalDay = day;
+    this.renderTodayAttendanceScheduleSummary();
   },
 
   changeTodayCalMonth(offset) {
@@ -2173,8 +2195,12 @@ const App = {
       m = 1;
       y++;
     }
+    const now = new Date();
     this.state.calYear = y;
     this.state.calMonth = m;
+    this.state.selectedCalYear = y;
+    this.state.selectedCalMonth = m;
+    this.state.selectedCalDay = (m === (now.getMonth() + 1) && y === now.getFullYear()) ? now.getDate() : 1;
     this.renderTodayData();
   },
 

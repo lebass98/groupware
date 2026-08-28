@@ -1011,7 +1011,7 @@ const PCApp = {
     }
   },
 
-  // 5-2. Center Column: Integrated Attendance Calendar & Today's Schedule Widget (근태일지 달력 + 구분선 + 오늘의 일정 통합 위젯)
+  // 5-2. Center Column: Integrated Attendance Calendar & Today's Schedule Widget (캘린더 달력 + 구분선 + 선택 일자 일정 통합 위젯)
   renderCompanyScheduleWidget() {
     const schedWrap = document.getElementById('pc-widget-company-schedule');
     if (!schedWrap) return;
@@ -1029,25 +1029,34 @@ const PCApp = {
       monthTotalScheds += schs.length;
     }
 
-    // Today's schedule data
+    // Today & Selected Date Calculation
     const todayYear = now.getFullYear();
     const todayMonth = now.getMonth() + 1;
     const todayDay = now.getDate();
     const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-    const dayOfWeekStr = dayNames[now.getDay()];
-    const todayDateKey = `${todayYear}-${todayMonth}-${todayDay}`;
-    const todaySchedules = this.getSchedulesForDay(todayYear, todayMonth, todayDay) || [];
+
+    const selYear = this.state.selectedCalYear || year;
+    const selMonth = this.state.selectedCalMonth || month;
+    const selDay = (this.state.selectedCalDay !== undefined && this.state.selectedCalDay !== null)
+      ? this.state.selectedCalDay
+      : (selMonth === todayMonth && selYear === todayYear ? todayDay : 1);
+
+    const selDate = new Date(selYear, selMonth - 1, selDay);
+    const selDayOfWeekStr = dayNames[selDate.getDay()];
+    const isSelectedToday = (selYear === todayYear && selMonth === todayMonth && selDay === todayDay);
+    const scheduleTitleLabel = isSelectedToday ? '오늘의 일정' : `${selMonth}월 ${selDay}일 일정`;
+    const selSchedules = this.getSchedulesForDay(selYear, selMonth, selDay) || [];
 
     schedWrap.innerHTML = `
       <div class="pc-bento-card">
-        <!-- 1. Top Section: 근태일지 간소화 달력 -->
+        <!-- 1. Top Section: 캘린더 간소화 달력 -->
         <div class="pc-card-header mb-3">
           <div class="flex items-center gap-2.5">
             <span class="pc-card-title flex items-center gap-2">
               <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
               </svg>
-              근태일지
+              캘린더
             </span>
             <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${year}년 ${month}월 · 총 ${monthTotalScheds}건</span>
           </div>
@@ -1082,14 +1091,14 @@ const PCApp = {
 
           <!-- Calendar Days Grid -->
           <div class="grid grid-cols-7 gap-1.5">
-            ${this.generateDashboardCalGridHTML(year, month, firstDay, lastDate, now)}
+            ${this.generateDashboardCalGridHTML(year, month, firstDay, lastDate, now, selDay, selMonth, selYear)}
           </div>
         </div>
 
-        <!-- Divider Line (근태일지와 오늘의 일정 구분선) -->
+        <!-- Divider Line (캘린더와 하단 일정 구분선) -->
         <div class="my-5 border-t border-outline/60"></div>
 
-        <!-- 2. Bottom Section: 오늘의 일정 -->
+        <!-- 2. Bottom Section: 선택 일자 일정 -->
         <div>
           <div class="pc-card-header mb-3">
             <div class="flex items-center gap-2.5">
@@ -1097,15 +1106,15 @@ const PCApp = {
                 <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
                 </svg>
-                오늘의 일정
+                ${scheduleTitleLabel}
               </span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${todayMonth}월 ${todayDay}일 (${dayOfWeekStr}) · 총 ${todaySchedules.length}건</span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${selMonth}월 ${selDay}일 (${selDayOfWeekStr}) · 총 ${selSchedules.length}건</span>
             </div>
             <button class="pc-card-action text-xs" onclick="PCApp.switchScreen('calendar')">전체보기</button>
           </div>
 
           <div class="space-y-2.5">
-            ${todaySchedules.length > 0 ? todaySchedules.map(s => {
+            ${selSchedules.length > 0 ? selSchedules.map(s => {
               const isHoliday = (
                 s.badge === '공휴일' ||
                 s.badge === '기념일' ||
@@ -1131,7 +1140,7 @@ const PCApp = {
               ` : '';
 
               return `
-                <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-xl border border-outline/30 hover:border-primary/50 transition-all gap-3 cursor-pointer group" onclick="PCApp.openDateScheduleModal('${todayDateKey}')" title="클릭하여 상세 정보 보기">
+                <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline/30 hover:border-primary/50 transition-all gap-3 cursor-pointer group" onclick="PCApp.switchScreen('calendar')" title="클릭하여 캘린더 전체 일정 보기">
                   <div class="flex items-center gap-2 shrink-0">
                     <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
                   </div>
@@ -1149,11 +1158,11 @@ const PCApp = {
                 </div>
               `;
             }).join('') : `
-              <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-xl">
+              <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl">
                 <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
                 </svg>
-                <p class="font-bold text-sm text-on-surface">오늘 등록된 일정이 없습니다.</p>
+                <p class="font-bold text-sm text-on-surface">${selMonth}월 ${selDay}일에 등록된 일정이 없습니다.</p>
               </div>
             `}
           </div>
@@ -1163,7 +1172,7 @@ const PCApp = {
   },
 
   // Calendar Grid Generator (Dashboard Widget - 날짜 숫자 확대 & 이벤트 수 뱃지만 노출하는 간소화 캘린더)
-  generateDashboardCalGridHTML(year, month, firstDay, lastDate, now) {
+  generateDashboardCalGridHTML(year, month, firstDay, lastDate, now, selDay, selMonth, selYear) {
     let html = '';
 
     // Empty cells before first day
@@ -1173,8 +1182,8 @@ const PCApp = {
 
     // Days
     for (let d = 1; d <= lastDate; d++) {
-      const key = `${year}-${month}-${d}`;
       const isToday = (d === now.getDate() && month === (now.getMonth() + 1) && year === now.getFullYear());
+      const isSelected = (d === selDay && month === selMonth && year === selYear);
       const dayOfWeek = (firstDay + d - 1) % 7;
       const isSunday = (dayOfWeek === 0);
       const isSaturday = (dayOfWeek === 6);
@@ -1185,8 +1194,12 @@ const PCApp = {
       if (isSunday) dateNumClass = 'text-red-500 font-bold';
       else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
 
+      const selectedClass = isSelected
+        ? 'ring-2 ring-primary bg-primary/15 border-primary shadow-xs font-black'
+        : (isToday ? 'ring-1 ring-primary/40 bg-primary/5 border-outline/60' : 'bg-surface-container-low/70 hover:bg-primary/10 border-outline/60 hover:border-primary');
+
       html += `
-        <div class="h-11 sm:h-12 px-2 py-1.5 bg-surface-container-low/70 hover:bg-primary/10 border border-outline/60 hover:border-primary rounded-xl transition-all cursor-pointer flex items-center justify-between group ${isToday ? 'ring-2 ring-primary bg-primary/10' : ''}" onclick="PCApp.openDateScheduleModal('${key}')" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 상세 보기">
+        <div class="h-11 sm:h-12 px-2 py-1.5 border rounded-xl transition-all cursor-pointer flex items-center justify-between group ${selectedClass}" onclick="PCApp.selectDashboardDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
           <span class="text-sm sm:text-base font-bold ${dateNumClass} ${isToday ? 'w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shadow-xs' : ''}">${d}</span>
           ${daySchedules.length > 0 ? `<span class="min-w-[18px] h-[18px] px-1 rounded-full text-[11px] font-bold flex items-center justify-center bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}</span>` : ''}
         </div>
@@ -1194,6 +1207,13 @@ const PCApp = {
     }
 
     return html;
+  },
+
+  selectDashboardDate(year, month, day) {
+    this.state.selectedCalYear = year;
+    this.state.selectedCalMonth = month;
+    this.state.selectedCalDay = day;
+    this.renderCompanyScheduleWidget();
   },
 
   changeDashboardCalMonth(offset) {
@@ -1207,8 +1227,12 @@ const PCApp = {
       m = 1;
       y++;
     }
+    const now = new Date();
     this.state.calYear = y;
     this.state.calMonth = m;
+    this.state.selectedCalYear = y;
+    this.state.selectedCalMonth = m;
+    this.state.selectedCalDay = (m === (now.getMonth() + 1) && y === now.getFullYear()) ? now.getDate() : 1;
     this.renderCompanyScheduleWidget();
   },
 
