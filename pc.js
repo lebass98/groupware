@@ -1378,12 +1378,12 @@ const PCApp = {
               <div>
                 <!-- Main Header -->
                 <div class="mb-5">
-                  <h3 class="font-headline text-lg sm:text-xl font-black text-on-surface tracking-tight">5대 핵심 영역 구성</h3>
-                  <p class="text-xs text-on-surface-variant font-medium mt-1">영역별 비중과 전체 구성비를 한눈에 비교합니다.</p>
+                  <h3 class="font-headline text-lg sm:text-xl font-black text-on-surface tracking-tight">프로젝트 현황</h3>
+                  <p class="text-xs text-on-surface-variant font-medium mt-1">사업 유형별 비중과 전체 프로젝트 현황을 한눈에 비교합니다.</p>
                 </div>
 
                 <!-- Section Tag -->
-                <div class="text-[11px] font-bold tracking-wider text-primary uppercase mb-4">AREA DISTRIBUTION</div>
+                <div class="text-[11px] font-bold tracking-wider text-primary uppercase mb-4">PROJECT DISTRIBUTION</div>
 
                 <!-- 5 Status Progress Items -->
                 <div class="space-y-3.5">
@@ -1423,7 +1423,7 @@ const PCApp = {
                 <!-- Center Text inside Doughnut cutout -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
                   <span class="font-headline text-3xl font-black text-primary tracking-tight">100%</span>
-                  <span class="text-xs font-bold text-on-surface-variant mt-0.5">전체 구성</span>
+                  <span class="text-xs font-bold text-on-surface-variant mt-0.5">전체 프로젝트</span>
                 </div>
               </div>
 
