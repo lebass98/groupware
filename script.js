@@ -371,6 +371,10 @@ const App = {
           const sanitized = parsed.dockMenus.filter(id => validIds.includes(id) && id !== 'screen-profile');
           this.state.dockMenus = sanitized.length > 0 ? sanitized.slice(0, 4) : ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'];
         }
+        if (parsed.finance) this.state.finance = parsed.finance;
+        if (parsed.approvals) this.state.approvals = parsed.approvals;
+        if (parsed.leave) this.state.leave = parsed.leave;
+        if (parsed.user) this.state.user = { ...this.state.user, ...parsed.user };
       }
 
       // Projects State Sync (모바일-PC 공통 마스터 데이터 동기화)
@@ -426,7 +430,11 @@ const App = {
         recentProjects: this.state.recentProjects,
         trashedTodos: this.state.trashedTodos,
         activeTab: this.state.activeTab,
-        menuColumns: this.state.menuColumns
+        menuColumns: this.state.menuColumns,
+        finance: this.state.finance,
+        approvals: this.state.approvals,
+        leave: this.state.leave,
+        user: this.state.user
       }));
 
       if (this.state.projects) {

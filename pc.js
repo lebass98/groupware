@@ -259,6 +259,10 @@ const PCApp = {
         if (parsed.recentProjects && Array.isArray(parsed.recentProjects) && parsed.recentProjects.length > 0) {
           this.state.recentProjects = parsed.recentProjects;
         }
+        if (parsed.finance) this.state.finance = parsed.finance;
+        if (parsed.approvals) this.state.approvals = parsed.approvals;
+        if (parsed.leave) this.state.leave = parsed.leave;
+        if (parsed.user) this.state.user = { ...this.state.user, ...parsed.user };
       }
 
       // Projects State Sync (PC-Mobile 공통 마스터 데이터 동기화)
@@ -322,6 +326,10 @@ const PCApp = {
       if (this.state.todos) currentState.todos = this.state.todos;
       if (this.state.logs) currentState.logs = this.state.logs;
       if (this.state.recentProjects) currentState.recentProjects = this.state.recentProjects;
+      if (this.state.finance) currentState.finance = this.state.finance;
+      if (this.state.approvals) currentState.approvals = this.state.approvals;
+      if (this.state.leave) currentState.leave = this.state.leave;
+      if (this.state.user) currentState.user = this.state.user;
 
       localStorage.setItem('wordncode_groupware_state', JSON.stringify(currentState));
 
