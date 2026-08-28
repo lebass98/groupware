@@ -1787,13 +1787,13 @@ const App = {
 
     const allProjects = (this.state.projects || (window.MockData && window.MockData.projects) || []);
 
-    // 5대 핵심 영역 카테고리 정의 (단일 조화 블루 팔레트 매핑)
+    // 5대 핵심 영역 카테고리 정의 (Blue Universe & Iron Veil 브랜드 팔레트 매핑)
     const catDefs = [
       { key: 'operation', num: '01', name: '운영용역', color: '#0346FF' },
-      { key: 'build', num: '02', name: '구축중', color: '#0070E0' },
-      { key: 'maintenance', num: '03', name: '유지보수', color: '#2563EB' },
-      { key: 'improvement', num: '04', name: '개선사업', color: '#4B96F3' },
-      { key: 'in_progress', num: '05', name: '진행중', color: '#93C5FD' }
+      { key: 'build', num: '02', name: '구축중', color: '#002B99' },
+      { key: 'maintenance', num: '03', name: '유지보수', color: '#333436' },
+      { key: 'improvement', num: '04', name: '개선사업', color: '#5E6065' },
+      { key: 'in_progress', num: '05', name: '진행중', color: '#AFCBFF' }
     ];
 
     const counts = {
@@ -1852,7 +1852,7 @@ const App = {
                 </div>
 
                 <!-- Middle: Inline Progress Bar -->
-                <div class="flex-1 bg-[#E8F1FC] dark:bg-surface-container-high rounded-full h-2 overflow-hidden">
+                <div class="flex-1 bg-[#F3F4F6] dark:bg-surface-container-high rounded-full h-2 overflow-hidden">
                   <div class="h-full rounded-full transition-all duration-700" style="background-color: ${cat.color}; width: ${cat.pct}%;"></div>
                 </div>
 

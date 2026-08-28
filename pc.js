@@ -273,7 +273,7 @@ const PCApp = {
           if (Array.isArray(parsedProj) && parsedProj.length > 0) {
             this.state.projects = parsedProj;
           }
-        } catch (_) {}
+        } catch (_) { }
       }
       if (!this.state.projects || this.state.projects.length === 0) {
         this.state.projects = (window.MockData && window.MockData.projects) ? JSON.parse(JSON.stringify(window.MockData.projects)) : [];
@@ -309,7 +309,7 @@ const PCApp = {
       let currentState = {};
       const saved = localStorage.getItem('wordncode_groupware_state');
       if (saved) {
-        try { currentState = JSON.parse(saved); } catch (_) {}
+        try { currentState = JSON.parse(saved); } catch (_) { }
       }
 
       currentState.isCheckedIn = this.state.isCheckedIn;
@@ -381,12 +381,12 @@ const PCApp = {
   getVisibleNotifications() {
     const isManager = this.isManagerRole(this.state.user);
     let list = this.state.notifications || [];
-    
+
     // 팀장/부서장이 아닌 경우 팀원 출퇴근 알림(managerOnly) 필터링
     if (!isManager) {
       list = list.filter(n => !n.managerOnly);
     }
-    
+
     // 필터 탭 적용
     if (this.state.notificationFilter && this.state.notificationFilter !== 'all') {
       list = list.filter(n => n.type === this.state.notificationFilter);
@@ -404,7 +404,7 @@ const PCApp = {
     const unreadCount = this.getUnreadNotificationCount();
     const badgeEl = document.getElementById('pc-notification-badge');
     const modalBadgeEl = document.getElementById('pc-notif-modal-count');
-    
+
     if (badgeEl) {
       if (unreadCount > 0) {
         badgeEl.textContent = unreadCount > 99 ? '99+' : unreadCount;
@@ -787,7 +787,7 @@ const PCApp = {
 
     navListEl.innerHTML = navItems.map(item => {
       const isActive = (this.state.activeScreen === item.id);
-      const iconSvg = typeof getSvgIcon === 'function' 
+      const iconSvg = typeof getSvgIcon === 'function'
         ? getSvgIcon(item.iconName, 'w-5 h-5', '', isActive)
         : `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>`;
 
@@ -879,7 +879,7 @@ const PCApp = {
             </div>
 
             <div class="pc-commute-btn-group">
-              <button class="pc-commute-btn pc-commute-btn-in" onclick="PCApp.handleCheckIn()">
+              <button class="pc-commute-btn pc-commute-btn-in bg-primary" onclick="PCApp.handleCheckIn()">
                 <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
                 출근하기
               </button>
@@ -974,9 +974,9 @@ const PCApp = {
       const allUnresolved = (unresolvedCorp.length || unresolvedPersonal.length)
         ? [...unresolvedCorp, ...unresolvedPersonal]
         : [
-            { id: 1, title: '디자인팀 Figma 연간 라이선스 결제', amount: 450000, date: '2026.08.24', category: '법인카드' },
-            { id: 2, title: '고객사 미팅 시내교통비 청구', amount: 15400, date: '2026.08.25', category: '개인영수증' }
-          ];
+          { id: 1, title: '디자인팀 Figma 연간 라이선스 결제', amount: 450000, date: '2026.08.24', category: '법인카드' },
+          { id: 2, title: '고객사 미팅 시내교통비 청구', amount: 15400, date: '2026.08.25', category: '개인영수증' }
+        ];
 
       expenseWrap.innerHTML = `
         <div class="pc-bento-card">
@@ -1171,31 +1171,31 @@ const PCApp = {
 
           <div class="space-y-2.5">
             ${selSchedules.length > 0 ? selSchedules.map(s => {
-              const isHoliday = (
-                s.badge === '공휴일' ||
-                s.badge === '기념일' ||
-                s.badge === '절기' ||
-                s.title.includes('공휴일') ||
-                s.title.includes('기념일') ||
-                s.title.includes('대체공휴일') ||
-                s.title.includes('절기') ||
-                s.author === '공휴일' ||
-                s.author === '기념일' ||
-                s.author === '24절기' ||
-                s.author === '대한민국 공휴일' ||
-                s.author === '회사공지' ||
-                s.author === '국경일/기념일'
-              );
-              const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
-              const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
-              const locationBadgeHtml = s.location ? `
+      const isHoliday = (
+        s.badge === '공휴일' ||
+        s.badge === '기념일' ||
+        s.badge === '절기' ||
+        s.title.includes('공휴일') ||
+        s.title.includes('기념일') ||
+        s.title.includes('대체공휴일') ||
+        s.title.includes('절기') ||
+        s.author === '공휴일' ||
+        s.author === '기념일' ||
+        s.author === '24절기' ||
+        s.author === '대한민국 공휴일' ||
+        s.author === '회사공지' ||
+        s.author === '국경일/기념일'
+      );
+      const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
+      const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
+      const locationBadgeHtml = s.location ? `
                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface-variant border border-outline/30 whitespace-nowrap shrink-0">
                   <svg class="w-3 h-3 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                   <span>${s.location}</span>
                 </span>
               ` : '';
 
-              return `
+      return `
                 <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline/30 hover:border-primary/50 transition-all gap-3 cursor-pointer group" onclick="PCApp.switchScreen('calendar')" title="클릭하여 캘린더 전체 일정 보기">
                   <div class="flex items-center gap-2 shrink-0">
                     <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
@@ -1213,7 +1213,7 @@ const PCApp = {
                   </div>
                 </div>
               `;
-            }).join('') : `
+    }).join('') : `
               <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl">
                 <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
@@ -1465,13 +1465,13 @@ const PCApp = {
       const allProjects = (this.state.projects || (window.MockData && window.MockData.projects) || []);
       const totalCount = allProjects.length || 1;
 
-      // 5대 핵심 영역 카테고리 정의 (단일 조화 블루 팔레트 매핑)
+      // 5대 핵심 영역 카테고리 정의 (Blue Universe & Iron Veil 브랜드 팔레트 매핑)
       const catDefs = [
         { key: 'operation', num: '01', name: '운영용역', color: '#0346FF' },
-        { key: 'build', num: '02', name: '구축중', color: '#0070E0' },
-        { key: 'maintenance', num: '03', name: '유지보수', color: '#2563EB' },
-        { key: 'improvement', num: '04', name: '개선사업', color: '#4B96F3' },
-        { key: 'in_progress', num: '05', name: '진행중', color: '#93C5FD' }
+        { key: 'build', num: '02', name: '구축중', color: '#002B99' },
+        { key: 'maintenance', num: '03', name: '유지보수', color: '#333436' },
+        { key: 'improvement', num: '04', name: '개선사업', color: '#5E6065' },
+        { key: 'in_progress', num: '05', name: '진행중', color: '#AFCBFF' }
       ];
 
       const counts = {
@@ -1522,7 +1522,7 @@ const PCApp = {
                       </div>
 
                       <!-- Middle: Inline Progress Bar -->
-                      <div class="flex-1 bg-[#E8F1FC] dark:bg-surface-container-high rounded-full h-2 overflow-hidden">
+                      <div class="flex-1 bg-[#F3F4F6] dark:bg-surface-container-high rounded-full h-2 overflow-hidden">
                         <div class="h-full rounded-full transition-all duration-700" style="background-color: ${cat.color}; width: ${cat.pct}%;"></div>
                       </div>
 
@@ -1556,7 +1556,7 @@ const PCApp = {
       const canvas = document.getElementById('pc-project-donut-canvas');
       if (canvas && window.Chart) {
         if (this._projectChart) {
-          try { this._projectChart.destroy(); } catch (_) {}
+          try { this._projectChart.destroy(); } catch (_) { }
           this._projectChart = null;
         }
 
@@ -1637,14 +1637,14 @@ const PCApp = {
 
           <div class="space-y-3">
             ${topTodos.length > 0 ? topTodos.map((t, idx) => {
-              const isDone = t.status === 'done' || t.completed;
-              const statusBg = isDone ? 'bg-secondary-container text-secondary' : (t.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
-              const statusText = isDone ? '완료' : (t.status === 'in_progress' ? '진행 중' : '대기');
-              const prioBg = t.priority === 'high' ? 'bg-error-container text-error' : (t.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-tertiary-container text-tertiary');
-              const prioText = t.priority === 'high' ? '높음' : (t.priority === 'low' ? '낮음' : '보통');
-              const assignee = (t.assignees && t.assignees[0]) || { name: this.state.user.name, avatar: this.state.user.avatar };
+        const isDone = t.status === 'done' || t.completed;
+        const statusBg = isDone ? 'bg-secondary-container text-secondary' : (t.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
+        const statusText = isDone ? '완료' : (t.status === 'in_progress' ? '진행 중' : '대기');
+        const prioBg = t.priority === 'high' ? 'bg-error-container text-error' : (t.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-tertiary-container text-tertiary');
+        const prioText = t.priority === 'high' ? '높음' : (t.priority === 'low' ? '낮음' : '보통');
+        const assignee = (t.assignees && t.assignees[0]) || { name: this.state.user.name, avatar: this.state.user.avatar };
 
-              return `
+        return `
                 <div class="p-3.5 rounded-xl border border-outline hover:border-primary transition-all cursor-pointer group flex flex-col justify-between gap-2.5" onclick="PCApp.openTodoDetailModal(${t.id})">
                   <div class="flex items-center justify-between gap-1.5">
                     <div class="flex items-center gap-1.5 flex-wrap">
@@ -1675,7 +1675,7 @@ const PCApp = {
                   </div>
                 </div>
               `;
-            }).join('') : '<p class="text-xs text-on-surface-variant text-center py-4">등록된 할 일이 없습니다.</p>'}
+      }).join('') : '<p class="text-xs text-on-surface-variant text-center py-4">등록된 할 일이 없습니다.</p>'}
           </div>
         </div>
       `;
@@ -2518,14 +2518,14 @@ const PCApp = {
 
           <div class="space-y-1 flex-1 overflow-hidden">
             ${topScheds.map(s => {
-              const tagClass = this.getScheduleTagClass(s);
-              const cleanLabel = this.formatScheduleCleanLabel(s);
-              return `
+        const tagClass = this.getScheduleTagClass(s);
+        const cleanLabel = this.formatScheduleCleanLabel(s);
+        return `
                 <div class="text-[10px] px-1 py-0.5 rounded truncate font-medium ${tagClass}" title="${cleanLabel}">
                   ${cleanLabel}
                 </div>
               `;
-            }).join('')}
+      }).join('')}
             ${extraCount > 0 ? `<div class="text-[9px] text-on-surface-variant font-bold px-1">+${extraCount}건 더보기</div>` : ''}
           </div>
         </div>
@@ -2699,14 +2699,14 @@ const PCApp = {
       <!-- Filter Chips Bar -->
       <div class="flex items-center gap-1.5 mb-3 overflow-x-auto pb-1 shrink-0">
         ${filters.map(f => {
-          const isActive = (this.stateSideSchedule.activeFilter === f.id);
-          const btnClass = isActive ? f.activeBg : f.inactiveBg;
-          return `
+      const isActive = (this.stateSideSchedule.activeFilter === f.id);
+      const btnClass = isActive ? f.activeBg : f.inactiveBg;
+      return `
             <button type="button" class="px-3 py-1 rounded-full text-[11px] font-bold transition-all shrink-0 ${btnClass}" onclick="PCApp.setSideScheduleFilter('${f.id}')">
               ${f.label}
             </button>
           `;
-        }).join('')}
+    }).join('')}
       </div>
 
       <!-- Schedule Cards List (Scrollable Area) -->
@@ -2889,14 +2889,14 @@ const PCApp = {
         <!-- Filter Chips Bar (전체, 휴가, 외근, 반차, 회의) -->
         <div class="flex items-center gap-2 mb-4 overflow-x-auto pb-1 shrink-0">
           ${filters.map(f => {
-            const isActive = (this.stateDateModal.activeFilter === f.id);
-            const btnClass = isActive ? f.activeBg : f.inactiveBg;
-            return `
+      const isActive = (this.stateDateModal.activeFilter === f.id);
+      const btnClass = isActive ? f.activeBg : f.inactiveBg;
+      return `
               <button type="button" class="px-3.5 py-1 rounded-full text-xs font-bold transition-all shrink-0 ${btnClass}" onclick="PCApp.openDateScheduleModal(null, '${f.id}')">
                 ${f.label}
               </button>
             `;
-          }).join('')}
+    }).join('')}
         </div>
 
         <!-- Schedule Items List (Scrollable) -->
