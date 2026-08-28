@@ -1619,88 +1619,14 @@ const App = {
       }
     }
 
-    // --- SCREEN-TODAY (TODAY SUMMARY PAGE) LIVE DATA BINDING ---
-    const now = new Date();
-    const todayYear = this.state.calYear || 2026;
-    const todayMonth = this.state.calMonth || 8;
-    const todayDay = this.state.calSelectedDay || now.getDate();
+    // --- SCREEN-TODAY (TODAY SUMMARY PAGE / 모바일 메인) LIVE DATA BINDING ---
+    // 1. Unified Profile + Commute + Leave Bento Widget (PC와 100% 동일한 통합 위젯)
+    this.renderTodayProfileCommuteLeaveSummary();
 
-    // Date Header
-    const dateHeader = document.getElementById('today-summary-header-date');
-    const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-    const targetDateObj = new Date(todayYear, todayMonth - 1, todayDay);
-    if (dateHeader) {
-      dateHeader.innerText = `${todayMonth}월 ${todayDay}일 ${dayNames[targetDateObj.getDay()]}`;
-    }
-
-    // 0. Profile Widget (모바일 메인 프로필)
-    const profileAvatar = document.getElementById('today-summary-profile-avatar');
-    const profileName = document.getElementById('today-summary-profile-name');
-    const profileRole = document.getElementById('today-summary-profile-role');
-    const profileDept = document.getElementById('today-summary-profile-dept');
-    const u = this.state.user || { name: '이재광', role: '팀장', dept: '퍼블리싱팀', avatar: 'profile.png' };
-    if (profileAvatar && u.avatar) profileAvatar.src = u.avatar;
-    if (profileName) profileName.innerText = u.name || '이재광';
-    if (profileRole) profileRole.innerText = u.role || '팀장';
-    if (profileDept) profileDept.innerText = `${u.dept || '퍼블리싱팀'} · 워드앤코드`;
-
-    // Attendance Summary Widget
-    const workDot = document.getElementById('today-summary-work-dot');
-    const workStatus = document.getElementById('today-summary-work-status');
-    const workTime = document.getElementById('today-summary-work-time');
-    const checkinTime = document.getElementById('today-summary-checkin-time');
-    const progressBar = document.getElementById('today-summary-progress-bar');
-    const remainingTime = document.getElementById('today-summary-remaining-time');
-
-    if (this.state.isCheckedIn) {
-      if (workDot) workDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary relative z-10';
-      if (workStatus) {
-        workStatus.innerText = '근무 중';
-        workStatus.className = 'font-label text-sm font-semibold text-secondary';
-      }
-      const secs = this.state.todaySeconds || 0;
-      const hours = String(Math.floor(secs / 3600)).padStart(2, '0');
-      const mins = String(Math.floor((secs % 3600) / 60)).padStart(2, '0');
-      if (workTime) {
-        workTime.innerHTML = `${hours}<span class="text-2xl text-on-surface-variant font-semibold">h</span> ${mins}<span class="text-2xl text-on-surface-variant font-semibold">m</span>`;
-      }
-      if (checkinTime) {
-        checkinTime.innerText = this.state.checkInTimeStr || '08:45 AM';
-      }
-      const pct = Math.min(100, Math.round((secs / 28800) * 100));
-      if (progressBar) {
-        progressBar.style.width = `${pct}%`;
-      }
-      const remSecs = Math.max(0, 28800 - secs);
-      const remH = Math.floor(remSecs / 3600);
-      const remM = Math.floor((remSecs % 3600) / 60);
-      if (remainingTime) {
-        remainingTime.innerText = `퇴근까지 ${remH}h ${remM}m`;
-      }
-    } else {
-      if (workDot) workDot.className = 'w-2.5 h-2.5 rounded-full bg-outline-variant relative z-10';
-      if (workStatus) {
-        workStatus.innerText = '출근 전';
-        workStatus.className = 'font-label text-sm font-semibold text-on-surface-variant';
-      }
-      if (workTime) {
-        workTime.innerHTML = `00<span class="text-2xl text-on-surface-variant font-semibold">h</span> 00<span class="text-2xl text-on-surface-variant font-semibold">m</span>`;
-      }
-      if (checkinTime) {
-        checkinTime.innerText = '--:--';
-      }
-      if (progressBar) {
-        progressBar.style.width = `0%`;
-      }
-      if (remainingTime) {
-        remainingTime.innerText = '퇴근까지 8h 00m';
-      }
-    }
-
-    // 3. Attendance Log & Today's Schedule Section (근태일지 & 오늘의 일정 통합 위젯)
+    // 2. Attendance Log & Today's Schedule Section (캘린더 & 오늘의 일정 통합 위젯)
     this.renderTodayAttendanceScheduleSummary();
 
-    // 4. Notice Board Section (공지사항 위젯)
+    // 3. Notice Board Section (공지사항 위젯)
     this.renderTodayNoticeSummary();
 
     // Today's To-Do Tasks Section (오늘의 할 일 동적 바인딩)
@@ -1992,6 +1918,157 @@ const App = {
         }
       });
     }
+  },
+
+  // Mobile Main: Unified Profile + Commute + Leave Bento Card Widget (PC와 100% 동일한 통합 블록: 프로필 + 근태 + 연차)
+  renderTodayProfileCommuteLeaveSummary() {
+    const wrap = document.getElementById('today-summary-profile-commute-leave-container');
+    if (!wrap) return;
+
+    const u = this.state.user || { name: '이재광', role: '팀장', dept: '퍼블리싱팀', avatar: 'profile.png', location: '서울 금천구 벚꽃로 298' };
+    const checkInTime = this.state.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : '08:55');
+    const checkOutTime = this.state.checkOutTimeStr || '--:--';
+    const isCheckedIn = this.state.isCheckedIn;
+
+    wrap.innerHTML = `
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/15 shadow-2xs">
+        <!-- 1. Profile Section (Horizontal Layout: Photo left, Name/Role/Company right) -->
+        <div class="flex items-center gap-3 py-0.5">
+          <img src="${u.avatar || 'profile.png'}" class="w-10 h-10 rounded-full object-cover border-2 border-primary/20 shrink-0 shadow-xs" alt="사용자 프로필" />
+          <div class="min-w-0 flex-1 text-left">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <h2 class="font-headline text-sm sm:text-base font-black text-on-surface tracking-tight">${u.name || '이재광'}</h2>
+              <span class="text-[11px] font-bold text-primary px-1.5 py-0.5 rounded-md bg-primary/10 leading-none">${u.role || '팀장'}</span>
+            </div>
+            <p class="text-[11px] text-on-surface-variant font-medium mt-0.5 truncate">${u.dept || '퍼블리싱팀'} · 워드앤코드</p>
+          </div>
+        </div>
+
+        <!-- Divider Line 1 -->
+        <div class="my-4 border-t border-outline-variant/20"></div>
+
+        <!-- 2. Commute & Check-In Section (근태) -->
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span class="font-bold text-sm text-on-surface flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+              </svg>
+              근태
+            </span>
+            <span class="px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center gap-1.5 ${isCheckedIn ? 'bg-secondary/15 text-secondary border border-secondary/30' : 'bg-surface-container text-on-surface-variant'}">
+              <span class="w-1.5 h-1.5 rounded-full ${isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
+              <span>${isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}</span>
+            </span>
+          </div>
+
+          <div class="flex items-center justify-around bg-surface-container-low/70 rounded-xl p-3 mb-3.5 text-center">
+            <div>
+              <span class="text-[11px] text-on-surface-variant block mb-0.5 font-medium">출근 시간</span>
+              <span class="font-headline text-lg sm:text-xl font-black text-primary">${checkInTime}</span>
+            </div>
+            <span class="text-on-surface-variant text-lg font-bold">→</span>
+            <div>
+              <span class="text-[11px] text-on-surface-variant block mb-0.5 font-medium">퇴근 시간</span>
+              <span class="font-headline text-lg sm:text-xl font-black ${checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${checkOutTime}</span>
+            </div>
+          </div>
+
+          <div class="mb-3.5">
+            <div class="flex justify-between text-[11px] font-bold text-on-surface-variant mb-1">
+              <span>주 누적 근무시간</span>
+              <span class="text-primary font-bold">38시간 45분 / 40시간</span>
+            </div>
+            <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+              <div class="h-full bg-primary rounded-full" style="width: 96%;"></div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5 text-[11px] text-on-surface-variant mb-3.5 font-medium">
+            <svg class="w-3.5 h-3.5 text-secondary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <span class="truncate">위치 인증: <strong class="font-bold text-on-surface">${u.location || '서울 금천구 벚꽃로 298'}</strong></span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" class="py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 bg-primary text-white hover:bg-primary-dim active:scale-[0.98] transition-all shadow-xs" onclick="App.handleCheckIn()">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+              출근하기
+            </button>
+            <button type="button" class="py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 bg-surface-container border border-outline-variant/30 text-on-surface hover:bg-surface-container-high active:scale-[0.98] transition-all" onclick="App.handleCheckOut()">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+              퇴근하기
+            </button>
+          </div>
+        </div>
+
+        <!-- Divider Line 2 -->
+        <div class="my-4 border-t border-outline-variant/20"></div>
+
+        <!-- 3. Leave Section (연차) -->
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span class="font-bold text-sm text-on-surface flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/>
+              </svg>
+              연차
+            </span>
+            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-leave')">신청</button>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 mb-3">
+            <div class="p-2.5 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/10">
+              <div class="font-headline text-base font-black text-primary">9.0일</div>
+              <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">잔여 연차</div>
+            </div>
+            <div class="p-2.5 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/10">
+              <div class="font-headline text-base font-black text-on-surface">26.0일</div>
+              <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">사용 연차</div>
+            </div>
+            <div class="p-2.5 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/10">
+              <div class="font-headline text-base font-black text-on-surface-variant">35.0일</div>
+              <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">총 연차</div>
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center px-3 py-2 bg-surface-container-low/50 rounded-xl text-xs">
+              <span class="font-bold text-on-surface">연차 (종일)</span>
+              <span class="text-on-surface-variant font-medium">2026-08-19</span>
+            </div>
+            <div class="flex justify-between items-center px-3 py-2 bg-surface-container-low/50 rounded-xl text-xs">
+              <span class="font-bold text-secondary">반차 (오후)</span>
+              <span class="text-on-surface-variant font-medium">2026-08-21</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  handleCheckIn() {
+    const now = new Date();
+    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    this.state.isCheckedIn = true;
+    this.state.checkInTime = now;
+    this.state.checkInTimeStr = timeStr;
+    this.saveState();
+    this.showToast(`🎉 [출근 완료] ${timeStr} 정상 출근 처리되었습니다.`);
+    this.renderTodayData();
+    this.renderUI();
+  },
+
+  handleCheckOut() {
+    const now = new Date();
+    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    this.state.isCheckedIn = false;
+    this.state.checkOutTimeStr = timeStr;
+    this.saveState();
+    this.showToast(`👏 [퇴근 완료] ${timeStr} 정상 퇴근 처리되었습니다. 수고하셨습니다!`);
+    this.renderTodayData();
+    this.renderUI();
   },
 
   // Mobile Main Calendar & Today's Schedule Unified Widget (캘린더 달력 + 구분선 + 선택 일자 일정 통합 위젯)

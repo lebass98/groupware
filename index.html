@@ -487,56 +487,10 @@
     <!-- SCREEN 10: TODAY SUMMARY (모바일 메인) -->
     <section class="screen-view" id="screen-today">
       <main class="flex-1 flex flex-col gap-6 w-full text-left py-2 pb-24">
-        <!-- 0. Profile Widget (PC와 동일한 프로필 카드: 좌측 사진, 우측 이름/직책/회사) -->
+        <!-- 0. Unified Profile, Commute & Leave Widget (PC와 100% 동일한 통합 블록: 프로필 + 근태 + 연차) -->
         <section class="flex flex-col gap-4">
-          <div id="today-summary-profile-container" class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/15 shadow-2xs">
-            <div class="flex items-center gap-3">
-              <img id="today-summary-profile-avatar" src="profile.png" class="w-10 h-10 rounded-full object-cover border-2 border-primary/20 shrink-0 shadow-xs" alt="사용자 프로필" />
-              <div class="min-w-0 flex-1 text-left">
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <h2 id="today-summary-profile-name" class="font-headline text-sm sm:text-base font-black text-on-surface tracking-tight">이재광</h2>
-                  <span id="today-summary-profile-role" class="text-[11px] font-bold text-primary px-1.5 py-0.5 rounded-md bg-primary/10 leading-none">팀장</span>
-                </div>
-                <p id="today-summary-profile-dept" class="text-[11px] text-on-surface-variant font-medium mt-0.5 truncate">퍼블리싱팀 · 워드앤코드</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 1. Attendance Summary -->
-        <section class="flex flex-col gap-4">
-          <header class="flex justify-between items-center px-1">
-            <h2 class="font-headline text-lg font-bold">오늘의 근무</h2>
-            <span id="today-summary-header-date" class="font-label text-xs text-on-surface-variant font-medium">8월 12일 수요일</span>
-          </header>
-          <div class="bg-surface-container-lowest rounded-2xl p-5 relative overflow-hidden group transition-all duration-300">
-            <div class="absolute -top-12 -right-12 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>
-            <div class="relative z-10">
-              <div class="flex justify-between items-start mb-5">
-                <div>
-                  <div class="flex items-center gap-2 mb-1">
-                    <div class="active-dot-wrapper">
-                      <span id="today-summary-work-dot" class="w-2.5 h-2.5 rounded-full bg-secondary relative z-10"></span>
-                    </div>
-                    <span id="today-summary-work-status" class="font-label text-xs font-semibold text-secondary">근무 중</span>
-                  </div>
-                  <h3 id="today-summary-work-time" class="font-body text-3xl font-extrabold text-on-surface tracking-tight">04<span class="text-xl text-on-surface-variant font-semibold">h</span> 12<span class="text-xl text-on-surface-variant font-semibold">m</span></h3>
-                </div>
-                <div class="text-right">
-                  <p class="font-label text-xs text-on-surface-variant mb-0.5 font-medium">출근 시간</p>
-                  <p id="today-summary-checkin-time" class="font-body text-sm font-bold text-on-surface">08:45 AM</p>
-                </div>
-              </div>
-              <div class="w-full bg-surface-container h-2.5 rounded-full overflow-hidden mb-2.5">
-                <div id="today-summary-progress-bar" class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full w-[52%] relative">
-                  <div class="absolute right-0 top-0 bottom-0 w-8 bg-white/20 blur-[2px] rounded-full translate-x-1/2"></div>
-                </div>
-              </div>
-              <div class="flex justify-between font-label text-xs text-on-surface-variant font-medium">
-                <span>목표 8시간</span>
-                <span id="today-summary-remaining-time">퇴근까지 3h 48m</span>
-              </div>
-            </div>
+          <div id="today-summary-profile-commute-leave-container">
+            <!-- Dynamically populated by App.renderTodayProfileCommuteLeaveSummary() -->
           </div>
         </section>
 
@@ -585,36 +539,6 @@
           </header>
           <div id="today-summary-todos-container" class="flex flex-col gap-2.5">
             <!-- Dynamically populated by App.renderTodayData() -->
-          </div>
-        </section>
-
-        <!-- 5. Leave & Absence -->
-        <section class="flex flex-col gap-4">
-          <header class="flex justify-between items-center px-1">
-            <div class="flex items-center gap-2">
-              <svg class="w-5 h-5 text-tertiary" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M13.13 14.56l1.41-1.41-.71-.71a4 4 0 0 0-5.66 0l-.71.71 1.41 1.41.71-.71c.78-.78 2.05-.78 2.83 0l.73.71zm-4.24-8.49l1.41-1.41.71.71c2.34 2.34 2.34 6.14 0 8.49l-.71.71-1.41-1.41.71-.71a4 4 0 0 0 0-5.66l-.71-.72zm11.31.71l-1.41-1.41-2.83 2.83-1.41-1.41 2.83-2.83-1.41-1.41-2.83 2.83-1.41-1.41 2.83-2.83L13.13.79c-.78-.78-2.05-.78-2.83 0L3.19 7.89c-3.12 3.12-3.12 8.19 0 11.31l1.41 1.41 15.56-15.56z"/>
-              </svg>
-              <h2 class="font-headline text-lg font-bold">휴가 정보</h2>
-            </div>
-            <button class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-request')">상세보기</button>
-          </header>
-          <div class="bg-surface-container-lowest rounded-2xl p-5 flex flex-col gap-4">
-            <div class="flex justify-between items-center">
-              <span class="font-body text-sm font-bold text-on-surface">잔여 연차</span>
-              <span id="today-summary-leave-days" class="font-headline text-lg font-bold text-primary">12 <span class="text-xs font-medium text-on-surface-variant">일</span></span>
-            </div>
-            <div class="bg-surface-container-low rounded-xl p-3 flex items-start gap-3">
-              <div class="w-7 h-7 rounded-full bg-tertiary-container/30 flex items-center justify-center shrink-0 mt-0.5">
-                <svg class="w-4 h-4 text-tertiary" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                </svg>
-              </div>
-              <div>
-                <p class="font-label text-xs font-semibold text-on-surface mb-0.5">예정된 휴가</p>
-                <p id="today-summary-upcoming-leave" class="font-label text-xs text-on-surface-variant font-medium">8월 18일 (화) - 연차</p>
-              </div>
-            </div>
           </div>
         </section>
 
