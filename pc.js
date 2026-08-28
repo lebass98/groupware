@@ -811,27 +811,15 @@ const PCApp = {
       const todayScheds = this.getSchedulesForDay(now.getFullYear(), now.getMonth() + 1, now.getDate()) || [];
       profileWrap.innerHTML = `
         <div class="pc-bento-card">
-          <!-- 1. Profile Section -->
-          <div class="text-center pt-1 pb-1">
-            <div class="pc-profile-avatar-wrap">
-              <img src="${this.state.user.avatar}" class="pc-profile-avatar" alt="사용자 프로필" />
-            </div>
-            <h2 class="pc-profile-name text-center">${this.state.user.name} ${this.state.user.role}</h2>
-            <p class="pc-profile-dept text-center mb-3.5">${this.state.user.dept} | 워드앤코드</p>
-            
-            <div class="pc-profile-counters">
-              <div class="pc-counter-item" onclick="document.getElementById('pc-widget-company-schedule')?.scrollIntoView({ behavior: 'smooth' })">
-                <span class="pc-counter-num">${todayScheds.length}</span>
-                <span class="pc-counter-label">오늘 일정</span>
+          <!-- 1. Profile Section (Horizontal Layout: Photo left, Name/Role/Company right) -->
+          <div class="flex items-center gap-3.5 py-1">
+            <img src="${this.state.user.avatar}" class="w-14 h-14 rounded-full object-cover border-2 border-primary/20 shrink-0 shadow-xs" alt="사용자 프로필" />
+            <div class="min-w-0 flex-1 text-left">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <h2 class="font-headline text-base sm:text-lg font-black text-on-surface tracking-tight">${this.state.user.name}</h2>
+                <span class="text-xs font-bold text-primary px-1.5 py-0.5 rounded-md bg-primary/10 leading-none">${this.state.user.role}</span>
               </div>
-              <div class="pc-counter-item" onclick="PCApp.switchScreen('work-report')">
-                <span class="pc-counter-num">1</span>
-                <span class="pc-counter-label">작성할 보고</span>
-              </div>
-              <div class="pc-counter-item" onclick="PCApp.switchScreen('finance')">
-                <span class="pc-counter-num">0</span>
-                <span class="pc-counter-label">결재 대기</span>
-              </div>
+              <p class="text-xs text-on-surface-variant font-medium mt-1 truncate">${this.state.user.dept} · 워드앤코드</p>
             </div>
           </div>
 
@@ -845,7 +833,7 @@ const PCApp = {
                 <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
                 </svg>
-                근태 & 출/퇴근
+                근태
               </span>
               <span class="pc-commute-status-pill ${this.state.isCheckedIn ? 'checked-in' : ''}">
                 <span class="w-1.5 h-1.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
@@ -904,7 +892,7 @@ const PCApp = {
                 <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/>
                 </svg>
-                연차 / 휴가 현황
+                연차
               </span>
               <button class="pc-card-action text-xs" onclick="PCApp.switchScreen('request')">신청</button>
             </div>
@@ -1249,7 +1237,7 @@ const PCApp = {
           chipClass: 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/30 font-bold shadow-xs',
           badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">연차</span>',
           dotClass: 'bg-[#137333]',
-          cardBgClass: 'bg-surface-container-lowest/80 border-[#137333]/25 hover:bg-surface-container-low'
+          cardBgClass: 'bg-[#f2f9f4] border-[#137333]/25 hover:bg-[#e6f4ea]/60'
         };
       case '외근':
       case '출장':
@@ -1258,7 +1246,7 @@ const PCApp = {
           chipClass: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 font-bold shadow-xs',
           badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/25 whitespace-nowrap shrink-0">외근</span>',
           dotClass: 'bg-[#1a73e8]',
-          cardBgClass: 'bg-surface-container-lowest/80 border-[#1a73e8]/25 hover:bg-surface-container-low'
+          cardBgClass: 'bg-[#f0f5fe] border-[#1a73e8]/25 hover:bg-[#e8f0fe]/60'
         };
       case '반차':
       case '반반차':
@@ -1266,7 +1254,7 @@ const PCApp = {
           chipClass: 'bg-[#fef7e0] text-[#b06000] border border-[#b06000]/30 font-bold shadow-xs',
           badgeHtml: `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#fef7e0] text-[#b06000] border border-[#b06000]/25 whitespace-nowrap shrink-0">${category}</span>`,
           dotClass: 'bg-[#b06000]',
-          cardBgClass: 'bg-surface-container-lowest/80 border-[#b06000]/25 hover:bg-surface-container-low'
+          cardBgClass: 'bg-[#fffdf5] border-[#b06000]/25 hover:bg-[#fef7e0]/60'
         };
       case '회의':
       case '보고':
@@ -1274,21 +1262,28 @@ const PCApp = {
           chipClass: 'bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/30 font-bold shadow-xs',
           badgeHtml: `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#f3e8ff] text-[#6b21a8] border border-[#6b21a8]/25 whitespace-nowrap shrink-0">${category}</span>`,
           dotClass: 'bg-[#6b21a8]',
-          cardBgClass: 'bg-surface-container-lowest/80 border-[#6b21a8]/25 hover:bg-surface-container-low'
+          cardBgClass: 'bg-[#fbf7ff] border-[#6b21a8]/25 hover:bg-[#f3e8ff]/60'
         };
       case '공휴일':
         return {
           chipClass: 'bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/30 font-bold shadow-xs',
           badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#fce8e6] text-[#c5221f] border border-[#c5221f]/25 whitespace-nowrap shrink-0">공휴일</span>',
           dotClass: 'bg-[#c5221f]',
-          cardBgClass: 'bg-surface-container-lowest/80 border-[#c5221f]/25 hover:bg-surface-container-low'
+          cardBgClass: 'bg-[#fff5f5] border-[#c5221f]/25 hover:bg-[#fce8e6]/60'
+        };
+      case '절기':
+        return {
+          chipClass: 'bg-[#e6f4ea] text-[#137333] border border-[#137333]/30 font-bold shadow-xs',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e6f4ea] text-[#137333] border border-[#137333]/25 whitespace-nowrap shrink-0">절기</span>',
+          dotClass: 'bg-[#137333]',
+          cardBgClass: 'bg-[#f4fbf7] border-[#137333]/25 hover:bg-[#e6f4ea]/60'
         };
       default:
         return {
           chipClass: 'bg-surface-container text-on-surface font-bold',
           badgeHtml: `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface whitespace-nowrap shrink-0">${category || '일정'}</span>`,
           dotClass: 'bg-primary',
-          cardBgClass: 'bg-surface-container-lowest/80 border-outline/30 hover:bg-surface-container-low'
+          cardBgClass: 'bg-[#f8fafd] border-outline/30 hover:bg-[#e8f0fe]/40'
         };
     }
   },

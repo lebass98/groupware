@@ -1633,6 +1633,17 @@ const App = {
       dateHeader.innerText = `${todayMonth}월 ${todayDay}일 ${dayNames[targetDateObj.getDay()]}`;
     }
 
+    // 0. Profile Widget (모바일 메인 프로필)
+    const profileAvatar = document.getElementById('today-summary-profile-avatar');
+    const profileName = document.getElementById('today-summary-profile-name');
+    const profileRole = document.getElementById('today-summary-profile-role');
+    const profileDept = document.getElementById('today-summary-profile-dept');
+    const u = this.state.user || { name: '이재광', role: '팀장', dept: '퍼블리싱팀', avatar: 'profile.png' };
+    if (profileAvatar && u.avatar) profileAvatar.src = u.avatar;
+    if (profileName) profileName.innerText = u.name || '이재광';
+    if (profileRole) profileRole.innerText = u.role || '팀장';
+    if (profileDept) profileDept.innerText = `${u.dept || '퍼블리싱팀'} · 워드앤코드`;
+
     // Attendance Summary Widget
     const workDot = document.getElementById('today-summary-work-dot');
     const workStatus = document.getElementById('today-summary-work-status');
