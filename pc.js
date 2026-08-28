@@ -509,7 +509,7 @@ const PCApp = {
       } else if (item.type === 'approval') {
         typeBadge = '<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300">전자결재</span>';
       } else if (item.type === 'business') {
-        typeBadge = '<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-sky-500/10 text-sky-600 dark:text-sky-300">외근/출장</span>';
+        typeBadge = '<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-surface-container text-on-surface-variant">외근/출장</span>';
       } else {
         typeBadge = '<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-500/10 text-rose-600 dark:text-rose-300">공지/일정</span>';
       }
@@ -989,7 +989,7 @@ const PCApp = {
             ${notices.length > 0 ? notices.map((n, idx) => `
               <div class="flex items-center justify-between gap-3 p-2.5 rounded-xl hover:bg-surface-container-low transition-all cursor-pointer border border-transparent hover:border-outline/50 group" onclick="PCApp.openNoticeModal(${idx})">
                 <div class="flex items-center gap-2 min-w-0 flex-1">
-                  <span class="px-2 py-0.5 rounded-md text-[11px] font-bold shrink-0 ${n.isPinned || n.pinned ? 'bg-[#fee2e2] text-[#ef4444] dark:bg-rose-500/20 dark:text-rose-300' : 'bg-[#e8f0fe] text-[#0052d0] dark:bg-primary/20 dark:text-primary-300'}">
+                  <span class="px-2 py-0.5 rounded-md text-[11px] font-bold shrink-0 ${n.isPinned || n.pinned ? 'bg-[#fee2e2] text-[#ef4444] dark:bg-rose-500/20 dark:text-rose-300' : 'bg-surface-container text-on-surface-variant dark:bg-surface-container dark:text-on-surface'}">
                     ${n.isPinned || n.pinned ? '필독' : (n.category || '공통')}
                   </span>
                   <span class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
@@ -1182,7 +1182,7 @@ const PCApp = {
             <div class="py-1 rounded bg-surface-container-low text-on-surface">수</div>
             <div class="py-1 rounded bg-surface-container-low text-on-surface">목</div>
             <div class="py-1 rounded bg-surface-container-low text-on-surface">금</div>
-            <div class="py-1 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">토</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">토</div>
           </div>
 
           <!-- Calendar Days Grid -->
@@ -1229,8 +1229,8 @@ const PCApp = {
               const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
               const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
               const locationBadgeHtml = s.location ? `
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
-                  <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface-variant border border-outline/30 whitespace-nowrap shrink-0">
+                  <svg class="w-3 h-3 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                   <span>${s.location}</span>
                 </span>
               ` : '';
@@ -1351,10 +1351,10 @@ const PCApp = {
       case '출장':
       case '미팅':
         return {
-          chipClass: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 font-bold shadow-xs',
-          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/25 whitespace-nowrap shrink-0">외근</span>',
-          dotClass: 'bg-[#1a73e8]',
-          cardBgClass: 'bg-[#f0f5fe] border-[#1a73e8]/25 hover:bg-[#e8f0fe]/60'
+          chipClass: 'bg-surface-container text-on-surface-variant border border-outline/30 font-bold shadow-xs',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface-variant border border-outline/25 whitespace-nowrap shrink-0">외근</span>',
+          dotClass: 'bg-primary',
+          cardBgClass: 'bg-surface-container-lowest border-outline/25 hover:bg-surface-container-low'
         };
       case '반차':
       case '반반차':
@@ -1391,7 +1391,7 @@ const PCApp = {
           chipClass: 'bg-surface-container text-on-surface font-bold',
           badgeHtml: `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface whitespace-nowrap shrink-0">${category || '일정'}</span>`,
           dotClass: 'bg-primary',
-          cardBgClass: 'bg-[#f8fafd] border-outline/30 hover:bg-[#e8f0fe]/40'
+          cardBgClass: 'bg-surface-container-lowest border-outline/30 hover:bg-surface-container-low'
         };
     }
   },
@@ -1794,7 +1794,7 @@ const PCApp = {
       const isWork = m.status === 'work' || m.statusText === '근무중';
       const isOff = m.status === 'offwork' || m.statusText === '퇴근' || m.statusText === '휴가';
       const isBusiness = m.status === 'business' || m.statusText === '외근중';
-      const statusClass = isBusiness ? 'bg-sky-500/10 text-sky-600 border border-sky-500/20' : isWork ? 'bg-secondary-container text-secondary' : isOff ? 'bg-surface-container-high text-on-surface-variant' : 'bg-primary-container text-primary';
+      const statusClass = isBusiness ? 'bg-surface-container text-on-surface-variant border border-outline/20' : isWork ? 'bg-secondary-container text-secondary' : isOff ? 'bg-surface-container-high text-on-surface-variant' : 'bg-surface-container text-on-surface-variant';
       const todaySched = m.todaySchedule ? `<span class="px-2 py-0.5 rounded-md text-xs font-bold bg-tertiary-container text-tertiary">[예정: ${m.todaySchedule}]</span>` : '';
 
       return `
@@ -2975,8 +2975,8 @@ const PCApp = {
               ${showAvatar ? `<span class="font-bold text-xs sm:text-sm ${authorClass}">${authorName}</span>` : ''}
               <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${badgeBg} border">${badgeStr || catKey}</span>
               ${locationStr ? `
-                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20">
-                  <svg class="w-2.5 h-2.5 text-sky-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold leading-none bg-surface-container text-on-surface-variant border border-outline/30">
+                  <svg class="w-2.5 h-2.5 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                   <span>${locationStr}</span>
                 </span>
               ` : ''}
@@ -3158,8 +3158,8 @@ const PCApp = {
     const isSpecial = isHoliday || isSolarTerm || isObservance || authorStr === '회사공지';
     const authorHtml = isSpecial ? `<span class="font-bold text-xs text-on-surface-variant whitespace-nowrap leading-none flex items-center shrink-0">${item.badge || categoryKey}</span>` : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${item.author || '이재광 팀장'}</span>`;
     const locationBadgeHtml = locationStr ? `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
-        <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold leading-none bg-surface-container text-on-surface-variant border border-outline/30 whitespace-nowrap shrink-0">
+        <svg class="w-3 h-3 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <span>${locationStr}</span>
       </span>
     ` : '';
@@ -4109,7 +4109,7 @@ const PCApp = {
             <!-- 참여 팀원 배정 뱃지 -->
             <div class="flex items-center gap-1.5 flex-wrap mb-2">
               ${p.pm && p.pm !== '.' && p.pm !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300">PM ${p.pm}</span>` : ''}
-              ${p.planner && p.planner !== '.' && p.planner !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-sky-500/10 text-sky-600 dark:text-sky-300">기획 ${p.planner}</span>` : ''}
+              ${p.planner && p.planner !== '.' && p.planner !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-surface-container text-on-surface-variant">기획 ${p.planner}</span>` : ''}
               ${p.designer && p.designer !== '.' && p.designer !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-500/10 text-rose-600 dark:text-rose-300">디자인 ${p.designer}</span>` : ''}
               ${p.publisher && p.publisher !== '.' && p.publisher !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">퍼블 ${p.publisher}</span>` : ''}
               ${p.developer && p.developer !== '.' && p.developer !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300">개발 ${p.developer}</span>` : ''}

@@ -18,10 +18,10 @@
 
   --surface: #ffffff;
   --surface-container-lowest: #ffffff;
-  --surface-container-low: #f8fafc;
-  --surface-container: #f1f5f9;
-  --surface-container-high: #e2e8f0;
-  --surface-container-highest: #cbd5e1;
+  --surface-container-low: #f1f3f5;
+  --surface-container: #e9ecef;
+  --surface-container-high: #dee2e6;
+  --surface-container-highest: #ced4da;
 
   --on-surface: #232c51;
   --on-surface-variant: #515981;

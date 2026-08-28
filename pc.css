@@ -10,19 +10,19 @@
   /* Color Palette - Professional Light Theme */
   --primary: #0052d0;
   --primary-dim: #0047b7;
-  --primary-container: #e8f0fe;
+  --primary-container: #e9ecef;
   --on-primary: #ffffff;
   --secondary: #00875a;
   --secondary-container: #e3fcef;
   --tertiary: #d97706;
   --tertiary-container: #fef3c7;
   
-  --surface: #f4f6fa;
+  --surface: #f8f9fa;
   --surface-container-lowest: #ffffff;
-  --surface-container-low: #f8fafc;
-  --surface-container: #eef2f6;
-  --surface-container-high: #e2e8f0;
-  --surface-container-highest: #cbd5e1;
+  --surface-container-low: #f1f3f5;
+  --surface-container: #e9ecef;
+  --surface-container-high: #dee2e6;
+  --surface-container-highest: #ced4da;
   
   --on-surface: #1e293b;
   --on-surface-variant: #515981;

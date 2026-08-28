@@ -902,7 +902,7 @@ const App = {
       } else if (item.type === 'approval') {
         typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300">전자결재</span>';
       } else if (item.type === 'business') {
-        typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-500/10 text-sky-600 dark:text-sky-300">외근/출장</span>';
+        typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-surface-container text-on-surface-variant">외근/출장</span>';
       } else {
         typeBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-500/10 text-rose-600 dark:text-rose-300">공지/일정</span>';
       }
@@ -2140,7 +2140,7 @@ const App = {
             <div class="py-1 rounded bg-surface-container-low text-on-surface">수</div>
             <div class="py-1 rounded bg-surface-container-low text-on-surface">목</div>
             <div class="py-1 rounded bg-surface-container-low text-on-surface">금</div>
-            <div class="py-1 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">토</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">토</div>
           </div>
 
           <!-- Calendar Days Grid -->
@@ -2182,8 +2182,8 @@ const App = {
               const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
               const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
               const locationBadgeHtml = s.location ? `
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
-                  <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface-variant border border-outline/30 whitespace-nowrap shrink-0">
+                  <svg class="w-3 h-3 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                   <span>${s.location}</span>
                 </span>
               ` : '';
@@ -2294,7 +2294,7 @@ const App = {
           ${notices.length > 0 ? notices.slice(0, 5).map((n) => `
             <div class="flex items-center justify-between gap-3 p-2.5 rounded-xl hover:bg-surface-container-low transition-all cursor-pointer border border-transparent hover:border-outline-variant/30 group" onclick="App.openNoticeDetail(${n.id})">
               <div class="flex items-center gap-2 min-w-0 flex-1">
-                <span class="px-2 py-0.5 rounded-md text-[11px] font-bold shrink-0 ${n.isPinned || n.pinned ? 'bg-[#fee2e2] text-[#ef4444] dark:bg-rose-500/20 dark:text-rose-300' : 'bg-[#e8f0fe] text-[#0052d0] dark:bg-primary/20 dark:text-primary-300'}">
+                <span class="px-2 py-0.5 rounded-md text-[11px] font-bold shrink-0 ${n.isPinned || n.pinned ? 'bg-[#fee2e2] text-[#ef4444] dark:bg-rose-500/20 dark:text-rose-300' : 'bg-surface-container text-on-surface-variant dark:bg-surface-container dark:text-on-surface'}">
                   ${n.isPinned || n.pinned ? '필독' : (n.category || '공통')}
                 </span>
                 <span class="text-xs sm:text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
@@ -3002,10 +3002,10 @@ const App = {
       case '출장':
       case '미팅':
         return {
-          chipClass: 'bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/30 font-bold shadow-xs',
-          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-[#e8f0fe] text-[#1a73e8] border border-[#1a73e8]/25 whitespace-nowrap shrink-0">외근</span>',
-          dotClass: 'bg-[#1a73e8]',
-          cardBgClass: 'bg-[#f0f5fe] border-[#1a73e8]/25 hover:bg-[#e8f0fe]/60'
+          chipClass: 'bg-surface-container text-on-surface-variant border border-outline/30 font-bold shadow-xs',
+          badgeHtml: '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface-variant border border-outline/25 whitespace-nowrap shrink-0">외근</span>',
+          dotClass: 'bg-primary',
+          cardBgClass: 'bg-surface-container-lowest border-outline/25 hover:bg-surface-container-low'
         };
       case '반차':
       case '반반차':
@@ -3099,8 +3099,8 @@ const App = {
     const avatarHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<img src="${avatarUrl}" alt="${s.author || '프로필'}" class="w-9 h-9 rounded-full object-cover shrink-0 border border-outline-variant/15 shadow-2xs" />`;
     const authorTextHtml = (isHoliday || isSolarTerm || isObservance) ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
     const locationBadgeHtml = s.location ? `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
-        <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface-variant border border-outline/30 whitespace-nowrap shrink-0">
+        <svg class="w-3 h-3 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <span>${s.location}</span>
       </span>
     ` : '';
@@ -4178,8 +4178,8 @@ const App = {
       mainStatus = {
         type: 'business',
         text: '외근중',
-        dotColor: 'bg-sky-500',
-        badgeClass: 'bg-sky-500/10 text-sky-600 border border-sky-500/20',
+        dotColor: 'bg-slate-500',
+        badgeClass: 'bg-surface-container text-on-surface-variant border border-outline/30',
         icon: 'directions_car',
         pulse: false
       };
@@ -4327,7 +4327,7 @@ const App = {
         const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
         const schedBadgeClass = isVacationSchedule
           ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
-          : 'bg-sky-500/10 text-sky-700 border border-sky-500/20';
+          : 'bg-surface-container text-on-surface-variant border border-outline/30';
         const schedIcon = isVacationSchedule ? 'event_upcoming' : 'directions_car';
 
         todayScheduleBadge = `
@@ -4454,7 +4454,7 @@ const App = {
         const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
         const schedBadgeClass = isVacationSchedule
           ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
-          : 'bg-sky-500/10 text-sky-700 border border-sky-500/20';
+          : 'bg-surface-container text-on-surface-variant border border-outline/30';
         const schedIcon = isVacationSchedule ? 'event_upcoming' : 'directions_car';
 
         extraHtml = `
@@ -4493,7 +4493,7 @@ const App = {
         const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
         const schedBadgeClass = isVacationSchedule
           ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
-          : 'bg-sky-500/10 text-sky-700 border border-sky-500/20';
+          : 'bg-surface-container text-on-surface-variant border border-outline/30';
         scheduleSubBadge = `
           <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${schedBadgeClass}">
             <span>예정 : ${statusInfo.todaySchedule}</span>
