@@ -1019,7 +1019,7 @@ const PCApp = {
           ];
 
       expenseWrap.innerHTML = `
-        <div class="pc-bento-card h-full flex flex-col justify-between">
+        <div class="pc-bento-card">
           <div>
             <div class="pc-card-header mb-3">
               <span class="pc-card-title flex items-center gap-2">
@@ -1068,7 +1068,7 @@ const PCApp = {
       ];
 
       approvalWrap.innerHTML = `
-        <div class="pc-bento-card h-full flex flex-col justify-between">
+        <div class="pc-bento-card">
           <div>
             <div class="pc-card-header mb-3">
               <span class="pc-card-title flex items-center gap-2">
