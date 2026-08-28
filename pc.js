@@ -1373,20 +1373,16 @@ const PCApp = {
         <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-7 w-full shadow-[0_8px_32px_rgba(35,44,81,0.06)] border border-outline-variant/15 relative overflow-hidden">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-center">
             
-            <!-- Left Half: Header, Section Tag & 5 Area Progress List -->
+            <!-- Left Half: Header & 5 Area Progress List -->
             <div class="md:col-span-6 md:border-r md:border-outline-variant/20 md:pr-6 flex flex-col justify-between h-full">
               <div>
                 <!-- Main Header -->
-                <div class="mb-5">
+                <div class="mb-4">
                   <h3 class="font-headline text-lg sm:text-xl font-black text-on-surface tracking-tight">프로젝트 현황</h3>
-                  <p class="text-xs text-on-surface-variant font-medium mt-1">사업 유형별 비중과 전체 프로젝트 현황을 한눈에 비교합니다.</p>
                 </div>
 
-                <!-- Section Tag -->
-                <div class="text-[11px] font-bold tracking-wider text-primary uppercase mb-4">PROJECT DISTRIBUTION</div>
-
                 <!-- 5 Status Progress Items -->
-                <div class="space-y-3.5">
+                <div class="space-y-3">
                   ${activeCategories.map(cat => `
                     <div 
                       class="flex flex-col gap-1.5 cursor-pointer group rounded-xl p-1.5 -mx-1.5 hover:bg-surface-container-low transition-colors"
@@ -1407,17 +1403,12 @@ const PCApp = {
                   `).join('')}
                 </div>
               </div>
-
-              <!-- Footer note -->
-              <p class="text-[10px] text-on-surface-variant/70 font-medium mt-4">※ 실시간 프로젝트 마스터 데이터 기준 집계입니다.</p>
             </div>
 
-            <!-- Right Half: Section Tag, Donut Chart & Legend -->
+            <!-- Right Half: Donut Chart & Legend -->
             <div class="md:col-span-6 flex flex-col items-center justify-center">
-              <div class="w-full text-left md:text-center text-[11px] font-bold tracking-wider text-primary uppercase mb-2">TOTAL COMPOSITION</div>
-
               <!-- Donut Chart Canvas with Center 100% -->
-              <div class="relative w-44 h-44 sm:w-48 sm:h-48 my-2 flex items-center justify-center">
+              <div class="relative w-44 h-44 sm:w-48 sm:h-48 my-1 flex items-center justify-center">
                 <canvas id="pc-project-donut-canvas" class="w-full h-full"></canvas>
 
                 <!-- Center Text inside Doughnut cutout -->

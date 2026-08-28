@@ -357,6 +357,7 @@ Pool/
 - **PC 메인 대시보드 프로젝트 현황 위젯 '5대 핵심 영역 구성' 레이아웃으로 1:1 완벽 리뉴얼**: 좌측 AREA DISTRIBUTION(5개 영역별 명칭, 퍼센트, 풀 트랙 바), 중앙 세로 구분선, 우측 TOTAL COMPOSITION(단일 조화 블루 도넛 차트 및 중앙 100% 전체 구성 라벨, 하단 01~05 범례) 구조로 원본 시안과 100% 동일하게 구현 완료.
 - **PC 메인 대시보드 프로젝트 현황 위젯 타이틀 및 카피라이팅 최적화**: 위젯 메인 타이틀을 '프로젝트 현황'으로 변경하고, 서브 문구('사업 유형별 비중과 전체 프로젝트 현황을 한눈에 비교합니다.') 및 섹션 태그(PROJECT DISTRIBUTION, TOTAL COMPOSITION, 전체 프로젝트)를 업무 맥락에 맞춰 정교하게 수정 완료.
 - **PC 메타태그 Open Graph(OG) 및 Twitter Card 이미지 모바일 규격과 100% 일원화**: pc.html 헤더에 index.html과 동일한 og:image(resource/image/og_image.png), og:title, og:description, twitter:card 등 공유 메타데이터를 전면 추가하여 카카오톡·슬랙 등 SNS 공유 시 동일한 대표 이미지가 노출되도록 통일 완료.
+- **PC 프로젝트 현황 위젯 불필요 문구 정리 및 모바일 투데이(Today) 화면 프로젝트 현황 위젯 추가 연동**: PC 위젯 내 보조 문구(PROJECT DISTRIBUTION, 서브 설명, 하단 안내)를 삭제하여 더욱 간결하게 정돈하고, 모바일 투데이 메인 화면에도 100% 동일한 Chart.js 도넛 차트 및 5대 영역 프로그레스 바 위젯을 신규 탑재 완료.
 
 
 

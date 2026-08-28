@@ -1941,6 +1941,171 @@ const App = {
         </div>
       `;
     }
+
+    // 7. Project Status Overview Section (Mobile Today Donut Chart)
+    this.renderTodayProjectSummary();
+  },
+
+  renderTodayProjectSummary() {
+    const summaryWrap = document.getElementById('today-summary-project-container');
+    if (!summaryWrap) return;
+
+    const allProjects = (this.state.projects || (window.MockData && window.MockData.projects) || []);
+
+    // 5대 핵심 영역 카테고리 정의 (단일 조화 블루 팔레트 매핑)
+    const catDefs = [
+      { key: 'operation', num: '01', name: '운영용역', color: '#0052D0' },
+      { key: 'build', num: '02', name: '구축중', color: '#0070E0' },
+      { key: 'maintenance', num: '03', name: '유지보수', color: '#2563EB' },
+      { key: 'improvement', num: '04', name: '개선사업', color: '#4B96F3' },
+      { key: 'in_progress', num: '05', name: '진행중', color: '#93C5FD' }
+    ];
+
+    const counts = {
+      operation: 0,
+      build: 0,
+      maintenance: 0,
+      improvement: 0,
+      in_progress: 0,
+      completed: 0
+    };
+
+    allProjects.forEach(p => {
+      const c = this.getProjectCategory(p);
+      if (counts[c] !== undefined) counts[c]++;
+      else counts.in_progress++;
+    });
+
+    const activeCategories = catDefs.map(cat => {
+      const count = counts[cat.key] || 0;
+      const pct = allProjects.length > 0 ? Math.round((count / allProjects.length) * 100) : 0;
+      return { ...cat, count, pct };
+    });
+
+    summaryWrap.innerHTML = `
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/15 shadow-2xs relative overflow-hidden">
+        <div class="flex flex-col gap-5">
+          <!-- Donut Chart & Legend -->
+          <div class="flex flex-col items-center justify-center">
+            <!-- Donut Chart Canvas with Center 100% -->
+            <div class="relative w-40 h-40 sm:w-44 sm:h-44 my-1 flex items-center justify-center">
+              <canvas id="mobile-today-project-donut-canvas" class="w-full h-full"></canvas>
+
+              <!-- Center Text inside Doughnut cutout -->
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                <span class="font-headline text-2xl font-black text-primary tracking-tight">100%</span>
+                <span class="text-[11px] font-bold text-on-surface-variant mt-0.5">전체 프로젝트</span>
+              </div>
+            </div>
+
+            <!-- Bottom Legend (● 01  ● 02  ● 03  ● 04  ● 05) -->
+            <div class="flex items-center justify-center gap-3 mt-2 flex-wrap">
+              ${activeCategories.map(cat => `
+                <div 
+                  class="flex items-center gap-1.5 cursor-pointer group text-xs text-on-surface-variant hover:text-primary font-mono font-medium"
+                  onclick="App.switchTab('screen-project'); App.setProjectFilter('${cat.key}');"
+                  title="${cat.name} (${cat.pct}%)"
+                >
+                  <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${cat.color};"></span>
+                  <span class="text-[11px]">${cat.num}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="border-t border-outline-variant/15 w-full"></div>
+
+          <!-- 5 Status Progress Items -->
+          <div class="space-y-3">
+            ${activeCategories.map(cat => `
+              <div 
+                class="flex flex-col gap-1.5 cursor-pointer group rounded-xl p-1 -mx-1 hover:bg-surface-container-low transition-colors"
+                onclick="App.switchTab('screen-project'); App.setProjectFilter('${cat.key}');"
+                title="${cat.name} (${cat.count}건) 프로젝트 보기"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${cat.color};"></span>
+                    <span class="text-xs font-bold text-on-surface group-hover:text-primary transition-colors">${cat.name}</span>
+                  </div>
+                  <span class="text-xs font-extrabold text-on-surface font-mono">${cat.pct}%</span>
+                </div>
+                <div class="w-full bg-[#E8F1FC] dark:bg-surface-container-high rounded-full h-2 overflow-hidden">
+                  <div class="h-full rounded-full transition-all duration-700" style="background-color: ${cat.color}; width: ${cat.pct}%;"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Chart.js Doughnut 인스턴스 생성 및 렌더링
+    const canvas = document.getElementById('mobile-today-project-donut-canvas');
+    if (canvas && window.Chart) {
+      if (this._todayProjectChart) {
+        try { this._todayProjectChart.destroy(); } catch (_) {}
+        this._todayProjectChart = null;
+      }
+
+      const labels = activeCategories.map(c => c.name);
+      const data = activeCategories.map(c => c.count);
+      const bgColors = activeCategories.map(c => c.color);
+
+      this._todayProjectChart = new Chart(canvas, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: bgColors,
+            borderColor: '#ffffff',
+            borderWidth: 3,
+            hoverOffset: 6,
+            cutout: '68%'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              enabled: true,
+              backgroundColor: 'rgba(35, 44, 81, 0.92)',
+              titleFont: { family: 'Pretendard Variable', size: 12, weight: 'bold' },
+              bodyFont: { family: 'Pretendard Variable', size: 12 },
+              padding: 10,
+              cornerRadius: 8,
+              callbacks: {
+                label: (context) => {
+                  const idx = context.dataIndex;
+                  const cat = activeCategories[idx];
+                  return ` ${cat.name}: ${cat.count}건 (${cat.pct}%)`;
+                }
+              }
+            }
+          },
+          animation: {
+            duration: 750,
+            easing: 'easeOutQuart'
+          },
+          onClick: (evt, elements) => {
+            if (elements && elements.length > 0) {
+              const elementIndex = elements[0].index;
+              const cat = activeCategories[elementIndex];
+              if (cat) {
+                App.switchTab('screen-project');
+                App.setProjectFilter(cat.key);
+              }
+            }
+          }
+        }
+      });
+    }
   },
 
   showScreen(screenId) {
