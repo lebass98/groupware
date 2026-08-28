@@ -277,21 +277,6 @@
 
         <!-- Menu Grid Cards (Default: cols-2) -->
         <div class="grid grid-cols-2 cols-2 gap-4 mt-2" id="home-menu-grid">
-          <!-- Card 1: Check-in/out -->
-          <button type="button" data-id="screen-checkin" onclick="App.switchTab('screen-checkin')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
-            <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-              </svg>
-            </div>
-            <div class="flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-              <svg class="w-9 h-9" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/>
-              </svg>
-            </div>
-            <span class="font-label font-bold text-on-surface text-sm">출/퇴근</span>
-          </button>
-
           <!-- Card 2: Attendance Log (근태일지) -->
           <button type="button" data-id="screen-calendar" onclick="App.switchTab('screen-calendar')" class="relative bg-surface-container-lowest rounded-2xl p-6 flex flex-col items-center justify-center gap-3.5 hover:bg-surface-container-low transition-all active:scale-95 shadow-[0_8px_20px_rgba(35,44,81,0.04)] group">
             <div class="drag-handle absolute top-2 right-2 p-1.5 cursor-grab active:cursor-grabbing text-on-surface-variant/30 hover:text-on-surface-variant transition-colors" onclick="event.stopPropagation()">
@@ -425,30 +410,6 @@
             </div>
             <span class="font-label font-bold text-on-surface text-sm">업무보고</span>
           </button>
-        </div>
-
-        <!-- Recent Notice Preview Banner -->
-        <div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:bg-surface-container-low transition-colors shadow-[0_4px_16px_rgba(35,44,81,0.04)] mt-1 text-left" onclick="App.openNoticeDetail(1)">
-          <div class="flex items-center gap-2.5 truncate">
-            <span class="px-2.5 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary-fixed-dim font-label text-[11px] font-bold shrink-0">[필독]</span>
-            <span class="px-1.5 py-0.5 bg-error text-on-error rounded text-[10px] font-bold uppercase tracking-wider shrink-0">NEW</span>
-            <span class="font-headline font-bold text-xs text-on-surface truncate">2024년 하반기 워크샵 일정 안내</span>
-          </div>
-          <svg class="w-5 h-5 text-outline shrink-0 ml-1" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-          </svg>
-        </div>
-
-        <!-- Attendance Status Widget -->
-        <div class="bg-primary rounded-2xl p-5 flex items-center justify-between cursor-pointer shadow-lg shadow-primary/20 hover:opacity-95 transition-opacity" onclick="App.switchTab('screen-checkin')" id="home-status-widget">
-          <div class="flex flex-col gap-1">
-            <span class="font-label text-on-primary/80 text-xs font-semibold">현재 상태</span>
-            <span class="font-headline font-bold text-on-primary text-xl" id="home-status-title">아직 출근 전입니다</span>
-          </div>
-          <div class="flex items-center gap-2 bg-on-primary/10 rounded-full px-3.5 py-1.5 border border-on-primary/10">
-            <div class="w-2.5 h-2.5 rounded-full bg-secondary-container" id="home-status-dot"></div>
-            <span class="font-label font-semibold text-on-primary text-xs" id="home-status-badge">출근 전</span>
-          </div>
         </div>
       </main>
     </section>
