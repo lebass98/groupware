@@ -1333,7 +1333,146 @@ const PCApp = {
       `;
     }
 
-    // 2. To-Do Widget (카드 형태 최근 3개 렌더링)
+    // 2. Project Status Donut Chart Widget (참고 이미지 기반 도넛 차트 & 카테고리 현황)
+    const summaryWrap = document.getElementById('pc-widget-project-summary');
+    if (summaryWrap) {
+      const allProjects = (this.state.projects || (window.MockData && window.MockData.projects) || []);
+      const totalCount = allProjects.length || 1;
+
+      // 카테고리 정의 및 통계 집계
+      const catDefs = [
+        { key: 'operation', name: '운영용역', color: '#0D9488' },
+        { key: 'maintenance', name: '유지보수', color: '#EA580C' },
+        { key: 'improvement', name: '개선사업', color: '#9333EA' },
+        { key: 'build', name: '구축중', color: '#0052D0' },
+        { key: 'in_progress', name: '진행중', color: '#6366F1' }
+      ];
+
+      const counts = {
+        operation: 0,
+        maintenance: 0,
+        improvement: 0,
+        build: 0,
+        in_progress: 0,
+        completed: 0
+      };
+
+      allProjects.forEach(p => {
+        const c = this.getProjectCategory(p);
+        if (counts[c] !== undefined) counts[c]++;
+        else counts.in_progress++;
+      });
+
+      const activeCategories = catDefs.map(cat => {
+        const count = counts[cat.key] || 0;
+        const pct = allProjects.length > 0 ? ((count / allProjects.length) * 100).toFixed(1) : '0.0';
+        return { ...cat, count, pct: parseFloat(pct) };
+      });
+
+      // SVG Donut Chart 연산 (r=50, circumference=314.159)
+      const radius = 50;
+      const circumference = 2 * Math.PI * radius; // 314.159
+      let currentOffset = 0;
+
+      const svgSegments = activeCategories.filter(c => c.count > 0).map(cat => {
+        const ratio = cat.count / allProjects.length;
+        const arcLength = ratio * circumference;
+        const gap = activeCategories.filter(c => c.count > 0).length > 1 ? 2.5 : 0;
+        const visibleDash = Math.max(0, arcLength - gap);
+        const dashArray = `${visibleDash.toFixed(2)} ${(circumference - visibleDash).toFixed(2)}`;
+        const dashOffset = (-currentOffset).toFixed(2);
+        currentOffset += arcLength;
+
+        return `
+          <circle 
+            cx="70" 
+            cy="70" 
+            r="${radius}" 
+            fill="transparent" 
+            stroke="${cat.color}" 
+            stroke-width="16" 
+            stroke-dasharray="${dashArray}" 
+            stroke-dashoffset="${dashOffset}"
+            class="transition-all duration-700 hover:opacity-80 cursor-pointer"
+            onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
+          >
+            <title>${cat.name}: ${cat.count}건 (${cat.pct.toFixed(1)}%)</title>
+          </circle>
+        `;
+      }).join('');
+
+      summaryWrap.innerHTML = `
+        <div class="pc-bento-card">
+          <div class="flex items-center justify-between mb-3.5">
+            <span class="pc-card-title flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+              </svg>
+              전사 프로젝트 현황
+            </span>
+            <button 
+              type="button" 
+              class="w-7 h-7 rounded-full bg-surface-container hover:bg-primary hover:text-white text-on-surface-variant flex items-center justify-center transition-all cursor-pointer group shadow-2xs" 
+              title="프로젝트 게시판 전체보기"
+              onclick="PCApp.switchScreen('project')"
+            >
+              <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-12 gap-2 items-center">
+            <!-- Left Breakdown Items (7 Cols) -->
+            <div class="col-span-7 space-y-1">
+              ${activeCategories.map(cat => `
+                <div 
+                  class="flex items-center justify-between px-2 py-1.5 rounded-xl hover:bg-surface-container-high/60 transition-all cursor-pointer group"
+                  onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
+                  title="${cat.name} 프로젝트 모아보기"
+                >
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-2.5 h-2.5 rounded-full shrink-0 shadow-2xs" style="background-color: ${cat.color};"></span>
+                    <span class="text-xs font-bold text-on-surface group-hover:text-primary transition-colors truncate">${cat.name}</span>
+                  </div>
+
+                  <div class="flex items-center gap-2 shrink-0 text-right">
+                    <span class="text-xs font-extrabold text-on-surface font-mono">${cat.count}건</span>
+                    <div class="w-12 text-right">
+                      <span class="text-[11px] font-bold font-mono" style="color: ${cat.color};">${cat.pct.toFixed(1)}%</span>
+                      <div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mt-0.5">
+                        <div class="h-full rounded-full transition-all duration-500" style="width: ${cat.pct}%; background-color: ${cat.color};"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Right Donut Chart (5 Cols) -->
+            <div class="col-span-5 flex flex-col items-center justify-center relative">
+              <div class="relative w-32 h-32 flex items-center justify-center">
+                <svg class="w-full h-full -rotate-90 filter drop-shadow-sm" viewBox="0 0 140 140">
+                  <!-- Background track -->
+                  <circle cx="70" cy="70" r="${radius}" fill="transparent" stroke="var(--surface-container)" stroke-width="16"></circle>
+                  <!-- Segments -->
+                  ${svgSegments}
+                </svg>
+
+                <!-- Center Text -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
+                  <span class="text-[10px] font-medium text-on-surface-variant leading-tight">총 프로젝트</span>
+                  <span class="text-lg font-black text-on-surface tracking-tight leading-snug">${allProjects.length}</span>
+                  <span class="text-[9.5px] font-bold text-primary leading-tight">개 사업</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 3. To-Do Widget (카드 형태 최근 3개 렌더링)
     const todoWrap = document.getElementById('pc-widget-todo');
     if (todoWrap) {
       const topTodos = (this.state.todos || []).slice(0, 3);
