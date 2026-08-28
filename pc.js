@@ -4076,7 +4076,7 @@ const PCApp = {
             <!-- 상단 태그 & 상태 뱃지 -->
             <div class="flex items-center justify-between gap-2 mb-3">
               <div class="flex items-center gap-1.5 min-w-0">
-                <span class="text-xs font-bold ps-3 py-1 rounded-full bg-primary/10 text-primary truncate max-w-[140px]">${p.clientName || '고객사'}</span>
+                <span class="text-xs font-bold pl-0 pr-2 py-0.5 text-primary truncate max-w-[140px]">${p.clientName || '고객사'}</span>
                 ${p.category ? `<span class="text-xs font-medium px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant shrink-0">${p.category}</span>` : ''}
               </div>
               <span class="text-xs font-bold px-2.5 py-1 rounded-lg shrink-0 ${badge.badgeClass}">

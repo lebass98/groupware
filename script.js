@@ -6587,7 +6587,7 @@ const App = {
           <!-- 2: 고객사, PM, 상태 뱃지, 프로젝트 ID & 작성일자 -->
           <div class="flex items-center justify-between gap-2">
             <div class="flex items-center gap-1.5 flex-wrap min-w-0">
-              <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] font-bold">
+              <span class="pl-0 pr-2 py-0.5 text-primary text-[11px] font-bold">
                 ${p.clientName || '고객사'}
               </span>
               <span class="px-2.5 py-0.5 rounded-full ${badge.badgeClass} text-[11px] font-bold border">
@@ -6603,7 +6603,7 @@ const App = {
           </div>
 
           <!-- 3: 진척도 바 -->
-          <div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/10">
+          <div class="p-3 bg-surface-container-low rounded-md border border-outline-variant/10">
             <div class="flex justify-between items-center text-xs text-on-surface-variant font-medium mb-1.5">
               <span>기간: <strong class="text-on-surface font-bold">${p.period || '2026-07 ~ 2026-12'}</strong></span>
               <span class="font-bold text-primary">${progressVal}</span>
@@ -6614,7 +6614,7 @@ const App = {
           </div>
 
           <!-- 4: 사이트명과 ID -->
-          <div class="bg-surface-container-low px-3 py-2 rounded-lg flex items-center text-xs border border-outline-variant/10 justify-between">
+          <div class="bg-surface-container-low px-3 py-2 rounded-md flex items-center text-xs border border-outline-variant/10 justify-between">
             <div class="flex items-center gap-1.5 truncate">
               <svg class="w-4 h-4 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
