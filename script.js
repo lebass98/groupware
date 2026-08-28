@@ -2102,7 +2102,7 @@ const App = {
               ` : '';
 
               return `
-                <div class="flex items-center ${colorInfo.cardBgClass} p-3 rounded-xl border border-outline-variant/20 hover:border-primary/50 transition-all gap-2.5 cursor-pointer group" onclick="App.openDateDetailModal(${todayDay})" title="클릭하여 상세 정보 보기">
+                <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/20 hover:border-primary/50 transition-all gap-2.5 cursor-pointer group" onclick="App.openDateDetailModal(${todayDay})" title="클릭하여 상세 정보 보기">
                   <div class="flex items-center gap-2 shrink-0">
                     <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
                   </div>
@@ -2120,7 +2120,7 @@ const App = {
                 </div>
               `;
             }).join('') : `
-              <div class="p-5 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-xl">
+              <div class="p-5 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl">
                 <p class="font-bold text-xs text-on-surface">오늘 등록된 일정이 없습니다.</p>
               </div>
             `}
@@ -2135,7 +2135,7 @@ const App = {
 
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
-      html += `<div class="h-10 sm:h-11 p-1 bg-surface-container-lowest/30 border border-outline-variant/10 rounded-xl opacity-30"></div>`;
+      html += `<div class="h-10 sm:h-11"></div>`;
     }
 
     // Days
@@ -2152,7 +2152,7 @@ const App = {
       else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
 
       html += `
-        <div class="h-10 sm:h-11 px-1.5 py-1 bg-surface-container-low/70 hover:bg-primary/10 border border-outline-variant/30 hover:border-primary rounded-xl transition-all cursor-pointer flex items-center justify-between group ${isToday ? 'ring-2 ring-primary bg-primary/10' : ''}" onclick="App.openDateDetailModal(${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건)">
+        <div class="h-10 sm:h-11 px-1.5 py-1 hover:bg-primary/10 transition-all cursor-pointer flex items-center justify-between group ${isToday ? 'bg-primary/10 rounded-xl ring-1 ring-primary/30' : ''}" onclick="App.openDateDetailModal(${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건)">
           <span class="text-xs sm:text-sm font-bold ${dateNumClass} ${isToday ? 'w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold shadow-xs' : ''}">${d}</span>
           ${daySchedules.length > 0 ? `<span class="min-w-[16px] h-[16px] px-1 rounded-full text-[10px] font-bold flex items-center justify-center bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}</span>` : ''}
         </div>
