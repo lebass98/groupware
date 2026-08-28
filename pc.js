@@ -1630,7 +1630,7 @@ const PCApp = {
               <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22 5.18L10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM19.79 10.22C19.92 10.79 20 11.39 20 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8c1.66 0 3.2.51 4.48 1.39l1.45-1.45C16.19 2.7 14.19 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z"/>
               </svg>
-              To-Do 할 일 목록
+              할일 목록
             </span>
             <button class="pc-card-action" onclick="PCApp.switchScreen('todo')">전체보기</button>
           </div>

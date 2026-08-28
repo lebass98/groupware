@@ -1637,63 +1637,68 @@ const App = {
     // 3. Notice Board Section (공지사항 위젯)
     this.renderTodayNoticeSummary();
 
-    // Today's To-Do Tasks Section (오늘의 할 일 동적 바인딩)
+    // Today's To-Do Tasks Section (할일 목록 동적 바인딩)
     const todosContainer = document.getElementById('today-summary-todos-container');
     if (todosContainer) {
       const activeTodos = (this.state.todos || []).filter(t => t.status !== 'draft');
       const displayTodos = activeTodos.slice(0, 3); // 상위 3개 표시
 
       if (displayTodos.length > 0) {
-        todosContainer.innerHTML = displayTodos.map(todo => {
-          const isDone = todo.status === 'done';
-          const prioBgClass = todo.priority === 'high' ? 'bg-error-container text-error' : (todo.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-tertiary-container text-tertiary');
-          const prioText = todo.priority === 'high' ? '높음' : (todo.priority === 'low' ? '낮음' : '보통');
-          const statusBgClass = isDone
-            ? 'bg-secondary-container text-secondary'
-            : (todo.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
-          const statusText = isDone ? '완료' : (todo.status === 'in_progress' ? '진행 중' : '대기');
-          const assignee = (todo.assignees && todo.assignees[0]) || { name: (this.state.myProfile && this.state.myProfile.name) || '이재광', avatar: (this.state.myProfile && this.state.myProfile.avatar) || './profile.png' };
+        todosContainer.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/15 shadow-2xs flex flex-col gap-3">
+            ${displayTodos.map(todo => {
+              const isDone = todo.status === 'done' || todo.completed;
+              const prioBgClass = todo.priority === 'high' ? 'bg-error-container text-error' : (todo.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-tertiary-container text-tertiary');
+              const prioText = todo.priority === 'high' ? '높음' : (todo.priority === 'low' ? '낮음' : '보통');
+              const statusBgClass = isDone
+                ? 'bg-secondary-container text-secondary'
+                : (todo.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
+              const statusText = isDone ? '완료' : (todo.status === 'in_progress' ? '진행 중' : '대기');
+              const assignee = (todo.assignees && todo.assignees[0]) || { name: (this.state.myProfile && this.state.myProfile.name) || '이재광 팀장', avatar: (this.state.myProfile && this.state.myProfile.avatar) || './resource/image/profile_jaegwang.png' };
 
-          return `
-            <div class="p-3.5 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-2xs hover:shadow-xs hover:border-primary/30 transition-all flex flex-col gap-2.5 cursor-pointer text-left" onclick="App.openTodoDetailModal(${todo.id})">
-              <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${statusBgClass}">
-                    ${statusText}
-                  </span>
-                  <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${prioBgClass}">
-                    ${prioText}
-                  </span>
-                  <span class="text-xs font-bold text-primary truncate max-w-[140px]"># ${todo.project || '일반 업무'}</span>
-                </div>
-                <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${todo.id});" class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 ${isDone ? 'bg-secondary border-secondary text-white' : 'border-outline-variant hover:border-primary bg-surface-container-low'}" title="${isDone ? '미완료로 변경' : '완료 처리'}">
-                  ${isDone ? '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
-                </button>
-              </div>
+              return `
+                <div class="p-3.5 rounded-xl border border-outline-variant/30 hover:border-primary/50 transition-all flex flex-col justify-between gap-2.5 cursor-pointer text-left group" onclick="App.openTodoDetailModal(${todo.id})">
+                  <div class="flex items-center justify-between gap-1.5">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${statusBgClass}">
+                        ${statusText}
+                      </span>
+                      <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${prioBgClass}">
+                        ${prioText}
+                      </span>
+                      <span class="text-xs font-bold text-primary truncate max-w-[140px]"># ${todo.project || '일반 업무'}</span>
+                    </div>
+                    <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${todo.id});" class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 ${isDone ? 'bg-secondary border-secondary text-white' : 'border-outline-variant hover:border-primary bg-surface-container-lowest'}" title="${isDone ? '미완료로 변경' : '완료 처리'}">
+                      ${isDone ? '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
+                    </button>
+                  </div>
 
-              <h4 class="font-headline text-sm font-bold text-on-surface line-clamp-2 leading-snug ${isDone ? 'line-through opacity-60' : ''}">
-                ${todo.title}
-              </h4>
+                  <h4 class="font-headline text-sm font-bold text-on-surface line-clamp-2 leading-snug ${isDone ? 'line-through opacity-50' : ''}">
+                    ${todo.title}
+                  </h4>
 
-              <div class="flex items-center justify-between text-xs text-on-surface-variant pt-2 border-t border-outline-variant/10">
-                <div class="flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5 text-on-surface-variant/70 shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
-                  </svg>
-                  <span class="font-medium text-xs">${todo.dueDate || '마감일 미지정'}</span>
+                  <div class="flex items-center justify-between text-xs text-on-surface-variant pt-2 border-t border-outline-variant/15">
+                    <div class="flex items-center gap-1.5">
+                      <svg class="w-3.5 h-3.5 text-on-surface-variant/70 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                      </svg>
+                      <span class="font-medium text-xs">${todo.dueDate || '마감일 미지정'}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                      <img src="${assignee.avatar || './resource/image/profile_jaegwang.png'}" class="w-5 h-5 rounded-full object-cover border border-outline/30 shrink-0" alt="${assignee.name}" onerror="this.src='./resource/image/profile_jaegwang.png'" />
+                      <span class="text-xs font-bold text-on-surface">${assignee.name}</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-center gap-1.5">
-                  <span class="text-xs font-bold text-on-surface">${assignee.name}</span>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('');
+              `;
+            }).join('')}
+          </div>
+        `;
       } else {
         todosContainer.innerHTML = `
           <div class="bg-surface-container-lowest rounded-2xl p-6 text-center text-on-surface-variant font-medium border border-outline-variant/10">
             <svg class="w-8 h-8 text-outline mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor"><path d="M22 5.18L10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM19.79 10.22C19.92 10.79 20 11.39 20 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8c1.66 0 3.2.51 4.48 1.39l1.45-1.45C16.19 2.7 14.19 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z"/></svg>
-            <p class="font-bold text-on-surface text-sm">등록된 오늘의 할 일이 없습니다.</p>
+            <p class="text-xs">등록된 할 일이 없습니다.</p>
           </div>
         `;
       }
