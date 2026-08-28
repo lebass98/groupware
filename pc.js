@@ -1333,19 +1333,19 @@ const PCApp = {
       `;
     }
 
-    // 2. Project Status Donut Chart Widget (Chart.js Powered - Fluid Attendant Design Spec)
+    // 2. Project Status Donut Chart Widget (5대 핵심 영역 구성 & Harmonic Blue Donut Spec)
     const summaryWrap = document.getElementById('pc-widget-project-summary');
     if (summaryWrap) {
       const allProjects = (this.state.projects || (window.MockData && window.MockData.projects) || []);
       const totalCount = allProjects.length || 1;
 
-      // 카테고리 정의 및 시각 디자인 시스템 컬러 매핑
+      // 5대 핵심 영역 카테고리 정의 (단일 조화 블루 팔레트 매핑)
       const catDefs = [
-        { key: 'operation', name: '운영용역', color: '#EC4899' },
-        { key: 'build', name: '구축중', color: '#0052D0' },
-        { key: 'maintenance', name: '유지보수', color: '#F59E0B' },
-        { key: 'improvement', name: '개선사업', color: '#8B5CF6' },
-        { key: 'in_progress', name: '진행중', color: '#10B981' }
+        { key: 'operation', num: '01', name: '운영용역', color: '#0052D0' },
+        { key: 'build', num: '02', name: '구축중', color: '#0070E0' },
+        { key: 'maintenance', num: '03', name: '유지보수', color: '#2563EB' },
+        { key: 'improvement', num: '04', name: '개선사업', color: '#4B96F3' },
+        { key: 'in_progress', num: '05', name: '진행중', color: '#93C5FD' }
       ];
 
       const counts = {
@@ -1365,82 +1365,83 @@ const PCApp = {
 
       const activeCategories = catDefs.map(cat => {
         const count = counts[cat.key] || 0;
-        const pct = allProjects.length > 0 ? ((count / allProjects.length) * 100).toFixed(1) : '0.0';
-        return { ...cat, count, pct: parseFloat(pct) };
+        const pct = allProjects.length > 0 ? Math.round((count / allProjects.length) * 100) : 0;
+        return { ...cat, count, pct };
       });
 
       summaryWrap.innerHTML = `
-        <div class="bg-surface-container-low rounded-2xl p-6 w-full shadow-[0_8px_32px_rgba(35,44,81,0.06)] relative overflow-hidden border border-outline-variant/15">
-          <!-- Header -->
-          <div class="flex justify-between items-center mb-5 relative z-10">
-            <div class="flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                </svg>
-              </div>
+        <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-7 w-full shadow-[0_8px_32px_rgba(35,44,81,0.06)] border border-outline-variant/15 relative overflow-hidden">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-center">
+            
+            <!-- Left Half: Header, Section Tag & 5 Area Progress List -->
+            <div class="md:col-span-6 md:border-r md:border-outline-variant/20 md:pr-6 flex flex-col justify-between h-full">
               <div>
-                <h3 class="font-headline text-base font-bold text-on-surface leading-tight">Project Status Overview</h3>
-              </div>
-            </div>
-            <button 
-              type="button" 
-              class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary hover:bg-surface-container-highest transition-colors shadow-2xs cursor-pointer group"
-              title="프로젝트 관리 바로가기"
-              onclick="PCApp.switchScreen('project')"
-            >
-              <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-              </svg>
-            </button>
-          </div>
+                <!-- Main Header -->
+                <div class="mb-5">
+                  <h3 class="font-headline text-lg sm:text-xl font-black text-on-surface tracking-tight">5대 핵심 영역 구성</h3>
+                  <p class="text-xs text-on-surface-variant font-medium mt-1">영역별 비중과 전체 구성비를 한눈에 비교합니다.</p>
+                </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center relative z-10">
-            <!-- Left Column: Detailed List (7 Cols) -->
-            <div class="md:col-span-7 flex flex-col gap-2">
-              ${activeCategories.map((cat, idx) => {
-                const isActive = idx === 0;
-                const containerClass = isActive
-                  ? 'bg-surface-container-highest rounded-xl p-2.5 flex items-center justify-between group cursor-pointer transition-colors hover:bg-surface-container-lowest shadow-2xs'
-                  : 'rounded-xl p-2.5 flex items-center justify-between group cursor-pointer hover:bg-surface-container transition-colors';
-                const labelClass = isActive ? 'font-bold text-xs text-on-surface' : 'font-medium text-xs text-on-surface-variant group-hover:text-on-surface';
+                <!-- Section Tag -->
+                <div class="text-[11px] font-bold tracking-wider text-primary uppercase mb-4">AREA DISTRIBUTION</div>
 
-                return `
-                  <div 
-                    class="${containerClass}"
-                    onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
-                    title="${cat.name} 프로젝트 모아보기"
-                  >
-                    <span class="${labelClass}">${cat.name}</span>
-                    <div class="flex items-center gap-3">
-                      <span class="font-headline font-bold text-sm text-on-surface font-mono">${cat.count}</span>
-                      <div class="flex flex-col items-end gap-1 w-16">
-                        <span class="font-bold text-[11px] font-mono" style="color: ${cat.color};">${cat.pct.toFixed(1)}%</span>
-                        <div class="w-full bg-surface-container-lowest rounded-full h-1.5 overflow-hidden">
-                          <div class="h-full rounded-full transition-all duration-500" style="background-color: ${cat.color}; width: ${cat.pct}%;"></div>
+                <!-- 5 Status Progress Items -->
+                <div class="space-y-3.5">
+                  ${activeCategories.map(cat => `
+                    <div 
+                      class="flex flex-col gap-1.5 cursor-pointer group rounded-xl p-1.5 -mx-1.5 hover:bg-surface-container-low transition-colors"
+                      onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
+                      title="${cat.name} (${cat.count}건) 프로젝트 보기"
+                    >
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                          <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${cat.color};"></span>
+                          <span class="text-xs font-bold text-on-surface group-hover:text-primary transition-colors">${cat.name}</span>
                         </div>
+                        <span class="text-xs font-extrabold text-on-surface font-mono">${cat.pct}%</span>
+                      </div>
+                      <div class="w-full bg-[#E8F1FC] dark:bg-surface-container-high rounded-full h-2 overflow-hidden">
+                        <div class="h-full rounded-full transition-all duration-700" style="background-color: ${cat.color}; width: ${cat.pct}%;"></div>
                       </div>
                     </div>
-                  </div>
-                `;
-              }).join('')}
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Footer note -->
+              <p class="text-[10px] text-on-surface-variant/70 font-medium mt-4">※ 실시간 프로젝트 마스터 데이터 기준 집계입니다.</p>
             </div>
 
-            <!-- Right Column: Chart.js Donut Chart (5 Cols) -->
-            <div class="md:col-span-5 flex items-center justify-center relative">
-              <!-- Ambient glow behind chart -->
-              <div class="absolute inset-0 bg-primary opacity-[0.04] blur-[30px] rounded-full scale-75"></div>
-              
-              <div class="relative w-40 h-40 flex items-center justify-center">
+            <!-- Right Half: Section Tag, Donut Chart & Legend -->
+            <div class="md:col-span-6 flex flex-col items-center justify-center">
+              <div class="w-full text-left md:text-center text-[11px] font-bold tracking-wider text-primary uppercase mb-2">TOTAL COMPOSITION</div>
+
+              <!-- Donut Chart Canvas with Center 100% -->
+              <div class="relative w-44 h-44 sm:w-48 sm:h-48 my-2 flex items-center justify-center">
                 <canvas id="pc-project-donut-canvas" class="w-full h-full"></canvas>
 
                 <!-- Center Text inside Doughnut cutout -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                  <span class="text-[11px] font-medium text-on-surface-variant leading-tight">Total Projects</span>
-                  <span class="font-headline text-2xl font-bold text-on-surface mt-0.5">${allProjects.length}</span>
+                  <span class="font-headline text-3xl font-black text-primary tracking-tight">100%</span>
+                  <span class="text-xs font-bold text-on-surface-variant mt-0.5">전체 구성</span>
                 </div>
               </div>
+
+              <!-- Bottom Legend (● 01  ● 02  ● 03  ● 04  ● 05) -->
+              <div class="flex items-center justify-center gap-3 sm:gap-4 mt-2 flex-wrap">
+                ${activeCategories.map(cat => `
+                  <div 
+                    class="flex items-center gap-1.5 cursor-pointer group text-xs text-on-surface-variant hover:text-primary font-mono font-medium"
+                    onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
+                    title="${cat.name} (${cat.pct}%)"
+                  >
+                    <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${cat.color};"></span>
+                    <span class="text-[11px]">${cat.num}</span>
+                  </div>
+                `).join('')}
+              </div>
             </div>
+
           </div>
         </div>
       `;
@@ -1465,9 +1466,9 @@ const PCApp = {
               data: data,
               backgroundColor: bgColors,
               borderColor: '#ffffff',
-              borderWidth: 2,
+              borderWidth: 3,
               hoverOffset: 6,
-              cutout: '72%'
+              cutout: '68%'
             }]
           },
           options: {
@@ -1488,7 +1489,7 @@ const PCApp = {
                   label: (context) => {
                     const idx = context.dataIndex;
                     const cat = activeCategories[idx];
-                    return ` ${cat.name}: ${cat.count}건 (${cat.pct.toFixed(1)}%)`;
+                    return ` ${cat.name}: ${cat.count}건 (${cat.pct}%)`;
                   }
                 }
               }
