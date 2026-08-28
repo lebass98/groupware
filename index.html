@@ -2051,21 +2051,64 @@
           </div>
         </div>
 
-        <!-- Search Bar Section -->
-        <div class="relative w-full">
-          <svg class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-          </svg>
-          <input class="w-full bg-surface-container-highest rounded-xl py-3.5 pl-12 pr-4 text-sm font-body border-2 border-transparent transition-all duration-300 placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest" id="project-search-input" onkeyup="App.filterProjects()" placeholder="프로젝트명, 사이트명, PM, 작성자 검색..." type="text"/>
+        <!-- Search Bar & Sort Section -->
+        <div class="flex gap-2">
+          <div class="relative flex-1">
+            <svg class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <input class="w-full bg-surface-container-highest rounded-xl py-3 pl-10 pr-3 text-xs font-body border-2 border-transparent transition-all duration-300 placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest" id="project-search-input" onkeyup="App.filterProjects()" placeholder="프로젝트명, 고객사, 담당자 검색..." type="text"/>
+          </div>
+
+          <!-- Sort Select Dropdown -->
+          <div class="relative shrink-0">
+            <select 
+              id="project-sort-select" 
+              class="h-full pl-3 pr-7 py-2.5 bg-surface-container-highest rounded-xl text-xs font-bold text-on-surface border border-transparent focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer" 
+              onchange="App.setProjectSort(this.value)"
+            >
+              <option value="recommend">추천순</option>
+              <option value="recent">최근수정</option>
+              <option value="name">이름순</option>
+              <option value="progress">진척도순</option>
+              <option value="deadline">마감임박</option>
+            </select>
+            <svg class="w-3.5 h-3.5 text-on-surface-variant absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 10l5 5 5-5z"/>
+            </svg>
+          </div>
         </div>
 
-        <!-- Category Filter Chips -->
+        <!-- Category Filter Chips (7개 탭: 전체, 진행중, 유지보수, 개선사업, 구축중, 운영용역, 완료) -->
         <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" id="project-filter-chips">
-          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold transition-all active:scale-95 project-chip active" onclick="App.setProjectFilter('all', this)">전체</button>
-          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip" onclick="App.setProjectFilter('in_progress', this)">진행중</button>
-          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip" onclick="App.setProjectFilter('maintenance', this)">유지보수</button>
-          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip" onclick="App.setProjectFilter('build', this)">구축/고도화</button>
-          <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip" onclick="App.setProjectFilter('my', this)">내 담당</button>
+          <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label text-xs font-bold transition-all active:scale-95 project-chip active flex items-center gap-1 shrink-0" data-filter="all" onclick="App.setProjectFilter('all', this)">
+            <span>전체</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20" id="m-proj-count-all">10</span>
+          </button>
+          <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip flex items-center gap-1 shrink-0" data-filter="in_progress" onclick="App.setProjectFilter('in_progress', this)">
+            <span>진행중</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-proj-count-in_progress">0</span>
+          </button>
+          <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip flex items-center gap-1 shrink-0" data-filter="maintenance" onclick="App.setProjectFilter('maintenance', this)">
+            <span>유지보수</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-proj-count-maintenance">0</span>
+          </button>
+          <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip flex items-center gap-1 shrink-0" data-filter="improvement" onclick="App.setProjectFilter('improvement', this)">
+            <span>개선사업</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-proj-count-improvement">0</span>
+          </button>
+          <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip flex items-center gap-1 shrink-0" data-filter="build" onclick="App.setProjectFilter('build', this)">
+            <span>구축중</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-proj-count-build">0</span>
+          </button>
+          <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip flex items-center gap-1 shrink-0" data-filter="operation" onclick="App.setProjectFilter('operation', this)">
+            <span>운영용역</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-proj-count-operation">0</span>
+          </button>
+          <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip flex items-center gap-1 shrink-0" data-filter="completed" onclick="App.setProjectFilter('completed', this)">
+            <span>완료</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-proj-count-completed">0</span>
+          </button>
         </div>
 
         <!-- Project List / Cards Section -->

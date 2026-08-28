@@ -261,6 +261,20 @@ const PCApp = {
         }
       }
 
+      // Projects State Sync (PC-Mobile 공통 마스터 데이터 동기화)
+      const savedProjects = localStorage.getItem('wordncode_groupware_projects');
+      if (savedProjects) {
+        try {
+          const parsedProj = JSON.parse(savedProjects);
+          if (Array.isArray(parsedProj) && parsedProj.length > 0) {
+            this.state.projects = parsedProj;
+          }
+        } catch (_) {}
+      }
+      if (!this.state.projects || this.state.projects.length === 0) {
+        this.state.projects = (window.MockData && window.MockData.projects) ? JSON.parse(JSON.stringify(window.MockData.projects)) : [];
+      }
+
       // Notifications Read State Sync
       const savedNotifs = localStorage.getItem('wordncode_notifications_read_state');
       if (savedNotifs) {
@@ -275,6 +289,14 @@ const PCApp = {
       }
     } catch (e) {
       console.warn('[PC] LocalStorage load error:', e);
+    }
+  },
+
+  saveProjects() {
+    try {
+      localStorage.setItem('wordncode_groupware_projects', JSON.stringify(this.state.projects || []));
+    } catch (e) {
+      console.warn('[PC] Projects save error:', e);
     }
   },
 
@@ -302,6 +324,10 @@ const PCApp = {
       if (this.state.recentProjects) currentState.recentProjects = this.state.recentProjects;
 
       localStorage.setItem('wordncode_groupware_state', JSON.stringify(currentState));
+
+      if (this.state.projects) {
+        this.saveProjects();
+      }
 
       // Save Notifications Read State
       if (this.state.notifications) {
@@ -4665,7 +4691,7 @@ const PCApp = {
 
     // 4. Cross-Device Cross-Tab Real-time Storage Sync (모바일-PC 실시간 동기화)
     window.addEventListener('storage', (e) => {
-      if (e.key === 'wordncode_groupware_state' || e.key === 'wordncode_notifications_read_state') {
+      if (e.key === 'wordncode_groupware_state' || e.key === 'wordncode_notifications_read_state' || e.key === 'wordncode_groupware_projects') {
         this.loadState();
         this.updateNotificationBadge();
         // 메인 대시보드 3열 위젯 전면 실시간 갱신

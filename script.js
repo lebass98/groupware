@@ -166,6 +166,7 @@ const App = {
     projects: (window.MockData && window.MockData.projects) || [],
     projectsFilter: 'all',
     projectsSearchQuery: '',
+    projectsSort: 'recommend',
     projectViewMode: 'card',
     // Work Reports State
     workReports: (window.MockData && window.MockData.workReports) || [],
@@ -255,7 +256,7 @@ const App = {
 
     // Cross-Device Cross-Tab Real-time Storage Sync (멀티 디바이스 실시간 데이터 동기화)
     window.addEventListener('storage', (e) => {
-      if (e.key === 'wordncode_groupware_state' || e.key === 'wordncode_notifications_read_state') {
+      if (e.key === 'wordncode_groupware_state' || e.key === 'wordncode_notifications_read_state' || e.key === 'wordncode_groupware_projects') {
         this.loadState();
         this.updateNotificationBadge();
         if (this.state.isLoggedIn) {
@@ -270,6 +271,7 @@ const App = {
           this.renderTodayData();
           if (typeof this.renderLogs === 'function') this.renderLogs();
           if (typeof this.renderTodos === 'function') this.renderTodos();
+          if (typeof this.renderProjects === 'function') this.renderProjects();
           if (this.state.activeTab === 'screen-notice-list') this.renderNotifications();
         }
       }
@@ -371,6 +373,20 @@ const App = {
         }
       }
 
+      // Projects State Sync (모바일-PC 공통 마스터 데이터 동기화)
+      const savedProjects = localStorage.getItem('wordncode_groupware_projects');
+      if (savedProjects) {
+        try {
+          const parsedProj = JSON.parse(savedProjects);
+          if (Array.isArray(parsedProj) && parsedProj.length > 0) {
+            this.state.projects = parsedProj;
+          }
+        } catch (_) {}
+      }
+      if (!this.state.projects || this.state.projects.length === 0) {
+        this.state.projects = (window.MockData && window.MockData.projects) ? JSON.parse(JSON.stringify(window.MockData.projects)) : [];
+      }
+
       // Notifications Read State Sync
       const savedNotifs = localStorage.getItem('wordncode_notifications_read_state');
       if (savedNotifs) {
@@ -385,6 +401,14 @@ const App = {
       }
     } catch (e) {
       console.warn('LocalStorage error:', e);
+    }
+  },
+
+  saveProjects() {
+    try {
+      localStorage.setItem('wordncode_groupware_projects', JSON.stringify(this.state.projects || []));
+    } catch (e) {
+      console.warn('Projects save error:', e);
     }
   },
 
@@ -404,6 +428,10 @@ const App = {
         activeTab: this.state.activeTab,
         menuColumns: this.state.menuColumns
       }));
+
+      if (this.state.projects) {
+        this.saveProjects();
+      }
 
       // Save Notifications Read State
       if (this.state.notifications) {
@@ -6073,19 +6101,27 @@ const App = {
   },
 
   // =========================================
-  // 전사 프로젝트 관리 모듈 (Projects Management)
+  // 전사 프로젝트 관리 모듈 (Projects Management - PC와 100% 동일한 데이터 및 필터 동기화)
   // =========================================
   setProjectFilter(filterKey, chipEl) {
-    this.state.projectsFilter = filterKey;
-    const chips = document.querySelectorAll('.project-chip');
+    this.state.projectsFilter = filterKey || 'all';
+    const chips = document.querySelectorAll('#project-filter-chips .project-chip');
     chips.forEach(c => {
-      c.classList.remove('bg-primary', 'text-on-primary', 'active');
-      c.classList.add('bg-surface-container', 'text-on-surface-variant');
+      const isTarget = c.getAttribute('data-filter') === this.state.projectsFilter;
+      const countBadge = c.querySelector('span:last-child');
+      if (isTarget) {
+        c.className = 'whitespace-nowrap px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label text-xs font-bold transition-all active:scale-95 project-chip active flex items-center gap-1 shrink-0';
+        if (countBadge) countBadge.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 text-white';
+      } else {
+        c.className = 'whitespace-nowrap px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest project-chip flex items-center gap-1 shrink-0';
+        if (countBadge) countBadge.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest text-on-surface-variant';
+      }
     });
-    if (chipEl) {
-      chipEl.classList.remove('bg-surface-container', 'text-on-surface-variant');
-      chipEl.classList.add('bg-primary', 'text-on-primary', 'active');
-    }
+    this.renderProjects();
+  },
+
+  setProjectSort(sortType) {
+    this.state.projectsSort = sortType || 'recommend';
     this.renderProjects();
   },
 
@@ -6109,39 +6145,150 @@ const App = {
     this.renderProjects();
   },
 
+  getProjectCategory(p) {
+    const text = `${p.status || ''} ${p.statusText || ''} ${p.title || ''} ${p.category || ''}`;
+    if (p.status === 'completed' || text.includes('완료')) {
+      return 'completed';
+    }
+    if (p.status === 'build' || text.includes('플랫폼 구축') || text.includes('신규구축') || (text.includes('구축') && !text.includes('고도화') && !text.includes('개선'))) {
+      return 'build';
+    }
+    if (p.status === 'improvement' || text.includes('개선') || text.includes('고도화') || text.includes('연계개선')) {
+      return 'improvement';
+    }
+    if (p.status === 'operation' || text.includes('운영용역') || text.includes('운영 용역') || text.includes('유지보수 용역') || text.includes('유지보수용역') || text.includes('유지관리')) {
+      return 'operation';
+    }
+    if (p.status === 'maintenance' || text.includes('유지보수')) {
+      return 'maintenance';
+    }
+    return 'in_progress';
+  },
+
+  getProjectStatusBadge(p) {
+    const cat = this.getProjectCategory(p);
+    switch (cat) {
+      case 'build':
+        return {
+          badgeClass: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-bold',
+          label: p.statusText || '구축중'
+        };
+      case 'improvement':
+        return {
+          badgeClass: 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/20 font-bold',
+          label: p.statusText || '개선사업'
+        };
+      case 'operation':
+        return {
+          badgeClass: 'bg-teal-500/15 text-teal-600 dark:text-teal-400 border border-teal-500/20 font-bold',
+          label: p.statusText || '운영용역'
+        };
+      case 'maintenance':
+        return {
+          badgeClass: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-bold',
+          label: p.statusText || '유지보수'
+        };
+      case 'completed':
+        return {
+          badgeClass: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-bold',
+          label: p.statusText || '완료'
+        };
+      case 'in_progress':
+      default:
+        return {
+          badgeClass: 'bg-primary/15 text-primary border border-primary/20 font-bold',
+          label: p.statusText || '진행중'
+        };
+    }
+  },
+
   renderProjects() {
     const container = document.getElementById('project-list-container');
     const totalCountEl = document.getElementById('project-total-count');
     if (!container) return;
 
-    let list = [...(this.state.projects || (window.MockData && window.MockData.projects) || [])];
+    let allProjects = (this.state.projects || (window.MockData && window.MockData.projects) || []);
+
+    // 1. 카테고리별 건수 계산 및 모바일 칩 뱃지 갱신
+    const counts = {
+      all: allProjects.length,
+      in_progress: 0,
+      maintenance: 0,
+      improvement: 0,
+      build: 0,
+      operation: 0,
+      completed: 0
+    };
+
+    allProjects.forEach(p => {
+      const cat = this.getProjectCategory(p);
+      if (counts[cat] !== undefined) counts[cat]++;
+    });
+
+    Object.keys(counts).forEach(key => {
+      const badge = document.getElementById(`m-proj-count-${key}`);
+      if (badge) badge.textContent = counts[key];
+    });
+
+    // 2. 카테고리 필터링
     const filter = this.state.projectsFilter || 'all';
+    let list = allProjects.filter(p => {
+      if (filter === 'all') return true;
+      return this.getProjectCategory(p) === filter;
+    });
+
+    // 3. 통합 검색 필터링
     const query = (this.state.projectsSearchQuery || '').toLowerCase().trim();
-
-    // 1. 상태 및 탭 필터링
-    if (filter === 'in_progress') {
-      list = list.filter(p => p.status === 'in_progress');
-    } else if (filter === 'maintenance') {
-      list = list.filter(p => p.status === 'maintenance');
-    } else if (filter === 'build') {
-      list = list.filter(p => p.status === 'build');
-    } else if (filter === 'my') {
-      const myName = this.state.user?.name || '이재광';
-      list = list.filter(p => (p.pm && p.pm.includes(myName)) || (p.author && p.author.includes(myName)));
-    }
-
-    // 2. 통합 검색 필터링
     if (query) {
-      list = list.filter(p =>
-        (p.title && p.title.toLowerCase().includes(query)) ||
-        (p.projectId && p.projectId.toLowerCase().includes(query)) ||
-        (p.siteName && p.siteName.toLowerCase().includes(query)) ||
-        (p.siteId && p.siteId.toLowerCase().includes(query)) ||
-        (p.pm && p.pm.toLowerCase().includes(query)) ||
-        (p.author && p.author.toLowerCase().includes(query)) ||
-        (p.category && p.category.toLowerCase().includes(query))
-      );
+      list = list.filter(p => {
+        const fullText = [
+          p.title,
+          p.clientName,
+          p.siteName,
+          p.siteId,
+          p.projectId,
+          p.category,
+          p.statusText,
+          p.pm,
+          p.planner,
+          p.designer,
+          p.publisher,
+          p.developer,
+          p.author,
+          p.devLang,
+          p.content
+        ].filter(Boolean).join(' ').toLowerCase();
+        return fullText.includes(query);
+      });
     }
+
+    // 4. 정렬 옵션 적용 (추천순, 최근수정순, 이름순, 진척도순, 마감임박순)
+    const sort = this.state.projectsSort || 'recommend';
+    list.sort((a, b) => {
+      if (sort === 'name') {
+        return (a.title || '').localeCompare(b.title || '', 'ko');
+      } else if (sort === 'recent') {
+        const dateA = a.dateFull || a.date || '';
+        const dateB = b.dateFull || b.date || '';
+        return dateB.localeCompare(dateA);
+      } else if (sort === 'progress') {
+        const progA = parseInt(a.views || 80, 10);
+        const progB = parseInt(b.views || 80, 10);
+        return progB - progA;
+      } else if (sort === 'deadline') {
+        const deadA = a.periodEnd || a.period || '9999-99-99';
+        const deadB = b.periodEnd || b.period || '9999-99-99';
+        return deadA.localeCompare(deadB);
+      } else {
+        const catScore = { build: 5, improvement: 4, in_progress: 3, operation: 2, maintenance: 1, completed: 0 };
+        const scoreA = catScore[this.getProjectCategory(a)] || 0;
+        const scoreB = catScore[this.getProjectCategory(b)] || 0;
+        if (scoreA !== scoreB) return scoreB - scoreA;
+        const dateA = a.dateFull || a.date || '';
+        const dateB = b.dateFull || b.date || '';
+        return dateB.localeCompare(dateA);
+      }
+    });
 
     if (totalCountEl) {
       totalCountEl.textContent = `총 ${list.length}개`;
@@ -6150,7 +6297,9 @@ const App = {
     if (list.length === 0) {
       container.innerHTML = `
         <div class="flex flex-col items-center justify-center py-16 text-center bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10 shadow-2xs">
-          <span class="material-symbols-outlined text-4xl text-on-surface-variant opacity-60 mb-2">folder_off</span>
+          <svg class="w-10 h-10 text-on-surface-variant opacity-60 mb-2" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+          </svg>
           <h3 class="font-headline text-base font-bold text-on-surface mb-1">검색된 프로젝트가 없습니다</h3>
           <p class="text-xs text-on-surface-variant max-w-xs">다른 검색어를 입력하거나 필터를 변경해 보세요.</p>
         </div>
@@ -6160,27 +6309,31 @@ const App = {
 
     // -------------------------------------------------------------
     // 1. 간략화 리스트 모드 (projectViewMode === 'list')
-    // 1. 좌측: 폴더아이콘 + 프로젝트 제목
-    // 2. 우측: 작성한 날짜만 깔끔하게 표시
     // -------------------------------------------------------------
     if (this.state.projectViewMode === 'list') {
       container.className = "flex flex-col gap-2.5";
       container.innerHTML = list.map(p => {
         const formattedDate = (p.date || '').replace(/-/g, '.');
+        const badge = this.getProjectStatusBadge(p);
 
         return `
-          <div class="flex items-center justify-between bg-surface-container-lowest rounded-md px-4 py-3.5 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openProjectDetail(${p.id})">
-            <!-- 1. 폴더아이콘 + 프로젝트 제목 및 하단 줄내림 날짜 -->
+          <div class="flex items-center justify-between bg-surface-container-lowest rounded-xl px-4 py-3.5 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openProjectDetail(${p.id})">
             <div class="flex items-center gap-3 min-w-0 flex-1 mr-3">
-              <span class="material-symbols-outlined text-primary text-xl group-hover:scale-110 transition-transform shrink-0">folder_open</span>
+              <svg class="w-5 h-5 text-primary shrink-0 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>
+              </svg>
               <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-1.5 mb-0.5">
+                  <span class="px-2 py-0.2 rounded-md text-[10px] font-bold ${badge.badgeClass}">${badge.label}</span>
+                  <span class="text-[11px] font-mono text-on-surface-variant/80 font-medium">${formattedDate}</span>
+                </div>
                 <h3 class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</h3>
-                <span class="text-[11px] font-mono text-on-surface-variant/80 font-medium mt-0.5">${formattedDate}</span>
               </div>
             </div>
             
-            <!-- 2. 우측: 이동 화살표 -->
-            <span class="material-symbols-outlined text-on-surface-variant text-base group-hover:translate-x-1 transition-transform shrink-0">chevron_right</span>
+            <svg class="w-5 h-5 text-on-surface-variant group-hover:translate-x-1 transition-transform shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+            </svg>
           </div>
         `;
       }).join('');
@@ -6189,45 +6342,40 @@ const App = {
 
     // -------------------------------------------------------------
     // 2. 카드 모드 (projectViewMode === 'card')
-    // 1. 상단타이틀(폴더아이콘 영역): 프로젝트 제목 (ID 표시 안함)
-    // 2. 우측(기존 몇개 업무 자리): PM 이름
-    // 3. 진행도 요약(기존 대기/진행중 자리): 글 번호, 상태 뱃지, 프로젝트 ID
-    // 4. 그레이박스 안: 사이트명과 (id)
     // -------------------------------------------------------------
     container.className = "flex flex-col gap-4";
     container.innerHTML = list.map(p => {
       const pmText = (p.pm && p.pm !== '-') ? p.pm : '미지정';
       const formattedDate = (p.date || '').replace(/-/g, '.');
-
-      let statusBadgeClass = 'bg-primary/10 text-primary border-primary/20';
-      if (p.status === 'maintenance') statusBadgeClass = 'bg-secondary/10 text-secondary border-secondary/20';
-      else if (p.status === 'build') statusBadgeClass = 'bg-tertiary-container/30 text-tertiary border-tertiary/20';
+      const badge = this.getProjectStatusBadge(p);
+      const progressVal = p.views ? `${p.views}%` : '85%';
 
       return `
-        <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3.5 border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] active:scale-98 transition-all cursor-pointer group text-left" onclick="App.openProjectDetail(${p.id})">
-          <!-- 1: 상단 타이틀(폴더아이콘 + 프로젝트제목) & 우측 화살표 -->
+        <div class="bg-surface-container-lowest p-5 rounded-2xl flex flex-col gap-3 border border-outline-variant/10 shadow-[0_2px_12px_rgba(35,44,81,0.03)] hover:shadow-[0_8px_24px_rgba(35,44,81,0.08)] active:scale-98 transition-all cursor-pointer group text-left" onclick="App.openProjectDetail(${p.id})">
+          <!-- 1: 상단 타이틀 & 우측 화살표 -->
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2 min-w-0 flex-1 mr-2">
-              <span class="material-symbols-outlined text-primary text-xl group-hover:scale-110 transition-transform shrink-0">folder_open</span>
+              <svg class="w-5 h-5 text-primary shrink-0 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>
+              </svg>
               <h3 class="font-headline font-bold text-base text-on-surface group-hover:text-primary transition-colors truncate">${p.title}</h3>
             </div>
-            <span class="material-symbols-outlined text-on-surface-variant text-lg group-hover:translate-x-1 transition-transform shrink-0">chevron_right</span>
+            <svg class="w-5 h-5 text-on-surface-variant group-hover:translate-x-1 transition-transform shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+            </svg>
           </div>
 
-          <!-- 2: 글 번호, PM, 상태 뱃지, 프로젝트 ID 태그 & 우측 끝 작성일자 -->
-          <div class="flex items-center justify-between gap-2 pt-0.5">
-            <div class="flex items-center gap-2 flex-wrap min-w-0">
-              <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-mono font-bold">
-                No. ${p.no}
-              </span>
+          <!-- 2: 고객사, PM, 상태 뱃지, 프로젝트 ID & 작성일자 -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 flex-wrap min-w-0">
               <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] font-bold">
-                ${pmText}
+                ${p.clientName || '고객사'}
               </span>
-              <span class="px-2.5 py-0.5 rounded-full ${statusBadgeClass} text-[11px] font-bold border">
-                ${p.statusText || '진행중'}
+              <span class="px-2.5 py-0.5 rounded-full ${badge.badgeClass} text-[11px] font-bold border">
+                ${badge.label}
               </span>
-              <span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[11px] font-mono font-medium">
-                ${p.projectId}
+              <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-medium">
+                PM ${pmText}
               </span>
             </div>
             <span class="font-mono text-on-surface-variant text-xs font-medium shrink-0">
@@ -6235,13 +6383,27 @@ const App = {
             </span>
           </div>
 
-          <!-- 4: 그레이박스 -> 사이트명과 (id) -->
-          <div class="bg-surface-container-low p-3 rounded-md flex items-center text-xs border border-outline-variant/10">
+          <!-- 3: 진척도 바 -->
+          <div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/10">
+            <div class="flex justify-between items-center text-xs text-on-surface-variant font-medium mb-1.5">
+              <span>기간: <strong class="text-on-surface font-bold">${p.period || '2026-07 ~ 2026-12'}</strong></span>
+              <span class="font-bold text-primary">${progressVal}</span>
+            </div>
+            <div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+              <div class="h-full bg-primary rounded-full transition-all duration-500" style="width: ${progressVal};"></div>
+            </div>
+          </div>
+
+          <!-- 4: 사이트명과 ID -->
+          <div class="bg-surface-container-low px-3 py-2 rounded-lg flex items-center text-xs border border-outline-variant/10 justify-between">
             <div class="flex items-center gap-1.5 truncate">
-              <span class="material-symbols-outlined text-sm text-on-surface-variant shrink-0">web</span>
+              <svg class="w-4 h-4 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+              </svg>
               <span class="font-medium text-on-surface truncate">${p.siteName}</span>
               <span class="text-on-surface-variant/70 text-[11px] font-mono shrink-0">(${p.siteId})</span>
             </div>
+            <span class="text-[11px] font-medium text-primary shrink-0">상세보기</span>
           </div>
         </div>
       `;
