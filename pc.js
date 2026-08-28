@@ -773,145 +773,144 @@ const PCApp = {
     this.renderRightCol();
   },
 
-  // 5-1. Left Column
+  // 5-1. Left Column (1열: 프로필 + 근태 & 출/퇴근 + 연차/휴가 현황 통합 위젯 & 이달의 생일자 위젯)
   renderLeftCol() {
-    // 1. Profile Widget
+    // 1. Profile + Commute + Leave Unified Bento Card Widget
     const profileWrap = document.getElementById('pc-widget-profile');
     if (profileWrap) {
       const now = new Date();
       const todayScheds = this.getSchedulesForDay(now.getFullYear(), now.getMonth() + 1, now.getDate()) || [];
       profileWrap.innerHTML = `
-        <div class="pc-bento-card pc-profile-card text-center">
-          <div class="pc-profile-avatar-wrap">
-            <img src="${this.state.user.avatar}" class="pc-profile-avatar" alt="사용자 프로필" />
-          </div>
-          <h2 class="pc-profile-name text-center">${this.state.user.name} ${this.state.user.role}</h2>
-          <p class="pc-profile-dept text-center">${this.state.user.dept} | 워드앤코드</p>
-          
-          <div class="pc-profile-counters">
-            <div class="pc-counter-item" onclick="document.getElementById('pc-widget-company-schedule')?.scrollIntoView({ behavior: 'smooth' })">
-              <span class="pc-counter-num">${todayScheds.length}</span>
-              <span class="pc-counter-label">오늘 일정</span>
-            </div>
-            <div class="pc-counter-item" onclick="PCApp.switchScreen('work-report')">
-              <span class="pc-counter-num">1</span>
-              <span class="pc-counter-label">작성할 보고</span>
-            </div>
-            <div class="pc-counter-item" onclick="PCApp.switchScreen('finance')">
-              <span class="pc-counter-num">0</span>
-              <span class="pc-counter-label">결재 대기</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // 2. Check-In & Commute Widget (Figma Style - 1열 연차현황 위로 배치)
-    const commuteWrap = document.getElementById('pc-widget-commute');
-    if (commuteWrap) {
-      commuteWrap.innerHTML = `
-        <div class="pc-bento-card pc-commute-card">
-          <div class="pc-card-header mb-3">
-            <span class="pc-card-title flex items-center gap-2">
-              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-              </svg>
-              근태 & 출/퇴근
-            </span>
-            <span class="pc-commute-status-pill ${this.state.isCheckedIn ? 'checked-in' : ''}">
-              <span class="w-1.5 h-1.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
-              ${this.state.isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}
-            </span>
-          </div>
-
-          <div class="pc-commute-time-display">
-            <div>
-              <span class="text-xs text-on-surface-variant block mb-0.5 font-medium">출근 시간</span>
-              <span class="pc-commute-big-time text-primary">${this.state.checkInTime}</span>
-            </div>
-            <span class="text-on-surface-variant text-xl font-bold">→</span>
-            <div>
-              <span class="text-xs text-on-surface-variant block mb-0.5 font-medium">퇴근 시간</span>
-              <span class="pc-commute-big-time ${this.state.checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${this.state.checkOutTime}</span>
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <div class="flex justify-between text-xs font-bold text-on-surface-variant mb-1.5">
-              <span>주 누적 근무시간</span>
-              <span class="text-primary font-bold">38시간 45분 / 40시간</span>
-            </div>
-            <div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
-              <div class="h-full bg-primary rounded-full" style="width: 96%;"></div>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-1.5 text-xs text-on-surface-variant mb-3 font-medium">
-            <svg class="w-4 h-4 text-secondary shrink-0" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-            </svg>
-            <span class="truncate">위치 인증: <strong class="font-bold text-on-surface">${this.state.user.location}</strong></span>
-          </div>
-
-          <div class="pc-commute-btn-group">
-            <button class="pc-commute-btn pc-commute-btn-in" onclick="PCApp.handleCheckIn()">
-              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
-              출근하기
-            </button>
-            <button class="pc-commute-btn pc-commute-btn-out" onclick="PCApp.handleCheckOut()">
-              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
-              퇴근하기
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    // 3. Leave / Vacation Widget
-    const leaveWrap = document.getElementById('pc-widget-leave');
-    if (leaveWrap) {
-      leaveWrap.innerHTML = `
         <div class="pc-bento-card">
-          <div class="pc-card-header">
-            <span class="pc-card-title whitespace-nowrap">
-              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/>
-              </svg>
-              연차 / 휴가 현황
-            </span>
-            <button class="pc-card-action" onclick="PCApp.switchScreen('request')">신청</button>
-          </div>
-          
-          <div class="pc-leave-stat-grid">
-            <div class="pc-leave-stat-box">
-              <div class="pc-leave-val text-primary">9.0일</div>
-              <div class="pc-leave-lbl">잔여 연차</div>
+          <!-- 1. Profile Section -->
+          <div class="text-center pt-1 pb-1">
+            <div class="pc-profile-avatar-wrap">
+              <img src="${this.state.user.avatar}" class="pc-profile-avatar" alt="사용자 프로필" />
             </div>
-            <div class="pc-leave-stat-box">
-              <div class="pc-leave-val text-on-surface">26.0일</div>
-              <div class="pc-leave-lbl">사용 연차</div>
-            </div>
-            <div class="pc-leave-stat-box">
-              <div class="pc-leave-val text-on-surface-variant">35.0일</div>
-              <div class="pc-leave-lbl">총 연차</div>
+            <h2 class="pc-profile-name text-center">${this.state.user.name} ${this.state.user.role}</h2>
+            <p class="pc-profile-dept text-center mb-3.5">${this.state.user.dept} | 워드앤코드</p>
+            
+            <div class="pc-profile-counters">
+              <div class="pc-counter-item" onclick="document.getElementById('pc-widget-company-schedule')?.scrollIntoView({ behavior: 'smooth' })">
+                <span class="pc-counter-num">${todayScheds.length}</span>
+                <span class="pc-counter-label">오늘 일정</span>
+              </div>
+              <div class="pc-counter-item" onclick="PCApp.switchScreen('work-report')">
+                <span class="pc-counter-num">1</span>
+                <span class="pc-counter-label">작성할 보고</span>
+              </div>
+              <div class="pc-counter-item" onclick="PCApp.switchScreen('finance')">
+                <span class="pc-counter-num">0</span>
+                <span class="pc-counter-label">결재 대기</span>
+              </div>
             </div>
           </div>
 
-          <div class="pc-leave-history-list">
-            <div class="pc-leave-history-item">
-              <span class="font-bold text-sm text-on-surface">연차 (종일)</span>
-              <span class="text-xs text-on-surface-variant font-medium">2026-08-19</span>
+          <!-- Divider Line 1 -->
+          <div class="my-5 border-t border-outline/60"></div>
+
+          <!-- 2. Commute & Check-In Section -->
+          <div>
+            <div class="pc-card-header mb-3">
+              <span class="pc-card-title flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </svg>
+                근태 & 출/퇴근
+              </span>
+              <span class="pc-commute-status-pill ${this.state.isCheckedIn ? 'checked-in' : ''}">
+                <span class="w-1.5 h-1.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
+                ${this.state.isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}
+              </span>
             </div>
-            <div class="pc-leave-history-item">
-              <span class="font-bold text-sm text-secondary">반차 (오후)</span>
-              <span class="text-xs text-on-surface-variant font-medium">2026-08-21</span>
+
+            <div class="pc-commute-time-display mb-4">
+              <div>
+                <span class="text-xs text-on-surface-variant block mb-0.5 font-medium">출근 시간</span>
+                <span class="pc-commute-big-time text-primary">${this.state.checkInTime}</span>
+              </div>
+              <span class="text-on-surface-variant text-xl font-bold">→</span>
+              <div>
+                <span class="text-xs text-on-surface-variant block mb-0.5 font-medium">퇴근 시간</span>
+                <span class="pc-commute-big-time ${this.state.checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${this.state.checkOutTime}</span>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="flex justify-between text-xs font-bold text-on-surface-variant mb-1.5">
+                <span>주 누적 근무시간</span>
+                <span class="text-primary font-bold">38시간 45분 / 40시간</span>
+              </div>
+              <div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
+                <div class="h-full bg-primary rounded-full" style="width: 96%;"></div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1.5 text-xs text-on-surface-variant mb-3.5 font-medium">
+              <svg class="w-4 h-4 text-secondary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+              <span class="truncate">위치 인증: <strong class="font-bold text-on-surface">${this.state.user.location}</strong></span>
+            </div>
+
+            <div class="pc-commute-btn-group">
+              <button class="pc-commute-btn pc-commute-btn-in" onclick="PCApp.handleCheckIn()">
+                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                출근하기
+              </button>
+              <button class="pc-commute-btn pc-commute-btn-out" onclick="PCApp.handleCheckOut()">
+                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+                퇴근하기
+              </button>
+            </div>
+          </div>
+
+          <!-- Divider Line 2 -->
+          <div class="my-5 border-t border-outline/60"></div>
+
+          <!-- 3. Leave / Vacation Section -->
+          <div>
+            <div class="pc-card-header mb-3">
+              <span class="pc-card-title whitespace-nowrap flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.42-2.02.54 4.09 7.37-4.79 1.28-2.27-1.74-1.4.38 2.05 3.55 1.4.38 15.45-4.14c.81-.21 1.29-1.04 1.07-1.84z"/>
+                </svg>
+                연차 / 휴가 현황
+              </span>
+              <button class="pc-card-action text-xs" onclick="PCApp.switchScreen('request')">신청</button>
+            </div>
+            
+            <div class="pc-leave-stat-grid mb-3.5">
+              <div class="pc-leave-stat-box">
+                <div class="pc-leave-val text-primary">9.0일</div>
+                <div class="pc-leave-lbl">잔여 연차</div>
+              </div>
+              <div class="pc-leave-stat-box">
+                <div class="pc-leave-val text-on-surface">26.0일</div>
+                <div class="pc-leave-lbl">사용 연차</div>
+              </div>
+              <div class="pc-leave-stat-box">
+                <div class="pc-leave-val text-on-surface-variant">35.0일</div>
+                <div class="pc-leave-lbl">총 연차</div>
+              </div>
+            </div>
+
+            <div class="pc-leave-history-list">
+              <div class="pc-leave-history-item">
+                <span class="font-bold text-sm text-on-surface">연차 (종일)</span>
+                <span class="text-xs text-on-surface-variant font-medium">2026-08-19</span>
+              </div>
+              <div class="pc-leave-history-item">
+                <span class="font-bold text-sm text-secondary">반차 (오후)</span>
+                <span class="text-xs text-on-surface-variant font-medium">2026-08-21</span>
+              </div>
             </div>
           </div>
         </div>
       `;
     }
 
-    // 4. Birthday Widget
+    // 2. Birthday Widget
     const birthWrap = document.getElementById('pc-widget-birthday');
     if (birthWrap) {
       birthWrap.innerHTML = `
