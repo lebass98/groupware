@@ -1333,7 +1333,7 @@ const PCApp = {
       `;
     }
 
-    // 2. Project Status Donut Chart Widget (Fluid Attendant Design System Spec)
+    // 2. Project Status Donut Chart Widget (Chart.js Powered - Fluid Attendant Design Spec)
     const summaryWrap = document.getElementById('pc-widget-project-summary');
     if (summaryWrap) {
       const allProjects = (this.state.projects || (window.MockData && window.MockData.projects) || []);
@@ -1368,38 +1368,6 @@ const PCApp = {
         const pct = allProjects.length > 0 ? ((count / allProjects.length) * 100).toFixed(1) : '0.0';
         return { ...cat, count, pct: parseFloat(pct) };
       });
-
-      // SVG Donut Chart 연산 (r=40, circumference=251.327)
-      const radius = 40;
-      const circumference = 2 * Math.PI * radius; // 251.327
-      let currentOffset = 0;
-
-      const svgSegments = activeCategories.filter(c => c.count > 0).map(cat => {
-        const ratio = cat.count / allProjects.length;
-        const arcLength = ratio * circumference;
-        const gap = activeCategories.filter(c => c.count > 0).length > 1 ? 1.5 : 0;
-        const visibleDash = Math.max(0, arcLength - gap);
-        const dashArray = `${visibleDash.toFixed(2)} ${(circumference - visibleDash).toFixed(2)}`;
-        const dashOffset = (-currentOffset).toFixed(2);
-        currentOffset += arcLength;
-
-        return `
-          <circle 
-            class="donut-segment cursor-pointer transition-all duration-300 hover:opacity-90" 
-            cx="50" 
-            cy="50" 
-            fill="none" 
-            r="${radius}" 
-            stroke="${cat.color}" 
-            stroke-width="16" 
-            stroke-dasharray="${dashArray}" 
-            stroke-dashoffset="${dashOffset}"
-            onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
-          >
-            <title>${cat.name}: ${cat.count}건 (${cat.pct.toFixed(1)}%)</title>
-          </circle>
-        `;
-      }).join('');
 
       summaryWrap.innerHTML = `
         <div class="bg-surface-container-low rounded-2xl p-6 w-full shadow-[0_8px_32px_rgba(35,44,81,0.06)] relative overflow-hidden border border-outline-variant/15">
@@ -1458,22 +1426,17 @@ const PCApp = {
               }).join('')}
             </div>
 
-            <!-- Right Column: Donut Chart (5 Cols) -->
+            <!-- Right Column: Chart.js Donut Chart (5 Cols) -->
             <div class="md:col-span-5 flex items-center justify-center relative">
               <!-- Ambient glow behind chart -->
               <div class="absolute inset-0 bg-primary opacity-[0.04] blur-[30px] rounded-full scale-75"></div>
               
               <div class="relative w-40 h-40 flex items-center justify-center">
-                <svg class="w-full h-full -rotate-90 drop-shadow-[0_6px_16px_rgba(0,82,208,0.12)]" viewBox="0 0 100 100">
-                  <!-- Background ring -->
-                  <circle class="opacity-50" cx="50" cy="50" fill="none" r="40" stroke="var(--surface-container-highest, #ffffff)" stroke-width="12"></circle>
-                  <!-- Segments -->
-                  ${svgSegments}
-                </svg>
+                <canvas id="pc-project-donut-canvas" class="w-full h-full"></canvas>
 
-                <!-- Center Text -->
+                <!-- Center Text inside Doughnut cutout -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                  <span class="text-[11px] font-medium text-on-surface-variant">Total Projects</span>
+                  <span class="text-[11px] font-medium text-on-surface-variant leading-tight">Total Projects</span>
                   <span class="font-headline text-2xl font-bold text-on-surface mt-0.5">${allProjects.length}</span>
                 </div>
               </div>
@@ -1481,6 +1444,72 @@ const PCApp = {
           </div>
         </div>
       `;
+
+      // Chart.js Doughnut 인스턴스 생성 및 렌더링
+      const canvas = document.getElementById('pc-project-donut-canvas');
+      if (canvas && window.Chart) {
+        if (this._projectChart) {
+          try { this._projectChart.destroy(); } catch (_) {}
+          this._projectChart = null;
+        }
+
+        const labels = activeCategories.map(c => c.name);
+        const data = activeCategories.map(c => c.count);
+        const bgColors = activeCategories.map(c => c.color);
+
+        this._projectChart = new Chart(canvas, {
+          type: 'doughnut',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              backgroundColor: bgColors,
+              borderColor: '#ffffff',
+              borderWidth: 2,
+              hoverOffset: 6,
+              cutout: '72%'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                enabled: true,
+                backgroundColor: 'rgba(35, 44, 81, 0.92)',
+                titleFont: { family: 'Plus Jakarta Sans', size: 12, weight: 'bold' },
+                bodyFont: { family: 'Manrope', size: 12 },
+                padding: 10,
+                cornerRadius: 8,
+                callbacks: {
+                  label: (context) => {
+                    const idx = context.dataIndex;
+                    const cat = activeCategories[idx];
+                    return ` ${cat.name}: ${cat.count}건 (${cat.pct.toFixed(1)}%)`;
+                  }
+                }
+              }
+            },
+            animation: {
+              duration: 750,
+              easing: 'easeOutQuart'
+            },
+            onClick: (evt, elements) => {
+              if (elements && elements.length > 0) {
+                const elementIndex = elements[0].index;
+                const cat = activeCategories[elementIndex];
+                if (cat) {
+                  PCApp.switchScreen('project');
+                  PCApp.setProjectFilter(cat.key);
+                }
+              }
+            }
+          }
+        });
+      }
     }
 
     // 3. To-Do Widget (카드 형태 최근 3개 렌더링)
