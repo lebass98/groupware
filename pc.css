@@ -1359,11 +1359,11 @@ strong {
   height: 20px;
 }
 .pc-commute-btn-in {
-  background: var(--secondary);
+  background: #0346FF;
   color: #fff;
 }
 .pc-commute-btn-in:hover {
-  background: #00704a;
+  background: var(--primary-dim, #002b99);
 }
 .pc-commute-btn-out {
   background: var(--surface-container-high);
