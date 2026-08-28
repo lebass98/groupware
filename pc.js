@@ -812,14 +812,14 @@ const PCApp = {
       profileWrap.innerHTML = `
         <div class="pc-bento-card">
           <!-- 1. Profile Section (Horizontal Layout: Photo left, Name/Role/Company right) -->
-          <div class="flex items-center gap-3.5 py-1">
-            <img src="${this.state.user.avatar}" class="w-14 h-14 rounded-full object-cover border-2 border-primary/20 shrink-0 shadow-xs" alt="사용자 프로필" />
+          <div class="flex items-center gap-3 py-0.5">
+            <img src="${this.state.user.avatar}" class="w-10 h-10 rounded-full object-cover border-2 border-primary/20 shrink-0 shadow-xs" alt="사용자 프로필" />
             <div class="min-w-0 flex-1 text-left">
               <div class="flex items-center gap-1.5 flex-wrap">
-                <h2 class="font-headline text-base sm:text-lg font-black text-on-surface tracking-tight">${this.state.user.name}</h2>
-                <span class="text-xs font-bold text-primary px-1.5 py-0.5 rounded-md bg-primary/10 leading-none">${this.state.user.role}</span>
+                <h2 class="font-headline text-sm sm:text-base font-black text-on-surface tracking-tight">${this.state.user.name}</h2>
+                <span class="text-[11px] font-bold text-primary px-1.5 py-0.5 rounded-md bg-primary/10 leading-none">${this.state.user.role}</span>
               </div>
-              <p class="text-xs text-on-surface-variant font-medium mt-1 truncate">${this.state.user.dept} · 워드앤코드</p>
+              <p class="text-[11px] text-on-surface-variant font-medium mt-0.5 truncate">${this.state.user.dept} · 워드앤코드</p>
             </div>
           </div>
 
