@@ -523,24 +523,8 @@
             </div>
           </div>
         </section>
-        
-        <!-- 2. Project Status Overview (프로젝트 현황 도넛 차트 위젯) -->
-        <section class="flex flex-col gap-4">
-          <header class="flex items-center justify-between px-1">
-            <div class="flex items-center gap-2">
-              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-              </svg>
-              <h2 class="font-headline text-lg font-bold">프로젝트 현황</h2>
-            </div>
-            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-project')">전체보기</button>
-          </header>
-          <div id="today-summary-project-container">
-            <!-- Dynamically populated by App.renderTodayProjectSummary() -->
-          </div>
-        </section>
 
-        <!-- 3. Attendance Log & Today's Schedule (근태일지 & 오늘의 일정 통합 위젯) -->
+        <!-- 2. Attendance Log & Today's Schedule (근태일지 & 오늘의 일정 통합 위젯) -->
         <section class="flex flex-col gap-4">
           <header class="flex items-center justify-between px-1">
             <div class="flex items-center gap-2">
@@ -556,7 +540,7 @@
           </div>
         </section>
 
-        <!-- 4. Notice Board Summary (공지사항 위젯) -->
+        <!-- 3. Notice Board Summary (공지사항 위젯) -->
         <section class="flex flex-col gap-4">
           <header class="flex items-center justify-between px-1">
             <div class="flex items-center gap-2">
@@ -572,7 +556,7 @@
           </div>
         </section>
 
-        <!-- 5. Today's To-Do Tasks (오늘의 할 일) -->
+        <!-- 4. Today's To-Do Tasks (오늘의 할 일) -->
         <section class="flex flex-col gap-4">
           <header class="flex items-center justify-between px-1">
             <div class="flex items-center gap-2">
@@ -653,6 +637,22 @@
           </header>
           <div id="today-summary-pending-list" class="flex flex-col gap-3">
             <!-- Dynamically populated by App.renderTodayData() -->
+          </div>
+        </section>
+
+        <!-- 8. Project Status Overview (프로젝트 현황 도넛 차트 위젯 - 맨 하단 배치) -->
+        <section class="flex flex-col gap-4">
+          <header class="flex items-center justify-between px-1">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+              </svg>
+              <h2 class="font-headline text-lg font-bold">프로젝트 현황</h2>
+            </div>
+            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-project')">전체보기</button>
+          </header>
+          <div id="today-summary-project-container">
+            <!-- Dynamically populated by App.renderTodayProjectSummary() -->
           </div>
         </section>
       </main>
