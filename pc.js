@@ -1645,7 +1645,7 @@ const PCApp = {
               const assignee = (t.assignees && t.assignees[0]) || { name: this.state.user.name, avatar: this.state.user.avatar };
 
               return `
-                <div class="p-3.5 bg-surface-container-low rounded-xl border border-outline hover:border-primary hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between gap-2.5" onclick="PCApp.openTodoDetailModal(${t.id})">
+                <div class="p-3.5 rounded-xl border border-outline hover:border-primary transition-all cursor-pointer group flex flex-col justify-between gap-2.5" onclick="PCApp.openTodoDetailModal(${t.id})">
                   <div class="flex items-center justify-between gap-1.5">
                     <div class="flex items-center gap-1.5 flex-wrap">
                       <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${statusBg}">${statusText}</span>
