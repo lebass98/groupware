@@ -182,7 +182,6 @@ const App = {
 
   init() {
     this.loadState();
-    this.applyTheme(this.state.settings.themeIdx || 3);
     this.startLiveClock();
     this.updateNotificationBadge();
 
@@ -5152,17 +5151,7 @@ const App = {
     if (deptEl) deptEl.innerText = `${user.dept || '퍼블리싱팀'} · ${user.email || 'yellow@wordncode.com'}`;
     if (avatarEl) avatarEl.src = user.avatar || 'profile.png';
 
-    // 2. 테마 팔레트 활성 상태 갱신
-    const currentTheme = (this.state.settings && this.state.settings.themeIdx) || 3;
-    document.querySelectorAll('.drawer-theme-btn').forEach(btn => {
-      if (Number(btn.getAttribute('data-theme-idx')) === Number(currentTheme)) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-
-    // 3. 다크 모드 토글 상태 갱신
+    // 2. 다크 모드 토글 상태 갱신
     const isDark = (this.state.settings && this.state.settings.dark) || false;
     const drawerDarkToggle = document.getElementById('drawer-dark-toggle');
     const drawerDarkKnob = document.getElementById('drawer-dark-knob');
@@ -5218,105 +5207,11 @@ const App = {
     }
   },
 
-  // Palette Theme Select Methods
-  openPaletteModal() {
-    const modal = document.getElementById('modal-theme-select');
-    const panel = document.getElementById('theme-select-panel');
-    if (modal && panel) {
-      modal.classList.remove('hidden');
-      setTimeout(() => {
-        panel.classList.remove('scale-95', 'opacity-0');
-        panel.classList.add('scale-100', 'opacity-100');
-      }, 10);
-    }
-  },
-
-  closePaletteModal() {
-    const modal = document.getElementById('modal-theme-select');
-    const panel = document.getElementById('theme-select-panel');
-    if (modal && panel) {
-      panel.classList.remove('scale-100', 'opacity-100');
-      panel.classList.add('scale-95', 'opacity-0');
-      setTimeout(() => {
-        modal.classList.add('hidden');
-      }, 200);
-    }
-  },
-
-  selectColorTheme(themeIdx) {
-    this.applyTheme(themeIdx);
-
-    // Save to state & LocalStorage
-    this.state.settings.themeIdx = themeIdx;
-    this.saveState();
-
-    // Update Drawer Theme Buttons active state
-    document.querySelectorAll('.drawer-theme-btn').forEach(btn => {
-      if (Number(btn.getAttribute('data-theme-idx')) === Number(themeIdx)) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-
-    this.closePaletteModal();
-    this.showToast(`🎨 테마 ${themeIdx}(으)로 사이트 포인트 색상이 변경되었습니다.`);
-  },
-
-  applyTheme(themeIdx) {
-    const themes = {
-      1: {
-        '--primary': '#FFBE8D',
-        '--primary-dim': '#E6A775',
-        '--primary-container': '#FF8A8C',
-        '--primary-gradient': 'linear-gradient(135deg, #FFBE8D 0%, #FF8A8C 100%)'
-      },
-      2: {
-        '--primary': '#FF8A8C',
-        '--primary-dim': '#E06D70',
-        '--primary-container': '#5871F3',
-        '--primary-gradient': 'linear-gradient(135deg, #FF8A8C 0%, #5871F3 100%)'
-      },
-      3: {
-        '--primary': '#5871F3',
-        '--primary-dim': '#3F58DA',
-        '--primary-container': '#799DFF',
-        '--primary-gradient': 'linear-gradient(135deg, #5871F3 0%, #799DFF 100%)'
-      },
-      4: {
-        '--primary': '#5345BA',
-        '--primary-dim': '#3D30A0',
-        '--primary-container': '#8D7EF2',
-        '--primary-gradient': 'linear-gradient(135deg, #5345BA 0%, #8D7EF2 100%)'
-      },
-      5: {
-        '--primary': '#0E0548',
-        '--primary-dim': '#07022D',
-        '--primary-container': '#3323A5',
-        '--primary-gradient': 'linear-gradient(135deg, #0E0548 0%, #3323A5 100%)'
-      },
-      6: {
-        '--primary': '#0E0548',
-        '--primary-dim': '#07022D',
-        '--primary-container': '#FFBE8D',
-        '--primary-gradient': 'linear-gradient(135deg, #0E0548 0%, #FFBE8D 100%)'
-      }
-    };
-
-    const selectedTheme = themes[themeIdx] || themes[3];
-    const root = document.documentElement;
-
-    // Set custom CSS variables on documentElement
-    for (const [key, value] of Object.entries(selectedTheme)) {
-      root.style.setProperty(key, value);
-    }
-
-    // Update header palette button gradient
-    const paletteBtn = document.getElementById('palette-btn');
-    if (paletteBtn && selectedTheme['--primary-gradient']) {
-      paletteBtn.style.background = selectedTheme['--primary-gradient'];
-    }
-  },
+  // Palette Theme Select Methods (Deprecated & Safe No-Op)
+  openPaletteModal() {},
+  closePaletteModal() {},
+  selectColorTheme() {},
+  applyTheme() {},
 
   // To-Do / Task Management Methods
   initKanbanDragScroll() {
