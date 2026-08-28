@@ -4325,23 +4325,6 @@ const App = {
         </span>
       `;
 
-      // Today Scheduled Event Badge (근무중과 완벽히 동일한 크기 & '예정 : 제목' 문구)
-      let todayScheduleBadge = '';
-      if (statusInfo.todaySchedule) {
-        const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
-        const schedBadgeClass = isVacationSchedule
-          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
-          : 'bg-surface-container text-on-surface-variant border border-outline/30';
-        const schedIcon = isVacationSchedule ? 'event_upcoming' : 'directions_car';
-
-        todayScheduleBadge = `
-          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${schedBadgeClass}">
-            ${typeof getSvgIcon === 'function' ? getSvgIcon(schedIcon, 'w-3.5 h-3.5') : ''}
-            <span>예정 : ${statusInfo.todaySchedule}</span>
-          </span>
-        `;
-      }
-
       // Monthly Birthday Badge (이달의 생일 🎂)
       let birthdayBadge = '';
       if (emp.isBirthdayThisMonth) {
@@ -4370,7 +4353,6 @@ const App = {
               <p class="font-body text-xs text-on-surface-variant/80 mt-0.5">${emp.dept}</p>
               <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
                 ${primaryStatusBadge}
-                ${todayScheduleBadge}
                 ${birthdayBadge}
               </div>
             </div>
@@ -4453,22 +4435,6 @@ const App = {
     }
 
     if (statusBadgeEl) {
-      let extraHtml = '';
-      if (statusInfo.todaySchedule) {
-        const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
-        const schedBadgeClass = isVacationSchedule
-          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
-          : 'bg-surface-container text-on-surface-variant border border-outline/30';
-        const schedIcon = isVacationSchedule ? 'event_upcoming' : 'directions_car';
-
-        extraHtml = `
-          <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold ${schedBadgeClass}">
-            ${getSvgIcon(schedIcon, 'w-3.5 h-3.5')}
-            <span>예정 : ${statusInfo.todaySchedule}</span>
-          </span>
-        `;
-      }
-
       let birthdayBadgeHtml = '';
       if (emp.isBirthdayThisMonth) {
         birthdayBadgeHtml = `
@@ -4485,33 +4451,18 @@ const App = {
             ${getSvgIcon(statusInfo.icon, 'w-3.5 h-3.5')}
             <span>${statusInfo.text}</span>
           </span>
-          ${extraHtml}
           ${birthdayBadgeHtml}
         </div>
       `;
     }
 
     if (statusTextEl) {
-      let scheduleSubBadge = '';
-      if (statusInfo.todaySchedule) {
-        const isVacationSchedule = statusInfo.todaySchedule.includes('반차') || statusInfo.todaySchedule.includes('연차') || statusInfo.todaySchedule.includes('휴가');
-        const schedBadgeClass = isVacationSchedule
-          ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
-          : 'bg-surface-container text-on-surface-variant border border-outline/30';
-        scheduleSubBadge = `
-          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${schedBadgeClass}">
-            <span>예정 : ${statusInfo.todaySchedule}</span>
-          </span>
-        `;
-      }
-
       statusTextEl.innerHTML = `
         <div class="flex items-center gap-1.5">
           <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold ${statusInfo.badgeClass}">
             <span class="w-1.5 h-1.5 rounded-full ${statusInfo.dotColor}"></span>
             <span>${statusInfo.text}</span>
           </span>
-          ${scheduleSubBadge}
         </div>
       `;
     }

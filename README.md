@@ -380,6 +380,7 @@ Pool/
 - **전 디바이스 서피스 토큰 'surface-container-low: #f8f8f8' 일괄 통일 적용**: style.css, pc.css, index.html(Tailwind config) 및 DESIGN.md 전반의 1단계 컨테이너 서피스 토큰을 #f8f8f8로 일괄 변경하여 한층 더 은은하고 부드러운 배경 룩앤필 적용 완료.
 - **전 디바이스(PC·모바일·앱) 브랜드 신규 컬러 팔레트(Blue Universe & Iron Veil) 전면 개편 적용**: 메인 키 컬러를 Blue Universe(#0346FF), Blue Universe Dark(#002B99), Blue Universe Light(#AFCBFF), 본문 텍스트를 Iron Veil(#333436, #5E6065), 칩 및 컨테이너를 Cloud Whisper(#F3F4F6)로 일괄 적용하여 한층 더 모던하고 선명한 비주얼 룩앤필 구축 완료.
 - **모바일 환경설정 드로어 내 '테마 포인트 색상' 선택 기능 제거**: 모바일 설정 드로어 및 팝업 모달에서 6종 테마 포인트 색상 선택 기능을 완전히 제거하고, 전 디바이스 표준 Blue Universe 브랜드 톤으로 고정 적용 완료.
+- **전 디바이스 주소록 페이지 내 '예정' 항목 및 뱃지 전면 제거**: PC 대시보드 및 모바일 주소록 카드 목록과 상세 팝업 모달에서 불필요한 '예정' 일정 뱃지를 삭제하여 근무 상태와 연락처 정보 중심의 정돈된 주소록 뷰로 개선 완료.
 
 
 

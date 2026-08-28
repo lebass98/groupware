@@ -1795,7 +1795,6 @@ const PCApp = {
       const isOff = m.status === 'offwork' || m.statusText === '퇴근' || m.statusText === '휴가';
       const isBusiness = m.status === 'business' || m.statusText === '외근중';
       const statusClass = isBusiness ? 'bg-surface-container text-on-surface-variant border border-outline/20' : isWork ? 'bg-secondary-container text-secondary' : isOff ? 'bg-surface-container-high text-on-surface-variant' : 'bg-surface-container text-on-surface-variant';
-      const todaySched = m.todaySchedule ? `<span class="px-2 py-0.5 rounded-md text-xs font-bold bg-tertiary-container text-tertiary">[예정: ${m.todaySchedule}]</span>` : '';
 
       return `
         <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all text-base flex flex-col justify-between">
@@ -1810,7 +1809,6 @@ const PCApp = {
               </div>
               <span class="px-2.5 py-1 rounded-full text-xs font-bold ${statusClass}">● ${m.statusText || '근무중'}</span>
             </div>
-            ${todaySched ? `<div class="mb-3">${todaySched}</div>` : ''}
             <div class="space-y-1.5 text-sm text-on-surface-variant pt-3 border-t border-outline/70">
               <p class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -4078,7 +4076,7 @@ const PCApp = {
             <!-- 상단 태그 & 상태 뱃지 -->
             <div class="flex items-center justify-between gap-2 mb-3">
               <div class="flex items-center gap-1.5 min-w-0">
-                <span class="text-xs font-bold px-3 py-1 rounded-full bg-primary/10 text-primary truncate max-w-[140px]">${p.clientName || '고객사'}</span>
+                <span class="text-xs font-bold ps-3 py-1 rounded-full bg-primary/10 text-primary truncate max-w-[140px]">${p.clientName || '고객사'}</span>
                 ${p.category ? `<span class="text-xs font-medium px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant shrink-0">${p.category}</span>` : ''}
               </div>
               <span class="text-xs font-bold px-2.5 py-1 rounded-lg shrink-0 ${badge.badgeClass}">
@@ -4997,6 +4995,8 @@ const PCApp = {
     });
   }
 };
+
+window.PCApp = PCApp;
 
 // Auto boot on DOM load
 document.addEventListener('DOMContentLoaded', () => {
