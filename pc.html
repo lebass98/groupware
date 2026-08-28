@@ -564,19 +564,83 @@
         </div>
       </section>
 
-      <!-- SCREEN 9: PROJECTS VIEW -->
+      <!-- SCREEN 9: PROJECTS VIEW (프로젝트 관리) -->
       <section class="pc-screen-view p-8" id="pc-screen-project">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-outline">
           <div>
-            <h2 class="text-2xl font-bold text-on-surface">프로젝트 관리</h2>
-            <p class="text-base text-on-surface-variant font-medium mt-1">구축 및 운영/유지보수 프로젝트 현황</p>
+            <div class="flex items-center gap-3">
+              <h2 class="text-2xl font-bold text-on-surface">프로젝트 관리</h2>
+              <span class="px-3 py-1 bg-primary/10 text-primary font-bold rounded-full text-base" id="pc-project-total-badge">10개</span>
+            </div>
+            <p class="text-base text-on-surface-variant font-medium mt-1">구축, 개선사업, 유지보수 및 운영용역 프로젝트 통합 관리</p>
+          </div>
+
+          <!-- Search & Sort Controls -->
+          <div class="flex items-center gap-3 flex-wrap">
+            <!-- Search Bar -->
+            <div class="relative w-72">
+              <input 
+                type="text" 
+                id="pc-project-search-input" 
+                placeholder="프로젝트명, 고객사, 담당자 검색..." 
+                class="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary transition-all placeholder:text-on-surface-variant/60" 
+                oninput="PCApp.setProjectSearch(this.value)" 
+              />
+              <svg class="w-5 h-5 text-on-surface-variant absolute left-3 top-3" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+              </svg>
+            </div>
+
+            <!-- Sort Dropdown -->
+            <div class="relative">
+              <select 
+                id="pc-project-sort-select" 
+                class="pl-4 pr-9 py-2.5 bg-surface-container-low border border-outline rounded-xl text-base font-bold text-on-surface focus:outline-none focus:border-primary cursor-pointer transition-all appearance-none" 
+                onchange="PCApp.setProjectSort(this.value)"
+              >
+                <option value="recommend">추천순 (기본)</option>
+                <option value="recent">최근수정순</option>
+                <option value="name">이름순 (가나다)</option>
+                <option value="progress">진척도 높은순</option>
+                <option value="deadline">마감임박순</option>
+              </select>
+              <svg class="w-4 h-4 text-on-surface-variant absolute right-3 top-3.5 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </div>
           </div>
         </div>
 
+        <!-- Filter Category Tabs (전체, 진행중, 유지보수, 개선사업, 구축중, 운영용역, 완료) -->
         <div class="flex gap-2 mb-6 overflow-x-auto pb-2" id="pc-project-filter-tabs">
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0" onclick="PCApp.setProjectFilter('all', this)">전체</button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setProjectFilter('in_progress', this)">진행중</button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setProjectFilter('maintenance', this)">유지보수</button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0 flex items-center gap-1.5" data-filter="all" onclick="PCApp.setProjectFilter('all', this)">
+            <span>전체</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20" id="pc-proj-count-all">10</span>
+          </button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="in_progress" onclick="PCApp.setProjectFilter('in_progress', this)">
+            <span>진행중</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-in_progress">0</span>
+          </button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="maintenance" onclick="PCApp.setProjectFilter('maintenance', this)">
+            <span>유지보수</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-maintenance">0</span>
+          </button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="improvement" onclick="PCApp.setProjectFilter('improvement', this)">
+            <span>개선사업</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-improvement">0</span>
+          </button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="build" onclick="PCApp.setProjectFilter('build', this)">
+            <span>구축중</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-build">0</span>
+          </button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="operation" onclick="PCApp.setProjectFilter('operation', this)">
+            <span>운영용역</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-operation">0</span>
+          </button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="completed" onclick="PCApp.setProjectFilter('completed', this)">
+            <span>완료</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-completed">0</span>
+          </button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pc-project-grid">

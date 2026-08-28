@@ -218,6 +218,9 @@ const PCApp = {
     notices: (window.MockData && window.MockData.notices) ? JSON.parse(JSON.stringify(window.MockData.notices)) : [],
     members: (window.MockData && window.MockData.employees) ? JSON.parse(JSON.stringify(window.MockData.employees)) : [],
     projects: (window.MockData && window.MockData.projects) ? JSON.parse(JSON.stringify(window.MockData.projects)) : [],
+    projectFilter: 'all',
+    projectSearch: '',
+    projectSort: 'recommend',
     expenses: [
       { id: 1, type: 'corp', typeLabel: '법인카드', date: '2026-08-24 12:30', title: '(주)맛있는식당 가산점', amount: 85000, category: '식대', status: 'unresolved', statusLabel: '결재 대기' },
       { id: 2, type: 'corp', typeLabel: '법인카드', date: '2026-08-23 20:15', title: '카카오T 택시 (야간교통비)', amount: 18500, category: '교통비', status: 'unresolved', statusLabel: '결재 대기' },
@@ -3558,55 +3561,266 @@ const PCApp = {
     }
   },
 
-  // 6-8. Projects Screen
+  // 6-8. Projects Screen (구분탭: 전체, 진행중, 유지보수, 개선사업, 구축중, 운영용역, 완료 / 정렬: 추천순, 최근수정, 이름순, 진척도순, 마감임박순 / 실시간 통합 검색)
   setProjectFilter(filter, btn) {
-    this.state.projectFilter = filter;
+    this.state.projectFilter = filter || 'all';
     const tabs = document.querySelectorAll('#pc-project-filter-tabs button');
     tabs.forEach(t => {
-      t.className = 'px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0';
+      const isTarget = t.getAttribute('data-filter') === this.state.projectFilter;
+      const countBadge = t.querySelector('span:last-child');
+      if (isTarget) {
+        t.className = 'px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0 flex items-center gap-1.5 shadow-xs';
+        if (countBadge) countBadge.className = 'px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white';
+      } else {
+        t.className = 'px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5 transition-colors';
+        if (countBadge) countBadge.className = 'px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest text-on-surface-variant';
+      }
     });
-    if (btn) btn.className = 'px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0';
     this.renderProjectView();
+  },
+
+  setProjectSearch(keyword) {
+    this.state.projectSearch = keyword || '';
+    this.renderProjectView();
+  },
+
+  setProjectSort(sortType) {
+    this.state.projectSort = sortType || 'recommend';
+    this.renderProjectView();
+  },
+
+  getProjectCategory(p) {
+    const text = `${p.status || ''} ${p.statusText || ''} ${p.title || ''} ${p.category || ''}`;
+    if (p.status === 'completed' || text.includes('완료')) {
+      return 'completed';
+    }
+    if (p.status === 'build' || text.includes('플랫폼 구축') || text.includes('신규구축') || (text.includes('구축') && !text.includes('고도화') && !text.includes('개선'))) {
+      return 'build';
+    }
+    if (p.status === 'improvement' || text.includes('개선') || text.includes('고도화') || text.includes('연계개선')) {
+      return 'improvement';
+    }
+    if (p.status === 'operation' || text.includes('운영용역') || text.includes('운영 용역') || text.includes('유지보수 용역') || text.includes('유지보수용역') || text.includes('유지관리')) {
+      return 'operation';
+    }
+    if (p.status === 'maintenance' || text.includes('유지보수')) {
+      return 'maintenance';
+    }
+    return 'in_progress';
+  },
+
+  getProjectStatusBadge(p) {
+    const cat = this.getProjectCategory(p);
+    switch (cat) {
+      case 'build':
+        return {
+          badgeClass: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-bold',
+          label: p.statusText || '구축중'
+        };
+      case 'improvement':
+        return {
+          badgeClass: 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/20 font-bold',
+          label: p.statusText || '개선사업'
+        };
+      case 'operation':
+        return {
+          badgeClass: 'bg-teal-500/15 text-teal-600 dark:text-teal-400 border border-teal-500/20 font-bold',
+          label: p.statusText || '운영용역'
+        };
+      case 'maintenance':
+        return {
+          badgeClass: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-bold',
+          label: p.statusText || '유지보수'
+        };
+      case 'completed':
+        return {
+          badgeClass: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-bold',
+          label: p.statusText || '완료'
+        };
+      case 'in_progress':
+      default:
+        return {
+          badgeClass: 'bg-primary/15 text-primary border border-primary/20 font-bold',
+          label: p.statusText || '진행중'
+        };
+    }
   },
 
   renderProjectView() {
     const grid = document.getElementById('pc-project-grid');
     if (!grid) return;
 
-    const filtered = (this.state.projects || []).filter(p => {
-      if (this.state.projectFilter === 'all') return true;
-      if (this.state.projectFilter === 'in_progress') return p.status === 'in_progress';
-      if (this.state.projectFilter === 'maintenance') return p.status === 'maintenance';
-      return true;
+    const allProjects = (this.state.projects || []);
+
+    // 1. 카테고리별 건수 계산 및 탭 뱃지 갱신
+    const counts = {
+      all: allProjects.length,
+      in_progress: 0,
+      maintenance: 0,
+      improvement: 0,
+      build: 0,
+      operation: 0,
+      completed: 0
+    };
+
+    allProjects.forEach(p => {
+      const cat = this.getProjectCategory(p);
+      if (counts[cat] !== undefined) counts[cat]++;
     });
 
-    grid.innerHTML = filtered.map(p => `
-      <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all text-base flex flex-col justify-between cursor-pointer" onclick="PCApp.openProjectModal(${p.id})">
-        <div>
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="text-xs font-bold px-3 py-1 rounded-full bg-primary/10 text-primary">${p.clientName || '고객사'}</span>
-            <span class="text-xs font-bold px-2.5 py-0.5 rounded-md ${p.status === 'in_progress' ? 'bg-secondary-container text-secondary' : 'bg-surface-container text-on-surface-variant'}">${p.statusText || '진행중'}</span>
-          </div>
-          <h3 class="font-bold text-lg text-on-surface mb-1 line-clamp-1">${p.title}</h3>
-          <p class="text-sm text-on-surface-variant mb-4">기간: ${p.period || '2026-07 ~ 2026-12'}</p>
-          
-          <div class="mb-4">
-            <div class="flex justify-between text-xs text-on-surface-variant mb-1">
-              <span>진척도</span>
-              <span class="font-bold text-primary">${p.views ? `${p.views}%` : '85%'}</span>
-            </div>
-            <div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
-              <div class="h-full bg-primary rounded-full" style="width: ${p.views ? `${p.views}%` : '85%'};"></div>
-            </div>
-          </div>
-        </div>
+    Object.keys(counts).forEach(key => {
+      const badge = document.getElementById(`pc-proj-count-${key}`);
+      if (badge) badge.textContent = counts[key];
+    });
 
-        <div class="pt-3 border-t border-outline/60 flex items-center justify-between text-xs text-on-surface-variant">
-          <span>작성자: ${p.author || '기획팀'}</span>
-          <span class="font-bold text-primary flex items-center gap-1">상세보기 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>
+    // 2. 카테고리 필터링
+    const filter = this.state.projectFilter || 'all';
+    let filtered = allProjects.filter(p => {
+      if (filter === 'all') return true;
+      return this.getProjectCategory(p) === filter;
+    });
+
+    // 3. 실시간 검색어 필터링
+    const search = (this.state.projectSearch || '').trim().toLowerCase();
+    if (search) {
+      filtered = filtered.filter(p => {
+        const fullText = [
+          p.title,
+          p.clientName,
+          p.siteName,
+          p.siteId,
+          p.projectId,
+          p.category,
+          p.statusText,
+          p.pm,
+          p.planner,
+          p.designer,
+          p.publisher,
+          p.developer,
+          p.author,
+          p.devLang,
+          p.content
+        ].filter(Boolean).join(' ').toLowerCase();
+        return fullText.includes(search);
+      });
+    }
+
+    // 4. 정렬 옵션 적용 (추천순, 최근수정순, 이름순, 진척도순, 마감임박순)
+    const sort = this.state.projectSort || 'recommend';
+    filtered.sort((a, b) => {
+      if (sort === 'name') {
+        return (a.title || '').localeCompare(b.title || '', 'ko');
+      } else if (sort === 'recent') {
+        const dateA = a.dateFull || a.date || '';
+        const dateB = b.dateFull || b.date || '';
+        return dateB.localeCompare(dateA);
+      } else if (sort === 'progress') {
+        const progA = parseInt(a.views || 80, 10);
+        const progB = parseInt(b.views || 80, 10);
+        return progB - progA;
+      } else if (sort === 'deadline') {
+        const deadA = a.periodEnd || a.period || '9999-99-99';
+        const deadB = b.periodEnd || b.period || '9999-99-99';
+        return deadA.localeCompare(deadB);
+      } else {
+        // recommend: 추천순 (진행/구축/개선/운영 가중치 + 최근 수정일)
+        const catScore = { build: 5, improvement: 4, in_progress: 3, operation: 2, maintenance: 1, completed: 0 };
+        const scoreA = catScore[this.getProjectCategory(a)] || 0;
+        const scoreB = catScore[this.getProjectCategory(b)] || 0;
+        if (scoreA !== scoreB) return scoreB - scoreA;
+        const dateA = a.dateFull || a.date || '';
+        const dateB = b.dateFull || b.date || '';
+        return dateB.localeCompare(dateA);
+      }
+    });
+
+    // 5. 총 프로젝트 개수 뱃지 갱신
+    const totalBadge = document.getElementById('pc-project-total-badge');
+    if (totalBadge) totalBadge.textContent = `${filtered.length}개`;
+
+    // 6. 결과 렌더링
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div class="col-span-full py-16 text-center bg-surface-container-lowest rounded-2xl border border-dashed border-outline">
+          <div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mx-auto mb-4 text-on-surface-variant">
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-lg text-on-surface mb-1">조건에 맞는 프로젝트가 없습니다</h3>
+          <p class="text-sm text-on-surface-variant mb-4">검색어 또는 구분 탭을 변경하여 다시 검색해보세요.</p>
+          <button class="px-4 py-2 rounded-xl text-sm font-bold bg-primary text-white hover:bg-primary/90 transition-all" onclick="PCApp.setProjectSearch(''); const searchInp = document.getElementById('pc-project-search-input'); if(searchInp) searchInp.value=''; PCApp.setProjectFilter('all');">
+            필터 초기화
+          </button>
         </div>
-      </div>
-    `).join('');
+      `;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(p => {
+      const badge = this.getProjectStatusBadge(p);
+      const progressVal = p.views ? `${p.views}%` : '85%';
+      return `
+        <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary/60 hover:shadow-lg transition-all text-base flex flex-col justify-between cursor-pointer group" onclick="PCApp.openProjectModal(${p.id})">
+          <div>
+            <!-- 상단 태그 & 상태 뱃지 -->
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <div class="flex items-center gap-1.5 min-w-0">
+                <span class="text-xs font-bold px-3 py-1 rounded-full bg-primary/10 text-primary truncate max-w-[140px]">${p.clientName || '고객사'}</span>
+                ${p.category ? `<span class="text-xs font-medium px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant shrink-0">${p.category}</span>` : ''}
+              </div>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-lg shrink-0 ${badge.badgeClass}">
+                ${badge.label}
+              </span>
+            </div>
+
+            <!-- 프로젝트 명 및 서브 정보 -->
+            <h3 class="font-bold text-lg text-on-surface group-hover:text-primary transition-colors mb-1.5 line-clamp-2 leading-snug">
+              ${p.title}
+            </h3>
+            <div class="flex items-center gap-2 text-xs text-on-surface-variant font-medium mb-4">
+              <span>#${p.siteId || p.projectId || 'p_project'}</span>
+              ${p.devLang && p.devLang !== '-' ? `<span>·</span><span>${p.devLang}</span>` : ''}
+            </div>
+
+            <!-- 기간 및 진척도 -->
+            <div class="p-3.5 bg-surface-container-low rounded-xl mb-4 border border-outline/30">
+              <div class="flex justify-between items-center text-xs text-on-surface-variant font-medium mb-2">
+                <span>기간: <strong class="text-on-surface font-bold">${p.period || '2026-07 ~ 2026-12'}</strong></span>
+                <span class="font-bold text-primary">${progressVal}</span>
+              </div>
+              <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+                <div class="h-full bg-primary rounded-full transition-all duration-500" style="width: ${progressVal};"></div>
+              </div>
+            </div>
+
+            <!-- 참여 팀원 배정 뱃지 -->
+            <div class="flex items-center gap-1.5 flex-wrap mb-2">
+              ${p.pm && p.pm !== '.' && p.pm !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300">PM ${p.pm}</span>` : ''}
+              ${p.planner && p.planner !== '.' && p.planner !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-sky-500/10 text-sky-600 dark:text-sky-300">기획 ${p.planner}</span>` : ''}
+              ${p.designer && p.designer !== '.' && p.designer !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-500/10 text-rose-600 dark:text-rose-300">디자인 ${p.designer}</span>` : ''}
+              ${p.publisher && p.publisher !== '.' && p.publisher !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">퍼블 ${p.publisher}</span>` : ''}
+              ${p.developer && p.developer !== '.' && p.developer !== '-' ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300">개발 ${p.developer}</span>` : ''}
+            </div>
+          </div>
+
+          <!-- 하단 메타 및 상세보기 버튼 -->
+          <div class="pt-3.5 mt-2 border-t border-outline/50 flex items-center justify-between text-xs text-on-surface-variant font-medium">
+            <div class="flex items-center gap-2">
+              <span>작성: ${p.author || '기획팀'}</span>
+              <span>·</span>
+              <span>${p.date || '2026-08-04'}</span>
+            </div>
+            <span class="font-bold text-primary flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              상세보기
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      `;
+    }).join('');
   },
 
   // 6-9. Request Screen (Leave & Outwork Form)
