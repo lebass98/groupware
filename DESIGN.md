@@ -27,9 +27,10 @@
 | `--primary-dim` | `#002b99` | `#3a6ede` | **Blue Universe - Dark** / Primary 눌림(Active) / 딥 블루 |
 | `--primary-container` | `#afcbff` | `#1b3b8c` | **Blue Universe - Light** / 컨테이너 하이라이트 배경 |
 | `--on-primary` | `#ffffff` | `#ffffff` | Primary 요소 전경 텍스트 |
-| `--secondary` | `#00693f` | `#27d085` | 에메랄드 그린 / 출근 및 성공 상태 |
-| `--secondary-container`| `#61fbab` | `#004d2e` | 성공 상태 배경 배지 |
-| `--tertiary` | `#785500` | `#ecaa00` | 앰버 골드 / 주의, 필독 배지 |
+| `--secondary` | `#00875a` | `#27d085` | 에메랄드 그린 / 출근 및 성공 상태 |
+| `--secondary-container`| `#e3fcef` | `#004d2e` | 소프트 민트 / 완료 상태 배경 배지 |
+| `--tertiary` | `#d97706` | `#ecaa00` | 앰버 골드 / 보통 우선순위 배지 |
+| `--tertiary-container`| `#fef3c7` | `#4a3600` | 소프트 옐로우 앰버 / 보통 우선순위 배경 배지 |
 | `--surface` | `#ffffff` | `#0b1120` | 기본 앱 뷰포트 바탕색 |
 | `--surface-container-low`| `#f8f8f8` | `#1e293b` | 1단계 카드 배경 |
 | `--surface-container` | `#f3f4f6` | `#333436` | **Cloud Whisper / Iron Veil** / 2단계 칩/입력 필드 배경 |
@@ -38,7 +39,8 @@
 | `--on-surface` | `#333436` | `#f1f5f9` | **Iron Veil** / 본문 메인 타이포 텍스트 색상 |
 | `--on-surface-variant`| `#5e6065` | `#94a3b8` | 서브 타이포, 라벨, 캡션 텍스트 |
 | `--outline` | `#e5e7eb` | `#64748b` | 디바이더 및 보조 라인 |
-| `--error` | `#b31b25` | `#ff6b6b` | 경고, 퇴근, 삭제 에러 컬러 |
+| `--error` | `#ef4444` | `#ff6b6b` | 경고, 높은 우선순위 에러 컬러 |
+| `--error-container` | `#fee2e2` | `#7f1d1d` | 소프트 핑크 레드 / 높은 우선순위 배경 배지 |
 
 ---
 

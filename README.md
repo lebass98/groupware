@@ -389,6 +389,7 @@ Pool/
 - **PC 메인 및 출퇴근 서브스크린 '퇴근하기' 버튼 색상 모바일 메인 스타일 일괄 통일 적용**: PC 메인 대시보드 1열 근태 위젯 및 출퇴근 관리 서브 화면의 '퇴근하기' 버튼 스타일을 모바일 메인과 동일하게 서피스 컨테이너(bg-surface-container), 서브 테두리 및 텍스트/아이콘 색상으로 통일 적용 완료.
 - **전 디바이스 휴가/외근 신청 전용 SVG 벡터 아이콘(비활성/활성) 일괄 교체 적용**: data/svgIcons.js 및 PC/모바일 전반의 휴가/외근 신청 아이콘을 요청된 신규 비활성(Outline) 및 활성(Filled) SVG 티켓 벡터 규격으로 전면 교체 적용 완료.
 - **모바일 할일 목록 상태 및 우선순위 뱃지 색상 PC 스타일 일괄 통일 적용**: 모바일 할일 목록(투데이 위젯, 프로젝트별 카드/리스트 모드 및 상세 모달)의 상태 뱃지(완료·진행중·대기)와 우선순위 뱃지(높음·보통·낮음) 색상 토큰(bg-secondary-container, bg-error-container, bg-tertiary-container, bg-surface-container)을 PC 규격과 100% 동일하게 일치화 완료.
+- **모바일(style.css & index.html) 뱃지 컬러 토큰(Secondary·Tertiary·Error Container) PC 팔레트 동기화**: 모바일의 컨테이너 컬러 토큰을 PC와 동일한 소프트 파스텔 계열(#e3fcef, #fef3c7, #fee2e2)로 동기화하여 PC 메인 위젯의 할일 목록 뱃지 색상이 모바일 메인에도 동일하게 렌더링되도록 수정 완료.
 
 
 

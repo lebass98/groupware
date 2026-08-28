@@ -9,12 +9,12 @@
   --on-primary: #ffffff;
   --on-primary-container: #002b99;
   
-  --secondary: #00693f;
-  --secondary-container: #61fbab;
-  --on-secondary: #caffdb;
+  --secondary: #00875a;
+  --secondary-container: #e3fcef;
+  --on-secondary: #00875a;
 
-  --tertiary: #785500;
-  --tertiary-container: #feb700;
+  --tertiary: #d97706;
+  --tertiary-container: #fef3c7;
 
   --surface: #ffffff;
   --surface-container-lowest: #ffffff;
@@ -29,9 +29,9 @@
   --outline: #e5e7eb;
   --outline-variant: #d1d5db;
 
-  --error: #b31b25;
-  --error-container: #fb5151;
-  --on-error: #ffefee;
+  --error: #ef4444;
+  --error-container: #fee2e2;
+  --on-error: #ef4444;
 
   --shadow-sm: 0 4px 12px rgba(51, 52, 54, 0.04);
   --shadow-md: 0 8px 24px rgba(51, 52, 54, 0.06);
