@@ -937,13 +937,10 @@ const PCApp = {
     }
   },
 
-  // 5-2. Center Column (2열: 근태일지 달력 위젯 -> 오늘의 일정 위젯 -> 공지사항 위젯 -> 주간 업무 보고 위젯)
+  // 5-2. Center Column (2열: 근태일지 & 오늘의 일정 통합 위젯 -> 공지사항 위젯)
   renderCenterCol() {
-    // 1. Company Schedule Widget (2열 최상단: 근태일지 간소화 달력)
+    // 1. Company Schedule & Today's Schedule Integrated Widget (2열 최상단: 근태일지 간소화 달력 + 구분선 + 오늘의 일정 통합)
     this.renderCompanyScheduleWidget();
-
-    // 2. Today Schedule Widget (2열: 오늘의 일정 Bento 위젯 - 모바일 1:1 일치)
-    this.renderTodayScheduleWidget();
 
     // 2. Notice Card Widget (최근 5개 공지사항 카드 UI)
     const noticeWrap = document.getElementById('pc-widget-notice-banner');
@@ -987,7 +984,7 @@ const PCApp = {
     }
   },
 
-  // 5-2. Top Center Column: Simplified Attendance Calendar Widget (2열 최상단 근태일지 간소화 달력 위젯)
+  // 5-2. Center Column: Integrated Attendance Calendar & Today's Schedule Widget (근태일지 달력 + 구분선 + 오늘의 일정 통합 위젯)
   renderCompanyScheduleWidget() {
     const schedWrap = document.getElementById('pc-widget-company-schedule');
     if (!schedWrap) return;
@@ -1005,8 +1002,18 @@ const PCApp = {
       monthTotalScheds += schs.length;
     }
 
+    // Today's schedule data
+    const todayYear = now.getFullYear();
+    const todayMonth = now.getMonth() + 1;
+    const todayDay = now.getDate();
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+    const dayOfWeekStr = dayNames[now.getDay()];
+    const todayDateKey = `${todayYear}-${todayMonth}-${todayDay}`;
+    const todaySchedules = this.getSchedulesForDay(todayYear, todayMonth, todayDay) || [];
+
     schedWrap.innerHTML = `
       <div class="pc-bento-card">
+        <!-- 1. Top Section: 근태일지 간소화 달력 -->
         <div class="pc-card-header mb-3">
           <div class="flex items-center gap-2.5">
             <span class="pc-card-title flex items-center gap-2">
@@ -1051,145 +1058,86 @@ const PCApp = {
             ${this.generateDashboardCalGridHTML(year, month, firstDay, lastDate, now)}
           </div>
         </div>
-      </div>
-    `;
-  },
 
-  // Calendar Grid Generator (Dashboard Widget - 날짜 숫자 확대 & 이벤트 수 뱃지만 노출하는 간소화 캘린더)
-  generateDashboardCalGridHTML(year, month, firstDay, lastDate, now) {
-    let html = '';
+        <!-- Divider Line (근태일지와 오늘의 일정 구분선) -->
+        <div class="my-5 border-t border-outline/60"></div>
 
-    // Empty cells before first day
-    for (let i = 0; i < firstDay; i++) {
-      html += `<div class="h-11 sm:h-12 p-1 bg-surface-container-lowest/30 border border-outline/20 rounded-xl opacity-30"></div>`;
-    }
-
-    // Days
-    for (let d = 1; d <= lastDate; d++) {
-      const key = `${year}-${month}-${d}`;
-      const isToday = (d === now.getDate() && month === (now.getMonth() + 1) && year === now.getFullYear());
-      const dayOfWeek = (firstDay + d - 1) % 7;
-      const isSunday = (dayOfWeek === 0);
-      const isSaturday = (dayOfWeek === 6);
-
-      const daySchedules = this.getSchedulesForDay(year, month, d) || [];
-
-      let dateNumClass = 'text-on-surface';
-      if (isSunday) dateNumClass = 'text-red-500 font-bold';
-      else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
-
-      html += `
-        <div class="h-11 sm:h-12 px-2 py-1.5 bg-surface-container-low/70 hover:bg-primary/10 border border-outline/60 hover:border-primary rounded-xl transition-all cursor-pointer flex items-center justify-between group ${isToday ? 'ring-2 ring-primary bg-primary/10' : ''}" onclick="PCApp.openDateScheduleModal('${key}')" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 상세 보기">
-          <span class="text-sm sm:text-base font-bold ${dateNumClass} ${isToday ? 'w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shadow-xs' : ''}">${d}</span>
-          ${daySchedules.length > 0 ? `<span class="min-w-[18px] h-[18px] px-1 rounded-full text-[11px] font-bold flex items-center justify-center bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}</span>` : ''}
-        </div>
-      `;
-    }
-
-    return html;
-  },
-
-  changeDashboardCalMonth(offset) {
-    let y = this.state.calYear || 2026;
-    let m = this.state.calMonth || 8;
-    m += offset;
-    if (m < 1) {
-      m = 12;
-      y--;
-    } else if (m > 12) {
-      m = 1;
-      y++;
-    }
-    this.state.calYear = y;
-    this.state.calMonth = m;
-    this.renderCompanyScheduleWidget();
-  },
-
-  // 2. Today's Schedule Widget (2열: 모바일 투데이와 100% 동일한 오늘의 일정 Bento 위젯)
-  renderTodayScheduleWidget() {
-    const wrap = document.getElementById('pc-widget-today-schedule');
-    if (!wrap) return;
-
-    const now = new Date();
-    const todayYear = now.getFullYear();
-    const todayMonth = now.getMonth() + 1;
-    const todayDay = now.getDate();
-    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-    const dayOfWeekStr = dayNames[now.getDay()];
-    const todayDateKey = `${todayYear}-${todayMonth}-${todayDay}`;
-
-    const schedules = this.getSchedulesForDay(todayYear, todayMonth, todayDay) || [];
-
-    wrap.innerHTML = `
-      <div class="pc-bento-card">
-        <div class="pc-card-header mb-3">
-          <div class="flex items-center gap-2.5">
-            <span class="pc-card-title flex items-center gap-2">
-              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
-              </svg>
-              오늘의 일정
-            </span>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${todayMonth}월 ${todayDay}일 (${dayOfWeekStr}) · 총 ${schedules.length}건</span>
-          </div>
-          <button class="pc-card-action" onclick="PCApp.switchScreen('calendar')">전체보기</button>
-        </div>
-
-        <div class="space-y-2.5">
-          ${schedules.length > 0 ? schedules.map(s => {
-            const isHoliday = (
-              s.badge === '공휴일' ||
-              s.badge === '기념일' ||
-              s.badge === '절기' ||
-              s.title.includes('공휴일') ||
-              s.title.includes('기념일') ||
-              s.title.includes('대체공휴일') ||
-              s.title.includes('절기') ||
-              s.author === '공휴일' ||
-              s.author === '기념일' ||
-              s.author === '24절기' ||
-              s.author === '대한민국 공휴일' ||
-              s.author === '회사공지' ||
-              s.author === '국경일/기념일'
-            );
-            const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
-            const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
-            const locationBadgeHtml = s.location ? `
-              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
-                <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                <span>${s.location}</span>
+        <!-- 2. Bottom Section: 오늘의 일정 -->
+        <div>
+          <div class="pc-card-header mb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="pc-card-title flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+                </svg>
+                오늘의 일정
               </span>
-            ` : '';
-
-            return `
-              <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-xl border border-outline/30 hover:border-primary/50 transition-all gap-3 cursor-pointer group" onclick="PCApp.openDateScheduleModal('${todayDateKey}')" title="클릭하여 상세 정보 보기">
-                <div class="flex items-center gap-2 shrink-0">
-                  <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
-                </div>
-                <div class="flex-1 text-left min-w-0 flex flex-col justify-center">
-                  <div class="flex items-center justify-between gap-2 mb-1.5 min-w-0">
-                    <div class="flex items-center gap-1.5 flex-wrap min-w-0">
-                      ${authorText}
-                      ${colorInfo.badgeHtml}
-                      ${locationBadgeHtml}
-                    </div>
-                    <span class="text-xs text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
-                  </div>
-                  <div class="text-sm text-on-surface font-bold leading-snug truncate group-hover:text-primary transition-colors">${this.formatScheduleCleanLabel(s)}</div>
-                </div>
-              </div>
-            `;
-          }).join('') : `
-            <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-xl">
-              <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
-              </svg>
-              <p class="font-bold text-sm text-on-surface">오늘 등록된 일정이 없습니다.</p>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${todayMonth}월 ${todayDay}일 (${dayOfWeekStr}) · 총 ${todaySchedules.length}건</span>
             </div>
-          `}
+            <button class="pc-card-action text-xs" onclick="PCApp.switchScreen('calendar')">전체보기</button>
+          </div>
+
+          <div class="space-y-2.5">
+            ${todaySchedules.length > 0 ? todaySchedules.map(s => {
+              const isHoliday = (
+                s.badge === '공휴일' ||
+                s.badge === '기념일' ||
+                s.badge === '절기' ||
+                s.title.includes('공휴일') ||
+                s.title.includes('기념일') ||
+                s.title.includes('대체공휴일') ||
+                s.title.includes('절기') ||
+                s.author === '공휴일' ||
+                s.author === '기념일' ||
+                s.author === '24절기' ||
+                s.author === '대한민국 공휴일' ||
+                s.author === '회사공지' ||
+                s.author === '국경일/기념일'
+              );
+              const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
+              const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
+              const locationBadgeHtml = s.location ? `
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
+                  <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                  <span>${s.location}</span>
+                </span>
+              ` : '';
+
+              return `
+                <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-xl border border-outline/30 hover:border-primary/50 transition-all gap-3 cursor-pointer group" onclick="PCApp.openDateScheduleModal('${todayDateKey}')" title="클릭하여 상세 정보 보기">
+                  <div class="flex items-center gap-2 shrink-0">
+                    <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
+                  </div>
+                  <div class="flex-1 text-left min-w-0 flex flex-col justify-center">
+                    <div class="flex items-center justify-between gap-2 mb-1.5 min-w-0">
+                      <div class="flex items-center gap-1.5 flex-wrap min-w-0">
+                        ${authorText}
+                        ${colorInfo.badgeHtml}
+                        ${locationBadgeHtml}
+                      </div>
+                      <span class="text-xs text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
+                    </div>
+                    <div class="text-sm text-on-surface font-bold leading-snug truncate group-hover:text-primary transition-colors">${this.formatScheduleCleanLabel(s)}</div>
+                  </div>
+                </div>
+              `;
+            }).join('') : `
+              <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-xl">
+                <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                </svg>
+                <p class="font-bold text-sm text-on-surface">오늘 등록된 일정이 없습니다.</p>
+              </div>
+            `}
+          </div>
         </div>
       </div>
     `;
+  },
+
+  // 2. Today's Schedule Widget (하위 호환성 유지)
+  renderTodayScheduleWidget() {
+    this.renderCompanyScheduleWidget();
   },
 
   getCategoryColorStyle(category) {
