@@ -1657,7 +1657,7 @@ const App = {
               const assignee = (todo.assignees && todo.assignees[0]) || { name: (this.state.myProfile && this.state.myProfile.name) || '이재광 팀장', avatar: (this.state.myProfile && this.state.myProfile.avatar) || './resource/image/profile_jaegwang.png' };
 
               return `
-                <div class="p-3.5 rounded-xl border border-outline-variant/30 hover:border-primary/50 transition-all flex flex-col justify-between gap-2.5 cursor-pointer text-left group" onclick="App.openTodoDetailModal(${todo.id})">
+                <div class="p-3.5 rounded-md border border-outline-variant/30 hover:border-primary/50 transition-all flex flex-col justify-between gap-2.5 cursor-pointer text-left group" onclick="App.openTodoDetailModal(${todo.id})">
                   <div class="flex items-center justify-between gap-1.5">
                     <div class="flex items-center gap-1.5 flex-wrap">
                       <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${statusBgClass}">
@@ -1975,7 +1975,7 @@ const App = {
             </span>
           </div>
 
-          <div class="flex items-center justify-around bg-surface-container-low/70 rounded-xl p-3 mb-3.5 text-center">
+          <div class="flex items-center justify-around bg-surface-container-low/70 rounded-md p-3 mb-3.5 text-center">
             <div>
               <span class="text-[11px] text-on-surface-variant block mb-0.5 font-medium">출근 시간</span>
               <span class="font-headline text-lg sm:text-xl font-black text-primary">${checkInTime}</span>
@@ -2032,26 +2032,26 @@ const App = {
           </div>
 
           <div class="grid grid-cols-3 gap-2 mb-3">
-            <div class="p-2.5 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/10">
+            <div class="p-2.5 bg-surface-container-low/70 rounded-md text-center border border-outline-variant/10">
               <div class="font-headline text-base font-black text-primary">9.0일</div>
               <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">잔여 연차</div>
             </div>
-            <div class="p-2.5 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/10">
+            <div class="p-2.5 bg-surface-container-low/70 rounded-md text-center border border-outline-variant/10">
               <div class="font-headline text-base font-black text-on-surface">26.0일</div>
               <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">사용 연차</div>
             </div>
-            <div class="p-2.5 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/10">
+            <div class="p-2.5 bg-surface-container-low/70 rounded-md text-center border border-outline-variant/10">
               <div class="font-headline text-base font-black text-on-surface-variant">35.0일</div>
               <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">총 연차</div>
             </div>
           </div>
 
           <div class="space-y-1.5">
-            <div class="flex justify-between items-center px-3 py-2 bg-surface-container-low/50 rounded-xl text-xs">
+            <div class="flex justify-between items-center px-3 py-2 bg-surface-container-low/50 rounded-md text-xs">
               <span class="font-bold text-on-surface">연차 (종일)</span>
               <span class="text-on-surface-variant font-medium">2026-08-19</span>
             </div>
-            <div class="flex justify-between items-center px-3 py-2 bg-surface-container-low/50 rounded-xl text-xs">
+            <div class="flex justify-between items-center px-3 py-2 bg-surface-container-low/50 rounded-md text-xs">
               <span class="font-bold text-secondary">반차 (오후)</span>
               <span class="text-on-surface-variant font-medium">2026-08-21</span>
             </div>

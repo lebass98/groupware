@@ -31,7 +31,7 @@
 | `--secondary-container`| `#61fbab` | `#004d2e` | 성공 상태 배경 배지 |
 | `--tertiary` | `#785500` | `#ecaa00` | 앰버 골드 / 주의, 필독 배지 |
 | `--surface` | `#ffffff` | `#0b1120` | 기본 앱 뷰포트 바탕색 (Slate Black) |
-| `--surface-container-low`| `#f8fafc` | `#1e293b` | 1단계 카드 배경 |
+| `--surface-container-low`| `#f8f8f8` | `#1e293b` | 1단계 카드 배경 |
 | `--surface-container` | `#f1f5f9` | `#334155` | 2단계 칩/입력 필드 배경 |
 | `--surface-container-high`| `#e2e8f0` | `#475569` | 3단계 선택 박스 및 버튼 |
 | `--surface-container-lowest`| `#ffffff` | `#151f32` | 고대비 카드/모달 최상위 배경 |
