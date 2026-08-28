@@ -1404,31 +1404,34 @@ const PCApp = {
                   <h3 class="font-headline text-lg sm:text-xl font-black text-on-surface tracking-tight">프로젝트 현황</h3>
                 </div>
 
-                <!-- 5 Status Progress Items -->
-                <div class="space-y-3">
+                <!-- 5 Status Progress Items (Single row: Name - Bar - Percent) -->
+                <div class="space-y-3.5">
                   ${activeCategories.map(cat => `
                     <div 
-                      class="flex flex-col gap-1.5 cursor-pointer group rounded-xl p-1.5 -mx-1.5 hover:bg-surface-container-low transition-colors"
+                      class="flex items-center gap-3 cursor-pointer group rounded-xl p-1 -mx-1 hover:bg-surface-container-low transition-colors"
                       onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
-                      title="${cat.name} (${cat.count}건) 프로젝트 보기"
+                      title="${cat.name} (${cat.count}건 / ${cat.pct}%) 프로젝트 보기"
                     >
-                      <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                          <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${cat.color};"></span>
-                          <span class="text-xs font-bold text-on-surface group-hover:text-primary transition-colors">${cat.name}</span>
-                        </div>
-                        <span class="text-xs font-extrabold text-on-surface font-mono">${cat.pct}%</span>
+                      <!-- Left: Dot + Category Name -->
+                      <div class="flex items-center gap-2 shrink-0 min-w-[70px]">
+                        <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${cat.color};"></span>
+                        <span class="text-xs font-bold text-on-surface group-hover:text-primary transition-colors whitespace-nowrap">${cat.name}</span>
                       </div>
-                      <div class="w-full bg-[#E8F1FC] dark:bg-surface-container-high rounded-full h-2 overflow-hidden">
+
+                      <!-- Middle: Inline Progress Bar -->
+                      <div class="flex-1 bg-[#E8F1FC] dark:bg-surface-container-high rounded-full h-2 overflow-hidden">
                         <div class="h-full rounded-full transition-all duration-700" style="background-color: ${cat.color}; width: ${cat.pct}%;"></div>
                       </div>
+
+                      <!-- Right: Percentage -->
+                      <span class="text-xs font-extrabold text-on-surface font-mono shrink-0 min-w-[36px] text-right">${cat.pct}%</span>
                     </div>
                   `).join('')}
                 </div>
               </div>
             </div>
 
-            <!-- Right Half: Donut Chart & Legend -->
+            <!-- Right Half: Donut Chart -->
             <div class="md:col-span-6 flex flex-col items-center justify-center">
               <!-- Donut Chart Canvas with Center 100% -->
               <div class="relative w-44 h-44 sm:w-48 sm:h-48 my-1 flex items-center justify-center">
@@ -1439,20 +1442,6 @@ const PCApp = {
                   <span class="font-headline text-3xl font-black text-primary tracking-tight">100%</span>
                   <span class="text-xs font-bold text-on-surface-variant mt-0.5">전체 프로젝트</span>
                 </div>
-              </div>
-
-              <!-- Bottom Legend (● 01  ● 02  ● 03  ● 04  ● 05) -->
-              <div class="flex items-center justify-center gap-3 sm:gap-4 mt-2 flex-wrap">
-                ${activeCategories.map(cat => `
-                  <div 
-                    class="flex items-center gap-1.5 cursor-pointer group text-xs text-on-surface-variant hover:text-primary font-mono font-medium"
-                    onclick="PCApp.switchScreen('project'); PCApp.setProjectFilter('${cat.key}');"
-                    title="${cat.name} (${cat.pct}%)"
-                  >
-                    <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${cat.color};"></span>
-                    <span class="text-[11px]">${cat.num}</span>
-                  </div>
-                `).join('')}
               </div>
             </div>
 
