@@ -526,14 +526,14 @@
           </div>
         </section>
 
-        <!-- 4. Today's To-Do Tasks (오늘의 할 일) -->
+        <!-- 4. Today's To-Do Tasks (To-Do 할 일 목록) -->
         <section class="flex flex-col gap-4">
           <header class="flex items-center justify-between px-1">
             <div class="flex items-center gap-2">
               <svg class="w-5 h-5 text-secondary" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22 5.18L10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM19.79 10.22C19.92 10.79 20 11.39 20 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8c1.66 0 3.2.51 4.48 1.39l1.45-1.45C16.19 2.7 14.19 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z"/>
               </svg>
-              <h2 class="font-headline text-lg font-bold">오늘의 할 일</h2>
+              <h2 class="font-headline text-lg font-bold">To-Do 할 일 목록</h2>
             </div>
             <button class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-todo')">전체보기</button>
           </header>
@@ -542,7 +542,7 @@
           </div>
         </section>
 
-        <!-- 6. Finance & Expenses -->
+        <!-- 6. Finance & Expenses (경비 내역) -->
         <section class="flex flex-col gap-4">
           <header class="flex justify-between items-center px-1">
             <div class="flex items-center gap-2">
@@ -564,14 +564,14 @@
           </div>
         </section>
 
-        <!-- 7. Pending Approvals -->
+        <!-- 7. Pending Approvals (결재 내역) -->
         <section class="flex flex-col gap-4">
           <header class="flex justify-between items-center px-1">
             <div class="flex items-center gap-2">
               <svg class="w-5 h-5 text-tertiary-fixed-dim" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M21.71 5.29l-3-3a1.003 1.003 0 0 0-1.42 0L3 16.59V21h4.41L21.71 6.71c.39-.39.39-1.03 0-1.42zM6.59 19H5v-1.59l11-11L17.59 8l-11 11z"/>
               </svg>
-              <h2 class="font-headline text-lg font-bold">결재 대기</h2>
+              <h2 class="font-headline text-lg font-bold">결재 내역</h2>
             </div>
             <span id="today-summary-pending-count" class="bg-tertiary-container text-on-tertiary-container font-label text-xs font-bold px-2.5 py-0.5 rounded-full">1건</span>
           </header>
