@@ -1147,31 +1147,29 @@ const PCApp = {
 
     schedWrap.innerHTML = `
       <div class="pc-bento-card">
-        <!-- 1. Top Section: 캘린더 간소화 달력 -->
-        <div class="pc-card-header mb-3">
-          <div class="flex items-center gap-2.5">
+        <!-- 1. Top Section: 캘린더 간소화 달력 (중앙 년월 네비게이션 & 배경/보더 없음, 전체보기/총건수 삭제) -->
+        <div class="flex items-center justify-between mb-3 relative min-h-[32px]">
+          <div class="flex items-center gap-2">
             <span class="pc-card-title flex items-center gap-2">
               <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
               </svg>
               캘린더
             </span>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${year}년 ${month}월 · 총 ${monthTotalScheds}건</span>
           </div>
 
-          <!-- Month Controls & Action Buttons -->
-          <div class="flex items-center gap-2">
-            <div class="flex items-center bg-surface-container-low border border-outline rounded-lg p-0.5">
-              <button type="button" class="p-1 hover:bg-surface-container rounded text-on-surface transition-colors" onclick="PCApp.changeDashboardCalMonth(-1)" title="이전 달">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-              </button>
-              <span class="px-2 font-bold text-xs text-on-surface min-w-[70px] text-center">${year}.${String(month).padStart(2, '0')}</span>
-              <button type="button" class="p-1 hover:bg-surface-container rounded text-on-surface transition-colors" onclick="PCApp.changeDashboardCalMonth(1)" title="다음 달">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-              </button>
-            </div>
-            <button class="pc-card-action text-xs" onclick="PCApp.switchScreen('calendar')">전체보기</button>
+          <!-- Centered Month Controls without background/border -->
+          <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+            <button type="button" class="p-1 hover:bg-surface-container-low rounded-full text-on-surface transition-colors" onclick="PCApp.changeDashboardCalMonth(-1)" title="이전 달">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <span class="px-1.5 font-bold text-sm text-on-surface min-w-[70px] text-center">${year}.${String(month).padStart(2, '0')}</span>
+            <button type="button" class="p-1 hover:bg-surface-container-low rounded-full text-on-surface transition-colors" onclick="PCApp.changeDashboardCalMonth(1)" title="다음 달">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
           </div>
+
+          <div></div>
         </div>
 
         <!-- Simplified Calendar Grid in Dashboard Card -->

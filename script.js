@@ -2117,24 +2117,16 @@ const App = {
 
     schedWrap.innerHTML = `
       <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/15 shadow-2xs">
-        <!-- 1. Top Section: 캘린더 간소화 달력 헤더 -->
-        <div class="flex items-center justify-between gap-2 mb-3">
-          <div class="flex items-center gap-2 min-w-0">
-            <span class="px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${year}년 ${month}월 · 총 ${monthTotalScheds}건</span>
-          </div>
-
-          <!-- Month Controls & Action Buttons -->
+        <!-- 1. Top Section: 캘린더 간소화 달력 헤더 (중앙 년월 네비게이션 & 배경/보더 없음, 전체보기/총건수 삭제) -->
+        <div class="flex items-center justify-center mb-3">
           <div class="flex items-center gap-1.5">
-            <div class="flex items-center bg-surface-container-low border border-outline-variant/30 rounded-lg p-0.5">
-              <button type="button" class="p-1 hover:bg-surface-container rounded text-on-surface transition-colors" onclick="App.changeTodayCalMonth(-1)" title="이전 달">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-              </button>
-              <span class="px-1.5 font-bold text-xs text-on-surface min-w-[55px] text-center">${year}.${String(month).padStart(2, '0')}</span>
-              <button type="button" class="p-1 hover:bg-surface-container rounded text-on-surface transition-colors" onclick="App.changeTodayCalMonth(1)" title="다음 달">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-              </button>
-            </div>
-            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-calendar')">전체보기</button>
+            <button type="button" class="p-1 hover:bg-surface-container-low rounded-full text-on-surface transition-colors" onclick="App.changeTodayCalMonth(-1)" title="이전 달">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <span class="px-2 font-bold text-sm text-on-surface min-w-[65px] text-center">${year}.${String(month).padStart(2, '0')}</span>
+            <button type="button" class="p-1 hover:bg-surface-container-low rounded-full text-on-surface transition-colors" onclick="App.changeTodayCalMonth(1)" title="다음 달">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
           </div>
         </div>
 
