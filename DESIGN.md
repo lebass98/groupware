@@ -23,7 +23,7 @@
 
 | 토큰명 | 라이트 모드 (Light) | 다크 모드 (Dark) | 설명 / 용도 |
 | :--- | :--- | :--- | :--- |
-| `--primary` | `#0346ff` | `#5e8bff` | **Blue Universe** / 메인 브랜드 키 컬러 / 주요 버튼 및 강조 |
+| `--primary` | `#333436` | `#5e8bff` | **Iron Veil / Dark Slate** / 메인 브랜드 키 컬러 / 주요 버튼 및 강조 |
 | `--primary-dim` | `#002b99` | `#3a6ede` | **Blue Universe - Dark** / Primary 눌림(Active) / 딥 블루 |
 | `--primary-container` | `#afcbff` | `#1b3b8c` | **Blue Universe - Light** / 컨테이너 하이라이트 배경 |
 | `--on-primary` | `#ffffff` | `#ffffff` | Primary 요소 전경 텍스트 |
