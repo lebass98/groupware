@@ -2,12 +2,12 @@
 
 :root {
   /* Stitch Color Tokens */
-  --primary: #0052d0;
-  --primary-dim: #0047b7;
-  --primary-container: #799dff;
-  --primary-fixed-dim: #638eff;
-  --on-primary: #f1f2ff;
-  --on-primary-container: #001e58;
+  --primary: #0346ff;
+  --primary-dim: #002b99;
+  --primary-container: #afcbff;
+  --primary-fixed-dim: #afcbff;
+  --on-primary: #ffffff;
+  --on-primary-container: #002b99;
   
   --secondary: #00693f;
   --secondary-container: #61fbab;
@@ -19,23 +19,23 @@
   --surface: #ffffff;
   --surface-container-lowest: #ffffff;
   --surface-container-low: #f8f8f8;
-  --surface-container: #e9ecef;
-  --surface-container-high: #dee2e6;
-  --surface-container-highest: #ced4da;
+  --surface-container: #f3f4f6;
+  --surface-container-high: #e5e7eb;
+  --surface-container-highest: #d1d5db;
 
-  --on-surface: #232c51;
-  --on-surface-variant: #515981;
+  --on-surface: #333436;
+  --on-surface-variant: #5e6065;
 
-  --outline: #6c759e;
-  --outline-variant: #a2abd7;
+  --outline: #e5e7eb;
+  --outline-variant: #d1d5db;
 
   --error: #b31b25;
   --error-container: #fb5151;
   --on-error: #ffefee;
 
-  --shadow-sm: 0 4px 12px rgba(35, 44, 81, 0.04);
-  --shadow-md: 0 8px 24px rgba(35, 44, 81, 0.06);
-  --shadow-lg: 0 16px 36px rgba(0, 82, 208, 0.15);
+  --shadow-sm: 0 4px 12px rgba(51, 52, 54, 0.04);
+  --shadow-md: 0 8px 24px rgba(51, 52, 54, 0.06);
+  --shadow-lg: 0 16px 36px rgba(3, 70, 255, 0.15);
 
   --radius-sm: 0.75rem;
   --radius-md: 1.25rem;

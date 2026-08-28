@@ -1790,7 +1790,7 @@ const App = {
 
     // 5대 핵심 영역 카테고리 정의 (단일 조화 블루 팔레트 매핑)
     const catDefs = [
-      { key: 'operation', num: '01', name: '운영용역', color: '#0052D0' },
+      { key: 'operation', num: '01', name: '운영용역', color: '#0346FF' },
       { key: 'build', num: '02', name: '구축중', color: '#0070E0' },
       { key: 'maintenance', num: '03', name: '유지보수', color: '#2563EB' },
       { key: 'improvement', num: '04', name: '개선사업', color: '#4B96F3' },
@@ -4717,9 +4717,9 @@ const App = {
     if (matchBadge && matchIcon && matchText) {
       if (geoCheck.isAllowed) {
         // Location MATCHED: 출근 체크 가능
-        matchBadge.style.background = 'rgba(0, 82, 208, 0.1)';
-        matchBadge.style.color = '#0052d0';
-        matchBadge.style.border = '1px solid rgba(0, 82, 208, 0.25)';
+        matchBadge.style.background = 'rgba(3, 70, 255, 0.1)';
+        matchBadge.style.color = '#0346ff';
+        matchBadge.style.border = '1px solid rgba(3, 70, 255, 0.25)';
         matchIcon.innerText = 'check_circle';
         matchText.innerText = '출근 체크 가능 (서울 금천구 벚꽃로 298)';
       } else {

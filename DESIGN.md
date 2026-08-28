@@ -23,21 +23,21 @@
 
 | 토큰명 | 라이트 모드 (Light) | 다크 모드 (Dark) | 설명 / 용도 |
 | :--- | :--- | :--- | :--- |
-| `--primary` | `#0052d0` | `#5e8bff` | 메인 브랜드 브라이트 블루 / 주요 버튼 및 강조 |
-| `--primary-dim` | `#0047b7` | `#3a6ede` | Primary 눌림(Active) / 딥 블루 |
-| `--primary-container` | `#799dff` | `#1b3b8c` | 컨테이너 하이라이트 배경 |
-| `--on-primary` | `#f1f2ff` | `#ffffff` | Primary 요소 전경 텍스트 |
+| `--primary` | `#0346ff` | `#5e8bff` | **Blue Universe** / 메인 브랜드 키 컬러 / 주요 버튼 및 강조 |
+| `--primary-dim` | `#002b99` | `#3a6ede` | **Blue Universe - Dark** / Primary 눌림(Active) / 딥 블루 |
+| `--primary-container` | `#afcbff` | `#1b3b8c` | **Blue Universe - Light** / 컨테이너 하이라이트 배경 |
+| `--on-primary` | `#ffffff` | `#ffffff` | Primary 요소 전경 텍스트 |
 | `--secondary` | `#00693f` | `#27d085` | 에메랄드 그린 / 출근 및 성공 상태 |
 | `--secondary-container`| `#61fbab` | `#004d2e` | 성공 상태 배경 배지 |
 | `--tertiary` | `#785500` | `#ecaa00` | 앰버 골드 / 주의, 필독 배지 |
-| `--surface` | `#ffffff` | `#0b1120` | 기본 앱 뷰포트 바탕색 (Slate Black) |
+| `--surface` | `#ffffff` | `#0b1120` | 기본 앱 뷰포트 바탕색 |
 | `--surface-container-low`| `#f8f8f8` | `#1e293b` | 1단계 카드 배경 |
-| `--surface-container` | `#f1f5f9` | `#334155` | 2단계 칩/입력 필드 배경 |
-| `--surface-container-high`| `#e2e8f0` | `#475569` | 3단계 선택 박스 및 버튼 |
+| `--surface-container` | `#f3f4f6` | `#333436` | **Cloud Whisper / Iron Veil** / 2단계 칩/입력 필드 배경 |
+| `--surface-container-high`| `#e5e7eb` | `#475569` | 3단계 선택 박스 및 버튼 |
 | `--surface-container-lowest`| `#ffffff` | `#151f32` | 고대비 카드/모달 최상위 배경 |
-| `--on-surface` | `#232c51` | `#f1f5f9` | 본문 메인 타이포 텍스트 색상 |
-| `--on-surface-variant`| `#515981` | `#94a3b8` | 서브 타이포, 라벨, 캡션 텍스트 |
-| `--outline` | `#6c759e` | `#64748b` | 디바이더 및 보조 라인 |
+| `--on-surface` | `#333436` | `#f1f5f9` | **Iron Veil** / 본문 메인 타이포 텍스트 색상 |
+| `--on-surface-variant`| `#5e6065` | `#94a3b8` | 서브 타이포, 라벨, 캡션 텍스트 |
+| `--outline` | `#e5e7eb` | `#64748b` | 디바이더 및 보조 라인 |
 | `--error` | `#b31b25` | `#ff6b6b` | 경고, 퇴근, 삭제 에러 컬러 |
 
 ---
@@ -46,7 +46,7 @@
 
 상단 헤더의 팔레트 버튼을 통해 실시간 적용 가능한 메인 포인트 컬러 토큰 세트입니다.
 
-1. **Professional Blue (기본)**: `#0052d0` (신뢰감 높은 글로벌 테크 블루)
+1. **Blue Universe (기본)**: `#0346ff` (선명하고 미래지향적인 블루 유니버스)
 2. **Emerald Green**: `#00693f` (생동감 있는 친환경 숲 테마)
 3. **Royal Violet**: `#6200ee` (세련된 세미 다이나믹 바이올렛)
 4. **Coral Pink**: `#e91e63` (트렌디하고 감각적인 코랄 핑크)

@@ -1467,7 +1467,7 @@ const PCApp = {
 
       // 5대 핵심 영역 카테고리 정의 (단일 조화 블루 팔레트 매핑)
       const catDefs = [
-        { key: 'operation', num: '01', name: '운영용역', color: '#0052D0' },
+        { key: 'operation', num: '01', name: '운영용역', color: '#0346FF' },
         { key: 'build', num: '02', name: '구축중', color: '#0070E0' },
         { key: 'maintenance', num: '03', name: '유지보수', color: '#2563EB' },
         { key: 'improvement', num: '04', name: '개선사업', color: '#4B96F3' },

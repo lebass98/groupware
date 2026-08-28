@@ -87,7 +87,7 @@ export default function App() {
           }}
           renderLoading={() => (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#0052D0" />
+              <ActivityIndicator size="large" color="#0346FF" />
             </View>
           )}
           onError={() => setError(true)}
@@ -137,18 +137,18 @@ const styles = StyleSheet.create({
   errorTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#232C51',
+    color: '#333436',
     marginBottom: 8,
   },
   errorSub: {
     fontSize: 14,
-    color: '#515981',
+    color: '#5E6065',
     textAlign: 'center',
     marginBottom: 24,
     lineHeight: 20,
   },
   retryBtn: {
-    backgroundColor: '#0052D0',
+    backgroundColor: '#0346FF',
     paddingHorizontal: 28,
     paddingVertical: 14,
     borderRadius: 14,
