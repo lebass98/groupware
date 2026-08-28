@@ -1765,7 +1765,7 @@ const App = {
             </div>
             <div class="text-left">
               <p class="font-bold text-sm text-on-surface truncate max-w-[180px]">8월 4주차 UI/UX 라이선스 구매 품의</p>
-              <p class="text-xs text-on-surface-variant font-medium mt-0.5">기안일: 2026.08.25 · 손석호 대리</p>
+              <p class="text-xs text-on-surface-variant font-medium mt-0.5">2026.08.25 · 손석호 대리</p>
             </div>
           </div>
           <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300 shrink-0">결재대기</span>

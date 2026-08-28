@@ -1096,7 +1096,7 @@ const PCApp = {
                     </div>
                     <div class="min-w-0 flex-1">
                       <p class="font-bold text-xs text-on-surface group-hover:text-primary transition-colors truncate">${a.title}</p>
-                      <p class="text-[11px] text-on-surface-variant font-medium mt-0.5">기안일: ${a.date} · ${a.drafter}</p>
+                      <p class="text-[11px] text-on-surface-variant font-medium mt-0.5">${a.date} · ${a.drafter}</p>
                     </div>
                   </div>
                   <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300 shrink-0 ml-2">결재대기</span>
