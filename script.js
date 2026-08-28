@@ -2191,15 +2191,14 @@ const App = {
           ${notices.length > 0 ? notices.slice(0, 5).map((n) => `
             <div class="flex items-center justify-between gap-3 p-2.5 rounded-xl hover:bg-surface-container-low transition-all cursor-pointer border border-transparent hover:border-outline-variant/30 group" onclick="App.openNoticeDetail(${n.id})">
               <div class="flex items-center gap-2 min-w-0 flex-1">
-                <span class="px-2 py-0.5 rounded-md text-[11px] font-bold shrink-0 ${n.isPinned ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">
-                  ${n.isPinned ? '필독' : (n.category || '공통')}
+                <span class="px-2 py-0.5 rounded-md text-[11px] font-bold shrink-0 ${n.isPinned || n.pinned ? 'bg-[#fee2e2] text-[#ef4444] dark:bg-rose-500/20 dark:text-rose-300' : 'bg-[#e8f0fe] text-[#0052d0] dark:bg-primary/20 dark:text-primary-300'}">
+                  ${n.isPinned || n.pinned ? '필독' : (n.category || '공통')}
                 </span>
                 <span class="text-xs sm:text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
                   ${n.title}
                 </span>
               </div>
               <div class="flex items-center gap-1.5 shrink-0 text-xs text-on-surface-variant font-medium">
-                ${n.fileName ? '<span class="text-xs text-primary" title="첨부파일 있음">📎</span>' : ''}
                 <span class="whitespace-nowrap">${n.date}</span>
               </div>
             </div>
