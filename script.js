@@ -5308,25 +5308,27 @@ const App = {
           const checkColor = isDone ? 'text-primary' : 'text-on-surface-variant';
           const isDoneClass = isDone ? 'line-through text-on-surface-variant opacity-70' : 'text-on-surface';
 
-          let priorityDot = `<span class="w-2 h-2 rounded-full bg-tertiary shrink-0"></span>`;
-          if (t.priority === 'high') priorityDot = `<span class="w-2 h-2 rounded-full bg-error shrink-0"></span>`;
-          else if (t.priority === 'low') priorityDot = `<span class="w-2 h-2 rounded-full bg-outline shrink-0"></span>`;
+          let priorityBadge = `<span class="px-2 py-0.5 rounded-md bg-tertiary-container text-tertiary text-[11px] font-bold shrink-0">보통</span>`;
+          if (t.priority === 'high') priorityBadge = `<span class="px-2 py-0.5 rounded-md bg-error-container text-error text-[11px] font-bold shrink-0">높음</span>`;
+          else if (t.priority === 'low') priorityBadge = `<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold shrink-0">낮음</span>`;
 
-          let statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">대기</span>`;
-          if (t.status === 'in_progress') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold shrink-0">진행 중</span>`;
-          else if (t.status === 'done') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-bold shrink-0">완료</span>`;
-          else if (t.status === 'draft') statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">임시저장</span>`;
+          let statusBadge = `<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold shrink-0">대기</span>`;
+          if (t.status === 'in_progress') statusBadge = `<span class="px-2 py-0.5 rounded-md bg-primary/10 text-primary text-[11px] font-bold shrink-0">진행 중</span>`;
+          else if (t.status === 'done') statusBadge = `<span class="px-2 py-0.5 rounded-md bg-secondary-container text-secondary text-[11px] font-bold shrink-0">완료</span>`;
+          else if (t.status === 'draft') statusBadge = `<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold shrink-0">임시저장</span>`;
 
           return `
               <div class="flex items-center gap-3 bg-surface-container-lowest rounded-xl px-4 py-3 border border-outline-variant/10 hover:bg-surface-container-low active:scale-98 transition-all cursor-pointer group text-left shadow-2xs" onclick="App.openTodoDetailModal(${t.id})">
                 <button type="button" onclick="event.stopPropagation(); App.toggleTodoStatus(${t.id});" class="shrink-0 ${checkColor} hover:text-primary transition-colors">
                   <span class="material-symbols-outlined text-xl">${checkIcon}</span>
                 </button>
-                ${priorityDot}
                 <div class="flex-1 min-w-0 flex items-center gap-2">
                   <span class="font-headline text-sm font-semibold ${isDoneClass} truncate group-hover:text-primary transition-colors">${t.title}</span>
                 </div>
-                ${statusBadge}
+                <div class="flex items-center gap-1.5 shrink-0">
+                  ${statusBadge}
+                  ${priorityBadge}
+                </div>
                 <span class="text-[10px] text-on-surface-variant font-medium whitespace-nowrap shrink-0">${t.dueDate || ''}</span>
                 <button type="button" onclick="event.stopPropagation(); App.editTodo(${t.id});" class="shrink-0 p-1 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
                   <span class="material-symbols-outlined text-base">edit</span>
@@ -5376,7 +5378,7 @@ const App = {
               <div class="flex items-center gap-1.5 text-[11px] font-semibold text-on-surface-variant">
                 <span class="px-2 py-0.5 rounded-full bg-surface-container">대기 ${todoCount}</span>
                 <span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold">진행 중 ${inProgressCount}</span>
-                <span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary font-bold">완료 ${doneCount}</span>
+                <span class="px-2 py-0.5 rounded-full bg-secondary-container text-secondary font-bold">완료 ${doneCount}</span>
               </div>
               <span class="material-symbols-outlined text-on-surface-variant text-base group-hover:translate-x-1 transition-transform ml-1">chevron_right</span>
             </div>
@@ -5421,20 +5423,20 @@ const App = {
 
         let priorityBadgeHtml = '';
         if (t.priority === 'high') {
-          priorityBadgeHtml = `<span class="bg-error/10 text-error text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-error"></span>높음</span>`;
+          priorityBadgeHtml = `<span class="bg-error-container text-error text-[11px] font-bold px-2 py-0.5 rounded-md">높음</span>`;
         } else if (t.priority === 'low') {
-          priorityBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-outline"></span>낮음</span>`;
+          priorityBadgeHtml = `<span class="bg-surface-container text-on-surface-variant text-[11px] font-bold px-2 py-0.5 rounded-md">낮음</span>`;
         } else {
-          priorityBadgeHtml = `<span class="bg-tertiary/10 text-tertiary text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>보통</span>`;
+          priorityBadgeHtml = `<span class="bg-tertiary-container text-tertiary text-[11px] font-bold px-2 py-0.5 rounded-md">보통</span>`;
         }
 
-        let statusBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-[11px] font-bold px-2.5 py-0.5 rounded-full">대기</span>`;
+        let statusBadgeHtml = `<span class="bg-surface-container text-on-surface-variant text-[11px] font-bold px-2 py-0.5 rounded-md">대기</span>`;
         if (t.status === 'in_progress') {
-          statusBadgeHtml = `<span class="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full">진행 중</span>`;
+          statusBadgeHtml = `<span class="bg-primary/10 text-primary text-[11px] font-bold px-2 py-0.5 rounded-md">진행 중</span>`;
         } else if (t.status === 'done') {
-          statusBadgeHtml = `<span class="bg-secondary/10 text-secondary text-[11px] font-bold px-2.5 py-0.5 rounded-full">완료</span>`;
+          statusBadgeHtml = `<span class="bg-secondary-container text-secondary text-[11px] font-bold px-2 py-0.5 rounded-md">완료</span>`;
         } else if (t.status === 'draft') {
-          statusBadgeHtml = `<span class="bg-surface-container-high text-on-surface-variant text-[11px] font-bold px-2.5 py-0.5 rounded-full">임시저장</span>`;
+          statusBadgeHtml = `<span class="bg-surface-container text-on-surface-variant text-[11px] font-bold px-2 py-0.5 rounded-md">임시저장</span>`;
         }
 
         const assigneesHtml = (t.assignees || []).map((a, idx) => `
@@ -5513,7 +5515,7 @@ const App = {
             <h2 class="font-headline font-bold text-base text-on-surface-variant flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
               완료
-              <span class="bg-secondary/10 text-secondary text-xs font-bold py-0.5 px-2.5 rounded-full">${doneList.length}</span>
+              <span class="bg-secondary-container text-secondary text-xs font-bold py-0.5 px-2.5 rounded-full">${doneList.length}</span>
             </h2>
           </div>
           ${doneList.length > 0 ? `
@@ -5596,7 +5598,7 @@ const App = {
           <div class="flex items-center gap-2 pt-1 flex-wrap">
             <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-semibold">대기 ${todoCount}</span>
             <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] font-bold">진행 중 ${inProgressCount}</span>
-            <span class="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-[11px] font-bold">완료 ${doneCount}</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-secondary text-[11px] font-bold">완료 ${doneCount}</span>
           </div>
 
           <!-- 최근 업무 미리보기 -->
@@ -5878,23 +5880,23 @@ const App = {
     // Status Badge
     let statusBadgeHtml = '';
     if (todo.status === 'in_progress') {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary font-label text-xs font-bold">진행 중</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-primary/10 text-primary font-label text-xs font-bold">진행 중</span>`;
     } else if (todo.status === 'done') {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary/10 text-secondary font-label text-xs font-bold">완료</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-secondary-container text-secondary font-label text-xs font-bold">완료</span>`;
     } else if (todo.status === 'draft') {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold">임시저장</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label text-xs font-bold">임시저장</span>`;
     } else {
-      statusBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold">${todo.status || '대기'}</span>`;
+      statusBadgeHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label text-xs font-bold">${todo.status || '대기'}</span>`;
     }
 
     // Priority Badge
     let priorityBadgeHtml = '';
     if (todo.priority === 'high') {
-      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-error/10 text-error font-label text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-error mr-1.5"></span>높음</span>`;
+      priorityBadgeHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-error-container text-error font-label text-xs font-bold">높음</span>`;
     } else if (todo.priority === 'low') {
-      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label text-xs font-bold">낮음</span>`;
+      priorityBadgeHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label text-xs font-bold">낮음</span>`;
     } else {
-      priorityBadgeHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary/10 text-tertiary font-label text-xs font-bold"><span class="w-1.5 h-1.5 rounded-full bg-tertiary mr-1.5"></span>보통</span>`;
+      priorityBadgeHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-tertiary-container text-tertiary font-label text-xs font-bold">보통</span>`;
     }
 
     // Assignees Stack (주소록 연동)
