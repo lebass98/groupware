@@ -1135,6 +1135,56 @@ const PCApp = {
     `;
   },
 
+  // Calendar Grid Generator (Dashboard Widget - 날짜 숫자 확대 & 이벤트 수 뱃지만 노출하는 간소화 캘린더)
+  generateDashboardCalGridHTML(year, month, firstDay, lastDate, now) {
+    let html = '';
+
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+      html += `<div class="h-11 sm:h-12 p-1 bg-surface-container-lowest/30 border border-outline/20 rounded-xl opacity-30"></div>`;
+    }
+
+    // Days
+    for (let d = 1; d <= lastDate; d++) {
+      const key = `${year}-${month}-${d}`;
+      const isToday = (d === now.getDate() && month === (now.getMonth() + 1) && year === now.getFullYear());
+      const dayOfWeek = (firstDay + d - 1) % 7;
+      const isSunday = (dayOfWeek === 0);
+      const isSaturday = (dayOfWeek === 6);
+
+      const daySchedules = this.getSchedulesForDay(year, month, d) || [];
+
+      let dateNumClass = 'text-on-surface';
+      if (isSunday) dateNumClass = 'text-red-500 font-bold';
+      else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
+
+      html += `
+        <div class="h-11 sm:h-12 px-2 py-1.5 bg-surface-container-low/70 hover:bg-primary/10 border border-outline/60 hover:border-primary rounded-xl transition-all cursor-pointer flex items-center justify-between group ${isToday ? 'ring-2 ring-primary bg-primary/10' : ''}" onclick="PCApp.openDateScheduleModal('${key}')" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 상세 보기">
+          <span class="text-sm sm:text-base font-bold ${dateNumClass} ${isToday ? 'w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shadow-xs' : ''}">${d}</span>
+          ${daySchedules.length > 0 ? `<span class="min-w-[18px] h-[18px] px-1 rounded-full text-[11px] font-bold flex items-center justify-center bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}</span>` : ''}
+        </div>
+      `;
+    }
+
+    return html;
+  },
+
+  changeDashboardCalMonth(offset) {
+    let y = this.state.calYear || 2026;
+    let m = this.state.calMonth || 8;
+    m += offset;
+    if (m < 1) {
+      m = 12;
+      y--;
+    } else if (m > 12) {
+      m = 1;
+      y++;
+    }
+    this.state.calYear = y;
+    this.state.calMonth = m;
+    this.renderCompanyScheduleWidget();
+  },
+
   // 2. Today's Schedule Widget (하위 호환성 유지)
   renderTodayScheduleWidget() {
     this.renderCompanyScheduleWidget();
