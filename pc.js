@@ -1396,8 +1396,8 @@ const PCApp = {
     const quickWrap = document.getElementById('pc-widget-quick-menu');
     if (quickWrap) {
       quickWrap.innerHTML = `
-        <div class="pc-bento-card">
-          <div class="pc-card-header">
+        <div class="bg-transparent border-0 shadow-none p-0">
+          <div class="pc-card-header mb-2.5 px-0.5">
             <span class="pc-card-title">
               <svg class="w-4.5 h-4.5 text-primary" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.05.5-9 4.77-9 9.95 0 5.52 4.48 10 10 10 2.44 0 4.67-.88 6.43-2.33l-2.02-2.02c-1.25.86-2.77 1.35-4.41 1.35z"/>
