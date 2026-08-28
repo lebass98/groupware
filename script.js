@@ -1686,125 +1686,11 @@ const App = {
       }
     }
 
-    // Real-time Notifications Feed Section (투데이 실시간 알림 동적 바인딩)
-    const notiContainer = document.getElementById('today-summary-notifications-container');
-    if (notiContainer) {
-      const visibleNotifs = typeof this.getVisibleNotifications === 'function'
-        ? this.getVisibleNotifications()
-        : (this.state.notifications || []);
-      const displayNotifs = visibleNotifs.slice(0, 3); // 상위 3개 표시
+    // 3. Attendance Log & Today's Schedule Section (근태일지 & 오늘의 일정 통합 위젯)
+    this.renderTodayAttendanceScheduleSummary();
 
-      if (displayNotifs.length > 0) {
-        notiContainer.innerHTML = displayNotifs.map(item => {
-          let typeBadge = '';
-          if (item.type === 'commute') {
-            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300">출/퇴근</span>';
-          } else if (item.type === 'approval') {
-            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300">전자결재</span>';
-          } else if (item.type === 'business') {
-            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-sky-500/10 text-sky-600 dark:text-sky-300">외근/출장</span>';
-          } else {
-            typeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-rose-500/10 text-rose-600 dark:text-rose-300">공지/일정</span>';
-          }
-
-          const unreadBadge = !item.isRead
-            ? '<span class="w-2 h-2 rounded-full bg-[#e83538] shrink-0" title="읽지 않음"></span>'
-            : '';
-
-          const unreadBg = !item.isRead
-            ? 'bg-primary/5 border border-primary/20'
-            : 'bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/10';
-
-          return `
-            <div class="p-3.5 rounded-2xl ${unreadBg} shadow-2xs transition-all active:scale-[0.98] cursor-pointer flex flex-col gap-1.5 text-left" onclick="App.onNotificationClick(${item.id})">
-              <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-1.5 min-w-0">
-                  ${typeBadge}
-                  <span class="font-bold text-sm text-on-surface truncate">${item.title}</span>
-                </div>
-                <div class="flex items-center gap-1.5 shrink-0">
-                  <span class="text-xs text-on-surface-variant font-medium">${item.time}</span>
-                  ${unreadBadge}
-                </div>
-              </div>
-              <p class="text-xs text-on-surface-variant font-medium leading-relaxed break-words">${item.message}</p>
-              <div class="text-xs text-on-surface-variant/80 font-medium">
-                <span>${item.sender?.dept || ''} ${item.sender?.name || ''} ${item.sender?.role || ''}</span>
-              </div>
-            </div>
-          `;
-        }).join('');
-      } else {
-        notiContainer.innerHTML = `
-          <div class="bg-surface-container-lowest rounded-2xl p-6 text-center text-on-surface-variant font-medium border border-outline-variant/10">
-            <svg class="w-8 h-8 text-outline mx-auto mb-1" viewBox="0 -960 960 960" fill="currentColor">
-              <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/>
-            </svg>
-            <p class="font-bold text-on-surface text-sm">새로운 알림이 없습니다.</p>
-          </div>
-        `;
-      }
-    }
-
-    // Today's Calendar & Schedule Section
-    const schedulesContainer = document.getElementById('today-summary-schedules-container');
-    if (schedulesContainer) {
-      const schedules = this.getMockSchedules(todayYear, todayMonth, todayDay) || [];
-
-      if (schedules.length > 0) {
-        schedulesContainer.innerHTML = schedules.map(s => {
-          const isHoliday = (
-            s.badge === '공휴일' ||
-            s.badge === '기념일' ||
-            s.badge === '절기' ||
-            s.title.includes('공휴일') ||
-            s.title.includes('기념일') ||
-            s.title.includes('대체공휴일') ||
-            s.title.includes('절기') ||
-            s.author === '공휴일' ||
-            s.author === '기념일' ||
-            s.author === '24절기' ||
-            s.author === '대한민국 공휴일' ||
-            s.author === '회사공지' ||
-            s.author === '국경일/기념일'
-          );
-          const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
-          const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
-          const locationBadgeHtml = s.location ? `
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
-              <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-              <span>${s.location}</span>
-            </span>
-          ` : '';
-
-          return `
-            <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/15 shadow-2xs transition-all gap-3">
-              <div class="flex items-center gap-2 shrink-0">
-                <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
-              </div>
-              <div class="flex-1 text-left min-w-0 flex flex-col justify-center">
-                <div class="flex items-center justify-between gap-2 mb-1.5 min-w-0">
-                  <div class="flex items-center gap-1.5 flex-wrap min-w-0">
-                    ${authorText}
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none shrink-0 ${colorInfo.badgeHtml.includes('class=\"') ? colorInfo.badgeHtml.match(/class=\"(.*?)\"/)[1] : ''}">${s.badge}</span>
-                    ${locationBadgeHtml}
-                  </div>
-                  <span class="text-xs text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
-                </div>
-                <div class="text-sm text-on-surface font-bold font-headline leading-snug truncate">${this.formatScheduleCleanLabel(s)}</div>
-              </div>
-            </div>
-          `;
-        }).join('');
-      } else {
-        schedulesContainer.innerHTML = `
-          <div class="bg-surface-container-lowest rounded-2xl p-6 text-center text-on-surface-variant font-medium border border-outline-variant/10">
-            <span class="material-symbols-outlined text-3xl text-outline mb-1">event_available</span>
-            <p class="font-bold text-on-surface text-sm">오늘 예정된 일정이 없습니다.</p>
-          </div>
-        `;
-      }
-    }
+    // 4. Notice Board Section (공지사항 위젯)
+    this.renderTodayNoticeSummary();
 
     // Today's To-Do Tasks Section (오늘의 할 일 동적 바인딩)
     const todosContainer = document.getElementById('today-summary-todos-container');
@@ -2106,6 +1992,221 @@ const App = {
         }
       });
     }
+  },
+
+  // Mobile Today Attendance Log & Schedule Unified Widget
+  renderTodayAttendanceScheduleSummary() {
+    const schedWrap = document.getElementById('today-summary-attendance-schedule-container');
+    if (!schedWrap) return;
+
+    const year = this.state.calYear || 2026;
+    const month = this.state.calMonth || 8;
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    const lastDate = new Date(year, month, 0).getDate();
+    const now = new Date();
+
+    // Calculate monthly total
+    let monthTotalScheds = 0;
+    for (let d = 1; d <= lastDate; d++) {
+      const schs = this.getMockSchedules(year, month, d) || [];
+      monthTotalScheds += schs.length;
+    }
+
+    // Today's schedule data
+    const todayYear = now.getFullYear();
+    const todayMonth = now.getMonth() + 1;
+    const todayDay = now.getDate();
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+    const dayOfWeekStr = dayNames[now.getDay()];
+    const todaySchedules = this.getMockSchedules(todayYear, todayMonth, todayDay) || [];
+
+    schedWrap.innerHTML = `
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/15 shadow-2xs">
+        <!-- 1. Top Section: 근태일지 간소화 달력 헤더 -->
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">${year}년 ${month}월 · 총 ${monthTotalScheds}건</span>
+          </div>
+
+          <!-- Month Controls & Action Buttons -->
+          <div class="flex items-center gap-1.5">
+            <div class="flex items-center bg-surface-container-low border border-outline-variant/30 rounded-lg p-0.5">
+              <button type="button" class="p-1 hover:bg-surface-container rounded text-on-surface transition-colors" onclick="App.changeTodayCalMonth(-1)" title="이전 달">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              </button>
+              <span class="px-1.5 font-bold text-xs text-on-surface min-w-[55px] text-center">${year}.${String(month).padStart(2, '0')}</span>
+              <button type="button" class="p-1 hover:bg-surface-container rounded text-on-surface transition-colors" onclick="App.changeTodayCalMonth(1)" title="다음 달">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+              </button>
+            </div>
+            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-calendar')">전체보기</button>
+          </div>
+        </div>
+
+        <!-- Simplified Calendar Grid in Mobile Card -->
+        <div>
+          <!-- Day of week header -->
+          <div class="grid grid-cols-7 gap-1 mb-1.5 text-center font-bold text-[11px] select-none">
+            <div class="py-1 rounded bg-red-500/10 text-red-600 dark:text-red-400">일</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">월</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">화</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">수</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">목</div>
+            <div class="py-1 rounded bg-surface-container-low text-on-surface">금</div>
+            <div class="py-1 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">토</div>
+          </div>
+
+          <!-- Calendar Days Grid -->
+          <div class="grid grid-cols-7 gap-1">
+            ${this.generateTodayCalGridHTML(year, month, firstDay, lastDate, now)}
+          </div>
+        </div>
+
+        <!-- Divider Line (근태일지와 오늘의 일정 구분선) -->
+        <div class="my-5 border-t border-outline-variant/20"></div>
+
+        <!-- 2. Bottom Section: 오늘의 일정 -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-sm text-on-surface">오늘의 일정</span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary whitespace-nowrap">${todayMonth}월 ${todayDay}일 (${dayOfWeekStr}) · 총 ${todaySchedules.length}건</span>
+            </div>
+            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-calendar')">전체보기</button>
+          </div>
+
+          <div class="space-y-2.5">
+            ${todaySchedules.length > 0 ? todaySchedules.map(s => {
+              const isHoliday = (
+                s.badge === '공휴일' ||
+                s.badge === '기념일' ||
+                s.badge === '절기' ||
+                s.title.includes('공휴일') ||
+                s.title.includes('기념일') ||
+                s.title.includes('대체공휴일') ||
+                s.title.includes('절기') ||
+                s.author === '공휴일' ||
+                s.author === '기념일' ||
+                s.author === '24절기' ||
+                s.author === '대한민국 공휴일' ||
+                s.author === '회사공지' ||
+                s.author === '국경일/기념일'
+              );
+              const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
+              const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
+              const locationBadgeHtml = s.location ? `
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 whitespace-nowrap shrink-0">
+                  <svg class="w-3 h-3 text-sky-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                  <span>${s.location}</span>
+                </span>
+              ` : '';
+
+              return `
+                <div class="flex items-center ${colorInfo.cardBgClass} p-3 rounded-xl border border-outline-variant/20 hover:border-primary/50 transition-all gap-2.5 cursor-pointer group" onclick="App.openDateDetailModal(${todayDay})" title="클릭하여 상세 정보 보기">
+                  <div class="flex items-center gap-2 shrink-0">
+                    <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
+                  </div>
+                  <div class="flex-1 text-left min-w-0 flex flex-col justify-center">
+                    <div class="flex items-center justify-between gap-2 mb-1 min-w-0">
+                      <div class="flex items-center gap-1.5 flex-wrap min-w-0">
+                        ${authorText}
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none shrink-0 ${colorInfo.badgeHtml.includes('class=\"') ? colorInfo.badgeHtml.match(/class=\"(.*?)\"/)[1] : ''}">${s.badge}</span>
+                        ${locationBadgeHtml}
+                      </div>
+                      <span class="text-[11px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
+                    </div>
+                    <div class="text-xs sm:text-sm text-on-surface font-bold leading-snug truncate group-hover:text-primary transition-colors">${this.formatScheduleCleanLabel(s)}</div>
+                  </div>
+                </div>
+              `;
+            }).join('') : `
+              <div class="p-5 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-xl">
+                <p class="font-bold text-xs text-on-surface">오늘 등록된 일정이 없습니다.</p>
+              </div>
+            `}
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  generateTodayCalGridHTML(year, month, firstDay, lastDate, now) {
+    let html = '';
+
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+      html += `<div class="h-10 sm:h-11 p-1 bg-surface-container-lowest/30 border border-outline-variant/10 rounded-xl opacity-30"></div>`;
+    }
+
+    // Days
+    for (let d = 1; d <= lastDate; d++) {
+      const isToday = (d === now.getDate() && month === (now.getMonth() + 1) && year === now.getFullYear());
+      const dayOfWeek = (firstDay + d - 1) % 7;
+      const isSunday = (dayOfWeek === 0);
+      const isSaturday = (dayOfWeek === 6);
+
+      const daySchedules = this.getMockSchedules(year, month, d) || [];
+
+      let dateNumClass = 'text-on-surface';
+      if (isSunday) dateNumClass = 'text-red-500 font-bold';
+      else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
+
+      html += `
+        <div class="h-10 sm:h-11 px-1.5 py-1 bg-surface-container-low/70 hover:bg-primary/10 border border-outline-variant/30 hover:border-primary rounded-xl transition-all cursor-pointer flex items-center justify-between group ${isToday ? 'ring-2 ring-primary bg-primary/10' : ''}" onclick="App.openDateDetailModal(${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건)">
+          <span class="text-xs sm:text-sm font-bold ${dateNumClass} ${isToday ? 'w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold shadow-xs' : ''}">${d}</span>
+          ${daySchedules.length > 0 ? `<span class="min-w-[16px] h-[16px] px-1 rounded-full text-[10px] font-bold flex items-center justify-center bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}</span>` : ''}
+        </div>
+      `;
+    }
+
+    return html;
+  },
+
+  changeTodayCalMonth(offset) {
+    let y = this.state.calYear || 2026;
+    let m = this.state.calMonth || 8;
+    m += offset;
+    if (m < 1) {
+      m = 12;
+      y--;
+    } else if (m > 12) {
+      m = 1;
+      y++;
+    }
+    this.state.calYear = y;
+    this.state.calMonth = m;
+    this.renderTodayData();
+  },
+
+  // Mobile Today Notice Board Widget
+  renderTodayNoticeSummary() {
+    const noticeWrap = document.getElementById('today-summary-notice-container');
+    if (!noticeWrap) return;
+
+    const notices = this.state.notices || [];
+
+    noticeWrap.innerHTML = `
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/15 shadow-2xs">
+        <div class="flex flex-col gap-2">
+          ${notices.length > 0 ? notices.slice(0, 5).map((n) => `
+            <div class="flex items-center justify-between gap-3 p-2.5 rounded-xl hover:bg-surface-container-low transition-all cursor-pointer border border-transparent hover:border-outline-variant/30 group" onclick="App.openNoticeDetail(${n.id})">
+              <div class="flex items-center gap-2 min-w-0 flex-1">
+                <span class="px-2 py-0.5 rounded-md text-[11px] font-bold shrink-0 ${n.isPinned ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">
+                  ${n.isPinned ? '필독' : (n.category || '공통')}
+                </span>
+                <span class="text-xs sm:text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
+                  ${n.title}
+                </span>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0 text-xs text-on-surface-variant font-medium">
+                ${n.fileName ? '<span class="text-xs text-primary" title="첨부파일 있음">📎</span>' : ''}
+                <span class="whitespace-nowrap">${n.date}</span>
+              </div>
+            </div>
+          `).join('') : '<p class="text-xs text-on-surface-variant text-center py-4">등록된 공지사항이 없습니다.</p>'}
+        </div>
+      </div>
+    `;
   },
 
   showScreen(screenId) {

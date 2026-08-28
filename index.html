@@ -540,26 +540,39 @@
           </div>
         </section>
 
-        <!-- 3. Real-time Notifications Summary (실시간 알림 피드) -->
+        <!-- 3. Attendance Log & Today's Schedule (근태일지 & 오늘의 일정 통합 위젯) -->
         <section class="flex flex-col gap-4">
           <header class="flex items-center justify-between px-1">
             <div class="flex items-center gap-2">
-              <svg class="w-5 h-5 text-primary" viewBox="0 -960 960 960" fill="currentColor">
-                <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/>
+              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
               </svg>
-              <div class="flex items-center gap-1.5">
-                <h2 class="font-headline text-lg font-bold">실시간 알림</h2>
-                <span id="today-summary-noti-badge" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e83538] text-white">0</span>
-              </div>
+              <h2 class="font-headline text-lg font-bold">근태일지 &amp; 일정</h2>
             </div>
-            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.openNotificationModal()">전체보기</button>
+            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-calendar')">전체보기</button>
           </header>
-          <div id="today-summary-notifications-container" class="flex flex-col gap-2.5">
-            <!-- Dynamically populated by App.renderTodayData() -->
+          <div id="today-summary-attendance-schedule-container">
+            <!-- Dynamically populated by App.renderTodayAttendanceScheduleSummary() -->
           </div>
         </section>
 
-        <!-- 3. Today's To-Do Tasks (오늘의 할 일) -->
+        <!-- 4. Notice Board Summary (공지사항 위젯) -->
+        <section class="flex flex-col gap-4">
+          <header class="flex items-center justify-between px-1">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+              </svg>
+              <h2 class="font-headline text-lg font-bold">공지사항</h2>
+            </div>
+            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-notice')">전체보기</button>
+          </header>
+          <div id="today-summary-notice-container">
+            <!-- Dynamically populated by App.renderTodayNoticeSummary() -->
+          </div>
+        </section>
+
+        <!-- 5. Today's To-Do Tasks (오늘의 할 일) -->
         <section class="flex flex-col gap-4">
           <header class="flex items-center justify-between px-1">
             <div class="flex items-center gap-2">
@@ -571,22 +584,6 @@
             <button class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-todo')">전체보기</button>
           </header>
           <div id="today-summary-todos-container" class="flex flex-col gap-2.5">
-            <!-- Dynamically populated by App.renderTodayData() -->
-          </div>
-        </section>
-
-        <!-- 4. Calendar & Schedule -->
-        <section class="flex flex-col gap-4">
-          <header class="flex items-center justify-between px-1">
-            <div class="flex items-center gap-2">
-              <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
-              </svg>
-              <h2 class="font-headline text-lg font-bold">오늘의 일정</h2>
-            </div>
-            <button class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-calendar')">전체보기</button>
-          </header>
-          <div id="today-summary-schedules-container" class="flex flex-col gap-3">
             <!-- Dynamically populated by App.renderTodayData() -->
           </div>
         </section>
