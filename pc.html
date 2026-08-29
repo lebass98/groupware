@@ -727,55 +727,102 @@
                 <div>
                   <label class="block font-bold text-base text-on-surface mb-2">휴가 구분</label>
                   <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="pc-leave-type-options">
-                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-primary rounded-xl cursor-pointer font-bold text-primary">
-                      <input type="radio" name="pc_leave_type" value="연차" checked class="accent-primary" />
+                    <label class="flex items-center gap-2 p-3 bg-primary/5 border border-primary rounded-xl cursor-pointer font-bold text-primary shadow-xs">
+                      <input type="radio" name="pc_leave_type" value="연차" checked onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
                       연차 (종일)
                     </label>
-                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container">
-                      <input type="radio" name="pc_leave_type" value="오전 반차" class="accent-primary" />
+                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors">
+                      <input type="radio" name="pc_leave_type" value="오전 반차" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
                       오전 반차
                     </label>
-                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container">
-                      <input type="radio" name="pc_leave_type" value="오후 반차" class="accent-primary" />
+                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors">
+                      <input type="radio" name="pc_leave_type" value="오후 반차" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
                       오후 반차
                     </label>
-                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container">
-                      <input type="radio" name="pc_leave_type" value="반반차" class="accent-primary" />
+                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors">
+                      <input type="radio" name="pc_leave_type" value="반반차" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
                       반반차 (2시간)
                     </label>
-                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container">
-                      <input type="radio" name="pc_leave_type" value="공가" class="accent-primary" />
+                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors">
+                      <input type="radio" name="pc_leave_type" value="공가" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
                       공가
                     </label>
-                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container">
-                      <input type="radio" name="pc_leave_type" value="병가" class="accent-primary" />
+                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors">
+                      <input type="radio" name="pc_leave_type" value="병가" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
                       병가
                     </label>
-                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container">
-                      <input type="radio" name="pc_leave_type" value="경조사" class="accent-primary" />
+                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors">
+                      <input type="radio" name="pc_leave_type" value="경조사" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
                       경조사
                     </label>
-                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container">
-                      <input type="radio" name="pc_leave_type" value="생일휴가" class="accent-primary" />
+                    <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors">
+                      <input type="radio" name="pc_leave_type" value="생일휴가" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
                       생일휴가
                     </label>
+                  </div>
+                </div>
+
+                <!-- 반반차 선택 시 시간 선택 구획 (시작시간/종료시간 & 빠른 프리셋 버튼) -->
+                <div id="pc-leave-time-range-container" class="hidden space-y-3 bg-surface-container-low p-4 rounded-2xl border border-primary/40">
+                  <div class="flex items-center justify-between">
+                    <label class="font-bold text-base text-primary flex items-center gap-1.5">
+                      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                      </svg>
+                      시간 선택 (반반차 2시간)
+                    </label>
+                    <span class="text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-md">2시간 기준 (연차 0.25일 차감)</span>
+                  </div>
+
+                  <!-- Quick Preset Time Buttons -->
+                  <div class="flex flex-wrap gap-2 pt-1">
+                    <button type="button" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-outline bg-surface-container-lowest text-on-surface hover:border-primary hover:text-primary transition-all active:scale-[0.98]" onclick="PCApp.setLeaveTimePreset('09:00', '11:00')">
+                      🌅 오전 09:00 ~ 11:00
+                    </button>
+                    <button type="button" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-outline bg-surface-container-lowest text-on-surface hover:border-primary hover:text-primary transition-all active:scale-[0.98]" onclick="PCApp.setLeaveTimePreset('10:00', '12:00')">
+                      ☀️ 오전 10:00 ~ 12:00
+                    </button>
+                    <button type="button" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-outline bg-surface-container-lowest text-on-surface hover:border-primary hover:text-primary transition-all active:scale-[0.98]" onclick="PCApp.setLeaveTimePreset('14:00', '16:00')">
+                      ☕ 오후 14:00 ~ 16:00
+                    </button>
+                    <button type="button" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-outline bg-surface-container-lowest text-on-surface hover:border-primary hover:text-primary transition-all active:scale-[0.98]" onclick="PCApp.setLeaveTimePreset('16:00', '18:00')">
+                      🌇 조기퇴근 16:00 ~ 18:00
+                    </button>
+                  </div>
+
+                  <!-- Time Pickers Row -->
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div>
+                      <label class="block text-xs font-bold text-on-surface-variant mb-1">시작 시간</label>
+                      <input type="time" id="pc-leave-start-time" value="09:00" onchange="PCApp.calculateLeaveDays()" class="w-full p-3 bg-surface-container-lowest border border-outline rounded-xl text-base text-on-surface font-semibold focus:outline-none focus:border-primary" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold text-on-surface-variant mb-1">종료 시간</label>
+                      <input type="time" id="pc-leave-end-time" value="11:00" onchange="PCApp.calculateLeaveDays()" class="w-full p-3 bg-surface-container-lowest border border-outline rounded-xl text-base text-on-surface font-semibold focus:outline-none focus:border-primary" />
+                    </div>
                   </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="block font-bold text-base text-on-surface mb-2">시작 일자</label>
-                    <input type="date" id="pc-req-leave-start" value="2026-08-25" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" />
+                    <input type="date" id="pc-req-leave-start" value="2026-08-25" onchange="PCApp.calculateLeaveDays()" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" />
                   </div>
                   <div>
                     <label class="block font-bold text-base text-on-surface mb-2">종료 일자</label>
-                    <input type="date" id="pc-req-leave-end" value="2026-08-25" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" />
+                    <input type="date" id="pc-req-leave-end" value="2026-08-25" onchange="PCApp.calculateLeaveDays()" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" />
                   </div>
                 </div>
 
                 <div>
                   <label class="block font-bold text-base text-on-surface mb-2">휴가 사유</label>
                   <textarea id="pc-req-leave-reason" rows="3" placeholder="개인 사유 및 비상연락망을 기재해주세요." class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary"></textarea>
+                </div>
+
+                <!-- 신청 요약 안내 바 -->
+                <div class="p-4 rounded-xl bg-surface-container-low border border-outline flex items-center justify-between" id="pc-leave-summary-card">
+                  <span class="text-sm font-bold text-on-surface-variant">차감 연차 및 기간</span>
+                  <span class="text-base font-bold text-primary" id="pc-leave-days-count">총 1.0일</span>
                 </div>
 
                 <div class="flex justify-end pt-2">

@@ -4187,20 +4187,148 @@ const PCApp = {
     }
   },
 
+  onLeaveTypeChange(typeVal) {
+    this.state.currentLeaveType = typeVal;
+
+    // Update active radio border styling in pc-leave-type-options
+    const labels = document.querySelectorAll('#pc-leave-type-options label');
+    labels.forEach(lbl => {
+      const radio = lbl.querySelector('input[type="radio"]');
+      if (radio && radio.value === typeVal) {
+        lbl.className = 'flex items-center gap-2 p-3 bg-primary/5 border border-primary rounded-xl cursor-pointer font-bold text-primary shadow-xs';
+      } else {
+        lbl.className = 'flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors';
+      }
+    });
+
+    const timeContainer = document.getElementById('pc-leave-time-range-container');
+    const endInput = document.getElementById('pc-req-leave-end');
+    const startInput = document.getElementById('pc-req-leave-start');
+
+    if (typeVal === '반반차') {
+      if (timeContainer) timeContainer.classList.remove('hidden');
+      if (endInput && startInput) {
+        endInput.value = startInput.value;
+        endInput.disabled = true;
+      }
+    } else {
+      if (timeContainer) timeContainer.classList.add('hidden');
+      if (endInput) {
+        endInput.disabled = (typeVal === '오전 반차' || typeVal === '오후 반차' || typeVal === '생일휴가');
+        if (endInput.disabled && startInput) {
+          endInput.value = startInput.value;
+        }
+      }
+    }
+
+    this.calculateLeaveDays();
+  },
+
+  setLeaveTimePreset(start, end) {
+    const startEl = document.getElementById('pc-leave-start-time');
+    const endEl = document.getElementById('pc-leave-end-time');
+    if (startEl) startEl.value = start;
+    if (endEl) endEl.value = end;
+    this.calculateLeaveDays();
+  },
+
+  calculateLeaveDays() {
+    const startEl = document.getElementById('pc-req-leave-start');
+    const endEl = document.getElementById('pc-req-leave-end');
+    const countEl = document.getElementById('pc-leave-days-count');
+    if (!countEl) return;
+
+    const selectedRadio = document.querySelector('input[name="pc_leave_type"]:checked');
+    const selectedType = selectedRadio ? selectedRadio.value : '연차';
+
+    if (selectedType === '반반차') {
+      const startTime = document.getElementById('pc-leave-start-time')?.value || '09:00';
+      const endTime = document.getElementById('pc-leave-end-time')?.value || '11:00';
+      countEl.innerHTML = `총 <strong class="text-primary">0.25일</strong> (2시간: ${startTime} ~ ${endTime})`;
+      return;
+    }
+
+    if (selectedType === '오전 반차') {
+      countEl.innerHTML = `총 <strong class="text-primary">0.5일</strong> (오전 09:00 ~ 13:00)`;
+      return;
+    }
+
+    if (selectedType === '오후 반차') {
+      countEl.innerHTML = `총 <strong class="text-primary">0.5일</strong> (오후 14:00 ~ 18:00)`;
+      return;
+    }
+
+    if (selectedType === '생일휴가') {
+      countEl.innerHTML = `총 <strong class="text-primary">1.0일</strong> (생일 특별 유급휴가)`;
+      return;
+    }
+
+    if (!startEl || !endEl || !startEl.value || !endEl.value) {
+      countEl.innerHTML = `총 <strong class="text-primary">1.0일</strong>`;
+      return;
+    }
+
+    const startDate = new Date(startEl.value);
+    const endDate = new Date(endEl.value);
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      countEl.innerHTML = `총 <strong class="text-primary">1.0일</strong>`;
+      return;
+    }
+
+    const diffTime = endDate.getTime() - startDate.getTime();
+    const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1);
+
+    countEl.innerHTML = `총 <strong class="text-primary">${diffDays}.0일</strong>`;
+  },
+
   renderRequestView() {
     this.switchRequestTab(this.state.requestTab || 'leave');
+
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    const startEl = document.getElementById('pc-req-leave-start');
+    const endEl = document.getElementById('pc-req-leave-end');
+    const outworkDateEl = document.getElementById('pc-req-outwork-date');
+
+    if (startEl && !startEl.value) startEl.value = todayStr;
+    if (endEl && !endEl.value) endEl.value = todayStr;
+    if (outworkDateEl && !outworkDateEl.value) outworkDateEl.value = todayStr;
+
+    const checkedRadio = document.querySelector('input[name="pc_leave_type"]:checked');
+    this.onLeaveTypeChange(checkedRadio ? checkedRadio.value : '연차');
   },
 
   submitLeaveForm() {
     const selectedRadio = document.querySelector('input[name="pc_leave_type"]:checked');
     const leaveType = selectedRadio ? selectedRadio.value : '연차';
-    const startDate = document.getElementById('pc-req-leave-start').value;
-    const endDate = document.getElementById('pc-req-leave-end').value;
-    const reason = document.getElementById('pc-req-leave-reason').value;
+    const startDate = document.getElementById('pc-req-leave-start')?.value || '';
+    const endDate = document.getElementById('pc-req-leave-end')?.value || startDate;
+    const reason = document.getElementById('pc-req-leave-reason')?.value || '개인 사유';
 
     if (!startDate) {
       alert('시작 일자를 선택해주세요.');
       return;
+    }
+
+    let scheduleTitle = `${leaveType} (${reason || '개인 사유'})`;
+    let timeStr = '종일';
+    let toastMessage = `[신청 완료] ${startDate} ${leaveType} 신청서가 정상 접수되었습니다.`;
+
+    if (leaveType === '반반차') {
+      const startTime = document.getElementById('pc-leave-start-time')?.value || '09:00';
+      const endTime = document.getElementById('pc-leave-end-time')?.value || '11:00';
+      scheduleTitle = `반반차 [${startTime}~${endTime}]`;
+      timeStr = `${startTime} ~ ${endTime}`;
+      toastMessage = `[신청 완료] ${startDate} 반반차 [${startTime}~${endTime}] (0.25일) 신청서가 정상 접수되었습니다.`;
+    } else if (leaveType === '오전 반차') {
+      scheduleTitle = `오전 반차 (${reason || '개인 사유'})`;
+      timeStr = '09:00 ~ 13:00';
+      toastMessage = `[신청 완료] ${startDate} 오전 반차(0.5일) 신청서가 정상 접수되었습니다.`;
+    } else if (leaveType === '오후 반차') {
+      scheduleTitle = `오후 반차 (${reason || '개인 사유'})`;
+      timeStr = '14:00 ~ 18:00';
+      toastMessage = `[신청 완료] ${startDate} 오후 반차(0.5일) 신청서가 정상 접수되었습니다.`;
     }
 
     // Register to MockData schedules
@@ -4209,15 +4337,17 @@ const PCApp = {
     if (!schedulesMap[key]) schedulesMap[key] = [];
 
     schedulesMap[key].push({
-      title: `${leaveType} (${reason || '개인 사유'})`,
-      time: leaveType.includes('반차') ? '13:00 ~ 18:00' : '종일',
-      type: 'error',
+      title: scheduleTitle,
+      time: timeStr,
+      type: 'warning',
       badge: leaveType,
       author: '이재광 팀장',
-      avatar: './profile.png'
+      avatar: 'profile.png'
     });
 
-    this.showToast(`[신청 완료] ${startDate} ${leaveType} 신청서가 정상 접수되었습니다.`);
+    this.showToast(toastMessage);
+    this.renderLeftCol();
+    this.renderCompanyScheduleWidget();
     this.switchScreen('dashboard');
   },
 
