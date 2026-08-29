@@ -638,7 +638,13 @@ const PCApp = {
 
       const clockEl = document.getElementById('pc-gnb-clock');
       if (clockEl) {
-        clockEl.innerHTML = `<span>${year}.${month}.${date} (${day})</span> <strong class="text-primary ml-1">${hours}:${mins}:${secs}</strong>`;
+        clockEl.innerHTML = `
+          <svg class="w-4 h-4 text-primary shrink-0 pc-clock-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+          </svg>
+          <span class="pc-clock-date"><span class="pc-clock-year">${year}.</span>${month}.${date} <span class="pc-clock-day">(${day})</span></span>
+          <strong class="pc-clock-time text-primary ml-1">${hours}:${mins}:${secs}</strong>
+        `;
       }
       const checkinLiveTime = document.getElementById('pc-checkin-live-time');
       if (checkinLiveTime) {
@@ -647,6 +653,32 @@ const PCApp = {
     };
     update();
     setInterval(update, 1000);
+  },
+
+  // Header Search Bar Mobile / Responsive Toggle
+  toggleHeaderSearch(e) {
+    if (e) e.stopPropagation();
+    const searchContainer = document.getElementById('pc-gnb-search');
+    const input = document.getElementById('pc-gnb-search-input');
+    if (!searchContainer) return;
+
+    const isNarrow = window.innerWidth <= 1200;
+    if (isNarrow) {
+      const isActive = searchContainer.classList.toggle('active');
+      if (isActive && input) {
+        setTimeout(() => input.focus(), 60);
+      }
+    } else {
+      if (input) input.focus();
+    }
+  },
+
+  closeHeaderSearch(e) {
+    if (e) e.stopPropagation();
+    const searchContainer = document.getElementById('pc-gnb-search');
+    if (searchContainer) {
+      searchContainer.classList.remove('active');
+    }
   },
 
   // 2-1. Fixed Header Notice Flip Ticker Banner
@@ -4933,9 +4965,22 @@ const PCApp = {
   },
 
   bindGlobalEvents() {
-    // 1. ESC Key Modal Close
+    // 1. ESC Key Modal & Search Close
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') this.closeModal();
+      if (e.key === 'Escape') {
+        this.closeModal();
+        this.closeHeaderSearch();
+      }
+    });
+
+    // 1-1. Click Outside Responsive Search Close
+    document.addEventListener('click', (e) => {
+      const searchContainer = document.getElementById('pc-gnb-search');
+      if (searchContainer && searchContainer.classList.contains('active')) {
+        if (!searchContainer.contains(e.target)) {
+          searchContainer.classList.remove('active');
+        }
+      }
     });
 
     // 2. Browser History Back / Forward (popstate)
