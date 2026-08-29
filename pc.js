@@ -1174,7 +1174,7 @@ const PCApp = {
             <div class="py-1 rounded bg-surface-container-low text-on-surface">수</div>
             <div class="py-1 rounded bg-surface-container-low text-on-surface">목</div>
             <div class="py-1 rounded bg-surface-container-low text-on-surface">금</div>
-            <div class="py-1 rounded bg-surface-container-low text-on-surface">토</div>
+            <div class="py-1 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">토</div>
           </div>
 
           <!-- Calendar Days Grid -->
@@ -1277,10 +1277,11 @@ const PCApp = {
       const isSaturday = (dayOfWeek === 6);
 
       const daySchedules = this.getSchedulesForDay(year, month, d) || [];
+      const hasHoliday = daySchedules.some(s => s.badge === '공휴일' || s.title?.includes('공휴일') || s.title?.includes('대체공휴일'));
 
       let dateNumClass = 'text-on-surface';
-      if (isSunday) dateNumClass = 'text-red-500 font-bold';
-      else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
+      if (isSunday || hasHoliday) dateNumClass = 'text-red-600 dark:text-red-400 font-bold';
+      else if (isSaturday) dateNumClass = 'text-blue-600 dark:text-blue-400 font-bold';
 
       const selectedClass = isSelected
         ? 'ring-2 ring-primary bg-primary/15 border-primary shadow-xs font-black'
