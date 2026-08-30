@@ -384,7 +384,7 @@ const App = {
           if (Array.isArray(parsedProj) && parsedProj.length > 0) {
             this.state.projects = parsedProj;
           }
-        } catch (_) {}
+        } catch (_) { }
       }
       if (!this.state.projects || this.state.projects.length === 0) {
         this.state.projects = (window.MockData && window.MockData.projects) ? JSON.parse(JSON.stringify(window.MockData.projects)) : [];
@@ -765,12 +765,12 @@ const App = {
   getVisibleNotifications() {
     const isManager = this.isManagerRole(this.state.user);
     let list = this.state.notifications || [];
-    
+
     // 팀장/부서장이 아닌 경우 팀원 출퇴근 알림(managerOnly) 필터링
     if (!isManager) {
       list = list.filter(n => !n.managerOnly);
     }
-    
+
     // 필터 탭 적용
     if (this.state.notificationFilter && this.state.notificationFilter !== 'all') {
       list = list.filter(n => n.type === this.state.notificationFilter);
@@ -789,7 +789,7 @@ const App = {
     const badgeEl = document.getElementById('mobile-notification-badge');
     const modalBadgeEl = document.getElementById('notification-unread-count-badge');
     const todaySummaryBadgeEl = document.getElementById('today-summary-noti-badge');
-    
+
     if (badgeEl) {
       if (unreadCount > 0) {
         badgeEl.textContent = unreadCount > 99 ? '99+' : unreadCount;
@@ -818,8 +818,8 @@ const App = {
     const roleLabel = document.getElementById('notification-role-label');
     if (roleLabel) {
       const isManager = this.isManagerRole(this.state.user);
-      roleLabel.textContent = isManager 
-        ? `팀장 권한 (${this.state.user.role || '팀장'}): 팀원 출퇴근 알림 연동됨` 
+      roleLabel.textContent = isManager
+        ? `팀장 권한 (${this.state.user.role || '팀장'}): 팀원 출퇴근 알림 연동됨`
         : `일반 권한 (${this.state.user.role || '팀원'}): 개인 결재/외근/공지 알림 연동됨`;
     }
 
@@ -836,7 +836,7 @@ const App = {
 
   filterNotifications(filterType, tabEl) {
     this.state.notificationFilter = filterType || 'all';
-    
+
     const tabs = document.querySelectorAll('#notification-filter-tabs button');
     tabs.forEach(btn => {
       if (btn.getAttribute('data-filter') === this.state.notificationFilter) {
@@ -1646,16 +1646,16 @@ const App = {
         todosContainer.innerHTML = `
           <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/15 shadow-2xs flex flex-col gap-3">
             ${displayTodos.map(todo => {
-              const isDone = todo.status === 'done' || todo.completed;
-              const prioBgClass = todo.priority === 'high' ? 'bg-error-container text-error' : (todo.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-tertiary-container text-tertiary');
-              const prioText = todo.priority === 'high' ? '높음' : (todo.priority === 'low' ? '낮음' : '보통');
-              const statusBgClass = isDone
-                ? 'bg-secondary-container text-secondary'
-                : (todo.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
-              const statusText = isDone ? '완료' : (todo.status === 'in_progress' ? '진행 중' : '대기');
-              const assignee = (todo.assignees && todo.assignees[0]) || { name: (this.state.myProfile && this.state.myProfile.name) || '이재광 팀장', avatar: (this.state.myProfile && this.state.myProfile.avatar) || './resource/image/profile_jaegwang.png' };
+          const isDone = todo.status === 'done' || todo.completed;
+          const prioBgClass = todo.priority === 'high' ? 'bg-error-container text-error' : (todo.priority === 'low' ? 'bg-surface-container text-on-surface-variant' : 'bg-tertiary-container text-tertiary');
+          const prioText = todo.priority === 'high' ? '높음' : (todo.priority === 'low' ? '낮음' : '보통');
+          const statusBgClass = isDone
+            ? 'bg-secondary-container text-secondary'
+            : (todo.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant');
+          const statusText = isDone ? '완료' : (todo.status === 'in_progress' ? '진행 중' : '대기');
+          const assignee = (todo.assignees && todo.assignees[0]) || { name: (this.state.myProfile && this.state.myProfile.name) || '이재광 팀장', avatar: (this.state.myProfile && this.state.myProfile.avatar) || './resource/image/profile_jaegwang.png' };
 
-              return `
+          return `
                 <div class="p-3.5 rounded-md border border-outline-variant/30 hover:border-primary/50 transition-all flex flex-col justify-between gap-2.5 cursor-pointer text-left group" onclick="App.openTodoDetailModal(${todo.id})">
                   <div class="flex items-center justify-between gap-1.5">
                     <div class="flex items-center gap-1.5 flex-wrap">
@@ -1690,7 +1690,7 @@ const App = {
                   </div>
                 </div>
               `;
-            }).join('')}
+        }).join('')}
           </div>
         `;
       } else {
@@ -1869,7 +1869,7 @@ const App = {
     const canvas = document.getElementById('mobile-today-project-donut-canvas');
     if (canvas && window.Chart) {
       if (this._todayProjectChart) {
-        try { this._todayProjectChart.destroy(); } catch (_) {}
+        try { this._todayProjectChart.destroy(); } catch (_) { }
         this._todayProjectChart = null;
       }
 
@@ -2168,31 +2168,31 @@ const App = {
 
           <div class="space-y-2.5">
             ${selSchedules.length > 0 ? selSchedules.map(s => {
-              const isHoliday = (
-                s.badge === '공휴일' ||
-                s.badge === '기념일' ||
-                s.badge === '절기' ||
-                s.title.includes('공휴일') ||
-                s.title.includes('기념일') ||
-                s.title.includes('대체공휴일') ||
-                s.title.includes('절기') ||
-                s.author === '공휴일' ||
-                s.author === '기념일' ||
-                s.author === '24절기' ||
-                s.author === '대한민국 공휴일' ||
-                s.author === '회사공지' ||
-                s.author === '국경일/기념일'
-              );
-              const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
-              const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
-              const locationBadgeHtml = s.location ? `
+      const isHoliday = (
+        s.badge === '공휴일' ||
+        s.badge === '기념일' ||
+        s.badge === '절기' ||
+        s.title.includes('공휴일') ||
+        s.title.includes('기념일') ||
+        s.title.includes('대체공휴일') ||
+        s.title.includes('절기') ||
+        s.author === '공휴일' ||
+        s.author === '기념일' ||
+        s.author === '24절기' ||
+        s.author === '대한민국 공휴일' ||
+        s.author === '회사공지' ||
+        s.author === '국경일/기념일'
+      );
+      const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
+      const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
+      const locationBadgeHtml = s.location ? `
                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface-variant border border-outline/30 whitespace-nowrap shrink-0">
                   <svg class="w-3 h-3 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                   <span>${s.location}</span>
                 </span>
               ` : '';
 
-              return `
+      return `
                 <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/20 hover:border-primary/50 transition-all gap-2.5 cursor-pointer group" onclick="App.switchTab('screen-calendar')" title="클릭하여 캘린더 전체 일정 보기">
                   <div class="flex items-center gap-2 shrink-0">
                     <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
@@ -2210,7 +2210,7 @@ const App = {
                   </div>
                 </div>
               `;
-            }).join('') : `
+    }).join('') : `
               <div class="p-5 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl">
                 <p class="font-bold text-xs text-on-surface">${selMonth}월 ${selDay}일에 등록된 일정이 없습니다.</p>
               </div>
@@ -2245,8 +2245,8 @@ const App = {
       else if (isSaturday) dateNumClass = 'text-blue-600 dark:text-blue-400 font-bold';
 
       const selectedClass = isSelected
-        ? 'bg-primary/15 rounded-xl ring-2 ring-primary shadow-xs font-black'
-        : (isToday ? 'bg-primary/5 rounded-xl ring-1 ring-primary/30' : 'hover:bg-primary/10');
+        ? 'bg-primary/15 rounded-md ring-2 ring-primary shadow-xs font-black'
+        : (isToday ? 'bg-primary/5 rounded-md ring-1 ring-primary/30' : 'hover:bg-primary/10');
 
       html += `
         <div class="h-10 sm:h-11 px-1.5 py-1 transition-all cursor-pointer flex items-center justify-between group ${selectedClass}" onclick="App.selectTodayCalDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
@@ -5160,10 +5160,10 @@ const App = {
   },
 
   // Palette Theme Select Methods (Deprecated & Safe No-Op)
-  openPaletteModal() {},
-  closePaletteModal() {},
-  selectColorTheme() {},
-  applyTheme() {},
+  openPaletteModal() { },
+  closePaletteModal() { },
+  selectColorTheme() { },
+  applyTheme() { },
 
   // To-Do / Task Management Methods
   initKanbanDragScroll() {
