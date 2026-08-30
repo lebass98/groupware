@@ -1081,7 +1081,7 @@ const PCApp = {
 
     schedWrap.innerHTML = `
       <div class="pc-bento-card">
-        <!-- 1. Top Section: 캘린더 간소화 달력 (중앙 년월 네비게이션 & 배경/보더 없음, 전체보기/총건수 삭제) -->
+        <!-- 1. Top Section: 캘린더 간소화 달력 (중앙 년월 네비게이션 & 상단 총건수 뱃지) -->
         <div class="flex items-center justify-between mb-3 relative min-h-[32px]">
           <div class="flex items-center gap-2">
             <span class="pc-card-title flex items-center gap-2">
@@ -1090,6 +1090,7 @@ const PCApp = {
               </svg>
               캘린더
             </span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary whitespace-nowrap">총 ${monthTotalScheds}건</span>
           </div>
 
           <!-- Centered Month Controls without background/border -->
@@ -1116,7 +1117,7 @@ const PCApp = {
             <div class="py-1 rounded bg-surface-container-low text-on-surface">수</div>
             <div class="py-1 rounded bg-surface-container-low text-on-surface">목</div>
             <div class="py-1 rounded bg-surface-container-low text-on-surface">금</div>
-            <div class="py-1 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">토</div>
+            <div class="py-1 rounded bg-surface-container text-blue-600 dark:text-blue-400">토</div>
           </div>
 
           <!-- Calendar Days Grid -->
@@ -1207,7 +1208,8 @@ const PCApp = {
 
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
-      html += `<div class="h-11 sm:h-12 p-1 bg-surface-container-lowest/30 border border-outline/20 rounded-xl opacity-30"></div>`;
+      const isSatEmpty = (i % 7 === 6);
+      html += `<div class="h-11 sm:h-12 p-1 ${isSatEmpty ? 'bg-surface-container/60 dark:bg-surface-container-high/30' : 'bg-surface-container-lowest/30'} border border-outline/20 rounded-md opacity-40"></div>`;
     }
 
     // Days
@@ -1225,9 +1227,13 @@ const PCApp = {
       if (isSunday || hasHoliday) dateNumClass = 'text-red-600 dark:text-red-400 font-bold';
       else if (isSaturday) dateNumClass = 'text-blue-600 dark:text-blue-400 font-bold';
 
+      const defaultBg = isSaturday
+        ? 'bg-surface-container dark:bg-surface-container-high/40 hover:bg-primary/10 border-outline/60 hover:border-primary'
+        : 'bg-surface-container-low/70 hover:bg-primary/10 border-outline/60 hover:border-primary';
+
       const selectedClass = isSelected
         ? 'ring-2 ring-primary bg-primary/15 border-primary shadow-xs font-black'
-        : (isToday ? 'ring-1 ring-primary/40 bg-primary/5 border-outline/60' : 'bg-surface-container-low/70 hover:bg-primary/10 border-outline/60 hover:border-primary');
+        : (isToday ? 'ring-1 ring-primary/40 bg-primary/5 border-outline/60' : defaultBg);
 
       html += `
         <div class="h-11 sm:h-12 px-2 py-1.5 border rounded-md transition-all cursor-pointer flex items-center justify-between group ${selectedClass}" onclick="PCApp.selectDashboardDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
