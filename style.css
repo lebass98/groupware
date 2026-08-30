@@ -8,7 +8,7 @@
   --primary-fixed-dim: #afcbff;
   --on-primary: #ffffff;
   --on-primary-container: #002b99;
-  
+
   --secondary: #00875a;
   --secondary-container: #e3fcef;
   --on-secondary: #00875a;
@@ -325,7 +325,7 @@ svg {
   display: flex;
   flex-direction: column;
   padding-bottom: 110px;
-  box-shadow: 0 0 40px rgba(0,0,0,0.05);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
 }
 
 @media (min-width: 768px) {
@@ -388,7 +388,7 @@ body.dark .top-header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.82) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
   border: 1px solid rgba(255, 255, 255, 0.85) !important;
   border-radius: var(--radius-full);
   padding: 0 0.85rem;
@@ -420,14 +420,13 @@ body.dark .top-header {
   left: -80%;
   width: 140%;
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(255, 255, 255, 0.15) 20%, 
-    rgba(255, 255, 255, 0.7) 45%, 
-    rgba(224, 242, 254, 0.5) 55%, 
-    rgba(255, 255, 255, 0.3) 80%, 
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 20%,
+      rgba(255, 255, 255, 0.7) 45%,
+      rgba(224, 242, 254, 0.5) 55%,
+      rgba(255, 255, 255, 0.3) 80%,
+      transparent 100%);
   animation: noticeGlowSweep 3.5s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 1;
@@ -441,13 +440,12 @@ body.dark .top-header {
   left: -80%;
   width: 140%;
   height: 1.5px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(255, 255, 255, 0.4) 25%, 
-    #ffffff 50%, 
-    rgba(186, 230, 253, 0.8) 75%, 
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 25%,
+      #ffffff 50%,
+      rgba(186, 230, 253, 0.8) 75%,
+      transparent 100%);
   animation: noticeGlowSweep 3.5s ease-in-out infinite alternate;
   filter: blur(0.5px);
   pointer-events: none;
@@ -458,6 +456,7 @@ body.dark .top-header {
   0% {
     transform: translateX(-35%);
   }
+
   100% {
     transform: translateX(35%);
   }
@@ -476,24 +475,22 @@ body.dark .notice-ticker {
 }
 
 body.dark .notice-ticker::before {
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(255, 255, 255, 0.05) 20%, 
-    rgba(255, 255, 255, 0.25) 45%, 
-    rgba(147, 197, 253, 0.2) 55%, 
-    rgba(255, 255, 255, 0.1) 80%, 
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.05) 20%,
+      rgba(255, 255, 255, 0.25) 45%,
+      rgba(147, 197, 253, 0.2) 55%,
+      rgba(255, 255, 255, 0.1) 80%,
+      transparent 100%);
 }
 
 body.dark .notice-ticker::after {
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(255, 255, 255, 0.2) 25%, 
-    rgba(255, 255, 255, 0.6) 50%, 
-    rgba(147, 197, 253, 0.4) 75%, 
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 25%,
+      rgba(255, 255, 255, 0.6) 50%,
+      rgba(147, 197, 253, 0.4) 75%,
+      transparent 100%);
 }
 
 .ticker-label {
@@ -575,13 +572,31 @@ body.dark .ticker-item:hover {
 
 /* 부드러운 스크롤 & 페이드 애니메이션 */
 @keyframes tickerFlipIn {
-  0%   { transform: translateY(16px); opacity: 0; filter: blur(2px); }
-  100% { transform: translateY(0);   opacity: 1; filter: blur(0); }
+  0% {
+    transform: translateY(16px);
+    opacity: 0;
+    filter: blur(2px);
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    filter: blur(0);
+  }
 }
 
 @keyframes tickerFlipOut {
-  0%   { transform: translateY(0);    opacity: 1; filter: blur(0); }
-  100% { transform: translateY(-16px); opacity: 0; filter: blur(2px); }
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  100% {
+    transform: translateY(-16px);
+    opacity: 0;
+    filter: blur(2px);
+  }
 }
 
 .ticker-item.flip-in {
@@ -699,7 +714,8 @@ body.dark .ticker-action:hover {
 }
 
 .screen-view:not(#screen-login) {
-  padding-top: calc(92px + 1.5rem); /* 헤더(56px)+티커(36px) = 92px 만큼 여백 부여 */
+  padding-top: calc(92px + 1.5rem);
+  /* 헤더(56px)+티커(36px) = 92px 만큼 여백 부여 */
 }
 
 .screen-view.active {
@@ -743,18 +759,18 @@ body.dark .ticker-action:hover {
   gap: 0.625rem !important;
 }
 
-#home-menu-grid.cols-3 > button {
+#home-menu-grid.cols-3>button {
   padding: 1.15rem 0.35rem !important;
   gap: 0.5rem !important;
   border-radius: var(--radius-md) !important;
 }
 
-#home-menu-grid.cols-3 > button svg.w-9.h-9 {
+#home-menu-grid.cols-3>button svg.w-9.h-9 {
   width: 1.65rem !important;
   height: 1.65rem !important;
 }
 
-#home-menu-grid.cols-3 > button span.font-label {
+#home-menu-grid.cols-3>button span.font-label {
   font-size: 0.76rem !important;
   white-space: nowrap !important;
   letter-spacing: -0.04em !important;
@@ -974,8 +990,15 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 @keyframes pulseWave {
-  0% { transform: scale(1); opacity: 0.4; }
-  100% { transform: scale(1.35); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
 }
 
 .pulse-icon {
@@ -1512,11 +1535,11 @@ body.dark .menu-col-toggle-btn.active {
   border-radius: 50%;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: var(--primary);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(22px);
 }
 
@@ -1655,7 +1678,8 @@ body.dark .nav-item.active {
 body.modal-open {
   position: fixed !important;
   width: 100% !important;
-  overflow-y: scroll !important; /* 스크롤바 너비 유지 (레이아웃 shift 방지) */
+  overflow-y: scroll !important;
+  /* 스크롤바 너비 유지 (레이아웃 shift 방지) */
 }
 
 /* Modal overlays and inner scroll containers */
@@ -1684,8 +1708,13 @@ body.modal-open {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-card {
@@ -1808,14 +1837,26 @@ body.modal-open {
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Bottom Sheet Slide Up Animation */
 @keyframes slideUp {
-  from { transform: translate(-50%, 100%); }
-  to { transform: translate(-50%, 0); }
+  from {
+    transform: translate(-50%, 100%);
+  }
+
+  to {
+    transform: translate(-50%, 0);
+  }
 }
 
 .animate-slide-up {
@@ -1824,13 +1865,22 @@ body.modal-open {
 
 /* Pulse Animation for Check-in Dot */
 @keyframes pulse-ring {
-  0% { transform: scale(0.8); opacity: 0.5; }
-  100% { transform: scale(1.5); opacity: 0; }
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
+
 .active-dot-wrapper {
   position: relative;
   display: inline-flex;
 }
+
 .active-dot-wrapper::after {
   content: '';
   position: absolute;
@@ -1847,6 +1897,7 @@ body.modal-open {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -1915,10 +1966,12 @@ body.modal-open {
   cursor: pointer;
   transition: transform 0.15s ease, opacity 0.2s ease;
 }
+
 .header-notification-btn:active {
   transform: scale(0.92);
   opacity: 0.7;
 }
+
 .header-notification-badge {
   position: absolute;
   top: 2px;
@@ -1956,10 +2009,12 @@ body.modal-open {
   visibility: hidden;
   transition: opacity 0.25s ease, visibility 0.25s ease;
 }
+
 .notification-modal-backdrop.active {
   opacity: 1;
   visibility: visible;
 }
+
 .notification-modal-container {
   width: 100%;
   max-width: 520px;
@@ -1973,14 +2028,17 @@ body.modal-open {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
 }
+
 .notification-modal-backdrop.active .notification-modal-container {
   transform: translateY(0);
 }
+
 @media (min-width: 640px) {
   .notification-modal-backdrop {
     align-items: center;
     padding: 20px;
   }
+
   .notification-modal-container {
     border-radius: 28px;
     max-height: 80vh;
