@@ -1650,13 +1650,21 @@ strong {
   transform: translateY(-2px);
 }
 .pc-quick-icon {
-  width: 28px;
-  height: 28px;
-  background: transparent;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline);
   color: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: var(--shadow-xs);
+  transition: all 0.2s ease;
+}
+.pc-quick-item:hover .pc-quick-icon {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
 }
 .pc-quick-icon svg {
   width: 20px;
