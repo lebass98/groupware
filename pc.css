@@ -1129,38 +1129,106 @@ strong {
   align-items: start;
 }
 
+/* 3열 기본 모드: pc-col-group-left는 display: contents로 풀려 자식 열들이 1열, 3열에 직관적으로 배치됨 */
+.pc-col-group-left {
+  display: contents;
+}
+
+.pc-col-left {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.pc-col-center {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.pc-col-right {
+  grid-column: 3;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
 @media (max-width: 1560px) {
   .pc-dashboard-container {
     grid-template-columns: 290px 1fr 1fr;
     gap: 20px;
     padding: 24px 28px;
   }
+
+  .pc-col-left,
+  .pc-col-center,
+  .pc-col-right {
+    gap: 20px;
+  }
 }
 
+/* 2열 반응형 모드: 1열에 좌측 그룹(프로필->생일자->퀵액션->프로젝트현황->투두)이 빈틈없이 연속 흐름으로 밀착 배치됨 */
 @media (max-width: 1280px) {
   .pc-dashboard-container {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+    padding: 20px 24px;
   }
 
-  .pc-col-left {
-    display: none;
+  .pc-col-group-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .pc-col-left,
+  .pc-col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    grid-column: auto;
+    grid-row: auto;
+    width: 100%;
+  }
+
+  .pc-col-center {
+    grid-column: 2;
+    grid-row: 1;
+    gap: 20px;
   }
 }
 
+/* 1열 모바일/태블릿 슬림 모드 */
 @media (max-width: 960px) {
   .pc-dashboard-container {
     grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 16px;
   }
-}
 
-/* Column Layouts */
-.pc-col-left,
-.pc-col-center,
-.pc-col-right {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  min-width: 0;
+  .pc-col-group-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .pc-col-center {
+    grid-column: auto;
+    grid-row: auto;
+  }
 }
 
 /* Bento Card Common Styles */

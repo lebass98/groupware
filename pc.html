@@ -240,23 +240,26 @@
       <section class="pc-screen-view active" id="pc-screen-dashboard">
         <div class="pc-dashboard-container">
           
-          <!-- Column 1: Left Widgets (290px ~ 320px) -->
-          <div class="pc-col-left">
-            <div id="pc-widget-profile"></div>
-            <div id="pc-widget-birthday"></div>
+          <!-- Left Widget Group: 3열 모드 시 display: contents로 1열/3열 분리, 2열 모드 시 단일 연속 열로 통합 -->
+          <div class="pc-col-group-left">
+            <!-- Column 1: Left Widgets (프로필, 근태, 연차, 생일자) -->
+            <div class="pc-col-left">
+              <div id="pc-widget-profile"></div>
+              <div id="pc-widget-birthday"></div>
+            </div>
+
+            <!-- Column 3: Right Widgets (퀵액션, 프로젝트 현황 도넛 차트, 투두) -->
+            <div class="pc-col-right">
+              <div id="pc-widget-quick-menu"></div>
+              <div id="pc-widget-project-summary"></div>
+              <div id="pc-widget-todo"></div>
+            </div>
           </div>
 
           <!-- Column 2: Center Feed (캘린더 달력 & 오늘의 일정 통합 위젯, 공지사항 위젯) -->
           <div class="pc-col-center">
             <div id="pc-widget-company-schedule"></div>
             <div id="pc-widget-notice-banner"></div>
-          </div>
-
-          <!-- Column 3: Right Widgets (퀵액션, 전사 프로젝트 현황 도넛 차트, 투두) -->
-          <div class="pc-col-right">
-            <div id="pc-widget-quick-menu"></div>
-            <div id="pc-widget-project-summary"></div>
-            <div id="pc-widget-todo"></div>
           </div>
 
         </div>
