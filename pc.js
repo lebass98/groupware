@@ -939,15 +939,15 @@ const PCApp = {
             
             <div class="pc-leave-stat-grid mb-3.5">
               <div class="pc-leave-stat-box">
-                <div class="pc-leave-val text-primary">9.0일</div>
+                <div class="pc-leave-val text-primary">9.0<span class="text-[11px] font-medium ml-0.5 opacity-80">일</span></div>
                 <div class="pc-leave-lbl">잔여 연차</div>
               </div>
               <div class="pc-leave-stat-box">
-                <div class="pc-leave-val text-on-surface">26.0일</div>
+                <div class="pc-leave-val text-on-surface">26.0<span class="text-[11px] font-medium ml-0.5 opacity-80">일</span></div>
                 <div class="pc-leave-lbl">사용 연차</div>
               </div>
               <div class="pc-leave-stat-box">
-                <div class="pc-leave-val text-on-surface-variant">35.0일</div>
+                <div class="pc-leave-val text-on-surface-variant">35.0<span class="text-[11px] font-medium ml-0.5 opacity-80">일</span></div>
                 <div class="pc-leave-lbl">총 연차</div>
               </div>
             </div>

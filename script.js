@@ -2032,15 +2032,15 @@ const App = {
 
           <div class="grid grid-cols-3 gap-2 mb-3">
             <div class="p-2.5 bg-surface-container-low/70 rounded-md text-center border border-outline-variant/10">
-              <div class="font-headline text-base font-black text-primary">9.0일</div>
+              <div class="font-headline text-base font-black text-primary">9.0<span class="text-[10px] font-medium ml-0.5 opacity-80">일</span></div>
               <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">잔여 연차</div>
             </div>
             <div class="p-2.5 bg-surface-container-low/70 rounded-md text-center border border-outline-variant/10">
-              <div class="font-headline text-base font-black text-on-surface">26.0일</div>
+              <div class="font-headline text-base font-black text-on-surface">26.0<span class="text-[10px] font-medium ml-0.5 opacity-80">일</span></div>
               <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">사용 연차</div>
             </div>
             <div class="p-2.5 bg-surface-container-low/70 rounded-md text-center border border-outline-variant/10">
-              <div class="font-headline text-base font-black text-on-surface-variant">35.0일</div>
+              <div class="font-headline text-base font-black text-on-surface-variant">35.0<span class="text-[10px] font-medium ml-0.5 opacity-80">일</span></div>
               <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">총 연차</div>
             </div>
           </div>
