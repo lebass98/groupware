@@ -2138,13 +2138,13 @@ const App = {
         <div>
           <!-- Day of week header -->
           <div class="grid grid-cols-7 gap-1 mb-1.5 text-center font-bold text-[11px] select-none">
-            <div class="py-1 rounded bg-red-500/10 text-red-600 dark:text-red-400">일</div>
-            <div class="py-1 rounded bg-surface-container-low text-on-surface">월</div>
-            <div class="py-1 rounded bg-surface-container-low text-on-surface">화</div>
-            <div class="py-1 rounded bg-surface-container-low text-on-surface">수</div>
-            <div class="py-1 rounded bg-surface-container-low text-on-surface">목</div>
-            <div class="py-1 rounded bg-surface-container-low text-on-surface">금</div>
-            <div class="py-1 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">토</div>
+            <div class="py-1 rounded-md bg-red-500/10 text-red-600 dark:text-red-400">일</div>
+            <div class="py-1 rounded-md bg-surface-container-low text-on-surface">월</div>
+            <div class="py-1 rounded-md bg-surface-container-low text-on-surface">화</div>
+            <div class="py-1 rounded-md bg-surface-container-low text-on-surface">수</div>
+            <div class="py-1 rounded-md bg-surface-container-low text-on-surface">목</div>
+            <div class="py-1 rounded-md bg-surface-container-low text-on-surface">금</div>
+            <div class="py-1 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400">토</div>
           </div>
 
           <!-- Calendar Days Grid -->
