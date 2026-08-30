@@ -1025,18 +1025,12 @@ const App = {
       const clientHeight = window.innerHeight || document.documentElement.clientHeight;
       const isAtBottom = (currentScrollY + clientHeight) >= (scrollHeight - 25);
 
-      // 1. 공지사항 티커: 아래로 스크롤(Scroll Down) 시 오른쪽으로 슬라이드 아웃되어 사라지고, 위로 스크롤(Scroll Up) 또는 최상단 도달 시 다시 스무스하게 나타남
+      // 1. 공지사항 티커: 최상단에 있을 때만(currentScrollY <= 15) 나타나고, 스크롤을 하단으로 내릴 경우는 우측으로 슬라이드 아웃되어 사라짐
       if (ticker && ticker.style.display !== 'none') {
         if (currentScrollY <= 15) {
           ticker.classList.remove('ticker-hidden');
-        } else if (Math.abs(currentScrollY - lastScrollY) >= SCROLL_THRESHOLD) {
-          if (currentScrollY > lastScrollY) {
-            // 아래로 스크롤 -> 공지 티커 숨김 (슬라이드 아웃)
-            ticker.classList.add('ticker-hidden');
-          } else {
-            // 위로 스크롤 -> 공지 티커 다시 나타남 (슬라이드 인)
-            ticker.classList.remove('ticker-hidden');
-          }
+        } else {
+          ticker.classList.add('ticker-hidden');
         }
       }
 
