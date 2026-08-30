@@ -993,10 +993,54 @@ const PCApp = {
     }
   },
 
-  // 5-2. Center Column (2열: 캘린더 & 오늘의 일정 통합 위젯)
+  // 5-2. Center Column (2열: 캘린더 & 오늘의 일정 통합 위젯 -> 공지사항 위젯)
   renderCenterCol() {
-    // 1. Company Schedule & Today's Schedule Integrated Widget (2열 최상단: 캘린더 + 오늘의 일정 통합)
+    // 1. Company Schedule & Today's Schedule Integrated Widget (2열 상단: 캘린더 + 오늘의 일정 통합)
     this.renderCompanyScheduleWidget();
+
+    // 2. Notice Card Widget (2열 하단: 공지사항 위젯)
+    this.renderNoticeWidget();
+  },
+
+  renderNoticeWidget() {
+    const noticeWrap = document.getElementById('pc-widget-notice-banner');
+    if (!noticeWrap) return;
+
+    const notices = (this.state.notices && this.state.notices.length > 0)
+      ? this.state.notices.slice(0, 5)
+      : (window.MockData && window.MockData.notices ? window.MockData.notices.slice(0, 5) : []);
+
+    noticeWrap.innerHTML = `
+      <div class="pc-bento-card">
+        <div class="pc-card-header mb-3">
+          <span class="pc-card-title flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+            </svg>
+            공지사항
+          </span>
+          <button class="pc-card-action" onclick="PCApp.switchScreen('notice')">전체보기</button>
+        </div>
+
+        <div class="space-y-1">
+          ${notices.length > 0 ? notices.map((n, idx) => `
+            <div class="flex items-center justify-between gap-3 p-2.5 rounded-xl hover:bg-surface-container-low transition-all cursor-pointer border border-transparent hover:border-outline/50 group" onclick="PCApp.openNoticeModal(${idx})">
+              <div class="flex items-center gap-2 min-w-0 flex-1">
+                <span class="px-2 py-0.5 rounded-md text-[11px] font-bold shrink-0 ${n.isPinned || n.pinned ? 'bg-[#fee2e2] text-[#ef4444] dark:bg-rose-500/20 dark:text-rose-300' : 'bg-surface-container text-on-surface-variant dark:bg-surface-container dark:text-on-surface'}">
+                  ${n.isPinned || n.pinned ? '필독' : (n.category || '공통')}
+                </span>
+                <span class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
+                  ${n.title}
+                </span>
+              </div>
+              <div class="flex items-center gap-2 shrink-0 text-xs text-on-surface-variant font-medium">
+                <span class="whitespace-nowrap">${n.date}</span>
+              </div>
+            </div>
+          `).join('') : '<p class="text-xs text-on-surface-variant text-center py-4">등록된 공지사항이 없습니다.</p>'}
+        </div>
+      </div>
+    `;
   },
 
   // 5-2. Center Column: Integrated Attendance Calendar & Today's Schedule Widget (캘린더 달력 + 구분선 + 선택 일자 일정 통합 위젯)
@@ -1350,47 +1394,7 @@ const PCApp = {
       `;
     }
 
-    // 2. Notice Card Widget (공지사항 위젯)
-    const noticeWrap = document.getElementById('pc-widget-notice-banner');
-    if (noticeWrap) {
-      const notices = (this.state.notices && this.state.notices.length > 0)
-        ? this.state.notices.slice(0, 5)
-        : (window.MockData && window.MockData.notices ? window.MockData.notices.slice(0, 5) : []);
-
-      noticeWrap.innerHTML = `
-        <div class="pc-bento-card">
-          <div class="pc-card-header mb-3">
-            <span class="pc-card-title flex items-center gap-2">
-              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
-              </svg>
-              공지사항
-            </span>
-            <button class="pc-card-action" onclick="PCApp.switchScreen('notice')">전체보기</button>
-          </div>
-
-          <div class="space-y-1">
-            ${notices.length > 0 ? notices.map((n, idx) => `
-              <div class="flex items-center justify-between gap-3 p-2.5 rounded-xl hover:bg-surface-container-low transition-all cursor-pointer border border-transparent hover:border-outline/50 group" onclick="PCApp.openNoticeModal(${idx})">
-                <div class="flex items-center gap-2 min-w-0 flex-1">
-                  <span class="px-2 py-0.5 rounded-md text-[11px] font-bold shrink-0 ${n.isPinned || n.pinned ? 'bg-[#fee2e2] text-[#ef4444] dark:bg-rose-500/20 dark:text-rose-300' : 'bg-surface-container text-on-surface-variant dark:bg-surface-container dark:text-on-surface'}">
-                    ${n.isPinned || n.pinned ? '필독' : (n.category || '공통')}
-                  </span>
-                  <span class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
-                    ${n.title}
-                  </span>
-                </div>
-                <div class="flex items-center gap-2 shrink-0 text-xs text-on-surface-variant font-medium">
-                  <span class="whitespace-nowrap">${n.date}</span>
-                </div>
-              </div>
-            `).join('') : '<p class="text-xs text-on-surface-variant text-center py-4">등록된 공지사항이 없습니다.</p>'}
-          </div>
-        </div>
-      `;
-    }
-
-    // 3. Project Status Donut Chart Widget (5대 핵심 영역 구성 & Harmonic Blue Donut Spec)
+    // 2. Project Status Donut Chart Widget (5대 핵심 영역 구성 & Harmonic Blue Donut Spec)
     const summaryWrap = document.getElementById('pc-widget-project-summary');
     if (summaryWrap) {
       const allProjects = (this.state.projects || (window.MockData && window.MockData.projects) || []);
