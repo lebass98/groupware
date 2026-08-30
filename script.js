@@ -2144,7 +2144,7 @@ const App = {
             <div class="py-1 rounded-md bg-surface-container-low text-on-surface">수</div>
             <div class="py-1 rounded-md bg-surface-container-low text-on-surface">목</div>
             <div class="py-1 rounded-md bg-surface-container-low text-on-surface">금</div>
-            <div class="py-1 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400">토</div>
+            <div class="py-1 rounded-md bg-surface-container text-blue-600 dark:text-blue-400">토</div>
           </div>
 
           <!-- Calendar Days Grid -->
@@ -2226,7 +2226,8 @@ const App = {
 
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
-      html += `<div class="h-10 sm:h-11"></div>`;
+      const isSatEmpty = (i % 7 === 6);
+      html += `<div class="h-10 sm:h-11 ${isSatEmpty ? 'bg-surface-container/60 dark:bg-surface-container-high/30 rounded-md' : ''}"></div>`;
     }
 
     // Days
@@ -2244,14 +2245,18 @@ const App = {
       if (isSunday || hasHoliday) dateNumClass = 'text-red-600 dark:text-red-400 font-bold';
       else if (isSaturday) dateNumClass = 'text-blue-600 dark:text-blue-400 font-bold';
 
+      const defaultBg = isSaturday
+        ? 'bg-surface-container dark:bg-surface-container-high/40 hover:bg-primary/10'
+        : 'hover:bg-primary/10';
+
       const selectedClass = isSelected
         ? 'bg-primary/15 rounded-md ring-2 ring-primary shadow-xs font-black'
-        : (isToday ? 'bg-primary/5 rounded-md ring-1 ring-primary/30' : 'hover:bg-primary/10');
+        : (isToday ? 'bg-primary/5 rounded-md ring-1 ring-primary/30' : defaultBg);
 
       html += `
         <div class="h-10 sm:h-11 px-1.5 py-1 transition-all cursor-pointer flex items-center justify-between group ${selectedClass}" onclick="App.selectTodayCalDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
           <span class="text-xs sm:text-sm font-bold ${dateNumClass} ${isToday ? 'w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold shadow-xs' : ''}">${d}</span>
-          ${daySchedules.length > 0 ? `<span class="min-w-[16px] h-[16px] px-1 rounded-full text-[10px] font-bold flex items-center justify-center bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors">${daySchedules.length}</span>` : ''}
+          ${daySchedules.length > 0 ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center justify-center leading-none bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors whitespace-nowrap">${daySchedules.length}건</span>` : ''}
         </div>
       `;
     }
