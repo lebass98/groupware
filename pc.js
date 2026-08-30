@@ -1487,7 +1487,7 @@ const PCApp = {
 
                 <!-- Center Text inside Doughnut cutout -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                  <span class="font-headline text-3xl font-black text-primary tracking-tight">100%</span>
+                  <span class="font-headline text-3xl font-black text-primary tracking-tight">${allProjects.length}<span class="text-base font-bold ml-0.5">건</span></span>
                   <span class="text-xs font-bold text-on-surface-variant mt-0.5">전체 프로젝트</span>
                 </div>
               </div>

@@ -1828,7 +1828,7 @@ const App = {
 
               <!-- Center Text inside Doughnut cutout -->
               <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                <span class="font-headline text-2xl font-black text-primary tracking-tight">100%</span>
+                <span class="font-headline text-2xl font-black text-primary tracking-tight">${allProjects.length}<span class="text-sm font-bold ml-0.5">건</span></span>
                 <span class="text-[11px] font-bold text-on-surface-variant mt-0.5">전체 프로젝트</span>
               </div>
             </div>
