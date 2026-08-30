@@ -1209,7 +1209,7 @@ const PCApp = {
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
       const isSatEmpty = (i % 7 === 6);
-      html += `<div class="h-11 sm:h-12 p-1 ${isSatEmpty ? 'bg-surface-container/60 dark:bg-surface-container-high/30' : 'bg-surface-container-lowest/30'} border border-outline/20 rounded-md opacity-40"></div>`;
+      html += `<div class="h-11 sm:h-12 p-1 ${isSatEmpty ? 'bg-surface-container/60 dark:bg-surface-container-high/30' : 'bg-surface-container-lowest/30'} rounded-md opacity-40"></div>`;
     }
 
     // Days

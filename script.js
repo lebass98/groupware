@@ -2254,9 +2254,9 @@ const App = {
         : (isToday ? 'bg-primary/5 rounded-md ring-1 ring-primary/30' : defaultBg);
 
       html += `
-        <div class="h-10 sm:h-11 px-1.5 py-1 transition-all cursor-pointer flex items-center justify-between group ${selectedClass}" onclick="App.selectTodayCalDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
+        <div class="h-10 sm:h-11 px-2 py-1 transition-all cursor-pointer flex items-center justify-between group ${selectedClass}" onclick="App.selectTodayCalDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
           <span class="text-xs sm:text-sm font-bold ${dateNumClass} ${isToday ? 'w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold shadow-xs' : ''}">${d}</span>
-          ${daySchedules.length > 0 ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center justify-center leading-none bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors whitespace-nowrap">${daySchedules.length}건</span>` : ''}
+          ${daySchedules.length > 0 ? `<span class="w-1.5 h-1.5 rounded-full ${hasHoliday ? 'bg-red-500' : 'bg-primary'} shrink-0" title="일정 ${daySchedules.length}건"></span>` : ''}
         </div>
       `;
     }
