@@ -1209,7 +1209,7 @@ const PCApp = {
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
       const isSatEmpty = (i % 7 === 6);
-      html += `<div class="h-11 sm:h-12 p-1 ${isSatEmpty ? 'bg-surface-container/60 dark:bg-surface-container-high/30' : 'bg-surface-container-lowest/30'} rounded-md opacity-40"></div>`;
+      html += `<div class="h-13 sm:h-14 p-1 ${isSatEmpty ? 'bg-surface-container/60 dark:bg-surface-container-high/30' : 'bg-surface-container-lowest/30'} rounded-md opacity-40"></div>`;
     }
 
     // Days
@@ -1236,9 +1236,9 @@ const PCApp = {
         : (isToday ? 'ring-1 ring-primary/40 bg-primary/5 border-outline/60' : defaultBg);
 
       html += `
-        <div class="h-11 sm:h-12 px-2 py-1.5 rounded-md transition-all cursor-pointer flex items-center justify-between group ${selectedClass}" onclick="PCApp.selectDashboardDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
-          <span class="text-sm sm:text-base font-bold ${dateNumClass} ${isToday ? 'w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shadow-xs' : ''}">${d}</span>
-          ${daySchedules.length > 0 ? `<span class="px-1.5 py-0.5 rounded text-[10.5px] font-bold flex items-center justify-center leading-none bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors whitespace-nowrap">${daySchedules.length}건</span>` : ''}
+        <div class="h-13 sm:h-14 py-1.5 px-1 rounded-md transition-all cursor-pointer flex flex-col items-center justify-between group ${selectedClass}" onclick="PCApp.selectDashboardDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
+          <span class="text-sm font-bold ${dateNumClass} ${isToday ? 'w-5.5 h-5.5 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shadow-xs' : ''}">${d}</span>
+          ${daySchedules.length > 0 ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center justify-center leading-none bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors whitespace-nowrap">${daySchedules.length}건</span>` : '<span class="h-[14px]"></span>'}
         </div>
       `;
     }
