@@ -1236,9 +1236,13 @@ const PCApp = {
         : (isToday ? 'ring-1 ring-primary/40 bg-primary/5 border-outline/60' : defaultBg);
 
       html += `
-        <div class="h-13 sm:h-14 py-1.5 px-1 rounded-md transition-all cursor-pointer flex flex-col items-center justify-between group ${selectedClass}" onclick="PCApp.selectDashboardDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
-          <span class="text-sm font-bold ${dateNumClass} ${isToday ? 'w-5.5 h-5.5 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shadow-xs' : ''}">${d}</span>
-          ${daySchedules.length > 0 ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center justify-center leading-none bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors whitespace-nowrap">${daySchedules.length}건</span>` : '<span class="h-[14px]"></span>'}
+        <div class="h-13 sm:h-14 p-1.5 rounded-md transition-all cursor-pointer flex flex-col justify-between group ${selectedClass}" onclick="PCApp.selectDashboardDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
+          <div class="flex items-center justify-start">
+            <span class="text-sm font-bold ${dateNumClass} ${isToday ? 'w-5.5 h-5.5 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shadow-xs' : 'leading-none'}">${d}</span>
+          </div>
+          <div class="flex items-center justify-end w-full min-h-[14px]">
+            ${daySchedules.length > 0 ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center justify-center leading-none bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors whitespace-nowrap">${daySchedules.length}건</span>` : ''}
+          </div>
         </div>
       `;
     }
