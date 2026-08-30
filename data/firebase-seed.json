@@ -1172,6 +1172,15 @@
         "avatar": "./resource/image/profile_white.png"
       },
       {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      },
+      {
         "title": "반반차 [09:00~11:00]",
         "location": "",
         "time": "09:00 ~ 11:00",
