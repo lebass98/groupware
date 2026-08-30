@@ -113,5 +113,33 @@
     { "title": "연차", "location": "", "time": "종일", "type": "secondary", "badge": "연차", "author": "최지영 과장", "avatar": "./resource/image/profile_white.png" },
     { "title": "연차", "location": "", "time": "종일", "type": "secondary", "badge": "연차", "author": "윤진성 과장", "avatar": "./resource/image/profile_apple_20250611.png" },
     { "title": "반반차 [09:00~11:00]", "location": "", "time": "09:00 ~ 11:00", "type": "warning", "badge": "반반차", "author": "신현우 주임", "avatar": "./resource/image/profile_pink____________.png" }
+  ],
+  "2026-9-1": [
+    { "title": "연차", "location": "", "time": "종일", "type": "secondary", "badge": "연차", "author": "이채원 사원", "avatar": "./resource/image/profile_cool_20241224_lee.png" }
+  ],
+  "2026-9-2": [
+    { "title": "외근(오후) 월간보고", "location": "한국건강가정진흥원", "time": "13:00 ~ 18:00", "type": "primary", "badge": "외근", "author": "이채원 사원", "avatar": "./resource/image/profile_cool_20241224_lee.png" },
+    { "title": "외근(오후) 건강가정진흥원 방문", "location": "건강가정진흥원", "time": "13:00 ~ 18:00", "type": "primary", "badge": "외근", "author": "남기현 본부장", "avatar": "./resource/image/profile_help.png" },
+    { "title": "외근(오후) 월간보고", "location": "한국건강가정진흥원", "time": "13:00 ~ 18:00", "type": "primary", "badge": "외근", "author": "장현아 수습", "avatar": "./resource/image/profile_janghyunah.png" }
+  ],
+  "2026-9-4": [
+    { "title": "연차", "location": "", "time": "종일", "type": "error", "badge": "연차", "author": "이재광 팀장", "avatar": "profile.png" }
+  ],
+  "2026-9-10": [
+    { "title": "연차", "location": "", "time": "종일", "type": "secondary", "badge": "연차", "author": "최우석 과장", "avatar": "./resource/image/profile_mobile.png" },
+    { "title": "외근(오후) 건강가정진흥원 방문", "location": "건강가정진흥원", "time": "13:00 ~ 18:00", "type": "primary", "badge": "외근", "author": "남기현 본부장", "avatar": "./resource/image/profile_help.png" },
+    { "title": "외근(오후) 평가시스템 완료보고", "location": "한국건강가정진흥원", "time": "13:00 ~ 18:00", "type": "primary", "badge": "외근", "author": "박규태 대리", "avatar": "./resource/image/profile_green.png" }
+  ],
+  "2026-9-11": [
+    { "title": "연차", "location": "", "time": "종일", "type": "secondary", "badge": "연차", "author": "최우석 과장", "avatar": "./resource/image/profile_mobile.png" }
+  ],
+  "2026-9-21": [
+    { "title": "공가", "location": "", "time": "종일", "type": "secondary", "badge": "공가", "author": "유종현 주임", "avatar": "./resource/image/profile_jsp.png" }
+  ],
+  "2026-9-22": [
+    { "title": "공가", "location": "", "time": "종일", "type": "secondary", "badge": "공가", "author": "유종현 주임", "avatar": "./resource/image/profile_jsp.png" }
+  ],
+  "2026-9-23": [
+    { "title": "공가", "location": "", "time": "종일", "type": "secondary", "badge": "공가", "author": "유종현 주임", "avatar": "./resource/image/profile_jsp.png" }
   ]
 }
