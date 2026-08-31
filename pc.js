@@ -1032,6 +1032,7 @@ const PCApp = {
                 <span class="text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
                   ${n.title}
                 </span>
+                ${n.isNew ? '<span class="px-1.5 py-0.5 rounded bg-[#ef4444] text-white font-extrabold text-[9px] tracking-wider shrink-0 shadow-xs">NEW</span>' : ''}
               </div>
               <div class="flex items-center gap-2 shrink-0 text-xs text-on-surface-variant font-medium">
                 <span class="whitespace-nowrap">${n.date}</span>
@@ -1800,24 +1801,43 @@ const PCApp = {
       return matchCat && matchSearch;
     });
 
-    listWrap.innerHTML = filtered.map((n, idx) => `
-      <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all cursor-pointer text-base flex flex-col justify-between" onclick="PCApp.openNoticeModal(${idx})">
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-bold px-3 py-1 rounded-full ${n.isPinned || n.pinned ? 'bg-error-container text-error' : 'bg-primary-container text-primary'}">
-              ${n.isPinned || n.pinned ? '📌 [필독]' : '📢 [일반]'} ${n.category || '공통'}
-            </span>
-            <span class="text-sm text-on-surface-variant font-medium">${n.date}</span>
+    listWrap.innerHTML = filtered.map((n, idx) => {
+      const isPinned = n.isPinned || n.pinned;
+      const isNew = n.isNew;
+      const pinnedBadge = isPinned
+        ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-error/10 text-error border border-error/20 flex items-center gap-1 shrink-0">
+            <svg class="w-3 h-3 text-error shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 9V4l1 0c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1l1 0v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/>
+            </svg>
+            <span>필독</span>
+          </span>`
+        : '';
+      const categoryBadge = `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20 shrink-0">${n.category || '공통'}</span>`;
+      const newBadge = isNew
+        ? `<span class="px-2 py-0.5 rounded bg-[#ef4444] text-white font-extrabold text-[10px] tracking-wider shrink-0 shadow-xs">NEW</span>`
+        : '';
+
+      return `
+        <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all cursor-pointer text-base flex flex-col justify-between" onclick="PCApp.openNoticeModal(${idx})">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2 flex-wrap">
+                ${pinnedBadge}
+                ${categoryBadge}
+                ${newBadge}
+              </div>
+              <span class="text-sm text-on-surface-variant font-medium">${n.date}</span>
+            </div>
+            <h3 class="font-bold text-lg text-on-surface mb-2">${n.title}</h3>
+            <p class="text-base text-on-surface-variant line-clamp-2 leading-relaxed mb-4">${n.summary || '상세 공지 내용을 확인하려면 클릭하세요.'}</p>
           </div>
-          <h3 class="font-bold text-lg text-on-surface mb-2">${n.title}</h3>
-          <p class="text-base text-on-surface-variant line-clamp-2 leading-relaxed mb-4">${n.summary || '상세 공지 내용을 확인하려면 클릭하세요.'}</p>
+          <div class="pt-3 border-t border-outline/50 flex items-center justify-between text-sm text-on-surface-variant">
+            <span class="font-bold text-on-surface">작성자: ${n.author || '경영지원팀 오은주 차장'}</span>
+            ${n.fileName ? `<span class="flex items-center gap-1 text-primary font-bold">📎 ${n.fileName}</span>` : ''}
+          </div>
         </div>
-        <div class="pt-3 border-t border-outline/50 flex items-center justify-between text-sm text-on-surface-variant">
-          <span class="font-bold text-on-surface">작성자: ${n.author || '경영지원팀'}</span>
-          ${n.fileName ? `<span class="flex items-center gap-1 text-primary font-bold">📎 ${n.fileName}</span>` : ''}
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   },
 
   // 6-3. Work Report Screen (팀별 / 주간 / 일간 업무보고)
@@ -4500,7 +4520,7 @@ const PCApp = {
       ? '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-error/10 text-error border border-error/20 flex items-center gap-1 shrink-0"><svg class="w-3 h-3 text-error" viewBox="0 0 24 24" fill="currentColor"><path d="M16 9V4l1 0c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1l1 0v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg><span>필독</span></span>'
       : '';
     const newBadge = isNew
-      ? '<span class="px-1.5 py-0.5 rounded bg-error text-white font-bold text-[10px] tracking-wider shrink-0">NEW</span>'
+      ? '<span class="px-2 py-0.5 rounded bg-[#ef4444] text-white font-extrabold text-[10px] tracking-wider shrink-0 shadow-xs">NEW</span>'
       : '';
     const categoryBadge = `
       <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20 shrink-0">

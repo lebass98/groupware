@@ -2310,6 +2310,7 @@ const App = {
                 <span class="text-xs sm:text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
                   ${n.title}
                 </span>
+                ${n.isNew ? '<span class="px-1.5 py-0.5 rounded bg-[#ef4444] text-white font-extrabold text-[9px] tracking-wider shrink-0 shadow-xs">NEW</span>' : ''}
               </div>
               <div class="flex items-center gap-1.5 shrink-0 text-xs text-on-surface-variant font-medium">
                 <span class="whitespace-nowrap">${n.date}</span>
@@ -4526,22 +4527,34 @@ const App = {
     }
 
     container.innerHTML = filtered.map(item => {
-      const bgClass = item.isPinned ? 'bg-surface-container-lowest border border-primary/20 shadow-sm' : 'bg-surface-container-low';
-      const pinnedBadge = item.isPinned ? `<span class="px-2.5 py-1 rounded-full bg-tertiary-container/20 text-tertiary-fixed-dim font-label text-xs font-bold">[필독]</span>` : '';
-      const newBadge = item.isNew ? `<span class="px-2 py-0.5 bg-error text-on-error rounded text-[10px] font-bold uppercase tracking-wider">New</span>` : '';
+      const isPinned = item.isPinned || item.pinned;
+      const bgClass = isPinned ? 'bg-surface-container-lowest border border-error/20 shadow-sm' : 'bg-surface-container-low';
+      const pinnedBadge = isPinned
+        ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-error/10 text-error border border-error/20 flex items-center gap-1 shrink-0">
+            <svg class="w-3 h-3 text-error shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 9V4l1 0c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1l1 0v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/>
+            </svg>
+            <span>필독</span>
+          </span>`
+        : '';
+      const categoryBadge = `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20 shrink-0">${item.category || '공통'}</span>`;
+      const newBadge = item.isNew
+        ? `<span class="px-2 py-0.5 rounded bg-[#ef4444] text-white font-extrabold text-[10px] tracking-wider shrink-0 shadow-xs">NEW</span>`
+        : '';
 
       return `
         <article onclick="App.openNoticeDetail(${item.id})" class="${bgClass} rounded-2xl p-5 flex flex-col gap-3 transition-all duration-300 hover:-translate-y-1 cursor-pointer active:scale-95 text-left">
           <div class="flex items-center justify-between">
-            <div class="flex gap-2 items-center">
+            <div class="flex gap-2 items-center flex-wrap">
               ${pinnedBadge}
-              <span class="px-2.5 py-1 rounded-full bg-surface-container font-label text-xs text-on-surface-variant font-semibold">${item.category}</span>
+              ${categoryBadge}
+              ${newBadge}
             </div>
-            ${newBadge}
+            <span class="font-body text-xs text-on-surface-variant font-medium">${item.date}</span>
           </div>
           <div>
             <h2 class="font-headline text-base font-bold text-on-surface leading-snug mb-1">${item.title}</h2>
-            <p class="font-body text-xs text-on-surface-variant">${item.date}</p>
+            <p class="font-body text-xs text-on-surface-variant line-clamp-2">${item.summary || ''}</p>
           </div>
         </article>
       `;
@@ -4570,18 +4583,36 @@ const App = {
     const notice = this.state.notices.find(n => n.id === noticeId) || this.state.notices[0];
     this.state.currentNoticeId = notice.id;
 
-    const catEl = document.getElementById('notice-detail-cat');
-    const dateEl = document.getElementById('notice-detail-date');
+    const badgesWrap = document.getElementById('notice-detail-badges-wrap');
     const titleEl = document.getElementById('notice-detail-title');
     const authorEl = document.getElementById('notice-detail-author');
     const bodyEl = document.getElementById('notice-detail-body');
     const fileNameEl = document.getElementById('notice-attachment-name');
     const fileSizeEl = document.getElementById('notice-attachment-size');
 
-    if (catEl) catEl.innerText = notice.category;
-    if (dateEl) dateEl.innerText = notice.date;
+    if (badgesWrap) {
+      const isPinned = notice.isPinned || notice.pinned;
+      const isNew = notice.isNew;
+      const formattedDate = (notice.date || '').replace(/-/g, '.');
+
+      const pinnedBadge = isPinned
+        ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-error/10 text-error border border-error/20 flex items-center gap-1 shrink-0"><svg class="w-3 h-3 text-error shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M16 9V4l1 0c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1l1 0v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg><span>필독</span></span>`
+        : '';
+      const categoryBadge = `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20 shrink-0">${notice.category || '공통'}</span>`;
+      const newBadge = isNew
+        ? `<span class="px-2 py-0.5 rounded bg-[#ef4444] text-white font-extrabold text-[10px] tracking-wider shrink-0 shadow-xs">NEW</span>`
+        : '';
+
+      badgesWrap.innerHTML = `
+        ${pinnedBadge}
+        ${categoryBadge}
+        ${newBadge}
+        <span class="text-on-surface-variant font-body text-xs font-mono ml-auto" id="notice-detail-date">${formattedDate}</span>
+      `;
+    }
+
     if (titleEl) titleEl.innerText = notice.title;
-    if (authorEl) authorEl.innerText = notice.author;
+    if (authorEl) authorEl.innerText = notice.author || '경영지원팀 오은주 차장';
     if (bodyEl) bodyEl.innerHTML = notice.content;
     if (fileNameEl) fileNameEl.innerText = notice.fileName || '첨부파일.pdf';
     if (fileSizeEl) fileSizeEl.innerText = notice.fileSize || '1.5 MB';
