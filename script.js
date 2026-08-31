@@ -946,15 +946,6 @@ const App = {
     });
   },
 
-  loginDemo(provider) {
-    this.executeLoginTransition(() => {
-      const msg = provider
-        ? `🎉 ${provider} 계정으로 로그인되었습니다.`
-        : `🎉 ${this.state.user.name}님, 로그인 완료! 출결 관리 화면으로 이동합니다.`;
-      this.showToast(msg);
-    });
-  },
-
   logout() {
     this.state.isLoggedIn = false;
     this.state.isCheckedIn = false;
