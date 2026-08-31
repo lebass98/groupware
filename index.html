@@ -199,7 +199,7 @@
                 <label class="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-on-surface-variant">비밀번호</label>
                 <a class="text-xs font-bold text-primary hover:opacity-80 transition-opacity" href="#" onclick="event.preventDefault(); App.showToast('🔒 비밀번호 재설정 이메일이 발송되었습니다.');">비밀번호 찾기</a>
               </div>
-              <input id="password-input" class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3.5 sm:px-5 sm:py-4 text-sm sm:text-base text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" placeholder="••••••••" type="password" value="••••••••" required />
+              <input id="password-input" class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3.5 sm:px-5 sm:py-4 text-sm sm:text-base text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" placeholder="••••••••" type="password" required />
             </div>
 
             <!-- Primary Login Button -->
@@ -3287,6 +3287,12 @@
     </div>
   </div>
 
+  <!-- Firebase 연동 (compat 빌드: 기존 전역 스크립트 구조와 동일한 로딩 타이밍 보장) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="firebase/config.js"></script>
+  <script src="firebase/init.js"></script>
   <script src="data/mockData.js"></script>
   <script src="script.js?v=20260824_1646"></script>
 </body>

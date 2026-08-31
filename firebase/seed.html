@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>WnC 그룹웨어 · Firestore 초기 데이터 시딩</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { margin:0; padding:32px 20px; font:14px/1.6 -apple-system, BlinkMacSystemFont, "Pretendard Variable", sans-serif;
+         background:#f5f6f8; color:#1b1d21; display:flex; justify-content:center; }
+  @media (prefers-color-scheme: dark) { body { background:#101317; color:#e6e8ec; } }
+  .card { width:100%; max-width:640px; background:#fff; border-radius:16px; padding:28px;
+          box-shadow:0 10px 40px rgba(0,0,0,.08); }
+  @media (prefers-color-scheme: dark) { .card { background:#181c22; box-shadow:none; border:1px solid #2a2f38; } }
+  h1 { font-size:20px; margin:0 0 6px; }
+  p.sub { margin:0 0 22px; color:#6b7280; font-size:13px; }
+  label { display:block; font-size:12px; font-weight:700; margin:14px 0 6px; }
+  input { width:100%; box-sizing:border-box; padding:11px 13px; border:1px solid #d6dae1; border-radius:9px;
+          font-size:14px; background:transparent; color:inherit; }
+  button { margin-top:20px; width:100%; padding:13px; border:0; border-radius:999px; background:#2563eb; color:#fff;
+           font-size:15px; font-weight:700; cursor:pointer; }
+  button:disabled { background:#9aa4b2; cursor:not-allowed; }
+  #log { margin-top:20px; background:#0d1117; color:#c9d1d9; border-radius:10px; padding:14px;
+         font:12px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; white-space:pre-wrap;
+         max-height:320px; overflow:auto; display:none; }
+  .warn { margin-top:18px; padding:12px 14px; border-radius:10px; background:#fff4e5; color:#8a5300; font-size:12.5px; }
+  @media (prefers-color-scheme: dark) { .warn { background:#2e2415; color:#f0c17b; } }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Firestore 초기 데이터 시딩</h1>
+    <p class="sub">data/firebase-seed.json의 마스터 데이터를 Firestore로 일괄 업로드합니다.</p>
+
+    <label for="email">관리자 이메일</label>
+    <input id="email" type="email" placeholder="admin@wordncode.com" autocomplete="username" />
+
+    <label for="password">비밀번호</label>
+    <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+
+    <button id="run">로그인 후 시딩 실행</button>
+
+    <div class="warn">
+      이 페이지는 최초 1회 또는 마스터 데이터 갱신 시에만 사용합니다.
+      보안 규칙상 <code>admins/{UID}</code> 문서가 등록된 관리자 계정만 실행할 수 있습니다.
+    </div>
+
+    <div id="log"></div>
+  </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { seedFirebaseFirestore } from "../data/firebase-seeder.js";
+
+const logBox = document.getElementById('log');
+const button = document.getElementById('run');
+
+function log(line) {
+  logBox.style.display = 'block';
+  logBox.textContent += line + '\n';
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+// 콘솔 출력도 화면에 그대로 보여 준다(시더가 console.log으로 진행 상황을 알린다).
+['log', 'warn', 'error'].forEach((level) => {
+  const original = console[level].bind(console);
+  console[level] = (...args) => {
+    original(...args);
+    log(args.map((a) => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' '));
+  };
+});
+
+// firebase/config.js를 그대로 재사용한다.
+await import('./config.js');
+
+button.addEventListener('click', async () => {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  if (!email || !password) { log('이메일과 비밀번호를 입력하세요.'); return; }
+
+  button.disabled = true;
+  button.textContent = '실행 중...';
+  try {
+    const app = initializeApp(window.FirebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    log(`관리자 계정으로 로그인 중: ${email}`);
+    await signInWithEmailAndPassword(auth, email, password);
+    log('로그인 성공. 시딩을 시작합니다.');
+
+    await seedFirebaseFirestore(db, '../data/firebase-seed.json');
+    button.textContent = '시딩 완료';
+  } catch (err) {
+    log(`실패: ${err.code || ''} ${err.message}`);
+    button.disabled = false;
+    button.textContent = '다시 시도';
+  }
+});
+</script>
+</body>
+</html>

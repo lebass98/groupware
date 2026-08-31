@@ -299,6 +299,7 @@ const PCApp = {
   saveProjects() {
     try {
       localStorage.setItem('wordncode_groupware_projects', JSON.stringify(this.state.projects || []));
+      if (window.WncCloud) window.WncCloud.pushState();
     } catch (e) {
       console.warn('[PC] Projects save error:', e);
     }
@@ -342,6 +343,9 @@ const PCApp = {
         const readIds = this.state.notifications.filter(n => n.isRead).map(n => n.id);
         localStorage.setItem('wordncode_notifications_read_state', JSON.stringify(readIds));
       }
+
+      // Firebase 연동 시 다른 기기로 즉시 전파(미연동/오프라인이면 자동으로 무시된다)
+      if (window.WncCloud) window.WncCloud.pushState();
     } catch (e) {
       console.warn('[PC] LocalStorage save error:', e);
     }

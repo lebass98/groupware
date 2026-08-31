@@ -133,6 +133,42 @@ Pool/
      브라우저에서 `http://localhost:8089` 접속
    - **VS Code 사용 시**:
      `index.html` 우클릭 후 `Live Server로 열기` 클릭
+   - **실시간 새로고침(라이브 리로드) 사용 시**:
+     ```bash
+     node dev-server.js
+     ```
+     의존성 설치 없이 동작하며, CSS 저장 시 새로고침 없이 스타일만 교체하고 HTML/JS 저장 시 자동 새로고침합니다.
+
+---
+
+## 파이어베이스 연동 (Firebase Integration)
+
+전 디바이스 실시간 데이터 동기화와 실계정 로그인을 위해 Google Firebase(Firestore + Authentication)를 연동합니다.
+
+### 구성 파일
+
+| 파일 | 역할 |
+| :--- | :--- |
+| `firebase/config.js` | 프로젝트 설정값 및 연동 옵션(`requireAuth`, 디바운스 간격) |
+| `firebase/init.js` | 연동 레이어(`window.WncCloud`). 인증, 상태 업로드, 실시간 구독을 담당 |
+| `firebase/seed.html` | 관리자 전용 초기 데이터 시딩 페이지 |
+| `firestore.rules` | 보안 규칙. Firebase 콘솔 > Firestore > 규칙 탭에 붙여넣어 게시 |
+
+### 동작 방식
+
+- LocalStorage를 로컬 캐시로 유지한 상태에서 Firestore를 동기화 채널로 얹는 구조입니다. **오프라인이거나 Firebase 접속에 실패해도 앱은 기존과 100% 동일하게 동작**합니다.
+- 로그인 후 `saveState()` 호출 시 `users/{uid}` 문서로 상태가 업로드되고, 다른 기기의 변경은 `onSnapshot`으로 수신하여 LocalStorage에 반영한 뒤 `storage` 이벤트를 합성 발생시켜 기존 실시간 재렌더링 경로를 그대로 재사용합니다.
+- 기존 `storage` 이벤트 방식은 같은 브라우저의 탭 간에만 동작했으나, Firestore 연동으로 **PC-모바일-앱 간 실제 기기 경계를 넘는 동기화**가 가능해집니다.
+
+### 콘솔 설정 체크리스트
+
+1. **Authentication > 로그인 방법**: 이메일/비밀번호 사용 설정 (소셜 로그인은 사용하지 않음)
+2. **Authentication > 사용자**: 임직원 계정 등록 (신규 가입 기능이 없으므로 관리자가 직접 발급)
+3. **Authentication > 설정 > 승인된 도메인**: `lebass98.github.io` 추가 (`localhost`는 기본 포함)
+4. **Firestore > 규칙**: `firestore.rules` 내용을 붙여넣고 게시
+5. **Firestore > 데이터**: `admins` 컬렉션에 관리자 UID를 문서 ID로 하는 빈 문서 생성
+6. `firebase/seed.html`을 열어 관리자 계정으로 초기 데이터 시딩 1회 실행
+7. 임직원 계정 등록을 마친 뒤 `firebase/config.js`의 `requireAuth`를 `true`로 변경하여 데모 로그인 경로 차단
 
 ---
 
@@ -425,6 +461,8 @@ Pool/
 - **전 디바이스 소셜 로그인(Google/Naver) 및 계정 만들기 전면 제거**: 모바일 로그인 화면의 구분선·소셜 버튼·회원가입 앵커와 `loginDemo()` 데드코드를 삭제하여 이메일/비밀번호 단일 로그인 경로로 일원화 (PC·앱은 로그인 화면 미보유).
 - **의존성 없는 라이브 리로드 개발 서버 도입**: `dev-server.js`(Node 내장 모듈, SSE 기반)를 신설하여 CSS 변경 시 무새로고침 스타일 교체 및 HTML/JS 변경 시 자동 새로고침 지원.
 - **Antigravity 작업 규칙 Claude Code 동일 적용**: 루트 `CLAUDE.md`가 `.agents/AGENTS.md`를 임포트하도록 구성하여 규칙 원본을 단일화하고 도구 간 규칙 불일치를 방지.
+- **Google Firebase(Firestore + Authentication) 전 디바이스 연동 구축**: compat SDK 기반 `firebase/init.js` 연동 레이어(`window.WncCloud`)를 신설하여 `users/{uid}` 문서 상태 업로드 및 `onSnapshot` 실시간 수신을 구현하고, 원격 변경을 LocalStorage 반영 후 `storage` 이벤트 합성 발생으로 기존 재렌더링 경로에 무손실 연결.
+- **Firebase 인증 로그인 및 보안 규칙 적용**: 이메일/비밀번호 실계정 로그인(`requireAuth` 옵션으로 데모 폴백 제어), 개인정보 보호를 위한 비로그인 접근 전면 차단 `firestore.rules`, 관리자 전용 시딩 페이지 `firebase/seed.html` 신설.
 
 
 

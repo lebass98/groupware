@@ -410,6 +410,7 @@ const App = {
   saveProjects() {
     try {
       localStorage.setItem('wordncode_groupware_projects', JSON.stringify(this.state.projects || []));
+      if (window.WncCloud) window.WncCloud.pushState();
     } catch (e) {
       console.warn('Projects save error:', e);
     }
@@ -445,6 +446,9 @@ const App = {
         const readIds = this.state.notifications.filter(n => n.isRead).map(n => n.id);
         localStorage.setItem('wordncode_notifications_read_state', JSON.stringify(readIds));
       }
+
+      // Firebase 연동 시 다른 기기로 즉시 전파(미연동/오프라인이면 자동으로 무시된다)
+      if (window.WncCloud) window.WncCloud.pushState();
     } catch (e) {
       console.warn('Save error:', e);
     }
@@ -940,13 +944,35 @@ const App = {
     }).join('');
   },
 
-  login() {
+  async login() {
+    const email = (document.getElementById('email-input')?.value || '').trim();
+    const password = document.getElementById('password-input')?.value || '';
+    const requireAuth = !!(window.FirebaseOptions && window.FirebaseOptions.requireAuth);
+
+    // Firebase에 연결되어 있으면 실제 계정으로 인증한다.
+    if (window.WncCloud && window.WncCloud.isReady()) {
+      const result = await window.WncCloud.signIn(email, password);
+      if (result.ok) {
+        this.executeLoginTransition(() => {
+          this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! 전 기기 실시간 동기화가 활성화되었습니다.`);
+        });
+        return;
+      }
+      // requireAuth가 true면 인증 실패 시 진입을 차단한다.
+      if (requireAuth) {
+        this.showToast(`⚠️ ${result.message}`);
+        return;
+      }
+      console.info('[Firebase] 계정 인증에 실패하여 로컬 데모 모드로 진입합니다:', result.code);
+    }
+
     this.executeLoginTransition(() => {
       this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! WnC 그룹웨어를 시작합니다.`);
     });
   },
 
   logout() {
+    if (window.WncCloud) window.WncCloud.signOut();
     this.state.isLoggedIn = false;
     this.state.isCheckedIn = false;
     this.stopWorkTimer();

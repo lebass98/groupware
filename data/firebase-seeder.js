@@ -16,9 +16,9 @@
  * await seedFirebaseFirestore(db);
  */
 
-export async function seedFirebaseFirestore(db) {
+export async function seedFirebaseFirestore(db, seedUrl = './data/firebase-seed.json') {
   try {
-    const response = await fetch('./data/firebase-seed.json');
+    const response = await fetch(seedUrl);
     const seedData = await response.json();
     console.log("🚀 Firebase 시드 데이터 로드 성공:", seedData._meta);
 
