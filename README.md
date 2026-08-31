@@ -100,14 +100,24 @@ Material Design 3 (M3) 디자인 시스템 기반:
 
 ```text
 Pool/
-├── .agents/                    # 작업 커밋 및 브랜치 규칙 (AGENTS.md)
+├── .agents/                    # 작업 커밋 및 브랜치 규칙 (AGENTS.md) — 규칙 단일 원본
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml          # GitHub Pages 자동 배포 CI/CD 워크플로우
-├── react-native-app/           # React Native (Expo) 앱 래퍼
-├── index.html                  # 전체 SPA 레이아웃 및 11개 스크린 구조
+├── data/                       # 비즈니스 데이터 및 Firebase 시드 (mockData.js, *.json)
+├── firebase/
+│   ├── config.js               # Firebase 프로젝트 설정값 및 연동 옵션
+│   ├── init.js                 # 연동 레이어(window.WncCloud) — 인증, 상태 동기화
+│   └── seed.html               # 관리자 전용 초기 데이터 시딩 페이지
+├── pc/                         # /pc/ 경로 접속용 심볼릭 링크 모음
+├── react-native-app/           # React Native (Expo) 앱 래퍼 (WebView)
+├── index.html                  # 모바일 SPA 레이아웃 및 전체 스크린 구조
 ├── style.css                   # 디자인 토큰, M3 스타일, 애니메이션, 반응형 레이아웃
-├── script.js                   # SPA 상태 관리, 출퇴근 타이머, 근태일지 엔진, LocalStorage
+├── script.js                   # 모바일 상태 관리, 출퇴근 타이머, 캘린더 엔진, LocalStorage
+├── pc.html / pc.css / pc.js    # PC 대시보드 레이아웃 및 위젯 로직
+├── firestore.rules             # Firestore 보안 규칙 (콘솔 규칙 탭에 게시)
+├── dev-server.js               # 라이브 리로드 로컬 개발 서버 (배포 미포함)
+├── CLAUDE.md                   # .agents/AGENTS.md 임포트 (도구 간 규칙 일치)
 ├── profile.png                 # 사용자 프로필 기본 이미지
 ├── resource/                   # 오픈그래프 및 이미지 리소스
 └── README.md                   # 프로젝트 상세 한글 설명서
@@ -177,6 +187,40 @@ Pool/
 본 프로젝트는 `.github/workflows/deploy.yml` 설정을 포함하고 있어, `main` 브랜치에 코드 Push 시 **GitHub Actions**가 자동으로 GitHub Pages로 실시간 배포를 완료합니다.
 
 - **배포 확인 주소**: [https://lebass98.github.io/groupware/](https://lebass98.github.io/groupware/)
+
+---
+
+## 주의사항 및 알아둘 점 (Caveats & Operational Notes)
+
+### 보안 및 개인정보
+
+- **본 저장소는 공개(Public) 상태이며, `data/mockData.js`와 `data/employees.json`에 임직원 실명·휴대전화번호·이메일이 그대로 들어 있습니다.** 이미 인터넷에 노출된 상태이므로 저장소 비공개 전환 또는 더미 데이터 치환 여부를 반드시 검토해야 합니다. Firestore 보안 규칙은 DB만 보호할 뿐 저장소에 커밋된 파일은 보호하지 못합니다.
+- `firebase/config.js`의 `apiKey`는 비밀키가 아니라 프로젝트 식별자이므로 공개되어도 무방합니다. 다만 **실제 방어선은 `firestore.rules` 하나뿐**이며, 규칙을 게시하기 전까지 데이터베이스는 사실상 무방비 상태입니다.
+- 서버가 없는 정적 사이트라 클라이언트 검증은 우회 가능합니다. 권한 판단은 반드시 보안 규칙에 작성해야 합니다.
+- 신규 배포 도메인이 생기면 Firebase Authentication의 **승인된 도메인**에 추가해야 로그인이 동작합니다.
+
+### 파이어베이스 운영
+
+- **현재 Firestore와 연동된 범위는 개인 상태 데이터(근태, 할일, 연차, 결재, 경비, 알림 읽음)까지입니다.** 임직원 명단·공지·일정 등 마스터 데이터는 Firestore에 시딩은 되지만 화면은 아직 `data/mockData.js`에서 읽습니다. 읽기 경로 전환은 별도 작업입니다.
+- `firebase/config.js`의 `requireAuth`는 초기 도입 편의를 위해 `false`가 기본값입니다. 이 상태에서는 **인증에 실패해도 데모 모드로 로그인이 됩니다.** 임직원 계정 등록을 마치면 반드시 `true`로 변경하십시오.
+- **`firebase/seed.html` 재실행 시 같은 문서 ID를 덮어씁니다.** 운영 중 Firestore에서 수정한 내용이 시드 파일 기준으로 되돌아가므로, 최초 1회 또는 마스터 데이터 갱신 시에만 사용하십시오.
+- 무료 Spark 요금제는 하루 읽기 5만 건, 쓰기 2만 건 한도입니다. 이를 고려해 상태 업로드에 400ms 디바운스와 직전 값 비교 후 중복 쓰기 생략을 적용해 두었습니다.
+- 네트워크 차단, 오프라인, CDN 접속 실패 시 `window.WncCloud`는 자동으로 비활성 모드가 되어 **동기화만 멈추고 앱 기능은 기존과 동일하게 동작**합니다. 콘솔에 관련 안내 로그가 출력됩니다.
+
+### 배포 및 캐시
+
+- HTML의 `?v=` 쿼리는 **수동 캐시 버스터**입니다. `script.js`, `pc.js`, `style.css`, `pc.css`를 수정하면 해당 값을 함께 갱신해야 재방문자가 옛 파일을 실행하지 않습니다. 갱신을 빠뜨리면 새 HTML과 캐시된 옛 JS가 섞여 원인 파악이 어려운 오류가 발생합니다.
+- `pc/` 디렉토리는 `/pc/` 경로 접속을 위한 **심볼릭 링크 모음**입니다. 루트에 새 파일이나 폴더를 추가해 PC 화면에서 참조한다면 `pc/` 안에도 링크를 추가해야 합니다.
+- `main` 브랜치 푸시 시 GitHub Actions가 자동 배포합니다. 커밋이 곧 배포이므로 검증 후 푸시하십시오.
+
+### 로그인 정책
+
+- **소셜 로그인(Google/Naver)과 회원가입 기능은 제거되었습니다.** 이메일/비밀번호 단일 경로만 지원하며, 계정은 관리자가 Firebase 콘솔에서 직접 발급합니다.
+
+### 개발 환경
+
+- 외장 저장소에서 작업할 경우 macOS가 `._*`(AppleDouble) 파일을 지속적으로 생성합니다. Git 동기화 전후로 `find . -name "._*" -delete`를 실행해 잔류하지 않도록 관리합니다.
+- `dev-server.js`는 로컬 개발 전용 도구입니다. 라이브 리로드 스크립트는 서버가 응답 시점에 메모리상에서 주입하므로 **배포본 HTML에는 포함되지 않습니다.**
 
 ---
 
@@ -463,6 +507,8 @@ Pool/
 - **Antigravity 작업 규칙 Claude Code 동일 적용**: 루트 `CLAUDE.md`가 `.agents/AGENTS.md`를 임포트하도록 구성하여 규칙 원본을 단일화하고 도구 간 규칙 불일치를 방지.
 - **Google Firebase(Firestore + Authentication) 전 디바이스 연동 구축**: compat SDK 기반 `firebase/init.js` 연동 레이어(`window.WncCloud`)를 신설하여 `users/{uid}` 문서 상태 업로드 및 `onSnapshot` 실시간 수신을 구현하고, 원격 변경을 LocalStorage 반영 후 `storage` 이벤트 합성 발생으로 기존 재렌더링 경로에 무손실 연결.
 - **Firebase 인증 로그인 및 보안 규칙 적용**: 이메일/비밀번호 실계정 로그인(`requireAuth` 옵션으로 데모 폴백 제어), 개인정보 보호를 위한 비로그인 접근 전면 차단 `firestore.rules`, 관리자 전용 시딩 페이지 `firebase/seed.html` 신설.
+- **README 주의사항 및 알아둘 점 섹션 신설**: 공개 저장소 내 임직원 개인정보 노출, 보안 규칙 미게시 위험, 마스터 데이터 읽기 미전환 범위, 시딩 재실행 시 덮어쓰기, 무료 할당량, 수동 캐시 버스터 갱신 의무, pc/ 심볼릭 링크 관리 등 운영 유의사항을 문서화하고 프로젝트 구조도 최신화.
+- **수정: 캐시 버스터 버전 불일치 해소**: 오늘 변경된 script.js/pc.js의 `?v=` 값을 갱신하여 재방문자가 캐시된 구버전 JS와 신규 HTML을 혼용 실행하는 문제 예방.
 
 
 
