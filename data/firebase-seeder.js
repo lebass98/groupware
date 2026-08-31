@@ -80,7 +80,29 @@ export async function seedFirebaseFirestore(db, seedUrl = './data/firebase-seed.
       console.log(`✅ [Firestore] 'attendance' & 'attendance_logs' 컬렉션 시딩 완료`);
     }
 
-    // 6. 경비 및 결재 (finance) 시딩
+    // 6. 임직원 접근 명부 (members) 시딩
+    //    보안 규칙이 '사전 등록된 임직원'인지 판별하는 근거 데이터입니다.
+    //    이 명부에 없는 계정은 로그인에 성공하더라도 어떤 데이터도 읽을 수 없습니다.
+    if (seedData.employees && Array.isArray(seedData.employees)) {
+      const batch = writeBatch(db);
+      const registered = new Set();
+      seedData.employees.forEach(emp => {
+        const email = String(emp.email || '').trim().toLowerCase();
+        if (!email || registered.has(email)) return;
+        registered.add(email);
+        batch.set(doc(db, "members", email), {
+          email,
+          name: emp.name,
+          dept: emp.dept,
+          role: emp.role,
+          employeeId: emp.id
+        });
+      });
+      await batch.commit();
+      console.log(`✅ [Firestore] 'members' 접근 명부 (${registered.size}건) 시딩 완료`);
+    }
+
+    // 7. 경비 및 결재 (finance) 시딩
     if (seedData.finance && seedData.finance.expenses) {
       await setDoc(doc(db, "finance", "expenses"), seedData.finance.expenses);
       console.log(`✅ [Firestore] 'finance' 데이터 문서 시딩 완료`);

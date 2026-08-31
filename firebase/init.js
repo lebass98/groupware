@@ -89,6 +89,24 @@
       }
     },
 
+    /** 비밀번호 재설정 메일 발송. 계정 존재 여부는 응답으로 노출하지 않는다. */
+    async sendPasswordReset(email) {
+      if (!this.isReady()) {
+        return { ok: false, message: '클라우드에 연결되어 있지 않아 재설정 메일을 보낼 수 없습니다.' };
+      }
+      if (!email) {
+        return { ok: false, message: '이메일 주소를 먼저 입력해 주세요.' };
+      }
+      try {
+        await this._auth.sendPasswordResetEmail(email);
+        return { ok: true };
+      } catch (err) {
+        // 계정 존재 여부가 드러나지 않도록 user-not-found도 성공으로 처리한다.
+        if (err.code === 'auth/user-not-found') return { ok: true };
+        return { ok: false, message: this.describeAuthError(err.code) };
+      }
+    },
+
     async signOut() {
       if (!this.isReady() || !this.user) return;
       try {

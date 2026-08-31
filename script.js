@@ -944,6 +944,49 @@ const App = {
     }).join('');
   },
 
+  /** 로그인 화면의 '비밀번호 찾기' 처리. Firebase 미연동 시 기존 안내 문구를 유지한다. */
+  async resetPassword() {
+    const email = (document.getElementById('email-input')?.value || '').trim();
+
+    if (window.WncCloud && window.WncCloud.isReady()) {
+      const result = await window.WncCloud.sendPasswordReset(email);
+      this.showToast(result.ok
+        ? `🔒 ${email} 주소로 비밀번호 재설정 메일을 발송했습니다.`
+        : `⚠️ ${result.message}`);
+      return;
+    }
+
+    this.showToast('🔒 비밀번호 재설정 이메일이 발송되었습니다.');
+  },
+
+  /**
+   * 로그인한 계정의 이메일을 주소록(MockData.employees)과 대조하여
+   * 본인 프로필(이름, 부서, 직급, 연락처, 아바타)을 적용한다.
+   * 일치하는 임직원이 없으면 기존 프로필을 유지한다.
+   */
+  applySignedInProfile(email) {
+    const list = (window.MockData && window.MockData.employees) || [];
+    const target = String(email || '').trim().toLowerCase();
+    const emp = list.find(e => String(e.email || '').trim().toLowerCase() === target);
+
+    if (!emp) {
+      console.info('[Firebase] 주소록에서 일치하는 임직원을 찾지 못해 기존 프로필을 유지합니다:', email);
+      return false;
+    }
+
+    this.state.user = {
+      id: emp.id,
+      name: emp.name,
+      fullName: emp.name,
+      dept: emp.dept,
+      role: emp.role,
+      email: emp.email,
+      phone: emp.phone,
+      avatar: emp.avatar
+    };
+    return true;
+  },
+
   async login() {
     const email = (document.getElementById('email-input')?.value || '').trim();
     const password = document.getElementById('password-input')?.value || '';
@@ -953,6 +996,8 @@ const App = {
     if (window.WncCloud && window.WncCloud.isReady()) {
       const result = await window.WncCloud.signIn(email, password);
       if (result.ok) {
+        // 로그인 계정 이메일로 주소록에서 본인 임직원 정보를 찾아 프로필에 반영한다.
+        this.applySignedInProfile(result.user.email);
         this.executeLoginTransition(() => {
           this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! 전 기기 실시간 동기화가 활성화되었습니다.`);
         });

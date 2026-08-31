@@ -190,14 +190,14 @@
             <!-- Email Field -->
             <div class="space-y-1.5 text-left">
               <label class="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-on-surface-variant ml-1">이메일 주소</label>
-              <input id="email-input" class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3.5 sm:px-5 sm:py-4 text-sm sm:text-base text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" placeholder="name@company.com" type="email" value="jaegwang@company.com" required />
+              <input id="email-input" class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3.5 sm:px-5 sm:py-4 text-sm sm:text-base text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" placeholder="name@company.com" type="email" value="yellow@wordncode.com" required />
             </div>
 
             <!-- Password Field -->
             <div class="space-y-1.5 text-left">
               <div class="flex justify-between items-center px-1">
                 <label class="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-on-surface-variant">비밀번호</label>
-                <a class="text-xs font-bold text-primary hover:opacity-80 transition-opacity" href="#" onclick="event.preventDefault(); App.showToast('🔒 비밀번호 재설정 이메일이 발송되었습니다.');">비밀번호 찾기</a>
+                <a class="text-xs font-bold text-primary hover:opacity-80 transition-opacity" href="#" onclick="event.preventDefault(); App.resetPassword();">비밀번호 찾기</a>
               </div>
               <input id="password-input" class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3.5 sm:px-5 sm:py-4 text-sm sm:text-base text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" placeholder="••••••••" type="password" required />
             </div>
@@ -3294,6 +3294,6 @@
   <script src="firebase/config.js"></script>
   <script src="firebase/init.js"></script>
   <script src="data/mockData.js"></script>
-  <script src="script.js?v=20260831_firebase"></script>
+  <script src="script.js?v=20260901_auth"></script>
 </body>
 </html>
