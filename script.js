@@ -171,10 +171,10 @@ const App = {
     // Work Reports State
     workReports: (window.MockData && window.MockData.workReports) || [],
     workReportTab: 'weekly',
-    workReportYear: 2026,
-    workReportMonth: 8,
-    workReportWeek: 3,
-    workReportDate: '2026-08-21',
+    workReportYear: new Date().getFullYear(),
+    workReportMonth: new Date().getMonth() + 1,
+    workReportWeek: 1,
+    workReportDate: `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`,
     workReportTeam: 'all',
     // Menu Grid Columns (2 or 3)
     menuColumns: 2
@@ -2150,11 +2150,11 @@ const App = {
     const schedWrap = document.getElementById('today-summary-attendance-schedule-container');
     if (!schedWrap) return;
 
-    const year = this.state.calYear || 2026;
-    const month = this.state.calMonth || 8;
+    const now = new Date();
+    const year = this.state.calYear || now.getFullYear();
+    const month = this.state.calMonth || (now.getMonth() + 1);
     const firstDay = new Date(year, month - 1, 1).getDay();
     const lastDate = new Date(year, month, 0).getDate();
-    const now = new Date();
 
     // Calculate monthly total
     let monthTotalScheds = 0;
@@ -2334,8 +2334,9 @@ const App = {
   },
 
   changeTodayCalMonth(offset) {
-    let y = this.state.calYear || 2026;
-    let m = this.state.calMonth || 8;
+    const now = new Date();
+    let y = this.state.calYear || now.getFullYear();
+    let m = this.state.calMonth || (now.getMonth() + 1);
     m += offset;
     if (m < 1) {
       m = 12;
@@ -2344,7 +2345,6 @@ const App = {
       m = 1;
       y++;
     }
-    const now = new Date();
     this.state.calYear = y;
     this.state.calMonth = m;
     this.state.selectedCalYear = y;
@@ -2746,9 +2746,10 @@ const App = {
     const startDateEl = document.getElementById('schedule-input-start-date');
     const endDateEl = document.getElementById('schedule-input-end-date');
 
-    const year = this.state.calYear || 2026;
-    const month = String(this.state.calMonth || 8).padStart(2, '0');
-    const day = String(this.state.calSelectedDay || 12).padStart(2, '0');
+    const now = new Date();
+    const year = this.state.calYear || now.getFullYear();
+    const month = String(this.state.calMonth || (now.getMonth() + 1)).padStart(2, '0');
+    const day = String(this.state.calSelectedDay || now.getDate()).padStart(2, '0');
     const dateStr = selectedDate || `${year}-${month}-${day}`;
 
     if (startDateEl) startDateEl.value = dateStr;
@@ -3206,8 +3207,9 @@ const App = {
 
     if (!modalEl) return;
 
-    const year = this.state.calYear || 2026;
-    const month = this.state.calMonth || 8;
+    const now = new Date();
+    const year = this.state.calYear || now.getFullYear();
+    const month = this.state.calMonth || (now.getMonth() + 1);
     this.state.calSelectedDay = day;
 
     const dateObj = new Date(year, month - 1, day);
@@ -3283,8 +3285,9 @@ const App = {
     const listEl = document.getElementById('modal-date-detail-list');
     if (!listEl) return;
 
-    const year = this.state.calYear || 2026;
-    const month = this.state.calMonth || 8;
+    const now = new Date();
+    const year = this.state.calYear || now.getFullYear();
+    const month = this.state.calMonth || (now.getMonth() + 1);
     const cat = this.state.dateDetailCategory || 'all';
 
     let schedules = this.getMockSchedules(year, month, day) || [];
@@ -3940,10 +3943,11 @@ const App = {
 
   // Daily Timeline View Methods
   prevDailyMonth() {
+    const now = new Date();
     if (!this.state.dailyMonth) {
-      this.state.dailyYear = this.state.calYear || 2026;
-      this.state.dailyMonth = this.state.calMonth || 8;
-      this.state.dailyDay = this.state.calSelectedDay || 13;
+      this.state.dailyYear = this.state.calYear || now.getFullYear();
+      this.state.dailyMonth = this.state.calMonth || (now.getMonth() + 1);
+      this.state.dailyDay = this.state.calSelectedDay || now.getDate();
     }
     if (this.state.dailyMonth === 1) {
       this.state.dailyMonth = 12;
@@ -3955,10 +3959,11 @@ const App = {
   },
 
   nextDailyMonth() {
+    const now = new Date();
     if (!this.state.dailyMonth) {
-      this.state.dailyYear = this.state.calYear || 2026;
-      this.state.dailyMonth = this.state.calMonth || 8;
-      this.state.dailyDay = this.state.calSelectedDay || 13;
+      this.state.dailyYear = this.state.calYear || now.getFullYear();
+      this.state.dailyMonth = this.state.calMonth || (now.getMonth() + 1);
+      this.state.dailyDay = this.state.calSelectedDay || now.getDate();
     }
     if (this.state.dailyMonth === 12) {
       this.state.dailyMonth = 1;
@@ -3990,9 +3995,10 @@ const App = {
 
     if (!stripEl) return;
 
-    const year = this.state.dailyYear || this.state.weeklyYear || this.state.calYear || 2026;
-    const month = this.state.dailyMonth || this.state.weeklyMonth || this.state.calMonth || 8;
-    const selectedDay = this.state.dailyDay || this.state.weeklyDay || this.state.calSelectedDay || 13;
+    const now = new Date();
+    const year = this.state.dailyYear || this.state.weeklyYear || this.state.calYear || now.getFullYear();
+    const month = this.state.dailyMonth || this.state.weeklyMonth || this.state.calMonth || (now.getMonth() + 1);
+    const selectedDay = this.state.dailyDay || this.state.weeklyDay || this.state.calSelectedDay || now.getDate();
 
     this.state.dailyYear = year;
     this.state.dailyMonth = month;

@@ -22,19 +22,22 @@ const PCApp = {
     checkInTime: '08:55',
     checkOutTime: '--:--',
     workStatus: '근무중',
-    currentDate: new Date(2026, 7, 24), // 2026년 8월 24일 (월)
-    calYear: 2026,
-    calMonth: 8, // 8월 (1-indexed)
-    selectedDate: '2026-8-24',
+    currentDate: new Date(),
+    calYear: new Date().getFullYear(),
+    calMonth: new Date().getMonth() + 1,
+    selectedDate: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
+    selectedCalYear: new Date().getFullYear(),
+    selectedCalMonth: new Date().getMonth() + 1,
+    selectedCalDay: new Date().getDate(),
     directoryCategory: 'all',
     directorySearch: '',
     noticeCategory: 'all',
     noticeSearch: '',
     workReportTab: 'weekly',
-    workReportYear: 2026,
-    workReportMonth: 8,
-    workReportWeek: 3,
-    workReportDate: '2026-08-21',
+    workReportYear: new Date().getFullYear(),
+    workReportMonth: new Date().getMonth() + 1,
+    workReportWeek: 1,
+    workReportDate: `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`,
     workReportTeam: 'all',
     workReportDept: 'all',
     financeFilter: 'all',
@@ -1053,11 +1056,11 @@ const PCApp = {
     const schedWrap = document.getElementById('pc-widget-company-schedule');
     if (!schedWrap) return;
 
-    const year = this.state.calYear || 2026;
-    const month = this.state.calMonth || 8;
+    const now = new Date();
+    const year = this.state.calYear || now.getFullYear();
+    const month = this.state.calMonth || (now.getMonth() + 1);
     const firstDay = new Date(year, month - 1, 1).getDay();
     const lastDate = new Date(year, month, 0).getDate();
-    const now = new Date();
 
     // Calculate monthly total
     let monthTotalScheds = 0;
@@ -1263,8 +1266,9 @@ const PCApp = {
   },
 
   changeDashboardCalMonth(offset) {
-    let y = this.state.calYear || 2026;
-    let m = this.state.calMonth || 8;
+    const now = new Date();
+    let y = this.state.calYear || now.getFullYear();
+    let m = this.state.calMonth || (now.getMonth() + 1);
     m += offset;
     if (m < 1) {
       m = 12;
@@ -1273,7 +1277,6 @@ const PCApp = {
       m = 1;
       y++;
     }
-    const now = new Date();
     this.state.calYear = y;
     this.state.calMonth = m;
     this.state.selectedCalYear = y;
@@ -2346,8 +2349,9 @@ const PCApp = {
   // 6. Calendar View (근태일지 - 간략화된 월간 달력 & 일자별 모달 연동)
   // =========================================================================
   renderCalendarView() {
-    const year = this.state.calYear || 2026;
-    const month = this.state.calMonth || 8;
+    const now = new Date();
+    const year = this.state.calYear || now.getFullYear();
+    const month = this.state.calMonth || (now.getMonth() + 1);
 
     // 1. Month Label Update
     const monthLabelEl = document.getElementById('pc-cal-current-month-label');
@@ -2429,18 +2433,18 @@ const PCApp = {
   selectCalendarDate(key) {
     this.state.selectedDate = key;
     this.renderCalendarGrid();
-    this.renderCalendarSideSchedule(key);
+    this.renderCalendarSideSchedule();
   },
 
   renderCalendarGrid() {
     const gridWrap = document.getElementById('pc-cal-grid-container');
     if (!gridWrap) return;
 
-    const year = this.state.calYear || 2026;
-    const month = this.state.calMonth || 8;
+    const now = new Date();
+    const year = this.state.calYear || now.getFullYear();
+    const month = this.state.calMonth || (now.getMonth() + 1);
     const firstDay = new Date(year, month - 1, 1).getDay();
     const lastDate = new Date(year, month, 0).getDate();
-    const now = new Date();
 
     const selectedKey = this.state.selectedDate || `${year}-${month}-${now.getDate()}`;
 
@@ -2459,11 +2463,6 @@ const PCApp = {
       const dayOfWeek = (firstDay + d - 1) % 7;
       const isSunday = (dayOfWeek === 0);
       const isSaturday = (dayOfWeek === 6);
-
-      const daySchedules = this.getSchedulesForDay(year, month, d) || [];
-      const topScheds = daySchedules.slice(0, 3);
-      const extraCount = daySchedules.length - topScheds.length;
-
       let dateNumClass = 'text-on-surface';
       if (isSunday) dateNumClass = 'text-red-500 font-bold';
       else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
@@ -2538,16 +2537,16 @@ const PCApp = {
     if (dateKey) this.state.selectedDate = dateKey;
     if (activeFilter !== undefined) this.stateSideSchedule.activeFilter = activeFilter;
 
-    let key = this.state.selectedDate;
     const now = new Date();
+    let key = this.state.selectedDate;
     if (!key) {
-      key = `${this.state.calYear || 2026}-${this.state.calMonth || 8}-${now.getDate()}`;
+      key = `${this.state.calYear || now.getFullYear()}-${this.state.calMonth || (now.getMonth() + 1)}-${now.getDate()}`;
       this.state.selectedDate = key;
     }
 
     const parts = key.split('-').map(Number);
-    const year = parts[0] || 2026;
-    const month = parts[1] || 8;
+    const year = parts[0] || now.getFullYear();
+    const month = parts[1] || (now.getMonth() + 1);
     const day = parts[2] || now.getDate();
 
     const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
@@ -2686,8 +2685,9 @@ const PCApp = {
   },
 
   prevMonth() {
-    let y = this.state.calYear || 2026;
-    let m = this.state.calMonth || 8;
+    const now = new Date();
+    let y = this.state.calYear || now.getFullYear();
+    let m = this.state.calMonth || (now.getMonth() + 1);
     m--;
     if (m < 1) {
       m = 12;
@@ -2699,8 +2699,9 @@ const PCApp = {
   },
 
   nextMonth() {
-    let y = this.state.calYear || 2026;
-    let m = this.state.calMonth || 8;
+    const now = new Date();
+    let y = this.state.calYear || now.getFullYear();
+    let m = this.state.calMonth || (now.getMonth() + 1);
     m++;
     if (m > 12) {
       m = 1;
@@ -2723,7 +2724,7 @@ const PCApp = {
   // 6-2. Date Schedule Detail Modal (모바일 이미지 1:1 일치 단일 다이얼로그 모달)
   // =========================================================================
   stateDateModal: {
-    currentDateKey: '2026-8-12',
+    currentDateKey: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
     activeFilter: 'all' // 'all', '휴가', '외근', '반차', '회의'
   },
 
