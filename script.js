@@ -2120,15 +2120,15 @@ const App = {
             </span>
           </div>
 
-          <div class="flex items-center justify-around bg-surface-container-low/70 rounded-md p-3 mb-3.5 text-center">
+          <div class="flex items-center justify-around bg-surface-container-low/70 rounded-md p-4 mb-3.5 text-center">
             <div>
-              <span class="text-[11px] text-on-surface-variant block mb-0.5 font-medium">출근 시간</span>
-              <span class="font-headline text-lg sm:text-xl font-black text-primary">${checkInTime}</span>
+              <span class="text-[11px] text-on-surface-variant block mb-1.5 font-medium">출근 시간</span>
+              <span class="font-headline text-[2.25rem] leading-none font-black text-primary tracking-tight">${checkInTime}</span>
             </div>
-            <span class="text-on-surface-variant text-lg font-bold">→</span>
+            <span class="text-on-surface-variant text-2xl font-bold shrink-0">→</span>
             <div>
-              <span class="text-[11px] text-on-surface-variant block mb-0.5 font-medium">퇴근 시간</span>
-              <span class="font-headline text-lg sm:text-xl font-black ${checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${checkOutTime}</span>
+              <span class="text-[11px] text-on-surface-variant block mb-1.5 font-medium">퇴근 시간</span>
+              <span class="font-headline text-[2.25rem] leading-none font-black tracking-tight ${checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${checkOutTime}</span>
             </div>
           </div>
 
