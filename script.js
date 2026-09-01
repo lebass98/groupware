@@ -2290,7 +2290,7 @@ const App = {
             <div class="py-1 rounded-md bg-surface-container-low text-on-surface">수</div>
             <div class="py-1 rounded-md bg-surface-container-low text-on-surface">목</div>
             <div class="py-1 rounded-md bg-surface-container-low text-on-surface">금</div>
-            <div class="py-1 rounded-md bg-surface-container text-blue-600 dark:text-blue-400">토</div>
+            <div class="py-1 rounded-md bg-surface-container-low text-[#666666] dark:text-[#a8a8a8]">토</div>
           </div>
 
           <!-- Calendar Days Grid -->
@@ -2372,8 +2372,7 @@ const App = {
 
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
-      const isSatEmpty = (i % 7 === 6);
-      html += `<div class="h-10 sm:h-11 ${isSatEmpty ? 'bg-surface-container/60 dark:bg-surface-container-high/30 rounded-md' : ''}"></div>`;
+      html += `<div class="h-10 sm:h-11"></div>`;
     }
 
     // Days
@@ -2389,11 +2388,9 @@ const App = {
 
       let dateNumClass = 'text-on-surface';
       if (isSunday || hasHoliday) dateNumClass = 'text-red-600 dark:text-red-400 font-bold';
-      else if (isSaturday) dateNumClass = 'text-blue-600 dark:text-blue-400 font-bold';
+      else if (isSaturday) dateNumClass = 'text-[#666666] dark:text-[#a8a8a8] font-bold';
 
-      const defaultBg = isSaturday
-        ? 'bg-surface-container dark:bg-surface-container-high/40 hover:bg-primary/10'
-        : 'hover:bg-primary/10';
+      const defaultBg = 'hover:bg-primary/10';
 
       const selectedClass = isSelected
         ? 'bg-primary/15 rounded-md ring-2 ring-primary shadow-xs font-black'
