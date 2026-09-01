@@ -51,14 +51,35 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // 전사 마스터 데이터: 로그인한 임직원은 읽기만, 변경은 관리자만 가능합니다.
-    match /employees/{docId}       { allow read: if isMember(); allow write: if isAdmin(); }
-    match /notices/{docId}         { allow read: if isMember(); allow write: if isAdmin(); }
-    match /todos/{docId}           { allow read: if isMember(); allow write: if isAdmin(); }
-    match /schedules/{docId}       { allow read: if isMember(); allow write: if isAdmin(); }
-    match /attendance/{docId}      { allow read: if isMember(); allow write: if isAdmin(); }
-    match /attendance_logs/{docId} { allow read: if isMember(); allow write: if isAdmin(); }
-    match /finance/{docId}         { allow read: if isMember(); allow write: if isAdmin(); }
+    // 전사 마스터 데이터: 로그인한 임직원은 읽기만, 변경은 관리자(시딩)만 가능합니다.
+    // 아래 목록은 data/firebase-seeder.js의 SPEC 표와 1:1로 대응합니다.
+    // 시더에 컬렉션을 추가하면 이 목록에도 반드시 함께 추가해야 합니다.
+    // (규칙에 없는 경로는 맨 아래 기본 차단에 걸려 시딩이 실패합니다.)
+
+    // 임직원 및 조직
+    match /employees/{docId}           { allow read: if isMember(); allow write: if isAdmin(); }
+
+    // 공용 콘텐츠
+    match /notices/{docId}             { allow read: if isMember(); allow write: if isAdmin(); }
+    match /todos/{docId}               { allow read: if isMember(); allow write: if isAdmin(); }
+    match /trashed_todos/{docId}       { allow read: if isMember(); allow write: if isAdmin(); }
+    match /projects/{docId}            { allow read: if isMember(); allow write: if isAdmin(); }
+    match /notifications/{docId}       { allow read: if isMember(); allow write: if isAdmin(); }
+
+    // 업무 보고 3종
+    match /work_reports/{docId}        { allow read: if isMember(); allow write: if isAdmin(); }
+    match /daily_work_reports/{docId}  { allow read: if isMember(); allow write: if isAdmin(); }
+    match /team_work_reports/{docId}   { allow read: if isMember(); allow write: if isAdmin(); }
+
+    // 일정 및 달력(공휴일·절기)
+    match /schedules/{docId}           { allow read: if isMember(); allow write: if isAdmin(); }
+    match /calendar/{docId}            { allow read: if isMember(); allow write: if isAdmin(); }
+
+    // 근태 / 재무 / 기타 메타
+    match /attendance/{docId}          { allow read: if isMember(); allow write: if isAdmin(); }
+    match /attendance_logs/{docId}     { allow read: if isMember(); allow write: if isAdmin(); }
+    match /finance/{docId}             { allow read: if isMember(); allow write: if isAdmin(); }
+    match /meta/{docId}                { allow read: if isMember(); allow write: if isAdmin(); }
 
     // 위에서 명시하지 않은 모든 경로는 기본 차단합니다.
     match /{document=**} {

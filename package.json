@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "node dev-server.js",
     "start": "node dev-server.js",
-    "serve": "node dev-server.js"
+    "serve": "node dev-server.js",
+    "build:seed": "node data/build-seed.js",
+    "check:seed": "node data/build-seed.js --check",
+    "verify:seed": "node data/verify-seed.js"
   },
   "keywords": [
     "groupware",

@@ -42,8 +42,15 @@
     <button id="run">로그인 후 시딩 실행</button>
 
     <div class="warn">
-      이 페이지는 최초 1회 또는 마스터 데이터 갱신 시에만 사용합니다.
-      보안 규칙상 <code>admins/{UID}</code> 문서가 등록된 관리자 계정만 실행할 수 있습니다.
+      <b>실행 전 확인하십시오.</b> 아래 순서를 건너뛰면 permission-denied로 실패합니다.
+      <ol style="margin:8px 0 0; padding-left:18px;">
+        <li>터미널에서 <code>npm run verify:seed</code> 통과</li>
+        <li>Firebase 콘솔 &gt; Firestore &gt; 규칙 탭에 <code>firestore.rules</code> 게시</li>
+        <li>Firestore 데이터 탭에 <code>admins/{내 UID}</code> 문서 생성</li>
+      </ol>
+      <div style="margin-top:8px;">
+        시딩은 같은 문서 ID를 덮어씁니다. 기존 데이터를 수정했다면 그 변경분은 사라집니다.
+      </div>
     </div>
 
     <div id="log"></div>
