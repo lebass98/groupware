@@ -8,9 +8,26 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+const { exec } = require('child_process');
 
 const ROOT = __dirname;
-const PORT = Number(process.argv[2]) || 8089;
+
+// 인자 파싱 (포트, --open 여부)
+let PORT = 8089;
+let shouldOpen = false;
+
+for (let i = 2; i < process.argv.length; i++) {
+  const arg = process.argv[i];
+  if (arg === '--open' || arg === '-o') {
+    shouldOpen = true;
+  } else if (arg.startsWith('--port=')) {
+    PORT = Number(arg.split('=')[1]) || 8089;
+  } else if (!isNaN(Number(arg))) {
+    PORT = Number(arg);
+  }
+}
+
 const IGNORED = /(^|[\\/])(\.git|node_modules|\.expo|\.claude|\.agents|dist|build)([\\/]|$)/;
 const WATCH_EXT = /\.(html|css|js|json|png|jpe?g|gif|svg|webp)$/i;
 
@@ -106,6 +123,18 @@ function send(res, status, headers, body) {
   res.end(body);
 }
 
+function getNetworkIp() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return null;
+}
+
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
@@ -172,9 +201,18 @@ server.on('error', (err) => {
   throw err;
 });
 
-server.listen(PORT, () => {
-  console.log(`라이브 리로드 서버 실행 중`);
-  console.log(`  모바일: http://localhost:${PORT}/index.html`);
-  console.log(`  PC:     http://localhost:${PORT}/pc.html`);
-  console.log(`감시 대상: ${ROOT}`);
+server.listen(PORT, '0.0.0.0', () => {
+  const netIp = getNetworkIp();
+  console.log(`\n🚀 WnC 그룹웨어 라이브 리로드(자동 새로고침) 개발 서버 실행 완료\n`);
+  console.log(`  📱 모바일 메인:   http://localhost:${PORT}/index.html`);
+  console.log(`  💻 PC 대시보드:   http://localhost:${PORT}/pc.html`);
+  if (netIp) {
+    console.log(`  🌐 네트워크(모바일기기): http://${netIp}:${PORT}/index.html`);
+  }
+  console.log(`  📁 감시 디렉토리: ${ROOT}\n`);
+
+  if (shouldOpen) {
+    const startCmd = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
+    exec(`${startCmd} http://localhost:${PORT}/pc.html`);
+  }
 });

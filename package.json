@@ -1,0 +1,18 @@
+{
+  "name": "wordncode-groupware",
+  "version": "1.0.0",
+  "description": "WnC Groupware Web & Mobile Application with Live Reload Dev Server",
+  "main": "dev-server.js",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "start": "node dev-server.js",
+    "serve": "node dev-server.js"
+  },
+  "keywords": [
+    "groupware",
+    "wordncode",
+    "live-reload"
+  ],
+  "author": "WnC",
+  "license": "ISC"
+}
