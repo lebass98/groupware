@@ -2125,6 +2125,15 @@ window.WncBirthday = {
     return String((emp && (emp.email || emp.phone || emp.name)) || '').trim().toLowerCase();
   },
 
+  /** 직급·직책 서열 (앞쪽일수록 상위). 목록 정렬 기준으로 사용한다. */
+  ROLE_ORDER: ['대표', '본부장', '부장', '팀장', '차장', '과장', '대리', '주임', '사원', '수습'],
+
+  /** 서열 인덱스. 목록에 없는 직책은 맨 뒤로 보낸다. */
+  rankOf(emp) {
+    const idx = this.ROLE_ORDER.indexOf(String((emp && emp.role) || '').trim());
+    return idx === -1 ? this.ROLE_ORDER.length : idx;
+  },
+
   /**
    * 이달의 생일자 목록을 반환한다.
    *  - entries   : 표기용 목록(겸직은 직책별로 각각 포함하며 동일 인물끼리 인접 배치)
@@ -2142,8 +2151,13 @@ window.WncBirthday = {
       groups.get(key).push(emp);
     });
 
+    // 직급·직책 서열 상위 순으로 정렬한다(겸직은 상위 직책 기준, 동일 인물끼리 인접 배치).
     const entries = [];
-    groups.forEach((members) => members.forEach((emp) => entries.push(emp)));
+    Array.from(groups.values())
+      .map((members) => members.slice().sort((a, b) => this.rankOf(a) - this.rankOf(b)))
+      .sort((a, b) => this.rankOf(a[0]) - this.rankOf(b[0]))
+      .forEach((members) => members.forEach((emp) => entries.push(emp)));
+
     return { month: now.getMonth() + 1, entries, headcount: groups.size };
   }
 };
