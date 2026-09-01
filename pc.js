@@ -236,6 +236,104 @@ const PCApp = {
   // ==========================================================================
   // 멀티 디바이스 데이터 동기화 엔진 (Cross-Device LocalStorage Synchronization)
   // ==========================================================================
+  // ==========================================================================
+  // 계정 격리 엔진 (Account Isolation Engine)
+  // 같은 브라우저에서 계정을 바꿔 로그인해도 이전 계정의 개인 데이터가
+  // 화면·스토리지·클라우드 어디에도 남지 않도록 보장한다. (모바일 script.js와 동일 규격)
+  // ==========================================================================
+
+  /** 계정마다 달라지는 개인 데이터 필드. 계정 전환 시 이 목록만 초기화한다. */
+  ACCOUNT_SCOPED_FIELDS: [
+    'isCheckedIn', 'checkInTime', 'checkOutTime', 'workStatus',
+    'logs', 'todos', 'recentProjects',
+    'finance', 'approvals', 'leave', 'user', 'notifications'
+  ],
+
+  /** 부팅 시점(로컬 캐시 반영 전)의 개인 데이터 기본값을 1회 보관한다. */
+  captureAccountDefaults() {
+    if (this._accountDefaults) return;
+    const snapshot = {};
+    this.ACCOUNT_SCOPED_FIELDS.forEach((key) => {
+      const value = this.state[key];
+      snapshot[key] = value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+    });
+    this._accountDefaults = snapshot;
+  },
+
+  /** 개인 데이터를 부팅 시점 기본값으로 되돌린다(다른 계정 로그인 시 호출). */
+  resetAccountState() {
+    if (!this._accountDefaults) return;
+    this.ACCOUNT_SCOPED_FIELDS.forEach((key) => {
+      const def = this._accountDefaults[key];
+      this.state[key] = def === undefined ? undefined : JSON.parse(JSON.stringify(def));
+    });
+    console.info('[Account] 이전 계정의 개인 데이터를 초기화했습니다.');
+  },
+
+  /**
+   * 로그인한 계정의 이메일을 주소록(MockData.employees)과 대조하여
+   * 본인 프로필을 적용한다. 일치하는 임직원이 없으면 기존 프로필을 유지한다.
+   */
+  applySignedInProfile(email) {
+    const list = (window.MockData && window.MockData.employees) || [];
+    const target = String(email || '').trim().toLowerCase();
+    const emp = list.find(e => String(e.email || '').trim().toLowerCase() === target);
+    if (!emp) {
+      console.info('[Firebase] 주소록에서 일치하는 임직원을 찾지 못해 기존 프로필을 유지합니다:', email);
+      return false;
+    }
+    this.state.user = {
+      ...this.state.user,
+      id: emp.id,
+      name: emp.name,
+      dept: emp.dept,
+      role: emp.role,
+      email: emp.email,
+      phone: emp.phone,
+      avatar: emp.avatar
+    };
+    return true;
+  },
+
+  /**
+   * 로그인 계정이 확정되었을 때 호출된다.
+   * 다른 계정으로 바뀐 경우에만 개인 데이터를 비우고, 프로필은 항상 계정 기준으로 맞춘다.
+   */
+  handleCloudAccountChanged(detail) {
+    const info = detail || {};
+    if (info.switched) {
+      this.resetAccountState();
+    }
+    if (info.email) {
+      this.applySignedInProfile(info.email);
+    }
+    this.saveState();
+    this.refreshAllViews();
+  },
+
+  /** 클라우드에서 본인 계정 데이터를 처음 내려받은 직후 화면을 재동기화한다. */
+  handleCloudHydrated() {
+    this.loadState();
+    this.updateNotificationBadge();
+    this.refreshAllViews();
+  },
+
+  /** 대시보드 3열 위젯 및 현재 활성 서브스크린을 전면 재렌더링한다. */
+  refreshAllViews() {
+    this.renderSidebar();
+    this.renderLeftCol();
+    this.renderCenterCol();
+    this.renderRightCol();
+    if (this.state.activeScreen === 'checkin') this.renderCheckinView();
+    else if (this.state.activeScreen === 'todo') this.renderTodoView();
+    else if (this.state.activeScreen === 'notice') this.renderNoticeView();
+    else if (this.state.activeScreen === 'directory') this.renderDirectoryView();
+    else if (this.state.activeScreen === 'calendar') this.renderCalendarView();
+    else if (this.state.activeScreen === 'work-report') this.renderWorkReportView();
+    else if (this.state.activeScreen === 'finance') this.renderFinanceView();
+    else if (this.state.activeScreen === 'project') this.renderProjectView();
+  },
+
   loadState() {
     try {
       const saved = localStorage.getItem('wordncode_groupware_state');
@@ -355,6 +453,8 @@ const PCApp = {
   },
 
   init() {
+    // 계정 전환 시 되돌릴 개인 데이터 기본값을 로컬 캐시를 읽기 전에 먼저 보관한다.
+    this.captureAccountDefaults();
     this.loadState();
     this.bindTheme();
     this.bindSidebarState();
@@ -5091,21 +5191,20 @@ const PCApp = {
       if (e.key === 'wordncode_groupware_state' || e.key === 'wordncode_notifications_read_state' || e.key === 'wordncode_groupware_projects') {
         this.loadState();
         this.updateNotificationBadge();
-        // 메인 대시보드 3열 위젯 전면 실시간 갱신
-        this.renderLeftCol();
-        this.renderCenterCol();
-        this.renderRightCol();
-        // 현재 열려있는 활성 서브스크린 실시간 갱신
-        if (this.state.activeScreen === 'checkin') this.renderCheckinView();
-        else if (this.state.activeScreen === 'todo') this.renderTodoView();
-        else if (this.state.activeScreen === 'notice') this.renderNoticeView();
-        else if (this.state.activeScreen === 'directory') this.renderDirectoryView();
-        else if (this.state.activeScreen === 'calendar') this.renderCalendarView();
-        else if (this.state.activeScreen === 'work-report') this.renderWorkReportView();
-        else if (this.state.activeScreen === 'finance') this.renderFinanceView();
-        else if (this.state.activeScreen === 'project') this.renderProjectView();
+        // 메인 대시보드 3열 위젯 및 활성 서브스크린 전면 실시간 갱신
+        this.refreshAllViews();
       }
     });
+
+    // 5. 계정 격리 연동: 로그인 계정 확정 및 클라우드 최초 수신 시점에 상태를 정렬한다.
+    window.addEventListener('wnc-cloud-account-changed', (e) => this.handleCloudAccountChanged(e.detail));
+    window.addEventListener('wnc-cloud-hydrated', () => this.handleCloudHydrated());
+
+    // 인증 복원이 앱 초기화보다 먼저 끝난 경우를 대비해 마지막 이벤트를 재생한다.
+    if (window.WncCloud && window.WncCloud.account) {
+      this.handleCloudAccountChanged(window.WncCloud.account);
+      if (window.WncCloud.isHydrated()) this.handleCloudHydrated();
+    }
   }
 };
 

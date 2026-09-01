@@ -181,6 +181,8 @@ const App = {
   },
 
   init() {
+    // 계정 전환 시 되돌릴 개인 데이터 기본값을 로컬 캐시를 읽기 전에 먼저 보관한다.
+    this.captureAccountDefaults();
     this.loadState();
     this.startLiveClock();
     this.updateNotificationBadge();
@@ -276,6 +278,16 @@ const App = {
       }
     });
 
+    // 계정 격리 연동: 로그인 계정 확정 및 클라우드 최초 수신 시점에 상태를 정렬한다.
+    window.addEventListener('wnc-cloud-account-changed', (e) => this.handleCloudAccountChanged(e.detail));
+    window.addEventListener('wnc-cloud-hydrated', () => this.handleCloudHydrated());
+
+    // 인증 복원이 앱 초기화보다 먼저 끝난 경우를 대비해 마지막 이벤트를 재생한다.
+    if (window.WncCloud && window.WncCloud.account) {
+      this.handleCloudAccountChanged(window.WncCloud.account);
+      if (window.WncCloud.isHydrated()) this.handleCloudHydrated();
+    }
+
     this.renderUI();
   },
 
@@ -332,6 +344,69 @@ const App = {
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
+  },
+
+  // ==========================================================================
+  // 계정 격리 엔진 (Account Isolation Engine)
+  // 같은 브라우저에서 계정을 바꿔 로그인해도 이전 계정의 개인 데이터가
+  // 화면·스토리지·클라우드 어디에도 남지 않도록 보장한다.
+  // ==========================================================================
+
+  /** 계정마다 달라지는 개인 데이터 필드. 계정 전환 시 이 목록만 초기화한다. */
+  ACCOUNT_SCOPED_FIELDS: [
+    'isCheckedIn', 'checkInTime', 'checkInTimeStr', 'todaySeconds',
+    'logs', 'todos', 'trashedTodos', 'recentProjects',
+    'finance', 'approvals', 'leave', 'user', 'notifications'
+  ],
+
+  /** 부팅 시점(로컬 캐시 반영 전)의 개인 데이터 기본값을 1회 보관한다. */
+  captureAccountDefaults() {
+    if (this._accountDefaults) return;
+    const snapshot = {};
+    this.ACCOUNT_SCOPED_FIELDS.forEach((key) => {
+      const value = this.state[key];
+      snapshot[key] = value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+    });
+    this._accountDefaults = snapshot;
+  },
+
+  /** 개인 데이터를 부팅 시점 기본값으로 되돌린다(다른 계정 로그인 시 호출). */
+  resetAccountState() {
+    if (!this._accountDefaults) return;
+    this.stopWorkTimer();
+    this.ACCOUNT_SCOPED_FIELDS.forEach((key) => {
+      const def = this._accountDefaults[key];
+      this.state[key] = def === undefined ? undefined : JSON.parse(JSON.stringify(def));
+    });
+    this.state.checkInTime = null;
+    this.state.checkInTimeStr = null;
+    console.info('[Account] 이전 계정의 개인 데이터를 초기화했습니다.');
+  },
+
+  /**
+   * 로그인 계정이 확정되었을 때 호출된다.
+   * 다른 계정으로 바뀐 경우에만 개인 데이터를 비우고, 프로필은 항상 계정 기준으로 맞춘다.
+   */
+  handleCloudAccountChanged(detail) {
+    const info = detail || {};
+    if (info.switched) {
+      this.resetAccountState();
+    }
+    if (info.email) {
+      this.applySignedInProfile(info.email);
+    }
+    this.saveState();
+    this.renderUI();
+  },
+
+  /** 클라우드에서 본인 계정 데이터를 처음 내려받은 직후 화면을 재동기화한다. */
+  handleCloudHydrated() {
+    this.loadState();
+    this.updateNotificationBadge();
+    if (this.state.isLoggedIn) {
+      this.renderUI();
+      this.renderTodayData();
+    }
   },
 
   loadState() {
