@@ -1246,7 +1246,7 @@ const PCApp = {
       html += `
         <div class="h-13 sm:h-14 p-1.5 rounded-md transition-all cursor-pointer flex flex-col justify-between group ${selectedClass}" onclick="PCApp.selectDashboardDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 (일정 ${daySchedules.length}건) · 클릭하여 일정 확인">
           <div class="flex items-center justify-start">
-            <span class="text-sm font-bold ${dateNumClass} ${isToday ? 'w-5.5 h-5.5 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shadow-xs' : 'leading-none'}">${d}</span>
+            <span class="w-6 h-6 flex items-center justify-center text-xs font-bold ${dateNumClass} ${isToday ? 'rounded-full bg-primary text-white font-extrabold shadow-xs' : ''} leading-none">${d}</span>
           </div>
           <div class="flex items-center justify-end w-full min-h-[14px]">
             ${daySchedules.length > 0 ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center justify-center leading-none bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors whitespace-nowrap">${daySchedules.length}건</span>` : ''}
