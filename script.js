@@ -2046,8 +2046,8 @@ const App = {
             tooltip: {
               enabled: true,
               backgroundColor: 'rgba(35, 44, 81, 0.92)',
-              titleFont: { family: 'Pretendard Variable', size: 12, weight: 'bold' },
-              bodyFont: { family: 'Pretendard Variable', size: 12 },
+              titleFont: { family: 'Pretendard', size: 12, weight: 'bold' },
+              bodyFont: { family: 'Pretendard', size: 12 },
               padding: 10,
               cornerRadius: 8,
               callbacks: {

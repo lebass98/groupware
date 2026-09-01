@@ -1,4 +1,4 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
 :root {
   /* Stitch Color Tokens */
@@ -270,7 +270,7 @@ input,
 textarea,
 select,
 button {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif !important;
+  font-family: Pretendard, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -649,7 +649,7 @@ body.dark .ticker-action:hover {
 
 
 .brand-title {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -826,7 +826,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .live-time {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 2.5rem;
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -1007,7 +1007,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .pulse-text {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -1068,7 +1068,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .stat-box-value {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 1.4rem;
   font-weight: 600;
   color: var(--on-surface);
@@ -1076,7 +1076,7 @@ body.dark .menu-col-toggle-btn.active {
 
 /* Schedule Section */
 .section-title {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 1.15rem;
   font-weight: 600;
   margin-bottom: 0.85rem;
@@ -1161,7 +1161,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .logs-hero-value {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
   color: var(--primary);
@@ -1181,7 +1181,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .score-num {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 1.6rem;
   font-weight: 600;
   font-style: italic;
@@ -1287,7 +1287,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .log-day {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 1.15rem;
   font-weight: 600;
   color: var(--primary);
@@ -1348,7 +1348,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .log-time-val {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--on-surface);
@@ -1409,7 +1409,7 @@ body.dark .menu-col-toggle-btn.active {
 }
 
 .profile-name {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--on-surface);
@@ -1550,7 +1550,7 @@ input:checked+.slider:before {
   border-radius: var(--radius-lg);
   background: rgba(179, 27, 37, 0.1);
   color: var(--error);
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -1736,7 +1736,7 @@ body.modal-open {
 }
 
 .modal-title {
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--on-surface);
@@ -1754,7 +1754,7 @@ body.modal-open {
   padding: 0.85rem 1rem;
   border: none;
   border-radius: var(--radius-full);
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-family: Pretendard, sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -1982,7 +1982,7 @@ body.modal-open {
   border-radius: 9999px;
   background-color: #e83538 !important;
   color: #ffffff !important;
-  font-family: 'Pretendard Variable', Pretendard, sans-serif !important;
+  font-family: Pretendard, sans-serif !important;
   font-size: 10.5px !important;
   font-weight: 700 !important;
   line-height: 1;

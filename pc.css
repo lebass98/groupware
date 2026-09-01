@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 /* ==========================================================================
    WnC PC Desktop Groupware Theme Tokens & Stylesheet (pc.css)
@@ -31,8 +31,8 @@
   --error: #ef4444;
   --error-container: #fee2e2;
 
-  /* Typography - Only Pretendard Variable */
-  --font-family: "Pretendard Variable", Pretendard, sans-serif;
+  /* Typography - Only Pretendard */
+  --font-family: Pretendard, sans-serif;
 
   /* Shadows */
   --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
