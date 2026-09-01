@@ -11,24 +11,24 @@ window.MockData = {
   employees: [
     { id: 1, name: "김경현", dept: "경영지원팀", role: "대표", phone: "010-8885-5177", tel: "070-7711-4823", email: "abc@wordncode.com", avatar: "./resource/image/profile_abc.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 2, name: "오은주", dept: "경영지원팀", role: "차장", phone: "010-3712-7932", tel: "070-7711-4819", email: "sky@wordncode.com", avatar: "./resource/image/profile_sky.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
-    { id: 3, name: "김종규", dept: "기획팀", role: "팀장", phone: "010-4781-7808", tel: "070-8805-1647", email: "john@wordncode.com", avatar: "./resource/image/profile_john.png", status: "business", statusText: "외근중", todaySchedule: "외근", location: "한국건강가정진흥원" },
+    { id: 3, name: "김종규", dept: "기획팀", role: "팀장", phone: "010-4781-7808", tel: "070-8805-1647", email: "john@wordncode.com", avatar: "./resource/image/profile_john.png", status: "business", statusText: "외근중", todaySchedule: "외근", location: "한국건강가정진흥원", birthdayMonth: 9 },
     { id: 4, name: "박규태", dept: "기획팀", role: "대리", phone: "010-3230-1573", tel: "070-8805-1647", email: "green@wordncode.com", avatar: "./resource/image/profile_green.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 5, name: "한상희", dept: "기획팀", role: "사원", phone: "010-2635-9110", tel: "070-7711-4815", email: "star@wordncode.com", avatar: "./resource/image/profile_star_20250326.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 6, name: "장현아", dept: "기획팀", role: "수습", phone: "010-4562-3633", tel: "070-7711-4809", email: "you@wordncode.com", avatar: "./resource/image/profile_janghyunah.png", status: "business", statusText: "외근중", todaySchedule: "외근", location: "한국건강가정진흥원" },
-    { id: 7, name: "윤익수", dept: "디자인팀", role: "부장", phone: "010-2707-5681", tel: "070-8805-1646", email: "blue@wordncode.com", avatar: "./resource/image/profile_blue.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
+    { id: 7, name: "윤익수", dept: "디자인팀", role: "부장", phone: "010-2707-5681", tel: "070-8805-1646", email: "blue@wordncode.com", avatar: "./resource/image/profile_blue.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", birthdayMonth: 9 },
     { id: 8, name: "최지영", dept: "디자인팀", role: "과장", phone: "010-8632-0944", tel: "070-7711-4821", email: "white@wordncode.com", avatar: "./resource/image/profile_white.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 9, name: "신현우", dept: "디자인팀", role: "주임", phone: "010-8337-0176", tel: "070-7711-4810", email: "pink@wordncode.com", avatar: "./resource/image/profile_pink____________.png", status: "offwork", statusText: "퇴근", todaySchedule: "", location: "" },
     { id: 10, name: "명희진", dept: "디자인팀", role: "주임", phone: "010-2607-5235", tel: "070-7711-4812", email: "gray@wordncode.com", avatar: "./resource/image/profile_gray_20240502__.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
-    { id: 11, name: "이재광", dept: "퍼블리싱팀", role: "팀장", phone: "010-5244-1251", tel: "070-7711-4808", email: "yellow@wordncode.com", avatar: "profile.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", isBirthdayThisMonth: true, birthday: "08.21" },
+    { id: 11, name: "이재광", dept: "퍼블리싱팀", role: "팀장", phone: "010-5244-1251", tel: "070-7711-4808", email: "yellow@wordncode.com", avatar: "profile.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", birthdayMonth: 9 },
     { id: 12, name: "조지혜", dept: "퍼블리싱팀", role: "과장", phone: "010-2362-0263", tel: "070-7711-4806", email: "red@wordncode.com", avatar: "./resource/image/profile_red_20260602.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
-    { id: 13, name: "손석호", dept: "퍼블리싱팀", role: "주임", phone: "010-6565-4215", tel: "070-7711-4811", email: "pub@wordncode.com", avatar: "./resource/image/profile_pub.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
-    { id: 14, name: "최우석", dept: "개발팀", role: "과장", phone: "010-2887-1810", tel: "070-8805-1648", email: "mobile@wordncode.com", avatar: "./resource/image/profile_mobile.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
+    { id: 13, name: "손석호", dept: "퍼블리싱팀", role: "주임", phone: "010-6565-4215", tel: "070-7711-4811", email: "pub@wordncode.com", avatar: "./resource/image/profile_pub.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", birthdayMonth: 9 },
+    { id: 14, name: "최우석", dept: "개발팀", role: "과장", phone: "010-2887-1810", tel: "070-8805-1648", email: "mobile@wordncode.com", avatar: "./resource/image/profile_mobile.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", birthdayMonth: 9 },
     { id: 15, name: "안영재", dept: "개발팀", role: "대리", phone: "010-9776-1309", tel: "070-7711-4805", email: "pro@wordncode.com", avatar: "./resource/image/profile_pro.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 16, name: "곽재훈", dept: "개발팀", role: "대리", phone: "010-8479-8729", tel: "070-7711-1653", email: "spring@wordncode.com", avatar: "./resource/image/profile_spring.png", status: "offwork", statusText: "퇴근", todaySchedule: "", location: "" },
     { id: 17, name: "유종현", dept: "개발팀", role: "주임", phone: "010-7455-4047", tel: "070-7711-4820", email: "jsp@wordncode.com", avatar: "./resource/image/profile_jsp.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 18, name: "남기현", dept: "전략본부", role: "본부장", phone: "010-5578-9436", tel: "070-7711-4804", email: "help@wordncode.com", avatar: "./resource/image/profile_help.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 19, name: "윤진성", dept: "전략본부", role: "과장", phone: "010-2889-3274", tel: "070-7711-4822", email: "apple@wordncode.com", avatar: "./resource/image/profile_apple_20250611.png", status: "business", statusText: "외근중", todaySchedule: "외근", location: "한가원" },
-    { id: 20, name: "김종규", dept: "수행본부", role: "본부장", phone: "010-4781-7808", tel: "070-8805-1647", email: "john@wordncode.com", avatar: "./resource/image/profile_john_.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
+    { id: 20, name: "김종규", dept: "수행본부", role: "본부장", phone: "010-4781-7808", tel: "070-8805-1647", email: "john@wordncode.com", avatar: "./resource/image/profile_john_.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", birthdayMonth: 9 },
     { id: 21, name: "이채원", dept: "수행본부", role: "사원", phone: "010-3533-1662", tel: "070-4210-6134", email: "cool@wordncode.com", avatar: "./resource/image/profile_cool_20241224_lee.png", status: "business", statusText: "외근중", todaySchedule: "외근", location: "한국건강가정진흥원" }
   ],
 
@@ -2095,4 +2095,55 @@ window.MockData = {
       isRead: true
     }
   ]
+};
+
+
+/**
+ * 이달의 생일자 판별 유틸 (전 디바이스 공통)
+ *
+ * 임직원 데이터의 birthdayMonth(1~12) 또는 birthday('MM.DD') 값을 실제 현재 날짜와 대조하여
+ * '이달의 생일자'를 동적으로 산출한다. 달이 바뀌면 자동 갱신되므로 월별 하드코딩이 필요 없다.
+ * 겸직(동일 인물이 두 부서에 등록된 경우)은 직책별로 각각 표기하되 인원수는 1명으로 집계한다.
+ */
+window.WncBirthday = {
+  /** 임직원의 생일 월(1~12)을 반환한다. 정보가 없으면 null. */
+  getMonth(emp) {
+    if (!emp) return null;
+    if (emp.birthdayMonth) return Number(emp.birthdayMonth);
+    const matched = String(emp.birthday || '').match(/^(\d{1,2})/);
+    return matched ? Number(matched[1]) : null;
+  },
+
+  /** 기준일(기본값: 오늘)이 속한 달의 생일자인지 여부. */
+  isThisMonth(emp, refDate) {
+    const month = this.getMonth(emp);
+    return month !== null && month === (refDate || new Date()).getMonth() + 1;
+  },
+
+  /** 겸직 판별용 동일 인물 식별키. 이메일 > 연락처 > 이름 순으로 사용한다. */
+  identityKey(emp) {
+    return String((emp && (emp.email || emp.phone || emp.name)) || '').trim().toLowerCase();
+  },
+
+  /**
+   * 이달의 생일자 목록을 반환한다.
+   *  - entries   : 표기용 목록(겸직은 직책별로 각각 포함하며 동일 인물끼리 인접 배치)
+   *  - headcount : 실제 인원수(겸직은 1명으로 집계)
+   */
+  getMonthlyList(refDate) {
+    const now = refDate || new Date();
+    const list = (window.MockData && window.MockData.employees) || [];
+    const groups = new Map();
+
+    list.forEach((emp) => {
+      if (!this.isThisMonth(emp, now)) return;
+      const key = this.identityKey(emp);
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(emp);
+    });
+
+    const entries = [];
+    groups.forEach((members) => members.forEach((emp) => entries.push(emp)));
+    return { month: now.getMonth() + 1, entries, headcount: groups.size };
+  }
 };

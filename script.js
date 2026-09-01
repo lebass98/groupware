@@ -100,6 +100,15 @@ const ALL_DOCK_MENU_ITEMS = [
   { id: 'screen-work-report', name: '업무보고', iconName: 'assignment' }
 ];
 
+/** 이달의 생일자 여부 (data/mockData.js의 WncBirthday 유틸에 위임하여 현재 달 기준으로 판별) */
+const isBirthdayThisMonth = (emp) => !!(window.WncBirthday && window.WncBirthday.isThisMonth(emp));
+
+/** 생일 일자가 없는 임직원의 생일 표기용 월 라벨 (예: '9월') */
+const birthdayMonthLabel = (emp) => {
+  const month = window.WncBirthday ? window.WncBirthday.getMonth(emp) : null;
+  return month ? `${month}월` : '-';
+};
+
 const App = {
   state: {
     isLoggedIn: false, // Default to FALSE so user starts on Login screen
@@ -4414,7 +4423,7 @@ const App = {
         empStatusText.includes(query) ||
         infoText.includes(query) ||
         schedText.includes(query) ||
-        (emp.isBirthdayThisMonth && ('생일'.includes(query) || '생일자'.includes(query) || '이달의생일'.includes(query) || 'birthday'.includes(query))) ||
+        (isBirthdayThisMonth(emp) && ('생일'.includes(query) || '생일자'.includes(query) || '이달의생일'.includes(query) || 'birthday'.includes(query))) ||
         empPhone.includes(query);
       return matchCat && matchQuery;
     });
@@ -4443,7 +4452,7 @@ const App = {
         <div class="absolute bottom-0 right-0 h-3.5 w-3.5 ${statusInfo.dotColor} rounded-full border-2 border-surface-container-lowest z-10 ${statusInfo.pulse ? 'ring-2 ring-emerald-400/30' : ''}"></div>
       `;
 
-      const birthdayAvatarDeco = emp.isBirthdayThisMonth
+      const birthdayAvatarDeco = isBirthdayThisMonth(emp)
         ? `<div class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-pink-500 text-white text-[10px] flex items-center justify-center shadow-xs z-10 animate-bounce" title="이달의 생일자">🎂</div>`
         : '';
 
@@ -4477,7 +4486,7 @@ const App = {
 
       // Monthly Birthday Badge (이달의 생일 🎂)
       let birthdayBadge = '';
-      if (emp.isBirthdayThisMonth) {
+      if (isBirthdayThisMonth(emp)) {
         birthdayBadge = `
           <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-500/15 text-pink-600 dark:text-pink-300 border border-pink-500/30">
             ${typeof getSvgIcon === 'function' ? getSvgIcon('cake', 'w-3.5 h-3.5 text-pink-500') : ''}
@@ -4487,7 +4496,7 @@ const App = {
       }
 
       // Birthday Highlight Card Style
-      const birthdayCardStyle = emp.isBirthdayThisMonth
+      const birthdayCardStyle = isBirthdayThisMonth(emp)
         ? 'border-2 border-pink-500/30 shadow-[0_4px_16px_rgba(236,72,153,0.08)] bg-gradient-to-r from-pink-500/[0.04] to-transparent'
         : 'shadow-[0_2px_12px_rgba(35,44,81,0.04)]';
 
@@ -4570,10 +4579,10 @@ const App = {
 
     // Birthday Info in detail card
     if (birthdayEl) {
-      if (emp.isBirthdayThisMonth) {
+      if (isBirthdayThisMonth(emp)) {
         birthdayEl.innerHTML = `
           <div class="flex items-center gap-1.5">
-            <span class="font-body text-xs font-extrabold text-pink-600 dark:text-pink-400">${emp.birthday ? emp.birthday + '일' : '8월'}</span>
+            <span class="font-body text-xs font-extrabold text-pink-600 dark:text-pink-400">${emp.birthday ? emp.birthday + '일' : birthdayMonthLabel(emp)}</span>
             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-pink-500 text-white shadow-xs">이달의 생일 🎂</span>
           </div>
         `;
@@ -4586,7 +4595,7 @@ const App = {
 
     if (statusBadgeEl) {
       let birthdayBadgeHtml = '';
-      if (emp.isBirthdayThisMonth) {
+      if (isBirthdayThisMonth(emp)) {
         birthdayBadgeHtml = `
           <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-pink-500/15 text-pink-600 dark:text-pink-300 border border-pink-500/30 shadow-xs">
             ${getSvgIcon('cake', 'w-3.5 h-3.5 text-pink-500')}

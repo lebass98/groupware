@@ -46,7 +46,8 @@
       "status": "business",
       "statusText": "외근중",
       "todaySchedule": "외근",
-      "location": "한국건강가정진흥원"
+      "location": "한국건강가정진흥원",
+      "birthdayMonth": 9
     },
     {
       "id": 4,
@@ -102,7 +103,8 @@
       "status": "work",
       "statusText": "근무중",
       "todaySchedule": "",
-      "location": ""
+      "location": "",
+      "birthdayMonth": 9
     },
     {
       "id": 8,
@@ -159,8 +161,7 @@
       "statusText": "근무중",
       "todaySchedule": "",
       "location": "",
-      "isBirthdayThisMonth": true,
-      "birthday": "08.21"
+      "birthdayMonth": 9
     },
     {
       "id": 12,
@@ -188,7 +189,8 @@
       "status": "work",
       "statusText": "근무중",
       "todaySchedule": "",
-      "location": ""
+      "location": "",
+      "birthdayMonth": 9
     },
     {
       "id": 14,
@@ -202,7 +204,8 @@
       "status": "work",
       "statusText": "근무중",
       "todaySchedule": "",
-      "location": ""
+      "location": "",
+      "birthdayMonth": 9
     },
     {
       "id": 15,
@@ -286,7 +289,8 @@
       "status": "work",
       "statusText": "근무중",
       "todaySchedule": "",
-      "location": ""
+      "location": "",
+      "birthdayMonth": 9
     },
     {
       "id": 21,

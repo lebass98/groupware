@@ -1074,9 +1074,24 @@ const PCApp = {
       `;
     }
 
-    // 2. Birthday Widget
+    // 2. Birthday Widget (이달의 생일자 · 실제 현재 날짜 기준 동적 산출)
+    //    겸직 임직원은 직책별로 각각 표기하되 인원수는 1명으로 집계한다.
     const birthWrap = document.getElementById('pc-widget-birthday');
     if (birthWrap) {
+      const birthdays = window.WncBirthday
+        ? window.WncBirthday.getMonthlyList()
+        : { month: new Date().getMonth() + 1, entries: [], headcount: 0 };
+
+      const birthdayRows = birthdays.entries.map((emp) => `
+            <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl">
+              <img src="${emp.avatar}" class="w-11 h-11 rounded-full object-cover border border-outline" />
+              <div>
+                <p class="font-bold text-on-surface text-sm">${emp.name} ${emp.role} (${emp.dept})</p>
+                <p class="text-xs text-on-surface-variant font-medium mt-0.5">축하메시지 전송</p>
+              </div>
+            </div>
+      `).join('');
+
       birthWrap.innerHTML = `
         <div class="pc-bento-card">
           <div class="pc-card-header">
@@ -1084,16 +1099,12 @@ const PCApp = {
               <svg class="w-5 h-5 text-tertiary shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 6c1.11 0 2-.9 2-2 0-.38-.1-.73-.29-1.03L12 0l-1.71 2.97c-.19.3-.29.65-.29 1.03 0 1.1.9 2 2 2zm4.6 9.99l-1.07-1.07-1.08 1.07c-1.3 1.3-3.58 1.3-4.89 0l-1.07-1.07-1.09 1.07C6.75 16.64 5.88 17 4.96 17c-.73 0-1.4-.23-1.96-.64V21c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-4.64c-.56.41-1.23.64-1.96.64-.92 0-1.79-.36-2.44-1.01zM18 9h-5V7h-2v2H6c-1.66 0-3 1.34-3 3v1.54c0 1.08.88 1.96 1.96 1.96.52 0 1.02-.2 1.38-.57l2.14-2.13 2.13 2.13c.74.74 2.03.74 2.77 0l2.14-2.13 2.13 2.13c.37.37.86.57 1.39.57 1.08 0 1.96-.88 1.96-1.96V12c0-1.66-1.34-3-3-3z"/>
               </svg>
-              8월 생일자 🎂
+              ${birthdays.month}월 생일자 🎂
             </span>
-            <span class="text-xs font-bold text-primary">1명</span>
+            <span class="text-xs font-bold text-primary">${birthdays.headcount}명</span>
           </div>
-          <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl">
-            <img src="./profile.png" class="w-11 h-11 rounded-full object-cover border border-outline" />
-            <div>
-              <p class="font-bold text-on-surface text-sm">이재광 팀장 (퍼블리싱팀)</p>
-              <p class="text-xs text-on-surface-variant font-medium mt-0.5">08월 11일 · 축하메시지 전송</p>
-            </div>
+          <div class="space-y-2">
+            ${birthdayRows || `<div class="p-3 text-xs text-on-surface-variant font-medium">이달의 생일자가 없습니다.</div>`}
           </div>
         </div>
       `;
