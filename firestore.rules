@@ -1,0 +1,89 @@
+rules_version = '2';
+
+/**
+ * WnC 그룹웨어 Firestore 보안 규칙
+ *
+ * 이 앱은 GitHub Pages로 배포되는 정적 사이트라 서버 검증 계층이 없습니다.
+ * 따라서 이 규칙 파일이 데이터베이스를 지키는 유일한 방어선입니다.
+ * 임직원 연락처 등 개인정보가 포함되어 있으므로 비로그인 공개 읽기를 절대 허용하지 않습니다.
+ *
+ * 콘솔 적용 경로: Firebase 콘솔 > Firestore Database > 규칙 탭에 붙여넣고 게시
+ */
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // 임직원 판별: members 컬렉션에 본인 이메일 문서가 등록된 계정만 데이터에 접근할 수 있습니다.
+    // 이메일/비밀번호 가입이 열려 있으면 외부인이 임의로 계정을 만들 수 있으므로,
+    // '로그인 여부'만으로는 접근을 허용하지 않고 사전 등록된 임직원인지까지 확인합니다.
+    // members 문서는 firebase/seed.html 시딩 시 주소록 기준으로 자동 생성됩니다.
+    function isMember() {
+      return signedIn()
+        && request.auth.token.email != null
+        && exists(/databases/$(database)/documents/members/$(request.auth.token.email));
+    }
+
+    // 관리자 판별: admins 컬렉션에 본인 UID 문서가 존재하는 계정만 마스터 데이터를 쓸 수 있습니다.
+    // 콘솔에서 admins/{UID} 문서를 직접 생성하여 지정합니다.
+    function isAdmin() {
+      return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // 개인 상태 문서(근태, 할일, 연차, 결재, 경비 등 기기 간 동기화 대상)
+    // 본인 것만 읽고 쓸 수 있습니다.
+    match /users/{uid} {
+      allow read, write: if isMember() && request.auth.uid == uid;
+    }
+
+    // 관리자 지정 문서는 조회만 가능하고 클라이언트에서 수정할 수 없습니다.
+    match /admins/{uid} {
+      allow read: if isMember();
+      allow write: if false;
+    }
+
+    // 임직원 등록 명부. 클라이언트에서 수정할 수 없으며 관리자만 시딩으로 갱신합니다.
+    // 규칙 내부의 exists() 조회는 규칙 검사를 거치지 않으므로 순환 참조가 발생하지 않습니다.
+    match /members/{email} {
+      allow read: if isMember();
+      allow write: if isAdmin();
+    }
+
+    // 전사 마스터 데이터: 로그인한 임직원은 읽기만, 변경은 관리자(시딩)만 가능합니다.
+    // 아래 목록은 data/firebase-seeder.js의 SPEC 표와 1:1로 대응합니다.
+    // 시더에 컬렉션을 추가하면 이 목록에도 반드시 함께 추가해야 합니다.
+    // (규칙에 없는 경로는 맨 아래 기본 차단에 걸려 시딩이 실패합니다.)
+
+    // 임직원 및 조직
+    match /employees/{docId}           { allow read: if isMember(); allow write: if isAdmin(); }
+
+    // 공용 콘텐츠
+    match /notices/{docId}             { allow read: if isMember(); allow write: if isAdmin(); }
+    match /todos/{docId}               { allow read: if isMember(); allow write: if isAdmin(); }
+    match /trashed_todos/{docId}       { allow read: if isMember(); allow write: if isAdmin(); }
+    match /projects/{docId}            { allow read: if isMember(); allow write: if isAdmin(); }
+    match /notifications/{docId}       { allow read: if isMember(); allow write: if isAdmin(); }
+
+    // 업무 보고 3종
+    match /work_reports/{docId}        { allow read: if isMember(); allow write: if isAdmin(); }
+    match /daily_work_reports/{docId}  { allow read: if isMember(); allow write: if isAdmin(); }
+    match /team_work_reports/{docId}   { allow read: if isMember(); allow write: if isAdmin(); }
+
+    // 일정 및 달력(공휴일·절기)
+    match /schedules/{docId}           { allow read: if isMember(); allow write: if isAdmin(); }
+    match /calendar/{docId}            { allow read: if isMember(); allow write: if isAdmin(); }
+
+    // 근태 / 재무 / 기타 메타
+    match /attendance/{docId}          { allow read: if isMember(); allow write: if isAdmin(); }
+    match /attendance_logs/{docId}     { allow read: if isMember(); allow write: if isAdmin(); }
+    match /finance/{docId}             { allow read: if isMember(); allow write: if isAdmin(); }
+    match /meta/{docId}                { allow read: if isMember(); allow write: if isAdmin(); }
+
+    // 위에서 명시하지 않은 모든 경로는 기본 차단합니다.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "officeLocation": {
+    "name": "서울 금천구 벚꽃로 298",
+    "address": "서울특별시 금천구 벚꽃로 298 (가산동)",
+    "lat": 37.48120,
+    "lng": 126.88370,
+    "allowedRadiusMeters": 500
+  },
+  "logs": [
+    {
+      "id": 1,
+      "monthStr": "10월",
+      "dayNum": "24",
+      "dayName": "목요일",
+      "statusText": "출근 • 8시간 12분",
+      "statusType": "normal",
+      "checkInTimeStr": "오전 08:54",
+      "checkOutTimeStr": "오후 05:06",
+      "durationSec": 29520
+    },
+    {
+      "id": 2,
+      "monthStr": "10월",
+      "dayNum": "23",
+      "dayName": "수요일",
+      "statusText": "출근 • 7시간 45분",
+      "statusType": "normal",
+      "checkInTimeStr": "오전 09:15",
+      "checkOutTimeStr": "오후 05:00",
+      "durationSec": 27900
+    },
+    {
+      "id": 3,
+      "monthStr": "10월",
+      "dayNum": "22",
+      "dayName": "화요일",
+      "statusText": "재택 • 8시간 00분",
+      "statusType": "remote",
+      "checkInTimeStr": "오전 09:00",
+      "checkOutTimeStr": "오후 05:00",
+      "durationSec": 28800
+    },
+    {
+      "id": 4,
+      "monthStr": "10월",
+      "dayNum": "21",
+      "dayName": "월요일",
+      "statusText": "출근 • 9시간 02분",
+      "statusType": "normal",
+      "checkInTimeStr": "오전 08:48",
+      "checkOutTimeStr": "오후 05:50",
+      "durationSec": 32520
+    },
+    {
+      "id": 5,
+      "monthStr": "10월",
+      "dayNum": "18",
+      "dayName": "금요일",
+      "statusText": "연차 • 휴가",
+      "statusType": "remote",
+      "checkInTimeStr": "-",
+      "checkOutTimeStr": "-",
+      "durationSec": 28800
+    }
+  ]
+}

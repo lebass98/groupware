@@ -1,0 +1,22 @@
+{
+  "name": "wordncode-groupware",
+  "version": "1.0.0",
+  "description": "WnC Groupware Web & Mobile Application with Live Reload Dev Server",
+  "main": "dev-server.js",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "start": "node dev-server.js",
+    "serve": "node dev-server.js",
+    "build:seed": "node data/build-seed.js",
+    "check:seed": "node data/build-seed.js --check",
+    "verify:seed": "node data/verify-seed.js",
+    "check:firebase": "node data/check-firebase.js"
+  },
+  "keywords": [
+    "groupware",
+    "wordncode",
+    "live-reload"
+  ],
+  "author": "WnC",
+  "license": "ISC"
+}
