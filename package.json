@@ -9,7 +9,8 @@
     "serve": "node dev-server.js",
     "build:seed": "node data/build-seed.js",
     "check:seed": "node data/build-seed.js --check",
-    "verify:seed": "node data/verify-seed.js"
+    "verify:seed": "node data/verify-seed.js",
+    "check:firebase": "node data/check-firebase.js"
   },
   "keywords": [
     "groupware",
