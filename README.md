@@ -143,11 +143,14 @@ Pool/
      브라우저에서 `http://localhost:8089` 접속
    - **VS Code 사용 시**:
      `index.html` 우클릭 후 `Live Server로 열기` 클릭
-   - **실시간 새로고침(라이브 리로드) 사용 시**:
-     ```bash
-     node dev-server.js
-     ```
-     의존성 설치 없이 동작하며, CSS 저장 시 새로고침 없이 스타일만 교체하고 HTML/JS 저장 시 자동 새로고침합니다.
+   - **원클릭 통합 개발 서버 실행 (웹 + Expo 모바일 앱 동시 실행)**:
+     - **macOS / Linux**: `./start.sh` 실행 또는 Finder에서 `start-all.command` 더블 클릭
+     - **Windows**: `start.bat` 더블 클릭
+     - 웹 브라우저(`http://localhost:8089/pc.html`) 자동 오픈 및 Expo 모바일 앱 번들러(포트 8081)가 한 번에 실행됩니다.
+   - **개별 실행 및 종료 명령어**:
+     - 웹 전용 개발 서버: `npm run dev` (또는 `node dev-server.js --open`)
+     - Expo 모바일 앱: `npm run expo` (또는 `cd react-native-app && npx expo start`)
+     - 개발 서버 일괄 종료: `./stop.sh` (macOS/Linux) 또는 `stop.bat` (Windows)
 
 ---
 
@@ -543,6 +546,7 @@ Pool/
 
 ### 2026-09-07
 - **전 디바이스 9월 캘린더 전사 일정표 최신 데이터 전수 업데이트 및 동기화**: 9월 1일~28일 전사 임직원 외근·연차·반차·생일휴가·공가 일정을 최신 달력 기준으로 전수 반영하고, mockData.js, legacy schedules.json, firebase-seed.json 및 캐시 버스터를 100% 일괄 동기화 완료.
+- **OS별 원클릭 개발 서버 통합 실행 배치 스크립트(start.sh·start.bat) 구축**: macOS/Linux용(start.sh, 더블클릭용 start-all.command, stop.sh) 및 Windows용(start.bat, stop.bat)을 신설하여 웹 라이브 리로드 서버(브라우저 자동 열기)와 React Native Expo 앱 서버를 한 번에 자동 실행하고 포트 정리 및 프로세스 안전 종료 지원 완료.
 
 
 
