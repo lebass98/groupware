@@ -2571,6 +2571,11 @@ const PCApp = {
       const dayOfWeek = (firstDay + d - 1) % 7;
       const isSunday = (dayOfWeek === 0);
       const isSaturday = (dayOfWeek === 6);
+
+      const daySchedules = this.getSchedulesForDay(year, month, d) || [];
+      const topScheds = daySchedules.slice(0, 3);
+      const extraCount = daySchedules.length - topScheds.length;
+
       let dateNumClass = 'text-on-surface';
       if (isSunday) dateNumClass = 'text-red-500 font-bold';
       else if (isSaturday) dateNumClass = 'text-blue-500 font-bold';
