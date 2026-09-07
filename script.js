@@ -2313,50 +2313,11 @@ const App = {
           </div>
 
           <div class="space-y-2.5">
-            ${selSchedules.length > 0 ? selSchedules.map(s => {
-      const isHoliday = (
-        s.badge === '공휴일' ||
-        s.badge === '기념일' ||
-        s.badge === '절기' ||
-        s.title.includes('공휴일') ||
-        s.title.includes('기념일') ||
-        s.title.includes('대체공휴일') ||
-        s.title.includes('절기') ||
-        s.author === '공휴일' ||
-        s.author === '기념일' ||
-        s.author === '24절기' ||
-        s.author === '대한민국 공휴일' ||
-        s.author === '회사공지' ||
-        s.author === '국경일/기념일'
-      );
-      const colorInfo = this.getCategoryColorStyle(s.badge || s.title);
-      const authorText = isHoliday ? '' : `<span class="font-bold text-xs text-primary whitespace-nowrap leading-none flex items-center shrink-0">${s.author || '이재광 팀장'}</span>`;
-      const locationBadgeHtml = s.location ? `
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none bg-surface-container text-on-surface-variant border border-outline/30 whitespace-nowrap shrink-0">
-                  <svg class="w-3 h-3 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                  <span>${s.location}</span>
-                </span>
-              ` : '';
-
-      return `
-                <div class="flex items-center ${colorInfo.cardBgClass} p-3.5 rounded-2xl border border-outline-variant/20 hover:border-primary/50 transition-all gap-2.5 cursor-pointer group" onclick="App.switchTab('screen-calendar')" title="클릭하여 캘린더 전체 일정 보기">
-                  <div class="flex items-center gap-2 shrink-0">
-                    <div class="w-2.5 h-2.5 rounded-full ${colorInfo.dotClass} shrink-0"></div>
-                  </div>
-                  <div class="flex-1 text-left min-w-0 flex flex-col justify-center">
-                    <div class="flex items-center justify-between gap-2 mb-1 min-w-0">
-                      <div class="flex items-center gap-1.5 flex-wrap min-w-0">
-                        ${authorText}
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold leading-none shrink-0 ${colorInfo.badgeHtml.includes('class=\"') ? colorInfo.badgeHtml.match(/class=\"(.*?)\"/)[1] : ''}">${s.badge}</span>
-                        ${locationBadgeHtml}
-                      </div>
-                      <span class="text-[11px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
-                    </div>
-                    <div class="text-xs sm:text-sm text-on-surface font-bold leading-snug truncate group-hover:text-primary transition-colors">${this.formatScheduleCleanLabel(s)}</div>
-                  </div>
+            ${selSchedules.length > 0 ? selSchedules.map(s => `
+                <div class="cursor-pointer" onclick="App.switchTab('screen-calendar')" title="클릭하여 캘린더 전체 일정 보기">
+                  ${this.renderScheduleCardItem(s)}
                 </div>
-              `;
-    }).join('') : `
+              `).join('') : `
               <div class="p-5 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl">
                 <p class="font-bold text-xs text-on-surface">${selMonth}월 ${selDay}일에 등록된 일정이 없습니다.</p>
               </div>
@@ -3210,6 +3171,41 @@ const App = {
     }
   },
 
+  /**
+   * 일정의 카테고리 키를 판정한다. (근태일지 사이드 패널 분류 기준과 동일)
+   */
+  getScheduleCategoryKey(s) {
+    const titleStr = (s && s.title) || '';
+    const badgeStr = (s && s.badge) || '';
+    if (titleStr.includes('휴가') || titleStr.includes('연차') || badgeStr.includes('휴가') || badgeStr.includes('연차')) return '휴가';
+    if (titleStr.includes('외근') || titleStr.includes('출장') || titleStr.includes('미팅') || badgeStr.includes('외근')) return '외근';
+    if (titleStr.includes('반차') || titleStr.includes('반반차') || badgeStr.includes('반차')) return '반차';
+    if (titleStr.includes('회의') || titleStr.includes('보고') || badgeStr.includes('회의')) return '회의';
+    if (titleStr.includes('공휴일') || badgeStr.includes('공휴일')) return '공휴일';
+    if (titleStr.includes('절기') || badgeStr.includes('절기') || (s && s.author) === '24절기') return '절기';
+    if (titleStr.includes('기념일') || badgeStr.includes('기념일') || (s && s.author) === '기념일') return '기념일';
+    return '기타';
+  },
+
+  /**
+   * 카드에 작성자 이름이 이미 표시되므로, 제목 앞에 붙은 동일 이름을 제거하여
+   * '오은주 차장 · 오은주 반차'처럼 이름이 두 번 노출되는 것을 방지한다.
+   */
+  stripDuplicateAuthorName(title, author) {
+    let text = String(title || '').trim();
+    const fullName = String(author || '').trim();
+    if (!text || !fullName) return text;
+
+    const firstName = fullName.split(' ')[0];
+    for (const name of [fullName, firstName]) {
+      if (name && text.startsWith(name)) {
+        const rest = text.slice(name.length).replace(/^[\s·,\-]+/, '').trim();
+        if (rest) return rest;   // 이름만 남는 경우에는 원본을 유지한다.
+      }
+    }
+    return text;
+  },
+
   renderScheduleCardItem(s) {
     let avatarUrl = s.avatar;
     let deptName = '';
@@ -3275,7 +3271,7 @@ const App = {
             </div>
             <span class="text-[11px] text-on-surface-variant font-medium whitespace-nowrap shrink-0 leading-none ml-auto">${s.time}</span>
           </div>
-          <div class="text-sm text-on-surface font-bold font-headline leading-snug break-words">${s.title}</div>
+          <div class="text-sm text-on-surface font-bold font-headline leading-snug break-words">${this.stripDuplicateAuthorName(cleanTitle, s.author)}</div>
         </div>
       </div>
     `;
