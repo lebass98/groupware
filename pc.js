@@ -48,176 +48,10 @@ const PCApp = {
     isSidebarExpanded: false,
     notifications: (window.MockData && window.MockData.notifications) ? JSON.parse(JSON.stringify(window.MockData.notifications)) : [],
     notificationFilter: 'all',
-    todos: [
-      {
-        id: 1,
-        title: 'Q3 Performance Review UI Updates',
-        project: '그룹웨어 고도화',
-        status: 'in_progress',
-        priority: 'high',
-        dueDate: '오늘, 17:00',
-        assignees: [
-          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '팀장' },
-          { name: '명희진', avatar: './resource/image/profile_gray_20240502__.png', dept: '디자인팀', role: '주임' }
-        ],
-        isOverdue: false,
-        isMine: true,
-        notes: '3분기 평가 UI 디자인 시스템 반응형 레이아웃 반영 및 웹접근성 마크업 최적화',
-        hasAttachment: true
-      },
-      {
-        id: 2,
-        title: '모바일 웹 접근성 품질 인증 마크업 검수',
-        project: '그룹웨어 고도화',
-        status: 'todo',
-        priority: 'medium',
-        dueDate: '2026-08-28',
-        assignees: [
-          { name: '손석호', avatar: './resource/image/profile_pub.png', dept: '퍼블리싱팀', role: '주임' }
-        ],
-        isOverdue: false,
-        isMine: true,
-        notes: '스크린리더 ARIA 라벨링 및 키보드 초점 이동 순서 전수 검증',
-        hasAttachment: false
-      },
-      {
-        id: 3,
-        title: 'PC Bento 대시보드 3열 레이아웃 구축',
-        project: '그룹웨어 고도화',
-        status: 'done',
-        priority: 'high',
-        dueDate: '2026-08-24',
-        assignees: [
-          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '팀장' }
-        ],
-        isOverdue: false,
-        isMine: true,
-        notes: 'Figma 와이드 Bento Grid 및 Glassmorphism 디자인 시스템 완성',
-        hasAttachment: true
-      },
-      {
-        id: 4,
-        title: '국문 서브페이지 32종 반응형 퍼블리싱',
-        project: 'FCES 대표 웹사이트 개편',
-        status: 'todo',
-        priority: 'high',
-        dueDate: '2026-08-30',
-        assignees: [
-          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '팀장' },
-          { name: '손석호', avatar: './resource/image/profile_pub.png', dept: '퍼블리싱팀', role: '주임' }
-        ],
-        isOverdue: false,
-        isMine: true,
-        notes: '반응형 미디어쿼리 및 모바일 전용 UI 템플릿 제작',
-        hasAttachment: true
-      },
-      {
-        id: 5,
-        title: '헤더 GNB 메가메뉴 키보드 접근성 연동',
-        project: 'FCES 대표 웹사이트 개편',
-        status: 'in_progress',
-        priority: 'medium',
-        dueDate: '2026-08-27',
-        assignees: [
-          { name: '손석호', avatar: './resource/image/profile_pub.png', dept: '퍼블리싱팀', role: '주임' }
-        ],
-        isOverdue: false,
-        isMine: false,
-        notes: 'Tab 키 네비게이션 및 ESC 닫기 키이벤트 처리',
-        hasAttachment: false
-      },
-      {
-        id: 6,
-        title: '메인 비주얼 슬라이더 모션 및 테마 적용',
-        project: 'FCES 대표 웹사이트 개편',
-        status: 'done',
-        priority: 'medium',
-        dueDate: '2026-08-20',
-        assignees: [
-          { name: '명희진', avatar: './resource/image/profile_gray_20240502__.png', dept: '디자인팀', role: '주임' }
-        ],
-        isOverdue: false,
-        isMine: false,
-        notes: '스와이퍼 슬라이더 인터랙션 및 오토플레이 제어 버튼 구현',
-        hasAttachment: true
-      },
-      {
-        id: 7,
-        title: 'API Integration for Attendance Log',
-        project: '근태관리 시스템',
-        status: 'todo',
-        priority: 'medium',
-        dueDate: '내일, 12:00',
-        assignees: [
-          { name: '최우석', avatar: './resource/image/profile_mobile.png', dept: '개발팀', role: '과장' },
-          { name: '안영재', avatar: './resource/image/profile_pro.png', dept: '개발팀', role: '대리' }
-        ],
-        isOverdue: false,
-        isMine: false,
-        notes: '근태 기록 1초 단위 타이머 백엔드 동기화 API 연동',
-        hasAttachment: false
-      },
-      {
-        id: 8,
-        title: '외근/출장 전자결재 승인 프로세스 연동',
-        project: '근태관리 시스템',
-        status: 'in_progress',
-        priority: 'high',
-        dueDate: '2026-08-26',
-        assignees: [
-          { name: '안영재', avatar: './resource/image/profile_pro.png', dept: '개발팀', role: '대리' }
-        ],
-        isOverdue: false,
-        isMine: false,
-        notes: '결재선 지정 및 승인 완료 시 캘린더 자동 등록 로직 구현',
-        hasAttachment: true
-      },
-      {
-        id: 9,
-        title: '1초 단위 실시간 디지털 시계 위젯 구현',
-        project: '근태관리 시스템',
-        status: 'done',
-        priority: 'low',
-        dueDate: '2026-08-22',
-        assignees: [
-          { name: '최우석', avatar: './resource/image/profile_mobile.png', dept: '개발팀', role: '과장' }
-        ],
-        isOverdue: false,
-        isMine: false,
-        notes: '출근/퇴근 실시간 타임스탬프 기록 엔진 개발',
-        hasAttachment: false
-      },
-      {
-        id: 10,
-        title: 'Update Weekly Status Report Template',
-        project: '경영지원 / 재무',
-        status: 'done',
-        priority: 'low',
-        dueDate: '2026-08-12, 18:00',
-        assignees: [
-          { name: '이재광', avatar: 'profile.png', dept: '퍼블리싱팀', role: '팀장' }
-        ],
-        isOverdue: false,
-        isMine: true,
-        notes: '주간 보고서 신규 템플릿 마크다운 양식 가이드 전달',
-        hasAttachment: true
-      },
-      {
-        id: 11,
-        title: '8월 법인카드 지출결의서 정산 마감',
-        project: '경영지원 / 재무',
-        status: 'todo',
-        priority: 'medium',
-        dueDate: '2026-08-31',
-        assignees: [
-          { name: '오은주', avatar: './resource/image/profile_sky.png', dept: '경영지원팀', role: '차장' }
-        ],
-        isOverdue: false,
-        isMine: false,
-        notes: '영수증 증빙 확인 및 부서별 예산 집행 승인 처리',
-        hasAttachment: true
-      }
-    ],
+    todos: (window.MockData && window.MockData.todos) ? JSON.parse(JSON.stringify(window.MockData.todos)) : [],
+    trashedTodos: (window.MockData && window.MockData.trashedTodos) ? JSON.parse(JSON.stringify(window.MockData.trashedTodos)) : [],
+    logs: (window.MockData && window.MockData.attendance && window.MockData.attendance.logs) ? JSON.parse(JSON.stringify(window.MockData.attendance.logs)) : [],
+    userSchedules: {},
     notices: (window.MockData && window.MockData.notices) ? JSON.parse(JSON.stringify(window.MockData.notices)) : [],
     members: (window.MockData && window.MockData.employees) ? JSON.parse(JSON.stringify(window.MockData.employees)) : [],
     projects: (window.MockData && window.MockData.projects) ? JSON.parse(JSON.stringify(window.MockData.projects)) : [],
@@ -354,6 +188,9 @@ const PCApp = {
         if (parsed.logs && Array.isArray(parsed.logs) && parsed.logs.length > 0) {
           this.state.logs = parsed.logs;
         }
+        if (parsed.userSchedules && typeof parsed.userSchedules === 'object') {
+          this.state.userSchedules = parsed.userSchedules;
+        }
         if (parsed.todos && Array.isArray(parsed.todos) && parsed.todos.length > 0) {
           this.state.todos = parsed.todos;
         }
@@ -426,6 +263,7 @@ const PCApp = {
       }
 
       if (this.state.todos) currentState.todos = this.state.todos;
+      if (this.state.userSchedules) currentState.userSchedules = this.state.userSchedules;
       if (this.state.logs) currentState.logs = this.state.logs;
       if (this.state.recentProjects) currentState.recentProjects = this.state.recentProjects;
       if (this.state.finance) currentState.finance = this.state.finance;
@@ -2361,13 +2199,33 @@ const PCApp = {
     const tbody = document.getElementById('pc-checkin-tbody');
     if (!tbody) return;
 
-    const logs = [
-      { date: '2026-08-24 (월)', inTime: this.state.checkInTime || '08:55', outTime: this.state.checkOutTime || '18:00 (예정)', duration: '8시간 5분', status: this.state.isCheckedIn ? '근무중' : '정상퇴근', statusType: 'work' },
-      { date: '2026-08-21 (금)', inTime: '08:50', outTime: '18:05', duration: '8시간 15분', status: '정상근무', statusType: 'normal' },
-      { date: '2026-08-20 (목)', inTime: '08:52', outTime: '18:10', duration: '8시간 18분', status: '정상근무', statusType: 'normal' },
-      { date: '2026-08-19 (수)', inTime: '-', outTime: '-', duration: '8시간 00분', status: '연차 휴가', statusType: 'leave' },
-      { date: '2026-08-18 (화)', inTime: '08:48', outTime: '18:00', duration: '8시간 12분', status: '정상근무', statusType: 'normal' }
-    ];
+    // 공용 근태 로그(state.logs)를 그대로 사용한다.
+    // 화면 안에 별도 배열을 하드코딩하면 모바일과 데이터가 갈라지므로 금지한다.
+    const logs = (this.state.logs || []).map(l => {
+      const dayShort = String(l.dayName || '').replace('요일', '');
+      const secs = Number(l.durationSec) || 0;
+      const fallbackDuration = secs ? `${Math.floor(secs / 3600)}시간 ${Math.floor((secs % 3600) / 60)}분` : '-';
+      const statusText = String(l.statusText || '');
+      const hasSeparator = statusText.includes('•');
+
+      return {
+        date: `${l.monthStr || ''} ${l.dayNum || ''}일${dayShort ? ` (${dayShort})` : ''}`.trim(),
+        inTime: l.checkInTimeStr || '-',
+        outTime: l.checkOutTimeStr || '-',
+        duration: hasSeparator ? statusText.split('•').slice(1).join('•').trim() : fallbackDuration,
+        status: hasSeparator ? statusText.split('•')[0].trim() : (statusText || '기록'),
+        statusType: l.statusType || 'normal'
+      };
+    });
+
+    if (logs.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="p-8 text-center text-on-surface-variant font-medium">기록된 출퇴근 내역이 없습니다.</td>
+        </tr>
+      `;
+      return;
+    }
 
     tbody.innerHTML = logs.map(l => `
       <tr class="hover:bg-surface-container-low transition-all">
@@ -3140,6 +2998,33 @@ const PCApp = {
     return null;
   },
 
+  /** 'YYYY-MM-DD' 또는 'YYYY-M-D'를 일정 저장소 키 형식(YYYY-M-D)으로 정규화한다. */
+  normalizeScheduleKey(dateStr) {
+    const parts = String(dateStr || '').split('-').map(n => parseInt(n, 10));
+    if (parts.length < 3 || parts.some(isNaN)) return String(dateStr || '');
+    return `${parts[0]}-${parts[1]}-${parts[2]}`;
+  },
+
+  /**
+   * 사용자가 신청/등록한 일정을 공용 상태에 저장한다.
+   * state에 넣어야 saveState() -> LocalStorage -> Firebase 동기화 경로를 그대로 타고
+   * 모든 디바이스에 동일하게 반영된다. (메모리 전용 저장 금지)
+   */
+  addUserSchedule(dateStr, item) {
+    const key = this.normalizeScheduleKey(dateStr);
+    if (!key || !item) return;
+    if (!this.state.userSchedules) this.state.userSchedules = {};
+    if (!Array.isArray(this.state.userSchedules[key])) this.state.userSchedules[key] = [];
+    this.state.userSchedules[key].unshift(item);
+    this.saveState();
+  },
+
+  /** 해당 일자에 사용자가 등록한 일정 목록을 반환한다. */
+  getUserSchedules(year, month, day) {
+    const store = (this.state && this.state.userSchedules) || {};
+    return store[`${year}-${month}-${day}`] || [];
+  },
+
   getSchedulesForDay(year, month, day) {
     const key = `${year}-${month}-${day}`;
     const altKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -3166,7 +3051,7 @@ const PCApp = {
       }
     });
 
-    const userAdded = (window.App && window.App.mockDynamicSchedules && window.App.mockDynamicSchedules[key]) || [];
+    const userAdded = this.getUserSchedules(year, month, day);
     combined = [...combined, ...userAdded];
     return combined;
   },
@@ -4377,18 +4262,15 @@ const PCApp = {
       toastMessage = `[신청 완료] ${startDate} 반차(오후) 0.5일 신청서가 정상 접수되었습니다.`;
     }
 
-    // Register to MockData schedules
-    const schedulesMap = (window.MockData && window.MockData.schedules) || {};
-    const key = startDate.replace(/-0([1-9])/g, '-$1');
-    if (!schedulesMap[key]) schedulesMap[key] = [];
-
-    schedulesMap[key].push({
+    // 공용 상태에 저장 (LocalStorage 및 Firebase 동기화 경로를 그대로 사용)
+    const leaveUser = this.state.user || {};
+    this.addUserSchedule(startDate, {
       title: scheduleTitle,
       time: timeStr,
       type: 'warning',
       badge: leaveType,
-      author: '이재광 팀장',
-      avatar: 'profile.png'
+      author: `${leaveUser.name || '이재광'} ${leaveUser.role || '팀장'}`.trim(),
+      avatar: leaveUser.avatar || 'profile.png'
     });
 
     this.showToast(toastMessage);
@@ -4408,18 +4290,15 @@ const PCApp = {
       return;
     }
 
-    // Register to MockData schedules
-    const schedulesMap = (window.MockData && window.MockData.schedules) || {};
-    const key = date.replace(/-0([1-9])/g, '-$1');
-    if (!schedulesMap[key]) schedulesMap[key] = [];
-
-    schedulesMap[key].push({
+    // 공용 상태에 저장 (LocalStorage 및 Firebase 동기화 경로를 그대로 사용)
+    const user = this.state.user || {};
+    this.addUserSchedule(date, {
       title: `외근 [${place}] ${title}`,
       time: time,
       type: 'primary',
       badge: '외근',
-      author: '이재광 팀장',
-      avatar: './profile.png'
+      author: `${user.name || '이재광'} ${user.role || '팀장'}`.trim(),
+      avatar: user.avatar || 'profile.png'
     });
 
     this.showToast(`[신청 완료] ${date} ${place} 외근 신청서가 정상 접수되었습니다.`);

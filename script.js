@@ -125,6 +125,7 @@ const App = {
     selectedTrashIds: [],
     trashedTodos: (window.MockData && window.MockData.trashedTodos) || [],
     todos: (window.MockData && window.MockData.todos) || [],
+    userSchedules: {},
     finance: (window.MockData && window.MockData.finance) || { activeTab: 'expense', cardFilter: 'corp', reportFilter: 'all', expenses: { corp: [], personal: [] } },
     commuteTab: 'checkin',
     isCheckedIn: false,
@@ -437,6 +438,9 @@ const App = {
         if (parsed.logs && parsed.logs.length) {
           this.state.logs = parsed.logs;
         }
+        if (parsed.userSchedules && typeof parsed.userSchedules === 'object') {
+          this.state.userSchedules = parsed.userSchedules;
+        }
         if (parsed.todos && parsed.todos.length) {
           this.state.todos = parsed.todos;
         }
@@ -511,6 +515,7 @@ const App = {
         dockMenus: this.state.dockMenus,
         logs: this.state.logs,
         todos: this.state.todos,
+        userSchedules: this.state.userSchedules,
         recentProjects: this.state.recentProjects,
         trashedTodos: this.state.trashedTodos,
         activeTab: this.state.activeTab,
@@ -2927,21 +2932,14 @@ const App = {
 
     const [year, month, day] = startDate.split('-').map(Number);
 
-    if (!this.mockDynamicSchedules) {
-      this.mockDynamicSchedules = {};
-    }
-    const key = `${year}-${month}-${day}`;
-    if (!this.mockDynamicSchedules[key]) {
-      this.mockDynamicSchedules[key] = [];
-    }
-
-    this.mockDynamicSchedules[key].push({
+    const user = this.state.user || {};
+    this.addUserSchedule(`${year}-${month}-${day}`, {
       title: title,
       time: '종일',
       type: typeEl?.value || 'primary',
       badge: badge,
-      author: '이재광',
-      avatar: 'profile.png'
+      author: `${user.name || '이재광'} ${user.role || '팀장'}`.trim(),
+      avatar: user.avatar || 'profile.png'
     });
 
     this.showToast(`✨ 일정 '${title}' 등록이 완료되었습니다!`);
@@ -3026,6 +3024,33 @@ const App = {
     return null;
   },
 
+  /** 'YYYY-MM-DD' 또는 'YYYY-M-D'를 일정 저장소 키 형식(YYYY-M-D)으로 정규화한다. */
+  normalizeScheduleKey(dateStr) {
+    const parts = String(dateStr || '').split('-').map(n => parseInt(n, 10));
+    if (parts.length < 3 || parts.some(isNaN)) return String(dateStr || '');
+    return `${parts[0]}-${parts[1]}-${parts[2]}`;
+  },
+
+  /**
+   * 사용자가 신청/등록한 일정을 공용 상태에 저장한다.
+   * state에 넣어야 saveState() -> LocalStorage -> Firebase 동기화 경로를 그대로 타고
+   * 모든 디바이스에 동일하게 반영된다. (메모리 전용 저장 금지)
+   */
+  addUserSchedule(dateStr, item) {
+    const key = this.normalizeScheduleKey(dateStr);
+    if (!key || !item) return;
+    if (!this.state.userSchedules) this.state.userSchedules = {};
+    if (!Array.isArray(this.state.userSchedules[key])) this.state.userSchedules[key] = [];
+    this.state.userSchedules[key].unshift(item);
+    this.saveState();
+  },
+
+  /** 해당 일자에 사용자가 등록한 일정 목록을 반환한다. */
+  getUserSchedules(year, month, day) {
+    const store = (this.state && this.state.userSchedules) || {};
+    return store[`${year}-${month}-${day}`] || [];
+  },
+
   getMockSchedules(year, month, day) {
     const key = `${year}-${month}-${day}`;
     const defaultData = (window.MockData && window.MockData.schedules) || {};
@@ -3051,7 +3076,7 @@ const App = {
       }
     });
 
-    const userAdded = (this.mockDynamicSchedules && this.mockDynamicSchedules[key]) || [];
+    const userAdded = this.getUserSchedules(year, month, day);
     combined = [...combined, ...userAdded];
     if (combined.length > 0) {
       return combined.map(s => ({
@@ -4300,7 +4325,11 @@ const App = {
     const todayKey2 = `${curYear}-${String(curMonth).padStart(2, '0')}-${String(curDay).padStart(2, '0')}`;
 
     if (window.MockData && window.MockData.schedules) {
-      const todayList = window.MockData.schedules[todayKey1] || window.MockData.schedules[todayKey2] || [];
+      // 공용 조회 함수를 사용해야 사용자가 신청한 일정까지 함께 반영된다.
+      const todayList = this.getMockSchedules(curYear, curMonth, curDay)
+        || window.MockData.schedules[todayKey1]
+        || window.MockData.schedules[todayKey2]
+        || [];
       const match = todayList.find(s => {
         if (!s.author) return false;
         if (!s.author.includes(emp.name)) return false;
@@ -5192,13 +5221,8 @@ const App = {
       avatar: avatarUrl
     };
 
-    // 1. MockData.schedules 동기화
-    if (!window.MockData) window.MockData = {};
-    if (!window.MockData.schedules) window.MockData.schedules = {};
-    if (!window.MockData.schedules[schedDateKey]) {
-      window.MockData.schedules[schedDateKey] = [];
-    }
-    window.MockData.schedules[schedDateKey].unshift(newSchedItem);
+    // 1. 공용 상태에 저장 (LocalStorage 및 Firebase 동기화 경로를 그대로 사용)
+    this.addUserSchedule(schedDateKey, newSchedItem);
 
     // 2. 근태 로그 추가
     const targetDate = new Date(dateVal);

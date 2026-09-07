@@ -26,6 +26,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 0. 디바이스 간 데이터 일치 검증 (실패 시 배포 중단)
+      #    PC/모바일이 서로 다른 데이터를 보게 만드는 코드가 들어오면 여기서 걸러낸다.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 데이터 일치 검증
+        run: node data/verify-consistency.js
+
       # 1. Deploy to gh-pages branch (for Branch deployment setting)
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
