@@ -1719,7 +1719,7 @@ const PCApp = {
                   </div>
 
                   <h4 class="font-bold text-sm text-on-surface line-clamp-2 leading-snug ${isDone ? 'line-through opacity-50' : ''}">
-                    ${t.title}
+                    ${esc(t.title)}
                   </h4>
 
                   <div class="flex items-center justify-between text-xs text-on-surface-variant pt-2 border-t border-outline/50">
@@ -3537,7 +3537,7 @@ const PCApp = {
 
         <!-- Title -->
         <h2 class="text-2xl font-bold text-on-surface leading-snug mb-5 ${isDone ? 'line-through opacity-60' : ''}">
-          ${todo.title}
+          ${esc(todo.title)}
         </h2>
 
         <!-- Meta Grid Card -->
@@ -3575,11 +3575,11 @@ const PCApp = {
             첨부파일 (${todo.hasAttachment ? 1 : 0})
           </h4>
           ${todo.hasAttachment ? `
-            <div class="flex items-center justify-between p-3.5 bg-surface-container-low rounded-xl border border-outline hover:border-primary transition-all cursor-pointer group" onclick="PCApp.showToast('📥 [${todo.title}_관련자료.pdf] 첨부파일 다운로드가 시작되었습니다.')">
+            <div class="flex items-center justify-between p-3.5 bg-surface-container-low rounded-xl border border-outline hover:border-primary transition-all cursor-pointer group" onclick="PCApp.showToast('📥 [${escAttr(todo.title)}_관련자료.pdf] 첨부파일 다운로드가 시작되었습니다.')">
               <div class="flex items-center gap-3 min-w-0">
                 <svg class="w-6 h-6 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
                 <div class="truncate">
-                  <span class="text-sm font-bold text-on-surface block truncate group-hover:text-primary transition-colors">${todo.title}_기획문서.pdf</span>
+                  <span class="text-sm font-bold text-on-surface block truncate group-hover:text-primary transition-colors">${esc(todo.title)}_기획문서.pdf</span>
                   <span class="text-xs text-on-surface-variant font-medium">1.8 MB · 업무 기획자료</span>
                 </div>
               </div>
@@ -3674,10 +3674,10 @@ const PCApp = {
               <div class="flex items-start gap-3 mb-2.5">
                 <input type="checkbox" ${isDone ? 'checked' : ''} onclick="event.stopPropagation(); PCApp.toggleTodoStatus(${t.id});" class="w-5 h-5 accent-primary rounded cursor-pointer mt-0.5 shrink-0" />
                 <h4 class="font-bold text-base text-on-surface leading-snug group-hover:text-primary transition-colors break-words ${isDone ? 'line-through opacity-50' : ''}">
-                  ${t.title}
+                  ${esc(t.title)}
                 </h4>
               </div>
-              ${t.notes ? `<p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed mb-3 pl-8">${t.notes}</p>` : ''}
+              ${t.notes ? `<p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed mb-3 pl-8">${esc(t.notes)}</p>` : ''}
             </div>
 
             <div class="pt-3 border-t border-outline/50 flex items-center justify-between text-xs mt-2">
@@ -3697,10 +3697,10 @@ const PCApp = {
             <div class="flex items-center gap-3.5 flex-1 min-w-0 mr-4">
               <input type="checkbox" ${isDone ? 'checked' : ''} onclick="event.stopPropagation(); PCApp.toggleTodoStatus(${t.id});" class="w-5 h-5 accent-primary rounded cursor-pointer shrink-0" />
               <div class="min-w-0 flex-1">
-                <span class="text-base text-on-surface font-bold truncate block group-hover:text-primary transition-colors ${isDone ? 'line-through opacity-50' : ''}">${t.title}</span>
+                <span class="text-base text-on-surface font-bold truncate block group-hover:text-primary transition-colors ${isDone ? 'line-through opacity-50' : ''}">${esc(t.title)}</span>
                 <div class="flex items-center gap-2 mt-1 text-xs text-on-surface-variant">
                   <span>📅 ${t.dueDate || '오늘까지'}</span>
-                  ${t.notes ? `<span>·</span><span class="truncate max-w-xs">${t.notes}</span>` : ''}
+                  ${t.notes ? `<span>·</span><span class="truncate max-w-xs">${esc(t.notes)}</span>` : ''}
                 </div>
               </div>
             </div>
@@ -3872,7 +3872,7 @@ const PCApp = {
           const isDone = t.status === 'done' || t.completed;
           return `
             <div class="flex items-center justify-between text-xs py-1.5 border-b border-outline/40 last:border-none">
-              <span class="font-medium text-on-surface truncate ${isDone ? 'line-through opacity-50' : ''}">${t.title}</span>
+              <span class="font-medium text-on-surface truncate ${isDone ? 'line-through opacity-50' : ''}">${esc(t.title)}</span>
               <span class="text-[11px] text-on-surface-variant shrink-0 ml-2">${t.dueDate || ''}</span>
             </div>
           `;
@@ -4259,7 +4259,7 @@ const PCApp = {
     } else {
       if (timeContainer) timeContainer.classList.add('hidden');
       if (endInput) {
-        endInput.disabled = (typeVal === '오전 반차' || typeVal === '오후 반차' || typeVal === '생일휴가');
+        endInput.disabled = (typeVal === '반차(오전)' || typeVal === '반차(오후)' || typeVal === '생일휴가');
         if (endInput.disabled && startInput) {
           endInput.value = startInput.value;
         }
@@ -4293,13 +4293,13 @@ const PCApp = {
       return;
     }
 
-    if (selectedType === '오전 반차') {
+    if (selectedType === '반차(오전)') {
       countEl.innerHTML = `총 <strong class="text-primary">0.5일</strong> (오전 09:00 ~ 13:00)`;
       return;
     }
 
-    if (selectedType === '오후 반차') {
-      countEl.innerHTML = `총 <strong class="text-primary">0.5일</strong> (오후 14:00 ~ 18:00)`;
+    if (selectedType === '반차(오후)') {
+      countEl.innerHTML = `총 <strong class="text-primary">0.5일</strong> (오후 13:00 ~ 18:00)`;
       return;
     }
 
@@ -4366,14 +4366,14 @@ const PCApp = {
       scheduleTitle = `반반차 [${startTime}~${endTime}]`;
       timeStr = `${startTime} ~ ${endTime}`;
       toastMessage = `[신청 완료] ${startDate} 반반차 [${startTime}~${endTime}] (0.25일) 신청서가 정상 접수되었습니다.`;
-    } else if (leaveType === '오전 반차') {
-      scheduleTitle = `오전 반차 (${reason || '개인 사유'})`;
+    } else if (leaveType === '반차(오전)') {
+      scheduleTitle = `반차(오전) (${reason || '개인 사유'})`;
       timeStr = '09:00 ~ 13:00';
-      toastMessage = `[신청 완료] ${startDate} 오전 반차(0.5일) 신청서가 정상 접수되었습니다.`;
-    } else if (leaveType === '오후 반차') {
-      scheduleTitle = `오후 반차 (${reason || '개인 사유'})`;
-      timeStr = '14:00 ~ 18:00';
-      toastMessage = `[신청 완료] ${startDate} 오후 반차(0.5일) 신청서가 정상 접수되었습니다.`;
+      toastMessage = `[신청 완료] ${startDate} 반차(오전) 0.5일 신청서가 정상 접수되었습니다.`;
+    } else if (leaveType === '반차(오후)') {
+      scheduleTitle = `반차(오후) (${reason || '개인 사유'})`;
+      timeStr = '13:00 ~ 18:00';
+      toastMessage = `[신청 완료] ${startDate} 반차(오후) 0.5일 신청서가 정상 접수되었습니다.`;
     }
 
     // Register to MockData schedules

@@ -1819,7 +1819,7 @@ const App = {
                   </div>
 
                   <h4 class="font-headline text-sm font-bold text-on-surface line-clamp-2 leading-snug ${isDone ? 'line-through opacity-50' : ''}">
-                    ${todo.title}
+                    ${esc(todo.title)}
                   </h4>
 
                   <div class="flex items-center justify-between text-xs text-on-surface-variant pt-2 border-t border-outline-variant/15">
@@ -5509,7 +5509,7 @@ const App = {
                   <span class="material-symbols-outlined text-xl">${checkIcon}</span>
                 </button>
                 <div class="flex-1 min-w-0 flex items-center gap-2">
-                  <span class="font-headline text-sm font-semibold ${isDoneClass} truncate group-hover:text-primary transition-colors">${t.title}</span>
+                  <span class="font-headline text-sm font-semibold ${isDoneClass} truncate group-hover:text-primary transition-colors">${esc(t.title)}</span>
                 </div>
                 <div class="flex items-center gap-1.5 shrink-0">
                   ${statusBadge}
@@ -5635,8 +5635,8 @@ const App = {
               ${statusBadgeHtml}
               ${priorityBadgeHtml}
             </div>
-            <h3 class="font-headline font-semibold text-sm leading-snug group-hover:text-primary transition-colors ${isDoneClass}">${t.title}</h3>
-            ${t.notes ? `<p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">${t.notes}</p>` : ''}
+            <h3 class="font-headline font-semibold text-sm leading-snug group-hover:text-primary transition-colors ${isDoneClass}">${esc(t.title)}</h3>
+            ${t.notes ? `<p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">${esc(t.notes)}</p>` : ''}
             
             <div class="mt-auto flex items-center justify-between pt-3 border-t border-outline-variant/10">
               <div class="flex items-center gap-1.5 text-on-surface-variant text-[11px] font-medium">
@@ -5761,7 +5761,7 @@ const App = {
         const isDoneClass = isDone ? 'line-through opacity-60' : '';
         return `
           <div class="flex items-center justify-between text-xs py-1.5 border-b border-outline-variant/10 last:border-none">
-            <span class="font-medium text-on-surface truncate ${isDoneClass}">${t.title}</span>
+            <span class="font-medium text-on-surface truncate ${isDoneClass}">${esc(t.title)}</span>
             <span class="text-[10px] text-on-surface-variant shrink-0 ml-2">${t.dueDate || ''}</span>
           </div>
         `;
@@ -5967,10 +5967,10 @@ const App = {
               <input type="checkbox" ${isChecked} onchange="App.toggleTrashSelect(${t.id})" class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer"/>
             </label>
             <div class="flex-1 flex flex-col text-left">
-              <h3 class="font-body text-base font-bold text-on-surface line-through opacity-70 leading-tight">${t.title}</h3>
+              <h3 class="font-body text-base font-bold text-on-surface line-through opacity-70 leading-tight">${esc(t.title)}</h3>
               <div class="flex items-center gap-2 mt-1.5 flex-wrap">
                 <span class="text-xs text-on-surface-variant font-medium">삭제일: ${t.deletedAt || '방금 전'}</span>
-                ${t.project ? `<span class="text-[11px] text-outline font-medium"># ${t.project}</span>` : ''}
+                ${t.project ? `<span class="text-[11px] text-outline font-medium"># ${esc(t.project)}</span>` : ''}
               </div>
             </div>
           </div>
@@ -6108,10 +6108,10 @@ const App = {
         <div class="flex flex-wrap items-center gap-2">
           ${statusBadgeHtml}
           ${priorityBadgeHtml}
-          ${todo.project ? `<span class="text-on-surface-variant font-label text-xs ml-auto font-bold bg-surface-container-low px-3 py-1 rounded-full"># ${todo.project}</span>` : ''}
+          ${todo.project ? `<span class="text-on-surface-variant font-label text-xs ml-auto font-bold bg-surface-container-low px-3 py-1 rounded-full"># ${esc(todo.project)}</span>` : ''}
         </div>
         <h1 class="font-headline text-2xl sm:text-3xl font-extrabold text-on-surface leading-tight tracking-tight mt-1">
-          ${todo.title}
+          ${esc(todo.title)}
         </h1>
       </section>
 
@@ -6160,11 +6160,11 @@ const App = {
               </button>
             </div>
           `).join('') : (todo.hasAttachment ? `
-            <div class="flex items-center justify-between bg-surface-container hover:bg-surface-container-high transition-colors rounded-xl p-3.5 group cursor-pointer" onclick="App.showToast('📥 [${todo.title}_기획안.pdf] 첨부파일 다운로드가 시작되었습니다.')">
+            <div class="flex items-center justify-between bg-surface-container hover:bg-surface-container-high transition-colors rounded-xl p-3.5 group cursor-pointer" onclick="App.showToast('📥 [${escAttr(todo.title)}_기획안.pdf] 첨부파일 다운로드가 시작되었습니다.')">
               <div class="flex items-center gap-3 truncate">
                 <span class="material-symbols-outlined text-primary text-2xl">description</span>
                 <div class="flex flex-col truncate">
-                  <span class="font-body text-xs font-bold text-on-surface truncate">${todo.title}_관련자료.pdf</span>
+                  <span class="font-body text-xs font-bold text-on-surface truncate">${esc(todo.title)}_관련자료.pdf</span>
                   <span class="font-label text-[11px] text-on-surface-variant">2.4 MB • 업무 첨부문서</span>
                 </div>
               </div>

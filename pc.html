@@ -733,12 +733,12 @@
                       연차 (종일)
                     </label>
                     <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors">
-                      <input type="radio" name="pc_leave_type" value="오전 반차" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
-                      오전 반차
+                      <input type="radio" name="pc_leave_type" value="반차(오전)" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
+                      반차(오전)
                     </label>
                     <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors">
-                      <input type="radio" name="pc_leave_type" value="오후 반차" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
-                      오후 반차
+                      <input type="radio" name="pc_leave_type" value="반차(오후)" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
+                      반차(오후)
                     </label>
                     <label class="flex items-center gap-2 p-3 bg-surface-container-low border border-outline rounded-xl cursor-pointer font-bold text-on-surface hover:bg-surface-container transition-colors">
                       <input type="radio" name="pc_leave_type" value="반반차" onchange="PCApp.onLeaveTypeChange(this.value)" class="accent-primary" />
@@ -894,7 +894,8 @@
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Master Shared Data Layer -->
-  <script src="./data/svgIcons.js"></script>
+  <script src="./data/svgIcons.js?v=20260902_icons"></script>
+  <script src="./data/utils.js?v=20260902_escape"></script>
   <!-- Firebase 연동 (compat 빌드: 기존 전역 스크립트 구조와 동일한 로딩 타이밍 보장) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -903,6 +904,6 @@
   <script src="./firebase/init.js?v=20260901_account_isolation"></script>
   <script src="./data/mockData.js?v=20260907_sep_schedule"></script>
   <!-- PC Core Controller -->
-  <script src="./pc.js?v=20260901_sat_style"></script>
+  <script src="./pc.js?v=20260902_fixes"></script>
 </body>
 </html>
