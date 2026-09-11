@@ -18,9 +18,37 @@ const PCApp = {
       avatar: './profile.png',
       location: '서울 금천구 벚꽃로 298'
     },
-    isCheckedIn: true,
-    checkInTime: '08:55',
-    checkOutTime: '--:--',
+    isCheckedIn: (() => {
+      const logs = (window.MockData && window.MockData.attendance && window.MockData.attendance.logs) || [];
+      const first = logs[0];
+      const now = new Date();
+      if (first && Number(String(first.monthStr).replace('월', '')) === (now.getMonth() + 1) && Number(first.dayNum) === now.getDate()) {
+        return !!first.checkInTimeStr && first.checkInTimeStr !== '-';
+      }
+      return true;
+    })(),
+    checkInTime: (() => {
+      const logs = (window.MockData && window.MockData.attendance && window.MockData.attendance.logs) || [];
+      const first = logs[0];
+      const now = new Date();
+      if (first && Number(String(first.monthStr).replace('월', '')) === (now.getMonth() + 1) && Number(first.dayNum) === now.getDate()) {
+        const m = (first.checkInTimeStr || '').match(/(\d{1,2}:\d{2})/);
+        return m ? m[1] : '10:18';
+      }
+      return '10:18';
+    })(),
+    checkOutTime: (() => {
+      const logs = (window.MockData && window.MockData.attendance && window.MockData.attendance.logs) || [];
+      const first = logs[0];
+      const now = new Date();
+      if (first && Number(String(first.monthStr).replace('월', '')) === (now.getMonth() + 1) && Number(first.dayNum) === now.getDate()) {
+        if (first.checkOutTimeStr && first.checkOutTimeStr !== '-') {
+          const m = first.checkOutTimeStr.match(/(\d{1,2}:\d{2})/);
+          return m ? m[1] : first.checkOutTimeStr;
+        }
+      }
+      return '--:--';
+    })(),
     workStatus: '근무중',
     currentDate: new Date(),
     calYear: new Date().getFullYear(),
@@ -186,7 +214,34 @@ const PCApp = {
           }
         }
         if (parsed.logs && Array.isArray(parsed.logs) && parsed.logs.length > 0) {
-          this.state.logs = parsed.logs;
+          const hasOldMock = parsed.logs.some(l => l.monthStr === '10월' && Number(l.dayNum) > 15);
+          if (hasOldMock && window.MockData && window.MockData.attendance && window.MockData.attendance.logs) {
+            this.state.logs = JSON.parse(JSON.stringify(window.MockData.attendance.logs));
+          } else {
+            this.state.logs = parsed.logs;
+          }
+        }
+
+        // 오늘 날짜 출퇴근 기록이 logs에 존재할 경우 실시간 출근시간/퇴근시간 동기화
+        const now = new Date();
+        const curM = now.getMonth() + 1;
+        const curD = now.getDate();
+        const todayLog = (this.state.logs || []).find(l => {
+          return Number(String(l.monthStr).replace('월', '')) === curM && Number(l.dayNum) === curD;
+        });
+        if (todayLog && todayLog.checkInTimeStr && todayLog.checkInTimeStr !== '-') {
+          const inM = todayLog.checkInTimeStr.match(/(\d{1,2}:\d{2})/);
+          if (inM) {
+            this.state.checkInTime = inM[1];
+            this.state.checkInTimeStr = todayLog.checkInTimeStr;
+            this.state.isCheckedIn = true;
+          }
+          if (todayLog.checkOutTimeStr && todayLog.checkOutTimeStr !== '-') {
+            const outM = todayLog.checkOutTimeStr.match(/(\d{1,2}:\d{2})/);
+            this.state.checkOutTime = outM ? outM[1] : todayLog.checkOutTimeStr;
+          } else {
+            this.state.checkOutTime = '--:--';
+          }
         }
         if (parsed.userSchedules && typeof parsed.userSchedules === 'object') {
           this.state.userSchedules = parsed.userSchedules;

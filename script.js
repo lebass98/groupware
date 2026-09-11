@@ -436,7 +436,32 @@ const App = {
         this.state.settings = { ...this.state.settings, ...parsed.settings };
         this.state.activeTab = parsed.activeTab ?? 'screen-today';
         if (parsed.logs && parsed.logs.length) {
-          this.state.logs = parsed.logs;
+          const hasOldMock = parsed.logs.some(l => l.monthStr === '10월' && Number(l.dayNum) > 15);
+          if (hasOldMock && window.MockData && window.MockData.attendance && window.MockData.attendance.logs) {
+            this.state.logs = JSON.parse(JSON.stringify(window.MockData.attendance.logs));
+          } else {
+            this.state.logs = parsed.logs;
+          }
+        }
+
+        // 오늘 날짜 출퇴근 기록이 logs에 존재할 경우 실시간 출근시간 동기화
+        const now = new Date();
+        const curM = now.getMonth() + 1;
+        const curD = now.getDate();
+        const todayLog = (this.state.logs || []).find(l => {
+          return Number(String(l.monthStr).replace('월', '')) === curM && Number(l.dayNum) === curD;
+        });
+        if (todayLog && todayLog.checkInTimeStr && todayLog.checkInTimeStr !== '-') {
+          this.state.checkInTimeStr = todayLog.checkInTimeStr;
+          this.state.isCheckedIn = true;
+          const inM = todayLog.checkInTimeStr.match(/(\d{1,2}):(\d{2})/);
+          if (inM) {
+            const d = new Date();
+            let hours = parseInt(inM[1], 10);
+            if (todayLog.checkInTimeStr.includes('오후') && hours < 12) hours += 12;
+            d.setHours(hours, parseInt(inM[2], 10), 0, 0);
+            this.state.checkInTime = d;
+          }
         }
         if (parsed.userSchedules && typeof parsed.userSchedules === 'object') {
           this.state.userSchedules = parsed.userSchedules;
