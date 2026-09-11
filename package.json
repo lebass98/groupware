@@ -16,7 +16,9 @@
     "check:firebase": "node data/check-firebase.js",
     "sync:reports": "node scripts/sync-daily-reports.js",
     "sync:attendance": "node scripts/sync-daily-reports.js",
-    "sync:projects": "node scripts/sync-projects.js"
+    "sync:projects": "node scripts/sync-projects.js",
+    "sync:sites": "node scripts/sync-sites.js",
+    "sync:team-reports": "node scripts/sync-team-schedules.js"
   },
   "keywords": [
     "groupware",

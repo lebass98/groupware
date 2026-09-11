@@ -86,6 +86,11 @@ const PCApp = {
     projectFilter: 'all',
     projectSearch: '',
     projectSort: 'recommend',
+    projectSubTab: 'project',
+    sites: (window.MockData && window.MockData.sites) ? JSON.parse(JSON.stringify(window.MockData.sites)) : [],
+    siteFilter: 'all',
+    siteSearch: '',
+    siteSort: 'recent',
     expenses: [
       { id: 1, type: 'corp', typeLabel: '법인카드', date: '2026-08-24 12:30', title: '(주)맛있는식당 가산점', amount: 85000, category: '식대', status: 'unresolved', statusLabel: '결재 대기' },
       { id: 2, type: 'corp', typeLabel: '법인카드', date: '2026-08-23 20:15', title: '카카오T 택시 (야간교통비)', amount: 18500, category: '교통비', status: 'unresolved', statusLabel: '결재 대기' },
@@ -279,6 +284,26 @@ const PCApp = {
         this.saveProjects();
       }
 
+      // Sites State Sync (전사 사이트 410건 동기화)
+      const mockSites = (window.MockData && window.MockData.sites) ? window.MockData.sites : [];
+      const savedSites = localStorage.getItem('wordncode_groupware_sites');
+      if (savedSites) {
+        try {
+          const parsedSites = JSON.parse(savedSites);
+          if (Array.isArray(parsedSites) && parsedSites.length >= (mockSites.length || 410)) {
+            this.state.sites = parsedSites;
+          } else {
+            this.state.sites = JSON.parse(JSON.stringify(mockSites));
+            this.saveSites();
+          }
+        } catch (_) {
+          this.state.sites = JSON.parse(JSON.stringify(mockSites));
+        }
+      } else {
+        this.state.sites = JSON.parse(JSON.stringify(mockSites));
+        this.saveSites();
+      }
+
       // Notifications Read State Sync
       const savedNotifs = localStorage.getItem('wordncode_notifications_read_state');
       if (savedNotifs) {
@@ -302,6 +327,15 @@ const PCApp = {
       if (window.WncCloud) window.WncCloud.pushState();
     } catch (e) {
       console.warn('[PC] Projects save error:', e);
+    }
+  },
+
+  saveSites() {
+    try {
+      localStorage.setItem('wordncode_groupware_sites', JSON.stringify(this.state.sites || []));
+      if (window.WncCloud) window.WncCloud.pushState();
+    } catch (e) {
+      console.warn('[PC] Sites save error:', e);
     }
   },
 
@@ -2246,6 +2280,573 @@ const PCApp = {
     }
   },
 
+  // =========================================================================
+  // 6-3-1. Work Report Calendar Widget (업무보고 전용 달력 연동 컴포넌트)
+  // =========================================================================
+  renderWorkReportCalendar() {
+    const calWrap = document.getElementById('pc-work-report-calendar-widget');
+    if (!calWrap) return;
+
+    const now = new Date();
+    const year = this.state.workReportCalYear || this.state.calYear || now.getFullYear();
+    const month = this.state.workReportCalMonth || this.state.calMonth || (now.getMonth() + 1);
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    const lastDate = new Date(year, month, 0).getDate();
+
+    // 현재 선택된 일자
+    const selYear = this.state.workReportCalSelYear || year;
+    const selMonth = this.state.workReportCalSelMonth || month;
+    const selDay = this.state.workReportCalSelDay || (selMonth === (now.getMonth() + 1) && selYear === now.getFullYear() ? now.getDate() : 1);
+    const selectedDateStr = `${selYear}-${String(selMonth).padStart(2, '0')}-${String(selDay).padStart(2, '0')}`;
+
+    // 전체 실제 팀별 업무보고 목록
+    const allTeamData = (window.MockData && window.MockData.teamWorkReportsData) || [];
+
+    // 이 달에 등록된 업무보고 총 건수 계산
+    const monthPrefix = `${year}-${String(month).padStart(2, '0')}`;
+    const monthReports = allTeamData.filter(p => p.targetDate && p.targetDate.startsWith(monthPrefix));
+    const monthTotalCount = monthReports.length;
+
+    // 달력 날짜 셀 생성
+    let daysHtml = '';
+    // 전달 패딩
+    for (let i = 0; i < firstDay; i++) {
+      daysHtml += `<div class="h-12 p-1 bg-surface-container-lowest/30 rounded-lg opacity-30"></div>`;
+    }
+
+    // 당월 일자
+    for (let d = 1; d <= lastDate; d++) {
+      const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const isToday = (d === now.getDate() && month === (now.getMonth() + 1) && year === now.getFullYear());
+      const isSelected = (d === selDay && month === selMonth && year === selYear);
+      const dayOfWeek = (firstDay + d - 1) % 7;
+      const isSunday = (dayOfWeek === 0);
+      const isSaturday = (dayOfWeek === 6);
+
+      // 해당 일자에 등록된 팀별 업무보고 게시물 건수
+      const dayReports = allTeamData.filter(p => p.targetDate === dateStr);
+      const reportCount = dayReports.length;
+
+      let dateNumClass = 'text-on-surface';
+      if (isSunday) dateNumClass = 'text-red-500 dark:text-red-400 font-bold';
+      else if (isSaturday) dateNumClass = 'text-blue-500 dark:text-blue-400 font-bold';
+
+      const cellClass = isSelected
+        ? 'ring-2 ring-primary bg-primary/15 border-primary shadow-xs font-black'
+        : (isToday ? 'ring-1 ring-primary/40 bg-primary/5 border-outline/60' : 'bg-surface-container-low/70 hover:bg-primary/10 border-outline/50 hover:border-primary');
+
+      daysHtml += `
+        <div class="h-12 p-1.5 rounded-lg transition-all cursor-pointer flex flex-col justify-between group ${cellClass}" onclick="PCApp.selectWorkReportDate(${year}, ${month}, ${d})" title="${month}월 ${d}일 업무보고 ${reportCount}건">
+          <div class="flex items-center justify-between">
+            <span class="w-5 h-5 flex items-center justify-center text-xs font-bold ${dateNumClass} ${isToday ? 'rounded-full bg-primary text-white font-extrabold shadow-xs' : ''} leading-none">${d}</span>
+            ${reportCount > 0 ? `<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>` : ''}
+          </div>
+          <div class="flex items-center justify-end w-full">
+            ${reportCount > 0 ? `<span class="px-1 py-0.2 rounded text-[9px] font-bold bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors leading-none">${reportCount}건</span>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    calWrap.innerHTML = `
+      <!-- Top Month Header & Controls -->
+      <div class="flex items-center justify-between mb-3.5">
+        <div class="flex items-center gap-2">
+          <span class="font-headline font-bold text-base text-primary flex items-center gap-1.5">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+            근태일지 달력
+          </span>
+          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary">총 ${monthTotalCount}건</span>
+        </div>
+
+        <div class="flex items-center gap-1">
+          <button type="button" onclick="PCApp.changeWorkReportCalMonth(-1)" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-surface-container-highest transition-all text-on-surface" title="이전 달">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <span class="font-bold text-sm text-on-surface px-1.5 text-center min-w-[70px]">${year}.${String(month).padStart(2, '0')}</span>
+          <button type="button" onclick="PCApp.changeWorkReportCalMonth(1)" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-surface-container-highest transition-all text-on-surface" title="다음 달">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+          <button type="button" onclick="PCApp.resetWorkReportCalToday()" class="px-2 py-1 bg-surface-container text-on-surface-variant font-bold text-xs rounded-lg hover:text-primary active:scale-95 ml-1">오늘</button>
+        </div>
+      </div>
+
+      <!-- Days of Week Header -->
+      <div class="grid grid-cols-7 gap-1 mb-1.5 text-center font-bold text-xs select-none">
+        <div class="py-1 rounded bg-red-500/10 text-red-500">일</div>
+        <div class="py-1 rounded bg-surface-container-low text-on-surface">월</div>
+        <div class="py-1 rounded bg-surface-container-low text-on-surface">화</div>
+        <div class="py-1 rounded bg-surface-container-low text-on-surface">수</div>
+        <div class="py-1 rounded bg-surface-container-low text-on-surface">목</div>
+        <div class="py-1 rounded bg-surface-container-low text-on-surface">금</div>
+        <div class="py-1 rounded bg-surface-container-low text-blue-500">토</div>
+      </div>
+
+      <!-- Calendar Days Grid -->
+      <div class="grid grid-cols-7 gap-1">
+        ${daysHtml}
+      </div>
+    `;
+
+    // 하단 선택 일자 정보 요약 카드 렌더링
+    const statsWrap = document.getElementById('pc-work-report-calendar-stats');
+    if (statsWrap) {
+      const selDayReports = allTeamData.filter(p => p.targetDate === selectedDateStr);
+      let totalTasks = 0;
+      selDayReports.forEach(p => { totalTasks += (p.entries ? p.entries.length : 0); });
+
+      statsWrap.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-4 border border-outline/50 shadow-xs flex items-center justify-between">
+          <div>
+            <p class="text-xs text-on-surface-variant font-medium">선택 일자 업무보고</p>
+            <h4 class="text-base font-extrabold text-on-surface mt-0.5">${selMonth}월 ${selDay}일 (${selDayReports.length}개 부서)</h4>
+          </div>
+          <div class="text-right">
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-primary text-white shadow-2xs">${totalTasks}개 세부과업</span>
+          </div>
+        </div>
+      `;
+    }
+  },
+
+  selectWorkReportDate(year, month, day) {
+    this.state.workReportCalSelYear = year;
+    this.state.workReportCalSelMonth = month;
+    this.state.workReportCalSelDay = day;
+    const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    this.state.workReportDate = dateStr;
+
+    // 만약 주간 탭이 활성화되어 있다면 해당 일자가 속한 주차를 계산하여 주간 탭도 함께 연동
+    const week = Math.min(4, Math.max(1, Math.ceil(day / 7)));
+    this.state.workReportWeek = week;
+    this.state.workReportYear = year;
+    this.state.workReportMonth = month;
+
+    this.renderWorkReportCalendar();
+    this.renderWorkReportControls();
+    this.renderWorkReportView();
+  },
+
+  changeWorkReportCalMonth(delta) {
+    const now = new Date();
+    let y = this.state.workReportCalYear || this.state.calYear || now.getFullYear();
+    let m = (this.state.workReportCalMonth || this.state.calMonth || (now.getMonth() + 1)) + delta;
+    if (m < 1) { m = 12; y--; }
+    else if (m > 12) { m = 1; y++; }
+    this.state.workReportCalYear = y;
+    this.state.workReportCalMonth = m;
+    this.state.workReportCalSelYear = y;
+    this.state.workReportCalSelMonth = m;
+    this.state.workReportCalSelDay = (m === (now.getMonth() + 1) && y === now.getFullYear()) ? now.getDate() : 1;
+    this.state.workReportDate = `${y}-${String(m).padStart(2, '0')}-${String(this.state.workReportCalSelDay).padStart(2, '0')}`;
+    this.state.workReportYear = y;
+    this.state.workReportMonth = m;
+    this.state.workReportWeek = Math.min(4, Math.max(1, Math.ceil(this.state.workReportCalSelDay / 7)));
+
+    this.renderWorkReportCalendar();
+    this.renderWorkReportControls();
+    this.renderWorkReportView();
+  },
+
+  resetWorkReportCalToday() {
+    const now = new Date();
+    this.state.workReportCalYear = now.getFullYear();
+    this.state.workReportCalMonth = now.getMonth() + 1;
+    this.state.workReportCalSelYear = now.getFullYear();
+    this.state.workReportCalSelMonth = now.getMonth() + 1;
+    this.state.workReportCalSelDay = now.getDate();
+    this.state.workReportDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    this.state.workReportYear = now.getFullYear();
+    this.state.workReportMonth = now.getMonth() + 1;
+    this.state.workReportWeek = Math.min(4, Math.max(1, Math.ceil(now.getDate() / 7)));
+
+    this.renderWorkReportCalendar();
+    this.renderWorkReportControls();
+    this.renderWorkReportView();
+  },
+
+  renderWorkReportView() {
+    this.renderWorkReportCalendar();
+    this.renderWorkReportControls();
+
+    const wrap = document.getElementById('pc-workreport-full-container');
+    if (!wrap) return;
+
+    const tab = this.state.workReportTab || 'weekly';
+    const allTeamData = (window.MockData && window.MockData.teamWorkReportsData) || [];
+
+    // 1. 주간 업무보고 탭
+    if (tab === 'weekly') {
+      const week = this.state.workReportWeek || 3;
+      const allReports = (this.state.workReports && this.state.workReports.length > 0)
+        ? this.state.workReports
+        : ((window.MockData && window.MockData.workReports) || []);
+
+      const filtered = allReports.filter(r => r.week === week || (!r.week && week === 3));
+
+      if (filtered.length === 0) {
+        wrap.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-12 text-center text-on-surface-variant font-medium shadow-xs border border-outline/40 flex flex-col items-center justify-center">
+            <svg class="w-12 h-12 text-outline mb-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <p class="text-base font-bold text-on-surface mb-1">선택하신 주차에 등록된 주간 업무보고가 없습니다.</p>
+            <p class="text-xs text-on-surface-variant">좌측 근태일지 달력 또는 상단 컨트롤러를 통해 다른 주차를 확인해 보세요.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const renderSectionBlock = (sections) => {
+        if (!sections || sections.length === 0) return '<p class="text-xs text-on-surface-variant italic">등록된 내역이 없습니다.</p>';
+        return sections.map((sec, idx) => {
+          const divider = idx > 0 ? `<div class="h-px w-full bg-outline-variant/15 my-2"></div>` : '';
+
+          let itemsHtml = '';
+          if (sec.items && sec.items.length > 0) {
+            itemsHtml = `
+              <ul class="text-xs text-on-surface-variant space-y-1.5 pl-1 list-disc list-inside mt-1 leading-relaxed">
+                ${sec.items.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            `;
+          }
+
+          let commentHtml = '';
+          if (sec.comment) {
+            commentHtml = `
+              <p class="text-xs text-error-dim pl-1 mt-1.5 font-semibold leading-relaxed">
+                ${sec.comment}
+              </p>
+            `;
+          }
+
+          const isGenericLabel = !sec.label || ['전주', '금주', '전주 실적', '금주 진행', '작업내역', '디자인', '개발', '기획', '퍼블리싱', '프로젝트 진행 중'].includes(sec.label.trim());
+          const labelHtml = isGenericLabel ? '' : `<span class="text-xs font-semibold text-on-surface ml-1.5">(${sec.label})</span>`;
+
+          return `
+            ${divider}
+            <div class="text-left">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-xs font-bold ${sec.deptColor || 'text-primary'}">${sec.dept}</span>
+                ${labelHtml}
+              </div>
+              ${itemsHtml}
+              ${commentHtml}
+            </div>
+          `;
+        }).join('');
+      };
+
+      const alternatingThemes = [
+        {
+          borderLeft: 'border-l-[5px] border-l-primary',
+          badgeBg: 'bg-primary/10 text-primary border border-primary/20'
+        },
+        {
+          borderLeft: 'border-l-[5px] border-l-[#00693f]',
+          badgeBg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border border-[#00693f]/20'
+        }
+      ];
+
+      wrap.innerHTML = filtered.map((report, rIdx) => {
+        const theme = alternatingThemes[rIdx % alternatingThemes.length];
+        const prevSections = report.prevWeekSections || [];
+        const thisSections = report.thisWeekSections || report.sections || [];
+
+        return `
+          <article class="bg-surface-container-low rounded-2xl p-6 flex flex-col gap-4 shadow-2xs hover:shadow-xs transition-all duration-200 text-left border border-outline/40 ${theme.borderLeft}">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-outline/30">
+              <div class="min-w-0">
+                <span class="text-xs font-semibold ${theme.badgeBg} px-2.5 py-0.5 rounded-md mb-1.5 inline-block shadow-2xs">${report.client}</span>
+                <h3 class="font-bold text-on-surface text-lg hover:text-primary transition-colors">${report.title}</h3>
+                <p class="text-xs text-on-surface-variant mt-1 font-medium flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                  <span>${report.period}</span>
+                  <span class="text-outline">·</span>
+                  <span>주관: <strong>${report.primaryDept || '수행본부'}</strong></span>
+                </p>
+              </div>
+              <span class="text-xs font-bold px-3 py-1 bg-surface-container-high rounded-full text-on-surface-variant shrink-0 self-start sm:self-auto">${report.weekLabel || `2026년 8월 ${week}주차`}</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <!-- 1. [전주] 실적 (좌측 박스) -->
+              <div class="space-y-2 flex flex-col">
+                <div class="flex items-center gap-1.5 px-0.5">
+                  <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-surface-container-highest text-on-surface flex items-center gap-1.5 shadow-2xs">
+                    <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                    <span>전주 실적 (Last Week)</span>
+                  </span>
+                </div>
+                <div class="bg-surface-container-lowest rounded-xl p-4 flex-1 flex flex-col gap-2.5 shadow-xs border border-outline/40">
+                  ${renderSectionBlock(prevSections)}
+                </div>
+              </div>
+
+              <!-- 2. [금주] 계획 및 진행 (우측 박스) -->
+              <div class="space-y-2 flex flex-col">
+                <div class="flex items-center gap-1.5 px-0.5">
+                  <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-primary/10 text-primary flex items-center gap-1.5 shadow-2xs border border-primary/20">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                    <span>금주 계획 및 진행 (This Week)</span>
+                  </span>
+                </div>
+                <div class="bg-surface-container-lowest rounded-xl p-4 flex-1 flex flex-col gap-2.5 shadow-xs border border-outline/40">
+                  ${renderSectionBlock(thisSections)}
+                </div>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+      return;
+    }
+
+    // 2. 일간 업무보고 탭 (실제 wc_team_skedule 날짜 기반 연동)
+    if (tab === 'daily') {
+      const dateStr = this.state.workReportDate || '2026-09-14';
+
+      // 1순위: 크롤링된 실시간 팀별 업무보고(wc_team_skedule) 중 해당 일자 포스트 검색
+      const matchingPosts = allTeamData.filter(p => p.targetDate === dateStr);
+
+      if (matchingPosts.length > 0) {
+        wrap.innerHTML = matchingPosts.map(post => {
+          const entries = post.entries || [];
+          return `
+            <article class="bg-surface-container-low rounded-2xl p-6 flex flex-col gap-4 shadow-2xs hover:shadow-xs transition-all duration-200 text-left border border-outline/40 border-l-[5px] border-l-primary">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-outline/30">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                    <span class="text-xs font-bold text-primary px-2.5 py-0.5 bg-primary/10 rounded-md border border-primary/20">${post.team}</span>
+                    <span class="text-xs font-semibold bg-surface-container-highest text-on-surface px-2.5 py-0.5 rounded-md">${post.targetDate}</span>
+                    <span class="text-xs font-medium text-on-surface-variant">등록일: ${post.createdDate}</span>
+                  </div>
+                  <h3 class="font-bold text-on-surface text-lg leading-snug">${post.rawTitle}</h3>
+                </div>
+                <span class="text-xs font-bold px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full shrink-0">세부 과업 ${entries.length}건</span>
+              </div>
+
+              <!-- 세부 엔트리 목록 -->
+              <div class="space-y-3">
+                ${entries.map(e => `
+                  <div class="bg-surface-container-lowest rounded-xl p-4 shadow-xs border border-outline/30 flex flex-col gap-2">
+                    <div class="flex items-center justify-between gap-2 flex-wrap pb-1.5 border-b border-outline/15">
+                      <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">${e.project}</span>
+                        <strong class="text-xs font-bold text-on-surface">${e.member}</strong>
+                      </div>
+                      ${e.createdAt ? `<span class="text-[11px] text-on-surface-variant">${e.createdAt}</span>` : ''}
+                    </div>
+                    <div class="text-xs text-on-surface-variant whitespace-pre-wrap leading-relaxed font-body pl-1">
+                      ${e.content}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </article>
+          `;
+        }).join('');
+        return;
+      }
+
+      // 2순위: 기존 dailyWorkReports 대체 검색
+      const dailyList = (window.MockData && window.MockData.dailyWorkReports) || [];
+      const filtered = dailyList.filter(d => d.date === dateStr);
+
+      if (filtered.length > 0) {
+        wrap.innerHTML = filtered.map(item => {
+          const isDone = item.status === 'completed';
+          const statusBadge = isDone
+            ? `<span class="px-2.5 py-1 rounded-md text-xs font-bold bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border border-[#00693f]/20">완료</span>`
+            : `<span class="px-2.5 py-1 rounded-md text-xs font-bold bg-primary/10 text-primary border border-primary/20">진행중</span>`;
+
+          return `
+            <article class="bg-surface-container-low rounded-2xl p-6 flex flex-col gap-4 shadow-2xs hover:shadow-xs transition-all duration-200 text-left border border-outline/40 border-l-[5px] border-l-primary">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-outline/30">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                    <span class="text-xs font-semibold bg-surface-container-highest text-on-surface px-2.5 py-0.5 rounded-md shadow-2xs">${item.client}</span>
+                    <span class="text-xs font-bold text-primary px-2 py-0.5 bg-primary/10 rounded-md border border-primary/20">${item.primaryDept}</span>
+                    ${statusBadge}
+                  </div>
+                  <h3 class="font-bold text-on-surface text-lg leading-snug">${item.project}</h3>
+                  <p class="text-xs text-on-surface-variant mt-1 font-medium flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <span>작성자/담당: <strong class="text-on-surface">${item.author}</strong></span>
+                    <span class="text-outline">·</span>
+                    <span>보고 일자: <strong>${item.date}</strong></span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- 금일 / 명일 2열 Bento 그리드 -->
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="bg-surface-container-lowest rounded-xl p-4 shadow-xs border border-outline/40 flex flex-col gap-2.5">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                    <h4 class="text-xs font-bold text-primary">금일 수행 업무 (Today's Tasks)</h4>
+                  </div>
+                  <ul class="text-xs text-on-surface-variant space-y-1.5 pl-2 list-disc list-inside leading-relaxed font-body">
+                    ${item.todayTasks.map(t => `<li>${t}</li>`).join('')}
+                  </ul>
+                </div>
+                <div class="bg-surface-container-lowest rounded-xl p-4 shadow-xs border border-outline/40 flex flex-col gap-2.5">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#00693f]"></span>
+                    <h4 class="text-xs font-bold text-[#00693f] dark:text-emerald-300">명일 예정 업무 (Tomorrow's Plan)</h4>
+                  </div>
+                  <ul class="text-xs text-on-surface-variant space-y-1.5 pl-2 list-disc list-inside leading-relaxed font-body">
+                    ${item.tomorrowTasks.map(t => `<li>${t}</li>`).join('')}
+                  </ul>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+        return;
+      }
+
+      // 등록된 데이터 없음
+      wrap.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-12 text-center text-on-surface-variant font-medium shadow-xs border border-outline/40 flex flex-col items-center justify-center">
+          <svg class="w-12 h-12 text-outline mb-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+          <p class="text-base font-bold text-on-surface mb-1">${dateStr} 일자에 등록된 업무보고가 없습니다.</p>
+          <p class="text-xs text-on-surface-variant">좌측 근태일지 달력에서 업무보고가 등록된 날짜(2026-09-14, 2026-09-07, 2026-08-31 등)를 클릭해 보세요.</p>
+        </div>
+      `;
+      return;
+    }
+
+    // 3. 팀별 업무보고 탭 (실제 wc_team_skedule 연동)
+    if (tab === 'team') {
+      const selectedTeam = this.state.workReportTeam || 'all';
+
+      // 실제 크롤링된 데이터에서 필터링
+      const dateStr = this.state.workReportDate;
+      let matchingPosts = allTeamData;
+      if (selectedTeam !== 'all') {
+        matchingPosts = matchingPosts.filter(p => p.team === selectedTeam || (p.team && p.team.includes(selectedTeam)));
+      }
+      if (dateStr) {
+        // 날짜가 선택되어 있으면 해당 일자 우선 정렬
+        matchingPosts = [...matchingPosts].sort((a, b) => {
+          if (a.targetDate === dateStr && b.targetDate !== dateStr) return -1;
+          if (b.targetDate === dateStr && a.targetDate !== dateStr) return 1;
+          return 0;
+        });
+      }
+
+      if (matchingPosts.length === 0) {
+        // fallback
+        const teamList = (window.MockData && window.MockData.teamWorkReports) || [];
+        const filtered = selectedTeam === 'all' ? teamList : teamList.filter(t => t.dept === selectedTeam || t.deptName === selectedTeam);
+
+        if (filtered.length === 0) {
+          wrap.innerHTML = `
+            <div class="bg-surface-container-lowest rounded-2xl p-12 text-center text-on-surface-variant font-medium shadow-xs border border-outline/40 flex flex-col items-center justify-center">
+              <svg class="w-12 h-12 text-outline mb-3" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+              <p class="text-base font-bold text-on-surface mb-1">선택하신 부서(${selectedTeam})의 등록된 업무보고가 없습니다.</p>
+            </div>
+          `;
+          return;
+        }
+
+        wrap.innerHTML = filtered.map(team => {
+          const membersBadges = team.members.map(m => `
+            <div class="px-3 py-1.5 rounded-lg text-xs bg-surface-container-lowest border border-outline/30 flex items-center gap-1.5 shadow-2xs">
+              <span class="font-bold text-on-surface">${m.name} ${m.role}</span>
+              <span class="text-outline">·</span>
+              <span class="text-on-surface-variant truncate max-w-[240px]">${m.currentTask}</span>
+            </div>
+          `).join('');
+
+          const projectCards = team.projects.map(p => `
+            <div class="bg-surface-container-lowest rounded-xl p-4 border border-outline/40 shadow-xs flex flex-col gap-2.5">
+              <div class="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-outline/20">
+                <span class="text-xs font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-md">${p.client}</span>
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-primary/10 text-primary border border-primary/20">${p.status} (${p.progress})</span>
+              </div>
+              <h5 class="font-bold text-sm text-on-surface">${p.title}</h5>
+              <ul class="text-xs text-on-surface-variant space-y-1.5 pl-2 list-disc list-inside leading-relaxed mt-1 font-body">
+                ${p.tasks.map(t => `<li>${t}</li>`).join('')}
+              </ul>
+            </div>
+          `).join('');
+
+          return `
+            <article class="bg-surface-container-low rounded-2xl p-6 flex flex-col gap-5 shadow-2xs hover:shadow-xs transition-all duration-200 text-left border border-outline/40 border-l-[5px] border-l-primary">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-outline/30">
+                <div>
+                  <div class="flex items-center gap-2 mb-1.5">
+                    <h3 class="font-headline font-bold text-xl text-primary">${team.deptName}</h3>
+                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-md bg-surface-container-highest text-on-surface">팀장: ${team.leader}</span>
+                    <span class="text-xs text-on-surface-variant">소속 팀원: ${team.members.length}명</span>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-1.5">
+                <h4 class="text-xs font-bold text-on-surface-variant flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                  <span>팀원별 현재 전담 업무</span>
+                </h4>
+                <div class="flex flex-wrap gap-2">
+                  ${membersBadges}
+                </div>
+              </div>
+              <div class="space-y-3">
+                <h4 class="text-xs font-bold text-on-surface-variant flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+                  <span>진행 프로젝트 및 세부 작업 내역 (${team.projects.length}건)</span>
+                </h4>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  ${projectCards}
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+        return;
+      }
+
+      // 크롤링된 실시간 포스트 목록 렌더링 (최대 10건)
+      wrap.innerHTML = matchingPosts.slice(0, 10).map(post => {
+        const entries = post.entries || [];
+        const isCurrentDate = (post.targetDate === dateStr);
+        return `
+          <article class="bg-surface-container-low rounded-2xl p-6 flex flex-col gap-4 shadow-2xs hover:shadow-xs transition-all duration-200 text-left border border-outline/40 ${isCurrentDate ? 'border-l-[6px] border-l-primary ring-2 ring-primary/20' : 'border-l-[5px] border-l-outline'}">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-outline/30">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-bold text-primary px-2.5 py-0.5 bg-primary/10 rounded-md border border-primary/20">${post.team}</span>
+                  <span class="text-xs font-semibold bg-surface-container-highest text-on-surface px-2.5 py-0.5 rounded-md">${post.targetDate}</span>
+                  ${isCurrentDate ? '<span class="px-2 py-0.5 rounded bg-primary text-white text-[10px] font-extrabold">선택일자</span>' : ''}
+                </div>
+                <h3 class="font-bold text-on-surface text-lg leading-snug">${post.rawTitle}</h3>
+              </div>
+              <span class="text-xs font-bold px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full shrink-0">세부 과업 ${entries.length}건</span>
+            </div>
+
+            <!-- 세부 과업 그리드 -->
+            <div class="space-y-3">
+              ${entries.map(e => `
+                <div class="bg-surface-container-lowest rounded-xl p-4 shadow-xs border border-outline/30 flex flex-col gap-2">
+                  <div class="flex items-center justify-between gap-2 flex-wrap pb-1.5 border-b border-outline/15">
+                    <div class="flex items-center gap-2">
+                      <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">${e.project}</span>
+                      <strong class="text-xs font-bold text-on-surface">${e.member}</strong>
+                    </div>
+                    ${e.createdAt ? `<span class="text-[11px] text-on-surface-variant">${e.createdAt}</span>` : ''}
+                  </div>
+                  <div class="text-xs text-on-surface-variant whitespace-pre-wrap leading-relaxed font-body pl-1">
+                    ${e.content}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+  },
+
   // 6-4. Check-in & Logs Screen
   setWorkStatus(status, btn) {
     this.state.workStatus = status;
@@ -3983,6 +4584,17 @@ const PCApp = {
   },
 
   renderProjectView() {
+    // 서브탭 건수 뱃지 갱신
+    const projCountEl = document.getElementById('pc-subtab-count-project');
+    const siteCountEl = document.getElementById('pc-subtab-count-site');
+    if (projCountEl) projCountEl.textContent = (this.state.projects || []).length;
+    if (siteCountEl) siteCountEl.textContent = (this.state.sites || []).length;
+
+    if (this.state.projectSubTab === 'site') {
+      this.renderSites();
+      return;
+    }
+
     const grid = document.getElementById('pc-project-grid');
     if (!grid) return;
 
@@ -4157,6 +4769,482 @@ const PCApp = {
         </div>
       `;
     }).join('');
+  },
+
+  // ==========================================================================
+  // 프로젝트 관리 서브 탭 (프로젝트 ↔ 사이트) 및 사이트 관리 엔진
+  // ==========================================================================
+  switchProjectSubTab(tab) {
+    this.state.projectSubTab = tab || 'project';
+    const projBtn = document.getElementById('pc-proj-subtab-project');
+    const siteBtn = document.getElementById('pc-proj-subtab-site');
+    const projView = document.getElementById('pc-subview-project');
+    const siteView = document.getElementById('pc-subview-site');
+    const screenTitle = document.getElementById('pc-project-screen-title');
+    const screenDesc = document.getElementById('pc-project-screen-desc');
+    const totalBadge = document.getElementById('pc-project-total-badge');
+    const searchInp = document.getElementById('pc-project-search-input');
+
+    const allProjects = this.state.projects || [];
+    const allSites = this.state.sites || [];
+
+    // 서브탭 건수 뱃지 동기화
+    const projCountEl = document.getElementById('pc-subtab-count-project');
+    const siteCountEl = document.getElementById('pc-subtab-count-site');
+    if (projCountEl) projCountEl.textContent = allProjects.length;
+    if (siteCountEl) siteCountEl.textContent = allSites.length;
+
+    if (this.state.projectSubTab === 'site') {
+      if (projBtn) projBtn.className = 'px-5 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer';
+      if (siteBtn) siteBtn.className = 'px-5 py-2.5 rounded-xl font-bold text-base transition-all bg-primary text-white shadow-xs flex items-center gap-2 cursor-pointer';
+      if (projView) projView.classList.add('hidden');
+      if (siteView) siteView.classList.remove('hidden');
+
+      if (screenTitle) screenTitle.textContent = '사이트 관리';
+      if (screenDesc) screenDesc.textContent = '전사 사이트 접속 URL, 계정 및 고객사 담당자 통합 관리';
+      if (totalBadge) totalBadge.textContent = `${allSites.length}개`;
+      if (searchInp) {
+        searchInp.placeholder = '사이트명, 고객사, 사이트코드, 담당자 검색...';
+        searchInp.value = this.state.siteSearch || '';
+      }
+      this.renderSites();
+    } else {
+      if (projBtn) projBtn.className = 'px-5 py-2.5 rounded-xl font-bold text-base transition-all bg-primary text-white shadow-xs flex items-center gap-2 cursor-pointer';
+      if (siteBtn) siteBtn.className = 'px-5 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer';
+      if (projView) projView.classList.remove('hidden');
+      if (siteView) siteView.classList.add('hidden');
+
+      if (screenTitle) screenTitle.textContent = '프로젝트 관리';
+      if (screenDesc) screenDesc.textContent = '구축, 개선사업, 유지보수 및 운영용역 프로젝트 통합 관리';
+      if (totalBadge) totalBadge.textContent = `${allProjects.length}개`;
+      if (searchInp) {
+        searchInp.placeholder = '프로젝트명, 고객사, 담당자 검색...';
+        searchInp.value = this.state.projectSearch || '';
+      }
+      this.renderProjects();
+    }
+  },
+
+  onProjectSearchInput(val) {
+    if (this.state.projectSubTab === 'site') {
+      this.setSiteSearch(val);
+    } else {
+      this.setProjectSearch(val);
+    }
+  },
+
+  onProjectSortChange(val) {
+    if (this.state.projectSubTab === 'site') {
+      this.setSiteSort(val);
+    } else {
+      this.setProjectSort(val);
+    }
+  },
+
+  setSiteFilter(filterKey, tabEl) {
+    this.state.siteFilter = filterKey || 'all';
+    const tabs = document.querySelectorAll('#pc-site-filter-tabs button');
+    tabs.forEach(t => {
+      const isTarget = t.getAttribute('data-filter') === this.state.siteFilter;
+      const countSpan = t.querySelector('span:last-child');
+      if (isTarget) {
+        t.className = 'px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0 flex items-center gap-1.5 cursor-pointer';
+        if (countSpan) countSpan.className = 'px-2 py-0.5 rounded-full text-xs font-bold bg-white/20';
+      } else {
+        t.className = 'px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5 cursor-pointer';
+        if (countSpan) countSpan.className = 'px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest';
+      }
+    });
+    this.renderSites();
+  },
+
+  setSiteSearch(keyword) {
+    this.state.siteSearch = keyword || '';
+    this.renderSites();
+  },
+
+  setSiteSort(sortType) {
+    this.state.siteSort = sortType || 'recent';
+    this.renderSites();
+  },
+
+  renderSites() {
+    const grid = document.getElementById('pc-site-grid');
+    if (!grid) return;
+
+    const allSites = (this.state.sites || []);
+
+    // 1. 탭 카운트 집계
+    const counts = {
+      all: allSites.length,
+      has_urls: allSites.filter(s => s.urls && s.urls.length > 0).length,
+      has_contacts: allSites.filter(s => s.contacts && s.contacts.length > 0).length
+    };
+
+    const countAll = document.getElementById('pc-site-count-all');
+    const countUrls = document.getElementById('pc-site-count-has-urls');
+    const countContacts = document.getElementById('pc-site-count-has-contacts');
+    if (countAll) countAll.textContent = counts.all;
+    if (countUrls) countUrls.textContent = counts.has_urls;
+    if (countContacts) countContacts.textContent = counts.has_contacts;
+
+    // 2. 필터링
+    let filtered = allSites.filter(s => {
+      if (this.state.siteFilter === 'has_urls') return s.urls && s.urls.length > 0;
+      if (this.state.siteFilter === 'has_contacts') return s.contacts && s.contacts.length > 0;
+      return true;
+    });
+
+    // 3. 검색어 필터
+    const search = (this.state.siteSearch || '').trim().toLowerCase();
+    if (search) {
+      filtered = filtered.filter(s => {
+        const titleMatch = (s.title || '').toLowerCase().includes(search);
+        const codeMatch = (s.siteCode || '').toLowerCase().includes(search);
+        const clientMatch = (s.client || '').toLowerCase().includes(search);
+        const authorMatch = (s.author || '').toLowerCase().includes(search);
+        const contactMatch = (s.contacts || []).some(c =>
+          (c.name || '').toLowerCase().includes(search) ||
+          (c.tel || '').includes(search) ||
+          (c.email || '').toLowerCase().includes(search)
+        );
+        const urlMatch = (s.urls || []).some(u =>
+          (u.title || '').toLowerCase().includes(search) ||
+          (u.url || '').toLowerCase().includes(search)
+        );
+        return titleMatch || codeMatch || clientMatch || authorMatch || contactMatch || urlMatch;
+      });
+    }
+
+    // 4. 정렬
+    const sort = this.state.siteSort || 'recent';
+    filtered.sort((a, b) => {
+      if (sort === 'name') {
+        return (a.title || '').localeCompare(b.title || '', 'ko');
+      } else {
+        // recent: 최신등록순
+        const dateA = a.date || '';
+        const dateB = b.date || '';
+        if (dateA !== dateB) return dateB.localeCompare(dateA);
+        return (b.id || 0) - (a.id || 0);
+      }
+    });
+
+    // 5. 뱃지 갱신
+    const totalBadge = document.getElementById('pc-project-total-badge');
+    if (totalBadge && this.state.projectSubTab === 'site') {
+      totalBadge.textContent = `${filtered.length}개`;
+    }
+
+    // 6. 결과 렌더링
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div class="col-span-full py-16 text-center bg-surface-container-lowest rounded-2xl border border-dashed border-outline">
+          <div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mx-auto mb-4 text-on-surface-variant">
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-lg text-on-surface mb-1">조건에 맞는 사이트가 없습니다</h3>
+          <p class="text-sm text-on-surface-variant mb-4">검색어 또는 필터를 변경하여 다시 검색해보세요.</p>
+          <button class="px-4 py-2 rounded-xl text-sm font-bold bg-primary text-white hover:bg-primary/90 transition-all cursor-pointer" onclick="PCApp.setSiteSearch(''); const searchInp = document.getElementById('pc-project-search-input'); if(searchInp) searchInp.value=''; PCApp.setSiteFilter('all');">
+            필터 초기화
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(s => {
+      const firstContact = (s.contacts && s.contacts.length > 0) ? s.contacts[0] : null;
+      const urls = s.urls || [];
+      const primaryUrl = s.primaryUrl || (urls[0] ? urls[0].url : '');
+
+      return `
+        <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary/60 hover:shadow-lg transition-all text-base flex flex-col justify-between cursor-pointer group" onclick="PCApp.openSiteModal(${s.id})">
+          <div>
+            <!-- 상단 고객사 & 사이트코드 뱃지 -->
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <div class="flex items-center gap-1.5 min-w-0">
+                <span class="text-xs font-bold pl-0 pr-2 py-0.5 text-primary truncate max-w-[150px]">${s.client || '고객사'}</span>
+                ${s.siteCode && s.siteCode !== '-' ? `<span class="text-xs font-mono font-bold px-2 py-0.5 rounded-md bg-secondary/10 text-secondary shrink-0">${s.siteCode}</span>` : ''}
+              </div>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-lg shrink-0 bg-surface-container text-on-surface-variant">
+                ${s.category || '기타'}
+              </span>
+            </div>
+
+            <!-- 사이트 명 -->
+            <h3 class="font-bold text-lg text-on-surface group-hover:text-primary transition-colors mb-2 line-clamp-2 leading-snug">
+              ${s.title}
+            </h3>
+
+            <!-- 접속 URL 링크 버튼 영역 (최대 2개 노출) -->
+            <div class="p-3 bg-surface-container-low rounded-xl mb-4 border border-outline/30 flex flex-col gap-2" onclick="event.stopPropagation()">
+              <div class="flex items-center justify-between text-xs text-on-surface-variant font-medium">
+                <span class="flex items-center gap-1 font-bold text-on-surface">
+                  <svg class="w-3.5 h-3.5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+                  </svg>
+                  접속 URL (${urls.length}개)
+                </span>
+                ${primaryUrl ? `
+                  <a href="${primaryUrl}" target="_blank" rel="noopener noreferrer" class="text-[11px] font-bold text-primary hover:underline flex items-center gap-0.5">
+                    바로가기
+                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                  </a>
+                ` : '<span class="text-[11px] text-on-surface-variant/60">미등록</span>'}
+              </div>
+
+              ${urls.length > 0 ? `
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  ${urls.slice(0, 3).map(u => `
+                    <a href="${u.url}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-surface-container-lowest hover:bg-primary hover:text-white rounded-lg text-xs font-medium text-on-surface transition-colors flex items-center gap-1 border border-outline/40 truncate max-w-full" title="${u.title}: ${u.url}">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                      <span class="truncate">${u.type || u.title}</span>
+                    </a>
+                  `).join('')}
+                  ${urls.length > 3 ? `<span class="px-1.5 py-1 text-[11px] text-on-surface-variant font-bold">+${urls.length - 3}</span>` : ''}
+                </div>
+              ` : `
+                <div class="text-[11px] text-on-surface-variant/60">등록된 접속 URL이 없습니다.</div>
+              `}
+            </div>
+
+            <!-- 담당자 정보 (1순위) -->
+            ${firstContact ? `
+              <div class="p-3 bg-surface-container-low rounded-xl mb-4 border border-outline/30 flex items-center justify-between text-xs" onclick="event.stopPropagation()">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
+                    ${firstContact.name ? firstContact.name.charAt(0) : '당'}
+                  </div>
+                  <div>
+                    <span class="font-bold text-on-surface">${firstContact.name}</span>
+                    <span class="text-[11px] text-on-surface-variant font-medium ml-1">${firstContact.position || '담당자'}</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  ${firstContact.tel ? `<a href="tel:${firstContact.tel}" class="p-1.5 rounded-lg bg-surface-container text-primary hover:bg-primary hover:text-white transition-colors" title="${firstContact.tel}"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg></a>` : ''}
+                  ${firstContact.email ? `<a href="mailto:${firstContact.email}" class="p-1.5 rounded-lg bg-surface-container text-primary hover:bg-primary hover:text-white transition-colors" title="${firstContact.email}"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>` : ''}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- 카드 하단 메타 & 상세보기 액션 -->
+          <div class="pt-3 border-t border-outline/50 flex justify-between items-center text-xs text-on-surface-variant font-medium">
+            <div class="flex items-center gap-1.5">
+              <span>작성: ${s.author || '담당자'}</span>
+              <span>·</span>
+              <span>${s.date || '-'}</span>
+            </div>
+            <span class="font-bold text-primary flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              상세보기
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  openSiteModal(siteId) {
+    const s = (this.state.sites || []).find(item => item.id === siteId) ||
+      ((window.MockData && window.MockData.sites) || []).find(item => item.id === siteId);
+    if (!s) return;
+
+    const modalBody = document.getElementById('pc-modal-content');
+    if (!modalBody) return;
+
+    const contacts = s.contacts || [];
+    const urls = s.urls || [];
+
+    const contactsHtml = contacts.length > 0 ? contacts.map(c => `
+      <div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline/50 text-xs flex flex-col gap-2 shadow-2xs">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-primary text-sm">${c.name}</span>
+            <span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-medium">${c.position || '담당자'}</span>
+            ${c.department ? `<span class="text-[11px] text-on-surface-variant">(${c.department})</span>` : ''}
+          </div>
+          <div class="flex items-center gap-1.5">
+            ${c.tel ? `<a href="tel:${c.tel}" class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-primary hover:text-white text-primary transition-all font-bold flex items-center gap-1 text-[11px]" title="전화걸기"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg><span>전화</span></a>` : ''}
+            ${c.email ? `<a href="mailto:${c.email}" class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-primary hover:text-white text-primary transition-all font-bold flex items-center gap-1 text-[11px]" title="이메일"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg><span>메일</span></a>` : ''}
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-[11px] text-on-surface-variant font-medium pt-1 border-t border-outline/30">
+          <div>전화: <strong class="text-on-surface">${c.tel || '-'}</strong></div>
+          <div>휴대폰: <strong class="text-on-surface">${c.mobile || '-'}</strong></div>
+          <div>이메일: <strong class="text-on-surface">${c.email || '-'}</strong></div>
+          <div>팩스: <strong class="text-on-surface">${c.fax || '-'}</strong></div>
+        </div>
+      </div>
+    `).join('') : `
+      <div class="bg-surface-container-low rounded-xl p-4 border border-dashed border-outline/60 text-xs text-on-surface-variant text-center">
+        등록된 고객사 담당자 정보가 없습니다.
+      </div>
+    `;
+
+    const urlsHtml = urls.length > 0 ? urls.map(u => `
+      <div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline/50 text-xs flex flex-col gap-2 shadow-2xs">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="px-2 py-0.5 rounded-md bg-primary/10 text-primary font-bold text-xs shrink-0">${u.type || '일반'}</span>
+            <span class="font-bold text-on-surface text-sm truncate">${u.title || s.title}</span>
+          </div>
+          <a href="${u.url}" target="_blank" rel="noopener noreferrer" class="px-3 py-1 bg-primary text-white font-bold rounded-lg text-xs hover:bg-primary/90 transition-colors flex items-center gap-1 shrink-0">
+            <span>새창 열기</span>
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          </a>
+        </div>
+        <div class="p-2.5 bg-surface-container-low rounded-lg text-xs font-mono break-all text-on-surface-variant flex items-center justify-between gap-2">
+          <span class="truncate">${u.url}</span>
+          <button type="button" class="text-primary hover:underline font-bold text-[11px] shrink-0 cursor-pointer" onclick="PCApp.copyText('${u.url}', 'URL 주소')">복사</button>
+        </div>
+        ${(u.username || u.password) ? `
+          <div class="flex items-center gap-4 text-[11px] font-mono bg-surface-container/50 px-3 py-1.5 rounded-md">
+            ${u.username ? `<div>ID: <strong class="text-on-surface font-bold">${u.username}</strong></div>` : ''}
+            ${u.password ? `<div>PW: <strong class="text-on-surface font-bold">${u.password}</strong></div>` : ''}
+            <button type="button" class="text-primary hover:underline text-[11px] ml-auto font-bold cursor-pointer" onclick="PCApp.copyText('ID: ${u.username} / PW: ${u.password}', '계정 정보')">계정 복사</button>
+          </div>
+        ` : ''}
+      </div>
+    `).join('') : `
+      <div class="bg-surface-container-low rounded-xl p-4 border border-dashed border-outline/60 text-xs text-on-surface-variant text-center">
+        등록된 접속 URL 정보가 없습니다.
+      </div>
+    `;
+
+    modalBody.innerHTML = `
+      <div class="p-6 md:p-8 space-y-6 max-h-[85vh] overflow-y-auto">
+        <!-- 모달 헤더 -->
+        <div class="flex items-start justify-between gap-4 border-b border-outline/50 pb-5">
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary text-white">${s.category || '기타'}</span>
+              ${s.siteCode && s.siteCode !== '-' ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-secondary/10 text-secondary border border-secondary/20">${s.siteCode}</span>` : ''}
+              <span class="text-xs font-bold text-on-surface-variant">${s.client || '고객사'}</span>
+            </div>
+            <h2 class="text-2xl font-bold text-on-surface leading-tight">${s.title}</h2>
+          </div>
+          <button type="button" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors shrink-0 cursor-pointer" onclick="PCApp.closeModal('pc-modal')">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+
+        <!-- 기본 정보 그리드 -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-surface-container-low p-4 rounded-2xl border border-outline/40 text-xs">
+          <div>
+            <span class="text-on-surface-variant block mb-1">고객사(발주처)</span>
+            <strong class="text-on-surface text-sm font-bold">${s.client || '-'}</strong>
+          </div>
+          <div>
+            <span class="text-on-surface-variant block mb-1">사이트 코드</span>
+            <strong class="text-on-surface text-sm font-mono font-bold">${s.siteCode || '-'}</strong>
+          </div>
+          <div>
+            <span class="text-on-surface-variant block mb-1">등록자</span>
+            <strong class="text-on-surface text-sm font-bold">${s.author || '-'}</strong>
+          </div>
+          <div>
+            <span class="text-on-surface-variant block mb-1">등록일자</span>
+            <strong class="text-on-surface text-sm font-bold">${s.date || '-'}</strong>
+          </div>
+        </div>
+
+        <!-- 접속 URL 섹션 -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-bold text-base text-on-surface flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+              접속 URL 목록 (${urls.length}개)
+            </h3>
+          </div>
+          <div class="space-y-2.5">
+            ${urlsHtml}
+          </div>
+        </div>
+
+        <!-- 고객사 담당자 섹션 -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-bold text-base text-on-surface flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+              고객사 담당자 명단 (${contacts.length}명)
+            </h3>
+          </div>
+          <div class="space-y-2.5">
+            ${contactsHtml}
+          </div>
+        </div>
+
+        <!-- 첨부파일 섹션 -->
+        ${(s.attachments && s.attachments.length > 0) ? `
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-bold text-base text-on-surface flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                첨부파일 (${s.attachments.length}개)
+              </h3>
+            </div>
+            <div class="space-y-2">
+              ${s.attachments.map(att => `
+                <div class="flex items-center justify-between bg-surface-container-low p-3 rounded-xl border border-outline/40">
+                  <span class="text-xs font-bold text-on-surface truncate">${att.name}</span>
+                  <span class="text-[11px] text-on-surface-variant">${att.date || ''}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- 댓글 / 작업 메모 섹션 -->
+        ${(s.comments && s.comments.length > 0) ? `
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-bold text-base text-on-surface flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+                작업 메모 / 댓글 (${s.comments.length}건)
+              </h3>
+            </div>
+            <div class="space-y-2.5">
+              ${s.comments.map(c => `
+                <div class="p-3 bg-surface-container-low rounded-xl border border-outline/40 text-xs">
+                  <div class="flex items-center justify-between mb-1">
+                    <strong class="text-primary font-bold">${c.author}</strong>
+                    <span class="text-[11px] text-on-surface-variant font-medium">${c.date}</span>
+                  </div>
+                  <p class="text-on-surface whitespace-pre-line leading-relaxed">${c.content}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- 하단 닫기 액션바 -->
+        <div class="pt-4 border-t border-outline/50 flex justify-end">
+          <button type="button" class="px-6 py-2.5 rounded-xl font-bold text-sm bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors cursor-pointer" onclick="PCApp.closeModal('pc-modal')">
+            닫기
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.openModal('pc-modal');
+  },
+
+  copyText(text, label = '내용') {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        this.showToast(`${label}이(가) 클립보드에 복사되었습니다.`);
+      }).catch(() => {
+        this.showToast(`${label} 복사에 실패했습니다.`);
+      });
+    } else {
+      this.showToast(`${label} 복사 기능을 지원하지 않는 브라우저입니다.`);
+    }
   },
 
   // 6-9. Request Screen (Leave & Outwork Form)

@@ -64,6 +64,7 @@ service cloud.firestore {
     match /todos/{docId}               { allow read: if isMember(); allow write: if isAdmin(); }
     match /trashed_todos/{docId}       { allow read: if isMember(); allow write: if isAdmin(); }
     match /projects/{docId}            { allow read: if isMember(); allow write: if isAdmin(); }
+    match /sites/{docId}               { allow read: if isMember(); allow write: if isAdmin(); }
     match /notifications/{docId}       { allow read: if isMember(); allow write: if isAdmin(); }
 
     // 업무 보고 3종

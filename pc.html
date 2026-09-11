@@ -344,7 +344,7 @@
           </div>
         </div>
 
-        <!-- 3-Segment Top Tabs (팀별 / 주간 / 일간 업무보고 - 휴가/외근 신청 탭 스타일과 100% 동일 적용) -->
+        <!-- 3-Segment Top Tabs (팀별 / 주간 / 일간 업무보고) -->
         <div class="flex gap-3 mb-6">
           <button type="button" id="pc-tab-btn-report-team" onclick="PCApp.switchWorkReportTab('team')" class="flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab">
             👥 팀별 업무보고
@@ -357,14 +357,30 @@
           </button>
         </div>
 
-        <!-- Dynamic Sub-Controller Bar (Weekly / Daily / Team) -->
-        <div id="pc-work-report-sub-controls" class="mb-6">
-          <!-- Dynamically populated by PCApp.renderWorkReportControls() -->
-        </div>
+        <!-- Bento Grid: 좌측 달력 위젯 & 우측 업무보고 본문 컨테이너 -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <!-- 좌측 4열: 근태일지 캘린더 위젯 -->
+          <div class="lg:col-span-4 space-y-4">
+            <div id="pc-work-report-calendar-widget" class="bg-surface-container-low border border-outline/70 rounded-3xl p-5 shadow-xs">
+              <!-- Dynamically populated by PCApp.renderWorkReportCalendar() -->
+            </div>
+            <div id="pc-work-report-calendar-stats" class="space-y-2">
+              <!-- Dynamically populated summary tags -->
+            </div>
+          </div>
 
-        <!-- Report List Container -->
-        <div class="space-y-6" id="pc-workreport-full-container">
-          <!-- Dynamically rendered by PCApp.renderWorkReportView() -->
+          <!-- 우측 8열: 컨트롤러 및 업무보고 리스트 -->
+          <div class="lg:col-span-8 space-y-6">
+            <!-- Dynamic Sub-Controller Bar (Weekly / Daily / Team) -->
+            <div id="pc-work-report-sub-controls">
+              <!-- Dynamically populated by PCApp.renderWorkReportControls() -->
+            </div>
+
+            <!-- Report List Container -->
+            <div class="space-y-6" id="pc-workreport-full-container">
+              <!-- Dynamically rendered by PCApp.renderWorkReportView() -->
+            </div>
+          </div>
         </div>
       </section>
 
@@ -598,13 +614,14 @@
 
       <!-- SCREEN 9: PROJECTS VIEW (프로젝트 관리) -->
       <section class="pc-screen-view p-8" id="pc-screen-project">
+        <!-- Screen Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-outline">
           <div>
             <div class="flex items-center gap-3">
-              <h2 class="text-2xl font-bold text-on-surface">프로젝트 관리</h2>
-              <span class="px-3 py-1 bg-primary/10 text-primary font-bold rounded-full text-base" id="pc-project-total-badge">10개</span>
+              <h2 class="text-2xl font-bold text-on-surface" id="pc-project-screen-title">프로젝트 관리</h2>
+              <span class="px-3 py-1 bg-primary/10 text-primary font-bold rounded-full text-base" id="pc-project-total-badge">370개</span>
             </div>
-            <p class="text-base text-on-surface-variant font-medium mt-1">구축, 개선사업, 유지보수 및 운영용역 프로젝트 통합 관리</p>
+            <p class="text-base text-on-surface-variant font-medium mt-1" id="pc-project-screen-desc">구축, 개선사업, 유지보수 및 운영용역 프로젝트 통합 관리</p>
           </div>
 
           <!-- Search & Sort Controls -->
@@ -614,9 +631,9 @@
               <input 
                 type="text" 
                 id="pc-project-search-input" 
-                placeholder="프로젝트명, 고객사, 담당자 검색..." 
+                placeholder="검색어를 입력하세요..." 
                 class="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary transition-all placeholder:text-on-surface-variant/60" 
-                oninput="PCApp.setProjectSearch(this.value)" 
+                oninput="PCApp.onProjectSearchInput(this.value)" 
               />
               <svg class="w-5 h-5 text-on-surface-variant absolute left-3 top-3" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
@@ -628,12 +645,12 @@
               <select 
                 id="pc-project-sort-select" 
                 class="pl-4 pr-9 py-2.5 bg-surface-container-low border border-outline rounded-xl text-base font-bold text-on-surface focus:outline-none focus:border-primary cursor-pointer transition-all appearance-none" 
-                onchange="PCApp.setProjectSort(this.value)"
+                onchange="PCApp.onProjectSortChange(this.value)"
               >
                 <option value="recommend">추천순 (기본)</option>
-                <option value="recent">최근수정순</option>
+                <option value="recent">최근등록순</option>
                 <option value="name">이름순 (가나다)</option>
-                <option value="progress">진척도 높은순</option>
+                <option value="progress">진척도순</option>
                 <option value="deadline">마감임박순</option>
               </select>
               <svg class="w-4 h-4 text-on-surface-variant absolute right-3 top-3.5 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
@@ -643,40 +660,80 @@
           </div>
         </div>
 
-        <!-- Filter Category Tabs (전체, 진행중, 유지보수, 개선사업, 구축중, 운영용역, 완료) -->
-        <div class="flex gap-2 mb-6 overflow-x-auto pb-2" id="pc-project-filter-tabs">
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0 flex items-center gap-1.5" data-filter="all" onclick="PCApp.setProjectFilter('all', this)">
-            <span>전체</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20" id="pc-proj-count-all">10</span>
-          </button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="in_progress" onclick="PCApp.setProjectFilter('in_progress', this)">
-            <span>진행중</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-in_progress">0</span>
-          </button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="maintenance" onclick="PCApp.setProjectFilter('maintenance', this)">
-            <span>유지보수</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-maintenance">0</span>
-          </button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="improvement" onclick="PCApp.setProjectFilter('improvement', this)">
-            <span>개선사업</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-improvement">0</span>
-          </button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="build" onclick="PCApp.setProjectFilter('build', this)">
-            <span>구축중</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-build">0</span>
-          </button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="operation" onclick="PCApp.setProjectFilter('operation', this)">
-            <span>운영용역</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-operation">0</span>
-          </button>
-          <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="completed" onclick="PCApp.setProjectFilter('completed', this)">
-            <span>완료</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-completed">0</span>
-          </button>
+        <!-- Sub Tabs: [프로젝트] / [사이트] -->
+        <div class="flex items-center gap-3 mb-6">
+          <div class="inline-flex p-1 bg-surface-container-low rounded-2xl border border-outline/40 shadow-2xs">
+            <button class="px-5 py-2.5 rounded-xl font-bold text-base transition-all bg-primary text-white shadow-xs flex items-center gap-2 cursor-pointer" id="pc-proj-subtab-project" onclick="PCApp.switchProjectSubTab('project')">
+              <span>💼 프로젝트</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20" id="pc-subtab-count-project">370</span>
+            </button>
+            <button class="px-5 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer" id="pc-proj-subtab-site" onclick="PCApp.switchProjectSubTab('site')">
+              <span>🌐 사이트</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-site">410</span>
+            </button>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pc-project-grid">
-          <!-- Rendered by pc.js -->
+        <!-- SUBVIEW 1: PROJECTS CONTAINER -->
+        <div id="pc-subview-project" class="space-y-6">
+          <!-- Filter Category Tabs (전체, 진행중, 유지보수, 개선사업, 구축중, 운영용역, 완료) -->
+          <div class="flex gap-2 overflow-x-auto pb-2" id="pc-project-filter-tabs">
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0 flex items-center gap-1.5" data-filter="all" onclick="PCApp.setProjectFilter('all', this)">
+              <span>전체</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20" id="pc-proj-count-all">370</span>
+            </button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="in_progress" onclick="PCApp.setProjectFilter('in_progress', this)">
+              <span>진행중</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-in_progress">0</span>
+            </button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="maintenance" onclick="PCApp.setProjectFilter('maintenance', this)">
+              <span>유지보수</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-maintenance">0</span>
+            </button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="improvement" onclick="PCApp.setProjectFilter('improvement', this)">
+              <span>개선사업</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-improvement">0</span>
+            </button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="build" onclick="PCApp.setProjectFilter('build', this)">
+              <span>구축중</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-build">0</span>
+            </button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="operation" onclick="PCApp.setProjectFilter('operation', this)">
+              <span>운영용역</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-operation">0</span>
+            </button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="completed" onclick="PCApp.setProjectFilter('completed', this)">
+              <span>완료</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-completed">0</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pc-project-grid">
+            <!-- Rendered by pc.js -->
+          </div>
+        </div>
+
+        <!-- SUBVIEW 2: SITES CONTAINER (기본 숨김) -->
+        <div id="pc-subview-site" class="space-y-6 hidden">
+          <!-- Site Category Filter Chips -->
+          <div class="flex gap-2 overflow-x-auto pb-2" id="pc-site-filter-tabs">
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0 flex items-center gap-1.5 cursor-pointer" data-filter="all" onclick="PCApp.setSiteFilter('all', this)">
+              <span>전체</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20" id="pc-site-count-all">410</span>
+            </button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5 cursor-pointer" data-filter="has_urls" onclick="PCApp.setSiteFilter('has_urls', this)">
+              <span>접속 URL 등록</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-site-count-has-urls">0</span>
+            </button>
+            <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5 cursor-pointer" data-filter="has_contacts" onclick="PCApp.setSiteFilter('has_contacts', this)">
+              <span>담당자 등록</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-site-count-has-contacts">0</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pc-site-grid">
+            <!-- Rendered by pc.js -->
+          </div>
         </div>
       </section>
 

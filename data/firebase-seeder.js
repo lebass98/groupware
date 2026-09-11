@@ -34,6 +34,7 @@ const SPEC = [
   { key: 'todos', kind: 'docs', collection: 'todos', id: (t) => String(t.id) },
   { key: 'trashedTodos', kind: 'docs', collection: 'trashed_todos', id: (t) => String(t.id) },
   { key: 'projects', kind: 'docs', collection: 'projects', id: (p) => String(p.id) },
+  { key: 'sites', kind: 'docs', collection: 'sites', id: (s) => String(s.id) },
   { key: 'notifications', kind: 'docs', collection: 'notifications', id: (n) => String(n.id) },
 
   // --- 업무 보고 3종 ---
