@@ -310,198 +310,1259 @@ window.MockData = {
   // 4. 일정 데이터맵 (YYYY-M-D)
   schedules: {
     "2026-8-3": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      }
     ],
     "2026-8-4": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" },
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "최우석 과장",
+        "avatar": "./resource/image/profile_mobile.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "손석호 주임",
+        "avatar": "./resource/image/profile_pub.png"
+      }
     ],
     "2026-8-5": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" },
-      { title: "반반차 [09:00~11:00]", location: "", time: "09:00 ~ 11:00", type: "warning", badge: "반반차", author: "윤익수 부장", avatar: "./resource/image/profile_blue.png" },
-      { title: "외근(오후) 건강가정진흥원 방문", location: "건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      },
+      {
+        "title": "반반차 [09:00~11:00]",
+        "location": "",
+        "time": "09:00~11:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "윤익수 부장",
+        "avatar": "./resource/image/profile_blue.png"
+      },
+      {
+        "title": "외근(오후) 남기현 오후 건강가정진흥원",
+        "location": "건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
     ],
     "2026-8-6": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" },
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "외근(종일) API 확인 작업", location: "인천공항테크마켓", time: "09:00 ~ 18:00", type: "primary", badge: "외근", author: "안영재 대리", avatar: "./resource/image/profile_pro.png" },
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "유종현 주임", avatar: "./resource/image/profile_jsp.png" },
-      { title: "외근(오전) 주간보고", location: "한가원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" },
-      { title: "연차", location: "", time: "종일", type: "error", badge: "연차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "외근(종일) API 확인 작업",
+        "location": "인천공항테크마켓",
+        "time": "09:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "안영재 대리",
+        "avatar": "./resource/image/profile_pro.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "유종현 주임",
+        "avatar": "./resource/image/profile_jsp.png"
+      },
+      {
+        "title": "외근(오전) 주간보고",
+        "location": "한가원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "조지혜 과장",
+        "avatar": "./resource/image/profile_red_20260602.png"
+      }
     ],
     "2026-8-7": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "error", badge: "반차", author: "이재광 팀장", avatar: "profile.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "신현우 주임", avatar: "./resource/image/profile_pink____________.png" },
-      { title: "반반차 [16:00~18:00]", location: "", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
-      { title: "외근(오후) 비트라이스, 고양시스템 외근", location: "비트라이스 외", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "error",
+        "badge": "반차",
+        "author": "이재광 팀장",
+        "avatar": "profile.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "신현우 주임",
+        "avatar": "./resource/image/profile_pink____________.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "location": "",
+        "time": "16:00~18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오후) 남기현 오후 비트라이스, 교명시스템 외근",
+        "location": "비트라이스 외",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
     ],
     "2026-8-10": [
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" },
-      { title: "반반차 [16:00~18:00]", location: "", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" }
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "손석호 주임",
+        "avatar": "./resource/image/profile_pub.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "location": "",
+        "time": "16:00~18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "조지혜 과장",
+        "avatar": "./resource/image/profile_red_20260602.png"
+      }
     ],
     "2026-8-11": [
-      { title: "외근(오후) 수소포탈 업무 미팅", location: "한국수소연합", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "외근(오후) 규제개선 미팅", location: "한국수소연합", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
-      { title: "외근(오후) 수소연합 방문", location: "수소연합", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+      {
+        "title": "외근(오후) 수소포탈 업무미팅",
+        "location": "한국수소연합",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "외근(오후) 규제개선 미팅",
+        "location": "한국수소연합",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "외근(오후) 남기현 오후 수소연합 방문",
+        "location": "수소연합",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
     ],
     "2026-8-12": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
-      { title: "외근(오전) 건강가정진흥원 미팅", location: "건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "외근(오후) 유비디시즌 미팅", location: "유비디시즌", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "외근(오후) 월간회의", location: "한국건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "외근(오후) 월간회의", location: "한국건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
-      { title: "외근(오후) 월간회의", location: "한국건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
-      { title: "외근(오후) 월간보고", location: "한가원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" },
-      { title: "연차", location: "", time: "종일", type: "error", badge: "연차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" },
-      { title: "반반차 [16:00~18:00]", location: "", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "윤익수 부장", avatar: "./resource/image/profile_blue.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "외근(오전) 남기현 오전 건강가정진흥원",
+        "location": "건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) 남기현 오후 유비디시즌",
+        "location": "유비디시즌",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) 월간회의",
+        "location": "한국건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "외근(오후) 월간회의",
+        "location": "한국건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오후) 월간회의",
+        "location": "한국건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "외근(오후) 월간보고",
+        "location": "한가원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "조지혜 과장",
+        "avatar": "./resource/image/profile_red_20260602.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "location": "",
+        "time": "16:00~18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "윤익수 부장",
+        "avatar": "./resource/image/profile_blue.png"
+      }
     ],
     "2026-8-13": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "명희진 주임", avatar: "./resource/image/profile_gray_20240502__.png" },
-      { title: "외근(오전) 라마카롱소프트 미팅", location: "라마카롱 소프트", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "외근(오후) 퓨처누리 방문", location: "퓨처누리", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "명희진 주임",
+        "avatar": "./resource/image/profile_gray_20240502__.png"
+      },
+      {
+        "title": "외근(오전) 남기현 오전 리마커블소프트 방문",
+        "location": "리마커블 소프트",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) 남기현 오후 퓨처누리 방문",
+        "location": "퓨처누리",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
     ],
     "2026-8-14": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "명희진 주임", avatar: "./resource/image/profile_gray_20240502__.png" },
-      { title: "외근(오후) 인천공항 방문", location: "인천공항", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "외근(종일) IDC 센터 방문", location: "인천공항테크마켓", time: "09:00 ~ 18:00", type: "primary", badge: "외근", author: "안영재 대리", avatar: "./resource/image/profile_pro.png" },
-      { title: "외근(오전) 프로젝트 궁리 방문", location: "프로젝트 궁리", time: "09:00 ~ 12:00", "type": "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "명희진 주임",
+        "avatar": "./resource/image/profile_gray_20240502__.png"
+      },
+      {
+        "title": "외근(오후) 남기현 오후 인천공항 방문",
+        "location": "인천공항",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(종일) IDC 센터 방문",
+        "location": "인천공항테크마켓",
+        "time": "09:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "안영재 대리",
+        "avatar": "./resource/image/profile_pro.png"
+      },
+      {
+        "title": "외근(오전) 남기현 오전 프로젝트 궁리 방문",
+        "location": "프로젝트 궁리 방문",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
     ],
     "2026-8-18": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "연차", location: "", time: "종일", type: "error", badge: "연차", author: "이재광 팀장", avatar: "profile.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "error",
+        "badge": "연차",
+        "author": "이재광 팀장",
+        "avatar": "profile.png"
+      }
     ],
     "2026-8-19": [
-      { title: "연차", location: "", time: "종일", type: "error", badge: "연차", author: "이재광 팀장", avatar: "profile.png" },
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "한상희 사원", avatar: "./resource/image/profile_star_20250326.png" },
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
-      { title: "외근(오전) 주간보고", location: "한가원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "error",
+        "badge": "연차",
+        "author": "이재광 팀장",
+        "avatar": "profile.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "한상희 사원",
+        "avatar": "./resource/image/profile_star_20250326.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "외근(오전) 주간보고",
+        "location": "한가원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      },
+      {
+        "title": "외근(오후) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      }
     ],
     "2026-8-20": [
-      { title: "연차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "연차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" },
-      { title: "외근(오후) 경성 이스엠디 미팅", location: "이스엠디", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "반반차 [16:00~18:00]", location: "", time: "16:00 ~ 18:00", type: "error", badge: "반반차", author: "이재광 팀장", avatar: "profile.png" }
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      },
+      {
+        "title": "외근(오후) 남기현 점심 에스엠티 미팅",
+        "location": "에스엠티",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "location": "",
+        "time": "16:00~18:00",
+        "type": "error",
+        "badge": "반반차",
+        "author": "이재광 팀장",
+        "avatar": "profile.png"
+      }
     ],
     "2026-8-21": [
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
-      { title: "외근(오후) 지티씨큐 방문", location: "지티시큐", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "반반차 [16:00~18:00]", location: "", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "윤익수 부장", avatar: "./resource/image/profile_blue.png" }
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오후) 남기현 오후 지티씨큐 방문",
+        "location": "지티시큐",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "location": "",
+        "time": "16:00~18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "윤익수 부장",
+        "avatar": "./resource/image/profile_blue.png"
+      }
     ],
     "2026-8-24": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "안영재 대리", avatar: "./resource/image/profile_pro.png" },
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "곽재훈 대리", avatar: "./resource/image/profile_spring.png" },
-      { title: "연차", location: "", time: "종일", type: "error", badge: "연차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" },
-      { title: "반차(오전)", location: "", time: "09:00 ~ 13:00", type: "warning", badge: "반차", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "반반차 [16:00~18:00]", location: "", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "명희진 주임", avatar: "./resource/image/profile_gray_20240502__.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "안영재 대리",
+        "avatar": "./resource/image/profile_pro.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "곽재훈 대리",
+        "avatar": "./resource/image/profile_spring.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "조지혜 과장",
+        "avatar": "./resource/image/profile_red_20260602.png"
+      },
+      {
+        "title": "반차(오전)",
+        "location": "",
+        "time": "09:00 ~ 14:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "location": "",
+        "time": "16:00~18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "명희진 주임",
+        "avatar": "./resource/image/profile_gray_20240502__.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "손석호 주임",
+        "avatar": "./resource/image/profile_pub.png"
+      }
     ],
     "2026-8-25": [
-      { title: "반차(오전)", location: "", time: "09:00 ~ 13:00", type: "warning", badge: "반차", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "외근(오후) 용인문화원 방문", location: "용인문화원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+      {
+        "title": "반차(오전)",
+        "location": "",
+        "time": "09:00 ~ 14:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) 남기현, 이채원 용인문화원 방문",
+        "location": "용인문화원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
     ],
     "2026-8-26": [
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
-      { title: "외근(오전) 주간보고", location: "한가원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" }
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "외근(오전) 주간보고",
+        "location": "한가원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      }
     ],
     "2026-8-27": [
-      { title: "외근(종일) 업무미팅 (세종)", location: "지역고용정보네트워크", time: "09:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "반반차 [16:00~18:00]", location: "", time: "16:00 ~ 18:00", type: "warning", badge: "반반차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" }
+      {
+        "title": "외근(종일) 업무미팅 (세종)",
+        "location": "지역고용정보네트워크",
+        "time": "09:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "location": "",
+        "time": "16:00~18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "조지혜 과장",
+        "avatar": "./resource/image/profile_red_20260602.png"
+      },
+      {
+        "title": "외근(종일) 회의 참석",
+        "location": "고용노동부(지역고용네트워크)",
+        "time": "09:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "안영재 대리",
+        "avatar": "./resource/image/profile_pro.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "location": "",
+        "time": "16:00~18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "최우석 과장",
+        "avatar": "./resource/image/profile_mobile.png"
+      }
     ],
     "2026-8-28": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "최우석 과장",
+        "avatar": "./resource/image/profile_mobile.png"
+      },
+      {
+        "title": "외근(오전) 남기현 오전 과학치안진흥센터",
+        "location": "과학치안진흥센터",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오전) 남기현 오전 건강가정진흥원",
+        "location": "건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "명희진 주임",
+        "avatar": "./resource/image/profile_gray_20240502__.png"
+      }
     ],
     "2026-8-31": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "최지영 과장", avatar: "./resource/image/profile_white.png" },
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" },
-      { title: "반반차 [09:00~11:00]", location: "", time: "09:00 ~ 11:00", type: "warning", badge: "반반차", author: "신현우 주임", avatar: "./resource/image/profile_pink____________.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "최지영 과장",
+        "avatar": "./resource/image/profile_white.png"
+      },
+      {
+        "title": "반반차 [09:00~11:00]",
+        "location": "",
+        "time": "09:00~11:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "신현우 주임",
+        "avatar": "./resource/image/profile_pink____________.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      }
     ],
     "2026-9-1": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      }
     ],
     "2026-9-2": [
-      { title: "외근(오후) 월간보고", location: "한국건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
-      { title: "외근(오후) 건강가정진흥원 방문", location: "건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "외근(오후) 월간보고", location: "한국건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
-      { title: "외근(오후) 월간보고", location: "한가원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" },
-      { title: "외근(오후) 통합 월간보고", location: "한국건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" }
+      {
+        "title": "외근(오후) 월간보고",
+        "location": "한국건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "외근(오후) 남기현 오후 건강가정진흥원",
+        "location": "건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) 월간보고",
+        "location": "한국건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "외근(오후) 월간보고",
+        "location": "한가원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      },
+      {
+        "title": "외근(오후) 통합 월간보고",
+        "location": "한국건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      }
     ],
     "2026-9-3": [
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
     ],
     "2026-9-4": [
-      { title: "외근(오후) 업무미팅", location: "한국관세무역개발원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
-      { title: "외근(오후) 업무미팅", location: "한국관세무역개발원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "외근(오후) 업무미팅", location: "관세무역개발원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "조지혜 과장", avatar: "./resource/image/profile_red_20260602.png" }
+      {
+        "title": "외근(오후) 업무미팅",
+        "location": "한국관세무역개발원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "외근(오후) 업무미팅",
+        "location": "한국관세무역개발원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) 업무미팅",
+        "location": "관세무역개발원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "조지혜 과장",
+        "avatar": "./resource/image/profile_red_20260602.png"
+      }
     ],
     "2026-9-7": [
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "오은주 차장", avatar: "./resource/image/profile_sky.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" }
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "오은주 차장",
+        "avatar": "./resource/image/profile_sky.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "손석호 주임",
+        "avatar": "./resource/image/profile_pub.png"
+      }
     ],
     "2026-9-8": [
-      { title: "외근(종일) 데이터 품질진단 2차", location: "지역고용정보네트워크", time: "09:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
-      { title: "생일휴가", location: "", time: "종일", type: "secondary", badge: "휴가", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" },
-      { title: "외근(종일) SDQ 데이터정합성작업", location: "한국고용정보원 (지역고용네트워크)", time: "09:00 ~ 18:00", type: "primary", badge: "외근", author: "안영재 대리", avatar: "./resource/image/profile_pro.png" },
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "손석호 주임", avatar: "./resource/image/profile_pub.png" }
+      {
+        "title": "외근(종일) 데이터 품질진단 2차",
+        "location": "지역고용정보네트워크",
+        "time": "09:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "생일휴가",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "휴가",
+        "author": "최우석 과장",
+        "avatar": "./resource/image/profile_mobile.png"
+      },
+      {
+        "title": "외근(종일) SDQ 데이터정합성 작업",
+        "location": "한국고용정보원(지역고용네트워크)",
+        "time": "09:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "안영재 대리",
+        "avatar": "./resource/image/profile_pro.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "손석호 주임",
+        "avatar": "./resource/image/profile_pub.png"
+      }
     ],
     "2026-9-9": [
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "이채원 사원", avatar: "./resource/image/profile_cool_20241224_lee.png" },
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "유종현 주임", avatar: "./resource/image/profile_jsp.png" },
-      { title: "외근(오전) 주간회의", location: "한국건강가정진흥원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "장현아 수습", avatar: "./resource/image/profile_janghyunah.png" },
-      { title: "외근(오전) 주간보고", location: "한가원", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "error", badge: "반차", author: "이재광 팀장", avatar: "profile.png" },
-      { title: "반차(오후)", location: "", time: "13:00 ~ 18:00", type: "warning", badge: "반차", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "유종현 주임",
+        "avatar": "./resource/image/profile_jsp.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "외근(오전) 주간보고",
+        "location": "한가원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "error",
+        "badge": "반차",
+        "author": "이재광 팀장",
+        "avatar": "profile.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
     ],
     "2026-9-10": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" },
-      { title: "외근(오후) 건강가정진흥원 방문", location: "건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" },
-      { title: "외근(오후) 평가시스템 완료보고", location: "한국건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "박규태 대리", avatar: "./resource/image/profile_green.png" },
-      { title: "외근(오후) 평가시스템 완료보고회", location: "한국건강가정진흥원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "김종규 팀장", avatar: "./resource/image/profile_john.png" },
-      { title: "외근(오후) 완료보고회", location: "한가원", time: "13:00 ~ 18:00", type: "primary", badge: "외근", author: "윤진성 과장", avatar: "./resource/image/profile_apple_20250611.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "최우석 과장",
+        "avatar": "./resource/image/profile_mobile.png"
+      },
+      {
+        "title": "외근(오후) 남기현 오후 건강가정진흥원",
+        "location": "건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오후) 평가시스템 완료보고",
+        "location": "한국건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "외근(오후) 평가시스템 완료보고회",
+        "location": "한국건강가정진흥원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "김종규 팀장",
+        "avatar": "./resource/image/profile_john.png"
+      },
+      {
+        "title": "외근(오후) 완료보고회",
+        "location": "한가원",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      }
     ],
     "2026-9-11": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "최우석 과장", avatar: "./resource/image/profile_mobile.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "최우석 과장",
+        "avatar": "./resource/image/profile_mobile.png"
+      },
+      {
+        "title": "외근(오전) 업무미팅",
+        "location": "한국관세무역개발원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "외근(오전) 남기현 오전 관세무역개발원",
+        "location": "관세무역개발원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "조지혜 과장",
+        "avatar": "./resource/image/profile_red_20260602.png"
+      },
+      {
+        "title": "외근(오전) 남기현 오전 퓨처누리 방문",
+        "location": "퓨처누리",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "반반차 [16:00~18:00]",
+        "location": "",
+        "time": "16:00~18:00",
+        "type": "warning",
+        "badge": "반반차",
+        "author": "명희진 주임",
+        "avatar": "./resource/image/profile_gray_20240502__.png"
+      }
     ],
     "2026-9-14": [
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "안영재 대리", avatar: "./resource/image/profile_pro.png" },
-      { title: "연차", location: "", time: "종일", type: "secondary", badge: "연차", author: "곽재훈 대리", avatar: "./resource/image/profile_spring.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "안영재 대리",
+        "avatar": "./resource/image/profile_pro.png"
+      },
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "연차",
+        "author": "곽재훈 대리",
+        "avatar": "./resource/image/profile_spring.png"
+      },
+      {
+        "title": "외근(오전) 내방",
+        "location": "유틸렉스",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
     ],
     "2026-9-16": [
-      { title: "외근(오전) 에스큐엔티 방문", location: "에스큐엔티", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "남기현 본부장", avatar: "./resource/image/profile_help.png" }
+      {
+        "title": "외근(오전) 남기현 오전 에스큐엔티 방문",
+        "location": "에스큐엔티",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      }
     ],
     "2026-9-17": [
-      { title: "외근(오전) 수소포털 중간보고회", location: "한국수소연합", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "한상희 사원", avatar: "./resource/image/profile_star_20250326.png" },
-      { title: "외근(오전) 수소포털 중간보고회", location: "한국수소연합", time: "09:00 ~ 12:00", type: "primary", badge: "외근", author: "박규태 대리", avatar: "./resource/image/profile_green.png" }
+      {
+        "title": "외근(오전) 수소포털 중간보고회",
+        "location": "한국수소연합",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "한상희 사원",
+        "avatar": "./resource/image/profile_star_20250326.png"
+      },
+      {
+        "title": "외근(오전) 수소포털 중간보고회",
+        "location": "한국수소연합",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "박규태 대리",
+        "avatar": "./resource/image/profile_green.png"
+      }
     ],
     "2026-9-18": [
-      { title: "연차", location: "", time: "종일", type: "error", badge: "연차", author: "이재광 팀장", avatar: "profile.png" }
+      {
+        "title": "연차",
+        "location": "",
+        "time": "종일",
+        "type": "error",
+        "badge": "연차",
+        "author": "이재광 팀장",
+        "avatar": "profile.png"
+      }
     ],
     "2026-9-21": [
-      { title: "공가", location: "", time: "종일", type: "secondary", badge: "공가", author: "유종현 주임", avatar: "./resource/image/profile_jsp.png" }
+      {
+        "title": "공가",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "공가",
+        "author": "유종현 주임",
+        "avatar": "./resource/image/profile_jsp.png"
+      }
     ],
     "2026-9-22": [
-      { title: "공가", location: "", time: "종일", type: "secondary", badge: "공가", author: "유종현 주임", avatar: "./resource/image/profile_jsp.png" },
-      { title: "생일휴가", location: "", time: "종일", type: "secondary", badge: "휴가", author: "윤익수 부장", avatar: "./resource/image/profile_blue.png" }
+      {
+        "title": "공가",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "공가",
+        "author": "유종현 주임",
+        "avatar": "./resource/image/profile_jsp.png"
+      },
+      {
+        "title": "생일휴가",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "휴가",
+        "author": "윤익수 부장",
+        "avatar": "./resource/image/profile_blue.png"
+      }
     ],
     "2026-9-23": [
-      { title: "공가", location: "", time: "종일", type: "secondary", badge: "공가", author: "유종현 주임", avatar: "./resource/image/profile_jsp.png" }
+      {
+        "title": "공가",
+        "location": "",
+        "time": "종일",
+        "type": "secondary",
+        "badge": "공가",
+        "author": "유종현 주임",
+        "avatar": "./resource/image/profile_jsp.png"
+      }
     ],
     "2026-9-28": [
-      { title: "생일휴가", location: "", time: "종일", type: "error", badge: "휴가", author: "이재광 팀장", avatar: "profile.png" }
+      {
+        "title": "생일휴가",
+        "location": "",
+        "time": "종일",
+        "type": "error",
+        "badge": "휴가",
+        "author": "이재광 팀장",
+        "avatar": "profile.png"
+      }
     ]
+ 
   },
 
   // 5. 근태 및 출퇴근 기록
@@ -514,11 +1575,304 @@ window.MockData = {
       allowedRadiusMeters: 500
     },
     logs: [
-      { id: 1, monthStr: "10월", dayNum: "24", dayName: "목요일", statusText: "출근 • 8시간 12분", statusType: "normal", checkInTimeStr: "오전 08:54", checkOutTimeStr: "오후 05:06", durationSec: 29520 },
-      { id: 2, monthStr: "10월", dayNum: "23", dayName: "수요일", statusText: "출근 • 7시간 45분", statusType: "normal", checkInTimeStr: "오전 09:15", checkOutTimeStr: "오후 05:00", durationSec: 27900 },
-      { id: 3, monthStr: "10월", dayNum: "22", dayName: "화요일", statusText: "재택 • 8시간 00분", statusType: "remote", checkInTimeStr: "오전 09:00", checkOutTimeStr: "오후 05:00", durationSec: 28800 },
-      { id: 4, monthStr: "10월", dayNum: "21", dayName: "월요일", statusText: "출근 • 9시간 02분", statusType: "normal", checkInTimeStr: "오전 08:48", checkOutTimeStr: "오후 05:50", durationSec: 32520 },
-      { id: 5, monthStr: "10월", dayNum: "18", dayName: "금요일", statusText: "연차 • 휴가", statusType: "remote", checkInTimeStr: "-", checkOutTimeStr: "-", durationSec: 28800 }
+    {
+        "id": 1,
+        "monthStr": "9월",
+        "dayNum": "11",
+        "dayName": "금요일",
+        "statusText": "출근 • 근무중",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 10:18",
+        "checkOutTimeStr": "-",
+        "durationSec": 0
+      },
+      {
+        "id": 2,
+        "monthStr": "9월",
+        "dayNum": "10",
+        "dayName": "목요일",
+        "statusText": "출근 • 9시간 16분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:44",
+        "checkOutTimeStr": "오후 06:00",
+        "durationSec": 33360
+      },
+      {
+        "id": 3,
+        "monthStr": "9월",
+        "dayNum": "9",
+        "dayName": "수요일",
+        "statusText": "출근 • 근무중",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:58",
+        "checkOutTimeStr": "-",
+        "durationSec": 0
+      },
+      {
+        "id": 4,
+        "monthStr": "9월",
+        "dayNum": "8",
+        "dayName": "화요일",
+        "statusText": "출근 • 9시간 8분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:52",
+        "checkOutTimeStr": "오후 06:00",
+        "durationSec": 32880
+      },
+      {
+        "id": 5,
+        "monthStr": "9월",
+        "dayNum": "7",
+        "dayName": "월요일",
+        "statusText": "출근 • 9시간 23분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:46",
+        "checkOutTimeStr": "오후 06:09",
+        "durationSec": 33780
+      },
+      {
+        "id": 6,
+        "monthStr": "9월",
+        "dayNum": "4",
+        "dayName": "금요일",
+        "statusText": "출근 • 2시간 18분",
+        "statusType": "normal",
+        "checkInTimeStr": "오후 03:44",
+        "checkOutTimeStr": "오후 06:02",
+        "durationSec": 8280
+      },
+      {
+        "id": 7,
+        "monthStr": "9월",
+        "dayNum": "3",
+        "dayName": "목요일",
+        "statusText": "출근 • 6시간 43분",
+        "statusType": "normal",
+        "checkInTimeStr": "오후 02:09",
+        "checkOutTimeStr": "오후 08:52",
+        "durationSec": 24180
+      },
+      {
+        "id": 8,
+        "monthStr": "9월",
+        "dayNum": "2",
+        "dayName": "수요일",
+        "statusText": "출근 • 9시간 19분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:48",
+        "checkOutTimeStr": "오후 06:07",
+        "durationSec": 33540
+      },
+      {
+        "id": 9,
+        "monthStr": "9월",
+        "dayNum": "1",
+        "dayName": "화요일",
+        "statusText": "출근 • 9시간 19분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:45",
+        "checkOutTimeStr": "오후 06:04",
+        "durationSec": 33540
+      },
+      {
+        "id": 10,
+        "monthStr": "8월",
+        "dayNum": "31",
+        "dayName": "월요일",
+        "statusText": "출근 • 9시간 41분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:45",
+        "checkOutTimeStr": "오후 06:26",
+        "durationSec": 34860
+      },
+      {
+        "id": 11,
+        "monthStr": "8월",
+        "dayNum": "28",
+        "dayName": "금요일",
+        "statusText": "출근 • 근무중",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:43",
+        "checkOutTimeStr": "-",
+        "durationSec": 0
+      },
+      {
+        "id": 12,
+        "monthStr": "8월",
+        "dayNum": "27",
+        "dayName": "목요일",
+        "statusText": "출근 • 9시간 10분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:53",
+        "checkOutTimeStr": "오후 06:03",
+        "durationSec": 33000
+      },
+      {
+        "id": 13,
+        "monthStr": "8월",
+        "dayNum": "26",
+        "dayName": "수요일",
+        "statusText": "출근 • 9시간 14분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:50",
+        "checkOutTimeStr": "오후 06:04",
+        "durationSec": 33240
+      },
+      {
+        "id": 14,
+        "monthStr": "8월",
+        "dayNum": "25",
+        "dayName": "화요일",
+        "statusText": "출근 • 9시간 12분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:50",
+        "checkOutTimeStr": "오후 06:02",
+        "durationSec": 33120
+      },
+      {
+        "id": 15,
+        "monthStr": "8월",
+        "dayNum": "24",
+        "dayName": "월요일",
+        "statusText": "출근 • 9시간 14분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:47",
+        "checkOutTimeStr": "오후 06:01",
+        "durationSec": 33240
+      },
+      {
+        "id": 16,
+        "monthStr": "8월",
+        "dayNum": "21",
+        "dayName": "금요일",
+        "statusText": "출근 • 9시간 26분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:45",
+        "checkOutTimeStr": "오후 06:11",
+        "durationSec": 33960
+      },
+      {
+        "id": 17,
+        "monthStr": "8월",
+        "dayNum": "20",
+        "dayName": "목요일",
+        "statusText": "출근 • 7시간 17분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:44",
+        "checkOutTimeStr": "오후 04:01",
+        "durationSec": 26220
+      },
+      {
+        "id": 18,
+        "monthStr": "8월",
+        "dayNum": "14",
+        "dayName": "금요일",
+        "statusText": "출근 • 7시간 45분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 10:18",
+        "checkOutTimeStr": "오후 06:03",
+        "durationSec": 27900
+      },
+      {
+        "id": 19,
+        "monthStr": "8월",
+        "dayNum": "13",
+        "dayName": "목요일",
+        "statusText": "출근 • 9시간 5분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:59",
+        "checkOutTimeStr": "오후 06:04",
+        "durationSec": 32700
+      },
+      {
+        "id": 20,
+        "monthStr": "8월",
+        "dayNum": "12",
+        "dayName": "수요일",
+        "statusText": "출근 • 9시간 37분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:46",
+        "checkOutTimeStr": "오후 06:23",
+        "durationSec": 34620
+      },
+      {
+        "id": 21,
+        "monthStr": "8월",
+        "dayNum": "11",
+        "dayName": "화요일",
+        "statusText": "출근 • 9시간 46분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:47",
+        "checkOutTimeStr": "오후 06:33",
+        "durationSec": 35160
+      },
+      {
+        "id": 22,
+        "monthStr": "8월",
+        "dayNum": "10",
+        "dayName": "월요일",
+        "statusText": "출근 • 10시간 42분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:43",
+        "checkOutTimeStr": "오후 07:25",
+        "durationSec": 38520
+      },
+      {
+        "id": 23,
+        "monthStr": "8월",
+        "dayNum": "7",
+        "dayName": "금요일",
+        "statusText": "출근 • 4시간 36분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:51",
+        "checkOutTimeStr": "오후 01:27",
+        "durationSec": 16560
+      },
+      {
+        "id": 24,
+        "monthStr": "8월",
+        "dayNum": "6",
+        "dayName": "목요일",
+        "statusText": "출근 • 9시간 21분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:42",
+        "checkOutTimeStr": "오후 06:03",
+        "durationSec": 33660
+      },
+      {
+        "id": 25,
+        "monthStr": "8월",
+        "dayNum": "5",
+        "dayName": "수요일",
+        "statusText": "출근 • 9시간 19분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:45",
+        "checkOutTimeStr": "오후 06:04",
+        "durationSec": 33540
+      },
+      {
+        "id": 26,
+        "monthStr": "8월",
+        "dayNum": "4",
+        "dayName": "화요일",
+        "statusText": "출근 • 9시간 15분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:51",
+        "checkOutTimeStr": "오후 06:06",
+        "durationSec": 33300
+      },
+      {
+        "id": 27,
+        "monthStr": "8월",
+        "dayNum": "3",
+        "dayName": "월요일",
+        "statusText": "출근 • 9시간 18분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:44",
+        "checkOutTimeStr": "오후 06:02",
+        "durationSec": 33480
+      }
+   
     ]
   },
 

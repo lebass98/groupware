@@ -14,7 +14,8 @@
     "check:seed": "node data/build-seed.js --check",
     "verify:seed": "node data/verify-seed.js",
     "check:firebase": "node data/check-firebase.js",
-    "sync:reports": "node scripts/sync-daily-reports.js"
+    "sync:reports": "node scripts/sync-daily-reports.js",
+    "sync:attendance": "node scripts/sync-daily-reports.js"
   },
   "keywords": [
     "groupware",
