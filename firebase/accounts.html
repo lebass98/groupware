@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>WnC 그룹웨어 · 임직원 계정 발급</title>
+<style>
+  :root { color-scheme: light dark; --line:#dfe3ea; --muted:#6b7280; --bg:#f5f6f8; --card:#fff; --fg:#1b1d21; }
+  @media (prefers-color-scheme: dark) { :root { --line:#2a2f38; --muted:#9aa4b2; --bg:#101317; --card:#181c22; --fg:#e6e8ec; } }
+  body { margin:0; padding:32px 20px; background:var(--bg); color:var(--fg); display:flex; justify-content:center;
+         font:14px/1.6 -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif; }
+  .card { width:100%; max-width:760px; background:var(--card); border-radius:16px; padding:28px; border:1px solid var(--line); }
+  h1 { font-size:20px; margin:0 0 6px; }
+  p.sub { margin:0 0 20px; color:var(--muted); font-size:13px; }
+  .warn { padding:12px 14px; border-radius:10px; background:#fff4e5; color:#8a5300; font-size:12.5px; margin-bottom:20px; }
+  @media (prefers-color-scheme: dark) { .warn { background:#2e2415; color:#f0c17b; } }
+  label { display:block; font-size:12px; font-weight:700; margin:16px 0 6px; }
+  input[type=password], input[type=text] { width:100%; box-sizing:border-box; padding:11px 13px; border:1px solid var(--line);
+         border-radius:9px; font-size:14px; background:transparent; color:inherit; }
+  .list { border:1px solid var(--line); border-radius:10px; max-height:300px; overflow:auto; margin-top:8px; }
+  .row { display:flex; align-items:center; gap:10px; padding:9px 13px; border-bottom:1px solid var(--line); font-size:13px; }
+  .row:last-child { border-bottom:0; }
+  .row .email { color:var(--muted); margin-left:auto; font-size:12px; }
+  .tools { display:flex; gap:8px; margin-top:10px; }
+  .tools button { flex:1; padding:8px; font-size:12px; font-weight:700; border:1px solid var(--line);
+                  background:transparent; color:inherit; border-radius:8px; cursor:pointer; }
+  #run { margin-top:20px; width:100%; padding:13px; border:0; border-radius:999px; background:#2563eb; color:#fff;
+         font-size:15px; font-weight:700; cursor:pointer; }
+  #run:disabled { background:#9aa4b2; cursor:not-allowed; }
+  table { width:100%; border-collapse:collapse; margin-top:20px; font-size:12.5px; display:none; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); }
+  th { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  code { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .ok { color:#16a34a; font-weight:700; } .skip { color:#b45309; font-weight:700; } .fail { color:#dc2626; font-weight:700; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>임직원 계정 발급</h1>
+    <p class="sub">주소록을 기준으로 Firebase Authentication 계정을 일괄 생성합니다.</p>
+
+    <div class="warn">
+      <strong>비밀번호는 이 브라우저에서 Firebase로 직접 전송되며 저장소나 서버에 기록되지 않습니다.</strong><br />
+      발급을 마친 뒤 반드시 Firebase 콘솔 &gt; Authentication &gt; 설정 &gt; 사용자 작업에서
+      <b>‘가입 사용 중지’</b>를 체크하십시오. 체크하지 않으면 외부인이 임의로 계정을 만들 수 있습니다.
+    </div>
+
+    <label>발급 대상 임직원</label>
+    <div class="list" id="list">주소록을 불러오는 중...</div>
+    <div class="tools">
+      <button type="button" id="all">전체 선택</button>
+      <button type="button" id="none">전체 해제</button>
+    </div>
+
+    <label for="pw">초기 비밀번호 (6자 이상)</label>
+    <input id="pw" type="password" placeholder="전 계정에 동일하게 적용할 초기 비밀번호" autocomplete="new-password" />
+
+    <button id="run">선택한 임직원 계정 발급</button>
+
+    <table id="result">
+      <thead><tr><th>이름</th><th>이메일</th><th>결과</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signOut }
+  from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+await import('./config.js');
+
+const listEl = document.getElementById('list');
+const resultEl = document.getElementById('result');
+const runBtn = document.getElementById('run');
+
+const res = await fetch('../data/employees.json');
+const employees = await res.json();
+
+// 주소록에 같은 이메일이 중복 등록된 경우 계정은 1개만 발급한다.
+const seen = new Set();
+const unique = employees.filter((e) => {
+  const key = String(e.email || '').trim().toLowerCase();
+  if (!key || seen.has(key)) return false;
+  seen.add(key);
+  return true;
+});
+
+listEl.innerHTML = unique.map((e, i) => `
+  <div class="row">
+    <input type="checkbox" id="emp${i}" data-email="${e.email}" data-name="${e.name}" checked />
+    <label for="emp${i}" style="margin:0;font-weight:600;">${e.name}</label>
+    <span style="color:var(--muted);">${e.dept} ${e.role}</span>
+    <span class="email">${e.email}</span>
+  </div>`).join('');
+
+const boxes = () => [...listEl.querySelectorAll('input[type=checkbox]')];
+document.getElementById('all').onclick = () => boxes().forEach((b) => { b.checked = true; });
+document.getElementById('none').onclick = () => boxes().forEach((b) => { b.checked = false; });
+
+runBtn.addEventListener('click', async () => {
+  const password = document.getElementById('pw').value;
+  if (password.length < 6) { alert('초기 비밀번호를 6자 이상 입력하세요.'); return; }
+
+  const targets = boxes().filter((b) => b.checked);
+  if (!targets.length) { alert('발급할 임직원을 선택하세요.'); return; }
+
+  runBtn.disabled = true;
+  runBtn.textContent = '발급 중...';
+  resultEl.style.display = 'table';
+  const tbody = resultEl.querySelector('tbody');
+  tbody.innerHTML = '';
+
+  const app = initializeApp(window.FirebaseConfig);
+  const auth = getAuth(app);
+
+  for (const box of targets) {
+    const email = box.dataset.email;
+    const name = box.dataset.name;
+    let status = '';
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      status = '<span class="ok">발급 완료</span>';
+    } catch (err) {
+      status = err.code === 'auth/email-already-in-use'
+        ? '<span class="skip">이미 존재 (건너뜀)</span>'
+        : `<span class="fail">실패: ${err.code}</span>`;
+    }
+    tbody.insertAdjacentHTML('beforeend',
+      `<tr><td>${name}</td><td><code>${email}</code></td><td>${status}</td></tr>`);
+    // 계정 생성 시 해당 계정으로 자동 로그인되므로 즉시 로그아웃하고 다음 건을 처리한다.
+    await signOut(auth).catch(() => {});
+  }
+
+  runBtn.textContent = '발급 완료';
+});
+</script>
+</body>
+</html>
