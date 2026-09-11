@@ -490,17 +490,24 @@ const App = {
       }
 
       // Projects State Sync (모바일-PC 공통 마스터 데이터 동기화)
+      const mockProj = (window.MockData && window.MockData.projects) ? window.MockData.projects : [];
       const savedProjects = localStorage.getItem('wordncode_groupware_projects');
       if (savedProjects) {
         try {
           const parsedProj = JSON.parse(savedProjects);
-          if (Array.isArray(parsedProj) && parsedProj.length > 0) {
+          // 저장된 프로젝트가 최신 MockData의 370개보다 적으면 최신 MockData로 자동 업그레이드
+          if (Array.isArray(parsedProj) && parsedProj.length >= (mockProj.length || 370)) {
             this.state.projects = parsedProj;
+          } else {
+            this.state.projects = JSON.parse(JSON.stringify(mockProj));
+            this.saveProjects();
           }
-        } catch (_) { }
-      }
-      if (!this.state.projects || this.state.projects.length === 0) {
-        this.state.projects = (window.MockData && window.MockData.projects) ? JSON.parse(JSON.stringify(window.MockData.projects)) : [];
+        } catch (_) {
+          this.state.projects = JSON.parse(JSON.stringify(mockProj));
+        }
+      } else {
+        this.state.projects = JSON.parse(JSON.stringify(mockProj));
+        this.saveProjects();
       }
 
       // Notifications Read State Sync
