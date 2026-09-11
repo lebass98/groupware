@@ -8,3 +8,5 @@ node_modules/
 react-native-app/android/
 *.swp
 .App.js.swp
+.env
+.env.*

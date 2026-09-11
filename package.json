@@ -13,7 +13,8 @@
     "build:seed": "node data/build-seed.js",
     "check:seed": "node data/build-seed.js --check",
     "verify:seed": "node data/verify-seed.js",
-    "check:firebase": "node data/check-firebase.js"
+    "check:firebase": "node data/check-firebase.js",
+    "sync:reports": "node scripts/sync-daily-reports.js"
   },
   "keywords": [
     "groupware",
@@ -21,5 +22,8 @@
     "live-reload"
   ],
   "author": "WnC",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.2.0"
+  }
 }
