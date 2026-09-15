@@ -5465,6 +5465,8 @@ const PCApp = {
     this.showToast(`[출근 완료] ${timeStr} 정상 출근 처리되었습니다.`);
     this.renderLeftCol();
     if (this.state.activeScreen === 'checkin') this.renderCheckinView();
+    // 기존 그룹웨어(sitegate)에도 반영한다. 중계 서버가 없으면 조용히 건너뛴다.
+    if (window.WncSitegate) window.WncSitegate.syncAndNotify('in', (m) => this.showToast(m));
   },
 
   handleCheckOut() {
@@ -5476,6 +5478,7 @@ const PCApp = {
     this.showToast(`[퇴근 완료] ${timeStr} 정상 퇴근 처리되었습니다. 수고하셨습니다!`);
     this.renderLeftCol();
     if (this.state.activeScreen === 'checkin') this.renderCheckinView();
+    if (window.WncSitegate) window.WncSitegate.syncAndNotify('out', (m) => this.showToast(m));
   },
 
   toggleTodo(idx) {

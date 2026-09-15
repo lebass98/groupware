@@ -45,6 +45,33 @@ function loadEnv() {
   return env;
 }
 
+// 1-2. 크롤링 기준 날짜 계산
+//
+// 이전에는 연도(2026), 대상 월([8,9,10]), 기준일('2026-09-11')이 모두 하드코딩되어 있어
+// 날짜가 지나면 최근 기록이 조용히 누락되었다(실제로 09-12~09-15 기록이 버려지고 있었다).
+// 실행 시점을 기준으로 계산해 이 문제가 다시 생기지 않게 한다.
+function getCrawlRange() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+
+  // 근태일지(일정)는 앞으로 잡힌 휴가도 의미가 있으므로 다음 달까지 본다.
+  // 출퇴근 기록은 미래가 존재할 수 없으므로 이번 달까지만 본다.
+  const back = 1; // 지난달부터
+  const scheduleMonths = [];
+  const attendanceMonths = [];
+  for (let d = -back; d <= 1; d++) {
+    const t = new Date(year, month - 1 + d, 1);
+    scheduleMonths.push({ year: t.getFullYear(), month: t.getMonth() + 1 });
+    if (d <= 0) attendanceMonths.push({ year: t.getFullYear(), month: t.getMonth() + 1 });
+  }
+
+  const pad = (n) => String(n).padStart(2, '0');
+  const todayStr = `${year}-${pad(month)}-${pad(now.getDate())}`;
+
+  return { year, month, todayStr, scheduleMonths, attendanceMonths };
+}
+
 // 2. 임직원 마스터 로드
 function loadEmployees() {
   const mockPath = path.join(ROOT, 'data', 'mockData.js');
@@ -143,13 +170,14 @@ async function main() {
   // -------------------------------------------------------------
   // 1. 근태일지 캘린더 (bo_table=daily_report&skin=diary) 크롤링
   // -------------------------------------------------------------
-  console.log('📥 [2/5] 전사 근태일지(8월, 9월, 10월) 캘린더 데이터 크롤링 중...');
-  const months = [8, 9, 10];
+  const range = getCrawlRange();
+  const monthLabel = range.scheduleMonths.map((x) => `${x.month}월`).join(', ');
+  console.log(`📥 [2/5] 전사 근태일지(${monthLabel}) 캘린더 데이터 크롤링 중...`);
   const allSchedules = {};
   let excludedCount = 0;
 
-  for (const m of months) {
-    const url = `${baseUrl}/html/board/bbs/board.php?bo_table=daily_report&skin=diary&year=2026&month=${m}&id=${mb_id}`;
+  for (const { year: y, month: m } of range.scheduleMonths) {
+    const url = `${baseUrl}/html/board/bbs/board.php?bo_table=daily_report&skin=diary&year=${y}&month=${m}&id=${mb_id}`;
     const res = await fetch(url, {
       headers: { Cookie: cookieHeader, 'User-Agent': 'Mozilla/5.0' }
     });
@@ -268,8 +296,8 @@ async function main() {
   const allLogs = [];
   let logId = 1;
 
-  for (const m of [8, 9]) {
-    const url = `${baseUrl}/html/board/bbs/board.php?bo_table=attendance&year=2026&month=${m}&id=`;
+  for (const { year: y, month: m } of range.attendanceMonths) {
+    const url = `${baseUrl}/html/board/bbs/board.php?bo_table=attendance&year=${y}&month=${m}&id=`;
     const res = await fetch(url, {
       headers: { Cookie: cookieHeader, 'User-Agent': 'Mozilla/5.0' }
     });
@@ -290,8 +318,8 @@ async function main() {
       const [, yyyy, mm, dd, dayChar] = match;
       const rawDate = `${yyyy}-${mm}-${dd}`;
 
-      // 오늘(2026-09-11) 이후 미래 날짜 및 출퇴근 기록 없는 날짜 제외
-      if (rawDate > '2026-09-11') return;
+      // 미래 날짜 및 출퇴근 기록이 없는 날짜 제외 (기준일은 실행 시점의 오늘)
+      if (rawDate > range.todayStr) return;
       if ((!inTime || inTime === '없음') && (!outTime || outTime === '없음')) return;
 
       const duration = calcDuration(inTime, outTime);

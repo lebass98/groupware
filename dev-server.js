@@ -150,6 +150,68 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // --- sitegate 출퇴근 중계 API ---------------------------------------------
+  // 브라우저는 sitegate(HTTP 전용, CORS 없음)를 직접 호출할 수 없다.
+  // 이 서버가 대신 로그인해 요청을 보낸다. 자격 증명은 .env에만 있다.
+  //
+  // GET  /api/attendance          오늘 상태 조회 (등록하지 않음)
+  // POST /api/attendance          { mode: 'in' | 'out', confirm: true } 로 실제 등록
+  //
+  // 주의: 이 개발 서버는 같은 네트워크에 열려 있다. 실제 근태를 기록하는
+  //       엔드포인트이므로 신뢰할 수 없는 네트워크에서는 서버를 띄우지 않는다.
+  if (url.pathname === '/api/attendance') {
+    const json = (code, payload) => send(res, code,
+      { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
+      JSON.stringify(payload));
+
+    let sitegate;
+    try {
+      sitegate = require('./scripts/sitegate-attendance.js');
+    } catch (err) {
+      return json(500, { ok: false, message: `중계 모듈을 불러오지 못했습니다: ${err.message}` });
+    }
+
+    if (req.method === 'GET') {
+      sitegate.getStatus()
+        .then((r) => json(200, r))
+        .catch((err) => json(502, { ok: false, message: err.message }));
+      return;
+    }
+
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', (c) => {
+        body += c;
+        if (body.length > 10000) req.destroy(); // 과도한 요청 방지
+      });
+      req.on('end', () => {
+        let payload;
+        try {
+          payload = JSON.parse(body || '{}');
+        } catch {
+          return json(400, { ok: false, message: '잘못된 JSON 요청입니다.' });
+        }
+        // confirm 플래그를 요구해 링크 클릭이나 크롤러가 실수로 등록하지 못하게 한다.
+        if (payload.confirm !== true) {
+          return json(400, { ok: false, message: 'confirm: true 가 필요합니다.' });
+        }
+        console.log(`[근태] sitegate ${payload.mode === 'in' ? '출근' : '퇴근'} 등록 요청`);
+        sitegate.registerAttendance(payload.mode)
+          .then((r) => {
+            console.log(`[근태] ${r.ok ? '성공' : '거절'}: ${r.message}`);
+            json(r.ok ? 200 : 409, r);
+          })
+          .catch((err) => {
+            console.log(`[근태] 오류: ${err.message}`);
+            json(502, { ok: false, message: err.message });
+          });
+      });
+      return;
+    }
+
+    return json(405, { ok: false, message: 'GET 또는 POST만 지원합니다.' });
+  }
+
   let pathname;
   try {
     pathname = decodeURIComponent(url.pathname);

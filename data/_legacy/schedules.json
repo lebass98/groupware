@@ -1110,15 +1110,6 @@
       "avatar": "./resource/image/profile_red_20260602.png"
     },
     {
-      "title": "외근(오전) 남기현 오전 퓨처누리 방문",
-      "location": "퓨처누리",
-      "time": "09:00 ~ 12:00",
-      "type": "primary",
-      "badge": "외근",
-      "author": "남기현 본부장",
-      "avatar": "./resource/image/profile_help.png"
-    },
-    {
       "title": "반반차 [16:00~18:00]",
       "location": "",
       "time": "16:00~18:00",
@@ -1146,15 +1137,62 @@
       "badge": "연차",
       "author": "곽재훈 대리",
       "avatar": "./resource/image/profile_spring.png"
-    },
+    }
+  ],
+  "2026-9-15": [
     {
-      "title": "외근(오전) 내방",
-      "location": "유틸렉스",
+      "title": "외근(오전) 남기현 오전 에스앤비솔루션 방문",
+      "location": "에스엔비솔루션",
       "time": "09:00 ~ 12:00",
       "type": "primary",
       "badge": "외근",
       "author": "남기현 본부장",
       "avatar": "./resource/image/profile_help.png"
+    },
+    {
+      "title": "외근(오후) 수소기술사업화 업무미팅",
+      "location": "한국수소연합",
+      "time": "13:00 ~ 18:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "한상희 사원",
+      "avatar": "./resource/image/profile_star_20250326.png"
+    },
+    {
+      "title": "외근(오후) 수소기술사업화 업무미팅",
+      "location": "한국수소연합",
+      "time": "13:00 ~ 18:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "박규태 대리",
+      "avatar": "./resource/image/profile_green.png"
+    },
+    {
+      "title": "외근(오후) 수소기술사업화 업무미팅",
+      "location": "한국수소연합",
+      "time": "13:00 ~ 18:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "김종규 팀장",
+      "avatar": "./resource/image/profile_john.png"
+    },
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "손석호 주임",
+      "avatar": "./resource/image/profile_pub.png"
+    },
+    {
+      "title": "외근(오후) 수소기술사업화 업무미팅",
+      "location": "한국수소연합",
+      "time": "13:00 ~ 18:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "윤진성 과장",
+      "avatar": "./resource/image/profile_apple_20250611.png"
     }
   ],
   "2026-9-16": [
@@ -1166,6 +1204,33 @@
       "badge": "외근",
       "author": "남기현 본부장",
       "avatar": "./resource/image/profile_help.png"
+    },
+    {
+      "title": "외근(오전) 주간회의",
+      "location": "한국건강가정진흥원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "김종규 팀장",
+      "avatar": "./resource/image/profile_john.png"
+    },
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "손석호 주임",
+      "avatar": "./resource/image/profile_pub.png"
+    },
+    {
+      "title": "외근(오전) 주간회의",
+      "location": "한국건강가정진흥원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "장현아 수습",
+      "avatar": "./resource/image/profile_janghyunah.png"
     }
   ],
   "2026-9-17": [
