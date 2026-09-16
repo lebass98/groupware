@@ -334,3 +334,4 @@ Pool/
 - **GitHub Pages 배포 환경 출퇴근 기능 정상화**: GPS 좌표(`gpsLat`/`gpsLng`) 상태 저장 누락 수정, 지오펜스 판정을 좌표 우선 → 주소 매칭 순으로 재정렬, 위치 미확인 시 출근 차단 대신 '위치 미인증' 허용 처리 및 확인 모달 출퇴근에도 sitegate 중계 연동 추가.
 - **Expo SDK 57 업그레이드**: Expo Go SDK 57 호환을 위해 React Native 앱 SDK 54 → 57 상향(react 19.2.3 / react-native 0.86.3 / webview 13.16.1), expo-doctor 21종 점검 전체 통과 및 Metro 번들 정상 생성 검증.
 - **모바일 하단 독메뉴 상시 고정 노출**: 스크롤 다운 시 독메뉴가 숨겨지던 동작을 제거하여 로그인 상태에서 항상 고정 표시(모바일 전용 UI, PC는 해당 없음).
+- **Android 릴리스 APK 재빌드**: Expo SDK 57 기준 android 프리빌드 재생성 후 릴리스 APK(66MB) 빌드 성공, GitHub Pages 최신 배포본(?v=20260916_dock_fixed) 연동 확인.
