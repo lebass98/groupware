@@ -332,3 +332,4 @@ Pool/
 
 ### 2026-09-16
 - **GitHub Pages 배포 환경 출퇴근 기능 정상화**: GPS 좌표(`gpsLat`/`gpsLng`) 상태 저장 누락 수정, 지오펜스 판정을 좌표 우선 → 주소 매칭 순으로 재정렬, 위치 미확인 시 출근 차단 대신 '위치 미인증' 허용 처리 및 확인 모달 출퇴근에도 sitegate 중계 연동 추가.
+- **Expo SDK 57 업그레이드**: Expo Go SDK 57 호환을 위해 React Native 앱 SDK 54 → 57 상향(react 19.2.3 / react-native 0.86.3 / webview 13.16.1), expo-doctor 21종 점검 전체 통과 및 Metro 번들 정상 생성 검증.
