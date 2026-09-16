@@ -323,6 +323,11 @@ const App = {
         const lat = pos.coords.latitude.toFixed(5);
         const lng = pos.coords.longitude.toFixed(5);
 
+        // 지오펜스 판정에 쓰이는 실제 좌표를 반드시 상태에 저장한다.
+        // (예전에는 주소 문자열만 갱신해, 회사 밖 주소가 들어오면 좌표 판정이 통째로 건너뛰어졌다.)
+        this.state.gpsLat = lat;
+        this.state.gpsLng = lng;
+
         try {
           const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ko`);
           const data = await res.json();
@@ -758,12 +763,7 @@ const App = {
     const target = this.state.officeLocation;
     const locStr = this.state.currentLocation || '';
 
-    // Check by string address keyword
-    if (locStr.includes('금천구') || locStr.includes('벚꽃로') || locStr.includes('가산')) {
-      return { isAllowed: true, distanceMeter: 0, reason: '지정 오피스 주소 매칭 성공' };
-    }
-
-    // Check by real GPS coordinates
+    // 1순위: 실제 GPS 좌표 기준 거리 판정 (주소 문자열보다 항상 정확하다)
     if (this.state.gpsLat && this.state.gpsLng) {
       const dist = this.calculateDistanceMeters(
         parseFloat(this.state.gpsLat),
@@ -778,8 +778,15 @@ const App = {
       }
     }
 
-    // Default fallback when GPS permission denied or address unverified
-    return { isAllowed: false, distanceMeter: null, reason: 'GPS 위치 미확인' };
+    // 2순위: 주소 문자열 키워드 매칭 (역지오코딩 실패 등으로 좌표가 없을 때)
+    if (locStr.includes('금천구') || locStr.includes('벚꽃로') || locStr.includes('가산')) {
+      return { isAllowed: true, distanceMeter: 0, reason: '지정 오피스 주소 매칭 성공' };
+    }
+
+    // 좌표도 주소도 확인되지 않은 경우(권한 거부·기기 미지원·브라우저 차단)에는
+    // 출근 자체를 막지 않고 '위치 미인증' 상태로 허용한다.
+    // 위치 확인 실패가 근태 기록 자체를 불가능하게 만들면 안 되기 때문이다.
+    return { isAllowed: true, distanceMeter: null, unverified: true, reason: 'GPS 위치 미확인 (위치 미인증 출근)' };
   },
 
   formatCheckInTime(d) {
@@ -816,7 +823,11 @@ const App = {
       this.state.checkInTime = new Date();
       this.state.checkInTimeStr = this.formatCheckInTime(this.state.checkInTime);
       this.startWorkTimer();
-      this.showToast(`🎉 서울 금천구 벚꽃로 298 출근 체크 성공! (${this.state.checkInTimeStr})`);
+      if (geo.unverified) {
+        this.showToast(`🎉 출근 체크 완료! (${this.state.checkInTimeStr}) · 위치 미인증`);
+      } else {
+        this.showToast(`🎉 서울 금천구 벚꽃로 298 출근 체크 성공! (${this.state.checkInTimeStr})`);
+      }
     } else {
       // EXECUTE CHECK OUT
       const now = new Date();
@@ -862,6 +873,11 @@ const App = {
 
     this.saveState();
     this.renderUI();
+
+    // 기존 그룹웨어(sitegate)에도 반영한다. 중계 서버가 없으면 조용히 건너뛴다.
+    if (window.WncSitegate) {
+      window.WncSitegate.syncAndNotify(this.state.isCheckedIn ? 'in' : 'out', (m) => this.showToast(m));
+    }
   },
 
   executeLoginTransition(onComplete) {
