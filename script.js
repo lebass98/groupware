@@ -1239,12 +1239,10 @@ const App = {
   },
 
   // =========================================
-  // 스크롤 인터랙션: 최상단 공지 노출 / 아래 스크롤 숨김 & 독메뉴 위/아래 방향 슬라이드
+  // 스크롤 인터랙션: 최상단 공지 노출 / 아래 스크롤 시 공지 숨김 (독메뉴는 항상 고정)
   // =========================================
   initScrollEffects() {
-    let lastScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
     let isTicking = false;
-    const SCROLL_THRESHOLD = 5; // 스크롤 감도 임계값
 
     const handleScroll = () => {
       if (!this.state.isLoggedIn) {
@@ -1255,9 +1253,6 @@ const App = {
       const currentScrollY = Math.max(0, window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0);
       const ticker = document.getElementById('notice-ticker');
       const nav = document.getElementById('bottom-nav');
-      const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-      const clientHeight = window.innerHeight || document.documentElement.clientHeight;
-      const isAtBottom = (currentScrollY + clientHeight) >= (scrollHeight - 25);
 
       // 1. 공지사항 티커: 최상단에 있을 때만(currentScrollY <= 15) 나타나고, 스크롤을 하단으로 내릴 경우는 우측으로 슬라이드 아웃되어 사라짐
       if (ticker && ticker.style.display !== 'none') {
@@ -1268,23 +1263,12 @@ const App = {
         }
       }
 
-      // 2. 하단 독 메뉴: 스크롤을 위로 올릴 때 나타나고, 아래로 내릴 때는 아래로 슬라이드 다운되어 숨김
+      // 2. 하단 독 메뉴: 스크롤 방향과 무관하게 로그인 상태에서는 항상 고정 노출한다.
+      //    (예전에는 아래로 스크롤하면 숨겼으나, 탭 이동이 즉시 안 되어 사용성이 떨어졌다.)
       if (nav && nav.style.display !== 'none') {
-        if (currentScrollY <= 15 || isAtBottom) {
-          // 최상단 또는 페이지 맨 끝에 도달했을 때는 항상 독메뉴 표시
-          nav.classList.remove('nav-hidden');
-        } else if (Math.abs(currentScrollY - lastScrollY) >= SCROLL_THRESHOLD) {
-          if (currentScrollY > lastScrollY) {
-            // 아래로 스크롤 (Scroll Down) -> 독메뉴 숨김
-            nav.classList.add('nav-hidden');
-          } else {
-            // 위로 스크롤 (Scroll Up) -> 독메뉴 표시
-            nav.classList.remove('nav-hidden');
-          }
-        }
+        nav.classList.remove('nav-hidden');
       }
 
-      lastScrollY = currentScrollY;
       isTicking = false;
     };
 
