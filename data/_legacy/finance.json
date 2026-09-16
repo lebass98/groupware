@@ -1,0 +1,16 @@
+{
+  "activeTab": "expense",
+  "cardFilter": "corp",
+  "reportFilter": "all",
+  "expenses": {
+    "corp": [
+      { "id": 1, "type": "restaurant", "date": "11. 24 (금) 12:30", "title": "(주)맛있는식당 강남점", "amount": 85000, "status": "unresolved" },
+      { "id": 2, "type": "taxi", "date": "11. 23 (목) 20:15", "title": "카카오T택시", "amount": 18500, "status": "unresolved" },
+      { "id": 3, "type": "coffee", "date": "11. 22 (수) 14:00", "title": "스타벅스 코엑스점", "amount": 21000, "status": "completed" }
+    ],
+    "personal": [
+      { "id": 4, "type": "shopping", "date": "11. 25 (토) 10:10", "title": "교보문고 강남점 (도서)", "amount": 34000, "status": "unresolved" },
+      { "id": 5, "type": "coffee", "date": "11. 21 (화) 15:45", "title": "폴바셋 가산점", "amount": 6500, "status": "completed" }
+    ]
+  }
+}
