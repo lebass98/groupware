@@ -1541,6 +1541,33 @@ window.MockData = {
         "badge": "외근",
         "author": "장현아 수습",
         "avatar": "./resource/image/profile_janghyunah.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한가원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
+      },
+      {
+        "title": "외근(오후) 남기현 오후 퓨처누리 방문",
+        "location": "퓨처누리",
+        "time": "13:00 ~ 18:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오전) 주간회의",
+        "location": "한국건강가정진흥원",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "이채원 사원",
+        "avatar": "./resource/image/profile_cool_20241224_lee.png"
       }
     ],
     "2026-9-17": [
@@ -1561,6 +1588,24 @@ window.MockData = {
         "badge": "외근",
         "author": "박규태 대리",
         "avatar": "./resource/image/profile_green.png"
+      },
+      {
+        "title": "외근(오전) 남기현 오전 수소연합 방문",
+        "location": "수소연합",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "남기현 본부장",
+        "avatar": "./resource/image/profile_help.png"
+      },
+      {
+        "title": "외근(오전) 수소연합",
+        "location": "수소연합",
+        "time": "09:00 ~ 12:00",
+        "type": "primary",
+        "badge": "외근",
+        "author": "윤진성 과장",
+        "avatar": "./resource/image/profile_apple_20250611.png"
       }
     ],
     "2026-9-18": [
@@ -1572,6 +1617,24 @@ window.MockData = {
         "badge": "연차",
         "author": "이재광 팀장",
         "avatar": "profile.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "신현우 주임",
+        "avatar": "./resource/image/profile_pink____________.png"
+      },
+      {
+        "title": "반차(오후)",
+        "location": "",
+        "time": "13:00 ~ 18:00",
+        "type": "warning",
+        "badge": "반차",
+        "author": "장현아 수습",
+        "avatar": "./resource/image/profile_janghyunah.png"
       }
     ],
     "2026-9-21": [
@@ -1643,16 +1706,27 @@ window.MockData = {
     {
         "id": 1,
         "monthStr": "9월",
-        "dayNum": "15",
-        "dayName": "화요일",
+        "dayNum": "16",
+        "dayName": "수요일",
         "statusText": "출근 • 근무중",
         "statusType": "normal",
-        "checkInTimeStr": "오전 08:51",
+        "checkInTimeStr": "오전 08:48",
         "checkOutTimeStr": "-",
         "durationSec": 0
       },
       {
         "id": 2,
+        "monthStr": "9월",
+        "dayNum": "15",
+        "dayName": "화요일",
+        "statusText": "출근 • 9시간 17분",
+        "statusType": "normal",
+        "checkInTimeStr": "오전 08:51",
+        "checkOutTimeStr": "오후 06:08",
+        "durationSec": 33420
+      },
+      {
+        "id": 3,
         "monthStr": "9월",
         "dayNum": "14",
         "dayName": "월요일",
@@ -1663,7 +1737,7 @@ window.MockData = {
         "durationSec": 33600
       },
       {
-        "id": 3,
+        "id": 4,
         "monthStr": "9월",
         "dayNum": "11",
         "dayName": "금요일",
@@ -1674,7 +1748,7 @@ window.MockData = {
         "durationSec": 28440
       },
       {
-        "id": 4,
+        "id": 5,
         "monthStr": "9월",
         "dayNum": "10",
         "dayName": "목요일",
@@ -1685,7 +1759,7 @@ window.MockData = {
         "durationSec": 33360
       },
       {
-        "id": 5,
+        "id": 6,
         "monthStr": "9월",
         "dayNum": "9",
         "dayName": "수요일",
@@ -1696,7 +1770,7 @@ window.MockData = {
         "durationSec": 0
       },
       {
-        "id": 6,
+        "id": 7,
         "monthStr": "9월",
         "dayNum": "8",
         "dayName": "화요일",
@@ -1707,7 +1781,7 @@ window.MockData = {
         "durationSec": 32880
       },
       {
-        "id": 7,
+        "id": 8,
         "monthStr": "9월",
         "dayNum": "7",
         "dayName": "월요일",
@@ -1718,7 +1792,7 @@ window.MockData = {
         "durationSec": 33780
       },
       {
-        "id": 8,
+        "id": 9,
         "monthStr": "9월",
         "dayNum": "4",
         "dayName": "금요일",
@@ -1729,7 +1803,7 @@ window.MockData = {
         "durationSec": 8280
       },
       {
-        "id": 9,
+        "id": 10,
         "monthStr": "9월",
         "dayNum": "3",
         "dayName": "목요일",
@@ -1740,7 +1814,7 @@ window.MockData = {
         "durationSec": 24180
       },
       {
-        "id": 10,
+        "id": 11,
         "monthStr": "9월",
         "dayNum": "2",
         "dayName": "수요일",
@@ -1751,7 +1825,7 @@ window.MockData = {
         "durationSec": 33540
       },
       {
-        "id": 11,
+        "id": 12,
         "monthStr": "9월",
         "dayNum": "1",
         "dayName": "화요일",
@@ -1762,7 +1836,7 @@ window.MockData = {
         "durationSec": 33540
       },
       {
-        "id": 12,
+        "id": 13,
         "monthStr": "8월",
         "dayNum": "31",
         "dayName": "월요일",
@@ -1773,7 +1847,7 @@ window.MockData = {
         "durationSec": 34860
       },
       {
-        "id": 13,
+        "id": 14,
         "monthStr": "8월",
         "dayNum": "28",
         "dayName": "금요일",
@@ -1784,7 +1858,7 @@ window.MockData = {
         "durationSec": 0
       },
       {
-        "id": 14,
+        "id": 15,
         "monthStr": "8월",
         "dayNum": "27",
         "dayName": "목요일",
@@ -1795,7 +1869,7 @@ window.MockData = {
         "durationSec": 33000
       },
       {
-        "id": 15,
+        "id": 16,
         "monthStr": "8월",
         "dayNum": "26",
         "dayName": "수요일",
@@ -1806,7 +1880,7 @@ window.MockData = {
         "durationSec": 33240
       },
       {
-        "id": 16,
+        "id": 17,
         "monthStr": "8월",
         "dayNum": "25",
         "dayName": "화요일",
@@ -1817,7 +1891,7 @@ window.MockData = {
         "durationSec": 33120
       },
       {
-        "id": 17,
+        "id": 18,
         "monthStr": "8월",
         "dayNum": "24",
         "dayName": "월요일",
@@ -1828,7 +1902,7 @@ window.MockData = {
         "durationSec": 33240
       },
       {
-        "id": 18,
+        "id": 19,
         "monthStr": "8월",
         "dayNum": "21",
         "dayName": "금요일",
@@ -1839,7 +1913,7 @@ window.MockData = {
         "durationSec": 33960
       },
       {
-        "id": 19,
+        "id": 20,
         "monthStr": "8월",
         "dayNum": "20",
         "dayName": "목요일",
@@ -1850,7 +1924,7 @@ window.MockData = {
         "durationSec": 26220
       },
       {
-        "id": 20,
+        "id": 21,
         "monthStr": "8월",
         "dayNum": "14",
         "dayName": "금요일",
@@ -1861,7 +1935,7 @@ window.MockData = {
         "durationSec": 27900
       },
       {
-        "id": 21,
+        "id": 22,
         "monthStr": "8월",
         "dayNum": "13",
         "dayName": "목요일",
@@ -1872,7 +1946,7 @@ window.MockData = {
         "durationSec": 32700
       },
       {
-        "id": 22,
+        "id": 23,
         "monthStr": "8월",
         "dayNum": "12",
         "dayName": "수요일",
@@ -1883,7 +1957,7 @@ window.MockData = {
         "durationSec": 34620
       },
       {
-        "id": 23,
+        "id": 24,
         "monthStr": "8월",
         "dayNum": "11",
         "dayName": "화요일",
@@ -1894,7 +1968,7 @@ window.MockData = {
         "durationSec": 35160
       },
       {
-        "id": 24,
+        "id": 25,
         "monthStr": "8월",
         "dayNum": "10",
         "dayName": "월요일",
@@ -1905,7 +1979,7 @@ window.MockData = {
         "durationSec": 38520
       },
       {
-        "id": 25,
+        "id": 26,
         "monthStr": "8월",
         "dayNum": "7",
         "dayName": "금요일",
@@ -1916,7 +1990,7 @@ window.MockData = {
         "durationSec": 16560
       },
       {
-        "id": 26,
+        "id": 27,
         "monthStr": "8월",
         "dayNum": "6",
         "dayName": "목요일",
@@ -1927,7 +2001,7 @@ window.MockData = {
         "durationSec": 33660
       },
       {
-        "id": 27,
+        "id": 28,
         "monthStr": "8월",
         "dayNum": "5",
         "dayName": "수요일",
@@ -1938,7 +2012,7 @@ window.MockData = {
         "durationSec": 33540
       },
       {
-        "id": 28,
+        "id": 29,
         "monthStr": "8월",
         "dayNum": "4",
         "dayName": "화요일",
@@ -1949,7 +2023,7 @@ window.MockData = {
         "durationSec": 33300
       },
       {
-        "id": 29,
+        "id": 30,
         "monthStr": "8월",
         "dayNum": "3",
         "dayName": "월요일",
