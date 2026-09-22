@@ -114,6 +114,18 @@
 
   <!-- Core Stylesheet -->
   <link rel="stylesheet" href="./pc.css?v=20260922_radius" />
+  <style id="tab-count-superscript">
+    /* 모든 탭 안 카운트 숫자를 우상단 작은 첨자로 통일 (동적 className 변경에도 유지) */
+    button:has(> [data-tabcount]), a:has(> [data-tabcount]) { position: relative; }
+    [data-tabcount] {
+      position: absolute !important; top: 5px; right: 8px;
+      padding: 0 !important; margin: 0 !important;
+      background: none !important; border: none !important;
+      color: currentColor !important; opacity: .5;
+      font-size: 9px !important; line-height: 1 !important; font-weight: 700;
+      min-width: 0 !important; box-shadow: none !important;
+    }
+  </style>
 </head>
 <body class="bg-surface text-on-surface">
   
@@ -277,17 +289,17 @@
 
         <!-- 주소록 메인 구분 탭: 직원 / 고객사 -->
         <div class="flex items-center gap-3 mb-5 border-b border-outline/50 pb-3" id="pc-dir-main-tabs">
-          <button id="pc-dir-tab-employee" class="px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2" onclick="PCApp.switchDirectoryMainTab('employee')">
+          <button id="pc-dir-tab-employee" class="relative px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center" onclick="PCApp.switchDirectoryMainTab('employee')">
             <span>직원</span>
-            <span class="px-2 py-0.5 rounded-full text-xs bg-white/20 text-white" id="pc-dir-emp-count">21</span>
+            <span class="absolute top-1 right-1.5 text-[9px] leading-none font-medium text-white/70" id="pc-dir-emp-count" data-tabcount>21</span>
           </button>
-          <button id="pc-dir-tab-client" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2" onclick="PCApp.switchDirectoryMainTab('client')">
+          <button id="pc-dir-tab-client" class="relative px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center" onclick="PCApp.switchDirectoryMainTab('client')">
             <span>고객사</span>
-            <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-dir-client-count">879</span>
+            <span class="absolute top-1 right-1.5 text-[9px] leading-none font-medium text-on-surface-variant/45" id="pc-dir-client-count" data-tabcount>879</span>
           </button>
-          <button id="pc-dir-tab-vendor" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2" onclick="PCApp.switchDirectoryMainTab('vendor')">
+          <button id="pc-dir-tab-vendor" class="relative px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center" onclick="PCApp.switchDirectoryMainTab('vendor')">
             <span>거래처</span>
-            <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-dir-vendor-count">435</span>
+            <span class="absolute top-1 right-1.5 text-[9px] leading-none font-medium text-on-surface-variant/45" id="pc-dir-vendor-count" data-tabcount>435</span>
           </button>
         </div>
 
@@ -305,6 +317,11 @@
 
         <!-- 고객사 프로젝트별 탭 (고객사 탭 선택 시 노출) -->
         <div class="hidden gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide" id="pc-dir-client-project-tabs">
+          <!-- Rendered dynamically by pc.js -->
+        </div>
+
+        <!-- 거래처 초성별 탭 (거래처 탭 선택 시 노출) -->
+        <div class="hidden gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide" id="pc-dir-vendor-tabs">
           <!-- Rendered dynamically by pc.js -->
         </div>
 
@@ -332,11 +349,11 @@
         <div class="flex items-center gap-3 mb-5 border-b border-outline/50 pb-3" id="pc-notice-main-tabs">
           <button id="pc-notice-tab-official" class="px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2" onclick="PCApp.switchNoticeMainTab('official')">
             <span>사내 공지</span>
-            <span class="px-2 py-0.5 rounded-full text-xs bg-white/20 text-white" id="pc-notice-official-count">6</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-white/20 text-white" id="pc-notice-official-count" data-tabcount>6</span>
           </button>
           <button id="pc-notice-tab-pds" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2" onclick="PCApp.switchNoticeMainTab('pds')">
             <span>기술 자료실 (PDS)</span>
-            <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-notice-pds-count">47</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-notice-pds-count" data-tabcount>47</span>
           </button>
         </div>
 
@@ -382,15 +399,15 @@
           </button>
           <button type="button" id="pc-tab-btn-report-weekly_archive" onclick="PCApp.switchWorkReportTab('weekly_archive')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
             <span>📑 주간회의록</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest">65</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest" data-tabcount>65</span>
           </button>
           <button type="button" id="pc-tab-btn-report-teamcap" onclick="PCApp.switchWorkReportTab('teamcap')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
             <span>👑 팀장보고</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest">5</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest" data-tabcount>5</span>
           </button>
           <button type="button" id="pc-tab-btn-report-meeting" onclick="PCApp.switchWorkReportTab('meeting')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
             <span>🤝 미팅회의록</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest">45</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest" data-tabcount>45</span>
           </button>
           <button type="button" id="pc-tab-btn-report-issue" onclick="PCApp.switchWorkReportTab('issue')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
             <span>🛠 업무지원 요청</span>
@@ -774,42 +791,42 @@
             <button class="px-4 py-2.5 rounded-xl font-bold text-base transition-all bg-primary text-white shadow-xs flex items-center gap-2 cursor-pointer shrink-0" id="pc-proj-subtab-project" onclick="PCApp.switchProjectSubTab('project')">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
               <span>프로젝트</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20" id="pc-subtab-count-project">370</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20" id="pc-subtab-count-project" data-tabcount>370</span>
             </button>
             <button class="px-4 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer shrink-0" id="pc-proj-subtab-site" onclick="PCApp.switchProjectSubTab('site')">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
               <span>사이트</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-site">410</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-site" data-tabcount>410</span>
             </button>
             <button class="px-4 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer shrink-0" id="pc-proj-subtab-contract" onclick="PCApp.switchProjectSubTab('contract')">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
               <span>계약서</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-contract">150</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-contract" data-tabcount>150</span>
             </button>
             <button class="px-4 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer shrink-0" id="pc-proj-subtab-estimate" onclick="PCApp.switchProjectSubTab('estimate')">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
               <span>견적·제안</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-estimate">43</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-estimate" data-tabcount>43</span>
             </button>
             <button class="px-4 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer shrink-0" id="pc-proj-subtab-domain" onclick="PCApp.switchProjectSubTab('domain')">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
               <span>도메인</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-domain">146</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-domain" data-tabcount>146</span>
             </button>
             <button class="px-4 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer shrink-0" id="pc-proj-subtab-server" onclick="PCApp.switchProjectSubTab('server')">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zM7 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
               <span>서버·호스팅</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-server">225</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-server" data-tabcount>225</span>
             </button>
             <button class="px-4 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer shrink-0" id="pc-proj-subtab-url" onclick="PCApp.switchProjectSubTab('url')">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
               <span>URL 모음</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-url">225</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-url" data-tabcount>225</span>
             </button>
             <button class="px-4 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer shrink-0" id="pc-proj-subtab-storyboard" onclick="PCApp.switchProjectSubTab('storyboard')">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
               <span>스토리보드</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-storyboard">4</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-subtab-count-storyboard" data-tabcount>4</span>
             </button>
           </div>
         </div>
@@ -820,31 +837,31 @@
           <div class="flex gap-2 overflow-x-auto pb-2" id="pc-project-filter-tabs">
             <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0 flex items-center gap-1.5" data-filter="all" onclick="PCApp.setProjectFilter('all', this)">
               <span>전체</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20" id="pc-proj-count-all">370</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20" id="pc-proj-count-all" data-tabcount>370</span>
             </button>
             <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="in_progress" onclick="PCApp.setProjectFilter('in_progress', this)">
               <span>진행중</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-in_progress">0</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-in_progress" data-tabcount>0</span>
             </button>
             <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="maintenance" onclick="PCApp.setProjectFilter('maintenance', this)">
               <span>유지보수</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-maintenance">0</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-maintenance" data-tabcount>0</span>
             </button>
             <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="improvement" onclick="PCApp.setProjectFilter('improvement', this)">
               <span>개선사업</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-improvement">0</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-improvement" data-tabcount>0</span>
             </button>
             <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="build" onclick="PCApp.setProjectFilter('build', this)">
               <span>구축중</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-build">0</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-build" data-tabcount>0</span>
             </button>
             <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="operation" onclick="PCApp.setProjectFilter('operation', this)">
               <span>운영용역</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-operation">0</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-operation" data-tabcount>0</span>
             </button>
             <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0 flex items-center gap-1.5" data-filter="completed" onclick="PCApp.setProjectFilter('completed', this)">
               <span>완료</span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-completed">0</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest" id="pc-proj-count-completed" data-tabcount>0</span>
             </button>
           </div>
 

@@ -66,10 +66,43 @@
     return `${String(hours).padStart(2, '0')}:${m[2]}`;
   }
 
-  window.WncUtils = { escapeHtml, escapeAttr, toShortTime };
+  // 한글 상호명의 초성 그룹(ㄱ~ㅎ, A-Z, 0-9, 기타) 판별 — 주소록 거래처 초성 필터용
+  var HANGUL_CHO = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+  // 쌍자음은 대표 자음으로 묶는다 (ㄲ→ㄱ, ㄸ→ㄷ, ㅃ→ㅂ, ㅆ→ㅅ, ㅉ→ㅈ).
+  var CHO_GROUP = { 'ㄲ': 'ㄱ', 'ㄸ': 'ㄷ', 'ㅃ': 'ㅂ', 'ㅆ': 'ㅅ', 'ㅉ': 'ㅈ' };
+
+  // 상호명에서 초성 판별에 쓸 첫 유의미 글자 (괄호·법인격 접두어 제거)
+  function firstMeaningfulChar(name) {
+    var s = String(name || '')
+      .replace(/\([^)]*\)/g, '')
+      .replace(/^(주식회사|사단법인|재단법인|의료법인|사)\s*/, '')
+      .replace(/^[\s\-_.,·:;'"!?()\[\]{}#*&/\\]+/, '')
+      .trim();
+    return s.charAt(0);
+  }
+
+  // 첫 글자 → 초성 그룹 키 ('ㄱ'..'ㅎ' | 'A-Z' | '0-9' | '기타')
+  function choseongGroup(name) {
+    var ch = firstMeaningfulChar(name);
+    if (!ch) return '기타';
+    var code = ch.charCodeAt(0);
+    if (code >= 0xAC00 && code <= 0xD7A3) {
+      var cho = HANGUL_CHO[Math.floor((code - 0xAC00) / 588)];
+      return CHO_GROUP[cho] || cho;
+    }
+    if (code >= 0x3131 && code <= 0x314E) { // 조합되지 않은 낱자음
+      return CHO_GROUP[ch] || ch;
+    }
+    if (/[A-Za-z]/.test(ch)) return 'A-Z';
+    if (/[0-9]/.test(ch)) return '0-9';
+    return '기타';
+  }
+
+  window.WncUtils = { escapeHtml, escapeAttr, toShortTime, choseongGroup, firstMeaningfulChar };
 
   // 템플릿 안에서 짧게 쓰기 위한 전역 별칭.
   window.esc = escapeHtml;
   window.shortTime = toShortTime;
+  window.choseongGroup = choseongGroup;
   window.escAttr = escapeAttr;
 })();

@@ -116,6 +116,7 @@ const App = {
     dockMenus: ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'], // 4 core slots + 1 add custom button
     directoryMainTab: 'employee',
     clientProjectCategory: 'all',
+    vendorChoseong: 'all',
     todosFilter: 'all',
     todosSearchQuery: '',
     selectedProject: null,
@@ -4799,16 +4800,16 @@ const App = {
       { btn: vendorBtn, badgeId: 'dir-vendor-count-badge' }
     ].forEach(({ btn, badgeId }) => {
       if (!btn) return;
-      btn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+      btn.className = 'relative flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-all whitespace-nowrap shrink-0';
       const c = btn.querySelector(`#${badgeId}`);
-      if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary';
+      if (c) c.className = 'absolute top-0.5 right-1.5 text-[8px] leading-none font-medium text-on-surface-variant/45';
     });
 
     if (tab === 'employee') {
       if (empBtn) {
-        empBtn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+        empBtn.className = 'relative flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center transition-all whitespace-nowrap shrink-0';
         const c = empBtn.querySelector('#dir-emp-count-badge');
-        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
+        if (c) c.className = 'absolute top-0.5 right-1.5 text-[8px] leading-none font-medium text-white/70';
       }
       if (deptChips) {
         deptChips.classList.remove('hidden');
@@ -4820,9 +4821,9 @@ const App = {
       }
     } else if (tab === 'vendor') {
       if (vendorBtn) {
-        vendorBtn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+        vendorBtn.className = 'relative flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center transition-all whitespace-nowrap shrink-0';
         const c = vendorBtn.querySelector('#dir-vendor-count-badge');
-        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
+        if (c) c.className = 'absolute top-0.5 right-1.5 text-[8px] leading-none font-medium text-white/70';
       }
       if (deptChips) {
         deptChips.classList.add('hidden');
@@ -4832,11 +4833,16 @@ const App = {
         projChips.classList.add('hidden');
         projChips.style.display = 'none';
       }
+      const vChips = document.getElementById('directory-vendor-chips');
+      if (vChips) {
+        vChips.classList.remove('hidden');
+        vChips.style.display = 'flex';
+      }
     } else if (tab === 'client') {
       if (clientBtn) {
-        clientBtn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+        clientBtn.className = 'relative flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center transition-all whitespace-nowrap shrink-0';
         const c = clientBtn.querySelector('#dir-client-count-badge');
-        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
+        if (c) c.className = 'absolute top-0.5 right-1.5 text-[8px] leading-none font-medium text-white/70';
       }
       if (deptChips) {
         deptChips.classList.add('hidden');
@@ -4848,7 +4854,38 @@ const App = {
       }
     }
 
+    if (tab !== 'vendor') {
+      const vChips = document.getElementById('directory-vendor-chips');
+      if (vChips) { vChips.classList.add('hidden'); vChips.style.display = 'none'; }
+    }
+
     this.renderDirectory();
+  },
+
+  setVendorChoseong(group) {
+    this.state.vendorChoseong = group;
+    this.renderDirectory();
+  },
+
+  renderVendorChoseongChips(vendorList) {
+    const box = document.getElementById('directory-vendor-chips');
+    if (!box) return;
+    const ORDER = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ', 'A-Z', '0-9', '기타'];
+    const counts = {};
+    vendorList.forEach(v => {
+      const name = (v.meta && v.meta['상호']) || v.subject || '';
+      const g = window.choseongGroup ? window.choseongGroup(name) : '기타';
+      counts[g] = (counts[g] || 0) + 1;
+    });
+    const cur = this.state.vendorChoseong || 'all';
+    const chip = (key, label, count, active) => `
+      <button class="relative whitespace-nowrap pl-3 pr-4 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95 shrink-0 ${active ? 'bg-primary text-white shadow-xs' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-highest'}" onclick="App.setVendorChoseong('${key}')">
+        <span>${label}</span>
+        <span data-tabcount>${count}</span>
+      </button>`;
+    let html = chip('all', '전체', vendorList.length, cur === 'all');
+    ORDER.forEach(g => { if (counts[g]) html += chip(g, g, counts[g], cur === g); });
+    box.innerHTML = html;
   },
 
   cleanProjectName(c) {
@@ -4882,7 +4919,7 @@ const App = {
     let html = `
       <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95 flex items-center gap-1 shrink-0 ${allActive ? 'bg-primary text-white shadow-xs' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-highest'}" onclick="App.setClientProjectCategory('all')">
         <span>전체</span>
-        <span class="px-1.5 py-0.2 rounded-full text-[10px] ${allActive ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}">${clientList.length}</span>
+        <span class="px-1.5 py-0.2 rounded-full text-[10px] ${allActive ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}" data-tabcount>${clientList.length}</span>
       </button>
     `;
 
@@ -4892,7 +4929,7 @@ const App = {
       html += `
         <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95 flex items-center gap-1 shrink-0 ${isActive ? 'bg-primary text-white shadow-xs' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-highest'}" onclick="App.setClientProjectCategory('${esc(proj)}')">
           <span class="max-w-[130px] truncate" title="${esc(proj)}">${esc(proj)}</span>
-          <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}">${count}</span>
+          <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}" data-tabcount>${count}</span>
         </button>
       `;
     });
@@ -4915,10 +4952,18 @@ const App = {
     if (this.state.directoryMainTab === 'vendor') {
       const vendorList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.clientCompanies) || [];
       const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
+      const choFilter = this.state.vendorChoseong || 'all';
+
+      // 초성 필터 칩 렌더 (검색·초성과 무관하게 전체 기준 카운트)
+      this.renderVendorChoseongChips(vendorList);
 
       const filtered = vendorList.filter(v => {
-        if (!query) return true;
         const m = v.meta || {};
+        if (choFilter !== 'all') {
+          const nm = m['상호'] || v.subject || '';
+          if ((window.choseongGroup ? window.choseongGroup(nm) : '기타') !== choFilter) return false;
+        }
+        if (!query) return true;
         return (v.subject && v.subject.toLowerCase().includes(query)) ||
                (m['상호'] && m['상호'].toLowerCase().includes(query)) ||
                (m['대표자'] && m['대표자'].toLowerCase().includes(query)) ||
@@ -9442,12 +9487,12 @@ const App = {
     // Update Tab Buttons UI (지출결의서 탭 규격 100% 통일)
     const tabBtns = document.querySelectorAll('.report-nav-tab');
     tabBtns.forEach(btn => {
-      btn.className = 'flex-1 py-2.5 px-3 rounded-[0.875rem] text-xs sm:text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab';
+      btn.className = 'shrink-0 whitespace-nowrap py-2.5 px-3.5 rounded-[0.875rem] text-xs sm:text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab';
     });
 
     const activeBtn = document.getElementById(`tab-btn-report-${tab}`);
     if (activeBtn) {
-      activeBtn.className = 'flex-1 py-2.5 px-3 rounded-[0.875rem] text-xs sm:text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center report-nav-tab active';
+      activeBtn.className = 'shrink-0 whitespace-nowrap py-2.5 px-3.5 rounded-[0.875rem] text-xs sm:text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center report-nav-tab active';
     }
 
     this.renderMobileReportCalendar();

@@ -60,6 +60,7 @@ const PCApp = {
     directoryMainTab: 'employee',
     directoryCategory: 'all',
     clientProjectCategory: 'all',
+    vendorChoseong: 'all',
     directorySearch: '',
     noticeMainTab: 'official', // 'official' (사내공지 6건) or 'pds' (기술자료실 47건)
     noticeCategory: 'all',
@@ -2101,45 +2102,74 @@ const PCApp = {
       { btn: vendorBtn, countId: 'pc-dir-vendor-count' }
     ].forEach(({ btn, countId }) => {
       if (!btn) return;
-      btn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2';
+      btn.className = 'relative px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center';
       const c = btn.querySelector(`#${countId}`);
-      if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary';
+      if (c) c.className = 'absolute top-1 right-1.5 text-[9px] leading-none font-medium text-on-surface-variant/45';
     });
 
     // Activate selected tab
     if (tab === 'employee') {
       if (empBtn) {
-        empBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
+        empBtn.className = 'relative px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center';
         const c = empBtn.querySelector('#pc-dir-emp-count');
-        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
+        if (c) c.className = 'absolute top-1 right-1.5 text-[9px] leading-none font-medium text-white/70';
       }
       if (deptTabs) deptTabs.style.display = 'flex';
       if (clientProjTabs) clientProjTabs.classList.add('hidden');
+      { const vt = document.getElementById('pc-dir-vendor-tabs'); if (vt) { vt.classList.add('hidden'); vt.style.display = 'none'; } }
     } else if (tab === 'client') {
       if (clientBtn) {
-        clientBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
+        clientBtn.className = 'relative px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center';
         const c = clientBtn.querySelector('#pc-dir-client-count');
-        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
+        if (c) c.className = 'absolute top-1 right-1.5 text-[9px] leading-none font-medium text-white/70';
       }
       if (deptTabs) deptTabs.style.display = 'none';
       if (clientProjTabs) {
         clientProjTabs.classList.remove('hidden');
         clientProjTabs.style.display = 'flex';
       }
+      { const vt = document.getElementById('pc-dir-vendor-tabs'); if (vt) { vt.classList.add('hidden'); vt.style.display = 'none'; } }
     } else if (tab === 'vendor') {
       if (vendorBtn) {
-        vendorBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
+        vendorBtn.className = 'relative px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center';
         const c = vendorBtn.querySelector('#pc-dir-vendor-count');
-        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
+        if (c) c.className = 'absolute top-1 right-1.5 text-[9px] leading-none font-medium text-white/70';
       }
       if (deptTabs) deptTabs.style.display = 'none';
       if (clientProjTabs) {
         clientProjTabs.classList.add('hidden');
         clientProjTabs.style.display = 'none';
       }
+      { const vt = document.getElementById('pc-dir-vendor-tabs'); if (vt) { vt.classList.remove('hidden'); vt.style.display = 'flex'; } }
     }
 
     this.renderDirectoryView();
+  },
+
+  setVendorChoseong(group) {
+    this.state.vendorChoseong = group;
+    this.renderDirectoryView();
+  },
+
+  renderVendorChoseongTabs(vendorList) {
+    const box = document.getElementById('pc-dir-vendor-tabs');
+    if (!box) return;
+    const ORDER = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ', 'A-Z', '0-9', '기타'];
+    const counts = {};
+    vendorList.forEach(v => {
+      const name = (v.meta && v.meta['상호']) || v.subject || '';
+      const g = window.choseongGroup ? window.choseongGroup(name) : '기타';
+      counts[g] = (counts[g] || 0) + 1;
+    });
+    const cur = this.state.vendorChoseong || 'all';
+    const tab = (key, label, count, active) => `
+      <button class="relative px-4 py-2 rounded-xl text-base font-bold shrink-0 transition-all ${active ? 'bg-primary text-white shadow-sm' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'}" onclick="PCApp.setVendorChoseong('${key}')">
+        <span>${label}</span>
+        <span data-tabcount>${count}</span>
+      </button>`;
+    let html = tab('all', '전체', vendorList.length, cur === 'all');
+    ORDER.forEach(g => { if (counts[g]) html += tab(g, g, counts[g], cur === g); });
+    box.innerHTML = html;
   },
 
   setClientProjectCategory(projName) {
@@ -2246,10 +2276,18 @@ const PCApp = {
     if (this.state.directoryMainTab === 'vendor') {
       const vendorList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.clientCompanies) || [];
       const search = (this.state.directorySearch || '').trim().toLowerCase();
+      const choFilter = this.state.vendorChoseong || 'all';
+
+      // 초성 탭 렌더 (검색·초성과 무관하게 전체 기준 카운트)
+      this.renderVendorChoseongTabs(vendorList);
 
       const filtered = vendorList.filter(v => {
-        if (!search) return true;
         const m = v.meta || {};
+        if (choFilter !== 'all') {
+          const nm = m['상호'] || v.subject || '';
+          if ((window.choseongGroup ? window.choseongGroup(nm) : '기타') !== choFilter) return false;
+        }
+        if (!search) return true;
         return (v.subject && v.subject.toLowerCase().includes(search)) ||
                (m['상호'] && m['상호'].toLowerCase().includes(search)) ||
                (m['대표자'] && m['대표자'].toLowerCase().includes(search)) ||
@@ -2934,11 +2972,11 @@ const PCApp = {
     this.state.workReportTab = tab;
     const tabBtns = document.querySelectorAll('.pc-report-nav-tab');
     tabBtns.forEach(btn => {
-      btn.className = 'flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab';
+      btn.className = 'shrink-0 whitespace-nowrap px-5 py-3.5 rounded-2xl font-bold text-base transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab';
     });
     const activeBtn = document.getElementById(`pc-tab-btn-report-${tab}`);
     if (activeBtn) {
-      activeBtn.className = 'flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-primary text-white shadow-xs pc-report-nav-tab active';
+      activeBtn.className = 'shrink-0 whitespace-nowrap px-5 py-3.5 rounded-2xl font-bold text-base transition-all bg-primary text-white shadow-xs pc-report-nav-tab active';
     }
     this.renderWorkReportControls();
     this.renderWorkReportView();
