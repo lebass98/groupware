@@ -1108,7 +1108,19 @@
           <svg class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
             <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
           </svg>
-          <input class="w-full bg-surface-container-highest rounded-xl py-3.5 pl-12 pr-4 text-sm font-body border-2 border-transparent transition-all duration-300 placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest" id="notice-search-input" onkeyup="App.filterNotices()" placeholder="공지사항 검색..." type="text"/>
+          <input class="w-full bg-surface-container-highest rounded-xl py-3.5 pl-12 pr-4 text-sm font-body border-2 border-transparent transition-all duration-300 placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest" id="notice-search-input" onkeyup="App.filterNotices()" placeholder="공지사항 또는 자료실 검색..." type="text"/>
+        </div>
+
+        <!-- 공지 메인 구분 탭: 사내공지 / 기술 자료실 (PDS) -->
+        <div class="flex items-center gap-2 p-1 bg-surface-container rounded-2xl overflow-x-auto scrollbar-hide" id="notice-main-tabs">
+          <button id="notice-main-tab-official" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0" onclick="App.switchNoticeMainTab('official')">
+            <span>사내 공지</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white" id="notice-official-count-badge">6</span>
+          </button>
+          <button id="notice-main-tab-pds" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0" onclick="App.switchNoticeMainTab('pds')">
+            <span>기술 자료실</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary" id="notice-pds-count-badge">47</span>
+          </button>
         </div>
 
         <!-- Quick Category Filter Chips (Bento Style) -->
@@ -1640,6 +1652,9 @@
           <button id="finance-tab-report" onclick="App.switchFinanceTab('report')" class="flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center">
             품의서
           </button>
+          <button id="finance-tab-equipment" onclick="App.switchFinanceTab('equipment')" class="flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center">
+            비품·자산
+          </button>
         </div>
 
         <!-- ==================== TAB 1: EXPENSE CONTENT ==================== -->
@@ -1843,6 +1858,19 @@
             </svg>
             신규 품의서 작성
           </button>
+        </div>
+
+        <!-- ==================== TAB 3: EQUIPMENT / ASSET ==================== -->
+        <div id="finance-equipment-content" class="space-y-5 hidden">
+          <!-- 검색 -->
+          <div class="relative">
+            <svg class="w-4.5 h-4.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="equipment-search" oninput="App.renderEquipment()" placeholder="비품명, 사용자, 팀, 코드 검색..." class="w-full pl-11 pr-4 py-3 bg-surface-container-highest border-none rounded-xl text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all">
+          </div>
+          <!-- 요약 -->
+          <div class="grid grid-cols-3 gap-2.5" id="equipment-summary"></div>
+          <!-- 목록 -->
+          <div class="flex flex-col gap-3" id="equipment-list-container"></div>
         </div>
       </main>
     </section>

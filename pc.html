@@ -323,6 +323,18 @@
           </div>
         </div>
 
+        <!-- 공지사항 메인 구분 탭: 사내 공지 / 기술 자료실 (PDS) -->
+        <div class="flex items-center gap-3 mb-5 border-b border-outline/50 pb-3" id="pc-notice-main-tabs">
+          <button id="pc-notice-tab-official" class="px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2" onclick="PCApp.switchNoticeMainTab('official')">
+            <span>사내 공지</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-white/20 text-white" id="pc-notice-official-count">6</span>
+          </button>
+          <button id="pc-notice-tab-pds" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2" onclick="PCApp.switchNoticeMainTab('pds')">
+            <span>기술 자료실 (PDS)</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-notice-pds-count">47</span>
+          </button>
+        </div>
+
         <div class="flex gap-2 mb-6 overflow-x-auto pb-2" id="pc-notice-category-tabs">
           <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0" onclick="PCApp.setNoticeCategory('all', this)">전체</button>
           <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" onclick="PCApp.setNoticeCategory('인사', this)">인사</button>
@@ -554,6 +566,14 @@
           </button>
         </div>
 
+        <!-- 재무 하위 전환: 지출결의 / 비품·자산 -->
+        <div class="flex gap-2 mb-6">
+          <button id="pc-fin-mode-expense" onclick="PCApp.switchFinanceMode('expense')" class="px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white transition-all">지출결의</button>
+          <button id="pc-fin-mode-equipment" onclick="PCApp.switchFinanceMode('equipment')" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all">비품·자산</button>
+        </div>
+
+        <!-- 지출결의 패널 -->
+        <div id="pc-finance-expense-panel">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6" id="pc-finance-summary-cards">
           <!-- Rendered by pc.js -->
         </div>
@@ -582,6 +602,30 @@
               <!-- Rendered by pc.js -->
             </tbody>
           </table>
+        </div>
+        </div><!-- /pc-finance-expense-panel -->
+
+        <!-- 비품·자산 패널 -->
+        <div id="pc-finance-equipment-panel" class="hidden">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6" id="pc-equipment-summary"></div>
+          <div class="mb-4">
+            <input type="text" id="pc-equipment-search" oninput="PCApp.renderEquipment()" placeholder="비품명, 사용자, 팀, 코드 검색..." class="w-full md:w-96 px-4 py-2.5 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary transition-colors" />
+          </div>
+          <div class="pc-bento-card overflow-x-auto">
+            <table class="w-full text-base text-left border-collapse">
+              <thead>
+                <tr class="bg-surface-container border-b border-outline text-on-surface-variant font-bold">
+                  <th class="p-3.5">비품명</th>
+                  <th class="p-3.5">사용팀</th>
+                  <th class="p-3.5">사용자</th>
+                  <th class="p-3.5">비품코드</th>
+                  <th class="p-3.5">취득일</th>
+                  <th class="p-3.5">상태</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-outline" id="pc-equipment-tbody"></tbody>
+            </table>
+          </div>
         </div>
       </section>
 

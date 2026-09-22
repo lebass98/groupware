@@ -60,8 +60,10 @@ const PCApp = {
     directoryMainTab: 'employee',
     directoryCategory: 'all',
     directorySearch: '',
+    noticeMainTab: 'official', // 'official' (사내공지 6건) or 'pds' (기술자료실 47건)
     noticeCategory: 'all',
     noticeSearch: '',
+    pdsCategory: 'all',
     workReportTab: 'weekly',
     workReportYear: new Date().getFullYear(),
     workReportMonth: new Date().getMonth() + 1,
@@ -2366,6 +2368,50 @@ const PCApp = {
   },
 
   // 6-2. Notices Screen
+  switchNoticeMainTab(tab) {
+    this.state.noticeMainTab = tab;
+    const btnOfficial = document.getElementById('pc-notice-tab-official');
+    const btnPds = document.getElementById('pc-notice-tab-pds');
+    const catContainer = document.getElementById('pc-notice-category-tabs');
+
+    if (tab === 'official') {
+      if (btnOfficial) btnOfficial.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
+      if (btnPds) btnPds.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2';
+      if (catContainer) {
+        catContainer.innerHTML = `
+          <button class="px-4 py-2 rounded-xl text-base font-bold ${this.state.noticeCategory === 'all' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0" onclick="PCApp.setNoticeCategory('all', this)">전체</button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold ${this.state.noticeCategory === '인사' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0" onclick="PCApp.setNoticeCategory('인사', this)">인사</button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold ${this.state.noticeCategory === '복지' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0" onclick="PCApp.setNoticeCategory('복지', this)">복지</button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold ${this.state.noticeCategory === '시스템' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0" onclick="PCApp.setNoticeCategory('시스템', this)">시스템</button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold ${this.state.noticeCategory === '공통' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0" onclick="PCApp.setNoticeCategory('공통', this)">공통</button>
+        `;
+      }
+    } else {
+      if (btnOfficial) btnOfficial.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2';
+      if (btnPds) btnPds.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
+      if (catContainer) {
+        const cur = this.state.pdsCategory || 'all';
+        catContainer.innerHTML = `
+          <button class="px-4 py-2 rounded-xl text-base font-bold ${cur === 'all' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0" onclick="PCApp.setPdsCategory('all', this)">전체 (47)</button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold ${cur === 'dev' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0" onclick="PCApp.setPdsCategory('dev', this)">개발 게시판 (45)</button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold ${cur === 'source' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0" onclick="PCApp.setPdsCategory('source', this)">소스 자료실 (1)</button>
+          <button class="px-4 py-2 rounded-xl text-base font-bold ${cur === 'general' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0" onclick="PCApp.setPdsCategory('general', this)">일반 자료실 (1)</button>
+        `;
+      }
+    }
+    this.renderNoticeView();
+  },
+
+  setPdsCategory(cat, btn) {
+    this.state.pdsCategory = cat;
+    const tabs = document.querySelectorAll('#pc-notice-category-tabs button');
+    tabs.forEach(t => {
+      t.className = 'px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0';
+    });
+    if (btn) btn.className = 'px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0';
+    this.renderNoticeView();
+  },
+
   setNoticeCategory(cat, btn) {
     this.state.noticeCategory = cat;
     const tabs = document.querySelectorAll('#pc-notice-category-tabs button');
@@ -2380,12 +2426,101 @@ const PCApp = {
     const listWrap = document.getElementById('pc-notice-full-list');
     if (!listWrap) return;
 
+    // 카운트 배지 갱신
+    const officialCountEl = document.getElementById('pc-notice-official-count');
+    const pdsCountEl = document.getElementById('pc-notice-pds-count');
+    if (officialCountEl) officialCountEl.textContent = (this.state.notices || []).length;
+    const ext = (window.MockData && window.MockData.extendedData) || {};
+    const pdsList = ext.pds || [];
+    if (pdsCountEl) pdsCountEl.textContent = pdsList.length;
+
+    // 1) 기술 자료실 (PDS) 모드
+    if (this.state.noticeMainTab === 'pds') {
+      const pdsCat = this.state.pdsCategory || 'all';
+      const search = (this.state.noticeSearch || '').trim().toLowerCase();
+
+      const filteredPds = pdsList.filter(item => {
+        const matchCat = (pdsCat === 'all') || (item.pdsType === pdsCat);
+        const matchSearch = !search || 
+          (item.subject && item.subject.toLowerCase().includes(search)) || 
+          (item.author && item.author.toLowerCase().includes(search)) ||
+          (item.content && item.content.toLowerCase().includes(search));
+        return matchCat && matchSearch;
+      });
+
+      if (filteredPds.length === 0) {
+        listWrap.innerHTML = `
+          <div class="col-span-full p-12 bg-surface-container-lowest rounded-2xl border border-outline text-center text-on-surface-variant font-medium">
+            <svg class="w-12 h-12 text-outline mx-auto mb-3" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <p class="text-base">검색 조건에 맞는 기술 자료가 없습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      listWrap.innerHTML = filteredPds.map(item => {
+        const itemId = item.wr_id || item.id;
+        const typeBadge = item.pdsType === 'source'
+          ? '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20 shrink-0">소스자료실</span>'
+          : item.pdsType === 'dev'
+          ? '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20 shrink-0">개발게시판</span>'
+          : '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-secondary/10 text-secondary border border-secondary/20 shrink-0">일반자료실</span>';
+        
+        const filesCount = (item.files || []).length;
+        const commentsCount = (item.comments || []).length;
+        const snippet = (item.content || '').replace(/\s+/g, ' ').trim().slice(0, 95);
+
+        return `
+          <div class="p-6 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all cursor-pointer text-base flex flex-col justify-between group" onclick="PCApp.openExtendedModal('pds', '${itemId}')">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2 flex-wrap">
+                  ${typeBadge}
+                  <span class="text-xs font-mono text-on-surface-variant font-medium">No. ${itemId}</span>
+                </div>
+                <span class="text-sm text-on-surface-variant font-medium">${item.date || '-'}</span>
+              </div>
+              <h3 class="font-bold text-lg text-on-surface group-hover:text-primary transition-colors mb-2 line-clamp-1">${item.subject || '제목 없음'}</h3>
+              <p class="text-base text-on-surface-variant line-clamp-2 leading-relaxed mb-4">${snippet || '클릭하여 소스 코드 및 상세 기술 자료를 확인하세요.'}</p>
+            </div>
+            <div class="pt-3 border-t border-outline/50 flex items-center justify-between text-sm text-on-surface-variant">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-on-surface">${item.author || '워드앤코드'}</span>
+                <span class="text-outline">·</span>
+                <span>조회 ${item.hit || 0}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                ${filesCount > 0 ? `<span class="px-2.5 py-1 rounded-lg bg-surface-container text-primary font-bold text-xs flex items-center gap-1">📎 ${filesCount}개</span>` : ''}
+                ${commentsCount > 0 ? `<span class="px-2.5 py-1 rounded-lg bg-surface-container text-secondary font-bold text-xs flex items-center gap-1">💬 ${commentsCount}</span>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      return;
+    }
+
+    // 2) 사내 공지 (Official) 모드
     const filtered = (this.state.notices || []).filter(n => {
       const matchCat = this.state.noticeCategory === 'all' || n.category === this.state.noticeCategory;
       const search = (this.state.noticeSearch || '').trim().toLowerCase();
       const matchSearch = !search || (n.title && n.title.toLowerCase().includes(search)) || (n.summary && n.summary.toLowerCase().includes(search));
       return matchCat && matchSearch;
     });
+
+    if (filtered.length === 0) {
+      listWrap.innerHTML = `
+        <div class="col-span-full p-12 bg-surface-container-lowest rounded-2xl border border-outline text-center text-on-surface-variant font-medium">
+          <svg class="w-12 h-12 text-outline mx-auto mb-3" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <p class="text-base">검색 조건에 맞는 공지사항이 없습니다.</p>
+        </div>
+      `;
+      return;
+    }
 
     listWrap.innerHTML = filtered.map((n, idx) => {
       const isPinned = n.isPinned || n.pinned;
@@ -4701,7 +4836,68 @@ const PCApp = {
     this.renderFinanceView();
   },
 
+  /** 재무 화면 하위 전환: 지출결의 / 비품·자산 */
+  switchFinanceMode(mode) {
+    this.state.financeMode = mode;
+    const ex = document.getElementById('pc-finance-expense-panel');
+    const eq = document.getElementById('pc-finance-equipment-panel');
+    const bx = document.getElementById('pc-fin-mode-expense');
+    const bq = document.getElementById('pc-fin-mode-equipment');
+    const ACTIVE = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white transition-all';
+    const IDLE = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all';
+    if (ex) ex.classList.toggle('hidden', mode !== 'expense');
+    if (eq) eq.classList.toggle('hidden', mode !== 'equipment');
+    if (bx) bx.className = mode === 'expense' ? ACTIVE : IDLE;
+    if (bq) bq.className = mode === 'equipment' ? ACTIVE : IDLE;
+    if (mode === 'equipment') this.renderEquipment();
+  },
+
+  /** 비품·자산 대장 렌더 (크롤링된 MockData.equipment 사용) */
+  renderEquipment() {
+    const tbody = document.getElementById('pc-equipment-tbody');
+    const sumEl = document.getElementById('pc-equipment-summary');
+    if (!tbody) return;
+
+    const data = (window.MockData && window.MockData.equipment) || { items: [] };
+    const all = data.items || [];
+    const q = (document.getElementById('pc-equipment-search')?.value || '').trim().toLowerCase();
+    const items = q
+      ? all.filter((i) => [i.title, i.user, i.team, i.code, i.category].some((v) => String(v || '').toLowerCase().includes(q)))
+      : all;
+
+    if (sumEl) {
+      const inUse = all.filter((i) => /사용/.test(i.status)).length;
+      const teams = new Set(all.map((i) => i.team).filter(Boolean)).size;
+      const card = (n, l) => `<div class="pc-bento-card text-center py-5"><div class="text-3xl font-bold text-primary">${n}</div><div class="text-sm text-on-surface-variant mt-1">${l}</div></div>`;
+      sumEl.innerHTML = card(all.length, '총 비품') + card(inUse, '사용중') + card(teams, '보유 팀');
+    }
+
+    if (items.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-on-surface-variant">검색 결과가 없습니다.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = items.map((i) => {
+      const inUse = /사용/.test(i.status);
+      const badge = inUse
+        ? `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300">사용중</span>`
+        : `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-surface-container text-on-surface-variant">${esc(i.status || '미지정')}</span>`;
+      return `
+        <tr class="hover:bg-surface-container-low transition-colors">
+          <td class="p-3.5 font-bold text-on-surface">${esc(i.title)}</td>
+          <td class="p-3.5">${esc(i.team || '-')}</td>
+          <td class="p-3.5">${esc(i.user || '-')}</td>
+          <td class="p-3.5 font-mono text-sm text-on-surface-variant">${esc(i.code || '-')}</td>
+          <td class="p-3.5 font-mono text-sm">${esc(i.acquireDate || i.date || '-')}</td>
+          <td class="p-3.5">${badge}</td>
+        </tr>`;
+    }).join('');
+  },
+
   renderFinanceView() {
+    // 재무 진입 시 하위 모드 상태 복원(기본: 지출결의)
+    this.switchFinanceMode(this.state.financeMode || 'expense');
+
     // Summary Cards
     const summaryWrap = document.getElementById('pc-finance-summary-cards');
     if (summaryWrap) {
@@ -5842,7 +6038,8 @@ const PCApp = {
       weekly_archive: 'weeklyReports',
       teamcap: 'teamcapReports',
       meeting: 'meetings',
-      equipment: 'equipment'
+      equipment: 'equipment',
+      pds: 'pds'
     };
     const list = ext[keyMap[tab]] || [];
     const item = list.find(i => String(i.wr_id || i.id) === String(id));
@@ -5870,7 +6067,8 @@ const PCApp = {
       weekly_archive: '주간 업무 회의록 상세',
       teamcap: '팀장 보고서 상세',
       meeting: '고객사 미팅 회의록 상세',
-      equipment: '비품 및 사내 자산 상세 정보'
+      equipment: '비품 및 사내 자산 상세 정보',
+      pds: '기술 자료실 및 개발 소스 상세 정보'
     };
 
     // 메타데이터 테이블 구성

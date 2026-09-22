@@ -163,7 +163,9 @@ const App = {
       phone: '010-5244-1251',
       avatar: 'profile.png'
     },
+    noticeMainTab: 'official', // 'official' (사내공지) or 'pds' (기술 자료실)
     currentNoticeCategory: 'all',
+    currentPdsCategory: 'all',
     currentNoticeId: 1,
     notices: (window.MockData && window.MockData.notices) || [],
     calYear: new Date().getFullYear(),
@@ -2640,34 +2642,89 @@ const App = {
   switchFinanceTab(tabType) {
     this.state.finance.activeTab = tabType;
 
-    const tabExpense = document.getElementById('finance-tab-expense');
-    const tabReport = document.getElementById('finance-tab-report');
-    const contentExpense = document.getElementById('finance-expense-content');
-    const contentReport = document.getElementById('finance-report-content');
+    const ACTIVE = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center';
+    const IDLE = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center';
+
+    const tabs = {
+      expense: document.getElementById('finance-tab-expense'),
+      report: document.getElementById('finance-tab-report'),
+      equipment: document.getElementById('finance-tab-equipment')
+    };
+    const contents = {
+      expense: document.getElementById('finance-expense-content'),
+      report: document.getElementById('finance-report-content'),
+      equipment: document.getElementById('finance-equipment-content')
+    };
     const titleEl = document.getElementById('finance-main-title');
     const subEl = document.getElementById('finance-main-sub');
 
+    // 모든 탭/콘텐츠 초기화 후 선택 탭만 활성화
+    Object.entries(tabs).forEach(([k, el]) => { if (el) el.className = (k === tabType) ? ACTIVE : IDLE; });
+    Object.entries(contents).forEach(([k, el]) => { if (el) el.classList.toggle('hidden', k !== tabType); });
+
     if (tabType === 'expense') {
-      titleEl.innerText = '지출결의서';
-      subEl.innerText = '미결의 내역 및 결의서를 관리하세요.';
-
-      tabExpense.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center';
-      tabReport.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center';
-
-      contentExpense.classList.remove('hidden');
-      contentReport.classList.add('hidden');
+      if (titleEl) titleEl.innerText = '지출결의서';
+      if (subEl) subEl.innerText = '미결의 내역 및 결의서를 관리하세요.';
       this.renderExpenses();
+    } else if (tabType === 'equipment') {
+      if (titleEl) titleEl.innerText = '비품·자산 대장';
+      if (subEl) subEl.innerText = '전사 비품 및 자산 보유 현황을 관리하세요.';
+      this.renderEquipment();
     } else {
-      titleEl.innerText = '품의서';
-      subEl.innerText = '최근 문서 진행 현황을 확인하세요.';
-
-      tabReport.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center';
-      tabExpense.className = 'flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center';
-
-      contentReport.classList.remove('hidden');
-      contentExpense.classList.add('hidden');
+      if (titleEl) titleEl.innerText = '품의서';
+      if (subEl) subEl.innerText = '최근 문서 진행 현황을 확인하세요.';
       this.filterReportStatus(this.state.finance.reportFilter);
     }
+  },
+
+  /** 비품·자산 대장 렌더 (크롤링된 MockData.equipment 사용) */
+  renderEquipment() {
+    const listEl = document.getElementById('equipment-list-container');
+    const sumEl = document.getElementById('equipment-summary');
+    if (!listEl) return;
+
+    const data = (window.MockData && window.MockData.equipment) || { items: [] };
+    const all = data.items || [];
+    const q = (document.getElementById('equipment-search')?.value || '').trim().toLowerCase();
+    const items = q
+      ? all.filter((i) => [i.title, i.user, i.team, i.code, i.category].some((v) => String(v || '').toLowerCase().includes(q)))
+      : all;
+
+    if (sumEl) {
+      const inUse = all.filter((i) => /사용/.test(i.status)).length;
+      const teams = new Set(all.map((i) => i.team).filter(Boolean)).size;
+      const box = (num, label) => `
+        <div class="p-3 bg-surface-container-low rounded-xl text-center border border-outline-variant/10">
+          <div class="font-headline text-xl font-black text-primary">${num}</div>
+          <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">${label}</div>
+        </div>`;
+      sumEl.innerHTML = box(all.length, '총 비품') + box(inUse, '사용중') + box(teams, '보유 팀');
+    }
+
+    if (items.length === 0) {
+      listEl.innerHTML = `<div class="text-center py-10 text-on-surface-variant text-sm">검색 결과가 없습니다.</div>`;
+      return;
+    }
+
+    listEl.innerHTML = items.map((i) => {
+      const inUse = /사용/.test(i.status);
+      const badge = inUse
+        ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-secondary/15 text-secondary">사용중</span>`
+        : `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">${esc(i.status || '미지정')}</span>`;
+      const meta = [i.team, i.user].filter(Boolean).join(' · ') || '담당 미지정';
+      return `
+        <article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/10 flex flex-col gap-2">
+          <div class="flex justify-between items-start gap-2">
+            <strong class="font-headline text-sm text-on-surface leading-snug">${esc(i.title)}</strong>
+            ${badge}
+          </div>
+          <div class="flex items-center justify-between text-xs text-on-surface-variant">
+            <span>${esc(meta)}</span>
+            <span class="font-mono">${esc(i.acquireDate || i.date || '')}</span>
+          </div>
+          ${i.code ? `<div class="text-[11px] text-on-surface-variant/80 font-mono">코드 ${esc(i.code)}</div>` : ''}
+        </article>`;
+    }).join('');
   },
 
   filterCardType(cardType) {
@@ -5074,14 +5131,143 @@ const App = {
     this.showToast(`✉️ ${emp.name} (${emp.email}) 메일 작성 창을 엽니다.`);
   },
 
-  // Notice Methods
+  // Notice & PDS Methods
+  switchNoticeMainTab(tab) {
+    this.state.noticeMainTab = tab;
+    const btnOfficial = document.getElementById('notice-main-tab-official');
+    const btnPds = document.getElementById('notice-main-tab-pds');
+    const chipsContainer = document.getElementById('notice-category-chips');
+
+    if (tab === 'official') {
+      if (btnOfficial) {
+        btnOfficial.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+      }
+      if (btnPds) {
+        btnPds.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+      }
+      if (chipsContainer) {
+        chipsContainer.innerHTML = `
+          <button class="whitespace-nowrap px-4 py-2 rounded-full ${this.state.currentNoticeCategory === 'all' ? 'bg-primary text-on-primary active' : 'bg-surface-container text-on-surface-variant'} font-label text-xs font-bold transition-all active:scale-95 notice-chip" onclick="App.selectNoticeCategory('all', this)">전체</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full ${this.state.currentNoticeCategory === '인사' ? 'bg-primary text-on-primary active' : 'bg-surface-container text-on-surface-variant'} font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest notice-chip" onclick="App.selectNoticeCategory('인사', this)">인사</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full ${this.state.currentNoticeCategory === '복지' ? 'bg-primary text-on-primary active' : 'bg-surface-container text-on-surface-variant'} font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest notice-chip" onclick="App.selectNoticeCategory('복지', this)">복지</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full ${this.state.currentNoticeCategory === '시스템' ? 'bg-primary text-on-primary active' : 'bg-surface-container text-on-surface-variant'} font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest notice-chip" onclick="App.selectNoticeCategory('시스템', this)">시스템</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full ${this.state.currentNoticeCategory === '공통' ? 'bg-primary text-on-primary active' : 'bg-surface-container text-on-surface-variant'} font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest notice-chip" onclick="App.selectNoticeCategory('공통', this)">공통</button>
+        `;
+      }
+    } else {
+      if (btnOfficial) {
+        btnOfficial.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+      }
+      if (btnPds) {
+        btnPds.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+      }
+      if (chipsContainer) {
+        const cur = this.state.currentPdsCategory || 'all';
+        chipsContainer.innerHTML = `
+          <button class="whitespace-nowrap px-4 py-2 rounded-full ${cur === 'all' ? 'bg-primary text-on-primary active' : 'bg-surface-container text-on-surface-variant'} font-label text-xs font-bold transition-all active:scale-95 pds-chip" onclick="App.selectPdsCategory('all', this)">전체 (47)</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full ${cur === 'dev' ? 'bg-primary text-on-primary active' : 'bg-surface-container text-on-surface-variant'} font-label text-xs font-bold transition-all active:scale-95 pds-chip" onclick="App.selectPdsCategory('dev', this)">개발게시판 (45)</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full ${cur === 'source' ? 'bg-primary text-on-primary active' : 'bg-surface-container text-on-surface-variant'} font-label text-xs font-bold transition-all active:scale-95 pds-chip" onclick="App.selectPdsCategory('source', this)">소스 (1)</button>
+          <button class="whitespace-nowrap px-4 py-2 rounded-full ${cur === 'general' ? 'bg-primary text-on-primary active' : 'bg-surface-container text-on-surface-variant'} font-label text-xs font-bold transition-all active:scale-95 pds-chip" onclick="App.selectPdsCategory('general', this)">일반 (1)</button>
+        `;
+      }
+    }
+    this.renderNotices();
+  },
+
+  selectPdsCategory(cat, chipEl) {
+    this.state.currentPdsCategory = cat;
+    const chips = document.querySelectorAll('.pds-chip');
+    chips.forEach(c => {
+      c.classList.remove('bg-primary', 'text-on-primary', 'active');
+      c.classList.add('bg-surface-container', 'text-on-surface-variant');
+    });
+    if (chipEl) {
+      chipEl.classList.remove('bg-surface-container', 'text-on-surface-variant');
+      chipEl.classList.add('bg-primary', 'text-on-primary', 'active');
+    }
+    this.renderNotices();
+  },
+
   renderNotices() {
     const container = document.getElementById('notice-list-container');
     if (!container) return;
 
-    const query = (document.getElementById('notice-search-input')?.value || '').toLowerCase().trim();
-    const cat = this.state.currentNoticeCategory || 'all';
+    // 카운트 배지 갱신
+    const officialBadge = document.getElementById('notice-official-count-badge');
+    const pdsBadge = document.getElementById('notice-pds-count-badge');
+    if (officialBadge) officialBadge.textContent = (this.state.notices || []).length;
+    const ext = (window.MockData && window.MockData.extendedData) || {};
+    const pdsList = ext.pds || [];
+    if (pdsBadge) pdsBadge.textContent = pdsList.length;
 
+    const query = (document.getElementById('notice-search-input')?.value || '').toLowerCase().trim();
+
+    // 1) 기술 자료실 (PDS) 모바일 렌더링
+    if (this.state.noticeMainTab === 'pds') {
+      const pdsCat = this.state.currentPdsCategory || 'all';
+      const filteredPds = pdsList.filter(item => {
+        const matchCat = (pdsCat === 'all') || (item.pdsType === pdsCat);
+        const matchQuery = !query || 
+          (item.subject && item.subject.toLowerCase().includes(query)) || 
+          (item.author && item.author.toLowerCase().includes(query)) ||
+          (item.content && item.content.toLowerCase().includes(query));
+        return matchCat && matchQuery;
+      });
+
+      if (filteredPds.length === 0) {
+        container.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2">search_off</span>
+            <p>검색 조건에 맞는 기술 자료가 없습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filteredPds.map(item => {
+        const itemId = item.wr_id || item.id;
+        const typeBadge = item.pdsType === 'source'
+          ? '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20 shrink-0">소스자료실</span>'
+          : item.pdsType === 'dev'
+          ? '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20 shrink-0">개발게시판</span>'
+          : '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-secondary/10 text-secondary border border-secondary/20 shrink-0">일반자료실</span>';
+
+        const filesCount = (item.files || []).length;
+        const commentsCount = (item.comments || []).length;
+        const snippet = (item.content || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+
+        return `
+          <article onclick="App.openExtendedDetail('pds', '${itemId}')" class="bg-surface-container-low rounded-2xl p-5 flex flex-col gap-3 transition-all duration-300 hover:-translate-y-1 cursor-pointer active:scale-95 text-left border border-outline-variant/15 shadow-xs">
+            <div class="flex items-center justify-between">
+              <div class="flex gap-2 items-center flex-wrap">
+                ${typeBadge}
+                <span class="text-[11px] font-mono text-on-surface-variant">No. ${itemId}</span>
+              </div>
+              <span class="font-body text-xs text-on-surface-variant font-medium">${item.date || '-'}</span>
+            </div>
+            <div>
+              <h2 class="font-headline text-base font-bold text-on-surface leading-snug mb-1 line-clamp-1">${item.subject || '제목 없음'}</h2>
+              <p class="font-body text-xs text-on-surface-variant line-clamp-2 leading-relaxed">${snippet || '터치하여 소스 코드 및 기술 자료를 확인하세요.'}</p>
+            </div>
+            <div class="pt-2 border-t border-outline-variant/10 flex items-center justify-between text-xs text-on-surface-variant">
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-on-surface">${item.author || '워드앤코드'}</span>
+                <span class="text-outline">·</span>
+                <span>조회 ${item.hit || 0}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                ${filesCount > 0 ? `<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-bold flex items-center gap-0.5 text-[11px]">📎 ${filesCount}</span>` : ''}
+                ${commentsCount > 0 ? `<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-bold flex items-center gap-0.5 text-[11px]">💬 ${commentsCount}</span>` : ''}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+      return;
+    }
+
+    // 2) 사내 공지 (Official) 모바일 렌더링
+    const cat = this.state.currentNoticeCategory || 'all';
     let filtered = this.state.notices.filter(item => {
       const matchCat = cat === 'all' || item.category === cat;
       const matchQuery = !query || item.title.toLowerCase().includes(query) || item.category.toLowerCase().includes(query);
@@ -7874,7 +8060,8 @@ const App = {
       weekly_archive: 'weeklyReports',
       teamcap: 'teamcapReports',
       meeting: 'meetings',
-      equipment: 'equipment'
+      equipment: 'equipment',
+      pds: 'pds'
     };
     const list = ext[keyMap[tab]] || [];
     const item = list.find(i => String(i.wr_id || i.id) === String(id));
@@ -7896,7 +8083,8 @@ const App = {
       weekly_archive: '주간회의록 상세',
       teamcap: '팀장보고 상세',
       meeting: '미팅회의록 상세',
-      equipment: '비품/자산 상세'
+      equipment: '비품/자산 상세',
+      pds: '기술 자료실 상세'
     };
     if (titleEl) titleEl.textContent = titles[tab] || '상세 정보';
 
