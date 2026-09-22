@@ -5407,69 +5407,229 @@ const PCApp = {
   // ==========================================================================
   switchProjectSubTab(tab) {
     this.state.projectSubTab = tab || 'project';
-    const projBtn = document.getElementById('pc-proj-subtab-project');
-    const siteBtn = document.getElementById('pc-proj-subtab-site');
+    const subTabs = ['project', 'site', 'contract', 'estimate', 'domain', 'server', 'url', 'storyboard'];
+    
+    // 탭 버튼 스타일 갱신
+    subTabs.forEach(t => {
+      const btn = document.getElementById(`pc-proj-subtab-${t}`);
+      if (!btn) return;
+      if (t === this.state.projectSubTab) {
+        btn.className = 'px-4 py-2.5 rounded-xl font-bold text-base transition-all bg-primary text-white shadow-xs flex items-center gap-2 cursor-pointer shrink-0';
+        const badge = btn.querySelector('span:last-child');
+        if (badge) badge.className = 'px-2 py-0.5 rounded-full text-xs font-bold bg-white/20';
+      } else {
+        btn.className = 'px-4 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer shrink-0';
+        const badge = btn.querySelector('span:last-child');
+        if (badge) badge.className = 'px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest';
+      }
+    });
+
     const projView = document.getElementById('pc-subview-project');
     const siteView = document.getElementById('pc-subview-site');
+    const extView = document.getElementById('pc-subview-extended');
     const screenTitle = document.getElementById('pc-project-screen-title');
     const screenDesc = document.getElementById('pc-project-screen-desc');
     const totalBadge = document.getElementById('pc-project-total-badge');
     const searchInp = document.getElementById('pc-project-search-input');
 
-    const allProjects = this.state.projects || [];
-    const allSites = this.state.sites || [];
+    const ext = (window.MockData && window.MockData.extendedData) || {};
+    const counts = {
+      project: (this.state.projects || []).length,
+      site: (this.state.sites || []).length,
+      contract: (ext.contracts || []).length,
+      estimate: (ext.estimates || []).length,
+      domain: (ext.domains || []).length,
+      server: (ext.servers || []).length,
+      url: (ext.projectUrls || []).length,
+      storyboard: (ext.storyboards || []).length
+    };
 
     // 서브탭 건수 뱃지 동기화
-    const projCountEl = document.getElementById('pc-subtab-count-project');
-    const siteCountEl = document.getElementById('pc-subtab-count-site');
-    if (projCountEl) projCountEl.textContent = allProjects.length;
-    if (siteCountEl) siteCountEl.textContent = allSites.length;
+    subTabs.forEach(t => {
+      const el = document.getElementById(`pc-subtab-count-${t}`);
+      if (el) el.textContent = counts[t] || 0;
+    });
 
-    if (this.state.projectSubTab === 'site') {
-      if (projBtn) projBtn.className = 'px-5 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer';
-      if (siteBtn) siteBtn.className = 'px-5 py-2.5 rounded-xl font-bold text-base transition-all bg-primary text-white shadow-xs flex items-center gap-2 cursor-pointer';
-      if (projView) projView.classList.add('hidden');
-      if (siteView) siteView.classList.remove('hidden');
+    const configs = {
+      project: { title: '프로젝트 관리', desc: '구축, 개선사업, 유지보수 및 운영용역 프로젝트 통합 관리', ph: '프로젝트명, 고객사, 담당자 검색...' },
+      site: { title: '사이트 관리', desc: '전사 사이트 접속 URL, 계정 및 고객사 담당자 통합 관리', ph: '사이트명, 고객사, 사이트코드, 담당자 검색...' },
+      contract: { title: '계약서 관리 대장', desc: '전사 체결 프로젝트 계약서, 계약기간 및 발주처 대장', ph: '계약서명, 고객사, 담당자 검색...' },
+      estimate: { title: '견적 및 제안서', desc: '신규 사업 제안서, 견적 산출 대장 및 제안 이력 관리', ph: '견적/제안명, 고객사, 작성자 검색...' },
+      domain: { title: '도메인 관리 대장', desc: '전사 운영 사이트 공식 도메인 주소 및 등록기관·만료일 관리', ph: '도메인, 사이트명, 등록기관 검색...' },
+      server: { title: '서버 및 호스팅 인프라', desc: '개발/운영 서버, 클라우드 호스팅, OS 및 인프라 구성 현황', ph: '서버명, 사이트, OS, 위치 검색...' },
+      url: { title: '프로젝트 접속 URL 모음', desc: '개발/스테이징/운영 관리자 및 사용자 실제 접속 주소록', ph: 'URL, 프로젝트명, 사이트 검색...' },
+      storyboard: { title: '기획 스토리보드', desc: '프로젝트 기획 화면설계서(SB) 및 UI/UX 산출물', ph: '스토리보드명, 프로젝트 검색...' }
+    };
 
-      if (screenTitle) screenTitle.textContent = '사이트 관리';
-      if (screenDesc) screenDesc.textContent = '전사 사이트 접속 URL, 계정 및 고객사 담당자 통합 관리';
-      if (totalBadge) totalBadge.textContent = `${allSites.length}개`;
-      if (searchInp) {
-        searchInp.placeholder = '사이트명, 고객사, 사이트코드, 담당자 검색...';
-        searchInp.value = this.state.siteSearch || '';
-      }
-      this.renderSites();
-    } else {
-      if (projBtn) projBtn.className = 'px-5 py-2.5 rounded-xl font-bold text-base transition-all bg-primary text-white shadow-xs flex items-center gap-2 cursor-pointer';
-      if (siteBtn) siteBtn.className = 'px-5 py-2.5 rounded-xl font-bold text-base transition-all bg-transparent text-on-surface-variant hover:text-on-surface flex items-center gap-2 cursor-pointer';
+    const cur = configs[this.state.projectSubTab] || configs.project;
+    if (screenTitle) screenTitle.textContent = cur.title;
+    if (screenDesc) screenDesc.textContent = cur.desc;
+    if (totalBadge) totalBadge.textContent = `${counts[this.state.projectSubTab] || 0}개`;
+    if (searchInp) {
+      searchInp.placeholder = cur.ph;
+      searchInp.value = this.state.projectExtendedSearch || '';
+    }
+
+    if (this.state.projectSubTab === 'project') {
       if (projView) projView.classList.remove('hidden');
       if (siteView) siteView.classList.add('hidden');
-
-      if (screenTitle) screenTitle.textContent = '프로젝트 관리';
-      if (screenDesc) screenDesc.textContent = '구축, 개선사업, 유지보수 및 운영용역 프로젝트 통합 관리';
-      if (totalBadge) totalBadge.textContent = `${allProjects.length}개`;
-      if (searchInp) {
-        searchInp.placeholder = '프로젝트명, 고객사, 담당자 검색...';
-        searchInp.value = this.state.projectSearch || '';
-      }
+      if (extView) extView.classList.add('hidden');
       this.renderProjects();
+    } else if (this.state.projectSubTab === 'site') {
+      if (projView) projView.classList.add('hidden');
+      if (siteView) siteView.classList.remove('hidden');
+      if (extView) extView.classList.add('hidden');
+      this.renderSites();
+    } else {
+      if (projView) projView.classList.add('hidden');
+      if (siteView) siteView.classList.add('hidden');
+      if (extView) extView.classList.remove('hidden');
+      this.renderExtendedGridView(this.state.projectSubTab);
     }
   },
 
   onProjectSearchInput(val) {
-    if (this.state.projectSubTab === 'site') {
+    if (this.state.projectSubTab === 'project') {
+      this.setProjectSearch(val);
+    } else if (this.state.projectSubTab === 'site') {
       this.setSiteSearch(val);
     } else {
-      this.setProjectSearch(val);
+      this.state.projectExtendedSearch = val || '';
+      this.renderExtendedGridView(this.state.projectSubTab);
     }
   },
 
   onProjectSortChange(val) {
-    if (this.state.projectSubTab === 'site') {
+    if (this.state.projectSubTab === 'project') {
+      this.setProjectSort(val);
+    } else if (this.state.projectSubTab === 'site') {
       this.setSiteSort(val);
     } else {
-      this.setProjectSort(val);
+      this.state.projectExtendedSort = val || 'recommend';
+      this.renderExtendedGridView(this.state.projectSubTab);
     }
+  },
+
+  renderExtendedGridView(tab) {
+    const container = document.getElementById('pc-extended-grid');
+    if (!container) return;
+
+    const ext = (window.MockData && window.MockData.extendedData) || {};
+    const keyMap = {
+      contract: 'contracts',
+      estimate: 'estimates',
+      domain: 'domains',
+      server: 'servers',
+      url: 'projectUrls',
+      storyboard: 'storyboards'
+    };
+
+    let list = ext[keyMap[tab]] || [];
+    const query = (this.state.projectExtendedSearch || '').trim().toLowerCase();
+
+    if (query) {
+      list = list.filter(item => {
+        return (item.subject && item.subject.toLowerCase().includes(query)) ||
+               (item.title && item.title.toLowerCase().includes(query)) ||
+               (item.domain && item.domain.toLowerCase().includes(query)) ||
+               (item.site && item.site.toLowerCase().includes(query)) ||
+               (item.company && item.company.toLowerCase().includes(query)) ||
+               (item.url && item.url.toLowerCase().includes(query)) ||
+               (item.author && item.author.toLowerCase().includes(query));
+      });
+    }
+
+    const totalBadge = document.getElementById('pc-project-total-badge');
+    if (totalBadge) totalBadge.textContent = `${list.length}개`;
+
+    if (!list.length) {
+      container.innerHTML = `
+        <div class="col-span-full p-12 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline">
+          <svg class="w-12 h-12 text-outline mb-3 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+          <p class="text-base font-medium">등록되거나 검색된 항목이 없습니다.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = list.map(item => {
+      const title = item.title || item.subject || item.domain || '항목';
+      const site = item.site || item.company || '';
+      const author = item.author || '워드앤코드';
+      const date = item.date || '-';
+
+      // 탭별 맞춤 속성 배지 및 액션
+      let metaHtml = '';
+      let actionHtml = '';
+
+      if (tab === 'domain') {
+        metaHtml = `
+          <div class="space-y-1 text-xs text-on-surface-variant pt-2 border-t border-outline/50">
+            <p class="flex items-center justify-between"><span class="text-on-surface-variant/70">등록기관</span><span class="font-medium">${item.registrar || '-'}</span></p>
+            <p class="flex items-center justify-between"><span class="text-on-surface-variant/70">사이트</span><span class="font-semibold text-primary truncate max-w-[200px]">${site || '-'}</span></p>
+          </div>
+        `;
+        const linkUrl = (item.domain.startsWith('http') ? item.domain : `http://${item.domain}`).split(' ')[0];
+        actionHtml = `
+          <a href="${linkUrl}" target="_blank" rel="noopener noreferrer" class="w-full py-2 px-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition-colors">
+            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+            <span>도메인 바로가기</span>
+          </a>
+        `;
+      } else if (tab === 'server') {
+        metaHtml = `
+          <div class="space-y-1 text-xs text-on-surface-variant pt-2 border-t border-outline/50">
+            <p class="flex items-center justify-between"><span class="text-on-surface-variant/70">서버 용도</span><span class="font-bold text-on-surface">${item.usage || '서버'}</span></p>
+            <p class="flex items-center justify-between"><span class="text-on-surface-variant/70">위치</span><span class="font-medium">${item.location || '클라우드'}</span></p>
+            <p class="flex items-center justify-between"><span class="text-on-surface-variant/70">OS</span><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-surface-container-high text-primary">${item.os || 'Linux'}</span></p>
+          </div>
+        `;
+      } else if (tab === 'url') {
+        metaHtml = `
+          <div class="space-y-1 text-xs text-on-surface-variant pt-2 border-t border-outline/50">
+            <p class="flex items-center justify-between"><span class="text-on-surface-variant/70">소속 프로젝트</span><span class="font-semibold text-primary truncate max-w-[200px]">${site || '-'}</span></p>
+            <p class="text-[11px] text-on-surface-variant/80 truncate font-mono bg-surface-container/50 px-2 py-1 rounded mt-1">${item.url || '-'}</p>
+          </div>
+        `;
+        if (item.url && item.url.startsWith('http')) {
+          actionHtml = `
+            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="w-full py-2 px-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition-colors">
+              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+              <span>접속 주소 열기</span>
+            </a>
+          `;
+        }
+      } else if (tab === 'contract') {
+        metaHtml = `
+          <div class="space-y-1 text-xs text-on-surface-variant pt-2 border-t border-outline/50">
+            <p class="flex items-center justify-between"><span class="text-on-surface-variant/70">구분</span><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary">계약서 대장</span></p>
+            <p class="flex items-center justify-between"><span class="text-on-surface-variant/70">계약 등록일</span><span class="font-medium">${date}</span></p>
+          </div>
+        `;
+      } else {
+        metaHtml = `
+          <div class="space-y-1 text-xs text-on-surface-variant pt-2 border-t border-outline/50">
+            <p class="flex items-center justify-between"><span class="text-on-surface-variant/70">등록일</span><span class="font-medium">${date}</span></p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <h4 class="font-bold text-base text-on-surface line-clamp-2">${title}</h4>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-surface-container text-on-surface-variant shrink-0">${author}</span>
+            </div>
+            ${site && tab !== 'url' && tab !== 'domain' ? `<p class="text-xs text-primary font-semibold line-clamp-1 mb-2">${site}</p>` : ''}
+            ${metaHtml}
+          </div>
+          ${actionHtml ? `<div class="pt-3 mt-3 border-t border-outline/40">${actionHtml}</div>` : ''}
+        </div>
+      `;
+    }).join('');
   },
 
   setSiteFilter(filterKey, tabEl) {

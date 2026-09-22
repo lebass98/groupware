@@ -392,34 +392,143 @@ async function main() {
   console.log(`✅ [8/16] 고객사 실무 담당자: ${clientContacts.length}명 정밀 수집 완료`);
 
   // 9. wc_domain (도메인 관리 대장)
-  console.log('📥 [9/16] 9. 도메인 관리 대장 (wc_domain) 수집 중...');
-  const domainList = await crawlBoard('wc_domain', cookie, 10);
-  for (let i = 0; i < Math.min(domainList.length, 30); i++) {
-    const d = await fetchPostDetail('wc_domain', domainList[i].wr_id, cookie);
-    if (d) {
-      domainList[i].meta = d.meta;
-      domainList[i].domainUrl = domainList[i].subject;
-      domainList[i].expireDate = d.meta['만료일'] || '';
-      domainList[i].registrar = d.meta['등록업체'] || d.meta['호스팅'] || '';
-    }
+  console.log('📥 [9/16] 9. 도메인 관리 대장 (wc_domain) 정밀 수집 중...');
+  const domainList = [];
+  const seenDomainIds = new Set();
+  for (let page = 1; page <= 10; page++) {
+    const pUrl = `${BASE_URL}/html/board/bbs/board.php?bo_table=wc_domain&page=${page}`;
+    const pHtml = await fetchPage(pUrl, cookie);
+    if (!pHtml || pHtml.includes('존재하지 않는 게시판')) break;
+    const $ = cheerio.load(pHtml);
+    let count = 0;
+    $('form[name="fboardlist"] tr').each((_, tr) => {
+      const tds = $(tr).find('td');
+      if (tds.length === 8) {
+        const num = $(tds[0]).text().trim();
+        if (/^\d+$/.test(num) && !seenDomainIds.has(num)) {
+          seenDomainIds.add(num);
+          count++;
+          const category = $(tds[1]).text().trim();
+          const domain = $(tds[2]).text().trim();
+          const site = $(tds[3]).text().trim();
+          const registrar = $(tds[4]).text().trim();
+          const author = $(tds[5]).text().trim();
+          const date = $(tds[6]).text().trim();
+          const hit = $(tds[7]).text().trim();
+          domainList.push({
+            wr_id: num,
+            id: num,
+            category,
+            domain,
+            subject: domain,
+            site,
+            company: site.replace(/\s*\(s_[^)]+\)/, '').trim(),
+            registrar,
+            author,
+            date,
+            hit
+          });
+        }
+      }
+    });
+    if (count === 0) break;
   }
   fs.writeFileSync(path.join(LEGACY_DIR, 'domains.json'), JSON.stringify(domainList, null, 2));
   console.log(`✅ [9/16] 도메인 대장: ${domainList.length}건 수집 완료`);
 
   // 10. wc_server & wc_hosting (서버/호스팅 인프라)
-  console.log('📥 [10/16] 10. 서버/호스팅 인프라 (wc_server, wc_hosting) 수집 중...');
-  const serverList = await crawlBoard('wc_server', cookie, 10);
-  const hostingList = await crawlBoard('wc_hosting', cookie, 5);
-  const allServers = [
-    ...serverList.map(s => ({ ...s, infraType: 'server' })),
-    ...hostingList.map(h => ({ ...h, infraType: 'hosting' }))
-  ];
+  console.log('📥 [10/16] 10. 서버/호스팅 인프라 (wc_server, wc_hosting) 정밀 수집 중...');
+  const allServers = [];
+  const seenServerIds = new Set();
+  for (let page = 1; page <= 15; page++) {
+    const pUrl = `${BASE_URL}/html/board/bbs/board.php?bo_table=wc_server&page=${page}`;
+    const pHtml = await fetchPage(pUrl, cookie);
+    if (!pHtml || pHtml.includes('존재하지 않는 게시판')) break;
+    const $ = cheerio.load(pHtml);
+    let count = 0;
+    $('form[name="fboardlist"] tr').each((_, tr) => {
+      const tds = $(tr).find('td');
+      if (tds.length === 10) {
+        const num = $(tds[0]).text().trim();
+        if (/^\d+$/.test(num) && !seenServerIds.has(num)) {
+          seenServerIds.add(num);
+          count++;
+          const category = $(tds[1]).text().trim();
+          const title = $(tds[2]).text().trim();
+          const site = $(tds[3]).text().trim();
+          const usage = $(tds[4]).text().trim();
+          const location = $(tds[5]).text().trim();
+          const os = $(tds[6]).text().trim();
+          const author = $(tds[7]).text().trim();
+          const date = $(tds[8]).text().trim();
+          const hit = $(tds[9]).text().trim();
+          allServers.push({
+            wr_id: num,
+            id: num,
+            category,
+            title,
+            subject: title,
+            site,
+            company: site.replace(/\s*\(s_[^)]+\)/, '').trim(),
+            usage,
+            location,
+            os,
+            author,
+            date,
+            hit,
+            infraType: 'server'
+          });
+        }
+      }
+    });
+    if (count === 0) break;
+  }
   fs.writeFileSync(path.join(LEGACY_DIR, 'servers.json'), JSON.stringify(allServers, null, 2));
   console.log(`✅ [10/16] 서버/호스팅: ${allServers.length}건 수집 완료`);
 
   // 11. wc_url (프로젝트 URL 모음)
-  console.log('📥 [11/16] 11. 프로젝트 URL 모음 (wc_url) 수집 중...');
-  const projectUrls = await crawlBoard('wc_url', cookie, 15);
+  console.log('📥 [11/16] 11. 프로젝트 URL 모음 (wc_url) 정밀 수집 중...');
+  const projectUrls = [];
+  const seenUrlIds = new Set();
+  for (let page = 1; page <= 15; page++) {
+    const pUrl = `${BASE_URL}/html/board/bbs/board.php?bo_table=wc_url&page=${page}`;
+    const pHtml = await fetchPage(pUrl, cookie);
+    if (!pHtml || pHtml.includes('존재하지 않는 게시판')) break;
+    const $ = cheerio.load(pHtml);
+    let count = 0;
+    $('form[name="fboardlist"] tr').each((_, tr) => {
+      const tds = $(tr).find('td');
+      if (tds.length === 8) {
+        const num = $(tds[0]).text().trim();
+        if (/^\d+$/.test(num) && !seenUrlIds.has(num)) {
+          seenUrlIds.add(num);
+          count++;
+          const category = $(tds[1]).text().trim();
+          const title = $(tds[2]).text().trim();
+          const site = $(tds[3]).text().trim();
+          const targetUrl = $(tds[4]).text().trim();
+          const author = $(tds[5]).text().trim();
+          const date = $(tds[6]).text().trim();
+          const hit = $(tds[7]).text().trim();
+          projectUrls.push({
+            wr_id: num,
+            id: num,
+            category,
+            title,
+            subject: title,
+            site,
+            company: site.replace(/\s*\(s_[^)]+\)/, '').trim(),
+            url: targetUrl,
+            targetUrl,
+            author,
+            date,
+            hit
+          });
+        }
+      }
+    });
+    if (count === 0) break;
+  }
   fs.writeFileSync(path.join(LEGACY_DIR, 'project_urls.json'), JSON.stringify(projectUrls, null, 2));
   console.log(`✅ [11/16] 프로젝트 URL: ${projectUrls.length}건 수집 완료`);
 

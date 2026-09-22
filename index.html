@@ -1937,16 +1937,50 @@
           </div>
         </div>
 
-        <!-- Sub Tabs: [프로젝트] / [사이트] -->
-        <div class="flex p-1 bg-surface-container-low rounded-2xl border border-outline-variant/20 shadow-2xs">
-          <button id="m-proj-tab-project" class="flex-1 py-2.5 rounded-xl font-bold text-xs transition-all bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer" onclick="App.switchProjectSubTab('project')">
-            <span>💼 프로젝트</span>
-            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20" id="m-subtab-count-project">370</span>
-          </button>
-          <button id="m-proj-tab-site" class="flex-1 py-2.5 rounded-xl font-bold text-xs transition-all bg-transparent text-on-surface-variant flex items-center justify-center gap-1.5 cursor-pointer" onclick="App.switchProjectSubTab('site')">
-            <span>🌐 사이트</span>
-            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-subtab-count-site">410</span>
-          </button>
+        <!-- Sub Tabs: [프로젝트] / [사이트] / [계약서] / [견적·제안] / [도메인] / [서버·호스팅] / [URL 모음] / [스토리보드] -->
+        <div class="flex overflow-x-auto pb-1 scrollbar-hide" id="m-proj-subtabs-bar">
+          <div class="inline-flex p-1 bg-surface-container-low rounded-2xl border border-outline-variant/20 shadow-2xs gap-1">
+            <button id="m-proj-tab-project" class="whitespace-nowrap px-3.5 py-2 rounded-xl font-bold text-xs transition-all bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer shrink-0" onclick="App.switchProjectSubTab('project')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+              <span>프로젝트</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20" id="m-subtab-count-project">370</span>
+            </button>
+            <button id="m-proj-tab-site" class="whitespace-nowrap px-3.5 py-2 rounded-xl font-bold text-xs transition-all bg-transparent text-on-surface-variant flex items-center justify-center gap-1.5 cursor-pointer shrink-0" onclick="App.switchProjectSubTab('site')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+              <span>사이트</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-subtab-count-site">410</span>
+            </button>
+            <button id="m-proj-tab-contract" class="whitespace-nowrap px-3.5 py-2 rounded-xl font-bold text-xs transition-all bg-transparent text-on-surface-variant flex items-center justify-center gap-1.5 cursor-pointer shrink-0" onclick="App.switchProjectSubTab('contract')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+              <span>계약서</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-subtab-count-contract">150</span>
+            </button>
+            <button id="m-proj-tab-estimate" class="whitespace-nowrap px-3.5 py-2 rounded-xl font-bold text-xs transition-all bg-transparent text-on-surface-variant flex items-center justify-center gap-1.5 cursor-pointer shrink-0" onclick="App.switchProjectSubTab('estimate')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+              <span>견적·제안</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-subtab-count-estimate">43</span>
+            </button>
+            <button id="m-proj-tab-domain" class="whitespace-nowrap px-3.5 py-2 rounded-xl font-bold text-xs transition-all bg-transparent text-on-surface-variant flex items-center justify-center gap-1.5 cursor-pointer shrink-0" onclick="App.switchProjectSubTab('domain')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+              <span>도메인</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-subtab-count-domain">146</span>
+            </button>
+            <button id="m-proj-tab-server" class="whitespace-nowrap px-3.5 py-2 rounded-xl font-bold text-xs transition-all bg-transparent text-on-surface-variant flex items-center justify-center gap-1.5 cursor-pointer shrink-0" onclick="App.switchProjectSubTab('server')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zM7 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+              <span>서버</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-subtab-count-server">225</span>
+            </button>
+            <button id="m-proj-tab-url" class="whitespace-nowrap px-3.5 py-2 rounded-xl font-bold text-xs transition-all bg-transparent text-on-surface-variant flex items-center justify-center gap-1.5 cursor-pointer shrink-0" onclick="App.switchProjectSubTab('url')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+              <span>URL</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-subtab-count-url">225</span>
+            </button>
+            <button id="m-proj-tab-storyboard" class="whitespace-nowrap px-3.5 py-2 rounded-xl font-bold text-xs transition-all bg-transparent text-on-surface-variant flex items-center justify-center gap-1.5 cursor-pointer shrink-0" onclick="App.switchProjectSubTab('storyboard')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+              <span>스토리보드</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest" id="m-subtab-count-storyboard">4</span>
+            </button>
+          </div>
         </div>
 
         <!-- Search Bar & Sort Section -->
@@ -2056,6 +2090,19 @@
             <h3 class="font-headline text-sm font-bold text-on-surface">사이트 목록</h3>
             <div class="flex flex-col gap-3" id="site-list-container">
               <!-- Dynamic Site items rendered by App.renderSites() -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBVIEW 3: EXTENDED SUBVIEWS (계약서, 견적·제안, 도메인, 서버, URL, 스토리보드) -->
+        <div id="m-subview-extended" class="space-y-4 hidden">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-headline text-sm font-bold text-on-surface" id="m-extended-title">항목 목록</h3>
+              <span class="text-xs font-semibold text-primary" id="m-extended-count-badge">0건</span>
+            </div>
+            <div class="flex flex-col gap-3" id="extended-list-container">
+              <!-- Dynamic extended items rendered by App.renderExtendedView() -->
             </div>
           </div>
         </div>
@@ -3506,6 +3553,6 @@
   <script src="firebase/config.js"></script>
   <script src="firebase/init.js?v=20260901_account_isolation"></script>
   <script src="data/mockData.js?v=20260911_projects_370"></script>
-  <script src="script.js?v=20260922_directory_tabs"></script>
+  <script src="script.js?v=20260922_project_tabs"></script>
 </body>
 </html>
