@@ -283,7 +283,11 @@
           </button>
           <button id="pc-dir-tab-client" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2" onclick="PCApp.switchDirectoryMainTab('client')">
             <span>고객사</span>
-            <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-dir-client-count">375</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-dir-client-count">879</span>
+          </button>
+          <button id="pc-dir-tab-vendor" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2" onclick="PCApp.switchDirectoryMainTab('vendor')">
+            <span>거래처</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-dir-vendor-count">435</span>
           </button>
         </div>
 
@@ -390,6 +394,15 @@
           </button>
           <button type="button" id="pc-tab-btn-report-issue" onclick="PCApp.switchWorkReportTab('issue')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
             <span>🛠 업무지원 요청</span>
+          </button>
+          <button type="button" id="pc-tab-btn-report-teamwork" onclick="PCApp.switchWorkReportTab('teamwork')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
+            <span>🤝 팀별 이슈·팀웍</span>
+          </button>
+          <button type="button" id="pc-tab-btn-report-worklog" onclick="PCApp.switchWorkReportTab('worklog')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
+            <span>📔 업무일지</span>
+          </button>
+          <button type="button" id="pc-tab-btn-report-teamsched" onclick="PCApp.switchWorkReportTab('teamsched')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
+            <span>🗓 팀 일정</span>
           </button>
         </div>
 

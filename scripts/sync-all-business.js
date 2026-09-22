@@ -650,7 +650,18 @@ if (typeof module !== "undefined" && module.exports) {
   fs.writeFileSync(mockPath, content, 'utf8');
 }
 
-main().catch(err => {
-  console.error('❌ 크롤링 에러 발생:', err);
-  process.exit(1);
-});
+// --mockdata-only : 크롤링 없이 _legacy JSON들로 mockData 확장 데이터와 시드만 재생성
+if (process.argv.includes('--mockdata-only')) {
+  console.log('💾 [모드] --mockdata-only: 기존 _legacy 마스터로 mockData/시드만 갱신합니다.');
+  updateMockData();
+  try {
+    execSync('npm run build:seed', { cwd: ROOT, stdio: 'inherit' });
+    execSync('npm run verify:seed', { cwd: ROOT, stdio: 'inherit' });
+  } catch (e) { console.log('시드 빌드 알림:', e.message); }
+  console.log('✅ mockData/시드 갱신 완료');
+} else {
+  main().catch(err => {
+    console.error('❌ 크롤링 에러 발생:', err);
+    process.exit(1);
+  });
+}

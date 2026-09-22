@@ -194,11 +194,22 @@ async function main() {
   const recentPosts = posts.slice(0, 300);
   const jsonString = JSON.stringify(recentPosts, null, 2);
 
-  if (mockContent.includes('teamWorkReportsData: [')) {
-    mockContent = mockContent.replace(
-      /(  teamWorkReportsData:\s*\[)[\s\S]*?(\n  \],)/,
-      `$1\n${jsonString.slice(1, -1)}\n  ],`
-    );
+  // 괄호 균형으로 teamWorkReportsData 배열의 정확한 끝을 찾아 치환한다.
+  // (정규식 non-greedy 방식은 뒤따르는 extendedData 블록의 "]," 를 잘못 잡아 구조를 깨뜨림)
+  const twKey = 'teamWorkReportsData: [';
+  const twStart = mockContent.indexOf(twKey);
+  if (twStart >= 0) {
+    let depth = 0, inStr = false, quote = '', esc = false, twEnd = -1;
+    for (let i = twStart + twKey.length - 1; i < mockContent.length; i++) {
+      const c = mockContent[i];
+      if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === quote) inStr = false; continue; }
+      if (c === '"' || c === "'") { inStr = true; quote = c; continue; }
+      if (c === '[') depth++;
+      else if (c === ']') { depth--; if (depth === 0) { twEnd = i; break; } }
+    }
+    if (twEnd < 0) throw new Error('teamWorkReportsData 배열의 끝을 찾지 못했습니다.');
+    const replacement = 'teamWorkReportsData: [\n' + jsonString.slice(1, -1) + '\n  ]';
+    mockContent = mockContent.slice(0, twStart) + replacement + mockContent.slice(twEnd + 1);
   } else {
     mockContent = mockContent.replace(
       /(  \/\/ 9-3\. 팀별 업무보고[\s\S]*?teamWorkReports:\s*\[[\s\S]*?\n  \],)/,

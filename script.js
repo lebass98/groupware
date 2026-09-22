@@ -4788,13 +4788,15 @@ const App = {
     this.state.directoryMainTab = tab;
     const empBtn = document.getElementById('dir-main-tab-employee');
     const clientBtn = document.getElementById('dir-main-tab-client');
+    const vendorBtn = document.getElementById('dir-main-tab-vendor');
     const deptChips = document.getElementById('directory-category-chips');
     const projChips = document.getElementById('directory-client-project-chips');
 
     // Reset all tabs
     [
       { btn: empBtn, badgeId: 'dir-emp-count-badge' },
-      { btn: clientBtn, badgeId: 'dir-client-count-badge' }
+      { btn: clientBtn, badgeId: 'dir-client-count-badge' },
+      { btn: vendorBtn, badgeId: 'dir-vendor-count-badge' }
     ].forEach(({ btn, badgeId }) => {
       if (!btn) return;
       btn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
@@ -4811,6 +4813,20 @@ const App = {
       if (deptChips) {
         deptChips.classList.remove('hidden');
         deptChips.style.display = 'flex';
+      }
+      if (projChips) {
+        projChips.classList.add('hidden');
+        projChips.style.display = 'none';
+      }
+    } else if (tab === 'vendor') {
+      if (vendorBtn) {
+        vendorBtn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+        const c = vendorBtn.querySelector('#dir-vendor-count-badge');
+        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
+      }
+      if (deptChips) {
+        deptChips.classList.add('hidden');
+        deptChips.style.display = 'none';
       }
       if (projChips) {
         projChips.classList.add('hidden');
@@ -4893,6 +4909,67 @@ const App = {
     // 생일 배너 비표시
     if (birthdayBannerContainer) {
       birthdayBannerContainer.innerHTML = '';
+    }
+
+    // 1-0. 거래처(사업자정보) 주소록 탭 분기
+    if (this.state.directoryMainTab === 'vendor') {
+      const vendorList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.clientCompanies) || [];
+      const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
+
+      const filtered = vendorList.filter(v => {
+        if (!query) return true;
+        const m = v.meta || {};
+        return (v.subject && v.subject.toLowerCase().includes(query)) ||
+               (m['상호'] && m['상호'].toLowerCase().includes(query)) ||
+               (m['대표자'] && m['대표자'].toLowerCase().includes(query)) ||
+               (m['주소'] && m['주소'].toLowerCase().includes(query)) ||
+               (m['업태'] && m['업태'].toLowerCase().includes(query)) ||
+               (m['종목'] && m['종목'].toLowerCase().includes(query)) ||
+               (m['업체아이디'] && m['업체아이디'].toLowerCase().includes(query));
+      });
+
+      if (totalCountEl) totalCountEl.innerText = `총 ${filtered.length}곳`;
+      const vendorBadge = document.getElementById('dir-vendor-count-badge');
+      if (vendorBadge) vendorBadge.innerText = vendorList.length;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium">
+            <svg class="w-10 h-10 text-outline mb-2 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+            </svg>
+            <p>검색 조건에 맞는 거래처가 없습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(v => {
+        const m = v.meta || {};
+        const name = m['상호'] || v.subject || '거래처';
+        const initial = (v.subject || name).replace(/[^가-힣a-zA-Z0-9]/g, '').charAt(0) || '거';
+        const detailLine = [m['업태'], m['종목']].filter(x => x && x !== '..' && x !== '.').join(' · ');
+        const cycle = m['청구주기'] && m['청구주기'] !== '..' ? m['청구주기'] : '';
+        const addr = m['주소'] && m['주소'].length > 3 ? m['주소'] : '';
+        const ceo = m['대표자'] && m['대표자'].length > 1 && !/^[.]+$/.test(m['대표자']) ? m['대표자'] : '';
+
+        return `
+          <div class="p-4 bg-surface-container-lowest rounded-2xl border border-outline/70 shadow-xs flex items-start gap-3">
+            <div class="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-sm border border-primary/20 shrink-0">
+              ${initial}
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <h4 class="font-bold text-sm text-on-surface truncate">${v.subject || name}</h4>
+                ${cycle ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary shrink-0">청구 ${cycle}</span>` : ''}
+              </div>
+              <p class="text-xs text-on-surface-variant font-medium truncate mt-0.5">${ceo ? `대표 ${ceo}` : ''}${ceo && detailLine ? ' · ' : ''}${detailLine}</p>
+              ${addr ? `<p class="text-[11px] text-on-surface-variant/80 truncate mt-0.5">${addr}</p>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+      return;
     }
 
     // 1. 고객사 주소록 탭 분기
@@ -8172,6 +8249,8 @@ const App = {
       weekly_archive: 'weeklyReports',
       teamcap: 'teamcapReports',
       meeting: 'meetings',
+      issue: 'issues',
+      teamwork: 'teamworkIssues',
       equipment: 'equipment',
       pds: 'pds'
     };
@@ -8195,6 +8274,7 @@ const App = {
       weekly_archive: '주간회의록 상세',
       teamcap: '팀장보고 상세',
       issue: '업무지원 요청/이슈 상세',
+      teamwork: '팀별 이슈·팀웍 상세',
       meeting: '미팅회의록 상세',
       equipment: '비품/자산 상세',
       pds: '기술 자료실 상세'
@@ -9133,6 +9213,229 @@ const App = {
     this.renderWorkReports();
   },
 
+  // ── 업무일지 아카이브 (sitegate daily_report 46,700건 인덱스, 지연 로딩) ──
+  async loadWorklogIndex() {
+    if (this.state.worklogIndex || this.state.worklogLoading) return;
+    this.state.worklogLoading = true;
+    try {
+      const res = await fetch('data/_legacy/worklog_index.json', { cache: 'force-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      this.state.worklogIndex = await res.json();
+    } catch (e) {
+      this.state.worklogError = true;
+    }
+    this.state.worklogLoading = false;
+    if (this.state.workReportTab === 'worklog') this.renderWorkReports();
+  },
+
+  setWorklogFilter(kind, val) {
+    if (kind === 'year') this.state.worklogYear = val;
+    if (kind === 'author') this.state.worklogAuthor = val;
+    this.state.worklogPage = 1;
+    this.renderWorkReports();
+  },
+
+  moveWorklogPage(delta) {
+    this.state.worklogPage = Math.max(1, (this.state.worklogPage || 1) + delta);
+    this.renderWorkReports();
+  },
+
+  renderWorklogArchive(container) {
+    const idx = this.state.worklogIndex;
+    if (this.state.worklogError) {
+      container.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-xs">
+          ${getSvgIcon('assignment', 'w-10 h-10 text-outline mb-2 mx-auto')}
+          <p class="font-bold text-on-surface">업무일지 인덱스를 불러오지 못했습니다.</p>
+          <p class="text-xs mt-1">data/_legacy/worklog_index.json 파일이 있는지 확인해 주세요.</p>
+        </div>`;
+      return;
+    }
+    if (!idx) {
+      this.loadWorklogIndex();
+      container.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-xs">
+          <div class="w-8 h-8 border-[3px] border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-3"></div>
+          <p class="font-bold text-on-surface">업무일지 아카이브 로딩 중...</p>
+          <p class="text-xs mt-1">약 4만 건의 인덱스를 최초 1회 내려받습니다.</p>
+        </div>`;
+      return;
+    }
+
+    const items = idx.items || [];
+    const year = this.state.worklogYear || 'all';
+    const author = this.state.worklogAuthor || 'all';
+    const q = (this.state.workReportSearch || '').trim().toLowerCase();
+
+    const filtered = items.filter(r => {
+      if (year !== 'all' && (r.date || '').slice(0, 4) !== year) return false;
+      if (author !== 'all' && r.author !== author) return false;
+      if (q && !((r.subject || '').toLowerCase().includes(q) || (r.author || '').toLowerCase().includes(q) || (r.date || '').includes(q))) return false;
+      return true;
+    });
+
+    const cntEl = document.getElementById('m-report-ext-count');
+    if (cntEl) cntEl.textContent = `${filtered.length.toLocaleString()} / ${(idx.total || items.length).toLocaleString()}건`;
+
+    const PER = 30;
+    const pages = Math.max(1, Math.ceil(filtered.length / PER));
+    const page = Math.min(this.state.worklogPage || 1, pages);
+    this.state.worklogPage = page;
+    const view = filtered.slice((page - 1) * PER, page * PER);
+
+    const years = Object.keys(idx.byYear || {}).sort().reverse();
+    const authors = Object.entries(idx.byAuthor || {}).sort((a, b) => b[1] - a[1]).map(([n]) => n);
+    const yearOpts = ['<option value="all">전체 연도</option>'].concat(years.map(y => `<option value="${y}" ${y === year ? 'selected' : ''}>${y}년 (${(idx.byYear[y] || 0).toLocaleString()})</option>`)).join('');
+    const authorOpts = ['<option value="all">전체 작성자</option>'].concat(authors.map(a => `<option value="${a}" ${a === author ? 'selected' : ''}>${a} (${(idx.byAuthor[a] || 0).toLocaleString()})</option>`)).join('');
+
+    const rows = view.map(r => `
+      <div class="flex items-center gap-3 px-3.5 py-2.5 bg-surface-container-lowest rounded-xl border border-outline-variant/15">
+        <span class="text-[11px] font-mono text-on-surface-variant shrink-0 w-[74px]">${r.date || '-'}</span>
+        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary/10 text-primary shrink-0">${r.author || '-'}</span>
+        <span class="text-xs text-on-surface font-medium truncate flex-1">${(r.subject || '').replace(/</g, '&lt;')}</span>
+      </div>`).join('');
+
+    container.innerHTML = `
+      <div class="flex flex-col gap-3">
+        <div class="grid grid-cols-2 gap-2">
+          <select onchange="App.setWorklogFilter('year', this.value)" class="w-full px-3 py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20 text-xs font-bold text-on-surface focus:border-primary focus:outline-none">${yearOpts}</select>
+          <select onchange="App.setWorklogFilter('author', this.value)" class="w-full px-3 py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20 text-xs font-bold text-on-surface focus:border-primary focus:outline-none">${authorOpts}</select>
+        </div>
+        <div class="flex flex-col gap-2">${rows || '<div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant text-xs font-medium">조건에 맞는 업무일지가 없습니다.</div>'}</div>
+        ${pages > 1 ? `
+        <div class="flex items-center justify-center gap-3 pt-1">
+          <button onclick="App.moveWorklogPage(-1)" class="px-3.5 py-2 rounded-xl bg-surface-container text-on-surface text-xs font-bold ${page <= 1 ? 'opacity-40 pointer-events-none' : 'active:scale-95'} transition-all">이전</button>
+          <span class="text-xs font-bold text-on-surface-variant font-mono">${page} / ${pages.toLocaleString()}</span>
+          <button onclick="App.moveWorklogPage(1)" class="px-3.5 py-2 rounded-xl bg-surface-container text-on-surface text-xs font-bold ${page >= pages ? 'opacity-40 pointer-events-none' : 'active:scale-95'} transition-all">다음</button>
+        </div>` : ''}
+      </div>`;
+  },
+
+  // ── 팀 일정 아카이브 (sitegate wc_team_skedule 전량, 지연 로딩) ──
+  async loadTeamschedData() {
+    if (this.state.teamschedData || this.state.teamschedLoading) return;
+    this.state.teamschedLoading = true;
+    try {
+      const res = await fetch('data/_legacy/team_schedules.json', { cache: 'force-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const raw = await res.json();
+      this.state.teamschedData = Array.isArray(raw) ? raw : (raw.posts || []);
+    } catch (e) {
+      this.state.teamschedError = true;
+    }
+    this.state.teamschedLoading = false;
+    if (this.state.workReportTab === 'teamsched') this.renderWorkReports();
+  },
+
+  setTeamschedFilter(kind, val) {
+    if (kind === 'team') this.state.teamschedTeam = val;
+    if (kind === 'month') this.state.teamschedMonth = val;
+    this.state.teamschedPage = 1;
+    this.renderWorkReports();
+  },
+
+  moveTeamschedPage(delta) {
+    this.state.teamschedPage = Math.max(1, (this.state.teamschedPage || 1) + delta);
+    this.renderWorkReports();
+  },
+
+  toggleTeamschedOpen(id) {
+    this.state.teamschedOpen = this.state.teamschedOpen || {};
+    this.state.teamschedOpen[id] = !this.state.teamschedOpen[id];
+    this.renderWorkReports();
+  },
+
+  renderTeamschedArchive(container) {
+    const data = this.state.teamschedData;
+    if (this.state.teamschedError) {
+      container.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-xs">
+          ${getSvgIcon('assignment', 'w-10 h-10 text-outline mb-2 mx-auto')}
+          <p class="font-bold text-on-surface">팀 일정 아카이브를 불러오지 못했습니다.</p>
+        </div>`;
+      return;
+    }
+    if (!data) {
+      this.loadTeamschedData();
+      container.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-xs">
+          <div class="w-8 h-8 border-[3px] border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-3"></div>
+          <p class="font-bold text-on-surface">팀 일정 아카이브 로딩 중...</p>
+        </div>`;
+      return;
+    }
+
+    const team = this.state.teamschedTeam || 'all';
+    const month = this.state.teamschedMonth || 'all';
+    const q = (this.state.workReportSearch || '').trim().toLowerCase();
+    const open = this.state.teamschedOpen || {};
+
+    const filtered = data.filter(p => {
+      if (team !== 'all' && p.team !== team) return false;
+      if (month !== 'all' && (p.targetDate || '').slice(0, 7) !== month) return false;
+      if (q) {
+        const hay = (p.rawTitle || '') + ' ' + (p.entries || []).map(e => `${e.member} ${e.project} ${e.content}`).join(' ');
+        if (!hay.toLowerCase().includes(q)) return false;
+      }
+      return true;
+    });
+
+    const cntEl = document.getElementById('m-report-ext-count');
+    if (cntEl) cntEl.textContent = `${filtered.length.toLocaleString()} / ${data.length.toLocaleString()}건`;
+
+    const PER = 15;
+    const pages = Math.max(1, Math.ceil(filtered.length / PER));
+    const page = Math.min(this.state.teamschedPage || 1, pages);
+    this.state.teamschedPage = page;
+    const view = filtered.slice((page - 1) * PER, page * PER);
+
+    const teams = [...new Set(data.map(p => p.team).filter(Boolean))];
+    const months = [...new Set(data.map(p => (p.targetDate || '').slice(0, 7)).filter(m => m.length === 7))].sort().reverse();
+    const teamOpts = ['<option value="all">전체 팀</option>'].concat(teams.map(t => `<option value="${t}" ${t === team ? 'selected' : ''}>${t}</option>`)).join('');
+    const monthOpts = ['<option value="all">전체 월</option>'].concat(months.map(m => `<option value="${m}" ${m === month ? 'selected' : ''}>${m}</option>`)).join('');
+
+    const cards = view.map(p => {
+      const isOpen = !!open[p.wr_id];
+      const entries = p.entries || [];
+      const preview = entries.slice(0, isOpen ? entries.length : 0);
+      const entryHtml = preview.map(e => `
+        <div class="pt-2.5 mt-2.5 border-t border-outline-variant/10">
+          <div class="flex items-center gap-1.5 flex-wrap mb-1">
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary">${e.member || '-'}</span>
+            <span class="text-[11px] font-semibold text-on-surface-variant truncate">${(e.project || '').replace(/^##\s*/, '')}</span>
+          </div>
+          <p class="text-[11px] text-on-surface-variant whitespace-pre-line leading-relaxed">${(e.content || '').replace(/</g, '&lt;').trim()}</p>
+        </div>`).join('');
+
+      return `
+        <article class="bg-surface-container-low rounded-2xl p-4 shadow-xs border border-outline-variant/15 cursor-pointer" onclick="App.toggleTeamschedOpen('${p.wr_id}')">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#7c5cd6]/10 text-[#7c5cd6] shrink-0">${p.team || '팀'}</span>
+              <span class="text-xs font-mono text-on-surface-variant">${p.targetDate || '-'}</span>
+            </div>
+            <span class="text-[11px] font-bold text-on-surface-variant shrink-0">${entries.length}명 기록 ${isOpen ? '▲' : '▼'}</span>
+          </div>
+          ${isOpen ? entryHtml : `<p class="text-[11px] text-on-surface-variant mt-2 truncate">${entries.map(e => e.member).filter(Boolean).join(', ')}</p>`}
+        </article>`;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="flex flex-col gap-3">
+        <div class="grid grid-cols-2 gap-2">
+          <select onchange="App.setTeamschedFilter('team', this.value)" class="w-full px-3 py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20 text-xs font-bold text-on-surface focus:border-primary focus:outline-none">${teamOpts}</select>
+          <select onchange="App.setTeamschedFilter('month', this.value)" class="w-full px-3 py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20 text-xs font-bold text-on-surface focus:border-primary focus:outline-none">${monthOpts}</select>
+        </div>
+        <div class="flex flex-col gap-2.5">${cards || '<div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant text-xs font-medium">조건에 맞는 팀 일정이 없습니다.</div>'}</div>
+        ${pages > 1 ? `
+        <div class="flex items-center justify-center gap-3 pt-1">
+          <button onclick="App.moveTeamschedPage(-1)" class="px-3.5 py-2 rounded-xl bg-surface-container text-on-surface text-xs font-bold ${page <= 1 ? 'opacity-40 pointer-events-none' : 'active:scale-95'} transition-all">이전</button>
+          <span class="text-xs font-bold text-on-surface-variant font-mono">${page} / ${pages}</span>
+          <button onclick="App.moveTeamschedPage(1)" class="px-3.5 py-2 rounded-xl bg-surface-container text-on-surface text-xs font-bold ${page >= pages ? 'opacity-40 pointer-events-none' : 'active:scale-95'} transition-all">다음</button>
+        </div>` : ''}
+      </div>`;
+  },
+
   switchWorkReportTab(tab) {
     this.state.workReportTab = tab;
 
@@ -9273,18 +9576,18 @@ const App = {
           ${chipsHtml}
         </div>
       `;
-    } else if (['weekly_archive', 'teamcap', 'meeting', 'issue'].includes(tab)) {
+    } else if (['weekly_archive', 'teamcap', 'meeting', 'issue', 'teamwork', 'worklog', 'teamsched'].includes(tab)) {
       const ext = (window.MockData && window.MockData.extendedData) || {};
-      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues' };
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues', teamwork: 'teamworkIssues' };
       const list = ext[keyMap[tab]] || [];
-      const titles = { weekly_archive: '주간회의록 아카이브', teamcap: '팀장 보고서', meeting: '고객사 미팅 회의록', issue: '업무지원 요청/이슈' };
+      const titles = { weekly_archive: '주간회의록 아카이브', teamcap: '팀장 보고서', meeting: '고객사 미팅 회의록', issue: '업무지원 요청/이슈', teamwork: '팀별 이슈·팀웍', worklog: '업무일지 아카이브', teamsched: '팀 일정 아카이브' };
       const searchVal = (this.state.workReportSearch || '').trim();
 
       container.innerHTML = `
         <div class="flex flex-col gap-2.5 bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/15 shadow-xs">
           <div class="flex items-center justify-between">
             <span class="font-headline font-bold text-sm text-on-surface">${titles[tab]}</span>
-            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary">${list.length}건</span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary" id="m-report-ext-count">${list.length}건</span>
           </div>
           <div class="relative">
             <input type="text" id="m-report-search-input" value="${searchVal}" oninput="App.handleReportSearch(this.value)" placeholder="제목, 작성자, 내용 검색..." class="w-full px-3.5 py-2 pl-9 rounded-xl bg-surface-container-lowest border border-outline-variant/20 text-xs text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none transition-colors" />
@@ -9650,9 +9953,12 @@ const App = {
     }
 
     // 4. 주간회의록 / 팀장보고 / 미팅회의록 탭
-    if (['weekly_archive', 'teamcap', 'meeting', 'issue'].includes(tab)) {
+    if (tab === 'worklog') { this.renderWorklogArchive(container); return; }
+    if (tab === 'teamsched') { this.renderTeamschedArchive(container); return; }
+
+    if (['weekly_archive', 'teamcap', 'meeting', 'issue', 'teamwork'].includes(tab)) {
       const ext = (window.MockData && window.MockData.extendedData) || {};
-      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues' };
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues', teamwork: 'teamworkIssues' };
       const rawList = ext[keyMap[tab]] || [];
       const search = (this.state.workReportSearch || '').trim().toLowerCase();
 
@@ -9678,7 +9984,8 @@ const App = {
       const badgeStyles = {
         weekly_archive: { label: '주간회의', bg: 'bg-primary/10 text-primary border-primary/20' },
         teamcap: { label: '팀장보고', bg: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
-        meeting: { label: '고객미팅', bg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20' }
+        meeting: { label: '고객미팅', bg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20' },
+        teamwork: { label: '팀웍', bg: 'bg-[#7c5cd6]/10 text-[#7c5cd6] dark:text-purple-300 border-[#7c5cd6]/20' }
       };
       const curBadge = badgeStyles[tab] || { label: '보고서', bg: 'bg-primary/10 text-primary border-primary/20' };
 

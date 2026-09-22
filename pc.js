@@ -2090,13 +2090,15 @@ const PCApp = {
     this.state.directoryMainTab = tab;
     const empBtn = document.getElementById('pc-dir-tab-employee');
     const clientBtn = document.getElementById('pc-dir-tab-client');
+    const vendorBtn = document.getElementById('pc-dir-tab-vendor');
     const deptTabs = document.getElementById('pc-dir-dept-tabs');
     const clientProjTabs = document.getElementById('pc-dir-client-project-tabs');
 
     // Reset all tabs to inactive
     [
       { btn: empBtn, countId: 'pc-dir-emp-count' },
-      { btn: clientBtn, countId: 'pc-dir-client-count' }
+      { btn: clientBtn, countId: 'pc-dir-client-count' },
+      { btn: vendorBtn, countId: 'pc-dir-vendor-count' }
     ].forEach(({ btn, countId }) => {
       if (!btn) return;
       btn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2';
@@ -2123,6 +2125,17 @@ const PCApp = {
       if (clientProjTabs) {
         clientProjTabs.classList.remove('hidden');
         clientProjTabs.style.display = 'flex';
+      }
+    } else if (tab === 'vendor') {
+      if (vendorBtn) {
+        vendorBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
+        const c = vendorBtn.querySelector('#pc-dir-vendor-count');
+        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
+      }
+      if (deptTabs) deptTabs.style.display = 'none';
+      if (clientProjTabs) {
+        clientProjTabs.classList.add('hidden');
+        clientProjTabs.style.display = 'none';
       }
     }
 
@@ -2228,6 +2241,78 @@ const PCApp = {
   renderDirectoryView() {
     const container = document.getElementById('pc-directory-grid');
     if (!container) return;
+
+    // 1-0. 거래처(사업자정보) 주소록 탭 분기
+    if (this.state.directoryMainTab === 'vendor') {
+      const vendorList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.clientCompanies) || [];
+      const search = (this.state.directorySearch || '').trim().toLowerCase();
+
+      const filtered = vendorList.filter(v => {
+        if (!search) return true;
+        const m = v.meta || {};
+        return (v.subject && v.subject.toLowerCase().includes(search)) ||
+               (m['상호'] && m['상호'].toLowerCase().includes(search)) ||
+               (m['대표자'] && m['대표자'].toLowerCase().includes(search)) ||
+               (m['주소'] && m['주소'].toLowerCase().includes(search)) ||
+               (m['업태'] && m['업태'].toLowerCase().includes(search)) ||
+               (m['종목'] && m['종목'].toLowerCase().includes(search)) ||
+               (m['업체아이디'] && m['업체아이디'].toLowerCase().includes(search));
+      });
+
+      const vendorCountEl = document.getElementById('pc-dir-vendor-count');
+      if (vendorCountEl) vendorCountEl.innerText = vendorList.length;
+
+      if (!filtered.length) {
+        container.innerHTML = `
+          <div class="col-span-full p-12 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline">
+            <svg class="w-12 h-12 text-outline mb-3 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+            </svg>
+            <p class="text-base font-medium">검색 조건에 맞는 거래처가 없습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(v => {
+        const m = v.meta || {};
+        const name = v.subject || m['상호'] || '거래처';
+        const initial = name.replace(/[^가-힣a-zA-Z0-9]/g, '').charAt(0) || '거';
+        const detailLine = [m['업태'], m['종목']].filter(x => x && x !== '..' && x !== '.').join(' · ');
+        const cycle = m['청구주기'] && m['청구주기'] !== '..' ? m['청구주기'] : '';
+        const addr = m['주소'] && m['주소'].length > 3 ? m['주소'] : '';
+        const ceo = m['대표자'] && m['대표자'].length > 1 && !/^[.]+$/.test(m['대표자']) ? m['대표자'] : '';
+        const bizId = m['업체아이디'] || '';
+
+        return `
+          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all text-base flex flex-col">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold text-lg border border-primary/20 shrink-0">
+                ${initial}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <h4 class="font-bold text-base text-on-surface truncate" title="${name}">${name}</h4>
+                  ${cycle ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary shrink-0">청구 ${cycle}</span>` : ''}
+                </div>
+                <p class="text-xs font-semibold text-on-surface-variant truncate mt-1">${ceo ? `대표 ${ceo}` : ''}${ceo && detailLine ? ' · ' : ''}${detailLine || (ceo ? '' : '-')}</p>
+              </div>
+            </div>
+            <div class="space-y-1.5 text-xs text-on-surface-variant pt-3 border-t border-outline/70 mt-auto">
+              <p class="flex items-center gap-2 truncate">
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span class="truncate">${addr || '-'}</span>
+              </p>
+              ${bizId ? `<p class="flex items-center gap-2 truncate">
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+                <span class="truncate">업체 ID: ${bizId}</span>
+              </p>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+      return;
+    }
 
     // 1. 고객사 주소록 탭 분기
     if (this.state.directoryMainTab === 'client') {
@@ -2626,6 +2711,225 @@ const PCApp = {
   },
 
   // 6-3. Work Report Screen (팀별 / 주간 / 일간 업무보고)
+  // ── 업무일지 아카이브 (sitegate daily_report 46,700건 인덱스, 지연 로딩) ──
+  async loadWorklogIndex() {
+    if (this.state.worklogIndex || this.state.worklogLoading) return;
+    this.state.worklogLoading = true;
+    try {
+      const res = await fetch('data/_legacy/worklog_index.json', { cache: 'force-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      this.state.worklogIndex = await res.json();
+    } catch (e) {
+      this.state.worklogError = true;
+    }
+    this.state.worklogLoading = false;
+    if (this.state.workReportTab === 'worklog') this.renderWorkReportView();
+  },
+
+  setWorklogFilter(kind, val) {
+    if (kind === 'year') this.state.worklogYear = val;
+    if (kind === 'author') this.state.worklogAuthor = val;
+    this.state.worklogPage = 1;
+    this.renderWorkReportView();
+  },
+
+  moveWorklogPage(delta) {
+    this.state.worklogPage = Math.max(1, (this.state.worklogPage || 1) + delta);
+    this.renderWorkReportView();
+  },
+
+  renderWorklogArchive(wrap) {
+    const idx = this.state.worklogIndex;
+    if (this.state.worklogError) {
+      wrap.innerHTML = `<div class="bg-surface-container-lowest rounded-2xl p-12 text-center text-on-surface-variant font-medium border border-outline/40">업무일지 인덱스를 불러오지 못했습니다. (data/_legacy/worklog_index.json)</div>`;
+      return;
+    }
+    if (!idx) {
+      this.loadWorklogIndex();
+      wrap.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-12 text-center text-on-surface-variant font-medium border border-outline/40">
+          <div class="w-9 h-9 border-[3px] border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
+          업무일지 아카이브 로딩 중... (약 4만 건 인덱스 최초 1회)
+        </div>`;
+      return;
+    }
+
+    const items = idx.items || [];
+    const year = this.state.worklogYear || 'all';
+    const author = this.state.worklogAuthor || 'all';
+    const q = (this.state.workReportSearch || '').trim().toLowerCase();
+
+    const filtered = items.filter(r => {
+      if (year !== 'all' && (r.date || '').slice(0, 4) !== year) return false;
+      if (author !== 'all' && r.author !== author) return false;
+      if (q && !((r.subject || '').toLowerCase().includes(q) || (r.author || '').toLowerCase().includes(q) || (r.date || '').includes(q))) return false;
+      return true;
+    });
+
+    const cntEl = document.getElementById('pc-report-ext-count');
+    if (cntEl) cntEl.textContent = `${filtered.length.toLocaleString()} / ${(idx.total || items.length).toLocaleString()}건`;
+
+    const PER = 60;
+    const pages = Math.max(1, Math.ceil(filtered.length / PER));
+    const page = Math.min(this.state.worklogPage || 1, pages);
+    this.state.worklogPage = page;
+    const view = filtered.slice((page - 1) * PER, page * PER);
+
+    const years = Object.keys(idx.byYear || {}).sort().reverse();
+    const authors = Object.entries(idx.byAuthor || {}).sort((a, b) => b[1] - a[1]).map(([n]) => n);
+    const yearOpts = ['<option value="all">전체 연도</option>'].concat(years.map(y => `<option value="${y}" ${y === year ? 'selected' : ''}>${y}년 (${(idx.byYear[y] || 0).toLocaleString()})</option>`)).join('');
+    const authorOpts = ['<option value="all">전체 작성자</option>'].concat(authors.map(a => `<option value="${a}" ${a === author ? 'selected' : ''}>${a} (${(idx.byAuthor[a] || 0).toLocaleString()})</option>`)).join('');
+
+    const rows = view.map(r => `
+      <div class="grid grid-cols-[110px_120px_1fr] items-center gap-4 px-5 py-3 border-b border-outline/30 last:border-b-0 hover:bg-surface-container transition-colors">
+        <span class="text-xs font-mono text-on-surface-variant">${r.date || '-'}</span>
+        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary text-center truncate">${r.author || '-'}</span>
+        <span class="text-sm text-on-surface font-medium truncate">${(r.subject || '').replace(/</g, '&lt;')}</span>
+      </div>`).join('');
+
+    wrap.innerHTML = `
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-3">
+          <select onchange="PCApp.setWorklogFilter('year', this.value)" class="px-4 py-2.5 rounded-xl bg-surface-container-lowest border border-outline/50 text-sm font-bold text-on-surface focus:border-primary focus:outline-none">${yearOpts}</select>
+          <select onchange="PCApp.setWorklogFilter('author', this.value)" class="px-4 py-2.5 rounded-xl bg-surface-container-lowest border border-outline/50 text-sm font-bold text-on-surface focus:border-primary focus:outline-none">${authorOpts}</select>
+          <span class="text-xs text-on-surface-variant font-medium ml-auto">2013년부터의 전 임직원 일일 업무일지 인덱스 · 원문은 사내 그룹웨어에 보존</span>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl border border-outline/40 overflow-hidden">
+          <div class="grid grid-cols-[110px_120px_1fr] items-center gap-4 px-5 py-3 bg-surface-container text-xs font-bold text-on-surface-variant border-b border-outline/40">
+            <span>일자</span><span class="text-center">작성자</span><span>제목</span>
+          </div>
+          ${rows || '<div class="p-12 text-center text-on-surface-variant text-sm font-medium">조건에 맞는 업무일지가 없습니다.</div>'}
+        </div>
+        ${pages > 1 ? `
+        <div class="flex items-center justify-center gap-4">
+          <button onclick="PCApp.moveWorklogPage(-1)" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-sm font-bold ${page <= 1 ? 'opacity-40 pointer-events-none' : ''} transition-colors">이전</button>
+          <span class="text-sm font-bold text-on-surface-variant font-mono">${page} / ${pages.toLocaleString()}</span>
+          <button onclick="PCApp.moveWorklogPage(1)" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-sm font-bold ${page >= pages ? 'opacity-40 pointer-events-none' : ''} transition-colors">다음</button>
+        </div>` : ''}
+      </div>`;
+  },
+
+  // ── 팀 일정 아카이브 (sitegate wc_team_skedule 전량, 지연 로딩) ──
+  async loadTeamschedData() {
+    if (this.state.teamschedData || this.state.teamschedLoading) return;
+    this.state.teamschedLoading = true;
+    try {
+      const res = await fetch('data/_legacy/team_schedules.json', { cache: 'force-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const raw = await res.json();
+      this.state.teamschedData = Array.isArray(raw) ? raw : (raw.posts || []);
+    } catch (e) {
+      this.state.teamschedError = true;
+    }
+    this.state.teamschedLoading = false;
+    if (this.state.workReportTab === 'teamsched') this.renderWorkReportView();
+  },
+
+  setTeamschedFilter(kind, val) {
+    if (kind === 'team') this.state.teamschedTeam = val;
+    if (kind === 'month') this.state.teamschedMonth = val;
+    this.state.teamschedPage = 1;
+    this.renderWorkReportView();
+  },
+
+  moveTeamschedPage(delta) {
+    this.state.teamschedPage = Math.max(1, (this.state.teamschedPage || 1) + delta);
+    this.renderWorkReportView();
+  },
+
+  toggleTeamschedOpen(id) {
+    this.state.teamschedOpen = this.state.teamschedOpen || {};
+    this.state.teamschedOpen[id] = !this.state.teamschedOpen[id];
+    this.renderWorkReportView();
+  },
+
+  renderTeamschedArchive(wrap) {
+    const data = this.state.teamschedData;
+    if (this.state.teamschedError) {
+      wrap.innerHTML = `<div class="bg-surface-container-lowest rounded-2xl p-12 text-center text-on-surface-variant font-medium border border-outline/40">팀 일정 아카이브를 불러오지 못했습니다.</div>`;
+      return;
+    }
+    if (!data) {
+      this.loadTeamschedData();
+      wrap.innerHTML = `
+        <div class="bg-surface-container-lowest rounded-2xl p-12 text-center text-on-surface-variant font-medium border border-outline/40">
+          <div class="w-9 h-9 border-[3px] border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
+          팀 일정 아카이브 로딩 중...
+        </div>`;
+      return;
+    }
+
+    const team = this.state.teamschedTeam || 'all';
+    const month = this.state.teamschedMonth || 'all';
+    const q = (this.state.workReportSearch || '').trim().toLowerCase();
+    const open = this.state.teamschedOpen || {};
+
+    const filtered = data.filter(p => {
+      if (team !== 'all' && p.team !== team) return false;
+      if (month !== 'all' && (p.targetDate || '').slice(0, 7) !== month) return false;
+      if (q) {
+        const hay = (p.rawTitle || '') + ' ' + (p.entries || []).map(e => `${e.member} ${e.project} ${e.content}`).join(' ');
+        if (!hay.toLowerCase().includes(q)) return false;
+      }
+      return true;
+    });
+
+    const cntEl = document.getElementById('pc-report-ext-count');
+    if (cntEl) cntEl.textContent = `${filtered.length.toLocaleString()} / ${data.length.toLocaleString()}건`;
+
+    const PER = 24;
+    const pages = Math.max(1, Math.ceil(filtered.length / PER));
+    const page = Math.min(this.state.teamschedPage || 1, pages);
+    this.state.teamschedPage = page;
+    const view = filtered.slice((page - 1) * PER, page * PER);
+
+    const teams = [...new Set(data.map(p => p.team).filter(Boolean))];
+    const months = [...new Set(data.map(p => (p.targetDate || '').slice(0, 7)).filter(m => m.length === 7))].sort().reverse();
+    const teamOpts = ['<option value="all">전체 팀</option>'].concat(teams.map(t => `<option value="${t}" ${t === team ? 'selected' : ''}>${t}</option>`)).join('');
+    const monthOpts = ['<option value="all">전체 월</option>'].concat(months.map(m => `<option value="${m}" ${m === month ? 'selected' : ''}>${m}</option>`)).join('');
+
+    const cards = view.map(p => {
+      const isOpen = !!open[p.wr_id];
+      const entries = p.entries || [];
+      const entryHtml = entries.map(e => `
+        <div class="pt-3 mt-3 border-t border-outline/30">
+          <div class="flex items-center gap-2 flex-wrap mb-1.5">
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary">${e.member || '-'}</span>
+            <span class="text-xs font-semibold text-on-surface-variant truncate">${(e.project || '').replace(/^##\s*/, '')}</span>
+          </div>
+          <p class="text-xs text-on-surface-variant whitespace-pre-line leading-relaxed">${(e.content || '').replace(/</g, '&lt;').trim()}</p>
+        </div>`).join('');
+
+      return `
+        <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary transition-all cursor-pointer ${isOpen ? 'col-span-full' : ''}" onclick="PCApp.toggleTeamschedOpen('${p.wr_id}')">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#7c5cd6]/10 text-[#7c5cd6] shrink-0">${p.team || '팀'}</span>
+              <span class="text-sm font-mono font-bold text-on-surface">${p.targetDate || '-'}</span>
+            </div>
+            <span class="text-xs font-bold text-on-surface-variant shrink-0">${entries.length}명 ${isOpen ? '▲' : '▼'}</span>
+          </div>
+          ${isOpen ? entryHtml : `<p class="text-xs text-on-surface-variant mt-2.5 truncate">${entries.map(e => e.member).filter(Boolean).join(', ') || '기록 없음'}</p>`}
+        </div>`;
+    }).join('');
+
+    wrap.innerHTML = `
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-3">
+          <select onchange="PCApp.setTeamschedFilter('team', this.value)" class="px-4 py-2.5 rounded-xl bg-surface-container-lowest border border-outline/50 text-sm font-bold text-on-surface focus:border-primary focus:outline-none">${teamOpts}</select>
+          <select onchange="PCApp.setTeamschedFilter('month', this.value)" class="px-4 py-2.5 rounded-xl bg-surface-container-lowest border border-outline/50 text-sm font-bold text-on-surface focus:border-primary focus:outline-none">${monthOpts}</select>
+          <span class="text-xs text-on-surface-variant font-medium ml-auto">팀별 일일 업무 기록(코멘트 포함) · 카드를 클릭하면 팀원별 작업 내용이 펼쳐집니다</span>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">${cards || '<div class="col-span-full p-12 text-center text-on-surface-variant text-sm font-medium bg-surface-container-lowest rounded-2xl border border-outline/40">조건에 맞는 팀 일정이 없습니다.</div>'}</div>
+        ${pages > 1 ? `
+        <div class="flex items-center justify-center gap-4">
+          <button onclick="PCApp.moveTeamschedPage(-1)" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-sm font-bold ${page <= 1 ? 'opacity-40 pointer-events-none' : ''} transition-colors">이전</button>
+          <span class="text-sm font-bold text-on-surface-variant font-mono">${page} / ${pages}</span>
+          <button onclick="PCApp.moveTeamschedPage(1)" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-sm font-bold ${page >= pages ? 'opacity-40 pointer-events-none' : ''} transition-colors">다음</button>
+        </div>` : ''}
+      </div>`;
+  },
+
   switchWorkReportTab(tab) {
     this.state.workReportTab = tab;
     const tabBtns = document.querySelectorAll('.pc-report-nav-tab');
@@ -2757,18 +3061,18 @@ const PCApp = {
           ${chipsHtml}
         </div>
       `;
-    } else if (['weekly_archive', 'teamcap', 'meeting', 'issue'].includes(tab)) {
+    } else if (['weekly_archive', 'teamcap', 'meeting', 'issue', 'teamwork', 'worklog', 'teamsched'].includes(tab)) {
       const ext = (window.MockData && window.MockData.extendedData) || {};
-      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues' };
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues', teamwork: 'teamworkIssues' };
       const list = ext[keyMap[tab]] || [];
-      const titles = { weekly_archive: '주간회의록 아카이브', teamcap: '팀장 보고서', meeting: '고객사 미팅 회의록', issue: '업무지원 요청/이슈' };
+      const titles = { weekly_archive: '주간회의록 아카이브', teamcap: '팀장 보고서', meeting: '고객사 미팅 회의록', issue: '업무지원 요청/이슈', teamwork: '팀별 이슈·팀웍', worklog: '업무일지 아카이브', teamsched: '팀 일정 아카이브' };
       const searchVal = (this.state.workReportSearch || '').trim();
 
       container.innerHTML = `
         <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-surface-container-low p-4 rounded-2xl border border-outline/40 shadow-xs">
           <div class="flex items-center gap-2">
             <span class="font-bold text-base text-on-surface">${titles[tab]}</span>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">${list.length}건 등록</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20" id="pc-report-ext-count">${list.length}건 등록</span>
           </div>
           <div class="w-full sm:w-72 relative">
             <input type="text" id="pc-report-search-input" value="${searchVal}" oninput="PCApp.handleReportSearch(this.value)" placeholder="제목, 작성자, 내용 검색..." class="w-full px-4 py-2 pl-9 rounded-xl bg-surface-container-lowest border border-outline/50 text-xs text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none transition-colors" />
@@ -3077,9 +3381,9 @@ const PCApp = {
     }
 
     // 4. 주간회의록 / 팀장보고 / 미팅회의록 탭
-    if (['weekly_archive', 'teamcap', 'meeting', 'issue'].includes(tab)) {
+    if (['weekly_archive', 'teamcap', 'meeting', 'issue', 'teamwork'].includes(tab)) {
       const ext = (window.MockData && window.MockData.extendedData) || {};
-      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues' };
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues', teamwork: 'teamworkIssues' };
       const rawList = ext[keyMap[tab]] || [];
       const search = (this.state.workReportSearch || '').trim().toLowerCase();
 
@@ -3105,7 +3409,8 @@ const PCApp = {
       const badgeStyles = {
         weekly_archive: { label: '주간회의', bg: 'bg-primary/10 text-primary border-primary/20' },
         teamcap: { label: '팀장보고', bg: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
-        meeting: { label: '고객미팅', bg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20' }
+        meeting: { label: '고객미팅', bg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20' },
+        teamwork: { label: '팀웍', bg: 'bg-[#7c5cd6]/10 text-[#7c5cd6] dark:text-purple-300 border-[#7c5cd6]/20' }
       };
       const curBadge = badgeStyles[tab] || { label: '보고서', bg: 'bg-primary/10 text-primary border-primary/20' };
 
@@ -3726,11 +4031,15 @@ const PCApp = {
       return;
     }
 
+    // 4-0. 아카이브 탭: 업무일지 / 팀 일정 (지연 로딩 대용량 마스터)
+    if (tab === 'worklog') { this.renderWorklogArchive(wrap); return; }
+    if (tab === 'teamsched') { this.renderTeamschedArchive(wrap); return; }
+
     // 4. 확장 탭: 주간회의록 / 팀장보고 / 미팅회의록 / 업무지원 요청·이슈 (크롤링 extendedData)
-    if (['weekly_archive', 'teamcap', 'meeting', 'issue'].includes(tab)) {
+    if (['weekly_archive', 'teamcap', 'meeting', 'issue', 'teamwork'].includes(tab)) {
       const ext = (window.MockData && window.MockData.extendedData) || {};
-      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues' };
-      const titles = { weekly_archive: '주간회의록', teamcap: '팀장 보고서', meeting: '고객사 미팅 회의록', issue: '업무지원 요청/이슈' };
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues', teamwork: 'teamworkIssues' };
+      const titles = { weekly_archive: '주간회의록', teamcap: '팀장 보고서', meeting: '고객사 미팅 회의록', issue: '업무지원 요청/이슈', teamwork: '팀별 이슈·팀웍' };
       const rawList = ext[keyMap[tab]] || [];
       const search = (this.state.workReportSearch || '').trim().toLowerCase();
       const list = rawList.filter((it) => {
@@ -6180,6 +6489,7 @@ const PCApp = {
       teamcap: 'teamcapReports',
       meeting: 'meetings',
       issue: 'issues',
+      teamwork: 'teamworkIssues',
       equipment: 'equipment',
       pds: 'pds'
     };
@@ -6209,6 +6519,7 @@ const PCApp = {
       weekly_archive: '주간 업무 회의록 상세',
       teamcap: '팀장 보고서 상세',
       issue: '업무지원 요청/이슈 상세',
+      teamwork: '팀별 이슈·팀웍 상세',
       meeting: '고객사 미팅 회의록 상세',
       equipment: '비품 및 사내 자산 상세 정보',
       pds: '기술 자료실 및 개발 소스 상세 정보'
