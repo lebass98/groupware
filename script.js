@@ -7760,7 +7760,10 @@ const App = {
       domain: 'domains',
       server: 'servers',
       url: 'projectUrls',
-      storyboard: 'storyboards'
+      storyboard: 'storyboards',
+      weekly_archive: 'weeklyReports',
+      teamcap: 'teamcapReports',
+      meeting: 'meetings'
     };
     const list = ext[keyMap[tab]] || [];
     const item = list.find(i => String(i.wr_id || i.id) === String(id));
@@ -7778,7 +7781,10 @@ const App = {
       domain: '도메인 상세',
       server: '서버·호스팅 상세',
       url: '접속 URL 상세',
-      storyboard: '스토리보드 상세'
+      storyboard: '스토리보드 상세',
+      weekly_archive: '주간회의록 상세',
+      teamcap: '팀장보고 상세',
+      meeting: '미팅회의록 상세'
     };
     if (titleEl) titleEl.textContent = titles[tab] || '상세 정보';
 
@@ -8854,6 +8860,27 @@ const App = {
           ${chipsHtml}
         </div>
       `;
+    } else if (['weekly_archive', 'teamcap', 'meeting'].includes(tab)) {
+      const ext = (window.MockData && window.MockData.extendedData) || {};
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings' };
+      const list = ext[keyMap[tab]] || [];
+      const titles = { weekly_archive: '주간회의록 아카이브', teamcap: '팀장 보고서', meeting: '고객사 미팅 회의록' };
+      const searchVal = (this.state.workReportSearch || '').trim();
+
+      container.innerHTML = `
+        <div class="flex flex-col gap-2.5 bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/15 shadow-xs">
+          <div class="flex items-center justify-between">
+            <span class="font-headline font-bold text-sm text-on-surface">${titles[tab]}</span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary">${list.length}건</span>
+          </div>
+          <div class="relative">
+            <input type="text" id="m-report-search-input" value="${searchVal}" oninput="App.handleReportSearch(this.value)" placeholder="제목, 작성자, 내용 검색..." class="w-full px-3.5 py-2 pl-9 rounded-xl bg-surface-container-lowest border border-outline-variant/20 text-xs text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none transition-colors" />
+            <svg class="w-4 h-4 text-outline absolute left-3 top-2.5 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
+        </div>
+      `;
     }
   },
 
@@ -9206,7 +9233,83 @@ const App = {
           </article>
         `;
       }).join('');
+      return;
     }
+
+    // 4. 주간회의록 / 팀장보고 / 미팅회의록 탭
+    if (['weekly_archive', 'teamcap', 'meeting'].includes(tab)) {
+      const ext = (window.MockData && window.MockData.extendedData) || {};
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings' };
+      const rawList = ext[keyMap[tab]] || [];
+      const search = (this.state.workReportSearch || '').trim().toLowerCase();
+
+      const filtered = rawList.filter(item => {
+        if (!search) return true;
+        const subj = (item.subject || item.title || '').toLowerCase();
+        const author = (item.author || '').toLowerCase();
+        const content = (item.content || '').toLowerCase();
+        return subj.includes(search) || author.includes(search) || content.includes(search);
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium shadow-xs">
+            ${getSvgIcon('assignment', 'w-10 h-10 text-outline mb-2 mx-auto')}
+            <p class="font-bold text-on-surface">등록되거나 검색된 보고서/회의록이 없습니다.</p>
+            <p class="text-xs text-on-surface-variant mt-1">검색어를 초기화하거나 다른 탭을 선택해 보세요.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const badgeStyles = {
+        weekly_archive: { label: '주간회의', bg: 'bg-primary/10 text-primary border-primary/20' },
+        teamcap: { label: '팀장보고', bg: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
+        meeting: { label: '고객미팅', bg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20' }
+      };
+      const curBadge = badgeStyles[tab] || { label: '보고서', bg: 'bg-primary/10 text-primary border-primary/20' };
+
+      container.innerHTML = filtered.map(item => {
+        const itemId = item.wr_id || item.id;
+        const title = item.subject || item.title || '제목 없음';
+        const author = item.author || '담당자';
+        const date = item.date || '-';
+        const hit = item.hit || 0;
+        const filesCount = (item.files || []).length;
+        const commentsCount = (item.comments || []).length;
+        const snippet = (item.content || '').replace(/\s+/g, ' ').trim().slice(0, 90);
+
+        return `
+          <article class="bg-surface-container-low rounded-2xl p-4 sm:p-5 flex flex-col gap-3 shadow-xs border border-outline-variant/15 text-left active:scale-[0.99] transition-transform cursor-pointer" onclick="App.openExtendedDetail('${tab}', '${itemId}')">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${curBadge.bg}">${curBadge.label}</span>
+              <span class="text-xs font-mono text-on-surface-variant">${date}</span>
+            </div>
+            <div>
+              <h4 class="font-headline font-bold text-base text-on-surface line-clamp-1 mb-1">${title}</h4>
+              <p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">${snippet || '터치하여 상세 회의록 및 본문을 확인하세요.'}</p>
+            </div>
+            <div class="pt-2.5 border-t border-outline-variant/10 flex items-center justify-between text-xs text-on-surface-variant">
+              <div class="flex items-center gap-1.5">
+                ${getSvgIcon('person', 'w-3.5 h-3.5 text-outline')}
+                <span class="font-bold text-on-surface">${author}</span>
+                <span class="text-outline">·</span>
+                <span>조회 ${hit}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                ${filesCount > 0 ? `<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-bold flex items-center gap-0.5 text-[11px]">📎 ${filesCount}</span>` : ''}
+                ${commentsCount > 0 ? `<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-bold flex items-center gap-0.5 text-[11px]">💬 ${commentsCount}</span>` : ''}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+  },
+
+  handleReportSearch(query) {
+    this.state.workReportSearch = query;
+    this.renderWorkReports();
   },
 
   // Toast System

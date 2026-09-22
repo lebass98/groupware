@@ -2123,16 +2123,28 @@
           </div>
         </div>
 
-        <!-- 3-Segment Top Tabs (팀별 업무보고 / 주간 업무보고 / 일간 업무보고) - 지출결의서 탭 표준 통일 -->
-        <div class="bg-surface-container-low p-1.5 rounded-xl flex gap-1 mb-4 w-full shadow-sm">
-          <button type="button" id="tab-btn-report-team" onclick="App.switchWorkReportTab('team')" class="flex-1 py-2.5 px-3 rounded-[0.875rem] text-xs sm:text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab">
+        <!-- 6-Segment Top Tabs (팀별 / 주간 / 일간 / 주간회의록 / 팀장보고 / 미팅회의록) - 가로 스크롤 지원 -->
+        <div class="bg-surface-container-low p-1.5 rounded-xl flex gap-1 mb-4 w-full shadow-sm overflow-x-auto scrollbar-hide">
+          <button type="button" id="tab-btn-report-team" onclick="App.switchWorkReportTab('team')" class="whitespace-nowrap px-3.5 py-2 rounded-[0.875rem] text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab shrink-0">
             팀별 업무보고
           </button>
-          <button type="button" id="tab-btn-report-weekly" onclick="App.switchWorkReportTab('weekly')" class="flex-1 py-2.5 px-3 rounded-[0.875rem] text-xs sm:text-sm font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center report-nav-tab active">
+          <button type="button" id="tab-btn-report-weekly" onclick="App.switchWorkReportTab('weekly')" class="whitespace-nowrap px-3.5 py-2 rounded-[0.875rem] text-xs font-label font-bold text-on-primary bg-primary shadow-sm transition-all text-center report-nav-tab active shrink-0">
             주간 업무보고
           </button>
-          <button type="button" id="tab-btn-report-daily" onclick="App.switchWorkReportTab('daily')" class="flex-1 py-2.5 px-3 rounded-[0.875rem] text-xs sm:text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab">
+          <button type="button" id="tab-btn-report-daily" onclick="App.switchWorkReportTab('daily')" class="whitespace-nowrap px-3.5 py-2 rounded-[0.875rem] text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab shrink-0">
             일간 업무보고
+          </button>
+          <button type="button" id="tab-btn-report-weekly_archive" onclick="App.switchWorkReportTab('weekly_archive')" class="whitespace-nowrap px-3.5 py-2 rounded-[0.875rem] text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab shrink-0 flex items-center gap-1">
+            <span>주간회의록</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest">65</span>
+          </button>
+          <button type="button" id="tab-btn-report-teamcap" onclick="App.switchWorkReportTab('teamcap')" class="whitespace-nowrap px-3.5 py-2 rounded-[0.875rem] text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab shrink-0 flex items-center gap-1">
+            <span>팀장보고</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest">5</span>
+          </button>
+          <button type="button" id="tab-btn-report-meeting" onclick="App.switchWorkReportTab('meeting')" class="whitespace-nowrap px-3.5 py-2 rounded-[0.875rem] text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab shrink-0 flex items-center gap-1">
+            <span>미팅회의록</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest">45</span>
           </button>
         </div>
 

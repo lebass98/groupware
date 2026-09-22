@@ -347,16 +347,28 @@
           </div>
         </div>
 
-        <!-- 3-Segment Top Tabs (팀별 / 주간 / 일간 업무보고) -->
-        <div class="flex gap-3 mb-6">
-          <button type="button" id="pc-tab-btn-report-team" onclick="PCApp.switchWorkReportTab('team')" class="flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab">
+        <!-- 6-Segment Top Tabs (팀별 / 주간 / 일간 / 주간회의록 / 팀장보고 / 미팅회의록) -->
+        <div class="flex gap-2.5 mb-6 overflow-x-auto pb-1">
+          <button type="button" id="pc-tab-btn-report-team" onclick="PCApp.switchWorkReportTab('team')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab">
             👥 팀별 업무보고
           </button>
-          <button type="button" id="pc-tab-btn-report-weekly" onclick="PCApp.switchWorkReportTab('weekly')" class="flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-primary text-white shadow-xs pc-report-nav-tab active">
+          <button type="button" id="pc-tab-btn-report-weekly" onclick="PCApp.switchWorkReportTab('weekly')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-primary text-white shadow-xs pc-report-nav-tab active">
             📅 주간 업무보고
           </button>
-          <button type="button" id="pc-tab-btn-report-daily" onclick="PCApp.switchWorkReportTab('daily')" class="flex-1 py-3.5 rounded-2xl font-bold text-base transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab">
+          <button type="button" id="pc-tab-btn-report-daily" onclick="PCApp.switchWorkReportTab('daily')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab">
             📝 일간 업무보고
+          </button>
+          <button type="button" id="pc-tab-btn-report-weekly_archive" onclick="PCApp.switchWorkReportTab('weekly_archive')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
+            <span>📑 주간회의록</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest">65</span>
+          </button>
+          <button type="button" id="pc-tab-btn-report-teamcap" onclick="PCApp.switchWorkReportTab('teamcap')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
+            <span>👑 팀장보고</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest">5</span>
+          </button>
+          <button type="button" id="pc-tab-btn-report-meeting" onclick="PCApp.switchWorkReportTab('meeting')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
+            <span>🤝 미팅회의록</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest">45</span>
           </button>
         </div>
 

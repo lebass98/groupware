@@ -2471,6 +2471,27 @@ const PCApp = {
           ${chipsHtml}
         </div>
       `;
+    } else if (['weekly_archive', 'teamcap', 'meeting'].includes(tab)) {
+      const ext = (window.MockData && window.MockData.extendedData) || {};
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings' };
+      const list = ext[keyMap[tab]] || [];
+      const titles = { weekly_archive: '주간회의록 아카이브', teamcap: '팀장 보고서', meeting: '고객사 미팅 회의록' };
+      const searchVal = (this.state.workReportSearch || '').trim();
+
+      container.innerHTML = `
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-surface-container-low p-4 rounded-2xl border border-outline/40 shadow-xs">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-base text-on-surface">${titles[tab]}</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">${list.length}건 등록</span>
+          </div>
+          <div class="w-full sm:w-72 relative">
+            <input type="text" id="pc-report-search-input" value="${searchVal}" oninput="PCApp.handleReportSearch(this.value)" placeholder="제목, 작성자, 내용 검색..." class="w-full px-4 py-2 pl-9 rounded-xl bg-surface-container-lowest border border-outline/50 text-xs text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none transition-colors" />
+            <svg class="w-4 h-4 text-outline absolute left-3 top-2.5 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
+        </div>
+      `;
     }
   },
 
@@ -2766,7 +2787,90 @@ const PCApp = {
           </article>
         `;
       }).join('');
+      return;
     }
+
+    // 4. 주간회의록 / 팀장보고 / 미팅회의록 탭
+    if (['weekly_archive', 'teamcap', 'meeting'].includes(tab)) {
+      const ext = (window.MockData && window.MockData.extendedData) || {};
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings' };
+      const rawList = ext[keyMap[tab]] || [];
+      const search = (this.state.workReportSearch || '').trim().toLowerCase();
+
+      const filtered = rawList.filter(item => {
+        if (!search) return true;
+        const subj = (item.subject || item.title || '').toLowerCase();
+        const author = (item.author || '').toLowerCase();
+        const content = (item.content || '').toLowerCase();
+        return subj.includes(search) || author.includes(search) || content.includes(search);
+      });
+
+      if (filtered.length === 0) {
+        wrap.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-12 text-center text-on-surface-variant font-medium shadow-xs border border-outline/40 flex flex-col items-center justify-center">
+            <svg class="w-12 h-12 text-outline mb-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <p class="text-base font-bold text-on-surface mb-1">등록되거나 검색된 보고서/회의록이 없습니다.</p>
+            <p class="text-xs text-on-surface-variant">검색어를 초기화하거나 다른 탭을 선택해 보세요.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const badgeStyles = {
+        weekly_archive: { label: '주간회의', bg: 'bg-primary/10 text-primary border-primary/20' },
+        teamcap: { label: '팀장보고', bg: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
+        meeting: { label: '고객미팅', bg: 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20' }
+      };
+      const curBadge = badgeStyles[tab] || { label: '보고서', bg: 'bg-primary/10 text-primary border-primary/20' };
+
+      wrap.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          ${filtered.map(item => {
+            const itemId = item.wr_id || item.id;
+            const title = item.subject || item.title || '제목 없음';
+            const author = item.author || '담당자';
+            const date = item.date || '-';
+            const hit = item.hit || 0;
+            const filesCount = (item.files || []).length;
+            const commentsCount = (item.comments || []).length;
+            const snippet = (item.content || '').replace(/\s+/g, ' ').trim().slice(0, 100);
+
+            return `
+              <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline/70 hover:border-primary hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group" onclick="PCApp.openExtendedModal('${tab}', '${itemId}')">
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-2.5">
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${curBadge.bg}">${curBadge.label}</span>
+                    <span class="text-xs font-mono text-on-surface-variant">${date}</span>
+                  </div>
+                  <h4 class="font-bold text-base text-on-surface group-hover:text-primary transition-colors line-clamp-1 mb-2">${title}</h4>
+                  <p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed mb-4">${snippet || '클릭하여 상세 회의 내용과 본문을 확인하세요.'}</p>
+                </div>
+
+                <div class="pt-3 border-t border-outline/30 flex items-center justify-between text-xs text-on-surface-variant">
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-on-surface flex items-center gap-1">
+                      <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                      <span>${author}</span>
+                    </span>
+                    <span class="text-outline">·</span>
+                    <span>조회 ${hit}</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    ${filesCount > 0 ? `<span class="px-2 py-0.5 rounded-md bg-surface-container text-primary font-bold flex items-center gap-1">📎 ${filesCount}</span>` : ''}
+                    ${commentsCount > 0 ? `<span class="px-2 py-0.5 rounded-md bg-surface-container text-secondary font-bold flex items-center gap-1">💬 ${commentsCount}</span>` : ''}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+  },
+
+  handleReportSearch(query) {
+    this.state.workReportSearch = query;
+    this.renderWorkReportView();
   },
 
   // =========================================================================
@@ -5647,7 +5751,10 @@ const PCApp = {
       domain: 'domains',
       server: 'servers',
       url: 'projectUrls',
-      storyboard: 'storyboards'
+      storyboard: 'storyboards',
+      weekly_archive: 'weeklyReports',
+      teamcap: 'teamcapReports',
+      meeting: 'meetings'
     };
     const list = ext[keyMap[tab]] || [];
     const item = list.find(i => String(i.wr_id || i.id) === String(id));
@@ -5671,7 +5778,10 @@ const PCApp = {
       domain: '도메인 계정 및 상세 정보',
       server: '서버 및 호스팅 인프라 상세 정보',
       url: '프로젝트 접속 주소 상세 정보',
-      storyboard: '기획 스토리보드 상세 정보'
+      storyboard: '기획 스토리보드 상세 정보',
+      weekly_archive: '주간 업무 회의록 상세',
+      teamcap: '팀장 보고서 상세',
+      meeting: '고객사 미팅 회의록 상세'
     };
 
     // 메타데이터 테이블 구성
