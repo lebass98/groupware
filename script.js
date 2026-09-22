@@ -3191,7 +3191,15 @@ const App = {
       }
     });
 
-    const userAdded = this.getUserSchedules(year, month, day);
+    // 앱에서 직접 등록한 일정과 크롤링해 온 일정이 겹칠 수 있다.
+    // (앱에서 휴가를 신청 → 그룹웨어에서 승인 → 다음 크롤링 때 같은 일정이 들어온다)
+    // 이때는 원본인 그룹웨어 기록을 남기고 로컬 등록분을 접어, 같은 일정이 두 줄로 보이지 않게 한다.
+    const sameSchedule = (a, b) =>
+      String(a.title || '').trim() === String(b.title || '').trim() &&
+      String(a.author || '').trim() === String(b.author || '').trim();
+
+    const userAdded = this.getUserSchedules(year, month, day)
+      .filter((u) => !combined.some((existing) => sameSchedule(existing, u)));
     combined = [...combined, ...userAdded];
     if (combined.length > 0) {
       return combined.map(s => ({
