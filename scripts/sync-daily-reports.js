@@ -30,18 +30,27 @@ const ROOT = path.resolve(__dirname, '..');
 
 // 1. .env 환경변수 파싱
 function loadEnv() {
-  const envPath = path.join(ROOT, '.env');
-  if (!fs.existsSync(envPath)) return {};
-  const content = fs.readFileSync(envPath, 'utf8');
   const env = {};
-  content.split('\n').forEach(line => {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) return;
-    const idx = trimmed.indexOf('=');
-    if (idx !== -1) {
-      env[trimmed.slice(0, idx).trim()] = trimmed.slice(idx + 1).trim();
-    }
+
+  // 로컬에서는 .env 파일을 쓴다.
+  const envPath = path.join(ROOT, '.env');
+  if (fs.existsSync(envPath)) {
+    fs.readFileSync(envPath, 'utf8').split('\n').forEach(line => {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) return;
+      const idx = trimmed.indexOf('=');
+      if (idx !== -1) {
+        env[trimmed.slice(0, idx).trim()] = trimmed.slice(idx + 1).trim();
+      }
+    });
+  }
+
+  // CI(GitHub Actions)에는 .env 파일이 없고 Secrets가 환경변수로 들어온다.
+  // 파일에 값이 없을 때만 환경변수를 쓴다(로컬 설정이 CI 값에 덮이지 않게).
+  ['SITEGATE_URL', 'SITEGATE_ID', 'SITEGATE_PW'].forEach((key) => {
+    if (!env[key] && process.env[key]) env[key] = process.env[key];
   });
+
   return env;
 }
 
