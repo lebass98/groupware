@@ -1325,6 +1325,24 @@
       "badge": "반차",
       "author": "장현아 수습",
       "avatar": "./resource/image/profile_janghyunah.png"
+    },
+    {
+      "title": "반차(오후)",
+      "location": "",
+      "time": "13:00 ~ 18:00",
+      "type": "warning",
+      "badge": "반차",
+      "author": "곽재훈 대리",
+      "avatar": "./resource/image/profile_spring.png"
+    },
+    {
+      "title": "반반차 [16:00~18:00]",
+      "location": "",
+      "time": "16:00~18:00",
+      "type": "warning",
+      "badge": "반반차",
+      "author": "손석호 주임",
+      "avatar": "./resource/image/profile_pub.png"
     }
   ],
   "2026-9-21": [
@@ -1336,6 +1354,15 @@
       "badge": "공가",
       "author": "유종현 주임",
       "avatar": "./resource/image/profile_jsp.png"
+    },
+    {
+      "title": "반차(오후)",
+      "location": "",
+      "time": "13:00 ~ 18:00",
+      "type": "warning",
+      "badge": "반차",
+      "author": "손석호 주임",
+      "avatar": "./resource/image/profile_pub.png"
     }
   ],
   "2026-9-22": [
@@ -1356,6 +1383,60 @@
       "badge": "휴가",
       "author": "윤익수 부장",
       "avatar": "./resource/image/profile_blue.png"
+    },
+    {
+      "title": "외근(오전) 주간회의",
+      "location": "한국건강가정진흥원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "이채원 사원",
+      "avatar": "./resource/image/profile_cool_20241224_lee.png"
+    },
+    {
+      "title": "외근(오전) 주간회의",
+      "location": "한국건강가정진흥원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "장현아 수습",
+      "avatar": "./resource/image/profile_janghyunah.png"
+    },
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "손석호 주임",
+      "avatar": "./resource/image/profile_pub.png"
+    },
+    {
+      "title": "외근(오전) 주간회의",
+      "location": "한국건강가정진흥원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "김종규 팀장",
+      "avatar": "./resource/image/profile_john.png"
+    },
+    {
+      "title": "반차(오후)",
+      "location": "",
+      "time": "13:00 ~ 18:00",
+      "type": "warning",
+      "badge": "반차",
+      "author": "남기현 본부장",
+      "avatar": "./resource/image/profile_help.png"
+    },
+    {
+      "title": "외근(오전) 주간회의",
+      "location": "한가원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "윤진성 과장",
+      "avatar": "./resource/image/profile_apple_20250611.png"
     }
   ],
   "2026-9-23": [
@@ -1367,6 +1448,24 @@
       "badge": "공가",
       "author": "유종현 주임",
       "avatar": "./resource/image/profile_jsp.png"
+    },
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "손석호 주임",
+      "avatar": "./resource/image/profile_pub.png"
+    },
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "박규태 대리",
+      "avatar": "./resource/image/profile_green.png"
     }
   ],
   "2026-9-28": [
@@ -1378,6 +1477,37 @@
       "badge": "휴가",
       "author": "이재광 팀장",
       "avatar": "profile.png"
+    },
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "손석호 주임",
+      "avatar": "./resource/image/profile_pub.png"
+    }
+  ],
+  "2026-9-29": [
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "손석호 주임",
+      "avatar": "./resource/image/profile_pub.png"
+    }
+  ],
+  "2026-9-30": [
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "손석호 주임",
+      "avatar": "./resource/image/profile_pub.png"
     }
   ]
 }

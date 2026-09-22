@@ -9,9 +9,12 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { exec } = require('child_process');
+const { exec, execFile } = require('child_process');
 
 const ROOT = __dirname;
+
+// 근태일지 크롤링 동시 실행 방지 잠금
+let syncRunning = false;
 
 // 인자 파싱 (포트, --open 여부)
 let PORT = 8089;
@@ -210,6 +213,87 @@ const server = http.createServer((req, res) => {
     }
 
     return json(405, { ok: false, message: 'GET 또는 POST만 지원합니다.' });
+  }
+
+  // --- 근태일지 월별 크롤링 중계 API ----------------------------------------
+  // POST /api/sync/daily-reports  { year, month, confirm: true }
+  // 설정 화면의 '이번 달 근태일지 크롤링' 버튼이 호출한다.
+  // 크롤러는 파일을 직접 고쳐 쓰므로 동시에 두 번 돌지 않도록 잠금을 둔다.
+  if (url.pathname === '/api/sync/daily-reports') {
+    const json = (code, payload) => send(res, code,
+      { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
+      JSON.stringify(payload));
+
+    if (req.method === 'GET') {
+      // 클라이언트의 중계 존재 여부 확인용(실행하지 않는다).
+      return json(200, { ok: true, available: true, running: syncRunning });
+    }
+
+    if (req.method !== 'POST') {
+      return json(405, { ok: false, message: 'GET 또는 POST만 지원합니다.' });
+    }
+
+    let body = '';
+    req.on('data', (c) => {
+      body += c;
+      if (body.length > 10000) req.destroy();
+    });
+    req.on('end', () => {
+      let payload;
+      try {
+        payload = JSON.parse(body || '{}');
+      } catch {
+        return json(400, { ok: false, message: '잘못된 JSON 요청입니다.' });
+      }
+      if (payload.confirm !== true) {
+        return json(400, { ok: false, message: 'confirm: true 가 필요합니다.' });
+      }
+
+      const now = new Date();
+      const year = Number(payload.year) || now.getFullYear();
+      const month = Number(payload.month) || (now.getMonth() + 1);
+      if (!(month >= 1 && month <= 12) || !(year >= 2000 && year <= 2100)) {
+        return json(400, { ok: false, message: '연도 또는 월 값이 올바르지 않습니다.' });
+      }
+
+      if (syncRunning) {
+        return json(409, { ok: false, message: '이미 크롤링이 진행 중입니다. 잠시 후 다시 시도해 주세요.' });
+      }
+      syncRunning = true;
+
+      console.log(`[크롤링] ${year}년 ${month}월 근태일지 크롤링 시작`);
+      execFile(
+        process.execPath,
+        [path.join(ROOT, 'scripts', 'sync-daily-reports.js'), `--year=${year}`, `--month=${month}`],
+        { cwd: ROOT, timeout: 180000, maxBuffer: 10 * 1024 * 1024 },
+        (err, stdout, stderr) => {
+          syncRunning = false;
+          const log = String(stdout || '') + String(stderr || '');
+          if (err) {
+            console.log(`[크롤링] 실패: ${err.message}`);
+            return json(502, {
+              ok: false,
+              message: err.killed ? '크롤링 시간이 초과되었습니다.' : '크롤링에 실패했습니다.',
+              log: log.slice(-4000)
+            });
+          }
+          // 수집 건수를 로그에서 뽑아 사용자에게 돌려준다.
+          const schedHit = log.match(/총 (\d+)개 일자 일정 등록/);
+          const logHit = log.match(/총 (\d+)건 수집/);
+          console.log(`[크롤링] ${year}년 ${month}월 완료`);
+          json(200, {
+            ok: true,
+            year,
+            month,
+            scheduleDays: schedHit ? Number(schedHit[1]) : null,
+            attendanceCount: logHit ? Number(logHit[1]) : null,
+            message: `${year}년 ${month}월 근태일지 크롤링 및 동기화 완료`,
+            log: log.slice(-4000)
+          });
+        }
+      );
+    });
+    return;
   }
 
   let pathname;

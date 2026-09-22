@@ -18,6 +18,8 @@ const PCApp = {
       avatar: './profile.png',
       location: '서울 금천구 벚꽃로 298'
     },
+    // 오늘 기록이 없으면 '출근한 셈' 치거나 임의의 시간(10:18)을 만들어내지 않는다.
+    // 예전 기본값 때문에 모바일과 PC의 출근 시간이 서로 다르게 보였다.
     isCheckedIn: (() => {
       const logs = (window.MockData && window.MockData.attendance && window.MockData.attendance.logs) || [];
       const first = logs[0];
@@ -25,7 +27,7 @@ const PCApp = {
       if (first && Number(String(first.monthStr).replace('월', '')) === (now.getMonth() + 1) && Number(first.dayNum) === now.getDate()) {
         return !!first.checkInTimeStr && first.checkInTimeStr !== '-';
       }
-      return true;
+      return false;
     })(),
     checkInTime: (() => {
       const logs = (window.MockData && window.MockData.attendance && window.MockData.attendance.logs) || [];
@@ -33,9 +35,9 @@ const PCApp = {
       const now = new Date();
       if (first && Number(String(first.monthStr).replace('월', '')) === (now.getMonth() + 1) && Number(first.dayNum) === now.getDate()) {
         const m = (first.checkInTimeStr || '').match(/(\d{1,2}:\d{2})/);
-        return m ? m[1] : '10:18';
+        return m ? m[1] : '--:--';
       }
-      return '10:18';
+      return '--:--';
     })(),
     checkOutTime: (() => {
       const logs = (window.MockData && window.MockData.attendance && window.MockData.attendance.logs) || [];
@@ -653,15 +655,184 @@ const PCApp = {
     this.state.theme = theme;
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('wnc_pc_theme', theme);
-    const themeIcon = document.getElementById('pc-theme-icon');
-    if (themeIcon) {
-      themeIcon.innerHTML = theme === 'dark'
-        ? '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/></svg>'
-        : '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>';
-    }
   },
   toggleTheme() {
     this.setTheme(this.state.theme === 'dark' ? 'light' : 'dark');
+    // 설정 모달이 열려 있으면 토글 스위치 표시도 함께 맞춘다.
+    if (document.getElementById('pc-settings-theme-toggle')) this.renderSettingsThemeToggle();
+  },
+
+  // =========================================
+  // 환경설정 모달 (Settings)
+  // 모바일 설정 드로어와 동일한 구성(프로필 / 화면 모드 / 근태일지 크롤링)을 제공한다.
+  // 독 메뉴 편집은 모바일 하단 독 전용 기능이라 PC에는 포함하지 않는다.
+  // =========================================
+  openSettingsModal() {
+    const user = this.state.user || {};
+    const now = new Date();
+    const year = this.state.calYear || now.getFullYear();
+    const month = this.state.calMonth || (now.getMonth() + 1);
+    const monthValue = `${year}-${String(month).padStart(2, '0')}`;
+
+    const modalHtml = `
+      <div class="flex flex-col gap-5">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between pb-4 border-b border-outline">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-on-surface">환경설정</h3>
+              <p class="text-sm text-on-surface-variant">화면 모드 및 데이터 연동을 관리합니다.</p>
+            </div>
+          </div>
+          <button type="button" class="p-2 text-on-surface-variant hover:bg-surface-container rounded-xl transition-colors" onclick="PCApp.closeModal()" title="닫기">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- 1. 프로필 -->
+        <div class="flex items-center gap-3 p-4 rounded-2xl bg-surface-container-low border border-outline">
+          <img src="${user.avatar || './profile.png'}" alt="프로필" class="w-12 h-12 rounded-full object-cover border border-outline shrink-0" />
+          <div class="min-w-0">
+            <p class="text-base font-bold text-on-surface truncate">${user.name || '이재광'} ${user.role || '팀장'}</p>
+            <p class="text-xs text-on-surface-variant truncate">${user.dept || '퍼블리싱팀'} · ${user.email || 'yellow@wordncode.com'}</p>
+          </div>
+        </div>
+
+        <!-- 2. 화면 모드 -->
+        <div class="flex items-center justify-between p-4 rounded-2xl bg-surface-container-low border border-outline">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-on-surface">화면 모드</p>
+              <p class="text-xs text-on-surface-variant" id="pc-settings-theme-label">라이트 모드 적용 중</p>
+            </div>
+          </div>
+          <button type="button" onclick="PCApp.toggleTheme()" id="pc-settings-theme-toggle"
+            class="relative inline-flex h-6 w-11 items-center rounded-full bg-surface-container-high transition-colors focus:outline-none">
+            <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1 shadow-sm" id="pc-settings-theme-knob"></span>
+          </button>
+        </div>
+
+        <!-- 3. 근태일지 크롤링 -->
+        <div class="p-4 rounded-2xl bg-surface-container-low border border-outline space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-bold text-on-surface">근태일지 크롤링</p>
+                <p class="text-xs text-on-surface-variant">기존 그룹웨어(sitegate)에서 선택한 달을 가져옵니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="month" id="pc-settings-sync-month" value="${monthValue}"
+              class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-surface-container-lowest border border-outline text-sm font-medium text-on-surface focus:outline-none focus:border-primary transition-colors" />
+            <button type="button" id="pc-settings-sync-btn" onclick="PCApp.runDailyReportSync()"
+              class="shrink-0 py-2.5 px-4 rounded-xl bg-primary hover:bg-primary-dim text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-1.5 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+              </svg>
+              <span id="pc-settings-sync-label">크롤링</span>
+            </button>
+          </div>
+          <p class="text-xs font-medium text-on-surface-variant" id="pc-settings-sync-status">중계 서버 확인 중...</p>
+        </div>
+
+      </div>
+    `;
+
+    this.showModal(modalHtml);
+    this.renderSettingsThemeToggle();
+    this.initDailyReportSyncUI();
+  },
+
+  renderSettingsThemeToggle() {
+    const toggle = document.getElementById('pc-settings-theme-toggle');
+    const knob = document.getElementById('pc-settings-theme-knob');
+    const label = document.getElementById('pc-settings-theme-label');
+    if (!toggle || !knob || !label) return;
+    const isDark = this.state.theme === 'dark';
+    toggle.className = `relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${isDark ? 'bg-primary' : 'bg-surface-container-high'}`;
+    knob.className = `inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${isDark ? 'translate-x-6' : 'translate-x-1'}`;
+    label.innerText = isDark ? '다크 모드 적용 중' : '라이트 모드 적용 중';
+  },
+
+  // 중계 서버(로컬 개발 서버)가 있을 때만 크롤링 버튼을 활성화한다.
+  initDailyReportSyncUI() {
+    const btn = document.getElementById('pc-settings-sync-btn');
+    const status = document.getElementById('pc-settings-sync-status');
+    if (!btn || !status) return;
+
+    if (!window.WncSitegate) {
+      btn.disabled = true;
+      status.innerText = '중계 모듈을 불러오지 못했습니다.';
+      return;
+    }
+
+    btn.disabled = true;
+    window.WncSitegate.isAvailable().then((available) => {
+      btn.disabled = !available;
+      status.innerText = available
+        ? '연결됨 · 버튼을 누르면 해당 월을 새로 가져옵니다.'
+        : '중계 서버가 없어 크롤링할 수 없습니다. 로컬 개발 서버(npm start)에서 실행해 주세요.';
+    });
+  },
+
+  async runDailyReportSync() {
+    const input = document.getElementById('pc-settings-sync-month');
+    const btn = document.getElementById('pc-settings-sync-btn');
+    const label = document.getElementById('pc-settings-sync-label');
+    const status = document.getElementById('pc-settings-sync-status');
+    if (!input || !btn || !window.WncSitegate) return;
+
+    const [yStr, mStr] = String(input.value || '').split('-');
+    const year = Number(yStr);
+    const month = Number(mStr);
+    if (!year || !month) {
+      this.showToast('크롤링할 연·월을 먼저 선택해 주세요.');
+      return;
+    }
+
+    btn.disabled = true;
+    if (label) label.innerText = '가져오는 중';
+    if (status) status.innerText = `${year}년 ${month}월 근태일지를 가져오는 중입니다. 최대 3분까지 걸릴 수 있습니다...`;
+    this.showToast(`${year}년 ${month}월 근태일지 크롤링을 시작합니다...`);
+
+    const result = await window.WncSitegate.syncDailyReports(year, month);
+
+    if (label) label.innerText = '크롤링';
+    btn.disabled = false;
+
+    if (result && result.ok) {
+      const parts = [];
+      if (result.scheduleDays !== null && result.scheduleDays !== undefined) parts.push(`일정 ${result.scheduleDays}일치`);
+      if (result.attendanceCount !== null && result.attendanceCount !== undefined) parts.push(`출퇴근 ${result.attendanceCount}건`);
+      const detail = parts.length ? ` (${parts.join(', ')})` : '';
+      if (status) status.innerText = `${year}년 ${month}월 동기화 완료${detail}. 잠시 후 새로고침됩니다.`;
+      this.showToast(`${year}년 ${month}월 근태일지 동기화 완료${detail}`);
+      // 크롤링 결과는 mockData.js 파일에 반영되므로 새로고침해야 화면에 나타난다.
+      setTimeout(() => window.location.reload(), 1600);
+    } else {
+      const msg = (result && result.message) || '알 수 없는 오류';
+      if (status) status.innerText = `실패: ${msg}`;
+      this.showToast(`근태일지 크롤링 실패: ${msg}`);
+    }
   },
 
   // 2. Real-Time Header Clock

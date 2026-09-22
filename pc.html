@@ -143,27 +143,18 @@
         <!-- Dynamically Rendered by pc.js -->
       </ul>
 
-      <!-- Sidebar Footer (Theme, Mobile Switcher, Profile) -->
+      <!-- Sidebar Footer (Settings, Profile) -->
       <div class="pc-sidebar-footer" id="pc-sidebar-footer">
         <!-- Action Buttons Row -->
         <div class="pc-footer-btn-row">
-          <!-- Theme Toggle -->
-          <button type="button" class="pc-nav-btn" id="pc-theme-icon" onclick="PCApp.toggleTheme()" title="다크/라이트 모드 전환">
+          <!-- Settings (환경설정) -->
+          <button type="button" class="pc-nav-btn" id="pc-settings-btn" onclick="PCApp.openSettingsModal()" title="환경설정">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+              <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/>
             </svg>
-            <span class="pc-footer-btn-label">테마</span>
-            <span class="pc-tooltip">테마 전환</span>
+            <span class="pc-footer-btn-label">설정</span>
+            <span class="pc-tooltip">환경설정</span>
           </button>
-
-          <!-- Mobile View Switcher -->
-          <a href="./index.html?view=mobile" onclick="sessionStorage.setItem('forceView', 'mobile');" class="pc-nav-btn" title="모바일 뷰 전환" target="_self">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/>
-            </svg>
-            <span class="pc-footer-btn-label">모바일</span>
-            <span class="pc-tooltip">모바일 앱 뷰</span>
-          </a>
         </div>
 
         <!-- User Profile Avatar & Info Card -->
@@ -953,7 +944,7 @@
   <!-- Master Shared Data Layer -->
   <script src="./data/svgIcons.js?v=20260902_icons"></script>
   <script src="./data/utils.js?v=20260902_escape"></script>
-  <script src="./data/sitegate-client.js?v=20260915_attendance"></script>
+  <script src="./data/sitegate-client.js?v=20260922_sync_button"></script>
   <!-- Firebase 연동 (compat 빌드: 기존 전역 스크립트 구조와 동일한 로딩 타이밍 보장) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -962,6 +953,6 @@
   <script src="./firebase/init.js?v=20260901_account_isolation"></script>
   <script src="./data/mockData.js?v=20260911_projects_370"></script>
   <!-- PC Core Controller -->
-  <script src="./pc.js?v=20260915_sitegate"></script>
+  <script src="./pc.js?v=20260922_sync_button"></script>
 </body>
 </html>

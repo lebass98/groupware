@@ -430,6 +430,32 @@ const App = {
     }
   },
 
+  /**
+   * 크롤링된 출퇴근 로그(MockData/저장 상태)에서 '오늘' 기록을 찾아 현재 근태 상태에 반영한다.
+   * PC(pc.js)와 완전히 같은 기준(월·일 일치)을 쓰므로 두 화면의 출근 시간이 갈리지 않는다.
+   */
+  syncTodayAttendanceFromLogs() {
+    const now = new Date();
+    const curM = now.getMonth() + 1;
+    const curD = now.getDate();
+    const todayLog = (this.state.logs || []).find((l) =>
+      Number(String(l.monthStr).replace('월', '')) === curM && Number(l.dayNum) === curD);
+
+    if (!todayLog || !todayLog.checkInTimeStr || todayLog.checkInTimeStr === '-') return;
+
+    this.state.checkInTimeStr = todayLog.checkInTimeStr;
+    this.state.isCheckedIn = !todayLog.checkOutTimeStr || todayLog.checkOutTimeStr === '-';
+
+    const inM = todayLog.checkInTimeStr.match(/(\d{1,2}):(\d{2})/);
+    if (inM) {
+      const d = new Date();
+      let hours = parseInt(inM[1], 10);
+      if (todayLog.checkInTimeStr.includes('오후') && hours < 12) hours += 12;
+      d.setHours(hours, parseInt(inM[2], 10), 0, 0);
+      this.state.checkInTime = d;
+    }
+  },
+
   loadState() {
     try {
       const saved = localStorage.getItem('wordncode_groupware_state');
@@ -455,25 +481,6 @@ const App = {
           }
         }
 
-        // 오늘 날짜 출퇴근 기록이 logs에 존재할 경우 실시간 출근시간 동기화
-        const now = new Date();
-        const curM = now.getMonth() + 1;
-        const curD = now.getDate();
-        const todayLog = (this.state.logs || []).find(l => {
-          return Number(String(l.monthStr).replace('월', '')) === curM && Number(l.dayNum) === curD;
-        });
-        if (todayLog && todayLog.checkInTimeStr && todayLog.checkInTimeStr !== '-') {
-          this.state.checkInTimeStr = todayLog.checkInTimeStr;
-          this.state.isCheckedIn = true;
-          const inM = todayLog.checkInTimeStr.match(/(\d{1,2}):(\d{2})/);
-          if (inM) {
-            const d = new Date();
-            let hours = parseInt(inM[1], 10);
-            if (todayLog.checkInTimeStr.includes('오후') && hours < 12) hours += 12;
-            d.setHours(hours, parseInt(inM[2], 10), 0, 0);
-            this.state.checkInTime = d;
-          }
-        }
         if (parsed.userSchedules && typeof parsed.userSchedules === 'object') {
           this.state.userSchedules = parsed.userSchedules;
         }
@@ -499,6 +506,10 @@ const App = {
         if (parsed.leave) this.state.leave = parsed.leave;
         if (parsed.user) this.state.user = { ...this.state.user, ...parsed.user };
       }
+
+      // 오늘 출퇴근 기록 동기화는 저장된 상태가 있든 없든 항상 수행한다.
+      // (예전에는 localStorage가 있을 때만 돌아, 처음 접속한 기기에서는 PC와 출근 시간이 달라 보였다.)
+      this.syncTodayAttendanceFromLogs();
 
       // Projects State Sync (모바일-PC 공통 마스터 데이터 동기화)
       const mockProj = (window.MockData && window.MockData.projects) ? window.MockData.projects : [];
@@ -923,7 +934,8 @@ const App = {
     window.scrollTo({ top: 0, behavior: 'instant' });
 
     // 하단 독 활성 탭 갱신 및 알림 뱃지 갱신
-    this.renderBottomNav();
+    // (renderBottomNav 라는 함수는 존재하지 않아 로그인 직후 TypeError로 이후 초기화가 통째로 중단됐다)
+    this.renderDockNav();
     this.updateNotificationBadge();
 
     if (typeof onComplete === 'function') onComplete();
@@ -1834,7 +1846,7 @@ const App = {
     const statusDot = document.getElementById('home-status-dot');
     if (statusTitle && statusBadge && statusDot) {
       if (this.state.isCheckedIn) {
-        statusTitle.innerText = `${this.state.checkInTimeStr || '09:00'} 출근 완료`;
+        statusTitle.innerText = `${this.state.checkInTimeStr || '--:--'} 출근 완료`;
         statusBadge.innerText = '근무 중';
         statusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary';
       } else {
@@ -2156,7 +2168,8 @@ const App = {
     if (!wrap) return;
 
     const u = this.state.user || { name: '이재광', role: '팀장', dept: '퍼블리싱팀', avatar: 'profile.png', location: '서울 금천구 벚꽃로 298' };
-    const checkInTime = this.state.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : '08:55');
+    // 출근 기록이 없으면 임의의 시간을 지어내지 않는다(디바이스마다 다른 값이 보이는 원인이었다).
+    const checkInTime = this.state.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : '--:--');
     const checkOutTime = this.state.checkOutTimeStr || '--:--';
     const isCheckedIn = this.state.isCheckedIn;
 
@@ -2280,7 +2293,9 @@ const App = {
 
   handleCheckIn() {
     const now = new Date();
-    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    // 시간 표기는 앱 전체가 '오전/오후 HH:MM' 한 가지 형식만 쓴다.
+    // (예전에는 이 경로만 'HH:MM'으로 저장해 PC 화면과 값이 달라 보였다.)
+    const timeStr = this.formatCheckInTime(now);
     this.state.isCheckedIn = true;
     this.state.checkInTime = now;
     this.state.checkInTimeStr = timeStr;
@@ -2294,7 +2309,7 @@ const App = {
 
   handleCheckOut() {
     const now = new Date();
-    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    const timeStr = this.formatCheckInTime(now);
     this.state.isCheckedIn = false;
     this.state.checkOutTimeStr = timeStr;
     this.saveState();
@@ -4888,7 +4903,7 @@ const App = {
     const pulseSubtext = document.getElementById('pulse-subtext');
 
     if (this.state.isCheckedIn) {
-      const timeStr = this.state.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : '오전 08:45');
+      const timeStr = this.state.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : '--:--');
       if (homeStatusTitle) homeStatusTitle.innerText = `${timeStr} 출근 완료`;
       if (homeStatusBadge) homeStatusBadge.innerText = '근무 중';
       if (homeStatusDot) homeStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary';
@@ -5395,6 +5410,9 @@ const App = {
       }
     }
 
+    // 3. 근태일지 크롤링 UI 초기화 (기본값: 현재 보고 있는 달)
+    this.initDailyReportSyncUI();
+
     // 드로어 노출
     drawer.classList.remove('hidden');
     backdrop.classList.remove('opacity-0');
@@ -5405,6 +5423,80 @@ const App = {
     if (FramerMotion.engine) {
       FramerMotion.animate(backdrop, { opacity: [0, 1] }, { duration: 0.28, easing: 'ease-out' });
       FramerMotion.animate(panel, { transform: ['translateX(100%)', 'translateX(0%)'] }, { duration: 0.35, easing: FramerMotion.spring({ stiffness: 380, damping: 32 }) });
+    }
+  },
+
+  // =========================================
+  // 설정 > 근태일지 월별 크롤링 (기존 그룹웨어 sitegate 연동)
+  // 서버의 중계 엔드포인트가 크롤러를 실행하므로, 중계가 없는 정적 호스팅
+  // (GitHub Pages 등)에서는 버튼을 비활성화하고 이유를 함께 알린다.
+  // =========================================
+  initDailyReportSyncUI() {
+    const input = document.getElementById('settings-sync-month');
+    const btn = document.getElementById('settings-sync-btn');
+    const status = document.getElementById('settings-sync-status');
+    if (!input || !btn || !status) return;
+
+    // 기본값은 캘린더에서 보고 있는 달(없으면 이번 달)
+    const now = new Date();
+    const year = this.state.calYear || now.getFullYear();
+    const month = this.state.calMonth || (now.getMonth() + 1);
+    input.value = `${year}-${String(month).padStart(2, '0')}`;
+
+    if (!window.WncSitegate) {
+      btn.disabled = true;
+      status.innerText = '중계 모듈을 불러오지 못했습니다.';
+      return;
+    }
+
+    status.innerText = '중계 서버 확인 중...';
+    btn.disabled = true;
+    window.WncSitegate.isAvailable().then((available) => {
+      btn.disabled = !available;
+      status.innerText = available
+        ? '연결됨 · 버튼을 누르면 해당 월을 새로 가져옵니다.'
+        : '중계 서버가 없어 크롤링할 수 없습니다. 로컬 개발 서버(npm start)에서 실행해 주세요.';
+    });
+  },
+
+  async runDailyReportSync() {
+    const input = document.getElementById('settings-sync-month');
+    const btn = document.getElementById('settings-sync-btn');
+    const label = document.getElementById('settings-sync-label');
+    const status = document.getElementById('settings-sync-status');
+    if (!input || !btn || !window.WncSitegate) return;
+
+    const [yStr, mStr] = String(input.value || '').split('-');
+    const year = Number(yStr);
+    const month = Number(mStr);
+    if (!year || !month) {
+      this.showToast('⚠️ 크롤링할 연·월을 먼저 선택해 주세요.');
+      return;
+    }
+
+    btn.disabled = true;
+    if (label) label.innerText = '가져오는 중';
+    if (status) status.innerText = `${year}년 ${month}월 근태일지를 가져오는 중입니다. 최대 3분까지 걸릴 수 있습니다...`;
+    this.showToast(`📥 ${year}년 ${month}월 근태일지 크롤링을 시작합니다...`);
+
+    const result = await window.WncSitegate.syncDailyReports(year, month);
+
+    if (label) label.innerText = '크롤링';
+    btn.disabled = false;
+
+    if (result && result.ok) {
+      const parts = [];
+      if (result.scheduleDays !== null && result.scheduleDays !== undefined) parts.push(`일정 ${result.scheduleDays}일치`);
+      if (result.attendanceCount !== null && result.attendanceCount !== undefined) parts.push(`출퇴근 ${result.attendanceCount}건`);
+      const detail = parts.length ? ` (${parts.join(', ')})` : '';
+      if (status) status.innerText = `✅ ${year}년 ${month}월 동기화 완료${detail}. 잠시 후 새로고침됩니다.`;
+      this.showToast(`✅ ${year}년 ${month}월 근태일지 동기화 완료${detail}`);
+      // 크롤링 결과는 mockData.js 파일에 반영되므로 새로고침해야 화면에 나타난다.
+      setTimeout(() => window.location.reload(), 1600);
+    } else {
+      const msg = (result && result.message) || '알 수 없는 오류';
+      if (status) status.innerText = `⚠️ 실패: ${msg}`;
+      this.showToast(`⚠️ 근태일지 크롤링 실패: ${msg}`);
     }
   },
 

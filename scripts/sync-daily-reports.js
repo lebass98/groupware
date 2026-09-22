@@ -55,6 +55,26 @@ function getCrawlRange() {
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
 
+  // --year / --month 인자가 오면 그 달 하나만 크롤링한다(설정 화면의 '이번 달 크롤링' 버튼 경로).
+  // 이때는 나머지 달의 기존 데이터를 건드리지 않도록 뒤에서 병합 저장한다.
+  const argOf = (name) => {
+    const hit = process.argv.find((a) => a.startsWith(`--${name}=`));
+    return hit ? Number(hit.split('=')[1]) : null;
+  };
+  const onlyYear = argOf('year');
+  const onlyMonth = argOf('month');
+  if (onlyYear && onlyMonth && onlyMonth >= 1 && onlyMonth <= 12) {
+    const pad1 = (n) => String(n).padStart(2, '0');
+    return {
+      year: onlyYear,
+      month: onlyMonth,
+      todayStr: `${year}-${pad1(month)}-${pad1(now.getDate())}`,
+      scheduleMonths: [{ year: onlyYear, month: onlyMonth }],
+      attendanceMonths: [{ year: onlyYear, month: onlyMonth }],
+      singleMonth: true
+    };
+  }
+
   // 근태일지(일정)는 앞으로 잡힌 휴가도 의미가 있으므로 다음 달까지 본다.
   // 출퇴근 기록은 미래가 존재할 수 없으므로 이번 달까지만 본다.
   const back = 1; // 지난달부터
@@ -356,6 +376,49 @@ async function main() {
     delete item.rawDate;
   });
   console.log(`✅ [3/5] 출퇴근 기록 크롤링 완료: 총 ${allLogs.length}건 수집 (최신: ${allLogs[0] ? `${allLogs[0].monthStr} ${allLogs[0].dayNum}일 ${allLogs[0].checkInTimeStr}` : '없음'})`);
+
+  // -------------------------------------------------------------
+  // 2-5. 단일 월 모드 병합
+  //
+  // 특정 월만 크롤링한 경우, 저장 로직이 전체 블록을 통째로 덮어쓰므로
+  // 크롤링하지 않은 다른 달의 기존 데이터가 사라진다. 대상 월만 교체하고 나머지는 보존한다.
+  // -------------------------------------------------------------
+  if (range.singleMonth) {
+    const targetPrefix = `${range.year}-${range.month}-`;
+    const targetMonthStr = `${range.month}월`;
+
+    const prevSchedPath = path.join(ROOT, 'data', '_legacy', 'schedules.json');
+    if (fs.existsSync(prevSchedPath)) {
+      const prev = JSON.parse(fs.readFileSync(prevSchedPath, 'utf8'));
+      const merged = {};
+      Object.keys(prev).forEach((k) => {
+        if (!k.startsWith(targetPrefix)) merged[k] = prev[k];
+      });
+      Object.keys(allSchedules).forEach((k) => { merged[k] = allSchedules[k]; });
+      // 날짜 순 정렬 유지
+      const sortKey = (k) => k.split('-').map(Number);
+      Object.keys(merged).sort((a, b) => {
+        const [ay, am, ad] = sortKey(a); const [by, bm, bd] = sortKey(b);
+        return ay - by || am - bm || ad - bd;
+      }).forEach((k) => { const v = merged[k]; delete merged[k]; merged[k] = v; });
+      Object.keys(allSchedules).forEach((k) => delete allSchedules[k]);
+      Object.assign(allSchedules, merged);
+    }
+
+    const prevAttPath = path.join(ROOT, 'data', '_legacy', 'attendance_logs.json');
+    if (fs.existsSync(prevAttPath)) {
+      const prev = JSON.parse(fs.readFileSync(prevAttPath, 'utf8'));
+      const kept = (prev.logs || []).filter((l) => l.monthStr !== targetMonthStr);
+      const crawled = allLogs.slice();
+      allLogs.length = 0;
+      // 월 내림차순 → 일 내림차순(기존 정렬 규칙과 동일하게 최신 우선)
+      kept.concat(crawled)
+        .sort((a, b) => (parseInt(b.monthStr, 10) - parseInt(a.monthStr, 10)) || (Number(b.dayNum) - Number(a.dayNum)))
+        .forEach((l, i) => { l.id = i + 1; allLogs.push(l); });
+    }
+
+    console.log(`🔗 단일 월 모드: ${range.year}년 ${range.month}월만 갱신하고 나머지 달 데이터는 보존했습니다.`);
+  }
 
   // -------------------------------------------------------------
   // 3. 파일 저장 및 mockData.js 동기화

@@ -16,7 +16,9 @@
   'use strict';
 
   const ENDPOINT = '/api/attendance';
+  const SYNC_ENDPOINT = '/api/sync/daily-reports';
   const TIMEOUT_MS = 20000;
+  const SYNC_TIMEOUT_MS = 180000; // 크롤링은 로그인·파싱·시드 재생성까지 포함해 오래 걸린다.
 
   // 중계 존재 여부는 한 번만 확인하고 재사용한다(매번 확인하면 버튼이 느려진다).
   let availability = null;
@@ -35,7 +37,9 @@
   async function isAvailable() {
     if (availability !== null) return availability;
     try {
-      const res = await withTimeout(fetch(ENDPOINT, { method: 'GET' }), 5000);
+      // 가용성 확인에는 부작용이 없는 엔드포인트를 쓴다.
+      // (GET /api/attendance 는 확인할 때마다 sitegate에 실제 로그인해 느리다.)
+      const res = await withTimeout(fetch(SYNC_ENDPOINT, { method: 'GET' }), 5000);
       // 정적 호스팅이면 404/HTML이 돌아온다. JSON 응답일 때만 중계로 인정한다.
       const type = res.headers.get('content-type') || '';
       availability = res.ok && type.includes('application/json');
@@ -99,5 +103,31 @@
     return result;
   }
 
-  window.WncSitegate = { isAvailable, getStatus, register, syncAndNotify };
+  /**
+   * 지정한 연·월의 근태일지를 sitegate에서 크롤링해 앱 데이터에 반영한다.
+   * 설정 화면의 '근태일지 크롤링' 버튼이 사용한다.
+   *
+   * 크롤링은 서버가 파일을 고쳐 쓰는 작업이라 수십 초가 걸릴 수 있어 타임아웃을 길게 둔다.
+   *
+   * @param {number} year
+   * @param {number} month 1~12
+   * @returns {Promise<{skipped?:boolean, ok:boolean, message?:string}>}
+   */
+  async function syncDailyReports(year, month) {
+    if (!(await isAvailable())) {
+      return { skipped: true, ok: false, message: '크롤링 중계 서버가 없는 환경입니다. 로컬 개발 서버(npm start)에서만 동작합니다.' };
+    }
+    try {
+      const res = await withTimeout(fetch(SYNC_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ year, month, confirm: true })
+      }), SYNC_TIMEOUT_MS);
+      return await res.json();
+    } catch (err) {
+      return { ok: false, message: err.message };
+    }
+  }
+
+  window.WncSitegate = { isAvailable, getStatus, register, syncAndNotify, syncDailyReports };
 })();
