@@ -1809,6 +1809,7 @@ const App = {
     } else if (targetId === 'screen-request') {
       this.switchRequestType(this.state.currentRequestType || 'leave');
       this.fillRequestDefaultDates();
+      this.renderLeaveStats();
     } else if (targetId === 'screen-home' || targetId === 'screen-today') {
       this.renderTodayData();
     }
@@ -1965,10 +1966,10 @@ const App = {
 
     // Leave & Absence Section
     const leaveDaysEl = document.getElementById('today-summary-leave-days');
-    const bentoRemainEl = document.getElementById('bento-remain-days');
     if (leaveDaysEl) {
-      const remainText = bentoRemainEl ? bentoRemainEl.innerText.trim() : '12일';
-      leaveDaysEl.innerHTML = `${remainText.replace('일', '')} <span class="text-xs font-medium text-on-surface-variant">일</span>`;
+      const sum = this.getMyLeaveSummary();
+      const remain = sum && sum.remaining !== null && sum.remaining !== undefined ? String(Number(Number(sum.remaining).toFixed(2))) : '-';
+      leaveDaysEl.innerHTML = `${remain} <span class="text-xs font-medium text-on-surface-variant">일</span>`;
     }
 
     const upcomingLeaveEl = document.getElementById('today-summary-upcoming-leave');
@@ -2347,6 +2348,28 @@ const App = {
       // 최근 신청 이력은 미래 일정이 섞여 있어도 날짜 내림차순 그대로 보여준다.
       recent: (me.items || []).slice(0, 2)
     };
+  },
+
+  /**
+   * 휴가 관련 화면(투데이 위젯, 휴가 신청 페이지, 신청 모달)의
+   * 잔여/총부여/사용 숫자를 크롤링된 실데이터로 일괄 채운다.
+   * 데이터가 없으면 '-'로 두어 임의의 값이 보이지 않게 한다.
+   */
+  renderLeaveStats() {
+    const s = this.getMyLeaveSummary();
+    const fmt = (v) => (v === null || v === undefined ? '-' : String(Number(Number(v).toFixed(2))));
+    const set = (id, v, suffix) => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = suffix ? `${fmt(v)}${suffix}` : fmt(v);
+    };
+    // 휴가 신청 페이지
+    set('bento-remain-days-page', s && s.remaining);
+    set('bento-total-days-page', s && s.total, '일');
+    set('bento-used-days-page', s && s.used, '일');
+    // 휴가 신청 모달
+    set('bento-remain-days', s && s.remaining);
+    set('bento-total-days', s && s.total, '일');
+    set('bento-used-days', s && s.used, '일');
   },
 
   /**
@@ -5504,6 +5527,7 @@ const App = {
   openRequestModal(defaultType = 'leave') {
     this.switchRequestType(defaultType);
     this.fillRequestDefaultDates();
+    this.renderLeaveStats();
     this.calculateLeaveDays();
     this.switchTab('screen-request');
   },

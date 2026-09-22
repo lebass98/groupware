@@ -6525,6 +6525,14 @@ const PCApp = {
   renderRequestView() {
     this.switchRequestTab(this.state.requestTab || 'leave');
 
+    // 내 연차 보유 현황을 크롤링된 실데이터로 채운다(하드코딩 9.0/26.0/35.0 제거).
+    const sum = this.getMyLeaveSummary();
+    const fmt = (v) => (v === null || v === undefined ? '-' : String(Number(Number(v).toFixed(2))));
+    const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.innerText = fmt(v); };
+    setTxt('pc-req-leave-remain', sum && sum.remaining);
+    setTxt('pc-req-leave-used', sum && sum.used);
+    setTxt('pc-req-leave-total', sum && sum.total);
+
     const now = new Date();
     const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     const startEl = document.getElementById('pc-req-leave-start');
