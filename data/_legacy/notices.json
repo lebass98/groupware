@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1,
+    "title": "2024년 하반기 워크샵 일정 안내",
+    "category": "인사",
+    "date": "2024.10.24",
+    "isPinned": true,
+    "isNew": true,
+    "author": "경영지원팀 오은주 차장",
+    "summary": "2024년 하반기 워크샵 일정을 아래와 같이 안내합니다.",
+    "content": "<p class=\"mb-3\">안녕하십니까, 임직원 여러분.</p><p class=\"mb-3\">2024년도 하반기 워크샵 일정을 아래와 같이 안내드리오니, 부서별 일정을 확인하시어 준비해 주시기 바랍니다. 소통과 단합을 위한 다양하고 유익한 프로그램이 준비되어 있습니다.</p><div class=\"bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary\"><h3 class=\"font-headline font-bold text-primary mb-2 text-sm\">워크샵 주요 일정</h3><ul class=\"list-disc list-inside space-y-1.5 text-xs text-on-surface-variant\"><li><strong>일시:</strong> 2024년 11월 14일(목) ~ 11월 15일(금) [1박 2일]</li><li><strong>장소:</strong> 강원도 속초 리조트 메인 홀</li><li><strong>참석 대상:</strong> 전 임직원</li><li><strong>집결:</strong> 사옥 전면 주차장 08:30 대형버스 탑승</li></ul></div><p>상세 안내 자료 및 세부 편성표는 첨부파일을 확인해 주시기 바랍니다. 문의사항은 인사팀으로 연락 부탁드립니다.</p>",
+    "fileName": "2024_하반기_워크샵_세부안내.pdf",
+    "fileSize": "3.8 MB"
+  },
+  {
+    "id": 2,
+    "title": "임직원 건강검진 제휴 병원 추가 안내",
+    "category": "복지",
+    "date": "2024.10.22",
+    "isPinned": false,
+    "isNew": true,
+    "author": "경영지원팀 오은주 차장",
+    "summary": "2024년 임직원 종합 건강검진 신규 제휴 병원이 추가되었습니다.",
+    "content": "<p class=\"mb-3\">안녕하세요, 경영지원팀입니다.</p><p class=\"mb-3\">임직원분들의 편의 증진을 위해 2024년도 종합 건강검진 지정 제휴 병원을 추가 지정하였습니다.</p><div class=\"bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary\"><h3 class=\"font-headline font-bold text-primary mb-2 text-sm\">신규 제휴 병원 안내</h3><ul class=\"list-disc list-inside space-y-1.5 text-xs text-on-surface-variant\"><li>강남 세브란스 검진센터 (서울)</li><li>분당 서울대병원 건강증진센터 (경기)</li><li>예약 방법: 사내 복지 포털 로그인 후 온라인 신청</li></ul></div>",
+    "fileName": "2024_건강검진_제휴병원_목록.pdf",
+    "fileSize": "1.2 MB"
+  },
+  {
+    "id": 3,
+    "title": "사내 네트워크 정기 점검에 따른 서비스 일시 중단",
+    "category": "시스템",
+    "date": "2024.10.20",
+    "isPinned": false,
+    "isNew": false,
+    "author": "개발팀 최우석 과장",
+    "summary": "사내 서버 네트워크 인프라 정기 점검이 진행될 예정입니다.",
+    "content": "<p class=\"mb-3\">안녕하세요, 개발팀입니다.</p><p class=\"mb-3\">안정적인 사내 그룹웨어 서비스 제공을 위한 정기 네트워크 점검 작업이 진행됩니다.</p><div class=\"bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary\"><h3 class=\"font-headline font-bold text-primary mb-2 text-sm\">작업 일시 및 영향</h3><ul class=\"list-disc list-inside space-y-1.5 text-xs text-on-surface-variant\"><li><strong>점검 시간:</strong> 2024년 10월 27일(일) 02:00 ~ 06:00 (4시간)</li><li><strong>영향 범위:</strong> 그룹웨어, 전자결재, 출퇴근 관리 서비스 접근 불가</li></ul></div>",
+    "fileName": "네트워크_점검_안내.pdf",
+    "fileSize": "850 KB"
+  },
+  {
+    "id": 4,
+    "title": "10월 우수 사원 포상 결과 발표",
+    "category": "인사",
+    "date": "2024.10.15",
+    "isPinned": false,
+    "isNew": false,
+    "author": "경영지원팀 김경현 대표",
+    "summary": "10월 이달의 우수 사원 수상자를 발표합니다.",
+    "content": "<p class=\"mb-3\">축하합니다!</p><p class=\"mb-3\">10월 한 달간 뛰어난 성과와 헌신을 보여준 이달의 우수 사원 수상자를 발표합니다.</p><p class=\"text-xs text-on-surface-variant\">수상자 분들께는 개별 소정의 포상금과 수당이 지급됩니다.</p>",
+    "fileName": "10월_우수사원_수상자_명단.pdf",
+    "fileSize": "1.5 MB"
+  },
+  {
+    "id": 5,
+    "title": "사옥 주차장 이용 수칙 변경 안내",
+    "category": "공통",
+    "date": "2024.10.10",
+    "isPinned": false,
+    "isNew": false,
+    "author": "경영지원팀 오은주 차장",
+    "summary": "사옥 지하 주차장 등록 차량 주차 수칙 변경 사항입니다.",
+    "content": "<p class=\"mb-3\">안녕하세요, 경영지원팀입니다.</p><p class=\"mb-3\">사옥 주차 공간 효율화를 위해 주차등록 수칙이 일부 변경됩니다.</p>",
+    "fileName": "주차장_이용수칙_안내문.pdf",
+    "fileSize": "920 KB"
+  },
+  {
+    "id": 6,
+    "title": "2024년 연말 정산 안내",
+    "category": "인사",
+    "date": "2023.12.01",
+    "isPinned": false,
+    "isNew": false,
+    "author": "경영지원팀 오은주 차장",
+    "summary": "2024년도 귀속 연말정산 일정 및 관련 제출 서류 안내입니다.",
+    "content": "<p class=\"mb-3\">안녕하십니까, 임직원 여러분.</p><p class=\"mb-3\">2024년도 귀속 연말정산 일정을 아래와 같이 안내드리오니, 기한 내에 관련 서류를 제출하여 주시기 바랍니다. 올해부터 변경되는 세법 적용 사항이 있으니 첨부된 가이드라인을 반드시 확인해주시길 부탁드립니다.</p><div class=\"bg-surface-container rounded-2xl overflow-hidden p-5 my-5 border-l-[5px] border-primary\"><h3 class=\"font-headline font-semibold text-primary mb-2 text-sm\">주요 일정</h3><ul class=\"list-disc list-inside space-y-1.5 text-xs text-on-surface-variant\"><li>국세청 간소화 서비스 오픈: 2024.01.15</li><li>서류 제출 마감: 2024.01.31 (수) 18:00까지</li><li>예상 환급금 조회: 2024.02.15 이후</li></ul></div><p>기타 문의사항은 인사팀(내선 1234)으로 연락 주시기 바랍니다. 감사합니다.</p>",
+    "fileName": "2024_연말정산_가이드라인.pdf",
+    "fileSize": "2.4 MB"
+  }
+]
