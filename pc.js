@@ -1564,19 +1564,97 @@ const PCApp = {
             <button class="pc-card-action text-xs" onclick="PCApp.switchScreen('calendar')">전체보기</button>
           </div>
 
-          <div class="space-y-2.5">
-            ${selSchedules.length > 0 ? selSchedules.map(s => `
-                <div class="cursor-pointer" onclick="PCApp.switchScreen('calendar')" title="클릭하여 캘린더 전체 일정 보기">
-                  ${this.renderDateModalCard(s, this.getScheduleCategoryKey(s))}
-                </div>
-              `).join('') : `
-              <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl">
-                <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
-                </svg>
-                <p class="font-bold text-sm text-on-surface">${selMonth}월 ${selDay}일에 등록된 일정이 없습니다.</p>
-              </div>
-            `}
+          <div class="space-y-4">
+            ${(() => {
+              if (!selSchedules.length) {
+                return `
+                  <div class="p-6 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl">
+                    <svg class="w-8 h-8 text-on-surface-variant/40 mx-auto mb-1" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                    </svg>
+                    <p class="font-bold text-sm text-on-surface">${selMonth}월 ${selDay}일에 등록된 일정이 없습니다.</p>
+                  </div>
+                `;
+              }
+
+              // 그룹별 분류 (휴가/연차/반차, 외근/출장/미팅, 회의/보고, 공휴일/절기/기념일, 기타)
+              const groupDefs = [
+                {
+                  id: 'vacation',
+                  title: '휴가 · 연차',
+                  keys: ['휴가', '반차'],
+                  badgeClass: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20',
+                  dotClass: 'bg-emerald-600',
+                  icon: '<svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="currentColor"><path d="M13.13 14.56l1.41-1.41-.71-.71a4 4 0 0 0-5.66 0l-.71.71 1.41 1.41.71-.71c.78-.78 2.05-.78 2.83 0l.73.71zm-4.24-8.49l1.41-1.41.71.71c2.34 2.34 2.34 6.14 0 8.49l-.71.71-1.41-1.41.71-.71a4 4 0 0 0 0-5.66l-.71-.72zm11.31.71l-1.41-1.41-2.83 2.83-1.41-1.41 2.83-2.83-1.41-1.41-2.83 2.83-1.41-1.41 2.83-2.83L13.13.79c-.78-.78-2.05-.78-2.83 0L3.19 7.89c-3.12 3.12-3.12 8.19 0 11.31l1.41 1.41 15.56-15.56z"/></svg>'
+                },
+                {
+                  id: 'outwork',
+                  title: '외근 · 미팅',
+                  keys: ['외근'],
+                  badgeClass: 'bg-primary/10 text-primary border border-primary/20',
+                  dotClass: 'bg-primary',
+                  icon: '<svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>'
+                },
+                {
+                  id: 'meeting',
+                  title: '회의 · 보고',
+                  keys: ['회의'],
+                  badgeClass: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/20',
+                  dotClass: 'bg-purple-600',
+                  icon: '<svg class="w-4 h-4 text-purple-600 dark:text-purple-300" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>'
+                },
+                {
+                  id: 'holiday',
+                  title: '공휴일 · 기념일',
+                  keys: ['공휴일', '절기', '기념일'],
+                  badgeClass: 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20',
+                  dotClass: 'bg-rose-600',
+                  icon: '<svg class="w-4 h-4 text-rose-600 dark:text-rose-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'
+                },
+                {
+                  id: 'other',
+                  title: '기타 사내 일정',
+                  keys: ['기타'],
+                  badgeClass: 'bg-surface-container-high text-on-surface-variant border border-outline/30',
+                  dotClass: 'bg-outline',
+                  icon: '<svg class="w-4 h-4 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>'
+                }
+              ];
+
+              const groupedMap = {};
+              groupDefs.forEach(g => { groupedMap[g.id] = []; });
+
+              selSchedules.forEach(s => {
+                const catKey = this.getScheduleCategoryKey(s);
+                const matchedGroup = groupDefs.find(g => g.keys.includes(catKey)) || groupDefs[groupDefs.length - 1];
+                groupedMap[matchedGroup.id].push({ schedule: s, catKey });
+              });
+
+              return groupDefs.filter(g => groupedMap[g.id].length > 0).map(g => {
+                const items = groupedMap[g.id];
+                return `
+                  <div class="rounded-xl border border-outline/40 bg-surface-container-low/40 p-3">
+                    <!-- 그룹 헤더 -->
+                    <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-outline/30">
+                      <div class="flex items-center gap-2">
+                        ${g.icon}
+                        <h4 class="text-xs font-bold text-on-surface">${g.title}</h4>
+                      </div>
+                      <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${g.badgeClass}">${items.length}건</span>
+                    </div>
+
+                    <!-- 그룹 내 일정 목록 -->
+                    <div class="space-y-2">
+                      ${items.map(({ schedule: s, catKey }) => `
+                        <div class="cursor-pointer" onclick="PCApp.switchScreen('calendar')" title="클릭하여 캘린더 전체 일정 보기">
+                          ${this.renderDateModalCard(s, catKey)}
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                `;
+              }).join('');
+            })()}
           </div>
         </div>
       </div>

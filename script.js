@@ -2513,16 +2513,89 @@ const App = {
             <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-calendar')">전체보기</button>
           </div>
 
-          <div class="space-y-2.5">
-            ${selSchedules.length > 0 ? selSchedules.map(s => `
-                <div class="cursor-pointer" onclick="App.switchTab('screen-calendar')" title="클릭하여 캘린더 전체 일정 보기">
-                  ${this.renderScheduleCardItem(s)}
-                </div>
-              `).join('') : `
-              <div class="p-5 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl">
-                <p class="font-bold text-xs text-on-surface">${selMonth}월 ${selDay}일에 등록된 일정이 없습니다.</p>
-              </div>
-            `}
+          <div class="space-y-3.5">
+            ${(() => {
+              if (!selSchedules.length) {
+                return `
+                  <div class="p-5 text-center text-on-surface-variant font-medium bg-surface-container-low rounded-2xl">
+                    <p class="font-bold text-xs text-on-surface">${selMonth}월 ${selDay}일에 등록된 일정이 없습니다.</p>
+                  </div>
+                `;
+              }
+
+              // 그룹별 분류 (휴가/연차/반차, 외근/출장/미팅, 회의/보고, 공휴일/절기/기념일, 기타)
+              const groupDefs = [
+                {
+                  id: 'vacation',
+                  title: '휴가 · 연차',
+                  keys: ['휴가', '반차'],
+                  badgeClass: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20',
+                  icon: getSvgIcon('beach_access', 'w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400')
+                },
+                {
+                  id: 'outwork',
+                  title: '외근 · 미팅',
+                  keys: ['외근'],
+                  badgeClass: 'bg-primary/10 text-primary border border-primary/20',
+                  icon: getSvgIcon('business_center', 'w-3.5 h-3.5 text-primary')
+                },
+                {
+                  id: 'meeting',
+                  title: '회의 · 보고',
+                  keys: ['회의'],
+                  badgeClass: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/20',
+                  icon: getSvgIcon('groups', 'w-3.5 h-3.5 text-purple-600 dark:text-purple-300')
+                },
+                {
+                  id: 'holiday',
+                  title: '공휴일 · 기념일',
+                  keys: ['공휴일', '절기', '기념일'],
+                  badgeClass: 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20',
+                  icon: getSvgIcon('celebration', 'w-3.5 h-3.5 text-rose-600 dark:text-rose-400')
+                },
+                {
+                  id: 'other',
+                  title: '기타 사내 일정',
+                  keys: ['기타'],
+                  badgeClass: 'bg-surface-container-high text-on-surface-variant border border-outline-variant/20',
+                  icon: getSvgIcon('event', 'w-3.5 h-3.5 text-on-surface-variant')
+                }
+              ];
+
+              const groupedMap = {};
+              groupDefs.forEach(g => { groupedMap[g.id] = []; });
+
+              selSchedules.forEach(s => {
+                const catKey = this.getScheduleCategoryKey(s);
+                const matchedGroup = groupDefs.find(g => g.keys.includes(catKey)) || groupDefs[groupDefs.length - 1];
+                groupedMap[matchedGroup.id].push(s);
+              });
+
+              return groupDefs.filter(g => groupedMap[g.id].length > 0).map(g => {
+                const items = groupedMap[g.id];
+                return `
+                  <div class="rounded-2xl border border-outline-variant/15 bg-surface-container-low/35 p-3">
+                    <!-- 그룹 헤더 -->
+                    <div class="flex items-center justify-between pb-2 mb-2 border-b border-outline-variant/10">
+                      <div class="flex items-center gap-1.5">
+                        ${g.icon}
+                        <h4 class="text-xs font-bold text-on-surface">${g.title}</h4>
+                      </div>
+                      <span class="px-2 py-0.2 rounded-full text-[10px] font-bold ${g.badgeClass}">${items.length}건</span>
+                    </div>
+
+                    <!-- 그룹 내 일정 목록 -->
+                    <div class="space-y-2">
+                      ${items.map(s => `
+                        <div class="cursor-pointer active:scale-[0.99] transition-transform" onclick="App.switchTab('screen-calendar')" title="클릭하여 캘린더 전체 일정 보기">
+                          ${this.renderScheduleCardItem(s)}
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                `;
+              }).join('');
+            })()}
           </div>
         </div>
       </div>
