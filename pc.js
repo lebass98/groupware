@@ -34,8 +34,7 @@ const PCApp = {
       const first = logs[0];
       const now = new Date();
       if (first && Number(String(first.monthStr).replace('월', '')) === (now.getMonth() + 1) && Number(first.dayNum) === now.getDate()) {
-        const m = (first.checkInTimeStr || '').match(/(\d{1,2}:\d{2})/);
-        return m ? m[1] : '--:--';
+        return window.shortTime(first.checkInTimeStr);
       }
       return '--:--';
     })(),
@@ -45,8 +44,7 @@ const PCApp = {
       const now = new Date();
       if (first && Number(String(first.monthStr).replace('월', '')) === (now.getMonth() + 1) && Number(first.dayNum) === now.getDate()) {
         if (first.checkOutTimeStr && first.checkOutTimeStr !== '-') {
-          const m = first.checkOutTimeStr.match(/(\d{1,2}:\d{2})/);
-          return m ? m[1] : first.checkOutTimeStr;
+          return window.shortTime(first.checkOutTimeStr);
         }
       }
       return '--:--';
@@ -203,6 +201,27 @@ const PCApp = {
     else if (this.state.activeScreen === 'project') this.renderProjectView();
   },
 
+  /**
+   * 출퇴근 로그를 마스터(MockData = 크롤링 결과) 기준으로 병합한다.
+   * 같은 날짜가 양쪽에 있으면 마스터를 우선하고, 마스터에 없는 로컬 기록만 보존한다.
+   * (모바일 script.js 의 동명 함수와 동일한 규칙)
+   */
+  mergeAttendanceLogs(savedLogs) {
+    const master = (window.MockData && window.MockData.attendance && window.MockData.attendance.logs)
+      ? JSON.parse(JSON.stringify(window.MockData.attendance.logs))
+      : [];
+    if (!Array.isArray(savedLogs) || !savedLogs.length) return master.length ? master : (this.state.logs || []);
+    if (!master.length) return savedLogs;
+
+    const keyOf = (l) => `${String(l.monthStr).replace('월', '')}-${l.dayNum}`;
+    const masterKeys = new Set(master.map(keyOf));
+    const localOnly = savedLogs.filter((l) => !masterKeys.has(keyOf(l)));
+
+    return master.concat(localOnly)
+      .sort((a, b) => (parseInt(b.monthStr, 10) - parseInt(a.monthStr, 10)) || (Number(b.dayNum) - Number(a.dayNum)))
+      .map((l, i) => ({ ...l, id: i + 1 }));
+  },
+
   loadState() {
     try {
       const saved = localStorage.getItem('wordncode_groupware_state');
@@ -212,22 +231,17 @@ const PCApp = {
           this.state.isCheckedIn = parsed.isCheckedIn;
         }
         if (parsed.checkInTimeStr) {
-          const match = parsed.checkInTimeStr.match(/(\d{1,2}:\d{2})/);
-          this.state.checkInTime = match ? match[1] : parsed.checkInTimeStr;
+          // 공용 헬퍼로 24시간제 변환('오후 06:00' → 18:00). 모바일과 같은 값이 보이게 한다.
+          this.state.checkInTime = window.shortTime(parsed.checkInTimeStr);
         } else if (parsed.checkInTime) {
           const d = new Date(parsed.checkInTime);
           if (!isNaN(d.getTime())) {
             this.state.checkInTime = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
           }
         }
-        if (parsed.logs && Array.isArray(parsed.logs) && parsed.logs.length > 0) {
-          const hasOldMock = parsed.logs.some(l => l.monthStr === '10월' && Number(l.dayNum) > 15);
-          if (hasOldMock && window.MockData && window.MockData.attendance && window.MockData.attendance.logs) {
-            this.state.logs = JSON.parse(JSON.stringify(window.MockData.attendance.logs));
-          } else {
-            this.state.logs = parsed.logs;
-          }
-        }
+        // 출퇴근 로그의 원본은 언제나 크롤링 결과(MockData)다. 저장된 옛 로그가 이를 덮어쓰면
+        // 새로 크롤링된 오늘 기록을 못 읽어 모바일과 출근 시간이 갈린다. 마스터 우선으로 병합한다.
+        this.state.logs = this.mergeAttendanceLogs(parsed.logs);
 
         // 오늘 날짜 출퇴근 기록이 logs에 존재할 경우 실시간 출근시간/퇴근시간 동기화
         const now = new Date();
@@ -237,15 +251,11 @@ const PCApp = {
           return Number(String(l.monthStr).replace('월', '')) === curM && Number(l.dayNum) === curD;
         });
         if (todayLog && todayLog.checkInTimeStr && todayLog.checkInTimeStr !== '-') {
-          const inM = todayLog.checkInTimeStr.match(/(\d{1,2}:\d{2})/);
-          if (inM) {
-            this.state.checkInTime = inM[1];
-            this.state.checkInTimeStr = todayLog.checkInTimeStr;
-            this.state.isCheckedIn = true;
-          }
+          this.state.checkInTime = window.shortTime(todayLog.checkInTimeStr);
+          this.state.checkInTimeStr = todayLog.checkInTimeStr;
+          this.state.isCheckedIn = true;
           if (todayLog.checkOutTimeStr && todayLog.checkOutTimeStr !== '-') {
-            const outM = todayLog.checkOutTimeStr.match(/(\d{1,2}:\d{2})/);
-            this.state.checkOutTime = outM ? outM[1] : todayLog.checkOutTimeStr;
+            this.state.checkOutTime = window.shortTime(todayLog.checkOutTimeStr);
           } else {
             this.state.checkOutTime = '--:--';
           }
@@ -3044,8 +3054,8 @@ const PCApp = {
 
       return {
         date: `${l.monthStr || ''} ${l.dayNum || ''}일${dayShort ? ` (${dayShort})` : ''}`.trim(),
-        inTime: l.checkInTimeStr || '-',
-        outTime: l.checkOutTimeStr || '-',
+        inTime: l.checkInTimeStr ? window.shortTime(l.checkInTimeStr) : '-',
+        outTime: l.checkOutTimeStr ? window.shortTime(l.checkOutTimeStr) : '-',
         duration: hasSeparator ? statusText.split('•').slice(1).join('•').trim() : fallbackDuration,
         status: hasSeparator ? statusText.split('•')[0].trim() : (statusText || '기록'),
         statusType: l.statusType || 'normal'

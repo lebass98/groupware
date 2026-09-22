@@ -864,9 +864,9 @@ const App = {
       this.state.checkInTimeStr = this.formatCheckInTime(this.state.checkInTime);
       this.startWorkTimer();
       if (geo.unverified) {
-        this.showToast(`🎉 출근 체크 완료! (${this.state.checkInTimeStr}) · 위치 미인증`);
+        this.showToast(`🎉 출근 체크 완료! (${window.shortTime(this.state.checkInTimeStr)}) · 위치 미인증`);
       } else {
-        this.showToast(`🎉 서울 금천구 벚꽃로 298 출근 체크 성공! (${this.state.checkInTimeStr})`);
+        this.showToast(`🎉 서울 금천구 벚꽃로 298 출근 체크 성공! (${window.shortTime(this.state.checkInTimeStr)})`);
       }
     } else {
       // EXECUTE CHECK OUT
@@ -1875,7 +1875,7 @@ const App = {
     const statusDot = document.getElementById('home-status-dot');
     if (statusTitle && statusBadge && statusDot) {
       if (this.state.isCheckedIn) {
-        statusTitle.innerText = `${this.state.checkInTimeStr || '--:--'} 출근 완료`;
+        statusTitle.innerText = `${window.shortTime(this.state.checkInTimeStr)} 출근 완료`;
         statusBadge.innerText = '근무 중';
         statusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary';
       } else {
@@ -2198,8 +2198,9 @@ const App = {
 
     const u = this.state.user || { name: '이재광', role: '팀장', dept: '퍼블리싱팀', avatar: 'profile.png', location: '서울 금천구 벚꽃로 298' };
     // 출근 기록이 없으면 임의의 시간을 지어내지 않는다(디바이스마다 다른 값이 보이는 원인이었다).
-    const checkInTime = this.state.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : '--:--');
-    const checkOutTime = this.state.checkOutTimeStr || '--:--';
+    // 숫자를 크게 보여주는 자리라 '오전/오후'를 붙이면 폭이 모자란다. 24시간제로 줄여 표시한다.
+    const checkInTime = window.shortTime(this.state.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : '--:--'));
+    const checkOutTime = window.shortTime(this.state.checkOutTimeStr || '--:--');
     const isCheckedIn = this.state.isCheckedIn;
 
     wrap.innerHTML = `
@@ -4932,7 +4933,7 @@ const App = {
     const pulseSubtext = document.getElementById('pulse-subtext');
 
     if (this.state.isCheckedIn) {
-      const timeStr = this.state.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : '--:--');
+      const timeStr = window.shortTime(this.state.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : '--:--'));
       if (homeStatusTitle) homeStatusTitle.innerText = `${timeStr} 출근 완료`;
       if (homeStatusBadge) homeStatusBadge.innerText = '근무 중';
       if (homeStatusDot) homeStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-secondary';
@@ -5088,11 +5089,11 @@ const App = {
         <div class="log-times">
           <div class="log-time-col">
             <span class="log-time-label">출근 시각</span>
-            <span class="log-time-val">${log.checkInTimeStr}</span>
+            <span class="log-time-val">${window.shortTime(log.checkInTimeStr)}</span>
           </div>
           <div class="log-time-col">
             <span class="log-time-label">퇴근 시각</span>
-            <span class="log-time-val">${log.checkOutTimeStr}</span>
+            <span class="log-time-val">${window.shortTime(log.checkOutTimeStr)}</span>
           </div>
         </div>
       </div>

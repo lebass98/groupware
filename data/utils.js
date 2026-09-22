@@ -45,9 +45,31 @@
     return escapeHtml(value).replace(/`/g, '&#96;');
   }
 
-  window.WncUtils = { escapeHtml, escapeAttr };
+  /**
+   * '오전 08:47' / '오후 06:00' 같은 시간 문자열을 24시간제 'HH:MM'으로 줄인다.
+   *
+   * 모바일 근태 위젯은 숫자를 크게 보여주는 자리라 '오전/오후'까지 넣으면 폭이 모자란다.
+   * 단순히 접두어만 떼면 '오후 06:00'이 '06:00'이 되어 아침과 구분되지 않으므로 24시간제로 바꾼다.
+   *
+   * @param {string} value 시간 문자열. '-' 이나 '--:--' 같은 값은 그대로 돌려준다.
+   * @returns {string} 'HH:MM'
+   */
+  function toShortTime(value) {
+    if (!value) return '--:--';
+    const str = String(value).trim();
+    const m = str.match(/(\d{1,2}):(\d{2})/);
+    if (!m) return str; // '승인 대기', '-' 처럼 시간이 아닌 값은 건드리지 않는다.
+
+    let hours = parseInt(m[1], 10);
+    if (str.includes('오후') && hours < 12) hours += 12;
+    if (str.includes('오전') && hours === 12) hours = 0;
+    return `${String(hours).padStart(2, '0')}:${m[2]}`;
+  }
+
+  window.WncUtils = { escapeHtml, escapeAttr, toShortTime };
 
   // 템플릿 안에서 짧게 쓰기 위한 전역 별칭.
   window.esc = escapeHtml;
+  window.shortTime = toShortTime;
   window.escAttr = escapeAttr;
 })();
