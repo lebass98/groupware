@@ -3221,13 +3221,147 @@ const PCApp = {
     this.showToast(`근무 상태가 [${status}] 로 변경되었습니다.`);
   },
 
+  /**
+   * 근태 기록 달력 (근태 & 출/퇴근 관리 화면)
+   *
+   * 목록만으로는 "이번 달에 언제 늦었는지, 어느 날이 비었는지"가 한눈에 안 들어온다.
+   * 같은 state.logs 데이터를 달력으로도 보여준다. 데이터 원본은 하나다.
+   * (모바일 script.js 의 동명 함수와 동일한 규칙. 화면 폭이 넓어 퇴근 시각까지 표시한다.)
+   */
+  renderAttendanceCalendar() {
+    const wrap = document.getElementById('pc-attend-calendar-card');
+    if (!wrap) return;
+
+    const now = new Date();
+    const year = this.state.attendCalYear || now.getFullYear();
+    const month = this.state.attendCalMonth || (now.getMonth() + 1);
+
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    const lastDate = new Date(year, month, 0).getDate();
+    const logMap = this.getAttendanceLogMap(year, month);
+
+    let workedDays = 0;
+    let lateDays = 0;
+    let totalSec = 0;
+    Object.values(logMap).forEach((l) => {
+      if (l.statusType === 'late') lateDays++;
+      if (l.checkInTimeStr && l.checkInTimeStr !== '-' && l.checkInTimeStr !== '승인 대기') workedDays++;
+      totalSec += Number(l.durationSec) || 0;
+    });
+
+    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+    let cells = '';
+    for (let i = 0; i < firstDay; i++) cells += '<div class="pc-attend-cal-cell empty"></div>';
+
+    for (let d = 1; d <= lastDate; d++) {
+      const log = logMap[d];
+      const dow = new Date(year, month - 1, d).getDay();
+      const isToday = (year === now.getFullYear() && month === now.getMonth() + 1 && d === now.getDate());
+      const isSelected = (this.state.attendSelectedDay === d);
+
+      const cls = ['pc-attend-cal-cell'];
+      if (dow === 0) cls.push('sun');
+      if (dow === 6) cls.push('sat');
+      if (isToday) cls.push('today');
+      if (isSelected) cls.push('selected');
+
+      const inText = (log && log.checkInTimeStr && log.checkInTimeStr !== '-')
+        ? (log.checkInTimeStr === '승인 대기' ? '휴가' : window.shortTime(log.checkInTimeStr))
+        : '';
+      const outText = (log && log.checkOutTimeStr && log.checkOutTimeStr !== '-')
+        ? window.shortTime(log.checkOutTimeStr)
+        : '';
+      const dotType = log ? (log.statusType === 'remote' ? 'leave' : (log.statusType || 'normal')) : '';
+
+      cells += `
+        <div class="${cls.join(' ')}" onclick="PCApp.selectAttendanceDay(${d})">
+          <span class="pc-attend-cal-day">${d}</span>
+          ${inText ? `<span class="pc-attend-cal-time">${esc(inText)}</span>` : ''}
+          ${outText ? `<span class="pc-attend-cal-out">${esc(outText)}</span>` : ''}
+          ${dotType ? `<span class="pc-attend-cal-dot ${dotType}"></span>` : ''}
+        </div>`;
+    }
+
+    wrap.innerHTML = `
+      <div class="pc-attend-cal-head">
+        <h3 class="font-bold text-xl text-on-surface">${year}년 ${month}월 근태 달력</h3>
+        <div class="pc-attend-cal-nav">
+          <button type="button" onclick="PCApp.moveAttendanceMonth(-1)" title="이전 달">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <button type="button" onclick="PCApp.moveAttendanceMonth(1)" title="다음 달">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="pc-attend-cal-weekdays">${weekdays.map((w) => `<span>${w}</span>`).join('')}</div>
+      <div class="pc-attend-cal-grid">${cells}</div>
+
+      <div class="pc-attend-cal-legend">
+        <span><i class="pc-attend-cal-dot normal"></i>정상 ${workedDays - lateDays}일</span>
+        <span><i class="pc-attend-cal-dot late"></i>지각 ${lateDays}일</span>
+        <span><i class="pc-attend-cal-dot leave"></i>휴가·외근</span>
+        <span>누적 근무 ${Math.floor(totalSec / 3600)}시간</span>
+        ${this.state.attendSelectedDay
+          ? `<span style="margin-left:auto"><a href="javascript:void(0)" onclick="PCApp.selectAttendanceDay(null)" class="text-primary font-bold">전체 보기</a></span>`
+          : ''}
+      </div>
+    `;
+  },
+
+  /** 해당 연·월의 근태 로그를 일자(day) 기준 맵으로 만든다. */
+  getAttendanceLogMap(year, month) {
+    const map = {};
+    (this.state.logs || []).forEach((l) => {
+      const m = Number(String(l.monthStr).replace('월', ''));
+      const d = Number(l.dayNum);
+      if (m !== month || !d) return;
+      if (!map[d]) map[d] = l;
+    });
+    return map;
+  },
+
+  moveAttendanceMonth(delta) {
+    const now = new Date();
+    let year = this.state.attendCalYear || now.getFullYear();
+    let month = (this.state.attendCalMonth || (now.getMonth() + 1)) + delta;
+    if (month < 1) { month = 12; year--; }
+    if (month > 12) { month = 1; year++; }
+    this.state.attendCalYear = year;
+    this.state.attendCalMonth = month;
+    this.state.attendSelectedDay = null;
+    this.renderCheckinView();
+  },
+
+  /** 달력에서 일자를 선택하면 아래 표를 그 날짜 기록으로 좁힌다. 같은 날을 다시 누르면 해제된다. */
+  selectAttendanceDay(day) {
+    this.state.attendSelectedDay = (this.state.attendSelectedDay === day) ? null : day;
+    this.renderCheckinView();
+  },
+
   renderCheckinView() {
+    this.renderAttendanceCalendar();
+
     const tbody = document.getElementById('pc-checkin-tbody');
     if (!tbody) return;
 
     // 공용 근태 로그(state.logs)를 그대로 사용한다.
     // 화면 안에 별도 배열을 하드코딩하면 모바일과 데이터가 갈라지므로 금지한다.
-    const logs = (this.state.logs || []).map(l => {
+    let source = this.state.logs || [];
+
+    // 달력에서 특정 일자를 선택했으면 그 날짜 기록만 보여준다.
+    const selectedDay = this.state.attendSelectedDay;
+    const selectedMonth = this.state.attendCalMonth || (new Date().getMonth() + 1);
+    if (selectedDay) {
+      source = source.filter((l) =>
+        Number(String(l.monthStr).replace('월', '')) === selectedMonth && Number(l.dayNum) === selectedDay);
+    }
+
+    const scopeEl = document.getElementById('pc-checkin-log-scope');
+    if (scopeEl) scopeEl.innerText = selectedDay ? `${selectedMonth}월 ${selectedDay}일 기록` : '전체 기록';
+
+    const logs = source.map(l => {
       const dayShort = String(l.dayName || '').replace('요일', '');
       const secs = Number(l.durationSec) || 0;
       const fallbackDuration = secs ? `${Math.floor(secs / 3600)}시간 ${Math.floor((secs % 3600) / 60)}분` : '-';
@@ -5751,6 +5885,23 @@ const PCApp = {
     this.onLeaveTypeChange(checkedRadio ? checkedRadio.value : '연차');
   },
 
+  /**
+   * 시작일~종료일 사이의 모든 날짜를 일정 키(YYYY-M-D) 배열로 돌려준다.
+   * (모바일 script.js 의 동명 함수와 동일한 규칙)
+   */
+  eachDateKey(startStr, endStr) {
+    const keys = [];
+    const start = new Date(startStr);
+    const end = new Date(endStr || startStr);
+    if (isNaN(start.getTime())) return keys;
+    if (isNaN(end.getTime()) || end < start) return [`${start.getFullYear()}-${start.getMonth() + 1}-${start.getDate()}`];
+
+    for (let d = new Date(start), i = 0; d <= end && i < 90; d.setDate(d.getDate() + 1), i++) {
+      keys.push(`${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`);
+    }
+    return keys;
+  },
+
   submitLeaveForm() {
     const selectedRadio = document.querySelector('input[name="pc_leave_type"]:checked');
     const leaveType = selectedRadio ? selectedRadio.value : '연차';
@@ -5783,17 +5934,27 @@ const PCApp = {
       toastMessage = `[신청 완료] ${startDate} 반차(오후) 0.5일 신청서가 정상 접수되었습니다.`;
     }
 
+    if (endDate && endDate < startDate) {
+      alert('종료 일자가 시작 일자보다 빠릅니다.');
+      return;
+    }
+
     // 공용 상태에 저장 (LocalStorage 및 Firebase 동기화 경로를 그대로 사용)
+    // 종료일까지의 모든 날짜에 등록한다. 예전에는 시작일 하루만 등록돼 기간 휴가가 하루로 보였다.
     const leaveUser = this.state.user || {};
-    this.addUserSchedule(startDate, {
-      title: scheduleTitle,
-      time: timeStr,
-      type: 'warning',
-      badge: leaveType,
-      author: `${leaveUser.name || '이재광'} ${leaveUser.role || '팀장'}`.trim(),
-      avatar: leaveUser.avatar || 'profile.png'
+    const leaveDays = this.eachDateKey(startDate, endDate);
+    leaveDays.forEach((key) => {
+      this.addUserSchedule(key, {
+        title: scheduleTitle,
+        time: timeStr,
+        type: 'warning',
+        badge: leaveType,
+        author: `${leaveUser.name || '이재광'} ${leaveUser.role || '팀장'}`.trim(),
+        avatar: leaveUser.avatar || 'profile.png'
+      });
     });
 
+    if (leaveDays.length > 1) toastMessage += ` (${leaveDays.length}일 일정 등록)`;
     this.showToast(toastMessage);
     this.renderLeftCol();
     this.renderCompanyScheduleWidget();

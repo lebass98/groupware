@@ -2097,3 +2097,131 @@ svg.w-8 {
   z-index: 10;
   pointer-events: none;
 }
+/* =========================================================
+   근태 기록 달력 (근태 & 출/퇴근 관리 화면)
+   월별 출퇴근 현황을 한눈에 보여준다. 모바일 출석 기록 탭과 동일한 규칙.
+   ========================================================= */
+.pc-attend-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.pc-attend-cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pc-attend-cal-nav button {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.6rem;
+  color: var(--on-surface-variant);
+  background: transparent;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.pc-attend-cal-nav button:hover {
+  background: var(--surface-container-high);
+  color: var(--on-surface);
+}
+
+.pc-attend-cal-weekdays,
+.pc-attend-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.pc-attend-cal-weekdays {
+  margin-bottom: 6px;
+}
+
+.pc-attend-cal-weekdays span {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+}
+
+.pc-attend-cal-weekdays span:first-child { color: #e11d48; }
+.pc-attend-cal-weekdays span:last-child { color: #2563eb; }
+
+.pc-attend-cal-cell {
+  min-height: 66px;
+  border-radius: 0.75rem;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: var(--surface-container-low);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.pc-attend-cal-cell:hover { background: var(--surface-container); }
+.pc-attend-cal-cell.empty { background: transparent; cursor: default; }
+.pc-attend-cal-cell.empty:hover { background: transparent; }
+.pc-attend-cal-cell.today { border-color: var(--primary); }
+.pc-attend-cal-cell.selected { background: color-mix(in srgb, var(--primary) 14%, transparent); border-color: var(--primary); }
+
+.pc-attend-cal-day {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.pc-attend-cal-cell.sun .pc-attend-cal-day { color: #e11d48; }
+.pc-attend-cal-cell.sat .pc-attend-cal-day { color: #2563eb; }
+
+.pc-attend-cal-time {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.pc-attend-cal-out {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  line-height: 1.2;
+}
+
+.pc-attend-cal-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: auto;
+}
+
+.pc-attend-cal-dot.normal { background: var(--secondary); }
+.pc-attend-cal-dot.late { background: #f59e0b; }
+.pc-attend-cal-dot.remote { background: var(--primary); }
+.pc-attend-cal-dot.leave { background: #a855f7; }
+
+.pc-attend-cal-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--outline);
+}
+
+.pc-attend-cal-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+}

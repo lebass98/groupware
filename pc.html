@@ -112,7 +112,7 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 
   <!-- Core Stylesheet -->
-  <link rel="stylesheet" href="./pc.css?v=20260901_pretendard" />
+  <link rel="stylesheet" href="./pc.css?v=20260922_attend_cal" />
 </head>
 <body class="bg-surface text-on-surface">
   
@@ -480,11 +480,16 @@
               </div>
             </div>
           </div>
-          <div class="lg:col-span-2">
+          <div class="lg:col-span-2 flex flex-col gap-6">
+            <!-- 근태 기록 달력: 목록만으로는 월 전체 흐름이 안 보여 달력으로도 보여준다 -->
+            <div class="pc-bento-card" id="pc-attend-calendar-card">
+              <!-- PCApp.renderAttendanceCalendar() 가 채운다 -->
+            </div>
+
             <div class="pc-bento-card">
               <div class="flex items-center justify-between mb-4">
                 <h3 class="font-bold text-xl text-on-surface">출퇴근 기록 로그</h3>
-                <span class="text-base text-on-surface-variant font-medium">최근 5일간 기록</span>
+                <span class="text-base text-on-surface-variant font-medium" id="pc-checkin-log-scope">전체 기록</span>
               </div>
               <div class="overflow-x-auto">
                 <table class="w-full text-base text-left border-collapse" id="pc-checkin-table">
@@ -855,11 +860,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="block font-bold text-base text-on-surface mb-2">시작 일자</label>
-                    <input type="date" id="pc-req-leave-start" value="2026-08-25" onchange="PCApp.calculateLeaveDays()" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" />
+                    <input type="date" id="pc-req-leave-start" onchange="PCApp.calculateLeaveDays()" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" />
                   </div>
                   <div>
                     <label class="block font-bold text-base text-on-surface mb-2">종료 일자</label>
-                    <input type="date" id="pc-req-leave-end" value="2026-08-25" onchange="PCApp.calculateLeaveDays()" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" />
+                    <input type="date" id="pc-req-leave-end" onchange="PCApp.calculateLeaveDays()" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" />
                   </div>
                 </div>
 
@@ -890,7 +895,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block font-bold text-base text-on-surface mb-2">방문 일자</label>
-                <input type="date" id="pc-req-outwork-date" value="2026-08-25" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" />
+                <input type="date" id="pc-req-outwork-date" class="w-full p-3 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" />
               </div>
               <div>
                 <label class="block font-bold text-base text-on-surface mb-2">시간대 구분</label>
@@ -954,6 +959,6 @@
   <script src="./firebase/init.js?v=20260901_account_isolation"></script>
   <script src="./data/mockData.js?v=20260911_projects_370"></script>
   <!-- PC Core Controller -->
-  <script src="./pc.js?v=20260922_leaves"></script>
+  <script src="./pc.js?v=20260922_attend_cal"></script>
 </body>
 </html>

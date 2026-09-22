@@ -2044,3 +2044,147 @@ body.modal-open {
     max-height: 80vh;
   }
 }
+/* =========================================================
+   근태 기록 달력 (출/퇴근 관리 > 출석 기록 탭)
+   월별 출퇴근 현황을 한눈에 보여준다. 일자를 누르면 아래 목록이
+   그 날짜 기록으로 바뀐다(메인 캘린더 위젯과 같은 인터랙션 규칙).
+   ========================================================= */
+.attend-cal-card {
+  background: var(--surface-container-lowest);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-2xl);
+  padding: 1rem;
+  box-shadow: var(--shadow-2xs, 0 1px 2px rgba(0, 0, 0, 0.04));
+}
+
+body.dark .attend-cal-card {
+  background: var(--surface-container-lowest);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.attend-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.attend-cal-title {
+  font-family: var(--font-headline, inherit);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--on-surface);
+}
+
+.attend-cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.attend-cal-nav button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.6rem;
+  color: var(--on-surface-variant);
+  background: transparent;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.attend-cal-nav button:hover {
+  background: var(--surface-container-high);
+  color: var(--on-surface);
+}
+
+.attend-cal-weekdays,
+.attend-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.attend-cal-weekdays {
+  margin-bottom: 4px;
+}
+
+.attend-cal-weekdays span {
+  text-align: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+  padding: 2px 0;
+}
+
+.attend-cal-weekdays span:first-child { color: #e11d48; }
+.attend-cal-weekdays span:last-child { color: #2563eb; }
+
+.attend-cal-cell {
+  min-height: 46px;
+  border-radius: 0.6rem;
+  padding: 3px 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--surface-container-low);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+
+.attend-cal-cell:active { transform: scale(0.96); }
+.attend-cal-cell.empty { background: transparent; cursor: default; }
+.attend-cal-cell.today { border-color: var(--primary); }
+.attend-cal-cell.selected { background: color-mix(in srgb, var(--primary) 14%, transparent); border-color: var(--primary); }
+
+.attend-cal-day {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--on-surface);
+  line-height: 1.1;
+}
+
+.attend-cal-cell.sun .attend-cal-day { color: #e11d48; }
+.attend-cal-cell.sat .attend-cal-day { color: #2563eb; }
+
+.attend-cal-time {
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.attend-cal-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.attend-cal-dot.normal { background: var(--secondary); }
+.attend-cal-dot.late { background: #f59e0b; }
+.attend-cal-dot.remote { background: var(--primary); }
+.attend-cal-dot.leave { background: #a855f7; }
+
+.attend-cal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.7rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+body.dark .attend-cal-legend { border-top-color: rgba(255, 255, 255, 0.08); }
+
+.attend-cal-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+}

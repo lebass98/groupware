@@ -1807,6 +1807,7 @@ const App = {
       this.renderWorkReports();
     } else if (targetId === 'screen-request') {
       this.switchRequestType(this.state.currentRequestType || 'leave');
+      this.fillRequestDefaultDates();
     } else if (targetId === 'screen-home' || targetId === 'screen-today') {
       this.renderTodayData();
     }
@@ -1830,6 +1831,7 @@ const App = {
       logsBtn.className = activeBtnClass;
       checkinContent.classList.add('hidden');
       logsContent.classList.remove('hidden');
+      this.renderAttendanceCalendar();
       this.renderLogs();
     } else {
       checkinBtn.className = activeBtnClass;
@@ -2299,7 +2301,7 @@ const App = {
               </svg>
               연차
             </span>
-            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-leave')">신청</button>
+            <button type="button" class="font-label text-xs text-primary font-semibold hover:underline" onclick="App.switchTab('screen-request')">신청</button>
           </div>
 
           <div class="grid grid-cols-3 gap-2 mb-3">
@@ -5110,11 +5112,138 @@ const App = {
   },
 
   // Logs Rendering
+  /**
+   * 근태 기록 달력 (출/퇴근 관리 > 출석 기록 탭)
+   *
+   * 목록만으로는 "이번 달에 언제 늦었는지, 어느 날이 비었는지"가 한눈에 안 들어온다.
+   * 그래서 같은 state.logs 데이터를 달력 형태로도 보여준다. 데이터 원본은 하나다.
+   *
+   * 일자를 누르면 아래 목록이 그 날짜 기록만 보여준다(메인 캘린더 위젯과 같은 규칙).
+   */
+  renderAttendanceCalendar() {
+    const wrap = document.getElementById('attend-calendar-card');
+    if (!wrap) return;
+
+    const now = new Date();
+    const year = this.state.attendCalYear || now.getFullYear();
+    const month = this.state.attendCalMonth || (now.getMonth() + 1);
+
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    const lastDate = new Date(year, month, 0).getDate();
+    const logMap = this.getAttendanceLogMap(year, month);
+
+    let workedDays = 0;
+    let lateDays = 0;
+    let totalSec = 0;
+    Object.values(logMap).forEach((l) => {
+      if (l.statusType === 'late') lateDays++;
+      if (l.checkInTimeStr && l.checkInTimeStr !== '-' && l.checkInTimeStr !== '승인 대기') workedDays++;
+      totalSec += Number(l.durationSec) || 0;
+    });
+    const totalHours = Math.floor(totalSec / 3600);
+
+    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+    let cells = '';
+    for (let i = 0; i < firstDay; i++) cells += '<div class="attend-cal-cell empty"></div>';
+
+    for (let d = 1; d <= lastDate; d++) {
+      const log = logMap[d];
+      const dow = new Date(year, month - 1, d).getDay();
+      const isToday = (year === now.getFullYear() && month === now.getMonth() + 1 && d === now.getDate());
+      const isSelected = (this.state.attendSelectedDay === d);
+
+      const cls = ['attend-cal-cell'];
+      if (dow === 0) cls.push('sun');
+      if (dow === 6) cls.push('sat');
+      if (isToday) cls.push('today');
+      if (isSelected) cls.push('selected');
+
+      // 출근 시각과 상태 점만 표시한다. 칸이 좁아 그 이상은 오히려 읽기 어렵다.
+      const timeText = (log && log.checkInTimeStr && log.checkInTimeStr !== '-')
+        ? (log.checkInTimeStr === '승인 대기' ? '휴가' : window.shortTime(log.checkInTimeStr))
+        : '';
+      const dotType = log ? (log.statusType === 'remote' ? 'leave' : (log.statusType || 'normal')) : '';
+
+      cells += `
+        <div class="${cls.join(' ')}" onclick="App.selectAttendanceDay(${d})">
+          <span class="attend-cal-day">${d}</span>
+          ${timeText ? `<span class="attend-cal-time">${esc(timeText)}</span>` : ''}
+          ${dotType ? `<span class="attend-cal-dot ${dotType}"></span>` : ''}
+        </div>`;
+    }
+
+    wrap.innerHTML = `
+      <div class="attend-cal-head">
+        <span class="attend-cal-title">${year}년 ${month}월 근태</span>
+        <div class="attend-cal-nav">
+          <button type="button" onclick="App.moveAttendanceMonth(-1)" title="이전 달">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <button type="button" onclick="App.moveAttendanceMonth(1)" title="다음 달">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="attend-cal-weekdays">${weekdays.map((w) => `<span>${w}</span>`).join('')}</div>
+      <div class="attend-cal-grid">${cells}</div>
+
+      <div class="attend-cal-legend">
+        <span><i class="attend-cal-dot normal"></i>정상 ${workedDays - lateDays}일</span>
+        <span><i class="attend-cal-dot late"></i>지각 ${lateDays}일</span>
+        <span><i class="attend-cal-dot leave"></i>휴가·외근</span>
+        <span>· 누적 ${totalHours}시간</span>
+        ${this.state.attendSelectedDay ? `<span style="margin-left:auto"><a href="javascript:void(0)" onclick="App.selectAttendanceDay(null)" class="text-primary font-bold">전체 보기</a></span>` : ''}
+      </div>
+    `;
+  },
+
+  /** 해당 연·월의 근태 로그를 일자(day) 기준 맵으로 만든다. */
+  getAttendanceLogMap(year, month) {
+    const map = {};
+    (this.state.logs || []).forEach((l) => {
+      const m = Number(String(l.monthStr).replace('월', ''));
+      const d = Number(l.dayNum);
+      if (m !== month || !d) return;
+      // 로그에는 연도가 없다. 현재 보고 있는 달의 기록으로 간주한다(크롤링 범위가 3개월이라 충돌하지 않는다).
+      if (!map[d]) map[d] = l;
+    });
+    return map;
+  },
+
+  moveAttendanceMonth(delta) {
+    const now = new Date();
+    let year = this.state.attendCalYear || now.getFullYear();
+    let month = (this.state.attendCalMonth || (now.getMonth() + 1)) + delta;
+    if (month < 1) { month = 12; year--; }
+    if (month > 12) { month = 1; year++; }
+    this.state.attendCalYear = year;
+    this.state.attendCalMonth = month;
+    this.state.attendSelectedDay = null;
+    this.renderAttendanceCalendar();
+    this.renderLogs();
+  },
+
+  /** 달력에서 일자를 선택하면 아래 목록을 그 날짜 기록으로 좁힌다. 같은 날을 다시 누르면 해제된다. */
+  selectAttendanceDay(day) {
+    this.state.attendSelectedDay = (this.state.attendSelectedDay === day) ? null : day;
+    this.renderAttendanceCalendar();
+    this.renderLogs();
+  },
+
   renderLogs() {
     const container = document.getElementById('logs-list-container');
     if (!container) return;
 
     let filtered = [...this.state.logs];
+
+    // 달력에서 특정 일자를 선택했으면 그 날짜 기록만 보여준다.
+    if (this.state.attendSelectedDay) {
+      const month = this.state.attendCalMonth || (new Date().getMonth() + 1);
+      filtered = filtered.filter((l) =>
+        Number(String(l.monthStr).replace('월', '')) === month && Number(l.dayNum) === this.state.attendSelectedDay);
+    }
+
     if (this.state.currentFilter === 'week') {
       filtered = filtered.slice(0, 4);
     } else if (this.state.currentFilter === 'month') {
@@ -5176,8 +5305,19 @@ const App = {
   // Request Screen / Tab Handlers
   openRequestModal(defaultType = 'leave') {
     this.switchRequestType(defaultType);
+    this.fillRequestDefaultDates();
     this.calculateLeaveDays();
     this.switchTab('screen-request');
+  },
+
+  /** 신청 폼의 날짜를 오늘로 채운다(비어 있을 때만). 예전에는 지난 날짜가 하드코딩돼 있었다. */
+  fillRequestDefaultDates() {
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    ['leave-start-date', 'leave-end-date', 'outwork-date'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && !el.value) el.value = today;
+    });
   },
 
   closeRequestModal() {
@@ -5299,17 +5439,54 @@ const App = {
   },
 
   submitRequest() {
-    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value ||
-      document.querySelector('input[name="modal_leave_type"]:checked')?.value || '연차';
+    const selectedType = document.querySelector('input[name="leave_type"]:checked')?.value || '연차';
     const startDate = document.getElementById('leave-start-date')?.value || '';
-    const endDate = document.getElementById('leave-end-date')?.value || '';
-    const reason = document.getElementById('leave-reason-text')?.value || '개인 사유';
+    const endDate = document.getElementById('leave-end-date')?.value || startDate;
+    const reason = (document.getElementById('leave-reason-text')?.value || '').trim() || '개인 사유';
     const countText = document.getElementById('leave-days-count')?.innerText || '총 1일';
+
+    if (!startDate) {
+      this.showToast('⚠️ 휴가 시작 일자를 선택해 주세요.');
+      document.getElementById('leave-start-date')?.focus();
+      return;
+    }
+    if (endDate && endDate < startDate) {
+      this.showToast('⚠️ 종료 일자가 시작 일자보다 빠릅니다.');
+      return;
+    }
+
+    // 반차·반반차는 시간대가 정해져 있고, 연차는 종일이다. PC(submitLeaveForm)와 같은 규칙을 쓴다.
+    let timeStr = '종일';
+    let title = `${selectedType} (${reason})`;
+    if (selectedType === '반반차') {
+      const st = document.getElementById('page-leave-start-time')?.value || '09:00';
+      const et = document.getElementById('page-leave-end-time')?.value || '11:00';
+      timeStr = `${st} ~ ${et}`;
+      title = `반반차 [${st}~${et}]`;
+    } else if (selectedType === '반차(오전)') {
+      timeStr = '09:00 ~ 13:00';
+    } else if (selectedType === '반차(오후)') {
+      timeStr = '13:00 ~ 18:00';
+    }
+
+    // 캘린더에도 등록한다. 예전에는 근태 로그만 남겨 PC와 동작이 달랐다.
+    const user = this.state.user || {};
+    const author = `${user.name || '이재광'} ${user.role || '팀장'}`.trim();
+    const days = this.eachDateKey(startDate, endDate);
+    days.forEach((key) => {
+      this.addUserSchedule(key, {
+        title,
+        time: timeStr,
+        type: 'warning',
+        badge: selectedType,
+        author,
+        avatar: user.avatar || 'profile.png'
+      });
+    });
 
     const now = new Date();
     const daysArr = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-
-    const newLog = {
+    this.state.logs.unshift({
       id: Date.now(),
       monthStr: `${now.getMonth() + 1}월`,
       dayNum: String(now.getDate()),
@@ -5319,16 +5496,30 @@ const App = {
       checkInTimeStr: '승인 대기',
       checkOutTimeStr: '-',
       durationSec: 28800
-    };
+    });
 
-    this.state.logs.unshift(newLog);
     this.saveState();
-    this.closeRequestModal();
-    this.showToast(`✅ [${selectedType}] ${countText} 신청서가 성공적으로 제출되었습니다.`);
+    this.showToast(`✅ [${selectedType}] ${countText} 신청서가 접수되었습니다. (${days.length}일 일정 등록)`);
+    this.renderUI();
+    this.switchTab('screen-calendar');
+  },
 
-    if (this.state.activeTab === 'screen-logs') {
-      this.renderLogs();
+  /**
+   * 시작일~종료일 사이의 모든 날짜를 일정 키(YYYY-M-D) 배열로 돌려준다.
+   * 일정 키는 0을 채우지 않는 형식이라 date input 값(YYYY-MM-DD)을 그대로 쓸 수 없다.
+   */
+  eachDateKey(startStr, endStr) {
+    const keys = [];
+    const start = new Date(startStr);
+    const end = new Date(endStr || startStr);
+    if (isNaN(start.getTime())) return keys;
+    if (isNaN(end.getTime()) || end < start) return [`${start.getFullYear()}-${start.getMonth() + 1}-${start.getDate()}`];
+
+    // 장기 휴가를 잘못 입력해도 폭주하지 않도록 상한을 둔다.
+    for (let d = new Date(start), i = 0; d <= end && i < 90; d.setDate(d.getDate() + 1), i++) {
+      keys.push(`${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`);
     }
+    return keys;
   },
 
   submitOutworkRequest() {
