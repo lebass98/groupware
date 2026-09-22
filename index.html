@@ -1655,6 +1655,9 @@
           <button id="finance-tab-equipment" onclick="App.switchFinanceTab('equipment')" class="flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center">
             비품·자산
           </button>
+          <button id="finance-tab-record" onclick="App.switchFinanceTab('record')" class="flex-1 py-2.5 px-4 rounded-[0.875rem] text-sm font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center">
+            경비 내역
+          </button>
         </div>
 
         <!-- ==================== TAB 1: EXPENSE CONTENT ==================== -->
@@ -1871,6 +1874,16 @@
           <div class="grid grid-cols-3 gap-2.5" id="equipment-summary"></div>
           <!-- 목록 -->
           <div class="flex flex-col gap-3" id="equipment-list-container"></div>
+        </div>
+
+        <!-- ==================== TAB 4: EXPENSE RECORDS (경비 내역 실데이터) ==================== -->
+        <div id="finance-record-content" class="space-y-5 hidden">
+          <div class="relative">
+            <svg class="w-4.5 h-4.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="record-search" oninput="App.renderExpenseRecords()" placeholder="지출 제목, 사용자, 결제수단 검색..." class="w-full pl-11 pr-4 py-3 bg-surface-container-highest border-none rounded-xl text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all">
+          </div>
+          <p class="text-[11px] text-on-surface-variant px-1" id="record-note">※ 금액은 그룹웨어 열람 권한(작성자 전용) 제한으로 표시되지 않습니다.</p>
+          <div class="flex flex-col gap-3" id="record-list-container"></div>
         </div>
       </main>
     </section>
@@ -2177,6 +2190,9 @@
           <button type="button" id="tab-btn-report-meeting" onclick="App.switchWorkReportTab('meeting')" class="whitespace-nowrap px-3.5 py-2 rounded-[0.875rem] text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab shrink-0 flex items-center gap-1">
             <span>미팅회의록</span>
             <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-surface-container-highest">45</span>
+          </button>
+          <button type="button" id="tab-btn-report-issue" onclick="App.switchWorkReportTab('issue')" class="whitespace-nowrap px-3.5 py-2 rounded-[0.875rem] text-xs font-label font-medium text-on-surface-variant hover:bg-surface-container-highest transition-all text-center report-nav-tab shrink-0 flex items-center gap-1">
+            <span>업무지원 요청</span>
           </button>
         </div>
 
@@ -3634,6 +3650,6 @@
   <script src="firebase/config.js"></script>
   <script src="firebase/init.js?v=20260901_account_isolation"></script>
   <script src="data/mockData.js?v=20260911_projects_370"></script>
-  <script src="script.js?v=20260922_equipment"></script>
+  <script src="script.js?v=20260922_collab_expense"></script>
 </body>
 </html>

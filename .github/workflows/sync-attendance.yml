@@ -76,6 +76,20 @@ jobs:
           SITEGATE_PW: ${{ secrets.SITEGATE_PW }}
         run: node scripts/sync-equipment.js
 
+      - name: 경비지출내역 크롤링 및 동기화
+        env:
+          SITEGATE_URL: ${{ secrets.SITEGATE_URL }}
+          SITEGATE_ID: ${{ secrets.SITEGATE_ID }}
+          SITEGATE_PW: ${{ secrets.SITEGATE_PW }}
+        run: node scripts/sync-expenses.js
+
+      - name: 업무지원 요청/이슈 크롤링 및 동기화
+        env:
+          SITEGATE_URL: ${{ secrets.SITEGATE_URL }}
+          SITEGATE_ID: ${{ secrets.SITEGATE_ID }}
+          SITEGATE_PW: ${{ secrets.SITEGATE_PW }}
+        run: node scripts/sync-issues.js
+
       - name: 디바이스 간 데이터 일치 검증
         run: node data/verify-consistency.js
 

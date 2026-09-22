@@ -2648,12 +2648,14 @@ const App = {
     const tabs = {
       expense: document.getElementById('finance-tab-expense'),
       report: document.getElementById('finance-tab-report'),
-      equipment: document.getElementById('finance-tab-equipment')
+      equipment: document.getElementById('finance-tab-equipment'),
+      record: document.getElementById('finance-tab-record')
     };
     const contents = {
       expense: document.getElementById('finance-expense-content'),
       report: document.getElementById('finance-report-content'),
-      equipment: document.getElementById('finance-equipment-content')
+      equipment: document.getElementById('finance-equipment-content'),
+      record: document.getElementById('finance-record-content')
     };
     const titleEl = document.getElementById('finance-main-title');
     const subEl = document.getElementById('finance-main-sub');
@@ -2670,6 +2672,10 @@ const App = {
       if (titleEl) titleEl.innerText = '비품·자산 대장';
       if (subEl) subEl.innerText = '전사 비품 및 자산 보유 현황을 관리하세요.';
       this.renderEquipment();
+    } else if (tabType === 'record') {
+      if (titleEl) titleEl.innerText = '경비 내역';
+      if (subEl) subEl.innerText = '전사 카드/현금 지출 내역입니다.';
+      this.renderExpenseRecords();
     } else {
       if (titleEl) titleEl.innerText = '품의서';
       if (subEl) subEl.innerText = '최근 문서 진행 현황을 확인하세요.';
@@ -2723,6 +2729,38 @@ const App = {
             <span class="font-mono">${esc(i.acquireDate || i.date || '')}</span>
           </div>
           ${i.code ? `<div class="text-[11px] text-on-surface-variant/80 font-mono">코드 ${esc(i.code)}</div>` : ''}
+        </article>`;
+    }).join('');
+  },
+
+  /** 경비 내역 렌더 (크롤링된 MockData.expenseRecords 사용, 금액은 권한 제한으로 미표시) */
+  renderExpenseRecords() {
+    const listEl = document.getElementById('record-list-container');
+    if (!listEl) return;
+    const data = (window.MockData && window.MockData.expenseRecords) || { records: [] };
+    const all = data.records || [];
+    const q = (document.getElementById('record-search')?.value || '').trim().toLowerCase();
+    const items = (q
+      ? all.filter((r) => [r.title, r.author, r.payment].some((v) => String(v || '').toLowerCase().includes(q)))
+      : all).slice(0, 200);
+
+    if (items.length === 0) {
+      listEl.innerHTML = `<div class="text-center py-10 text-on-surface-variant text-sm">내역이 없습니다.</div>`;
+      return;
+    }
+    listEl.innerHTML = items.map((r) => {
+      const corp = /법인/.test(r.payment);
+      const chip = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${corp ? 'bg-primary/10 text-primary' : 'bg-surface-container text-on-surface-variant'}">${esc(r.payment || '기타')}</span>`;
+      return `
+        <article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/10 flex flex-col gap-2">
+          <div class="flex justify-between items-start gap-2">
+            <strong class="font-headline text-sm text-on-surface leading-snug">${esc(r.title)}</strong>
+            ${chip}
+          </div>
+          <div class="flex items-center justify-between text-xs text-on-surface-variant">
+            <span>${esc(r.author || '-')}</span>
+            <span class="font-mono">${esc(r.date || '')}</span>
+          </div>
         </article>`;
     }).join('');
   },
@@ -8084,6 +8122,7 @@ const App = {
       storyboard: '스토리보드 상세',
       weekly_archive: '주간회의록 상세',
       teamcap: '팀장보고 상세',
+      issue: '업무지원 요청/이슈 상세',
       meeting: '미팅회의록 상세',
       equipment: '비품/자산 상세',
       pds: '기술 자료실 상세'
@@ -9162,11 +9201,11 @@ const App = {
           ${chipsHtml}
         </div>
       `;
-    } else if (['weekly_archive', 'teamcap', 'meeting'].includes(tab)) {
+    } else if (['weekly_archive', 'teamcap', 'meeting', 'issue'].includes(tab)) {
       const ext = (window.MockData && window.MockData.extendedData) || {};
-      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings' };
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues' };
       const list = ext[keyMap[tab]] || [];
-      const titles = { weekly_archive: '주간회의록 아카이브', teamcap: '팀장 보고서', meeting: '고객사 미팅 회의록' };
+      const titles = { weekly_archive: '주간회의록 아카이브', teamcap: '팀장 보고서', meeting: '고객사 미팅 회의록', issue: '업무지원 요청/이슈' };
       const searchVal = (this.state.workReportSearch || '').trim();
 
       container.innerHTML = `
@@ -9539,9 +9578,9 @@ const App = {
     }
 
     // 4. 주간회의록 / 팀장보고 / 미팅회의록 탭
-    if (['weekly_archive', 'teamcap', 'meeting'].includes(tab)) {
+    if (['weekly_archive', 'teamcap', 'meeting', 'issue'].includes(tab)) {
       const ext = (window.MockData && window.MockData.extendedData) || {};
-      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings' };
+      const keyMap = { weekly_archive: 'weeklyReports', teamcap: 'teamcapReports', meeting: 'meetings', issue: 'issues' };
       const rawList = ext[keyMap[tab]] || [];
       const search = (this.state.workReportSearch || '').trim().toLowerCase();
 

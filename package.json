@@ -21,7 +21,9 @@
     "sync:team-reports": "node scripts/sync-team-schedules.js",
     "sync:leaves": "node scripts/sync-leaves.js",
     "sync:all-business": "node scripts/sync-all-business.js",
-    "sync:equipment": "node scripts/sync-equipment.js"
+    "sync:equipment": "node scripts/sync-equipment.js",
+    "sync:expenses": "node scripts/sync-expenses.js",
+    "sync:issues": "node scripts/sync-issues.js"
   },
   "keywords": [
     "groupware",

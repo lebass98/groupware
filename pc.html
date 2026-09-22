@@ -387,6 +387,9 @@
             <span>🤝 미팅회의록</span>
             <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-container-highest">45</span>
           </button>
+          <button type="button" id="pc-tab-btn-report-issue" onclick="PCApp.switchWorkReportTab('issue')" class="flex-1 py-3 px-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all bg-surface-container text-on-surface-variant hover:bg-surface-container-high pc-report-nav-tab flex items-center justify-center gap-1.5">
+            <span>🛠 업무지원 요청</span>
+          </button>
         </div>
 
         <!-- Bento Grid: 좌측 달력 위젯 & 우측 업무보고 본문 컨테이너 -->
@@ -570,6 +573,7 @@
         <div class="flex gap-2 mb-6">
           <button id="pc-fin-mode-expense" onclick="PCApp.switchFinanceMode('expense')" class="px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white transition-all">지출결의</button>
           <button id="pc-fin-mode-equipment" onclick="PCApp.switchFinanceMode('equipment')" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all">비품·자산</button>
+          <button id="pc-fin-mode-record" onclick="PCApp.switchFinanceMode('record')" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all">경비 내역</button>
         </div>
 
         <!-- 지출결의 패널 -->
@@ -624,6 +628,27 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-outline" id="pc-equipment-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 경비 내역 패널 -->
+        <div id="pc-finance-record-panel" class="hidden">
+          <div class="flex items-center justify-between mb-4 gap-3 flex-wrap">
+            <input type="text" id="pc-record-search" oninput="PCApp.renderExpenseRecords()" placeholder="지출 제목, 사용자, 결제수단 검색..." class="w-full md:w-96 px-4 py-2.5 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary transition-colors" />
+            <span class="text-sm text-on-surface-variant">※ 금액은 열람 권한(작성자 전용) 제한으로 표시되지 않습니다.</span>
+          </div>
+          <div class="pc-bento-card overflow-x-auto">
+            <table class="w-full text-base text-left border-collapse">
+              <thead>
+                <tr class="bg-surface-container border-b border-outline text-on-surface-variant font-bold">
+                  <th class="p-3.5">지출 제목</th>
+                  <th class="p-3.5">결제수단</th>
+                  <th class="p-3.5">작성자</th>
+                  <th class="p-3.5">지출일</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-outline" id="pc-record-tbody"></tbody>
             </table>
           </div>
         </div>
@@ -1071,6 +1096,6 @@
   <script src="./firebase/init.js?v=20260901_account_isolation"></script>
   <script src="./data/mockData.js?v=20260911_projects_370"></script>
   <!-- PC Core Controller -->
-  <script src="./pc.js?v=20260922_equipment"></script>
+  <script src="./pc.js?v=20260922_collab_expense"></script>
 </body>
 </html>
