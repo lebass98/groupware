@@ -4943,7 +4943,7 @@ window.MockData = {
         "date": "24-09-10 10:06",
         "team": "개발팀",
         "user": "",
-        "code": "건설기계 파견사무실 제습기 구입건",
+        "code": "",
         "category": "",
         "location": "기타",
         "status": "",

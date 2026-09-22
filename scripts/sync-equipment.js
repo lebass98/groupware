@@ -124,7 +124,8 @@ async function main() {
       date: dateRaw.trim(),
       team: attrs['사용팀'] || '',
       user: attrs['사용자'] || '',
-      code: attrs['비품코드'] || '',
+      // 비품코드에 한글이 섞이면 라벨 값이 비어 본문이 잘못 잡힌 것이므로 무효 처리한다.
+      code: (/[가-힣]/.test(attrs['비품코드'] || '') ? '' : (attrs['비품코드'] || '')),
       category: attrs['비품종류'] || '',
       location: attrs['위치 (비품)'] || attrs['위치'] || '',
       status: attrs['현재 사용여부'] || '',

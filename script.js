@@ -2929,8 +2929,10 @@ const App = {
     const listContainer = document.getElementById('expense-list-container');
     if (!listContainer) return;
 
-    const currentFilter = this.state.finance.cardFilter;
-    const items = this.state.finance.expenses[currentFilter];
+    const currentFilter = this.state.finance.cardFilter || 'corp';
+    this.state.finance.cardFilter = currentFilter;
+    const expenses = this.state.finance.expenses || { corp: [], personal: [] };
+    const items = expenses[currentFilter] || [];
 
     // 미결의 건수 집계
     const unresolvedCount = items.filter(i => i.status === 'unresolved').length;

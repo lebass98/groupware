@@ -69,6 +69,13 @@ jobs:
           SITEGATE_PW: ${{ secrets.SITEGATE_PW }}
         run: node scripts/sync-leaves.js
 
+      - name: 비품/자산 대장 크롤링 및 동기화
+        env:
+          SITEGATE_URL: ${{ secrets.SITEGATE_URL }}
+          SITEGATE_ID: ${{ secrets.SITEGATE_ID }}
+          SITEGATE_PW: ${{ secrets.SITEGATE_PW }}
+        run: node scripts/sync-equipment.js
+
       - name: 디바이스 간 데이터 일치 검증
         run: node data/verify-consistency.js
 
