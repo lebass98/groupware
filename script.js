@@ -431,6 +431,28 @@ const App = {
   },
 
   /**
+   * 출퇴근 로그를 마스터(MockData = 크롤링 결과) 기준으로 병합한다.
+   * 같은 날짜가 양쪽에 있으면 마스터를 우선하고, 마스터에 없는 로컬 기록만 보존한다.
+   *
+   * @param {Array} savedLogs localStorage에 저장돼 있던 로그
+   */
+  mergeAttendanceLogs(savedLogs) {
+    const master = (window.MockData && window.MockData.attendance && window.MockData.attendance.logs)
+      ? JSON.parse(JSON.stringify(window.MockData.attendance.logs))
+      : [];
+    if (!Array.isArray(savedLogs) || !savedLogs.length) return master.length ? master : (this.state.logs || []);
+    if (!master.length) return savedLogs;
+
+    const keyOf = (l) => `${String(l.monthStr).replace('월', '')}-${l.dayNum}`;
+    const masterKeys = new Set(master.map(keyOf));
+    const localOnly = savedLogs.filter((l) => !masterKeys.has(keyOf(l)));
+
+    return master.concat(localOnly)
+      .sort((a, b) => (parseInt(b.monthStr, 10) - parseInt(a.monthStr, 10)) || (Number(b.dayNum) - Number(a.dayNum)))
+      .map((l, i) => ({ ...l, id: i + 1 }));
+  },
+
+  /**
    * 크롤링된 출퇴근 로그(MockData/저장 상태)에서 '오늘' 기록을 찾아 현재 근태 상태에 반영한다.
    * PC(pc.js)와 완전히 같은 기준(월·일 일치)을 쓰므로 두 화면의 출근 시간이 갈리지 않는다.
    */
@@ -441,7 +463,17 @@ const App = {
     const todayLog = (this.state.logs || []).find((l) =>
       Number(String(l.monthStr).replace('월', '')) === curM && Number(l.dayNum) === curD);
 
-    if (!todayLog || !todayLog.checkInTimeStr || todayLog.checkInTimeStr === '-') return;
+    if (!todayLog || !todayLog.checkInTimeStr || todayLog.checkInTimeStr === '-') {
+      // 오늘 기록이 없는데 어제 이전의 출근 상태가 남아 있으면 지운다.
+      // (날짜가 바뀌어도 옛 출근 시간이 계속 떠 있던 원인)
+      const prev = this.state.checkInTime ? new Date(this.state.checkInTime) : null;
+      if (prev && prev.toDateString() !== now.toDateString()) {
+        this.state.isCheckedIn = false;
+        this.state.checkInTime = null;
+        this.state.checkInTimeStr = null;
+      }
+      return;
+    }
 
     this.state.checkInTimeStr = todayLog.checkInTimeStr;
     this.state.isCheckedIn = !todayLog.checkOutTimeStr || todayLog.checkOutTimeStr === '-';
@@ -472,14 +504,11 @@ const App = {
         this.state.checkInTimeStr = parsed.checkInTimeStr || (this.state.checkInTime ? this.formatCheckInTime(this.state.checkInTime) : null);
         this.state.settings = { ...this.state.settings, ...parsed.settings };
         this.state.activeTab = parsed.activeTab ?? 'screen-today';
-        if (parsed.logs && parsed.logs.length) {
-          const hasOldMock = parsed.logs.some(l => l.monthStr === '10월' && Number(l.dayNum) > 15);
-          if (hasOldMock && window.MockData && window.MockData.attendance && window.MockData.attendance.logs) {
-            this.state.logs = JSON.parse(JSON.stringify(window.MockData.attendance.logs));
-          } else {
-            this.state.logs = parsed.logs;
-          }
-        }
+        // 출퇴근 로그의 원본은 언제나 크롤링 결과(MockData)다.
+        // 예전에는 저장된 로그가 있으면 그것으로 통째로 덮어써서, 기기에 오래된 상태가
+        // 남아 있으면 새로 크롤링된 오늘 기록을 영영 못 읽고 옛 출근 시간이 계속 보였다.
+        // 이제 MockData를 기준으로 삼고, 거기에 없는 로컬 기록만 덧붙인다.
+        this.state.logs = this.mergeAttendanceLogs(parsed.logs);
 
         if (parsed.userSchedules && typeof parsed.userSchedules === 'object') {
           this.state.userSchedules = parsed.userSchedules;
@@ -801,7 +830,7 @@ const App = {
   },
 
   formatCheckInTime(d) {
-    if (!d) return '오전 08:45';
+    if (!d) return '--:--';
     const dateObj = typeof d === 'string' ? new Date(d) : d;
     let h = dateObj.getHours();
     const m = String(dateObj.getMinutes()).padStart(2, '0');
