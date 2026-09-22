@@ -764,6 +764,35 @@ const PCApp = {
           <p class="text-xs font-medium text-on-surface-variant" id="pc-settings-sync-status">중계 서버 확인 중...</p>
         </div>
 
+        <!-- 4. GitHub 연동 토큰 (관리자 전용) -->
+        <!--
+          배포본(GitHub Pages)에는 중계 서버가 없어 크롤링·출퇴근 등록을 직접 할 수 없다.
+          대신 GitHub Actions 워크플로를 실행시켜 처리하며, 그 실행 권한이 이 토큰이다.
+          토큰은 이 브라우저에만 저장되고 저장소에는 절대 올라가지 않는다.
+        -->
+        <div class="p-4 rounded-2xl bg-surface-container-low border border-outline space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 1a11 11 0 0 0-3.48 21.44c.55.1.75-.24.75-.53v-1.85c-3.06.67-3.71-1.48-3.71-1.48-.5-1.27-1.22-1.61-1.22-1.61-1-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.58 1.2 3.21.92.1-.71.38-1.2.7-1.47-2.44-.28-5.01-1.22-5.01-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.29 3.02 1.13a10.5 10.5 0 0 1 5.5 0c2.1-1.42 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.58 5.15-5.03 5.43.4.34.75 1.01.75 2.04v3.03c0 .29.2.64.76.53A11 11 0 0 0 12 1z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-on-surface">GitHub 연동 <span class="text-xs font-medium text-on-surface-variant">· 관리자 전용</span></p>
+              <p class="text-xs text-on-surface-variant">토큰을 등록하면 배포본에서도 크롤링·출퇴근 버튼이 동작합니다. 이 기기에만 저장됩니다.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="password" id="pc-settings-gh-token" placeholder="github_pat_..." autocomplete="off"
+              class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-surface-container-lowest border border-outline text-sm font-medium text-on-surface focus:outline-none focus:border-primary transition-colors" />
+            <button type="button" onclick="PCApp.saveGithubToken()"
+              class="shrink-0 py-2.5 px-4 rounded-xl bg-surface-container-high hover:bg-primary hover:text-white text-on-surface font-bold text-sm transition-all active:scale-95">
+              저장
+            </button>
+          </div>
+          <p class="text-xs font-medium text-on-surface-variant" id="pc-settings-gh-status">등록된 토큰이 없습니다.</p>
+        </div>
+
       </div>
     `;
 
@@ -783,11 +812,13 @@ const PCApp = {
     label.innerText = isDark ? '다크 모드 적용 중' : '라이트 모드 적용 중';
   },
 
-  // 중계 서버(로컬 개발 서버)가 있을 때만 크롤링 버튼을 활성화한다.
+  // 실행 경로(로컬 중계 / GitHub Actions)를 판별해 크롤링 버튼 상태를 정한다.
   initDailyReportSyncUI() {
     const btn = document.getElementById('pc-settings-sync-btn');
     const status = document.getElementById('pc-settings-sync-status');
     if (!btn || !status) return;
+
+    this.renderGithubTokenStatus();
 
     if (!window.WncSitegate) {
       btn.disabled = true;
@@ -796,19 +827,77 @@ const PCApp = {
     }
 
     btn.disabled = true;
+    status.innerText = '실행 경로를 확인하는 중...';
+
     window.WncSitegate.isAvailable().then((available) => {
-      btn.disabled = !available;
       if (available) {
-        status.innerText = '연결됨 · 버튼을 누르면 해당 월을 새로 가져옵니다.';
+        this._syncVia = 'relay';
+        btn.disabled = false;
+        status.innerText = '로컬 중계 연결됨 · 버튼을 누르면 해당 월을 바로 가져옵니다.';
+        return;
+      }
+
+      this._syncVia = 'actions';
+      if (window.WncActions && window.WncActions.hasToken()) {
+        btn.disabled = false;
+        status.innerText = 'GitHub Actions 경유 · 실행 후 반영까지 2~4분 걸립니다.';
       } else {
-        // 정적 호스팅(GitHub Pages)에는 중계가 없다. 대신 같은 크롤링을 돌리는
-        // GitHub Actions 워크플로로 안내한다(매일 오전 9시 자동 실행 + 수동 실행).
-        status.innerHTML = '이 환경에서는 중계 서버가 없어 직접 실행할 수 없습니다. '
-          + '매일 오전 8시에 자동 동기화되며, 지금 바로 받으려면 '
-          + '<a href="https://github.com/lebass98/groupware/actions/workflows/sync-attendance.yml" target="_blank" rel="noopener" class="text-primary font-bold underline">GitHub Actions에서 수동 실행</a>'
-          + '하세요.';
+        btn.disabled = true;
+        status.innerHTML = '이 환경에서는 아래 GitHub 토큰을 등록해야 버튼이 동작합니다. '
+          + '매일 오전 8시에 자동 동기화되며, '
+          + `<a href="${window.WncActions ? window.WncActions.actionsUrl('sync') : '#'}" target="_blank" rel="noopener" class="text-primary font-bold underline">GitHub에서 직접 실행</a>`
+          + '할 수도 있습니다.';
       }
     });
+  },
+
+  /** 저장된 GitHub 토큰 상태를 설정 모달에 표시한다. */
+  renderGithubTokenStatus() {
+    const status = document.getElementById('pc-settings-gh-status');
+    const input = document.getElementById('pc-settings-gh-token');
+    if (!status) return;
+
+    if (!window.WncActions || !window.WncActions.hasToken()) {
+      status.innerText = '등록된 토큰이 없습니다.';
+      return;
+    }
+
+    if (input) input.value = '';
+    status.innerText = '토큰 확인 중...';
+    window.WncActions.verifyToken().then((r) => {
+      status.innerText = r.ok ? '토큰 등록됨 · 배포본에서도 버튼이 동작합니다.' : `${r.message}`;
+    });
+  },
+
+  /** 입력한 GitHub 토큰을 이 기기에 저장한다(저장소에는 올라가지 않는다). */
+  async saveGithubToken() {
+    const input = document.getElementById('pc-settings-gh-token');
+    const status = document.getElementById('pc-settings-gh-status');
+    if (!input || !window.WncActions) return;
+
+    const token = String(input.value || '').trim();
+    if (!token) {
+      window.WncActions.setToken('');
+      this.showToast('GitHub 토큰을 삭제했습니다.');
+      if (status) status.innerText = '등록된 토큰이 없습니다.';
+      this.initDailyReportSyncUI();
+      return;
+    }
+
+    window.WncActions.setToken(token);
+    input.value = '';
+    if (status) status.innerText = '토큰 확인 중...';
+
+    const result = await window.WncActions.verifyToken();
+    if (result.ok) {
+      this.showToast('GitHub 토큰이 등록되었습니다.');
+    } else {
+      // 잘못된 토큰을 남겨두면 버튼이 계속 실패한다. 즉시 지운다.
+      window.WncActions.setToken('');
+      this.showToast(result.message);
+    }
+    if (status) status.innerText = result.ok ? '토큰 등록됨 · 배포본에서도 버튼이 동작합니다.' : result.message;
+    this.initDailyReportSyncUI();
   },
 
   async runDailyReportSync() {
@@ -816,7 +905,7 @@ const PCApp = {
     const btn = document.getElementById('pc-settings-sync-btn');
     const label = document.getElementById('pc-settings-sync-label');
     const status = document.getElementById('pc-settings-sync-status');
-    if (!input || !btn || !window.WncSitegate) return;
+    if (!input || !btn) return;
 
     const [yStr, mStr] = String(input.value || '').split('-');
     const year = Number(yStr);
@@ -828,28 +917,89 @@ const PCApp = {
 
     btn.disabled = true;
     if (label) label.innerText = '가져오는 중';
-    if (status) status.innerText = `${year}년 ${month}월 근태일지를 가져오는 중입니다. 최대 3분까지 걸릴 수 있습니다...`;
     this.showToast(`${year}년 ${month}월 근태일지 크롤링을 시작합니다...`);
 
-    const result = await window.WncSitegate.syncDailyReports(year, month);
+    const done = (msg, ok) => {
+      if (label) label.innerText = '크롤링';
+      btn.disabled = false;
+      if (status) status.innerText = msg;
+      this.showToast(msg);
+      if (ok) setTimeout(() => window.location.reload(), 1600);
+    };
 
-    if (label) label.innerText = '크롤링';
-    btn.disabled = false;
-
-    if (result && result.ok) {
-      const parts = [];
-      if (result.scheduleDays !== null && result.scheduleDays !== undefined) parts.push(`일정 ${result.scheduleDays}일치`);
-      if (result.attendanceCount !== null && result.attendanceCount !== undefined) parts.push(`출퇴근 ${result.attendanceCount}건`);
-      const detail = parts.length ? ` (${parts.join(', ')})` : '';
-      if (status) status.innerText = `${year}년 ${month}월 동기화 완료${detail}. 잠시 후 새로고침됩니다.`;
-      this.showToast(`${year}년 ${month}월 근태일지 동기화 완료${detail}`);
-      // 크롤링 결과는 mockData.js 파일에 반영되므로 새로고침해야 화면에 나타난다.
-      setTimeout(() => window.location.reload(), 1600);
-    } else {
-      const msg = (result && result.message) || '알 수 없는 오류';
-      if (status) status.innerText = `실패: ${msg}`;
-      this.showToast(`근태일지 크롤링 실패: ${msg}`);
+    // 1) 로컬 중계가 있으면 직접 크롤링한다(가장 빠르다).
+    if (this._syncVia === 'relay' && window.WncSitegate) {
+      if (status) status.innerText = `${year}년 ${month}월 근태일지를 가져오는 중입니다...`;
+      const result = await window.WncSitegate.syncDailyReports(year, month);
+      if (result && result.ok) {
+        const parts = [];
+        if (result.scheduleDays != null) parts.push(`일정 ${result.scheduleDays}일치`);
+        if (result.attendanceCount != null) parts.push(`출퇴근 ${result.attendanceCount}건`);
+        done(`${year}년 ${month}월 동기화 완료${parts.length ? ` (${parts.join(', ')})` : ''}`, true);
+      } else {
+        done(`크롤링 실패: ${(result && result.message) || '알 수 없는 오류'}`, false);
+      }
+      return;
     }
+
+    // 2) 배포본에서는 GitHub Actions를 실행시키고 완료까지 지켜본다.
+    const run = await this.runGithubWorkflow('sync', { year: String(year), month: String(month) },
+      (msg) => { if (status) status.innerText = msg; });
+
+    if (!run.ok) {
+      done(run.message, false);
+      return;
+    }
+    done(`${year}년 ${month}월 동기화 완료 · 배포 반영까지 1~2분 더 걸립니다.`, true);
+  },
+
+  /**
+   * GitHub Actions 워크플로를 실행시키고 완료까지 기다린다.
+   * 배포본(GitHub Pages)에는 중계 서버가 없어, 크롤링·출퇴근 등록을 이 경로로 처리한다.
+   * (모바일 script.js 의 동명 함수와 동일한 규칙)
+   */
+  async runGithubWorkflow(kind, inputs, onProgress) {
+    if (!window.WncActions) return { ok: false, message: 'GitHub 연동 모듈을 불러오지 못했습니다.' };
+    if (!window.WncActions.hasToken()) return { ok: false, message: '설정에서 GitHub 토큰을 먼저 등록해 주세요.' };
+
+    const notify = (m) => { if (typeof onProgress === 'function') onProgress(m); };
+
+    notify('GitHub Actions 실행을 요청하는 중...');
+    const started = await window.WncActions.dispatch(kind, inputs);
+    if (!started.ok) return { ok: false, message: started.message };
+
+    if (!started.runId) {
+      return { ok: false, message: '실행은 요청했으나 진행 상태를 확인하지 못했습니다. GitHub Actions 화면에서 확인해 주세요.' };
+    }
+
+    notify('GitHub Actions에서 처리 중입니다. 1~2분 걸립니다...');
+    const finished = await window.WncActions.waitForRun(started.runId,
+      (st) => notify(st === 'queued' ? '실행 대기 중입니다...' : 'GitHub Actions에서 처리 중입니다...'));
+
+    return finished.ok ? { ok: true, message: '완료되었습니다.' } : { ok: false, message: finished.message };
+  },
+
+  /**
+   * sitegate에 실제 출퇴근을 등록한다. 환경에 따라 경로가 다르다.
+   *   - 로컬 개발 서버: 중계 API가 즉시 처리한다.
+   *   - 배포본: GitHub Actions를 실행시켜 처리한다(토큰 필요).
+   *   - 둘 다 없으면 앱 안에서만 기록하고 조용히 넘어간다.
+   */
+  async syncAttendanceToGroupware(mode) {
+    const label = mode === 'in' ? '출근' : '퇴근';
+
+    if (window.WncSitegate) {
+      const result = await window.WncSitegate.syncAndNotify(mode, (m) => this.showToast(m));
+      if (!result || !result.skipped) return;
+    }
+
+    if (!window.WncActions || !window.WncActions.hasToken()) return;
+
+    this.showToast(`그룹웨어에 ${label}을 등록하는 중입니다...`);
+    const run = await this.runGithubWorkflow('attendance', { mode }, () => {});
+    this.showToast(run.ok
+      ? `그룹웨어에도 ${label} 등록되었습니다.`
+      : `그룹웨어 ${label} 등록 실패: ${run.message}`);
   },
 
   // 2. Real-Time Header Clock
@@ -5661,8 +5811,8 @@ const PCApp = {
     this.showToast(`[출근 완료] ${timeStr} 정상 출근 처리되었습니다.`);
     this.renderLeftCol();
     if (this.state.activeScreen === 'checkin') this.renderCheckinView();
-    // 기존 그룹웨어(sitegate)에도 반영한다. 중계 서버가 없으면 조용히 건너뛴다.
-    if (window.WncSitegate) window.WncSitegate.syncAndNotify('in', (m) => this.showToast(m));
+    // 기존 그룹웨어(sitegate)에도 반영한다.
+    this.syncAttendanceToGroupware('in');
   },
 
   handleCheckOut() {
@@ -5674,7 +5824,7 @@ const PCApp = {
     this.showToast(`[퇴근 완료] ${timeStr} 정상 퇴근 처리되었습니다. 수고하셨습니다!`);
     this.renderLeftCol();
     if (this.state.activeScreen === 'checkin') this.renderCheckinView();
-    if (window.WncSitegate) window.WncSitegate.syncAndNotify('out', (m) => this.showToast(m));
+    this.syncAttendanceToGroupware('out');
   },
 
   toggleTodo(idx) {

@@ -24,15 +24,22 @@ const ROOT = path.resolve(__dirname, '..');
 const AJAX_PATH = '/html/board/skin/board/attendance/attendanceAjax.php';
 
 function loadEnv() {
-  const envPath = path.join(ROOT, '.env');
-  if (!fs.existsSync(envPath)) return {};
   const env = {};
-  fs.readFileSync(envPath, 'utf8').split('\n').forEach((line) => {
-    const t = line.trim();
-    if (!t || t.startsWith('#')) return;
-    const i = t.indexOf('=');
-    if (i > 0) env[t.slice(0, i).trim()] = t.slice(i + 1).trim();
+  const envPath = path.join(ROOT, '.env');
+  if (fs.existsSync(envPath)) {
+    fs.readFileSync(envPath, 'utf8').split('\n').forEach((line) => {
+      const t = line.trim();
+      if (!t || t.startsWith('#')) return;
+      const i = t.indexOf('=');
+      if (i > 0) env[t.slice(0, i).trim()] = t.slice(i + 1).trim();
+    });
+  }
+
+  // CI(GitHub Actions)에는 .env 파일이 없고 Secrets가 환경변수로 들어온다.
+  ['SITEGATE_URL', 'SITEGATE_ID', 'SITEGATE_PW'].forEach((key) => {
+    if (!env[key] && process.env[key]) env[key] = process.env[key];
   });
+
   return env;
 }
 
@@ -214,3 +221,29 @@ async function registerAttendance(mode) {
 }
 
 module.exports = { getStatus, registerAttendance, readToday, login, config };
+
+// -----------------------------------------------------------------------------
+// CLI 진입점: node scripts/sitegate-attendance.js --mode=in|out
+//
+// GitHub Actions에서 출퇴근 등록 워크플로가 이 경로로 호출한다.
+// 정적 호스팅(GitHub Pages)에는 중계 서버가 없으므로, 앱의 출퇴근 버튼이
+// 워크플로를 실행시키고 러너가 대신 sitegate에 등록하는 구조다.
+// -----------------------------------------------------------------------------
+if (require.main === module) {
+  const modeArg = (process.argv.find((a) => a.startsWith('--mode=')) || '').split('=')[1];
+  if (modeArg !== 'in' && modeArg !== 'out') {
+    console.error('❌ --mode=in 또는 --mode=out 이 필요합니다.');
+    process.exit(1);
+  }
+
+  registerAttendance(modeArg)
+    .then((r) => {
+      console.log(`${r.ok ? '✅' : '⚠️'} ${r.message}`);
+      // 등록이 확인되지 않으면 워크플로도 실패로 남겨 사용자가 알 수 있게 한다.
+      process.exit(r.ok ? 0 : 1);
+    })
+    .catch((err) => {
+      console.error(`❌ ${modeArg === 'in' ? '출근' : '퇴근'} 등록 실패: ${err.message}`);
+      process.exit(1);
+    });
+}

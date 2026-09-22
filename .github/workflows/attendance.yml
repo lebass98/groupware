@@ -1,0 +1,81 @@
+name: 출퇴근 등록 (sitegate)
+
+# 앱의 출근/퇴근 버튼이 GitHub Pages(정적 호스팅)에서도 실제 그룹웨어에 기록되게 하는 워크플로.
+#
+# 브라우저는 sitegate를 직접 호출할 수 없다(HTTP 전용 + CORS 없음 + 자격증명 노출).
+# 그래서 앱이 이 워크플로를 실행시키고, 러너가 대신 로그인해 출퇴근을 등록한다.
+#
+# 주의: 실제 근태 기록을 남긴다. 잘못 등록하면 sitegate에서 직접 수정해야 한다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '출근(in) 또는 퇴근(out)'
+        required: true
+        type: choice
+        options:
+          - in
+          - out
+
+permissions:
+  contents: write
+
+# 출근과 퇴근이 동시에 돌지 않게 한다.
+concurrency:
+  group: sitegate-attendance
+  cancel-in-progress: false
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: sitegate 출퇴근 등록
+        env:
+          SITEGATE_URL: ${{ secrets.SITEGATE_URL }}
+          SITEGATE_ID: ${{ secrets.SITEGATE_ID }}
+          SITEGATE_PW: ${{ secrets.SITEGATE_PW }}
+        run: node scripts/sitegate-attendance.js --mode=${{ inputs.mode }}
+
+      # 등록된 기록을 곧바로 다시 크롤링해 앱 데이터에도 반영한다.
+      # 이 단계가 없으면 그룹웨어에는 기록됐는데 앱 화면은 예전 값을 보여준다.
+      - name: 이번 달 근태일지 재동기화
+        env:
+          SITEGATE_URL: ${{ secrets.SITEGATE_URL }}
+          SITEGATE_ID: ${{ secrets.SITEGATE_ID }}
+          SITEGATE_PW: ${{ secrets.SITEGATE_PW }}
+        run: |
+          YEAR=$(TZ=Asia/Seoul date '+%Y')
+          MONTH=$(TZ=Asia/Seoul date '+%-m')
+          node scripts/sync-daily-reports.js --year=$YEAR --month=$MONTH
+
+      - name: 데이터 일치 검증
+        run: node data/verify-consistency.js
+
+      - name: 변경사항 커밋 및 푸시
+        run: |
+          find . -name "._*" -not -path "./node_modules/*" -delete || true
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+
+          if git diff --cached --quiet; then
+            echo "변경사항이 없어 커밋을 건너뜁니다."
+            exit 0
+          fi
+
+          git commit -m "자동: $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M') ${{ inputs.mode == 'in' && '출근' || '퇴근' }} 등록 후 근태 동기화"
+          git pull --rebase origin main
+          git push origin HEAD:main
