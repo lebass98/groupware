@@ -57,6 +57,7 @@ const PCApp = {
     selectedCalYear: new Date().getFullYear(),
     selectedCalMonth: new Date().getMonth() + 1,
     selectedCalDay: new Date().getDate(),
+    directoryMainTab: 'employee',
     directoryCategory: 'all',
     directorySearch: '',
     noticeCategory: 'all',
@@ -2004,6 +2005,40 @@ const PCApp = {
   // 6. Detailed Sub-Screen Renderers
 
   // 6-1. Directory Screen
+  switchDirectoryMainTab(tab) {
+    this.state.directoryMainTab = tab;
+    const empBtn = document.getElementById('pc-dir-tab-employee');
+    const clientBtn = document.getElementById('pc-dir-tab-client');
+    const deptTabs = document.getElementById('pc-dir-dept-tabs');
+
+    if (tab === 'employee') {
+      if (empBtn) {
+        empBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
+        const c = empBtn.querySelector('#pc-dir-emp-count');
+        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
+      }
+      if (clientBtn) {
+        clientBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2';
+        const c = clientBtn.querySelector('#pc-dir-client-count');
+        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary';
+      }
+      if (deptTabs) deptTabs.style.display = 'flex';
+    } else {
+      if (empBtn) {
+        empBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2';
+        const c = empBtn.querySelector('#pc-dir-emp-count');
+        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary';
+      }
+      if (clientBtn) {
+        clientBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
+        const c = clientBtn.querySelector('#pc-dir-client-count');
+        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
+      }
+      if (deptTabs) deptTabs.style.display = 'none';
+    }
+    this.renderDirectoryView();
+  },
+
   setDirectoryDept(dept, btn) {
     this.state.directoryCategory = dept;
     const tabs = document.querySelectorAll('#pc-dir-dept-tabs button');
@@ -2052,6 +2087,93 @@ const PCApp = {
     const container = document.getElementById('pc-directory-grid');
     if (!container) return;
 
+    // 1. 고객사 주소록 탭 분기
+    if (this.state.directoryMainTab === 'client') {
+      const clientList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.clientContacts) || [];
+      const search = (this.state.directorySearch || '').trim().toLowerCase();
+      const filteredClients = clientList.filter(c => {
+        if (!search) return true;
+        return (c.name && c.name.toLowerCase().includes(search)) ||
+               (c.title && c.title.toLowerCase().includes(search)) ||
+               (c.nameWithTitle && c.nameWithTitle.toLowerCase().includes(search)) ||
+               (c.subject && c.subject.toLowerCase().includes(search)) ||
+               (c.company && c.company.toLowerCase().includes(search)) ||
+               (c.site && c.site.toLowerCase().includes(search)) ||
+               (c.phone && c.phone.includes(search)) ||
+               (c.mobile && c.mobile.includes(search)) ||
+               (c.tel && c.tel.includes(search)) ||
+               (c.email && c.email.toLowerCase().includes(search)) ||
+               (c.author && c.author.toLowerCase().includes(search));
+      });
+
+      const totalBadge = document.getElementById('pc-dir-total-badge');
+      if (totalBadge) totalBadge.textContent = `${filteredClients.length}명`;
+      const clientCountEl = document.getElementById('pc-dir-client-count');
+      if (clientCountEl) clientCountEl.textContent = clientList.length;
+
+      if (!filteredClients.length) {
+        container.innerHTML = `
+          <div class="col-span-full p-12 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline">
+            <svg class="w-12 h-12 text-outline mb-3 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h9.49c-.31-.62-.49-1.29-.49-2 0-1.5.68-2.84 1.75-3.75C13.88 14.1 12.87 14 12 14zm8.5 0a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm-1.5 5.5v-2h1.5v2h-1.5zm0 1.5h1.5v1.5h-1.5z"/>
+            </svg>
+            <p class="text-base font-medium">검색 조건에 맞는 고객사 담당자가 없습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filteredClients.map(c => {
+        const displayName = c.name || (c.subject || '고객사').split(' ')[0];
+        const displayTitle = c.title || '담당자';
+        const initial = displayName.charAt(0);
+        const contactPhone = c.mobile || c.phone || c.tel || '';
+        return `
+          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all text-base flex flex-col justify-between">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-3">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold text-lg border border-primary/20 shrink-0">
+                    ${initial}
+                  </div>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      <h4 class="font-bold text-base text-on-surface truncate">${displayName}</h4>
+                      <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary shrink-0">${displayTitle}</span>
+                    </div>
+                    <p class="text-xs font-semibold text-primary truncate mt-1" title="${c.company || c.site || '고객사'}">${c.company || c.site || '고객사'}</p>
+                  </div>
+                </div>
+                ${c.author ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-surface-container-high text-on-surface-variant shrink-0" title="워드앤코드 등록 담당자">담당: ${c.author}</span>` : ''}
+              </div>
+              <div class="space-y-1.5 text-xs text-on-surface-variant pt-3 border-t border-outline/70">
+                <p class="flex items-center gap-2 truncate">
+                  <svg class="w-4 h-4 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                  <span class="truncate">${c.email || '-'}</span>
+                </p>
+                <p class="flex items-center gap-2 truncate">
+                  <svg class="w-4 h-4 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                  <span>${contactPhone || '-'}${c.tel && c.mobile && c.tel !== c.mobile ? ` <span class="text-on-surface-variant/70 text-[11px]">(유선: ${c.tel})</span>` : ''}</span>
+                </p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-3 mt-3 border-t border-outline/50">
+              <a href="tel:${contactPhone}" class="py-2.5 px-3 bg-surface-container hover:bg-surface-container-high rounded-xl text-xs font-bold text-center text-on-surface flex items-center justify-center gap-1.5 transition-colors">
+                <svg class="w-3.5 h-3.5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+                <span>전화걸기</span>
+              </a>
+              <a href="mailto:${c.email || ''}" class="py-2.5 px-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition-colors">
+                <svg class="w-3.5 h-3.5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <span>메일보내기</span>
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+      return;
+    }
+
+    // 2. 직원 주소록 탭 (기존 21명 조직도)
     const now = new Date();
     const curYear = now.getFullYear();
     const curMonth = now.getMonth() + 1;
@@ -2108,6 +2230,8 @@ const PCApp = {
 
     const totalBadge = document.getElementById('pc-dir-total-badge');
     if (totalBadge) totalBadge.textContent = `${filtered.length}명`;
+    const empCountEl = document.getElementById('pc-dir-emp-count');
+    if (empCountEl) empCountEl.textContent = membersList.length;
 
     container.innerHTML = filtered.map(m => {
       const isWork = m.status === 'work' || m.statusText === '근무중';
@@ -2130,21 +2254,23 @@ const PCApp = {
             </div>
             <div class="space-y-1.5 text-sm text-on-surface-variant pt-3 border-t border-outline/70">
               <p class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                ${m.email || 'user@wordncode.com'}
+                <svg class="w-4 h-4 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <span class="truncate">${m.email || 'user@wordncode.com'}</span>
               </p>
               <p class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-on-surface-variant" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                ${m.phone || '010-0000-0000'} ${m.tel ? `<span class="text-xs text-on-surface-variant/70">(내선: ${m.tel})</span>` : ''}
+                <svg class="w-4 h-4 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <span>${m.phone || '010-0000-0000'} ${m.tel ? `<span class="text-xs text-on-surface-variant/70">(내선: ${m.tel})</span>` : ''}</span>
               </p>
             </div>
           </div>
           <div class="grid grid-cols-2 gap-2 pt-4 mt-3 border-t border-outline/50">
-            <a href="tel:${m.phone || ''}" class="py-2 px-3 bg-surface-container hover:bg-surface-container-high rounded-xl text-xs font-bold text-center text-on-surface flex items-center justify-center gap-1">
-              📞 전화 걸기
+            <a href="tel:${m.phone || ''}" class="py-2.5 px-3 bg-surface-container hover:bg-surface-container-high rounded-xl text-xs font-bold text-center text-on-surface flex items-center justify-center gap-1.5 transition-colors">
+              <svg class="w-3.5 h-3.5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+              <span>전화 걸기</span>
             </a>
-            <button onclick="PCApp.openChatModal(${m.id})" class="py-2 px-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1">
-              💬 사내 메신저
+            <button onclick="PCApp.openChatModal(${m.id})" class="py-2.5 px-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition-colors">
+              <svg class="w-3.5 h-3.5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+              <span>사내 메신저</span>
             </button>
           </div>
         </div>

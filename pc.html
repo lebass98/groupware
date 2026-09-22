@@ -261,20 +261,32 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-outline">
           <div>
             <div class="flex items-center gap-3">
-              <h2 class="text-2xl font-bold text-on-surface">임직원 주소록</h2>
+              <h2 class="text-2xl font-bold text-on-surface">주소록</h2>
               <span class="px-3 py-1 bg-primary/10 text-primary font-bold rounded-full text-base" id="pc-dir-total-badge">21명</span>
             </div>
-            <p class="text-base text-on-surface-variant font-medium mt-1">워드앤코드 조직도 및 21명 임직원 비상연락망</p>
+            <p class="text-base text-on-surface-variant font-medium mt-1">임직원 조직도 및 고객사 담당자 연락망</p>
           </div>
           <div class="flex items-center gap-3">
             <div class="relative w-72">
-              <input type="text" id="pc-dir-search-input" placeholder="사원명, 직급, 부서 검색..." class="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" oninput="PCApp.state.directorySearch = this.value; PCApp.renderDirectoryView();" />
+              <input type="text" id="pc-dir-search-input" placeholder="이름, 부서, 고객사 검색..." class="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border border-outline rounded-xl text-base text-on-surface focus:outline-none focus:border-primary" oninput="PCApp.state.directorySearch = this.value; PCApp.renderDirectoryView();" />
               <svg class="w-5 h-5 text-on-surface-variant absolute left-3 top-3" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             </div>
           </div>
         </div>
 
-        <!-- 8 Core Department Tabs Fixed by AGENTS.md Rule -->
+        <!-- 주소록 메인 구분 탭: 직원 / 고객사 -->
+        <div class="flex items-center gap-3 mb-5 border-b border-outline/50 pb-3" id="pc-dir-main-tabs">
+          <button id="pc-dir-tab-employee" class="px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2" onclick="PCApp.switchDirectoryMainTab('employee')">
+            <span>직원</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-white/20 text-white" id="pc-dir-emp-count">21</span>
+          </button>
+          <button id="pc-dir-tab-client" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2" onclick="PCApp.switchDirectoryMainTab('client')">
+            <span>고객사</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-dir-client-count">375</span>
+          </button>
+        </div>
+
+        <!-- 8 Core Department Tabs Fixed by AGENTS.md Rule (직원 탭 선택 시 노출) -->
         <div class="flex gap-2 mb-6 overflow-x-auto pb-2" id="pc-dir-dept-tabs">
           <button class="px-4 py-2 rounded-xl text-base font-bold bg-primary text-white shrink-0" data-dept="all" onclick="PCApp.setDirectoryDept('all', this)">전체</button>
           <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" data-dept="경영지원팀" onclick="PCApp.setDirectoryDept('경영지원팀', this)">경영지원팀</button>
@@ -959,6 +971,6 @@
   <script src="./firebase/init.js?v=20260901_account_isolation"></script>
   <script src="./data/mockData.js?v=20260911_projects_370"></script>
   <!-- PC Core Controller -->
-  <script src="./pc.js?v=20260922_attend_cal"></script>
+  <script src="./pc.js?v=20260922_directory_tabs"></script>
 </body>
 </html>

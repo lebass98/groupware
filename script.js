@@ -114,6 +114,7 @@ const App = {
     isLoggedIn: false, // Default to FALSE so user starts on Login screen
     activeTab: 'screen-today',
     dockMenus: ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'], // 4 core slots + 1 add custom button
+    directoryMainTab: 'employee',
     todosFilter: 'all',
     todosSearchQuery: '',
     selectedProject: null,
@@ -4582,22 +4583,131 @@ const App = {
   },
 
   // Employee Directory Methods
+  switchDirectoryMainTab(tab) {
+    this.state.directoryMainTab = tab;
+    const empBtn = document.getElementById('dir-main-tab-employee');
+    const clientBtn = document.getElementById('dir-main-tab-client');
+    const deptChips = document.getElementById('directory-category-chips');
+
+    if (tab === 'employee') {
+      if (empBtn) {
+        empBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all';
+        const c = empBtn.querySelector('#dir-emp-count-badge');
+        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
+      }
+      if (clientBtn) {
+        clientBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all';
+        const c = clientBtn.querySelector('#dir-client-count-badge');
+        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary';
+      }
+      if (deptChips) deptChips.style.display = 'flex';
+    } else {
+      if (empBtn) {
+        empBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all';
+        const c = empBtn.querySelector('#dir-emp-count-badge');
+        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary';
+      }
+      if (clientBtn) {
+        clientBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all';
+        const c = clientBtn.querySelector('#dir-client-count-badge');
+        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
+      }
+      if (deptChips) deptChips.style.display = 'none';
+    }
+    this.renderDirectory();
+  },
+
   renderDirectory() {
     const container = document.getElementById('directory-list-container');
     const totalCountEl = document.getElementById('directory-total-count');
     const birthdayBannerContainer = document.getElementById('directory-birthday-banner-container');
     if (!container) return;
 
+    // 생일 배너 비표시
+    if (birthdayBannerContainer) {
+      birthdayBannerContainer.innerHTML = '';
+    }
+
+    // 1. 고객사 주소록 탭 분기
+    if (this.state.directoryMainTab === 'client') {
+      const clientList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.clientContacts) || [];
+      const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
+      const filteredClients = clientList.filter(c => {
+        if (!query) return true;
+        return (c.name && c.name.toLowerCase().includes(query)) ||
+               (c.title && c.title.toLowerCase().includes(query)) ||
+               (c.nameWithTitle && c.nameWithTitle.toLowerCase().includes(query)) ||
+               (c.subject && c.subject.toLowerCase().includes(query)) ||
+               (c.company && c.company.toLowerCase().includes(query)) ||
+               (c.site && c.site.toLowerCase().includes(query)) ||
+               (c.phone && c.phone.includes(query)) ||
+               (c.mobile && c.mobile.includes(query)) ||
+               (c.tel && c.tel.includes(query)) ||
+               (c.email && c.email.toLowerCase().includes(query)) ||
+               (c.author && c.author.toLowerCase().includes(query));
+      });
+
+      if (totalCountEl) totalCountEl.innerText = `총 ${filteredClients.length}명`;
+      const clientBadge = document.getElementById('dir-client-count-badge');
+      if (clientBadge) clientBadge.innerText = clientList.length;
+
+      if (filteredClients.length === 0) {
+        container.innerHTML = `
+          <div class="bg-surface-container-lowest rounded-2xl p-8 text-center text-on-surface-variant font-medium">
+            <svg class="w-10 h-10 text-outline mb-2 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h9.49c-.31-.62-.49-1.29-.49-2 0-1.5.68-2.84 1.75-3.75C13.88 14.1 12.87 14 12 14zm8.5 0a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm-1.5 5.5v-2h1.5v2h-1.5zm0 1.5h1.5v1.5h-1.5z"/>
+            </svg>
+            <p>검색 조건에 맞는 고객사 담당자가 없습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filteredClients.map(c => {
+        const displayName = c.name || (c.subject || '고객사').split(' ')[0];
+        const displayTitle = c.title || '담당자';
+        const initial = displayName.charAt(0);
+        const contactPhone = c.mobile || c.phone || c.tel || '';
+        return `
+          <div class="p-4 bg-surface-container-lowest rounded-2xl border border-outline/70 shadow-xs flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0 flex-1">
+              <div class="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm border border-primary/20 shrink-0">
+                ${initial}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <h4 class="font-bold text-sm text-on-surface truncate">${displayName}</h4>
+                  <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary shrink-0">${displayTitle}</span>
+                  ${c.author ? `<span class="px-1.5 py-0.2 text-[9px] font-medium bg-surface-container text-on-surface-variant rounded shrink-0">담당: ${c.author}</span>` : ''}
+                </div>
+                <p class="text-xs text-primary font-semibold truncate mt-0.5" title="${c.company || c.site || '고객사'}">${c.company || c.site || '고객사'}</p>
+                <p class="text-[11px] text-on-surface-variant/80 truncate mt-0.5">${contactPhone || '-'}${c.email ? ` · ${c.email}` : ''}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              ${contactPhone ? `
+                <a href="tel:${contactPhone}" class="w-9 h-9 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary flex items-center justify-center transition-colors" title="전화걸기">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+                </a>
+              ` : ''}
+              ${c.email ? `
+                <a href="mailto:${c.email}" class="w-9 h-9 rounded-xl bg-surface-container text-on-surface hover:bg-surface-container-high flex items-center justify-center transition-colors" title="이메일 보내기">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </a>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+      return;
+    }
+
+    // 2. 직원 주소록 탭 (21명 임직원)
     // Ensure employees list is always loaded
     if (!this.state.employees || !this.state.employees.length) {
       this.state.employees = (window.MockData && window.MockData.employees) || [];
     }
     const allEmployees = this.state.employees || [];
-
-    // 생일 배너 비표시 (요청에 따라 이달의 생일 상단 배너 제거)
-    if (birthdayBannerContainer) {
-      birthdayBannerContainer.innerHTML = '';
-    }
 
     const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
     const cat = this.state.currentDirectoryCategory || 'all';
@@ -4628,6 +4738,8 @@ const App = {
     });
 
     if (totalCountEl) totalCountEl.innerText = `총 ${filtered.length}명`;
+    const empBadge = document.getElementById('dir-emp-count-badge');
+    if (empBadge) empBadge.innerText = allEmployees.length;
 
     if (filtered.length === 0) {
       container.innerHTML = `

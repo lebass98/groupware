@@ -1,0 +1,392 @@
+[
+  {
+    "wr_id": "4",
+    "category": "",
+    "subject": "[경영지원팀] 업무지원 요청",
+    "author": "관리자",
+    "date": "2026-09-22",
+    "hit": "8",
+    "commentCount": 0,
+    "issueType": "issue"
+  },
+  {
+    "wr_id": "3",
+    "category": "",
+    "subject": "ICUH 서버이전 작업",
+    "author": "현이컴",
+    "date": "2026-09-22",
+    "hit": "4",
+    "commentCount": 0,
+    "issueType": "issue"
+  },
+  {
+    "wr_id": "2",
+    "category": "",
+    "subject": "기획팀 외부 교육 일정 관련",
+    "author": "관리자",
+    "date": "2026-09-22",
+    "hit": "11",
+    "commentCount": 0,
+    "issueType": "issue"
+  },
+  {
+    "wr_id": "1",
+    "category": "",
+    "subject": "영업 지원 관련",
+    "author": "관리자",
+    "date": "2026-09-22",
+    "hit": "8",
+    "commentCount": 0,
+    "issueType": "issue"
+  },
+  {
+    "wr_id": "60",
+    "category": "",
+    "subject": "[탁스코 사이트 개편] D1_경영지원팀",
+    "author": "문은미",
+    "date": "07-02",
+    "hit": "35",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "59",
+    "category": "",
+    "subject": "[탁스코 사이트 개편] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "38",
+    "category": "",
+    "subject": "[NH우대서비스 joy&Health 웹접근성 개편] D1_경영지원팀",
+    "author": "현이컴",
+    "date": "09-16",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "40",
+    "category": "",
+    "subject": "[NH우대서비스 joy&Health 웹접근성 개편] D2_기획팀",
+    "author": "김종규",
+    "date": "09-16",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "37",
+    "category": "",
+    "subject": "[NH우대서비스 joy&Health 웹접근성 개편] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "09-16",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "39",
+    "category": "",
+    "subject": "[NH우대서비스 joy&Health 웹접근성 개편] I2_기획팀",
+    "author": "김종규",
+    "date": "09-16",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "65",
+    "category": "",
+    "subject": "[NH우대서비스 joy&Health 웹접근성 개편] I3_디자인팀",
+    "author": "윤익수",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "66",
+    "category": "",
+    "subject": "[NH우대서비스 joy&Health 웹접근성 개편] I4_기획팀",
+    "author": "김종규",
+    "date": "10-02",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "70",
+    "category": "",
+    "subject": "[사립학교연금공단(사학연금) 홈페이지 재구축] D3_개발팀",
+    "author": "문은미",
+    "date": "12-18",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "48",
+    "category": "",
+    "subject": "[루키 쇼핑몰 구축] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "64",
+    "category": "",
+    "subject": "[한국어문능력개발원 사이트 고도화] D1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "63",
+    "category": "",
+    "subject": "[한국어문능력개발원 사이트 고도화] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "47",
+    "category": "",
+    "subject": "[나미투어 쇼핑몰 구축] D1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "46",
+    "category": "",
+    "subject": "[나미투어 쇼핑몰 구축] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "73",
+    "category": "",
+    "subject": "[대한항공 여행사진 공모전(여사공)] D3_개발팀",
+    "author": "문은미",
+    "date": "07-02",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "58",
+    "category": "",
+    "subject": "[케이넷티브이 관리자모드 개발] D1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "20",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "57",
+    "category": "",
+    "subject": "[케이넷티브이 관리자모드 개발] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "69",
+    "category": "",
+    "subject": "[독립기념관_국내사적지 홈페이지 구축] D2_기획팀",
+    "author": "이명준",
+    "date": "03-06",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "43",
+    "category": "",
+    "subject": "[고용률 70% 로드맵 온라인 통합관리시스템 구축] D1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "68",
+    "category": "",
+    "subject": "[고용률 70% 로드맵 온라인 통합관리시스템 구축] D2_기획팀",
+    "author": "김종규",
+    "date": "10-02",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "67",
+    "category": "",
+    "subject": "[고용률 70% 로드맵 온라인 통합관리시스템 구축] I2_기획팀",
+    "author": "김종규",
+    "date": "10-02",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "42",
+    "category": "",
+    "subject": "[고용률 70% 로드맵 온라인 통합관리시스템 구축] I3_디자인팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "62",
+    "category": "",
+    "subject": "[패션넷 코리아 리뉴얼작업] D1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "61",
+    "category": "",
+    "subject": "[패션넷 코리아 리뉴얼작업] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "50",
+    "category": "",
+    "subject": "[서울문화예술교육지원센터 정보서비스사업] D1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "49",
+    "category": "",
+    "subject": "[서울문화예술교육지원센터 정보서비스사업] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "45",
+    "category": "",
+    "subject": "[글로벌 에너지 교육센터 리뉴얼] D1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "44",
+    "category": "",
+    "subject": "[글로벌 에너지 교육센터 리뉴얼] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "52",
+    "category": "",
+    "subject": "[서울시민영화제 홈페이지 개편] D1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "51",
+    "category": "",
+    "subject": "[서울시민영화제 홈페이지 개편] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "56",
+    "category": "",
+    "subject": "[중앙대학교 영어영문학과_ENG] D1_경영지원팀",
+    "author": "문은미",
+    "date": "03-11",
+    "hit": "5",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "55",
+    "category": "",
+    "subject": "[중앙대학교 영어영문학과_ENG] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "54",
+    "category": "",
+    "subject": "[안성 홀스라이딩클럽 홈페이지 구축] D1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "53",
+    "category": "",
+    "subject": "[안성 홀스라이딩클럽 홈페이지 구축] I1_경영지원팀",
+    "author": "현이컴",
+    "date": "10-01",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  },
+  {
+    "wr_id": "72",
+    "category": "",
+    "subject": "[아르떼365 웹진 제작 및 뉴스레터 발송] D3_개발팀",
+    "author": "문은미",
+    "date": "03-11",
+    "hit": "0",
+    "commentCount": 0,
+    "issueType": "teamwork"
+  }
+]

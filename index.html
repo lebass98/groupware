@@ -1223,11 +1223,23 @@
           <svg class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
             <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
           </svg>
-          <input class="w-full bg-surface-container-highest rounded-xl py-3.5 pl-12 pr-4 text-sm font-body border-2 border-transparent transition-all duration-300 placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest" id="directory-search-input" onkeyup="App.filterDirectory()" placeholder="이름, 부서 또는 전화번호 검색" type="text"/>
+          <input class="w-full bg-surface-container-highest rounded-xl py-3.5 pl-12 pr-4 text-sm font-body border-2 border-transparent transition-all duration-300 placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest" id="directory-search-input" onkeyup="App.filterDirectory()" placeholder="이름, 부서, 고객사 검색..." type="text"/>
         </div>
 
         <!-- Monthly Birthday Highlight Banner Container -->
         <div id="directory-birthday-banner-container" class="space-y-3"></div>
+
+        <!-- 주소록 메인 구분 탭: 직원 / 고객사 -->
+        <div class="flex items-center gap-2 p-1 bg-surface-container rounded-2xl" id="directory-main-tabs">
+          <button id="dir-main-tab-employee" class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all" onclick="App.switchDirectoryMainTab('employee')">
+            <span>직원</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white" id="dir-emp-count-badge">21</span>
+          </button>
+          <button id="dir-main-tab-client" class="flex-1 py-2.5 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all" onclick="App.switchDirectoryMainTab('client')">
+            <span>고객사</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary" id="dir-client-count-badge">375</span>
+          </button>
+        </div>
 
         <!-- Team Category Filters (Bento Style Chips) -->
         <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" id="directory-category-chips">
@@ -3494,6 +3506,6 @@
   <script src="firebase/config.js"></script>
   <script src="firebase/init.js?v=20260901_account_isolation"></script>
   <script src="data/mockData.js?v=20260911_projects_370"></script>
-  <script src="script.js?v=20260922_checkin_menu"></script>
+  <script src="script.js?v=20260922_directory_tabs"></script>
 </body>
 </html>
