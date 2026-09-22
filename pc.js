@@ -59,6 +59,7 @@ const PCApp = {
     selectedCalDay: new Date().getDate(),
     directoryMainTab: 'employee',
     directoryCategory: 'all',
+    clientProjectCategory: 'all',
     directorySearch: '',
     noticeMainTab: 'official', // 'official' (사내공지 6건) or 'pds' (기술자료실 47건)
     noticeCategory: 'all',
@@ -2011,14 +2012,13 @@ const PCApp = {
     this.state.directoryMainTab = tab;
     const empBtn = document.getElementById('pc-dir-tab-employee');
     const clientBtn = document.getElementById('pc-dir-tab-client');
-    const eqBtn = document.getElementById('pc-dir-tab-equipment');
     const deptTabs = document.getElementById('pc-dir-dept-tabs');
+    const clientProjTabs = document.getElementById('pc-dir-client-project-tabs');
 
     // Reset all tabs to inactive
     [
       { btn: empBtn, countId: 'pc-dir-emp-count' },
-      { btn: clientBtn, countId: 'pc-dir-client-count' },
-      { btn: eqBtn, countId: 'pc-dir-equipment-count' }
+      { btn: clientBtn, countId: 'pc-dir-client-count' }
     ].forEach(({ btn, countId }) => {
       if (!btn) return;
       btn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2';
@@ -2034,6 +2034,7 @@ const PCApp = {
         if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
       }
       if (deptTabs) deptTabs.style.display = 'flex';
+      if (clientProjTabs) clientProjTabs.classList.add('hidden');
     } else if (tab === 'client') {
       if (clientBtn) {
         clientBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
@@ -2041,16 +2042,65 @@ const PCApp = {
         if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
       }
       if (deptTabs) deptTabs.style.display = 'none';
-    } else if (tab === 'equipment') {
-      if (eqBtn) {
-        eqBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
-        const c = eqBtn.querySelector('#pc-dir-equipment-count');
-        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
+      if (clientProjTabs) {
+        clientProjTabs.classList.remove('hidden');
+        clientProjTabs.style.display = 'flex';
       }
-      if (deptTabs) deptTabs.style.display = 'none';
     }
 
     this.renderDirectoryView();
+  },
+
+  setClientProjectCategory(projName) {
+    this.state.clientProjectCategory = projName;
+    this.renderDirectoryView();
+  },
+
+  cleanProjectName(c) {
+    let p = (c.company || c.site || '기타 / 미지정').replace(/\s*\(s_[^)]+\)/g, '').trim();
+    if (!p || p === '()') p = '기타 / 미지정';
+    return p;
+  },
+
+  renderDirectoryClientProjectTabs(clientList) {
+    const projContainer = document.getElementById('pc-dir-client-project-tabs');
+    if (!projContainer) return;
+
+    // 프로젝트별 인원 수 집계
+    const counts = {};
+    clientList.forEach(c => {
+      const p = this.cleanProjectName(c);
+      counts[p] = (counts[p] || 0) + 1;
+    });
+
+    const cur = this.state.clientProjectCategory || 'all';
+
+    // 정렬: 인원수 내림차순, 이름 오름차순
+    const sortedProjects = Object.keys(counts).sort((a, b) => {
+      if (counts[b] !== counts[a]) return counts[b] - counts[a];
+      return a.localeCompare(b);
+    });
+
+    const allActive = cur === 'all';
+    let html = `
+      <button class="px-4 py-2 rounded-xl text-base font-bold ${allActive ? 'bg-primary text-white shadow-sm' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0 flex items-center gap-1.5 transition-all" onclick="PCApp.setClientProjectCategory('all')">
+        <span>전체 프로젝트</span>
+        <span class="px-1.5 py-0.5 rounded-full text-xs ${allActive ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}">${clientList.length}</span>
+      </button>
+    `;
+
+    sortedProjects.forEach(proj => {
+      const isActive = cur === proj;
+      const count = counts[proj];
+      html += `
+        <button class="px-4 py-2 rounded-xl text-base font-bold ${isActive ? 'bg-primary text-white shadow-sm' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'} shrink-0 flex items-center gap-1.5 transition-all" onclick="PCApp.setClientProjectCategory('${esc(proj)}')">
+          <span class="max-w-[180px] truncate" title="${esc(proj)}">${esc(proj)}</span>
+          <span class="px-1.5 py-0.5 rounded-full text-xs ${isActive ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}">${count}</span>
+        </button>
+      `;
+    });
+
+    projContainer.innerHTML = html;
   },
 
   setDirectoryDept(dept, btn) {
@@ -2105,7 +2155,16 @@ const PCApp = {
     if (this.state.directoryMainTab === 'client') {
       const clientList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.clientContacts) || [];
       const search = (this.state.directorySearch || '').trim().toLowerCase();
+      const projFilter = this.state.clientProjectCategory || 'all';
+
+      // 상단 고객사 프로젝트 탭 목록 렌더
+      this.renderDirectoryClientProjectTabs(clientList);
+
       const filteredClients = clientList.filter(c => {
+        const projName = this.cleanProjectName(c);
+        const matchProject = (projFilter === 'all') || (projName === projFilter);
+        if (!matchProject) return false;
+
         if (!search) return true;
         return (c.name && c.name.toLowerCase().includes(search)) ||
                (c.title && c.title.toLowerCase().includes(search)) ||
@@ -2131,7 +2190,7 @@ const PCApp = {
             <svg class="w-12 h-12 text-outline mb-3 mx-auto" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h9.49c-.31-.62-.49-1.29-.49-2 0-1.5.68-2.84 1.75-3.75C13.88 14.1 12.87 14 12 14zm8.5 0a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm-1.5 5.5v-2h1.5v2h-1.5zm0 1.5h1.5v1.5h-1.5z"/>
             </svg>
-            <p class="text-base font-medium">검색 조건에 맞는 고객사 담당자가 없습니다.</p>
+            <p class="text-base font-medium">선택한 프로젝트 또는 검색 조건에 맞는 고객사 담당자가 없습니다.</p>
           </div>
         `;
         return;
@@ -2142,6 +2201,8 @@ const PCApp = {
         const displayTitle = c.title || '담당자';
         const initial = displayName.charAt(0);
         const contactPhone = c.mobile || c.phone || c.tel || '';
+        const projTitle = this.cleanProjectName(c);
+
         return `
           <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all text-base flex flex-col justify-between">
             <div>
@@ -2155,7 +2216,7 @@ const PCApp = {
                       <h4 class="font-bold text-base text-on-surface truncate">${displayName}</h4>
                       <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary shrink-0">${displayTitle}</span>
                     </div>
-                    <p class="text-xs font-semibold text-primary truncate mt-1" title="${c.company || c.site || '고객사'}">${c.company || c.site || '고객사'}</p>
+                    <p class="text-xs font-semibold text-primary truncate mt-1" title="${projTitle}">${projTitle}</p>
                   </div>
                 </div>
                 ${c.author ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-surface-container-high text-on-surface-variant shrink-0" title="워드앤코드 등록 담당자">담당: ${c.author}</span>` : ''}
@@ -2180,81 +2241,6 @@ const PCApp = {
                 <svg class="w-3.5 h-3.5 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                 <span>메일보내기</span>
               </a>
-            </div>
-          </div>
-        `;
-      }).join('');
-      return;
-    }
-
-    // 2. 사내 비품 / 자산 대장 탭 분기
-    if (this.state.directoryMainTab === 'equipment') {
-      const eqList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.equipment) || [];
-      const search = (this.state.directorySearch || '').trim().toLowerCase();
-      const filteredEq = eqList.filter(item => {
-        if (!search) return true;
-        const subj = (item.subject || '').toLowerCase();
-        const author = (item.author || '').toLowerCase();
-        const user = (item.user || '').toLowerCase();
-        const team = (item.team || '').toLowerCase();
-        const code = (item.code || '').toLowerCase();
-        const content = (item.content || '').toLowerCase();
-        return subj.includes(search) || author.includes(search) || user.includes(search) || team.includes(search) || code.includes(search) || content.includes(search);
-      });
-
-      const totalBadge = document.getElementById('pc-dir-total-badge');
-      if (totalBadge) totalBadge.textContent = `${filteredEq.length}건`;
-      const eqCountEl = document.getElementById('pc-dir-equipment-count');
-      if (eqCountEl) eqCountEl.textContent = eqList.length;
-
-      if (!filteredEq.length) {
-        container.innerHTML = `
-          <div class="col-span-full p-12 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline">
-            <svg class="w-12 h-12 text-outline mb-3 mx-auto" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>
-            </svg>
-            <p class="text-base font-medium">검색 조건에 맞는 비품 또는 자산 내역이 없습니다.</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = filteredEq.map(item => {
-        const itemId = item.wr_id || item.id || '';
-        const title = item.subject || '사내 비품';
-        const user = item.user || item.author || '-';
-        const team = item.team || '전사공용';
-        const code = item.code || '-';
-        const status = item.status || '사용중';
-        const acquireDate = item.acquireDate || item.date || '-';
-        const isUsing = status === '사용중' || status === '정상';
-        const statusBadgeClass = isUsing
-          ? 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20'
-          : 'bg-surface-container text-on-surface-variant border-outline/30';
-
-        const snippet = (item.content || '').replace(/\s+/g, ' ').trim().slice(0, 75);
-
-        return `
-          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all text-base flex flex-col justify-between cursor-pointer group" onclick="PCApp.openExtendedModal('equipment', '${itemId}')">
-            <div>
-              <div class="flex items-start justify-between gap-2 mb-2.5">
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusBadgeClass}">${status}</span>
-                <span class="text-xs font-mono font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">${code}</span>
-              </div>
-              <h4 class="font-bold text-base text-on-surface group-hover:text-primary transition-colors line-clamp-2 mb-2">${title}</h4>
-              <p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed mb-3">${snippet || '클릭하여 구매처, 금액, 사양 및 상세 메모를 확인하세요.'}</p>
-            </div>
-
-            <div class="pt-3 border-t border-outline/40 flex items-center justify-between text-xs text-on-surface-variant">
-              <div class="flex items-center gap-1.5 truncate mr-2">
-                <span class="font-bold text-on-surface flex items-center gap-1">
-                  <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                  <span>${user}</span>
-                </span>
-                <span class="text-outline">·</span>
-                <span class="truncate">${team}</span>
-              </div>
-              <span class="font-mono text-[11px] shrink-0">${acquireDate}</span>
             </div>
           </div>
         `;
@@ -4928,9 +4914,13 @@ const PCApp = {
       const badge = inUse
         ? `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300">사용중</span>`
         : `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-surface-container text-on-surface-variant">${esc(i.status || '미지정')}</span>`;
+      const itemId = i.wr_id || i.id || '';
       return `
-        <tr class="hover:bg-surface-container-low transition-colors">
-          <td class="p-3.5 font-bold text-on-surface">${esc(i.title)}</td>
+        <tr class="hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="PCApp.openExtendedModal('equipment', '${itemId}')">
+          <td class="p-3.5 font-bold text-on-surface group-hover:text-primary transition-colors flex items-center gap-2">
+            <span>${esc(i.title)}</span>
+            <span class="text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">상세보기 &rarr;</span>
+          </td>
           <td class="p-3.5">${esc(i.team || '-')}</td>
           <td class="p-3.5">${esc(i.user || '-')}</td>
           <td class="p-3.5 font-mono text-sm text-on-surface-variant">${esc(i.code || '-')}</td>

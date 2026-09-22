@@ -115,6 +115,7 @@ const App = {
     activeTab: 'screen-today',
     dockMenus: ['screen-home', 'screen-today', 'screen-directory', 'screen-notice-list'], // 4 core slots + 1 add custom button
     directoryMainTab: 'employee',
+    clientProjectCategory: 'all',
     todosFilter: 'all',
     todosSearchQuery: '',
     selectedProject: null,
@@ -2718,17 +2719,24 @@ const App = {
         ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-secondary/15 text-secondary">사용중</span>`
         : `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">${esc(i.status || '미지정')}</span>`;
       const meta = [i.team, i.user].filter(Boolean).join(' · ') || '담당 미지정';
+      const itemId = i.wr_id || i.id || '';
       return `
-        <article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/10 flex flex-col gap-2">
+        <article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/10 flex flex-col gap-2 cursor-pointer active:scale-[0.99] transition-transform group" onclick="App.openExtendedDetail('equipment', '${itemId}')">
           <div class="flex justify-between items-start gap-2">
-            <strong class="font-headline text-sm text-on-surface leading-snug">${esc(i.title)}</strong>
+            <strong class="font-headline text-sm text-on-surface group-hover:text-primary transition-colors leading-snug">${esc(i.title)}</strong>
             ${badge}
           </div>
           <div class="flex items-center justify-between text-xs text-on-surface-variant">
             <span>${esc(meta)}</span>
             <span class="font-mono">${esc(i.acquireDate || i.date || '')}</span>
           </div>
-          ${i.code ? `<div class="text-[11px] text-on-surface-variant/80 font-mono">코드 ${esc(i.code)}</div>` : ''}
+          <div class="flex items-center justify-between pt-1 border-t border-outline-variant/10 text-xs">
+            ${i.code ? `<span class="text-[11px] text-on-surface-variant/80 font-mono">코드 ${esc(i.code)}</span>` : '<span></span>'}
+            <span class="text-xs font-bold text-primary flex items-center gap-0.5">
+              상세보기
+              ${getSvgIcon('chevron_right', 'w-3.5 h-3.5')}
+            </span>
+          </div>
         </article>`;
     }).join('');
   },
@@ -4707,14 +4715,13 @@ const App = {
     this.state.directoryMainTab = tab;
     const empBtn = document.getElementById('dir-main-tab-employee');
     const clientBtn = document.getElementById('dir-main-tab-client');
-    const eqBtn = document.getElementById('dir-main-tab-equipment');
     const deptChips = document.getElementById('directory-category-chips');
+    const projChips = document.getElementById('directory-client-project-chips');
 
     // Reset all tabs
     [
       { btn: empBtn, badgeId: 'dir-emp-count-badge' },
-      { btn: clientBtn, badgeId: 'dir-client-count-badge' },
-      { btn: eqBtn, badgeId: 'dir-equipment-count-badge' }
+      { btn: clientBtn, badgeId: 'dir-client-count-badge' }
     ].forEach(({ btn, badgeId }) => {
       if (!btn) return;
       btn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
@@ -4728,24 +4735,80 @@ const App = {
         const c = empBtn.querySelector('#dir-emp-count-badge');
         if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
       }
-      if (deptChips) deptChips.style.display = 'flex';
+      if (deptChips) {
+        deptChips.classList.remove('hidden');
+        deptChips.style.display = 'flex';
+      }
+      if (projChips) {
+        projChips.classList.add('hidden');
+        projChips.style.display = 'none';
+      }
     } else if (tab === 'client') {
       if (clientBtn) {
         clientBtn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
         const c = clientBtn.querySelector('#dir-client-count-badge');
         if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
       }
-      if (deptChips) deptChips.style.display = 'none';
-    } else if (tab === 'equipment') {
-      if (eqBtn) {
-        eqBtn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
-        const c = eqBtn.querySelector('#dir-equipment-count-badge');
-        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
+      if (deptChips) {
+        deptChips.classList.add('hidden');
+        deptChips.style.display = 'none';
       }
-      if (deptChips) deptChips.style.display = 'none';
+      if (projChips) {
+        projChips.classList.remove('hidden');
+        projChips.style.display = 'flex';
+      }
     }
 
     this.renderDirectory();
+  },
+
+  cleanProjectName(c) {
+    let p = (c.company || c.site || '기타 / 미지정').replace(/\s*\(s_[^)]+\)/g, '').trim();
+    if (!p || p === '()') p = '기타 / 미지정';
+    return p;
+  },
+
+  setClientProjectCategory(projName) {
+    this.state.clientProjectCategory = projName;
+    this.renderDirectory();
+  },
+
+  renderDirectoryClientProjectChips(clientList) {
+    const chipContainer = document.getElementById('directory-client-project-chips');
+    if (!chipContainer) return;
+
+    const counts = {};
+    clientList.forEach(c => {
+      const p = this.cleanProjectName(c);
+      counts[p] = (counts[p] || 0) + 1;
+    });
+
+    const cur = this.state.clientProjectCategory || 'all';
+    const sortedProjects = Object.keys(counts).sort((a, b) => {
+      if (counts[b] !== counts[a]) return counts[b] - counts[a];
+      return a.localeCompare(b);
+    });
+
+    const allActive = cur === 'all';
+    let html = `
+      <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95 flex items-center gap-1 shrink-0 ${allActive ? 'bg-primary text-white shadow-xs' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-highest'}" onclick="App.setClientProjectCategory('all')">
+        <span>전체</span>
+        <span class="px-1.5 py-0.2 rounded-full text-[10px] ${allActive ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}">${clientList.length}</span>
+      </button>
+    `;
+
+    sortedProjects.forEach(proj => {
+      const isActive = cur === proj;
+      const count = counts[proj];
+      html += `
+        <button class="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95 flex items-center gap-1 shrink-0 ${isActive ? 'bg-primary text-white shadow-xs' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-highest'}" onclick="App.setClientProjectCategory('${esc(proj)}')">
+          <span class="max-w-[130px] truncate" title="${esc(proj)}">${esc(proj)}</span>
+          <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}">${count}</span>
+        </button>
+      `;
+    });
+
+    chipContainer.innerHTML = html;
   },
 
   renderDirectory() {
@@ -4763,7 +4826,16 @@ const App = {
     if (this.state.directoryMainTab === 'client') {
       const clientList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.clientContacts) || [];
       const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
+      const projFilter = this.state.clientProjectCategory || 'all';
+
+      // 상단 고객사 프로젝트 칩 렌더
+      this.renderDirectoryClientProjectChips(clientList);
+
       const filteredClients = clientList.filter(c => {
+        const projName = this.cleanProjectName(c);
+        const matchProj = (projFilter === 'all') || (projName === projFilter);
+        if (!matchProj) return false;
+
         if (!query) return true;
         return (c.name && c.name.toLowerCase().includes(query)) ||
                (c.title && c.title.toLowerCase().includes(query)) ||
@@ -4788,7 +4860,7 @@ const App = {
             <svg class="w-10 h-10 text-outline mb-2 mx-auto" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h9.49c-.31-.62-.49-1.29-.49-2 0-1.5.68-2.84 1.75-3.75C13.88 14.1 12.87 14 12 14zm8.5 0a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm-1.5 5.5v-2h1.5v2h-1.5zm0 1.5h1.5v1.5h-1.5z"/>
             </svg>
-            <p>검색 조건에 맞는 고객사 담당자가 없습니다.</p>
+            <p>선택한 프로젝트 또는 검색 조건에 맞는 고객사 담당자가 없습니다.</p>
           </div>
         `;
         return;
@@ -4799,6 +4871,8 @@ const App = {
         const displayTitle = c.title || '담당자';
         const initial = displayName.charAt(0);
         const contactPhone = c.mobile || c.phone || c.tel || '';
+        const projTitle = this.cleanProjectName(c);
+
         return `
           <div class="p-4 bg-surface-container-lowest rounded-2xl border border-outline/70 shadow-xs flex items-center justify-between gap-3">
             <div class="flex items-center gap-3 min-w-0 flex-1">
@@ -4811,7 +4885,7 @@ const App = {
                   <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary shrink-0">${displayTitle}</span>
                   ${c.author ? `<span class="px-1.5 py-0.2 text-[9px] font-medium bg-surface-container text-on-surface-variant rounded shrink-0">담당: ${c.author}</span>` : ''}
                 </div>
-                <p class="text-xs text-primary font-semibold truncate mt-0.5" title="${c.company || c.site || '고객사'}">${c.company || c.site || '고객사'}</p>
+                <p class="text-xs text-primary font-semibold truncate mt-0.5" title="${projTitle}">${projTitle}</p>
                 <p class="text-[11px] text-on-surface-variant/80 truncate mt-0.5">${contactPhone || '-'}${c.email ? ` · ${c.email}` : ''}</p>
               </div>
             </div>
@@ -4826,81 +4900,6 @@ const App = {
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                 </a>
               ` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
-      return;
-    }
-
-    // 2. 사내 비품 / 자산 대장 탭 분기
-    if (this.state.directoryMainTab === 'equipment') {
-      const eqList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.equipment) || [];
-      const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
-      const filteredEq = eqList.filter(item => {
-        if (!query) return true;
-        const subj = (item.subject || '').toLowerCase();
-        const author = (item.author || '').toLowerCase();
-        const user = (item.user || '').toLowerCase();
-        const team = (item.team || '').toLowerCase();
-        const code = (item.code || '').toLowerCase();
-        const content = (item.content || '').toLowerCase();
-        return subj.includes(query) || author.includes(query) || user.includes(query) || team.includes(query) || code.includes(query) || content.includes(query);
-      });
-
-      if (totalCountEl) totalCountEl.textContent = `${filteredEq.length}건`;
-      const eqCountBadge = document.getElementById('dir-equipment-count-badge');
-      if (eqCountBadge) eqCountBadge.textContent = eqList.length;
-
-      if (!filteredEq.length) {
-        container.innerHTML = `
-          <div class="p-8 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline-variant/15">
-            ${getSvgIcon('folder', 'w-10 h-10 text-outline mb-2 mx-auto')}
-            <p class="font-bold text-sm text-on-surface">검색 조건에 맞는 비품 또는 자산 내역이 없습니다.</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = filteredEq.map(item => {
-        const itemId = item.wr_id || item.id || '';
-        const title = item.subject || '사내 비품';
-        const user = item.user || item.author || '-';
-        const team = item.team || '전사공용';
-        const code = item.code || '-';
-        const status = item.status || '사용중';
-        const acquireDate = item.acquireDate || item.date || '-';
-        const isUsing = status === '사용중' || status === '정상';
-        const statusBadgeClass = isUsing
-          ? 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20'
-          : 'bg-surface-container text-on-surface-variant border-outline-variant/20';
-
-        const snippet = (item.content || '').replace(/\s+/g, ' ').trim().slice(0, 60);
-
-        return `
-          <div class="p-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-xs flex flex-col justify-between gap-2.5 active:scale-[0.99] transition-transform cursor-pointer" onclick="App.openExtendedDetail('equipment', '${itemId}')">
-            <div class="flex items-start justify-between gap-2">
-              <div class="flex items-center gap-1.5">
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${statusBadgeClass}">${status}</span>
-                <span class="text-[11px] font-mono font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded">${code}</span>
-              </div>
-              <span class="text-[11px] font-mono text-on-surface-variant">${acquireDate}</span>
-            </div>
-            <div>
-              <h4 class="font-headline font-bold text-sm text-on-surface line-clamp-2">${title}</h4>
-              <p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed mt-1">${snippet || '터치하여 구매처, 금액, 사양 및 상세 메모를 확인하세요.'}</p>
-            </div>
-            <div class="pt-2 border-t border-outline-variant/10 flex items-center justify-between text-xs text-on-surface-variant">
-              <div class="flex items-center gap-1">
-                ${getSvgIcon('person', 'w-3.5 h-3.5 text-outline')}
-                <strong class="text-on-surface">${user}</strong>
-                <span class="text-outline">·</span>
-                <span>${team}</span>
-              </div>
-              <span class="text-xs font-bold text-primary flex items-center gap-0.5">
-                상세보기
-                ${getSvgIcon('chevron_right', 'w-3.5 h-3.5')}
-              </span>
             </div>
           </div>
         `;

@@ -19,6 +19,8 @@ const iconv = require('iconv-lite');
 const { execSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
+// --pages=N : 목록 수집 페이지 수 (기본 10페이지 ≈ 150건, 전수는 --pages=140)
+const LIST_PAGES = Number((process.argv.find((a) => a.startsWith('--pages=')) || '').split('=')[1]) || 10;
 
 // 1. .env 환경변수 파싱
 function loadEnv() {
@@ -131,9 +133,10 @@ async function main() {
   const cookieHeader = await login(baseUrl, mb_id, mb_password);
   console.log('✅ [1/4] 로그인 성공! 세션 획득 완료');
 
-  console.log('📥 [2/4] 최근 10페이지(약 150건) 목록 수집 중...');
+  console.log(`📥 [2/4] 목록 ${LIST_PAGES}페이지 수집 중...`);
   const posts = [];
-  for (let page = 1; page <= 10; page++) {
+  let emptyStreak = 0;
+  for (let page = 1; page <= LIST_PAGES; page++) {
     const listRes = await fetch(`${baseUrl}/html/board/bbs/board.php?bo_table=wc_team_skedule&page=${page}`, {
       headers: { Cookie: cookieHeader }
     });
@@ -187,7 +190,9 @@ async function main() {
   // 4-2. data/mockData.js 내 MockData.teamWorkReportsData 저장
   const mockDataPath = path.join(ROOT, 'data', 'mockData.js');
   let mockContent = fs.readFileSync(mockDataPath, 'utf8');
-  const jsonString = JSON.stringify(posts, null, 2);
+  // 앱(mockData)에는 최근 300건만 주입해 페이로드를 보호한다. 전량은 _legacy/team_schedules.json에 보존.
+  const recentPosts = posts.slice(0, 300);
+  const jsonString = JSON.stringify(recentPosts, null, 2);
 
   if (mockContent.includes('teamWorkReportsData: [')) {
     mockContent = mockContent.replace(
@@ -202,7 +207,7 @@ async function main() {
   }
 
   fs.writeFileSync(mockDataPath, mockContent, 'utf8');
-  console.log(`  - ${mockDataPath} (MockData.teamWorkReportsData ${posts.length}건 동기화 완료)`);
+  console.log(`  - ${mockDataPath} (MockData.teamWorkReportsData 최근 ${recentPosts.length}건 동기화, 마스터 ${posts.length}건)`);
 
   // 4-3. Firestore 시드 빌드 실행
   try {

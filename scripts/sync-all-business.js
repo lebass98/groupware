@@ -266,20 +266,8 @@ async function main() {
     fs.mkdirSync(LEGACY_DIR, { recursive: true });
   }
 
-  // 1. cardncash (경비지출내역)
-  console.log('📥 [2/16] 1. 경비지출내역 (cardncash) 수집 중...');
-  const expensesList = await crawlBoard('cardncash', cookie, 10);
-  await enrichItemsWithDetails(expensesList, 'cardncash', cookie, 100);
-  expensesList.forEach(item => {
-    if (item.meta) {
-      item.amount = item.meta['금액'] || item.amount || '';
-      item.receipt = item.meta['증빙서류'] || item.receipt || '';
-      item.payDate = item.meta['지출일'] || item.date;
-      item.payType = item.meta['지출유형'] || item.category;
-    }
-  });
-  fs.writeFileSync(path.join(LEGACY_DIR, 'expenses.json'), JSON.stringify(expensesList, null, 2));
-  console.log(`✅ [2/16] 경비지출내역: ${expensesList.length}건 (상세 포함) 수집 완료`);
+  // 1. cardncash (경비지출내역) — 전용 크롤러(sync-expenses.js --pages=215)가 3,223건 전수를 관리하므로 건너뛴다.
+  console.log('⏭️  [2/16] 1. 경비지출내역: 전용 크롤러(node scripts/sync-expenses.js)에 위임 (기존 마스터 보존)');
 
   // 2. report_weekly (전사 주간회의록) & report_teamcap (팀장 전용)
   console.log('📥 [3/16] 2-3. 주간회의록 & 팀장보고 (report_weekly, report_teamcap) 수집 중...');
@@ -291,50 +279,19 @@ async function main() {
   fs.writeFileSync(path.join(LEGACY_DIR, 'teamcap_reports.json'), JSON.stringify(teamcapReports, null, 2));
   console.log(`✅ [3/16] 주간회의록: ${weeklyReports.length}건, 팀장보고: ${teamcapReports.length}건 (상세 포함) 수집 완료`);
 
-  // 4. equipment (사내 비품/자산 대장)
-  console.log('📥 [4/16] 4. 사내 비품/자산 대장 (equipment) 수집 중...');
-  const equipmentList = await crawlBoard('equipment', cookie, 8);
-  await enrichItemsWithDetails(equipmentList, 'equipment', cookie, 120);
-  equipmentList.forEach(item => {
-    if (item.meta) {
-      item.code = item.meta['비품코드'] || `EQ-${item.wr_id}`;
-      item.user = item.meta['사용자'] || item.author;
-      item.team = item.meta['사용팀'] || '';
-      item.status = item.meta['현재 사용여부'] || '사용중';
-      item.acquireDate = item.meta['취득일'] || item.date;
-    }
-  });
-  fs.writeFileSync(path.join(LEGACY_DIR, 'equipment.json'), JSON.stringify(equipmentList, null, 2));
-  console.log(`✅ [4/16] 사내 비품 대장: ${equipmentList.length}건 (상세 포함) 수집 완료`);
+  // 4. equipment (사내 비품/자산 대장) — 전용 크롤러(sync-equipment.js)가 106건 전수를 관리하므로 건너뛴다.
+  console.log('⏭️  [4/16] 4. 사내 비품/자산 대장: 전용 크롤러(node scripts/sync-equipment.js)에 위임 (기존 마스터 보존)');
 
-  // 5. contract (계약서 관리 대장)
-  console.log('📥 [5/16] 5. 계약서 관리 대장 (contract) 수집 중...');
-  const contractList = await crawlBoard('contract', cookie, 10);
-  await enrichItemsWithDetails(contractList, 'contract', cookie, 150);
-  contractList.forEach(item => {
-    if (item.meta) {
-      item.contractDate = item.meta['계약일'] || item.date;
-      item.totalAmount = item.meta['계약총액'] || '';
-      item.contractType = item.meta['계약유형'] || '기타';
-    }
-  });
-  fs.writeFileSync(path.join(LEGACY_DIR, 'contracts.json'), JSON.stringify(contractList, null, 2));
-  console.log(`✅ [5/16] 계약서 관리 대장: ${contractList.length}건 (상세 및 원본다운로드 링크 포함) 수집 완료`);
+  // 5. contract (계약서 관리 대장) — 전용 크롤러(sync-contracts.js)가 941건 전수+금액을 관리하므로 건너뛴다.
+  console.log('⏭️  [5/16] 5. 계약서 관리 대장: 전용 크롤러(node scripts/sync-contracts.js)에 위임 (기존 마스터 보존)');
 
-  // 6. estimate & project (견적/제안)
-  console.log('📥 [6/16] 6. 견적/제안 내역 (estimate, project) 수집 중...');
-  const estimateList = await crawlBoard('estimate', cookie, 2);
-  await enrichItemsWithDetails(estimateList, 'estimate', cookie, 50);
-  const projectProposals = (await crawlBoard('project', cookie, 5)).filter(p => p.subject.includes('견적') || p.subject.includes('제안') || p.subject.includes('계약'));
-  await enrichItemsWithDetails(projectProposals, 'project', cookie, 50);
-  const allEstimates = [...estimateList, ...projectProposals];
-  fs.writeFileSync(path.join(LEGACY_DIR, 'estimates.json'), JSON.stringify(allEstimates, null, 2));
-  console.log(`✅ [6/16] 견적 및 제안서: ${allEstimates.length}건 (상세 포함) 수집 완료`);
+  // 6. estimate & project (견적/제안) — 전용 크롤러(sync-planning-estimates.js)가 850건 전수를 관리하므로 건너뛴다.
+  console.log('⏭️  [6/16] 6. 견적/제안 내역: 전용 크롤러(node scripts/sync-planning-estimates.js)에 위임 (기존 마스터 보존)');
 
   // 7. com_reg (고객사 사업자정보 대장)
   console.log('📥 [7/16] 7. 고객사 사업자정보 (com_reg) 수집 중...');
-  const comRegList = await crawlBoard('com_reg', cookie, 10);
-  await enrichItemsWithDetails(comRegList, 'com_reg', cookie, 50);
+  const comRegList = await crawlBoard('com_reg', cookie, 85);
+  await enrichItemsWithDetails(comRegList, 'com_reg', cookie, 1250);
   fs.writeFileSync(path.join(LEGACY_DIR, 'client_companies.json'), JSON.stringify(comRegList, null, 2));
   console.log(`✅ [7/16] 고객사 사업자정보: ${comRegList.length}건 (상세 포함) 수집 완료`);
 
@@ -342,7 +299,7 @@ async function main() {
   console.log('📥 [8/16] 8. 고객사 담당자 명함첩 (wc_pic) 정밀 수집 중...');
   const clientContacts = [];
   const seenPicIds = new Set();
-  for (let page = 1; page <= 25; page++) {
+  for (let page = 1; page <= 70; page++) {
     const pUrl = `${BASE_URL}/html/board/bbs/board.php?bo_table=wc_pic&page=${page}`;
     const pHtml = await fetchPage(pUrl, cookie);
     if (!pHtml || pHtml.includes('존재하지 않는 게시판')) break;
@@ -454,7 +411,7 @@ async function main() {
   console.log('📥 [10/16] 10. 서버/호스팅 인프라 (wc_server, wc_hosting) 정밀 수집 중...');
   const allServers = [];
   const seenServerIds = new Set();
-  for (let page = 1; page <= 15; page++) {
+  for (let page = 1; page <= 30; page++) {
     const pUrl = `${BASE_URL}/html/board/bbs/board.php?bo_table=wc_server&page=${page}`;
     const pHtml = await fetchPage(pUrl, cookie);
     if (!pHtml || pHtml.includes('존재하지 않는 게시판')) break;
@@ -497,7 +454,7 @@ async function main() {
     });
     if (count === 0) break;
   }
-  await enrichItemsWithDetails(allServers, 'wc_server', cookie, 225);
+  await enrichItemsWithDetails(allServers, 'wc_server', cookie, 420);
   fs.writeFileSync(path.join(LEGACY_DIR, 'servers.json'), JSON.stringify(allServers, null, 2));
   console.log(`✅ [10/16] 서버/호스팅: ${allServers.length}건 (상세 IP/PW/계정 포함) 수집 완료`);
 
@@ -505,7 +462,7 @@ async function main() {
   console.log('📥 [11/16] 11. 프로젝트 URL 모음 (wc_url) 정밀 수집 중...');
   const projectUrls = [];
   const seenUrlIds = new Set();
-  for (let page = 1; page <= 15; page++) {
+  for (let page = 1; page <= 60; page++) {
     const pUrl = `${BASE_URL}/html/board/bbs/board.php?bo_table=wc_url&page=${page}`;
     const pHtml = await fetchPage(pUrl, cookie);
     if (!pHtml || pHtml.includes('존재하지 않는 게시판')) break;
@@ -544,21 +501,21 @@ async function main() {
     });
     if (count === 0) break;
   }
-  await enrichItemsWithDetails(projectUrls, 'wc_url', cookie, 225);
+  await enrichItemsWithDetails(projectUrls, 'wc_url', cookie, 820);
   fs.writeFileSync(path.join(LEGACY_DIR, 'project_urls.json'), JSON.stringify(projectUrls, null, 2));
   console.log(`✅ [11/16] 프로젝트 URL: ${projectUrls.length}건 (상세 포함) 수집 완료`);
 
   // 12. wc_storyboard (기획 스토리보드)
   console.log('📥 [12/16] 12. 기획 스토리보드 (wc_storyboard) 수집 중...');
-  const storyboards = await crawlBoard('wc_storyboard', cookie, 2);
-  await enrichItemsWithDetails(storyboards, 'wc_storyboard', cookie, 10);
+  const storyboards = await crawlBoard('wc_storyboard', cookie, 5);
+  await enrichItemsWithDetails(storyboards, 'wc_storyboard', cookie, 60);
   fs.writeFileSync(path.join(LEGACY_DIR, 'storyboards.json'), JSON.stringify(storyboards, null, 2));
   console.log(`✅ [12/16] 기획 스토리보드: ${storyboards.length}건 (상세 파일/내용 포함) 수집 완료`);
 
   // 13. wc_source, programming, pds (개발 자료 및 자료실)
   console.log('📥 [13/16] 13. 개발 자료 & 자료실 (wc_source, programming, pds) 수집 중...');
   const devSources = await crawlBoard('wc_source', cookie, 2);
-  const devProgramming = await crawlBoard('programming', cookie, 3);
+  const devProgramming = await crawlBoard('programming', cookie, 5);
   const pdsList = await crawlBoard('pds', cookie, 2);
   const allPds = [
     ...devSources.map(s => ({ ...s, pdsType: 'source' })),
@@ -573,8 +530,8 @@ async function main() {
 
   // 14. meeting (고객사 미팅 회의록)
   console.log('📥 [14/16] 14. 고객사 미팅 회의록 (meeting) 수집 중...');
-  const meetings = await crawlBoard('meeting', cookie, 3);
-  await enrichItemsWithDetails(meetings, 'meeting', cookie, 45);
+  const meetings = await crawlBoard('meeting', cookie, 6);
+  await enrichItemsWithDetails(meetings, 'meeting', cookie, 70);
   fs.writeFileSync(path.join(LEGACY_DIR, 'meetings.json'), JSON.stringify(meetings, null, 2));
   console.log(`✅ [14/16] 고객사 미팅 회의록: ${meetings.length}건 (상세 회의록 포함) 수집 완료`);
 
@@ -588,8 +545,9 @@ async function main() {
     ...issues.map(i => ({ ...i, issueType: 'issue' })),
     ...teamwork.map(t => ({ ...t, issueType: 'teamwork' }))
   ];
-  fs.writeFileSync(path.join(LEGACY_DIR, 'issues.json'), JSON.stringify(allIssues, null, 2));
-  console.log(`✅ [15/16] 팀 협업 및 이슈: ${allIssues.length}건 (상세 포함) 수집 완료`);
+  // 주의: issues.json은 업무지원 요청(todo 75건, sync-issues.js) 마스터이므로 덮어쓰지 않고 별도 파일에 저장한다.
+  fs.writeFileSync(path.join(LEGACY_DIR, 'teamwork_issues.json'), JSON.stringify(allIssues, null, 2));
+  console.log(`✅ [15/16] 팀 협업 및 이슈(팀별이슈+팀웍): ${allIssues.length}건 → teamwork_issues.json (상세 포함) 수집 완료`);
 
   // +@. toBeOrNotToBe (자리배치도 상황판 34석)
   console.log('📥 [16/16] +@. 워드앤코드 자리배치도 상황판 (toBeOrNotToBe) 수집 중...');
@@ -629,12 +587,13 @@ function updateMockData() {
   let content = fs.readFileSync(mockPath, 'utf8');
 
   // Load new JSONs
-  const expenses = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'expenses.json'), 'utf8'));
+  const asArray = (x, key) => (Array.isArray(x) ? x : (x && Array.isArray(x[key]) ? x[key] : []));
+  const expenses = asArray(JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'expenses.json'), 'utf8')), 'records');
   const weeklyReports = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'weekly_reports.json'), 'utf8'));
   const teamcapReports = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'teamcap_reports.json'), 'utf8'));
-  const equipment = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'equipment.json'), 'utf8'));
-  const contracts = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'contracts.json'), 'utf8'));
-  const estimates = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'estimates.json'), 'utf8'));
+  const equipment = asArray(JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'equipment.json'), 'utf8')), 'items');
+  const contracts = asArray(JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'contracts.json'), 'utf8')), 'contracts');
+  const estimates = asArray(JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'estimates.json'), 'utf8')), 'estimates');
   const clientCompanies = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'client_companies.json'), 'utf8'));
   const clientContacts = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'client_contacts.json'), 'utf8'));
   const domains = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'domains.json'), 'utf8'));
@@ -643,7 +602,9 @@ function updateMockData() {
   const storyboards = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'storyboards.json'), 'utf8'));
   const pds = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'pds.json'), 'utf8'));
   const meetings = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'meetings.json'), 'utf8'));
-  const issues = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'issues.json'), 'utf8'));
+  const issues = asArray(JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'issues.json'), 'utf8')), 'issues');
+  const teamworkIssuesPath = path.join(LEGACY_DIR, 'teamwork_issues.json');
+  const teamworkIssues = fs.existsSync(teamworkIssuesPath) ? JSON.parse(fs.readFileSync(teamworkIssuesPath, 'utf8')) : [];
   const seating = JSON.parse(fs.readFileSync(path.join(LEGACY_DIR, 'seating.json'), 'utf8'));
 
   const extendedData = {
@@ -662,6 +623,7 @@ function updateMockData() {
     pds,
     meetings,
     issues,
+    teamworkIssues,
     seating
   };
 
