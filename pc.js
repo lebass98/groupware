@@ -804,7 +804,7 @@ const PCApp = {
         // 정적 호스팅(GitHub Pages)에는 중계가 없다. 대신 같은 크롤링을 돌리는
         // GitHub Actions 워크플로로 안내한다(매일 오전 9시 자동 실행 + 수동 실행).
         status.innerHTML = '이 환경에서는 중계 서버가 없어 직접 실행할 수 없습니다. '
-          + '매일 오전 9시에 자동 동기화되며, 지금 바로 받으려면 '
+          + '매일 오전 8시에 자동 동기화되며, 지금 바로 받으려면 '
           + '<a href="https://github.com/lebass98/groupware/actions/workflows/sync-attendance.yml" target="_blank" rel="noopener" class="text-primary font-bold underline">GitHub Actions에서 수동 실행</a>'
           + '하세요.';
       }

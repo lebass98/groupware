@@ -10,8 +10,9 @@ name: 근태일지 자동 크롤링
 
 on:
   schedule:
-    # 매일 오전 9시(KST). GitHub Actions는 UTC 기준이라 00:00 UTC로 적는다.
-    - cron: '0 0 * * *'
+    # 매일 오전 8시(KST). GitHub Actions는 UTC 기준이라 전날 23:00 UTC로 적는다.
+    # (KST = UTC+9 이므로 08:00 KST - 9시간 = 23:00 UTC)
+    - cron: '0 23 * * *'
   workflow_dispatch:
     inputs:
       year:
