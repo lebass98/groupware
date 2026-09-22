@@ -5877,7 +5877,7 @@ const PCApp = {
     }
 
     modalBody.innerHTML = `
-      <div class="flex flex-col max-h-[85vh] text-left">
+      <div class="flex flex-col max-h-[85vh] text-left ext-detail-scope">
         <!-- Header -->
         <div class="flex items-start justify-between pb-4 border-b border-outline shrink-0">
           <div>

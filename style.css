@@ -37,10 +37,10 @@
   --shadow-md: 0 8px 24px rgba(51, 52, 54, 0.06);
   --shadow-lg: 0 16px 36px rgba(3, 70, 255, 0.15);
 
-  --radius-sm: 0.75rem;
-  --radius-md: 1.25rem;
-  --radius-lg: 2rem;
-  --radius-xl: 3rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.125rem;
   --radius-full: 9999px;
 }
 
@@ -2188,3 +2188,12 @@ body.dark .attend-cal-legend { border-top-color: rgba(255, 255, 255, 0.08); }
   font-weight: 600;
   color: var(--on-surface-variant);
 }
+
+/* =========================================================
+   확장 상세 모달(계약서·견적·도메인 등 8종 공통) 모서리 완화
+   기본 카드/항목의 라운딩이 과해 보인다는 요청에 따라, 이 모달 범위에서만
+   반경을 줄인다. ID 스코프라 앱의 나머지 라운딩은 그대로 보존된다.
+   ========================================================= */
+#extended-detail-content .rounded-2xl { border-radius: 0.6rem; }
+#extended-detail-content .rounded-xl { border-radius: 0.45rem; }
+#extended-detail-content .rounded-lg { border-radius: 0.35rem; }

@@ -43,10 +43,10 @@
 
   /* Radius */
   --radius-xs: 8px;
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 26px;
-  --radius-xl: 36px;
+  --radius-sm: 8px;
+  --radius-md: 11px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
 }
 
 [data-theme="dark"] {
@@ -2225,3 +2225,11 @@ svg.w-8 {
   font-weight: 600;
   color: var(--on-surface-variant);
 }
+
+/* =========================================================
+   확장 상세 모달(계약서·견적·도메인 등 8종 공통) 모서리 완화
+   .ext-detail-scope 범위에서만 반경을 줄여, 다른 화면 라운딩은 보존한다.
+   ========================================================= */
+.ext-detail-scope .rounded-2xl { border-radius: 0.6rem; }
+.ext-detail-scope .rounded-xl { border-radius: 0.45rem; }
+.ext-detail-scope .rounded-lg { border-radius: 0.4rem; }
