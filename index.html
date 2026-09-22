@@ -1229,15 +1229,19 @@
         <!-- Monthly Birthday Highlight Banner Container -->
         <div id="directory-birthday-banner-container" class="space-y-3"></div>
 
-        <!-- 주소록 메인 구분 탭: 직원 / 고객사 -->
-        <div class="flex items-center gap-2 p-1 bg-surface-container rounded-2xl" id="directory-main-tabs">
-          <button id="dir-main-tab-employee" class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all" onclick="App.switchDirectoryMainTab('employee')">
+        <!-- 주소록 메인 구분 탭: 직원 / 고객사 / 비품 대장 -->
+        <div class="flex items-center gap-2 p-1 bg-surface-container rounded-2xl overflow-x-auto scrollbar-hide" id="directory-main-tabs">
+          <button id="dir-main-tab-employee" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0" onclick="App.switchDirectoryMainTab('employee')">
             <span>직원</span>
             <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white" id="dir-emp-count-badge">21</span>
           </button>
-          <button id="dir-main-tab-client" class="flex-1 py-2.5 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all" onclick="App.switchDirectoryMainTab('client')">
+          <button id="dir-main-tab-client" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0" onclick="App.switchDirectoryMainTab('client')">
             <span>고객사</span>
             <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary" id="dir-client-count-badge">375</span>
+          </button>
+          <button id="dir-main-tab-equipment" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0" onclick="App.switchDirectoryMainTab('equipment')">
+            <span>비품 대장</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary" id="dir-equipment-count-badge">106</span>
           </button>
         </div>
 

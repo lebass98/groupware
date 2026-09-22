@@ -4587,33 +4587,44 @@ const App = {
     this.state.directoryMainTab = tab;
     const empBtn = document.getElementById('dir-main-tab-employee');
     const clientBtn = document.getElementById('dir-main-tab-client');
+    const eqBtn = document.getElementById('dir-main-tab-equipment');
     const deptChips = document.getElementById('directory-category-chips');
+
+    // Reset all tabs
+    [
+      { btn: empBtn, badgeId: 'dir-emp-count-badge' },
+      { btn: clientBtn, badgeId: 'dir-client-count-badge' },
+      { btn: eqBtn, badgeId: 'dir-equipment-count-badge' }
+    ].forEach(({ btn, badgeId }) => {
+      if (!btn) return;
+      btn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+      const c = btn.querySelector(`#${badgeId}`);
+      if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary';
+    });
 
     if (tab === 'employee') {
       if (empBtn) {
-        empBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all';
+        empBtn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
         const c = empBtn.querySelector('#dir-emp-count-badge');
         if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
       }
-      if (clientBtn) {
-        clientBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all';
-        const c = clientBtn.querySelector('#dir-client-count-badge');
-        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary';
-      }
       if (deptChips) deptChips.style.display = 'flex';
-    } else {
-      if (empBtn) {
-        empBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all';
-        const c = empBtn.querySelector('#dir-emp-count-badge');
-        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary';
-      }
+    } else if (tab === 'client') {
       if (clientBtn) {
-        clientBtn.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all';
+        clientBtn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
         const c = clientBtn.querySelector('#dir-client-count-badge');
         if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
       }
       if (deptChips) deptChips.style.display = 'none';
+    } else if (tab === 'equipment') {
+      if (eqBtn) {
+        eqBtn.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0';
+        const c = eqBtn.querySelector('#dir-equipment-count-badge');
+        if (c) c.className = 'px-1.5 py-0.5 rounded-full text-[10px] bg-white/20 text-white';
+      }
+      if (deptChips) deptChips.style.display = 'none';
     }
+
     this.renderDirectory();
   },
 
@@ -4702,7 +4713,82 @@ const App = {
       return;
     }
 
-    // 2. 직원 주소록 탭 (21명 임직원)
+    // 2. 사내 비품 / 자산 대장 탭 분기
+    if (this.state.directoryMainTab === 'equipment') {
+      const eqList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.equipment) || [];
+      const query = (document.getElementById('directory-search-input')?.value || '').toLowerCase().trim();
+      const filteredEq = eqList.filter(item => {
+        if (!query) return true;
+        const subj = (item.subject || '').toLowerCase();
+        const author = (item.author || '').toLowerCase();
+        const user = (item.user || '').toLowerCase();
+        const team = (item.team || '').toLowerCase();
+        const code = (item.code || '').toLowerCase();
+        const content = (item.content || '').toLowerCase();
+        return subj.includes(query) || author.includes(query) || user.includes(query) || team.includes(query) || code.includes(query) || content.includes(query);
+      });
+
+      if (totalCountEl) totalCountEl.textContent = `${filteredEq.length}건`;
+      const eqCountBadge = document.getElementById('dir-equipment-count-badge');
+      if (eqCountBadge) eqCountBadge.textContent = eqList.length;
+
+      if (!filteredEq.length) {
+        container.innerHTML = `
+          <div class="p-8 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline-variant/15">
+            ${getSvgIcon('folder', 'w-10 h-10 text-outline mb-2 mx-auto')}
+            <p class="font-bold text-sm text-on-surface">검색 조건에 맞는 비품 또는 자산 내역이 없습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filteredEq.map(item => {
+        const itemId = item.wr_id || item.id || '';
+        const title = item.subject || '사내 비품';
+        const user = item.user || item.author || '-';
+        const team = item.team || '전사공용';
+        const code = item.code || '-';
+        const status = item.status || '사용중';
+        const acquireDate = item.acquireDate || item.date || '-';
+        const isUsing = status === '사용중' || status === '정상';
+        const statusBadgeClass = isUsing
+          ? 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20'
+          : 'bg-surface-container text-on-surface-variant border-outline-variant/20';
+
+        const snippet = (item.content || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+
+        return `
+          <div class="p-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-xs flex flex-col justify-between gap-2.5 active:scale-[0.99] transition-transform cursor-pointer" onclick="App.openExtendedDetail('equipment', '${itemId}')">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${statusBadgeClass}">${status}</span>
+                <span class="text-[11px] font-mono font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded">${code}</span>
+              </div>
+              <span class="text-[11px] font-mono text-on-surface-variant">${acquireDate}</span>
+            </div>
+            <div>
+              <h4 class="font-headline font-bold text-sm text-on-surface line-clamp-2">${title}</h4>
+              <p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed mt-1">${snippet || '터치하여 구매처, 금액, 사양 및 상세 메모를 확인하세요.'}</p>
+            </div>
+            <div class="pt-2 border-t border-outline-variant/10 flex items-center justify-between text-xs text-on-surface-variant">
+              <div class="flex items-center gap-1">
+                ${getSvgIcon('person', 'w-3.5 h-3.5 text-outline')}
+                <strong class="text-on-surface">${user}</strong>
+                <span class="text-outline">·</span>
+                <span>${team}</span>
+              </div>
+              <span class="text-xs font-bold text-primary flex items-center gap-0.5">
+                상세보기
+                ${getSvgIcon('chevron_right', 'w-3.5 h-3.5')}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+      return;
+    }
+
+    // 3. 직원 주소록 탭 (21명 임직원)
     // Ensure employees list is always loaded
     if (!this.state.employees || !this.state.employees.length) {
       this.state.employees = (window.MockData && window.MockData.employees) || [];
@@ -7763,7 +7849,8 @@ const App = {
       storyboard: 'storyboards',
       weekly_archive: 'weeklyReports',
       teamcap: 'teamcapReports',
-      meeting: 'meetings'
+      meeting: 'meetings',
+      equipment: 'equipment'
     };
     const list = ext[keyMap[tab]] || [];
     const item = list.find(i => String(i.wr_id || i.id) === String(id));
@@ -7784,7 +7871,8 @@ const App = {
       storyboard: '스토리보드 상세',
       weekly_archive: '주간회의록 상세',
       teamcap: '팀장보고 상세',
-      meeting: '미팅회의록 상세'
+      meeting: '미팅회의록 상세',
+      equipment: '비품/자산 상세'
     };
     if (titleEl) titleEl.textContent = titles[tab] || '상세 정보';
 

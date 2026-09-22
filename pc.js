@@ -2009,33 +2009,45 @@ const PCApp = {
     this.state.directoryMainTab = tab;
     const empBtn = document.getElementById('pc-dir-tab-employee');
     const clientBtn = document.getElementById('pc-dir-tab-client');
+    const eqBtn = document.getElementById('pc-dir-tab-equipment');
     const deptTabs = document.getElementById('pc-dir-dept-tabs');
 
+    // Reset all tabs to inactive
+    [
+      { btn: empBtn, countId: 'pc-dir-emp-count' },
+      { btn: clientBtn, countId: 'pc-dir-client-count' },
+      { btn: eqBtn, countId: 'pc-dir-equipment-count' }
+    ].forEach(({ btn, countId }) => {
+      if (!btn) return;
+      btn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2';
+      const c = btn.querySelector(`#${countId}`);
+      if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary';
+    });
+
+    // Activate selected tab
     if (tab === 'employee') {
       if (empBtn) {
         empBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
         const c = empBtn.querySelector('#pc-dir-emp-count');
         if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
       }
-      if (clientBtn) {
-        clientBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2';
-        const c = clientBtn.querySelector('#pc-dir-client-count');
-        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary';
-      }
       if (deptTabs) deptTabs.style.display = 'flex';
-    } else {
-      if (empBtn) {
-        empBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2';
-        const c = empBtn.querySelector('#pc-dir-emp-count');
-        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary';
-      }
+    } else if (tab === 'client') {
       if (clientBtn) {
         clientBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
         const c = clientBtn.querySelector('#pc-dir-client-count');
         if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
       }
       if (deptTabs) deptTabs.style.display = 'none';
+    } else if (tab === 'equipment') {
+      if (eqBtn) {
+        eqBtn.className = 'px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2';
+        const c = eqBtn.querySelector('#pc-dir-equipment-count');
+        if (c) c.className = 'px-2 py-0.5 rounded-full text-xs bg-white/20 text-white';
+      }
+      if (deptTabs) deptTabs.style.display = 'none';
     }
+
     this.renderDirectoryView();
   },
 
@@ -2173,7 +2185,82 @@ const PCApp = {
       return;
     }
 
-    // 2. 직원 주소록 탭 (기존 21명 조직도)
+    // 2. 사내 비품 / 자산 대장 탭 분기
+    if (this.state.directoryMainTab === 'equipment') {
+      const eqList = (window.MockData && window.MockData.extendedData && window.MockData.extendedData.equipment) || [];
+      const search = (this.state.directorySearch || '').trim().toLowerCase();
+      const filteredEq = eqList.filter(item => {
+        if (!search) return true;
+        const subj = (item.subject || '').toLowerCase();
+        const author = (item.author || '').toLowerCase();
+        const user = (item.user || '').toLowerCase();
+        const team = (item.team || '').toLowerCase();
+        const code = (item.code || '').toLowerCase();
+        const content = (item.content || '').toLowerCase();
+        return subj.includes(search) || author.includes(search) || user.includes(search) || team.includes(search) || code.includes(search) || content.includes(search);
+      });
+
+      const totalBadge = document.getElementById('pc-dir-total-badge');
+      if (totalBadge) totalBadge.textContent = `${filteredEq.length}건`;
+      const eqCountEl = document.getElementById('pc-dir-equipment-count');
+      if (eqCountEl) eqCountEl.textContent = eqList.length;
+
+      if (!filteredEq.length) {
+        container.innerHTML = `
+          <div class="col-span-full p-12 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline">
+            <svg class="w-12 h-12 text-outline mb-3 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>
+            </svg>
+            <p class="text-base font-medium">검색 조건에 맞는 비품 또는 자산 내역이 없습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filteredEq.map(item => {
+        const itemId = item.wr_id || item.id || '';
+        const title = item.subject || '사내 비품';
+        const user = item.user || item.author || '-';
+        const team = item.team || '전사공용';
+        const code = item.code || '-';
+        const status = item.status || '사용중';
+        const acquireDate = item.acquireDate || item.date || '-';
+        const isUsing = status === '사용중' || status === '정상';
+        const statusBadgeClass = isUsing
+          ? 'bg-[#00693f]/10 text-[#00693f] dark:text-emerald-300 border-[#00693f]/20'
+          : 'bg-surface-container text-on-surface-variant border-outline/30';
+
+        const snippet = (item.content || '').replace(/\s+/g, ' ').trim().slice(0, 75);
+
+        return `
+          <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all text-base flex flex-col justify-between cursor-pointer group" onclick="PCApp.openExtendedModal('equipment', '${itemId}')">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2.5">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${statusBadgeClass}">${status}</span>
+                <span class="text-xs font-mono font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">${code}</span>
+              </div>
+              <h4 class="font-bold text-base text-on-surface group-hover:text-primary transition-colors line-clamp-2 mb-2">${title}</h4>
+              <p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed mb-3">${snippet || '클릭하여 구매처, 금액, 사양 및 상세 메모를 확인하세요.'}</p>
+            </div>
+
+            <div class="pt-3 border-t border-outline/40 flex items-center justify-between text-xs text-on-surface-variant">
+              <div class="flex items-center gap-1.5 truncate mr-2">
+                <span class="font-bold text-on-surface flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5 text-outline" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                  <span>${user}</span>
+                </span>
+                <span class="text-outline">·</span>
+                <span class="truncate">${team}</span>
+              </div>
+              <span class="font-mono text-[11px] shrink-0">${acquireDate}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+      return;
+    }
+
+    // 3. 직원 주소록 탭 (기존 21명 조직도)
     const now = new Date();
     const curYear = now.getFullYear();
     const curMonth = now.getMonth() + 1;
@@ -5754,7 +5841,8 @@ const PCApp = {
       storyboard: 'storyboards',
       weekly_archive: 'weeklyReports',
       teamcap: 'teamcapReports',
-      meeting: 'meetings'
+      meeting: 'meetings',
+      equipment: 'equipment'
     };
     const list = ext[keyMap[tab]] || [];
     const item = list.find(i => String(i.wr_id || i.id) === String(id));
@@ -5781,7 +5869,8 @@ const PCApp = {
       storyboard: '기획 스토리보드 상세 정보',
       weekly_archive: '주간 업무 회의록 상세',
       teamcap: '팀장 보고서 상세',
-      meeting: '고객사 미팅 회의록 상세'
+      meeting: '고객사 미팅 회의록 상세',
+      equipment: '비품 및 사내 자산 상세 정보'
     };
 
     // 메타데이터 테이블 구성
