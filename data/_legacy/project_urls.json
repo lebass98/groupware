@@ -11,7 +11,17 @@
     "targetUrl": "https://mecenat.nisus.kr/main",
     "author": "장현아",
     "date": "2026-09-02",
-    "hit": "2"
+    "hit": "2",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "국외소재문화재재단 대국민 아카이브 s_overseaschf",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://overseaschf.or.kr/_fox/login.do (CMS 접속 주소)",
+      "아이디": "admin",
+      "암호": "okchf$#@!"
+    },
+    "comments": []
   },
   {
     "wr_id": "798",
@@ -25,7 +35,15 @@
     "targetUrl": "https://siwf.nisus.kr/ko/index.do",
     "author": "한상희",
     "date": "2026-05-14",
-    "hit": "3"
+    "hit": "3",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "국외소재문화재재단 대국민 아카이브 s_overseaschf",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://overseaschf.or.kr/archive/index.do (대국민 아카이브 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "797",
@@ -39,7 +57,17 @@
     "targetUrl": "https://diaspora.nisus.kr/index.do",
     "author": "고지연",
     "date": "2024-03-25",
-    "hit": "8"
+    "hit": "8",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "디아스포라 웹진 너머 s_diaspora",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://www.diasporabook.or.kr/intra/login/login.do (관리자)",
+      "아이디": "intra",
+      "암호": "1111"
+    },
+    "comments": []
   },
   {
     "wr_id": "796",
@@ -53,7 +81,15 @@
     "targetUrl": "http://code0195.sitegate.co.kr",
     "author": "고지연",
     "date": "2023-12-27",
-    "hit": "9"
+    "hit": "9",
+    "content": "/",
+    "files": [],
+    "meta": {
+      "사이트": "디아스포라 웹진 너머 s_diaspora",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://www.diasporabook.or.kr (사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "795",
@@ -67,7 +103,17 @@
     "targetUrl": "http://wnc22.cafe24.com/main.do",
     "author": "박규태",
     "date": "2023-02-27",
-    "hit": "10"
+    "hit": "10",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 혁신기업협력센터 s_kistiecc",
+      "URL 종류": "기타",
+      "URL": "http://pf.kakao.com/_XuWnb (카카오 채널 (검색용 아이디: iecc_kist))",
+      "아이디": "iecc_kist@kakao.com",
+      "암호": "kist2014!"
+    },
+    "comments": []
   },
   {
     "wr_id": "794",
@@ -81,7 +127,17 @@
     "targetUrl": "http://45.115.152.17/index.do",
     "author": "김종규",
     "date": "2020-02-28",
-    "hit": "13"
+    "hit": "13",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 혁신기업협력센터 s_kistiecc",
+      "URL 종류": "기타",
+      "URL": "https://gitlab.mobilehunter.net/kist/aac (aac lims의 전체 소스)",
+      "아이디": "john",
+      "암호": "qwer12#$"
+    },
+    "comments": []
   },
   {
     "wr_id": "793",
@@ -95,7 +151,17 @@
     "targetUrl": "http://slb-64538.gov-ncloudslb.com:8080/",
     "author": "하상범",
     "date": "2019-09-18",
-    "hit": "10"
+    "hit": "10",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 혁신기업협력센터 s_kistiecc",
+      "URL 종류": "기타",
+      "URL": "https://plus.kipris.or.kr/ (특허정보원 API)",
+      "아이디": "kist",
+      "암호": "kist1966!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "792",
@@ -109,7 +175,17 @@
     "targetUrl": "http://183.109.79.75/main.do",
     "author": "김종규",
     "date": "2019-01-09",
-    "hit": "6"
+    "hit": "6",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 혁신기업협력센터 s_kistiecc",
+      "URL 종류": "기타",
+      "URL": "https://www.n-forum.com/ (알림톡 (워드앤코드 계정))",
+      "아이디": "wordncode",
+      "암호": "wc1353319!!!"
+    },
+    "comments": []
   },
   {
     "wr_id": "791",
@@ -123,7 +199,17 @@
     "targetUrl": "http://183.109.79.72:8080/main/main.do",
     "author": "김종규",
     "date": "2018-04-13",
-    "hit": "8"
+    "hit": "8",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 혁신기업협력센터 s_kistiecc",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://iecc.kist.re.kr/_intcms (관리자페이지)",
+      "아이디": "smesc_master",
+      "암호": "intcms1234!@#"
+    },
+    "comments": []
   },
   {
     "wr_id": "790",
@@ -137,7 +223,15 @@
     "targetUrl": "http://www.flyfreetel.co.kr/main/main.html",
     "author": "김종규",
     "date": "2018-04-09",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 혁신기업협력센터 s_kistiecc",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://iecc.kist.re.kr (사용자 페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "789",
@@ -151,7 +245,15 @@
     "targetUrl": "http://183.109.79.76/moel/main/Main.do",
     "author": "홍준표",
     "date": "2016-03-28",
-    "hit": "4"
+    "hit": "4",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "한국장애인문화예술원 s_ieum",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://www.ieum.or.kr/ (이음온라인)"
+    },
+    "comments": []
   },
   {
     "wr_id": "788",
@@ -165,7 +267,17 @@
     "targetUrl": "http://www.tp.or.kr:8088/tp/main/main.jsp",
     "author": "김종규",
     "date": "2015-05-13",
-    "hit": "10"
+    "hit": "10",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "국외소재문화재재단 외국어 홈페이지 제작 s_oversea",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://jpn.overseaschf.or.kr/ (일문페이지)",
+      "아이디": ".",
+      "암호": "."
+    },
+    "comments": []
   },
   {
     "wr_id": "787",
@@ -179,7 +291,17 @@
     "targetUrl": "http://sajeok.nisus.kr",
     "author": "이명준",
     "date": "2014-09-15",
-    "hit": "6"
+    "hit": "6",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "국외소재문화재재단 외국어 홈페이지 제작 s_oversea",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://eng.overseaschf.or.kr/ (영문페이지)",
+      "아이디": ".",
+      "암호": "."
+    },
+    "comments": []
   },
   {
     "wr_id": "786",
@@ -193,7 +315,17 @@
     "targetUrl": "http://183.109.79.76:8080/main.do",
     "author": "이창현",
     "date": "2014-02-19",
-    "hit": "12"
+    "hit": "12",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "대학 입학처 홈페이지 s_admissions",
+      "URL 종류": "테스트페이지(관리자)",
+      "URL": "http://wnc22.cafe24.com/_cms/login.do (인천대학교(테스트))",
+      "아이디": "wordncode",
+      "암호": "wc3191353"
+    },
+    "comments": []
   },
   {
     "wr_id": "785",
@@ -207,7 +339,15 @@
     "targetUrl": "http://code0092.sitegate.co.kr",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "4"
+    "hit": "4",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "대학 입학처 홈페이지 s_admissions",
+      "URL 종류": "테스트페이지(사용자)",
+      "URL": "http://wnc22.cafe24.com/main.do (인천대학교(테스트))"
+    },
+    "comments": []
   },
   {
     "wr_id": "784",
@@ -221,7 +361,17 @@
     "targetUrl": "http://vote.or.kr/html/main/main.php",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "국외소재문화재재단 통합홈페이지 구축 s_cultural",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://okservice.archivecenter.or.kr/cms/index.do (아카이브 서비스 사이트)",
+      "아이디": "admin",
+      "암호": "ansgjs12)(*&"
+    },
+    "comments": []
   },
   {
     "wr_id": "783",
@@ -235,7 +385,15 @@
     "targetUrl": "http://www.seongnam.go.kr/mayor/hope/listen_test.asp",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "4"
+    "hit": "4",
+    "content": "**",
+    "files": [],
+    "meta": {
+      "사이트": "자동차안전연구원 s_kotsa",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://avds.kotsa.or.kr/ (자동차안전연구원)"
+    },
+    "comments": []
   },
   {
     "wr_id": "782",
@@ -249,7 +407,15 @@
     "targetUrl": "http://code0107.sitegate.co.kr/main_.php",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "11",
+    "files": [],
+    "meta": {
+      "사이트": "서울대학생생활문화원 s_seoul",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://cdcc.snu.ac.kr/ (사용자 페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "781",
@@ -263,7 +429,17 @@
     "targetUrl": "http://183.109.79.71:5001/hyunjin/main/main.asp",
     "author": "이명준",
     "date": "2014-01-07",
-    "hit": "6"
+    "hit": "6",
+    "content": "11",
+    "files": [],
+    "meta": {
+      "사이트": "서울대학생생활문화원 s_seoul",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://code0011.sitegate.co.kr/board/adm/index.php (관리자 페이지)",
+      "아이디": "admin",
+      "암호": "snusnu"
+    },
+    "comments": []
   },
   {
     "wr_id": "780",
@@ -277,7 +453,15 @@
     "targetUrl": "http://code0031.sitegate.co.kr",
     "author": "이명준",
     "date": "2013-12-26",
-    "hit": "2"
+    "hit": "2",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "국외소재문화재재단 통합홈페이지 구축 s_cultural",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://211.248.96.9/archive/main.do (아카이브 서비스 사이트)"
+    },
+    "comments": []
   },
   {
     "wr_id": "779",
@@ -291,7 +475,17 @@
     "targetUrl": "http://empo70.cafe24.com",
     "author": "김종규",
     "date": "2013-12-17",
-    "hit": "10"
+    "hit": "10",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "국외소재문화재재단 통합홈페이지 구축 s_cultural",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.overseaschf.or.kr/dwmanage/login/login.do (재단 홈페이지 관리자)",
+      "아이디": "admin",
+      "암호": "okchf0727**"
+    },
+    "comments": []
   },
   {
     "wr_id": "778",
@@ -305,7 +499,17 @@
     "targetUrl": "http://edu.nisus.kr/edu",
     "author": "이명준",
     "date": "2013-12-03",
-    "hit": "2"
+    "hit": "2",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "국외소재문화재재단 통합홈페이지 구축 s_cultural",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.overseaschf.or.kr/ (재단 홈페이지 사용자)",
+      "아이디": ".",
+      "암호": "."
+    },
+    "comments": []
   },
   {
     "wr_id": "777",
@@ -319,7 +523,17 @@
     "targetUrl": "http://211.239.159.117/",
     "author": "이명준",
     "date": "2013-12-02",
-    "hit": "8"
+    "hit": "8",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "보미쌤 s_vomissam",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://www.vomissam.com/ (보미쌤 사용자 페이지)",
+      "아이디": ".",
+      "암호": "."
+    },
+    "comments": []
   },
   {
     "wr_id": "776",
@@ -333,7 +547,17 @@
     "targetUrl": "http://183.109.79.74:8091/moel/",
     "author": "이창현",
     "date": "2013-11-29",
-    "hit": "9"
+    "hit": "9",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "수소융합얼라이언스 수소경제 종합정보시스템 고도화 s_hydrogen",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://h2hub.or.kr/hes/main/main/pageLoad.do (수소전문기업 기업회원)",
+      "아이디": "h2korea",
+      "암호": "h2korea1"
+    },
+    "comments": []
   },
   {
     "wr_id": "775",
@@ -347,7 +571,17 @@
     "targetUrl": "http://183.109.79.72/www/home/main/sitemap_link.html",
     "author": "이명준",
     "date": "2013-11-26",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "수소융합얼라이언스 수소경제 종합정보시스템 고도화 s_hydrogen",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://h2hub.or.kr (수소전문기업 평가위원)",
+      "아이디": "evl001",
+      "암호": "1234!@#$"
+    },
+    "comments": []
   },
   {
     "wr_id": "774",
@@ -361,7 +595,17 @@
     "targetUrl": "http://www.smartrank.co.kr/CalcuttaRank/",
     "author": "이명준",
     "date": "2013-11-26",
-    "hit": "3"
+    "hit": "3",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "수소융합얼라이언스 수소경제 종합정보시스템 고도화 s_hydrogen",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://h2hub.or.kr/hes/main/main/pageLoad.do (수소전문기업 관리자)",
+      "아이디": "user001",
+      "암호": "1234!@#$"
+    },
+    "comments": []
   },
   {
     "wr_id": "773",
@@ -375,7 +619,17 @@
     "targetUrl": "http://tacs3.hosting2003.co.kr/html/main/main.php",
     "author": "이명준",
     "date": "2013-11-25",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "수소융합얼라이언스 수소경제 종합정보시스템 고도화 s_hydrogen",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://h2hub.or.kr/backoffice/login/pageLoad.do (포털관리자)",
+      "아이디": "ksec",
+      "암호": "1234!@#$"
+    },
+    "comments": []
   },
   {
     "wr_id": "772",
@@ -389,7 +643,17 @@
     "targetUrl": "http://bukbu.nisus.kr/m/index.asp",
     "author": "이명준",
     "date": "2013-11-22",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "경기도청소년활동진흥센터_2022 s_gysc2022",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://kgyvc24.cafe24.com/gysc (관리자 페이지)",
+      "아이디": "kgyvc",
+      "암호": "Kgyvc2022!g"
+    },
+    "comments": []
   },
   {
     "wr_id": "771",
@@ -403,7 +667,15 @@
     "targetUrl": "http://bukbu.nisus.kr/home/main/main.asp",
     "author": "이명준",
     "date": "2013-11-22",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "경기도청소년활동진흥센터_2022 s_gysc2022",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://kgyvc24.cafe24.com/ (사용자 페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "770",
@@ -417,7 +689,17 @@
     "targetUrl": "http://self25.cvstour.com/home",
     "author": "김종규",
     "date": "2013-09-05",
-    "hit": "12"
+    "hit": "12",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "경기도청소년활동진흥센터_2022 s_gysc2022",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.gysc.or.kr/gysc (관리자페이지)",
+      "아이디": "kgyvc",
+      "암호": "Kgyvc2022!g"
+    },
+    "comments": []
   },
   {
     "wr_id": "769",
@@ -431,7 +713,15 @@
     "targetUrl": "http://namishop.nisus.kr/home/main/main.php",
     "author": "김종규",
     "date": "2013-09-05",
-    "hit": "7"
+    "hit": "7",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "경기도청소년활동진흥센터_2022 s_gysc2022",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.gysc.or.kr (사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "768",
@@ -445,7 +735,15 @@
     "targetUrl": "https://mecenat.nisus.kr/login",
     "author": "장현아",
     "date": "2026-09-02",
-    "hit": "1"
+    "hit": "1",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 미래재단 s_future",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "sharing.kist.re.kr (KIST 미래재단 홈페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "767",
@@ -459,7 +757,17 @@
     "targetUrl": "https://siwf.nisus.kr/_fox/login.do",
     "author": "한상희",
     "date": "2026-05-14",
-    "hit": "2"
+    "hit": "2",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "유아즈 기업 사이트 s_yourz",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "yourztent.com/adm/login.do (유아즈 관리자 페이지)",
+      "아이디": "webmaster",
+      "암호": "pol2019"
+    },
+    "comments": []
   },
   {
     "wr_id": "766",
@@ -473,7 +781,17 @@
     "targetUrl": "http://tst.familynet.or.kr/super/login/index.do",
     "author": "김종규",
     "date": "2026-01-15",
-    "hit": "4"
+    "hit": "4",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "유아즈 기업 사이트 s_yourz",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "yourztent.com (유아즈 사용자)",
+      "아이디": ".",
+      "암호": "."
+    },
+    "comments": []
   },
   {
     "wr_id": "765",
@@ -487,7 +805,15 @@
     "targetUrl": "http://tst.familydb.or.kr/uat/uia/acvLoginUsr.do",
     "author": "김종규",
     "date": "2026-01-09",
-    "hit": "3"
+    "hit": "3",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "국민대학교 공동기기원 s_kmin",
+      "URL 종류": "참조사이트(디자인)",
+      "URL": "https://cms.kookmin.ac.kr/crf/index.do (국민대학교 공동기기원 템플릿 사이트)"
+    },
+    "comments": []
   },
   {
     "wr_id": "764",
@@ -501,7 +827,17 @@
     "targetUrl": "http://tst.familydb.or.kr/uat/uia/acvLoginUsr.do",
     "author": "김종규",
     "date": "2026-01-09",
-    "hit": "3"
+    "hit": "3",
+    "content": "Q",
+    "files": [],
+    "meta": {
+      "사이트": "k-book s_kbook",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://k-book.or.kr/manager/login/login (관리자페이지)",
+      "아이디": "admin",
+      "암호": "wc0000"
+    },
+    "comments": []
   },
   {
     "wr_id": "763",
@@ -515,7 +851,15 @@
     "targetUrl": "http://tst.familynet.or.kr:9190/web/index.do",
     "author": "김종규",
     "date": "2026-01-09",
-    "hit": "4"
+    "hit": "4",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "k-book s_kbook",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://k-book.or.kr (사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "762",
@@ -529,7 +873,17 @@
     "targetUrl": "https://diaspora.nisus.kr/intra/M000404/S900/fw/intra/bbs/00003/list.do",
     "author": "고지연",
     "date": "2024-03-25",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "FITI 신뢰성평가센터 s_reliability",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://reliability.fiti.re.kr/mng/login/loginForm.asp (FITI 신뢰성평가센터 관리자)",
+      "아이디": "admin",
+      "암호": "1111"
+    },
+    "comments": []
   },
   {
     "wr_id": "761",
@@ -543,7 +897,15 @@
     "targetUrl": "http://wnc22.cafe24.com/_cms/login.do",
     "author": "박규태",
     "date": "2023-02-27",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "FITI 신뢰성평가센터 s_reliability",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://reliability.fiti.re.kr/index2.asp (사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "760",
@@ -557,7 +919,17 @@
     "targetUrl": "http://45.115.152.17:8081",
     "author": "김종규",
     "date": "2020-02-28",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "국민대학교 경영대학원 s_kookmin",
+      "URL 종류": "웹퍼블리싱URL",
+      "URL": "https://cms.kookmin.ac.kr/mba/index.do (-)",
+      "아이디": "-",
+      "암호": "-"
+    },
+    "comments": []
   },
   {
     "wr_id": "759",
@@ -571,7 +943,17 @@
     "targetUrl": "http://45.115.152.17:8081",
     "author": "김종규",
     "date": "2020-02-28",
-    "hit": "2"
+    "hit": "2",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "KIST_미세먼지 사업단 s_kistmise",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://pmcenter.kist.re.kr (미세먼지 사업단 사용자 페이지)",
+      "아이디": ".",
+      "암호": "."
+    },
+    "comments": []
   },
   {
     "wr_id": "758",
@@ -585,7 +967,17 @@
     "targetUrl": "http://slb-64538.gov-ncloudslb.com:8081/",
     "author": "하상범",
     "date": "2019-09-18",
-    "hit": "2"
+    "hit": "2",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "청와대 사랑채 s_cwdsarangchae",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.cwdsarangchae.kr/_Admin/login.php (청와대 사랑채 관리자 페이지)",
+      "아이디": "sarang",
+      "암호": "sarang123"
+    },
+    "comments": []
   },
   {
     "wr_id": "757",
@@ -599,7 +991,17 @@
     "targetUrl": "http://183.109.79.73:8080/contest_adm/",
     "author": "김종규",
     "date": "2019-01-09",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "환기미술관 s_whanki",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://whankimuseum.org/new_html/admin/main.php (관리자페이지)",
+      "아이디": "admin",
+      "암호": "0000"
+    },
+    "comments": []
   },
   {
     "wr_id": "756",
@@ -613,7 +1015,17 @@
     "targetUrl": "http://183.109.79.75/contest_adm/",
     "author": "김종규",
     "date": "2019-01-09",
-    "hit": "4"
+    "hit": "4",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "(사)한국검인정교과서협회 s_ktbook",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://www.ktbook.com/txt_admin/index.asp (협회 홈페이지 관리자 페이지)",
+      "아이디": "전산팀",
+      "암호": "0502!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "755",
@@ -627,7 +1039,17 @@
     "targetUrl": "http://www.flyfreetel.co.kr/fly_adm/login/login.html",
     "author": "김종규",
     "date": "2018-04-09",
-    "hit": "1"
+    "hit": "1",
+    "content": "~~",
+    "files": [],
+    "meta": {
+      "사이트": "서울대학교 서어서문학과 2019 s_snuspanish_2019",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://spanish.snu.ac.kr/spanish_adm (서울대 서어서문학과 관리자 주소)",
+      "아이디": "admin",
+      "암호": "spanish"
+    },
+    "comments": []
   },
   {
     "wr_id": "754",
@@ -641,7 +1063,17 @@
     "targetUrl": "http://sajeok.nisus.kr/auth/login/eNortjI0sFLSz8xLSa3QK8goULIGXDAycgWF",
     "author": "이명준",
     "date": "2014-09-15",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "국회미래연구원 홈페이지 고도화 및 뉴스레터 제작 s_assemblyresearcher",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.happykorea.re.kr/ (대한민국 행복지도 사용자 페이지)",
+      "아이디": "-",
+      "암호": "-"
+    },
+    "comments": []
   },
   {
     "wr_id": "753",
@@ -655,7 +1087,17 @@
     "targetUrl": "http://code0086.sitegate.co.kr/hyunchung/mfismanager/index.asp",
     "author": "강호성",
     "date": "2014-08-19",
-    "hit": "5"
+    "hit": "5",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "국회미래연구원 홈페이지 고도화 및 뉴스레터 제작 s_assemblyresearcher",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://nafi.re.kr/nafi/index.do (국회미래연구원 사용자 페이지)",
+      "아이디": "-",
+      "암호": "-"
+    },
+    "comments": []
   },
   {
     "wr_id": "752",
@@ -669,7 +1111,17 @@
     "targetUrl": "http://183.109.79.76/employment/",
     "author": "김종규",
     "date": "2014-04-10",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국장애인문화예술원 s_ieum",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://ieumzine.kr/wp-admin/ (웹진)",
+      "아이디": "ieumzine_admin",
+      "암호": "wkdansdnjs!!"
+    },
+    "comments": []
   },
   {
     "wr_id": "751",
@@ -683,7 +1135,15 @@
     "targetUrl": "http://code0815.sitegate.co.kr/db/adm",
     "author": "관리자",
     "date": "2014-02-24",
-    "hit": "3"
+    "hit": "3",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "사이트": "한국장애인문화예술원 s_ieum",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://ieumzine.kr/ (웹진 이음)"
+    },
+    "comments": []
   },
   {
     "wr_id": "750",
@@ -697,7 +1157,17 @@
     "targetUrl": "http://fwww.cafe24.com/db/adm/admin.php",
     "author": "이명준",
     "date": "2014-02-11",
-    "hit": "2"
+    "hit": "2",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "사이트": "한국장애인문화예술원 s_ieum",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.ieum.or.kr/sign/in/admin (관리자)",
+      "아이디": "admin",
+      "암호": "rkvldk9711!!"
+    },
+    "comments": []
   },
   {
     "wr_id": "749",
@@ -711,7 +1181,17 @@
     "targetUrl": "http://221.154.253.139:8080/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "KIST School s_school",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://kist_school.kist.re.kr/eAplctAdmin/login (KIST School 입시지원관리 관리자 페이지)",
+      "아이디": "eaplctadmin",
+      "암호": "q1q1w2w2"
+    },
+    "comments": []
   },
   {
     "wr_id": "748",
@@ -725,7 +1205,17 @@
     "targetUrl": "http://61.100.186.159",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "KIST School s_school",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://kist_school.kist.re.kr/scadmin/login (KIST School 웹사이트 관리자 페이지)",
+      "아이디": "scadmin",
+      "암호": "q1q1w2w2"
+    },
+    "comments": []
   },
   {
     "wr_id": "747",
@@ -739,7 +1229,17 @@
     "targetUrl": "http://chartmonster.net",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "FITI시험연구원 s_fiti",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://www.fiti.re.kr/ (FITI 시험연구원 사용자 페이지)",
+      "아이디": "-",
+      "암호": "-"
+    },
+    "comments": []
   },
   {
     "wr_id": "746",
@@ -753,7 +1253,17 @@
     "targetUrl": "http://code0107.sitegate.co.kr/board/adm",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "KIST School s_school",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://kist_school.kist.re.kr/ (KIST School 사용자 페이지)",
+      "아이디": "-",
+      "암호": "-"
+    },
+    "comments": []
   },
   {
     "wr_id": "745",
@@ -767,7 +1277,17 @@
     "targetUrl": "http://green.klee.co.kr/admng",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "농촌경제연구원 농식품 소비정보 분석사업 s_consumptioninfo",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.krei.re.kr/consumptioninfo/index.do (사용자페이지)",
+      "아이디": ".",
+      "암호": "."
+    },
+    "comments": []
   },
   {
     "wr_id": "744",
@@ -781,7 +1301,17 @@
     "targetUrl": "http://qnet.nisus.kr/qnet2013/",
     "author": "이명준",
     "date": "2014-01-02",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "중견기업연합회 s_ahpek",
+      "URL 종류": "기타",
+      "URL": "https://analytics.naver.com/ (중견연 네이버 애널리틱스 계정)",
+      "아이디": "k-technavi",
+      "암호": "technavi19@)"
+    },
+    "comments": []
   },
   {
     "wr_id": "743",
@@ -795,7 +1325,17 @@
     "targetUrl": "http://code0011.sitegate.co.kr/board/adm/index.php",
     "author": "이명준",
     "date": "2013-12-31",
-    "hit": "3"
+    "hit": "3",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국과학기술연구원 (KIST본원) s_kist",
+      "URL 종류": "기타",
+      "URL": "https://analytics.naver.com/ (KIST본원 로그분석(네이버))",
+      "아이디": "kist_public",
+      "암호": "ghdqhtlf12! (홍보실12!)"
+    },
+    "comments": []
   },
   {
     "wr_id": "742",
@@ -809,7 +1349,17 @@
     "targetUrl": "http://code0051.sitegate.co.kr/board/",
     "author": "이명준",
     "date": "2013-12-31",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "드림커넥트 s_dream",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://kbdream.co.kr/wp-admin/ (워드프레스 관리자)",
+      "아이디": "grapevine6388",
+      "암호": "rmfpdlvm6638"
+    },
+    "comments": []
   },
   {
     "wr_id": "741",
@@ -823,7 +1373,11 @@
     "targetUrl": "http://edu.nisus.kr/edu/z_energy_admin/",
     "author": "이명준",
     "date": "2013-12-03",
-    "hit": "1"
+    "hit": "1",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "740",
@@ -837,7 +1391,15 @@
     "targetUrl": "http://211.239.159.117/adminmain/",
     "author": "이명준",
     "date": "2013-12-02",
-    "hit": "3"
+    "hit": "3",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "드림커넥트 s_dream",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://kbdream.co.kr/ (사용자 페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "739",
@@ -851,7 +1413,15 @@
     "targetUrl": "http://183.109.79.74:8091/moel/masterpage/",
     "author": "이창현",
     "date": "2013-11-29",
-    "hit": "3"
+    "hit": "3",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "지역고용연구소 s_krerl",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.kre.or.kr (사용자 주소)"
+    },
+    "comments": []
   },
   {
     "wr_id": "738",
@@ -865,7 +1435,17 @@
     "targetUrl": "http://cosd0083.sitegate.co.kr/__admpg",
     "author": "이명준",
     "date": "2013-11-27",
-    "hit": "5"
+    "hit": "5",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "2020 경기도종합체육대회 s_2020sports",
+      "URL 종류": "테스트페이지(관리자)",
+      "URL": "http://45.115.152.17:8081 (경기도 체육대회 관리자 (system))",
+      "아이디": "system",
+      "암호": "zesinc123!  (총괄)"
+    },
+    "comments": []
   },
   {
     "wr_id": "737",
@@ -879,7 +1459,17 @@
     "targetUrl": "http://tacs3.hosting2003.co.kr/admin/manage.php",
     "author": "이명준",
     "date": "2013-11-25",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "2020 경기도종합체육대회 s_2020sports",
+      "URL 종류": "테스트페이지(관리자)",
+      "URL": "http://45.115.152.17:8081 (경기도 체육대회 관리자 (admin))",
+      "아이디": "admin",
+      "암호": "goyang12#$"
+    },
+    "comments": []
   },
   {
     "wr_id": "736",
@@ -893,7 +1483,17 @@
     "targetUrl": "http://bukbu.nisus.kr/__admin/",
     "author": "이명준",
     "date": "2013-11-22",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "2020 경기도종합체육대회 s_2020sports",
+      "URL 종류": "테스트페이지(사용자)",
+      "URL": "http://45.115.152.17/index.do (경기도체육대회 사용자)",
+      "아이디": "1",
+      "암호": "1"
+    },
+    "comments": []
   },
   {
     "wr_id": "735",
@@ -907,7 +1507,17 @@
     "targetUrl": "http://self25.cvstour.com/namiMng/",
     "author": "김종규",
     "date": "2013-09-05",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "2020 경기도종합체육대회 s_2020sports",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://2020sports.goyang.go.kr (2020 경기도종합체육대회 대국민 사이트)",
+      "아이디": "1",
+      "암호": "1"
+    },
+    "comments": []
   },
   {
     "wr_id": "734",
@@ -921,7 +1531,11 @@
     "targetUrl": "http://namishop.nisus.kr/namiMng/",
     "author": "김종규",
     "date": "2013-09-05",
-    "hit": "10"
+    "hit": "10",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "733",
@@ -935,7 +1549,15 @@
     "targetUrl": "https://cms.kookmin.ac.kr/crf/index.do",
     "author": "조어진",
     "date": "2021-08-24",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 에너지저장연구단 s_battery",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "https://www.kist.re.kr/battery/ (사용자 신규)"
+    },
+    "comments": []
   },
   {
     "wr_id": "732",
@@ -949,7 +1571,17 @@
     "targetUrl": "http://www.indiebrandfair.com/",
     "author": "이명준",
     "date": "2018-03-22",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "유니세프 아동친화도시 홈페이지 s_childfriendlycitie",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://childfriendlycities.kr/board/adm (유니세프 아동친화도시 홈페이지 관리자)",
+      "아이디": "admin",
+      "암호": "!@#dbsltpvm#@!"
+    },
+    "comments": []
   },
   {
     "wr_id": "731",
@@ -963,7 +1595,15 @@
     "targetUrl": "http://www.philips.co.kr/healthcare",
     "author": "관리자",
     "date": "2015-08-10",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "유니세프 아동친화도시 홈페이지 s_childfriendlycitie",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://childfriendlycities.kr/index.html (유니세프 아동친화도시 홈페이지 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "730",
@@ -977,7 +1617,17 @@
     "targetUrl": "http://www.heritage.go.kr/",
     "author": "이명준",
     "date": "2014-08-06",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "경기도창업플랫폼 s_starup",
+      "URL 종류": "기타",
+      "URL": "https://www.gov-ncloud.com/ (경기도창업플랫폼 네이버 플랫폼)",
+      "아이디": "gs2099@gbsa.or.kr",
+      "암호": "startup6094@@"
+    },
+    "comments": []
   },
   {
     "wr_id": "729",
@@ -991,7 +1641,17 @@
     "targetUrl": "http://www.naverventures.com/",
     "author": "이명준",
     "date": "2014-08-06",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "경기도창업플랫폼 s_starup",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://www.gsp.or.kr:8081 (경기도 창업플랫폼 운용서버 관리자)",
+      "아이디": "admin",
+      "암호": "admin"
+    },
+    "comments": []
   },
   {
     "wr_id": "728",
@@ -1005,7 +1665,15 @@
     "targetUrl": "http://183.109.79.76/worknet/login/sitemap_link.html",
     "author": "김종규",
     "date": "2014-03-13",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "경기도창업플랫폼 s_starup",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.gsp.or.kr (경기도 창업플랫폼 운용서버 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "727",
@@ -1019,7 +1687,17 @@
     "targetUrl": "http://www.imagebit.co.kr/",
     "author": "이명준",
     "date": "2014-01-07",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "중견기업연합회 s_ahpek",
+      "URL 종류": "기타",
+      "URL": "https://orgcloud.gabia.com/ (중견기업연합회 가비아 정보)",
+      "아이디": "kbf2985",
+      "암호": "kmia2985!$"
+    },
+    "comments": []
   },
   {
     "wr_id": "726",
@@ -1033,7 +1711,17 @@
     "targetUrl": "http://www.goodrider.kr/",
     "author": "김종규",
     "date": "2013-09-03",
-    "hit": "3"
+    "hit": "3",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국공작기계산업협회 s_komma_2019",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://old.komma.org/admin/login/login.asp (관리자)",
+      "아이디": "bhk9636",
+      "암호": "bhk5347"
+    },
+    "comments": []
   },
   {
     "wr_id": "725",
@@ -1047,7 +1735,17 @@
     "targetUrl": "http://koycatest.uni9.co.kr/admin",
     "author": "김종규",
     "date": "2018-06-25",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "경기도창업플랫폼 s_starup",
+      "URL 종류": "테스트페이지(관리자)",
+      "URL": "http://slb-64538.gov-ncloudslb.com:8081/ (경기도 창업플랫폼 테스트 관리자)",
+      "아이디": "admin",
+      "암호": "admin"
+    },
+    "comments": []
   },
   {
     "wr_id": "724",
@@ -1061,7 +1759,15 @@
     "targetUrl": "http://koycatest.uni9.co.kr/",
     "author": "김종규",
     "date": "2018-06-25",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "경기도창업플랫폼 s_starup",
+      "URL 종류": "테스트페이지(사용자)",
+      "URL": "http://slb-64538.gov-ncloudslb.com:8080/ (경기도 창업플랫폼 테스트 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "723",
@@ -1075,7 +1781,17 @@
     "targetUrl": "http://reliability.fiti.re.kr/mng/login/loginForm.asp",
     "author": "이명준",
     "date": "2018-05-15",
-    "hit": "4"
+    "hit": "4",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "중견기업연합회 s_ahpek",
+      "URL 종류": "기타",
+      "URL": "https://www.dotname.co.kr/ (도메인 정보)",
+      "아이디": "bizhospital",
+      "암호": "*dotname1210"
+    },
+    "comments": []
   },
   {
     "wr_id": "722",
@@ -1089,7 +1805,17 @@
     "targetUrl": "http://www.miwit.com/",
     "author": "이명준",
     "date": "2015-02-25",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "녹색기술센터 s_gtck",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://www.gtck.re.kr/mnt/ (관리자 페이지)",
+      "아이디": "gtck",
+      "암호": "gtck7575!"
+    },
+    "comments": []
   },
   {
     "wr_id": "721",
@@ -1103,7 +1829,17 @@
     "targetUrl": "http://m16.co.kr/i815",
     "author": "이명준",
     "date": "2014-02-19",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "독립기념관 국내 사적지 홈페이지 개선_2019 s_i815_2019",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://sajeok.i815.or.kr/auth/login/eNortjI0sFLSz8xLSa3QK8goULIGXDAycgWF (독립기념관 국내 사적지 홈페이지 개선_2019_관리자시스템)",
+      "아이디": "admin",
+      "암호": "1111"
+    },
+    "comments": []
   },
   {
     "wr_id": "720",
@@ -1117,7 +1853,15 @@
     "targetUrl": "https://cms.kookmin.ac.kr/mba/index.do",
     "author": "조어진",
     "date": "2021-04-09",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "독립기념관 국내 사적지 홈페이지 개선_2019 s_i815_2019",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://sajeok.i815.or.kr (독립기념관 국내 사적지 홈페이지 개선_2019_사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "719",
@@ -1131,7 +1875,15 @@
     "targetUrl": "http://183.109.79.76/simtos/index.jsp",
     "author": "하상범",
     "date": "2019-02-25",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "농촌공간계획 s_krei_space",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.krei.re.kr/rsp/index.do (농촌공간계획 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "718",
@@ -1145,7 +1897,16 @@
     "targetUrl": "http://ogma.sitegate.co.kr/html/code/main/sitemap_link.php",
     "author": "김영화",
     "date": "2015-05-18",
-    "hit": "5"
+    "hit": "5",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "농촌공간계획 s_krei_space",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://krei.re.kr/neo/index.do (농촌공간계획 관리자)",
+      "아이디": "neo"
+    },
+    "comments": []
   },
   {
     "wr_id": "717",
@@ -1159,7 +1920,17 @@
     "targetUrl": "http://www.koreafashion.org/contest_2015/main/sitemap_link.html",
     "author": "김영화",
     "date": "2015-05-18",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "현진건설_2019 s_hyunjin21",
+      "URL 종류": "기타",
+      "URL": "http://hosting.smartsme.co.kr (유플러스 호스팅 관리자)",
+      "아이디": "hyunjin21",
+      "암호": "hyunjin21!"
+    },
+    "comments": []
   },
   {
     "wr_id": "716",
@@ -1173,7 +1944,15 @@
     "targetUrl": "http://1.234.66.17/main/sitemap_link.aspx",
     "author": "김영화",
     "date": "2015-03-20",
-    "hit": "3"
+    "hit": "3",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "남양주육아종합지원센터 s_nyjscc",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.nyjscc.kr/ (남양주육아종합지원센터 인트로)"
+    },
+    "comments": []
   },
   {
     "wr_id": "715",
@@ -1187,7 +1966,17 @@
     "targetUrl": "http://newfashion.nisus.kr/main/sitemap_link.asp",
     "author": "김영화",
     "date": "2015-03-20",
-    "hit": "6"
+    "hit": "6",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "남양주육아종합지원센터 s_nyjscc",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://nuture.nyjscc.kr/ (남양주육아종합지원센터_가정양육지원 관리자)",
+      "아이디": "admin",
+      "암호": "admin1234! (로그인 후 우측 상단 버튼 클릭)"
+    },
+    "comments": []
   },
   {
     "wr_id": "714",
@@ -1201,7 +1990,17 @@
     "targetUrl": "http://183.109.79.76/visitkorea/main/sitemap_link.html",
     "author": "김영화",
     "date": "2015-03-20",
-    "hit": "4"
+    "hit": "4",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "남양주육아종합지원센터 s_nyjscc",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.nyjscc.kr/child/ (남양주육아종합지원센터_어린이집지원 관리자)",
+      "아이디": "admin",
+      "암호": "admin1234!  (로그인 후 url 접근 ==> http://www.nyjscc.kr/kntool/)"
+    },
+    "comments": []
   },
   {
     "wr_id": "713",
@@ -1215,7 +2014,17 @@
     "targetUrl": "http://183.109.79.76/ksa_master_user/main/sitemap_link.html",
     "author": "김영화",
     "date": "2015-03-20",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "서울문화예술교육지원센터_2019 s_esac_2019",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://e-sac.or.kr/adm/ (서울문화예술교육지원센터 관리자페이지)",
+      "아이디": "admin",
+      "암호": "12345"
+    },
+    "comments": []
   },
   {
     "wr_id": "712",
@@ -1229,7 +2038,15 @@
     "targetUrl": "http://baligo.nisus.kr/bali_mobile/main/sitemap_link.html",
     "author": "김영화",
     "date": "2015-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "서울문화예술교육지원센터_2019 s_esac_2019",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://e-sac.or.kr/ (서울문화예술교육지원센터 사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "711",
@@ -1243,7 +2060,15 @@
     "targetUrl": "http://baligo.nisus.kr/home/main/sitemap_link.html",
     "author": "김영화",
     "date": "2015-01-23",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "유니에코 s_unieco",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.uni-eco.co.kr/ (유니에코)"
+    },
+    "comments": []
   },
   {
     "wr_id": "710",
@@ -1257,7 +2082,17 @@
     "targetUrl": "http://183.109.79.76/narasarang/main/sitemap_link.jsp",
     "author": "김영화",
     "date": "2015-01-23",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "서울테크노파크 s_Technopark",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.seoultp.or.kr/_intcms/ (서울테크노파크 관리자)",
+      "아이디": "admin",
+      "암호": "intcms"
+    },
+    "comments": []
   },
   {
     "wr_id": "709",
@@ -1271,7 +2106,17 @@
     "targetUrl": "http://183.109.79.76/tp/tp_____/main/sitemap_link.html",
     "author": "김영화",
     "date": "2015-01-23",
-    "hit": "4"
+    "hit": "4",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "중부기술교육원_2019 s_jbedu_2019",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.jbedu.or.kr/_cms.do (중부기술교육원 관리자)",
+      "아이디": "admin",
+      "암호": "gksskagkrry(한남학교)"
+    },
+    "comments": []
   },
   {
     "wr_id": "708",
@@ -1285,7 +2130,15 @@
     "targetUrl": "http://183.109.79.76/ifi_work/main/sitemap_link.html",
     "author": "김영화",
     "date": "2014-10-14",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "중부기술교육원_2019 s_jbedu_2019",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.jbedu.or.kr/ (중부기술교육원 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "707",
@@ -1299,7 +2152,11 @@
     "targetUrl": "http://183.109.79.76/kocea/main/sitemap_link.html",
     "author": "김영화",
     "date": "2014-08-04",
-    "hit": "6"
+    "hit": "6",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "706",
@@ -1313,7 +2170,17 @@
     "targetUrl": "http://sajeok.nisus.kr/m_coding/main/sitemap_link.html",
     "author": "김영화",
     "date": "2014-08-04",
-    "hit": "3"
+    "hit": "3",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "트니트니 s_tntnteacher",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.tntnteacher.co.kr/adm (트니트니 관리자)",
+      "아이디": "admin",
+      "암호": "tntn2019^^"
+    },
+    "comments": []
   },
   {
     "wr_id": "705",
@@ -1327,7 +2194,17 @@
     "targetUrl": "http://sajeok.nisus.kr/main/sitemap_link.html",
     "author": "이명준",
     "date": "2014-07-08",
-    "hit": "3"
+    "hit": "3",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "월드스타메이커 s_wsmaker",
+      "URL 종류": "기타",
+      "URL": "https://play.google.com/ (구글개발자 계정)",
+      "아이디": "worldstarmaker0001@gmail.com",
+      "암호": "500djrdnjs (500억원)"
+    },
+    "comments": []
   },
   {
     "wr_id": "704",
@@ -1341,7 +2218,17 @@
     "targetUrl": "http://183.109.79.76/reis/main/sitemap_link.html",
     "author": "김영화",
     "date": "2014-05-19",
-    "hit": "12"
+    "hit": "12",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "월드스타메이커 s_wsmaker",
+      "URL 종류": "기타",
+      "URL": "https://developer.apple.com/kr/programs/enroll/ (IOS 계정)",
+      "아이디": "surpassphoenix@gmail.com",
+      "암호": "1234QWer"
+    },
+    "comments": []
   },
   {
     "wr_id": "703",
@@ -1355,7 +2242,15 @@
     "targetUrl": "http://m16.co.kr/link/BSL/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "3"
+    "hit": "3",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "SIMTOS 2020 s_komma",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.simtos.org/eng/main/main (SIMTOS 2018(영문))"
+    },
+    "comments": []
   },
   {
     "wr_id": "702",
@@ -1369,7 +2264,15 @@
     "targetUrl": "http://183.109.79.72/www/home_society/main/sitemap_link.html",
     "author": "윤익수",
     "date": "2013-12-17",
-    "hit": "16"
+    "hit": "16",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "경기도청소년활동진흥센터_2019 s_gysc2019",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.gysc.or.kr/ (경기도청소년활동진흥센터 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "701",
@@ -1383,7 +2286,17 @@
     "targetUrl": "http://www1.fashionnetkorea.com/home/main/sitemap_link.html",
     "author": "윤익수",
     "date": "2013-10-01",
-    "hit": "10"
+    "hit": "10",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "민주화운동공제회 s_Min_Cor",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://www.minjugongje.or.kr/adm (민주화운동공제회 관리자)",
+      "아이디": "admin",
+      "암호": "alswnrhksflwk"
+    },
+    "comments": []
   },
   {
     "wr_id": "700",
@@ -1397,7 +2310,15 @@
     "targetUrl": "http://babycare.sitegate.co.kr/",
     "author": "박은경",
     "date": "2025-06-09",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "서울테크노파크 s_Technopark",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.seoultp.or.kr/home/homeIndex.do (서울테크노파크 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "699",
@@ -1411,7 +2332,17 @@
     "targetUrl": "https://corporation.h2hub.or.kr/hes/index.do",
     "author": "박규태",
     "date": "2025-05-15",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "패션협회, 의류산업협회 통합홈페이지 s_fashion",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.koreafashion.org/adminmain/ (패션협회 관리자)",
+      "아이디": "fashion",
+      "암호": "4743"
+    },
+    "comments": []
   },
   {
     "wr_id": "698",
@@ -1425,7 +2356,15 @@
     "targetUrl": "https://corporation.h2hub.or.kr/hes/index.do",
     "author": "박규태",
     "date": "2025-05-15",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "패션협회, 의류산업협회 통합홈페이지 s_fashion",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.koreafashion.org (패션협회)"
+    },
+    "comments": []
   },
   {
     "wr_id": "697",
@@ -1439,7 +2378,17 @@
     "targetUrl": "https://h2hub.or.kr/main/index.do",
     "author": "박규태",
     "date": "2025-05-15",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "2019 지역고용정보네트워크 s_2019reisorkr",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://reis.or.kr/reis_central/auth/login.do (지역고용정보네트워크 관리자)",
+      "아이디": "reismaster",
+      "암호": "~Reismaster7411"
+    },
+    "comments": []
   },
   {
     "wr_id": "696",
@@ -1453,7 +2402,15 @@
     "targetUrl": "http://unido.sitegate.co.kr/",
     "author": "이채원",
     "date": "2025-02-17",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "2019 지역고용정보네트워크 s_2019reisorkr",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.reis.or.kr (지역고용정보네트워크 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "695",
@@ -1467,7 +2424,17 @@
     "targetUrl": "https://lifelong.kku.ac.kr",
     "author": "고지연",
     "date": "2023-12-15",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "서울대학교 서어서문학과 2019 s_snuspanish_2019",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://spanish.snu.ac.kr/new/wp-login.php (서울대학교 인문대학 서어서문학과 2019 워드프레스 관리자)",
+      "아이디": "admin",
+      "암호": "wc3191353"
+    },
+    "comments": []
   },
   {
     "wr_id": "694",
@@ -1481,7 +2448,15 @@
     "targetUrl": "http://kgyvc24.cafe24.com/",
     "author": "김종규",
     "date": "2022-04-27",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "서울대학교 서어서문학과 2019 s_snuspanish_2019",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://spanish.snu.ac.kr/ (서울대학교 인문대학 서어서문학과 2019 사용자 (국문))"
+    },
+    "comments": []
   },
   {
     "wr_id": "693",
@@ -1495,7 +2470,17 @@
     "targetUrl": "sharing.kist.re.kr",
     "author": "오수민",
     "date": "2022-03-23",
-    "hit": "4"
+    "hit": "4",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "SIMTOS 2020 s_komma",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://www.simtos.org/_manager/login/login (SIMTOS 2020(관리자))",
+      "아이디": "admin",
+      "암호": "st1234"
+    },
+    "comments": []
   },
   {
     "wr_id": "692",
@@ -1509,7 +2494,15 @@
     "targetUrl": "yourztent.com",
     "author": "조어진",
     "date": "2021-10-19",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "SIMTOS 2020 s_komma",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.simtos.org/user/main/main (SIMTOS 2020(사용자))"
+    },
+    "comments": []
   },
   {
     "wr_id": "691",
@@ -1523,7 +2516,17 @@
     "targetUrl": "http://www.krei.re.kr/consumptioninfo/index.do",
     "author": "김종규",
     "date": "2020-05-15",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "경기도청소년활동진흥센터_2019 s_gysc2019",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.gysc.or.kr/gysc (경기도청소년활동진흥센터 관리자)",
+      "아이디": "kgyvc",
+      "암호": "a9383232"
+    },
+    "comments": []
   },
   {
     "wr_id": "690",
@@ -1537,7 +2540,17 @@
     "targetUrl": "http://www.kre.or.kr",
     "author": "김종규",
     "date": "2020-03-10",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "폴리스랩 s_policelab",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://policelab.or.kr/adm/login.do (관리자페이지)",
+      "아이디": "webmaster",
+      "암호": "pol2019"
+    },
+    "comments": []
   },
   {
     "wr_id": "689",
@@ -1551,7 +2564,15 @@
     "targetUrl": "http://2020sports.goyang.go.kr",
     "author": "김종규",
     "date": "2020-02-28",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "폴리스랩 s_policelab",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://policelab.or.kr/ (사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "688",
@@ -1565,7 +2586,15 @@
     "targetUrl": "https://www.kist.re.kr/battery/",
     "author": "김종규",
     "date": "2019-12-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "SIMTOS 2020 s_komma",
+      "URL 종류": "웹퍼블리싱URL",
+      "URL": "http://183.109.79.76/simtos/index.jsp (메인 페이지 퍼블리싱 주소)"
+    },
+    "comments": []
   },
   {
     "wr_id": "687",
@@ -1579,7 +2608,17 @@
     "targetUrl": "http://www.gsp.or.kr",
     "author": "하상범",
     "date": "2019-10-02",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "중소기업정책심의회 s_smepco",
+      "URL 종류": "기타",
+      "URL": "https://analytics.google.com/ (중소기업정책심의회 구글 웹로그 분석)",
+      "아이디": "kosbiweb@gmail.com",
+      "암호": "kosbi123!"
+    },
+    "comments": []
   },
   {
     "wr_id": "686",
@@ -1593,7 +2632,17 @@
     "targetUrl": "http://www.krei.re.kr/rsp/index.do",
     "author": "이명준",
     "date": "2019-07-18",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국패션협회 s_koreafashion",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://kaia.or.kr/member/login (한국의류산업협회 관리자)",
+      "아이디": "elswiver",
+      "암호": "mp12qwe09z!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "685",
@@ -1607,7 +2656,11 @@
     "targetUrl": "http://www.simtos.org/eng/main/main",
     "author": "하상범",
     "date": "2019-04-08",
-    "hit": "1"
+    "hit": "1",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "684",
@@ -1621,7 +2674,17 @@
     "targetUrl": "http://www.simtos.org/user/main/main",
     "author": "하상범",
     "date": "2019-03-18",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "SIMTOS 2020 s_komma",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.simtos.org/admin/loginout/ (SIMTOS 2018(관리자))",
+      "아이디": "admin",
+      "암호": "simtos34#$"
+    },
+    "comments": []
   },
   {
     "wr_id": "683",
@@ -1635,7 +2698,17 @@
     "targetUrl": "http://policelab.or.kr/",
     "author": "이명준",
     "date": "2019-02-27",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "법무법인 정일_집단소송사이트 s_jungil",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://jilaw.net/adm (법무법인 정일_집단소송사이트(관리자))",
+      "아이디": "admin",
+      "암호": "lawyersul"
+    },
+    "comments": []
   },
   {
     "wr_id": "682",
@@ -1649,7 +2722,15 @@
     "targetUrl": "http://jilaw.net",
     "author": "하상범",
     "date": "2019-01-24",
-    "hit": "3"
+    "hit": "3",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "법무법인 정일_집단소송사이트 s_jungil",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://jilaw.net (법무법인 정일_집단소송사이트(사용자))"
+    },
+    "comments": []
   },
   {
     "wr_id": "681",
@@ -1663,7 +2744,11 @@
     "targetUrl": "http://www.kcf90.com",
     "author": "이명준",
     "date": "2018-10-18",
-    "hit": "1"
+    "hit": "1",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "680",
@@ -1677,7 +2762,11 @@
     "targetUrl": "http://bk21.rhetoric.or.kr/",
     "author": "김종규",
     "date": "2018-08-28",
-    "hit": "1"
+    "hit": "1",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "679",
@@ -1691,7 +2780,17 @@
     "targetUrl": "http://ilchokak.co.kr/new/main/main.html",
     "author": "강슬기",
     "date": "2018-05-25",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국관광공사 관광벤처사업 s_tourventure",
+      "URL 종류": "테스트페이지(관리자)",
+      "URL": "http://183.109.79.73:8080/contest_adm/ (벤처관광 테스트 주소 (관리자) - 운영사 계정(씽굿))",
+      "아이디": "thinkgood",
+      "암호": "rhksflwk"
+    },
+    "comments": []
   },
   {
     "wr_id": "678",
@@ -1705,7 +2804,17 @@
     "targetUrl": "http://www.flyfreetel.com",
     "author": "김종규",
     "date": "2018-03-26",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국관광공사 관광벤처사업 s_tourventure",
+      "URL 종류": "테스트페이지(관리자)",
+      "URL": "http://183.109.79.75/contest_adm/ (벤처관광 테스트 주소 (관리자))",
+      "아이디": "contest_adm",
+      "암호": "Visitkorea!@#$"
+    },
+    "comments": []
   },
   {
     "wr_id": "677",
@@ -1719,7 +2828,17 @@
     "targetUrl": "http://www.flyfreetel.co.kr",
     "author": "김종규",
     "date": "2018-03-26",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국관광공사 관광벤처사업 s_tourventure",
+      "URL 종류": "테스트페이지(사용자)",
+      "URL": "http://183.109.79.75/main.do (벤처관광 테스트 주소 (사용자))",
+      "아이디": "/",
+      "암호": "/"
+    },
+    "comments": []
   },
   {
     "wr_id": "676",
@@ -1733,7 +2852,17 @@
     "targetUrl": "http://www.biostar.re.kr",
     "author": "김종규",
     "date": "2018-02-19",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국관광공사 관광벤처사업 s_tourventure",
+      "URL 종류": "기타",
+      "URL": "https://analytics.google.com (구글 웹 로그 분석)",
+      "아이디": "ktotourventure@gmail.com",
+      "암호": "rhksrhkdqpscj2@ (관광벤처2@)"
+    },
+    "comments": []
   },
   {
     "wr_id": "675",
@@ -1747,7 +2876,17 @@
     "targetUrl": "http://www.alliance.re.kr",
     "author": "김종규",
     "date": "2018-02-05",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국관광공사 관광벤처사업 s_tourventure",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://tourventure.or.kr/contest_adm/ (관광벤처사업 관리자페이지)",
+      "아이디": "contest_adm",
+      "암호": "Visitkorea!@#$"
+    },
+    "comments": []
   },
   {
     "wr_id": "674",
@@ -1761,7 +2900,15 @@
     "targetUrl": "http://shyc2007.com/maehwa/main.do",
     "author": "김종규",
     "date": "2018-02-05",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국관광공사 관광벤처사업 s_tourventure",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://tourventure.or.kr (관광벤처사업 사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "673",
@@ -1775,7 +2922,17 @@
     "targetUrl": "http://www.shyc2007.com/",
     "author": "김종규",
     "date": "2018-01-30",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국관광공사 관광벤처사업 s_tourventure",
+      "URL 종류": "기타",
+      "URL": "https://www.cafe24.com/ (카페24정보)",
+      "아이디": "toureventure",
+      "암호": "ktoventure1"
+    },
+    "comments": []
   },
   {
     "wr_id": "672",
@@ -1789,7 +2946,17 @@
     "targetUrl": "http://smesc.kist.re.kr/",
     "author": "김종규",
     "date": "2018-01-08",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "경수고속도로 s_yseway",
+      "URL 종류": "기타",
+      "URL": "https://analytics.naver.com/ (네이버 애널리틱스)",
+      "아이디": "yseway0907",
+      "암호": "yseadmin0907."
+    },
+    "comments": []
   },
   {
     "wr_id": "671",
@@ -1803,7 +2970,17 @@
     "targetUrl": "http://indiebrandfair.com/",
     "author": "강동우",
     "date": "2017-04-07",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국조리협회 s_kcf70",
+      "URL 종류": "기타",
+      "URL": "https://www.dotname.co.kr/ (닷네임코리아(도메인))",
+      "아이디": "kcf90",
+      "암호": "foodkcf90@"
+    },
+    "comments": []
   },
   {
     "wr_id": "670",
@@ -1817,7 +2994,15 @@
     "targetUrl": "http://www.koreafashioncontest.org",
     "author": "강동우",
     "date": "2017-04-07",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "3D프린팅연구조합 s_3dpro",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "3dpro.or.kr (사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "669",
@@ -1831,7 +3016,17 @@
     "targetUrl": "http://tourventure.or.kr/",
     "author": "유성민",
     "date": "2016-12-07",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "융합연구정책센터 s_crpc",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://crpc.kist.re.kr/_intcms (관리자페이지)",
+      "아이디": "admin",
+      "암호": "intcms"
+    },
+    "comments": []
   },
   {
     "wr_id": "668",
@@ -1845,7 +3040,15 @@
     "targetUrl": "http://hyominhospital.com/",
     "author": "홍준표",
     "date": "2016-11-10",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "융합연구정책센터 s_crpc",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://crpc.kist.re.kr (사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "667",
@@ -1859,7 +3062,17 @@
     "targetUrl": "http://cdcc.snu.ac.kr/",
     "author": "문은미",
     "date": "2015-03-19",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "시흥시청소년수련관 s_shyc",
+      "URL 종류": "기타",
+      "URL": "https://analytics.naver.com/ (네이버 로그분석)",
+      "아이디": "shyc7800",
+      "암호": "youth1318!"
+    },
+    "comments": []
   },
   {
     "wr_id": "666",
@@ -1873,7 +3086,17 @@
     "targetUrl": "http://mfis.mpva.go.kr/main.do",
     "author": "이명준",
     "date": "2015-02-09",
-    "hit": "1"
+    "hit": "1",
+    "content": "2018-11-02 요청으로 변경 -6928hh\n\n2019-02-21 요청으로 변경- h6928com\n\n2019-11-27 요청관리자 정보\nhttp://www.ikasi.or.kr/admin/admin.asp\n아이디 : ikasiaa\n비밀번호 : 0909ehdghk",
+    "files": [],
+    "meta": {
+      "사이트": "한국어문능력개발원 리뉴얼 s_ngel",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.ikasi.or.kr/admin/admin.asp (한국동화구연지도사협회)",
+      "아이디": "ikasiaa",
+      "암호": "6928guqghl"
+    },
+    "comments": []
   },
   {
     "wr_id": "665",
@@ -1887,7 +3110,17 @@
     "targetUrl": "http://safelife.or.kr/2014s_home/",
     "author": "김세미",
     "date": "2014-10-08",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "지역고용정보네트워크 s_reisorkr",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://reis.or.kr/reis_manager/auth/login.do (관리자/관리자 정보)",
+      "아이디": "wordncode (관리용 신규 아이디)",
+      "암호": "wordncode"
+    },
+    "comments": []
   },
   {
     "wr_id": "664",
@@ -1901,7 +3134,17 @@
     "targetUrl": "http://rookiekorea.com/m/main.html",
     "author": "이명준",
     "date": "2014-09-22",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국조리협회 s_kcf70",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://www.kcf90.com/adm/ (조리협회 신규관리자 (2018 개편))",
+      "아이디": "admin",
+      "암호": "whflrhksflwk"
+    },
+    "comments": []
   },
   {
     "wr_id": "663",
@@ -1915,7 +3158,15 @@
     "targetUrl": "http://117.52.82.70/main/main.do",
     "author": "김종규",
     "date": "2014-09-18",
-    "hit": "38"
+    "hit": "38",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국조리협회 s_kcf70",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.kcf90.com (한국조리협회(2018 개편))"
+    },
+    "comments": []
   },
   {
     "wr_id": "662",
@@ -1929,7 +3180,17 @@
     "targetUrl": "http://183.109.79.76/reis_renewal/main/main.do",
     "author": "김종규",
     "date": "2014-09-11",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "경수고속도로 s_yseway",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://www.yseway.com/_intcms (경수고속도로 관리자)",
+      "아이디": "admin",
+      "암호": "wooram9099."
+    },
+    "comments": []
   },
   {
     "wr_id": "661",
@@ -1943,7 +3204,15 @@
     "targetUrl": "http://cargo.brightstar.kr",
     "author": "이명준",
     "date": "2014-06-05",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "경수고속도로 s_yseway",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://www.yseway.com/ (사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "660",
@@ -1957,7 +3226,17 @@
     "targetUrl": "http://code0042.sitegate.co.kr/home/main/main.php",
     "author": "김세미",
     "date": "2014-05-23",
-    "hit": "2"
+    "hit": "2",
+    "content": "인증키 : WNJLG84BPJNCZ51870JD62VR1HM",
+    "files": [],
+    "meta": {
+      "사이트": "북부기술교육원 s_bukedu",
+      "URL 종류": "기타",
+      "URL": "http://openapi.work.go.kr/opi/opi/opia/wantedApiListVw.do (워크넷 오픈 API)",
+      "아이디": "bukbu2092",
+      "암호": "jzAA$!36"
+    },
+    "comments": []
   },
   {
     "wr_id": "659",
@@ -1971,7 +3250,15 @@
     "targetUrl": "http://code0085.sitegate.co.kr/home/main/main.php",
     "author": "이명준",
     "date": "2014-04-11",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 기술정책연구소 (TEPRI) s_tepri",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://tepri.kist.re.kr/ (사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "658",
@@ -1985,7 +3272,17 @@
     "targetUrl": "http://iwabiennale.org/2012/main/main.php",
     "author": "이명준",
     "date": "2014-02-10",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "BK21plus 고려대학교 번역과 프랑스문학 연구인력양성 사업팀 s_bk21plus",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://bk21.rhetoric.or.kr/bk21/html/admin/ (관리자 페이지 (크롬은 접속 안됨))",
+      "아이디": "admin",
+      "암호": "bk21pw29"
+    },
+    "comments": []
   },
   {
     "wr_id": "657",
@@ -1999,7 +3296,15 @@
     "targetUrl": "http://iwabiennale.org/",
     "author": "이명준",
     "date": "2014-02-10",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "BK21plus 고려대학교 번역과 프랑스문학 연구인력양성 사업팀 s_bk21plus",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://bk21.rhetoric.or.kr/ (사용자 페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "656",
@@ -2013,7 +3318,15 @@
     "targetUrl": "http://tmtled.cafe24.com",
     "author": "이명준",
     "date": "2014-02-05",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "VR 포트폴리오 s_wncvr",
+      "URL 종류": "기타",
+      "URL": "http://whankimuseum.org/vr/map/ (환기미술관 찾아오시는길 VR)"
+    },
+    "comments": []
   },
   {
     "wr_id": "655",
@@ -2027,7 +3340,15 @@
     "targetUrl": "http://tmtled.com/chn/",
     "author": "이명준",
     "date": "2014-02-05",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "VR 포트폴리오 s_wncvr",
+      "URL 종류": "기타",
+      "URL": "http://whankimuseum.org/vr/whanki/ (환기미술관 VR)"
+    },
+    "comments": []
   },
   {
     "wr_id": "654",
@@ -2041,7 +3362,15 @@
     "targetUrl": "http://tmtled.com/eng/",
     "author": "이명준",
     "date": "2014-02-05",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "VR 포트폴리오 s_wncvr",
+      "URL 종류": "기타",
+      "URL": "http://m16.co.kr/bukedu/map/ (북부기술교육원 찾아오시는길 VR)"
+    },
+    "comments": []
   },
   {
     "wr_id": "653",
@@ -2055,7 +3384,15 @@
     "targetUrl": "http://tmtled.com",
     "author": "이명준",
     "date": "2014-02-05",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "VR 포트폴리오 s_wncvr",
+      "URL 종류": "기타",
+      "URL": "http://m16.co.kr/bukedu/ (북부기술교육원 VR)"
+    },
+    "comments": []
   },
   {
     "wr_id": "652",
@@ -2069,7 +3406,15 @@
     "targetUrl": "http://clueandkey.com",
     "author": "이명준",
     "date": "2014-01-24",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "VR 포트폴리오 s_wncvr",
+      "URL 종류": "기타",
+      "URL": "http://m16.co.kr/bukhan/ (제타시스템/북한산성 VR)"
+    },
+    "comments": []
   },
   {
     "wr_id": "651",
@@ -2083,7 +3428,17 @@
     "targetUrl": "http://www.aceme.net",
     "author": "이명준",
     "date": "2014-01-24",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국조리협회 s_kcf70",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://kcf70.com/_tomatodream/ (조리협회 기존관리자)",
+      "아이디": "oktomato",
+      "암호": "2018kki"
+    },
+    "comments": []
   },
   {
     "wr_id": "650",
@@ -2097,7 +3452,15 @@
     "targetUrl": "http://global.seoul.go.kr/webzine/august/",
     "author": "이명준",
     "date": "2014-01-24",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국조리협회 s_kcf70",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.kcf70.com/ (한국조리협회)"
+    },
+    "comments": []
   },
   {
     "wr_id": "649",
@@ -2111,7 +3474,17 @@
     "targetUrl": "http://luxwood.co.kr",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "12",
+    "files": [],
+    "meta": {
+      "사이트": "한국청소년상담학회 s_koyca",
+      "URL 종류": "기타",
+      "URL": "http://www.koyca.net (사용자 개인 아이디)",
+      "아이디": "calcutta",
+      "암호": "m01025679456"
+    },
+    "comments": []
   },
   {
     "wr_id": "648",
@@ -2125,7 +3498,17 @@
     "targetUrl": "http://www.mndkids.or.kr",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국청소년상담학회 s_koyca",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.koyca.net/admin/ (관리자)",
+      "아이디": "admin",
+      "암호": "청소년상담12"
+    },
+    "comments": []
   },
   {
     "wr_id": "647",
@@ -2139,7 +3522,17 @@
     "targetUrl": "http://lingpiad.org/new_html/main/main.php",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "123",
+    "files": [],
+    "meta": {
+      "사이트": "한국청소년상담학회 s_koyca",
+      "URL 종류": "참조사이트(개발)",
+      "URL": "http://koycatest.uni9.co.kr/admin (신규 개발 테스트 페이지 관리자)",
+      "아이디": "test",
+      "암호": "123456"
+    },
+    "comments": []
   },
   {
     "wr_id": "646",
@@ -2153,7 +3546,17 @@
     "targetUrl": "http://bk21.kufra.org/html/main/main.php",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "3"
+    "hit": "3",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국청소년상담학회 s_koyca",
+      "URL 종류": "참조사이트(개발)",
+      "URL": "http://koycatest.uni9.co.kr/ (신규 개발 테스트 페이지)",
+      "아이디": "yubi",
+      "암호": "123456"
+    },
+    "comments": []
   },
   {
     "wr_id": "645",
@@ -2167,7 +3570,17 @@
     "targetUrl": "http://ksnlp.or.kr/",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "한국청소년상담학회 s_koyca",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.koyca.net (사용자페이지)",
+      "아이디": "wo2150",
+      "암호": "leedo21c"
+    },
+    "comments": []
   },
   {
     "wr_id": "644",
@@ -2181,7 +3594,16 @@
     "targetUrl": "http://cowayuxlab.co.kr",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "더플라이투어 s_flytour",
+      "URL 종류": "기타",
+      "URL": "http://devadmin.checkpay.co.kr/login.act (체크페이 관리자)",
+      "아이디": "idea"
+    },
+    "comments": []
   },
   {
     "wr_id": "643",
@@ -2195,7 +3617,17 @@
     "targetUrl": "http://nhistory.co.kr",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "북부기술교육원 s_bukedu",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.bukedu.or.kr/ (북부 담당자 계정)",
+      "아이디": "pageadm",
+      "암호": "jj4802"
+    },
+    "comments": []
   },
   {
     "wr_id": "642",
@@ -2209,7 +3641,17 @@
     "targetUrl": "http://savekorea001.cafe24.com/main/main.asp",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "패션협회, 패션넷코리아 유지보수 (2018) s_fashion2018",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://fnkadm.fashionnetkorea.com/ (패션넷코리아 관리자)",
+      "아이디": "admin",
+      "암호": "votusrhksflwk (패션관리자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "641",
@@ -2223,7 +3665,15 @@
     "targetUrl": "njpojang.com",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "패션협회, 패션넷코리아 유지보수 (2018) s_fashion2018",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://fashionnetkorea.com/ (패션넷코리아 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "640",
@@ -2237,7 +3687,17 @@
     "targetUrl": "http://61.100.186.159/~blutouch/main/main.php",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "패션협회, 패션넷코리아 유지보수 (2018) s_fashion2018",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.koreafashion.org/adminMain/ (패션협회 관리자)",
+      "아이디": "fashion",
+      "암호": "4743"
+    },
+    "comments": []
   },
   {
     "wr_id": "639",
@@ -2251,7 +3711,15 @@
     "targetUrl": "http://61.100.186.159/~blutouch/main/main_10.php",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "패션협회, 패션넷코리아 유지보수 (2018) s_fashion2018",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.koreafashion.org/ (패션협회 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "638",
@@ -2265,7 +3733,17 @@
     "targetUrl": "http://61.100.186.159/~blutouch/main/main.php",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국관광공사 크라우드펀딩 s_crowd",
+      "URL 종류": "기타",
+      "URL": "https://www.cafe24.com/ (카페24정보)",
+      "아이디": "toureventure",
+      "암호": "ktoventure1"
+    },
+    "comments": []
   },
   {
     "wr_id": "637",
@@ -2279,7 +3757,15 @@
     "targetUrl": "http://61.100.186.159/~yssurvey/html3/poll_login.html",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "2"
+    "hit": "2",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "일조각 s_ilchokak",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://ilchokak.co.kr/new/main/main.html (일조각 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "636",
@@ -2293,7 +3779,17 @@
     "targetUrl": "http://61.100.186.159/~yssurvey/html2/poll_login.html",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "일조각 s_ilchokak",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://ilchokak.co.kr/new/ilchokak_adm/ (일조각 관리자)",
+      "아이디": "admin",
+      "암호": "1234"
+    },
+    "comments": []
   },
   {
     "wr_id": "635",
@@ -2307,7 +3803,17 @@
     "targetUrl": "http://61.100.186.159/~yssurvey/html/poll_login.html",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "FITI 융합얼라이언스 s_alliance",
+      "URL 종류": "참조사이트(개발)",
+      "URL": "http://reliability.fiti.re.kr/mng/login/loginForm.asp (FITI신뢰성평가센터 관리자)",
+      "아이디": "admin",
+      "암호": "1111"
+    },
+    "comments": []
   },
   {
     "wr_id": "634",
@@ -2321,7 +3827,17 @@
     "targetUrl": "http://research.yonsei.ac.kr",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "FITI 융합얼라이언스 s_alliance",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://www.alliance.re.kr/fiti_adm (관리자 페이지)",
+      "아이디": "admin",
+      "암호": "fitirhksflwk (fiti관리자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "633",
@@ -2335,7 +3851,17 @@
     "targetUrl": "http://61.100.186.159/~lgdacoms/html/main/main.php",
     "author": "이명준",
     "date": "2014-01-23",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "서울대학교 대학원 협동과정 비교문학 전공 s_snucomplit",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://complit.snu.ac.kr/board/plit_adm/ (서울대학교 대학원 협동과정 비교문학 전공 관리자 (기존))",
+      "아이디": "admin",
+      "암호": "8282hardworking"
+    },
+    "comments": []
   },
   {
     "wr_id": "632",
@@ -2349,7 +3875,17 @@
     "targetUrl": "http://clubgony.com/new_www",
     "author": "이명준",
     "date": "2014-01-22",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "메디파크산부인과 s_medipark",
+      "URL 종류": "기타",
+      "URL": "http://www.inames.co.kr/ (메디파크 도메인 (아이네임즈))",
+      "아이디": "medipark7000",
+      "암호": "apelvkzm00 (메디파크00)"
+    },
+    "comments": []
   },
   {
     "wr_id": "631",
@@ -2363,7 +3899,17 @@
     "targetUrl": "http://61.100.186.159/~mice/html_/login_e.html",
     "author": "이명준",
     "date": "2014-01-22",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "바이오 창업 전주기 컨설팅 지원 플랫폼 (가칭) s_biostartup",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://www.biostar.re.kr/manager (관리자페이지)",
+      "아이디": "biostarAdmin",
+      "암호": "1234"
+    },
+    "comments": []
   },
   {
     "wr_id": "630",
@@ -2377,7 +3923,17 @@
     "targetUrl": "http://61.100.186.159/~mice/html_/login_k.html",
     "author": "이명준",
     "date": "2014-01-22",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 중소기업지원센터 s_smesc",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://smesc_new.kist.re.kr/home (구 사이트)",
+      "아이디": "smesc",
+      "암호": "smesc2014"
+    },
+    "comments": []
   },
   {
     "wr_id": "629",
@@ -2391,7 +3947,17 @@
     "targetUrl": "http://www.visualuhak.com/",
     "author": "이명준",
     "date": "2014-01-22",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "패션넷코리아 s_fashionnetkorea",
+      "URL 종류": "기타",
+      "URL": "http://kr.dnsever.com/ (DNS EVER)",
+      "아이디": "koreafashion",
+      "암호": "votusguq"
+    },
+    "comments": []
   },
   {
     "wr_id": "628",
@@ -2405,7 +3971,15 @@
     "targetUrl": "http://dream-now.co.kr",
     "author": "이명준",
     "date": "2014-01-22",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "서울특별시체육회 s_seoulsports",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.seoulsports.or.kr:8083/index.php (서울시체육회 사용자 (개편전 2016))"
+    },
+    "comments": []
   },
   {
     "wr_id": "627",
@@ -2419,7 +3993,15 @@
     "targetUrl": "http://eco-i.or.kr",
     "author": "이명준",
     "date": "2014-01-22",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "서울특별시체육회 s_seoulsports",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://www.seoulsports.or.kr (서울시체육회 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "626",
@@ -2433,7 +4015,17 @@
     "targetUrl": "http://gysc.or.kr/webzine45/main/main.php",
     "author": "이명준",
     "date": "2014-01-22",
-    "hit": "2"
+    "hit": "2",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "메디파크산부인과 s_medipark",
+      "URL 종류": "기타",
+      "URL": "https://developers.naver.com/products/map/ (메디파크 네이버 지도API)",
+      "아이디": "medipark2018",
+      "암호": "apelvkzm2018 (메디파크2018)"
+    },
+    "comments": []
   },
   {
     "wr_id": "625",
@@ -2447,7 +4039,15 @@
     "targetUrl": "http://hs-enc.co.kr/",
     "author": "이명준",
     "date": "2014-01-21",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "지역고용정보네트워크 s_reisorkr",
+      "URL 종류": "테스트페이지(사용자)",
+      "URL": "http://183.109.79.72:8080/main/main.do (내부 테스트 서버)"
+    },
+    "comments": []
   },
   {
     "wr_id": "624",
@@ -2461,7 +4061,15 @@
     "targetUrl": "http://modeshanghai.com/china/main.asp",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "트니트니 s_tntnteacher",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.tntnteacher.co.kr/ (트니트니 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "623",
@@ -2475,7 +4083,17 @@
     "targetUrl": "http://modeshanghai.com",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "트니트니 s_tntnteacher",
+      "URL 종류": "기타",
+      "URL": "https://www.gabia.com/ (트니트니 가비아정보)",
+      "아이디": "mfly87",
+      "암호": "cndwjs87"
+    },
+    "comments": []
   },
   {
     "wr_id": "622",
@@ -2489,7 +4107,17 @@
     "targetUrl": "http://cwdsarangchae.kr/china/main/main.php",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "더플라이투어 s_flytour",
+      "URL 종류": "테스트페이지(관리자)",
+      "URL": "http://www.flyfreetel.co.kr/fly_adm/login/login.html (관리자 페이지 개발중)",
+      "아이디": "admin",
+      "암호": "vmffkdlrhksflwk"
+    },
+    "comments": []
   },
   {
     "wr_id": "621",
@@ -2503,7 +4131,15 @@
     "targetUrl": "http://cwdsarangchae.kr/eng/main/main.php",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "더플라이투어 s_flytour",
+      "URL 종류": "테스트페이지(사용자)",
+      "URL": "http://www.flyfreetel.co.kr/main/main.html (플라이프리텔 개발주소)"
+    },
+    "comments": []
   },
   {
     "wr_id": "620",
@@ -2517,7 +4153,17 @@
     "targetUrl": "http://cwdsarangchae.kr/",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "지역고용정보네트워크 s_reisorkr",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://183.109.79.72/manage/login.do (구 관리자 사이트(내부서버)",
+      "아이디": "admin",
+      "암호": "1007"
+    },
+    "comments": []
   },
   {
     "wr_id": "619",
@@ -2531,7 +4177,15 @@
     "targetUrl": "http://61.100.186.159/~snuac",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "지역고용정보네트워크 s_reisorkr",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://183.109.79.72/main.do (구 사이트(내부 서버))"
+    },
+    "comments": []
   },
   {
     "wr_id": "618",
@@ -2545,7 +4199,15 @@
     "targetUrl": "http://totcar.co.kr",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "더플라이투어 s_flytour",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.flyfreetel.com (플라이프리텔 (도메인 포워딩))"
+    },
+    "comments": []
   },
   {
     "wr_id": "617",
@@ -2559,7 +4221,15 @@
     "targetUrl": "http://www.kodha.org",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "더플라이투어 s_flytour",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.flyfreetel.co.kr (플라이프리텔 메인 도메인)"
+    },
+    "comments": []
   },
   {
     "wr_id": "616",
@@ -2573,7 +4243,15 @@
     "targetUrl": "http://www.dmzecopeace.com/",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "3"
+    "hit": "3",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "메디파크산부인과 s_medipark",
+      "URL 종류": "참조사이트(디자인)",
+      "URL": "http://www.indiebrandfair.com/ (메디파크 참고사이트 (인디브랜드페어))"
+    },
+    "comments": []
   },
   {
     "wr_id": "615",
@@ -2587,7 +4265,15 @@
     "targetUrl": "http://www.4rivers.go.kr",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "메디파크산부인과 s_medipark",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.medi-park.co.kr (메디파크산부인과 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "614",
@@ -2601,7 +4287,17 @@
     "targetUrl": "http://butterflypark.icbp.go.kr/",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국관광공사 크라우드펀딩 s_crowd",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://tourventure.or.kr/contest_adm/ (관광벤처사업 관리자페이지)",
+      "아이디": "contest_adm",
+      "암호": "Visitkorea!@#$"
+    },
+    "comments": []
   },
   {
     "wr_id": "613",
@@ -2615,7 +4311,15 @@
     "targetUrl": "http://ezisam.com/",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "4"
+    "hit": "4",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국관광공사 크라우드펀딩 s_crowd",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://tourventure.or.kr (관광벤처사업 사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "612",
@@ -2629,7 +4333,17 @@
     "targetUrl": "http://www.ilsamji.co.kr",
     "author": "이명준",
     "date": "2014-01-17",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "일조각 s_ilchokak",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://ilchokak.co.kr/html/admin/index.php (일조각 기존 관리자페이지 (IE로만 접속 가능함))",
+      "아이디": "admin",
+      "암호": "1234"
+    },
+    "comments": []
   },
   {
     "wr_id": "611",
@@ -2643,7 +4357,15 @@
     "targetUrl": "http://shop.feelingyou.net/index.php",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "일조각 s_ilchokak",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "ilchokak.co.kr (일조각 기존 홈페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "610",
@@ -2657,7 +4379,17 @@
     "targetUrl": "http://www.feelingyou.net/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "서울특별시체육회 s_seoulsports",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://www.seoulsports.or.kr/_intcms/ (서울시체육회 관리자)",
+      "아이디": "admin",
+      "암호": "ssccms27@"
+    },
+    "comments": []
   },
   {
     "wr_id": "609",
@@ -2671,7 +4403,17 @@
     "targetUrl": "http://m.theapro.kr",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "지역고용정보네트워크 s_reisorkr",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://reis.or.kr/reis_central/auth/login.do (관리자 페이지)",
+      "아이디": "reismaster",
+      "암호": "~Reismaster7411"
+    },
+    "comments": []
   },
   {
     "wr_id": "608",
@@ -2685,7 +4427,15 @@
     "targetUrl": "http://www.theartro.kr/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "지역고용정보네트워크 s_reisorkr",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.reis.or.kr (사용자 페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "607",
@@ -2699,7 +4449,17 @@
     "targetUrl": "http://kor.theapro.kr/MA/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국과학기술연구원 (KIST본원) s_kist",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://www.kist.re.kr/masterpage (KIST본원 관리자)",
+      "아이디": "admin",
+      "암호": "ghdqhtlf1!! (홍보실1!!)"
+    },
+    "comments": []
   },
   {
     "wr_id": "606",
@@ -2713,7 +4473,15 @@
     "targetUrl": "http://webzine.gokams.or.kr/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "사이트": "한국과학기술연구원 (KIST본원) s_kist",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "https://www.kist.re.kr (KIST본원 사용자)"
+    },
+    "comments": []
   },
   {
     "wr_id": "605",
@@ -2727,7 +4495,15 @@
     "targetUrl": "http://artmaru.or.kr/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "바이오 창업 전주기 컨설팅 지원 플랫폼 (가칭) s_biostartup",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.biostar.re.kr (사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "604",
@@ -2741,7 +4517,17 @@
     "targetUrl": "http://academy.gokams.or.kr/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "서울특별시체육회 s_seoulsports",
+      "URL 종류": "기타",
+      "URL": "http://www.nurihosting.com/ (서버호스팅)",
+      "아이디": "seoulsports",
+      "암호": "ssc711"
+    },
+    "comments": []
   },
   {
     "wr_id": "603",
@@ -2755,7 +4541,15 @@
     "targetUrl": "http://www.artsdb.or.kr/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "FITI 융합얼라이언스 s_alliance",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.alliance.re.kr (사용자 페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "602",
@@ -2769,7 +4563,17 @@
     "targetUrl": "http://pams.or.kr/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "시흥시청소년수련관 s_shyc",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://shyc2007.com/sh (관리자 페이지 (2월 5일자 업데이트))",
+      "아이디": "admin",
+      "암호": "shyc_1894"
+    },
+    "comments": []
   },
   {
     "wr_id": "601",
@@ -2783,7 +4587,17 @@
     "targetUrl": "http://gokams.or.kr/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "매화청소년수련관 s_maewha",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://shyc2007.com/sh/ (관리자페이지)",
+      "아이디": "maehwa",
+      "암호": "alswl20 (민지20)"
+    },
+    "comments": []
   },
   {
     "wr_id": "600",
@@ -2797,7 +4611,15 @@
     "targetUrl": "http://jhhand.cafe24.com/",
     "author": "이명준",
     "date": "2014-01-16",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "매화청소년수련관 s_maewha",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://shyc2007.com/maehwa/main.do (사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "599",
@@ -2811,7 +4633,17 @@
     "targetUrl": "http://www.ktappi.or.kr/eng/",
     "author": "이명준",
     "date": "2014-01-15",
-    "hit": "4"
+    "hit": "4",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "FITI시험연구원 s_fiti",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "https://fiti.re.kr/masterpage (관리자페이지)",
+      "아이디": "admin",
+      "암호": "intcms"
+    },
+    "comments": []
   },
   {
     "wr_id": "598",
@@ -2825,7 +4657,15 @@
     "targetUrl": "http://www.ktappi.or.kr/new/",
     "author": "이명준",
     "date": "2014-01-15",
-    "hit": "4"
+    "hit": "4",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "시흥시청소년수련관 s_shyc",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://www.shyc2007.com/ (사용자페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "597",
@@ -2839,7 +4679,11 @@
     "targetUrl": "http://drboo.co.kr/",
     "author": "이명준",
     "date": "2014-01-15",
-    "hit": "1"
+    "hit": "1",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "596",
@@ -2853,7 +4697,17 @@
     "targetUrl": "http://www.kumc.or.kr/koreapoll/poll.jsp",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "지역고용 인프라확충 지원기간 공보(지역고용정보 네트워크 개편) s_reis",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://reis.or.kr/reis_central/auth/login.do (관리자 페이지 (등록시스템))",
+      "아이디": "reismaster",
+      "암호": "~Reismaster7411"
+    },
+    "comments": []
   },
   {
     "wr_id": "595",
@@ -2867,7 +4721,17 @@
     "targetUrl": "http://www.raonbook.co.kr/shop/main/index.php",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "OECD 대한민국정책센터 s_OECDJUNGCHAC",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.ktcfamily.org/webmanager (조세정책본부 KTC 관리자)",
+      "아이디": "superktc",
+      "암호": "oecd3299"
+    },
+    "comments": []
   },
   {
     "wr_id": "594",
@@ -2881,7 +4745,17 @@
     "targetUrl": "http://visangcp.com/",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "OECD 대한민국정책센터 s_OECDJUNGCHAC",
+      "URL 종류": "보안인증",
+      "URL": "https://reqnetwork.kdischool.ac.kr/ (네트워크 접속 요청)",
+      "아이디": "wordncode",
+      "암호": "00000000"
+    },
+    "comments": []
   },
   {
     "wr_id": "593",
@@ -2895,7 +4769,15 @@
     "targetUrl": "http://61.250.86.184/~happyweb/main.html",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "3"
+    "hit": "3",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "OECD 대한민국정책센터 s_OECDJUNGCHAC",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.ktcfamily.org (조세정책본부 KTC)"
+    },
+    "comments": []
   },
   {
     "wr_id": "592",
@@ -2909,7 +4791,17 @@
     "targetUrl": "http://www.sese.or.kr",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "OECD 대한민국정책센터 s_OECDJUNGCHAC",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.oecdkpc.org/kpc_admin/ (경쟁정책본부 관리자)",
+      "아이디": "admin",
+      "암호": "1004"
+    },
+    "comments": []
   },
   {
     "wr_id": "591",
@@ -2923,7 +4815,15 @@
     "targetUrl": "http://www.seongnam.go.kr/mayor/multibbs/multi_list.asp",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "OECD 대한민국정책센터 s_OECDJUNGCHAC",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://oecdkpc.org/competition/registration/ (경쟁정책본부)"
+    },
+    "comments": []
   },
   {
     "wr_id": "590",
@@ -2937,7 +4837,11 @@
     "targetUrl": "http://www.likeyoufriends.com",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "589",
@@ -2951,7 +4855,17 @@
     "targetUrl": "http://www.kolamp.com",
     "author": "이명준",
     "date": "2014-01-14",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "OECD 대한민국정책센터 s_OECDJUNGCHAC",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://public.oecdkorea.org/ebook/conf/login.jsp (공공관리정책본부 관리자)",
+      "아이디": "oecdkorea",
+      "암호": "admin1234"
+    },
+    "comments": []
   },
   {
     "wr_id": "588",
@@ -2965,7 +4879,15 @@
     "targetUrl": "http://www.fpag.co.kr",
     "author": "이명준",
     "date": "2014-01-07",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "OECD 대한민국정책센터 s_OECDJUNGCHAC",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://public.oecdkorea.org (공공관리정책본부)"
+    },
+    "comments": []
   },
   {
     "wr_id": "587",
@@ -2979,7 +4901,11 @@
     "targetUrl": "http://www.happyms.or.kr/m",
     "author": "이명준",
     "date": "2014-01-07",
-    "hit": "1"
+    "hit": "1",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "586",
@@ -2993,7 +4919,11 @@
     "targetUrl": "http://www.happyms.or.kr",
     "author": "이명준",
     "date": "2014-01-07",
-    "hit": "1"
+    "hit": "1",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "585",
@@ -3007,7 +4937,17 @@
     "targetUrl": "http://www.hyunjin.co.kr/mypage/price.asp",
     "author": "이명준",
     "date": "2014-01-07",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "OECD 대한민국정책센터 s_OECDJUNGCHAC",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.oecdkorea.org/_intcms/index.jsp (센터 홈페이지 관리자)",
+      "아이디": "admin",
+      "암호": "oecdkorea3702!"
+    },
+    "comments": []
   },
   {
     "wr_id": "584",
@@ -3021,7 +4961,15 @@
     "targetUrl": "http://q-korea.net/",
     "author": "이명준",
     "date": "2014-01-02",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "OECD 대한민국정책센터 s_OECDJUNGCHAC",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://www.oecdkorea.org/ (센터 홈페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "583",
@@ -3035,7 +4983,17 @@
     "targetUrl": "http://www.samjeongcm.co.kr/",
     "author": "이명준",
     "date": "2013-12-24",
-    "hit": "1"
+    "hit": "1",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "경기섬유종합지원센터 s_gtextopia",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.gtextopia.or.kr/admin/login.php (관리자페이지)",
+      "아이디": "sumyou1",
+      "암호": "tjadb2015(섬유2015)"
+    },
+    "comments": []
   },
   {
     "wr_id": "582",
@@ -3049,7 +5007,17 @@
     "targetUrl": "http://code0060.sitegate.co.kr",
     "author": "이명준",
     "date": "2013-12-19",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 중소기업지원센터 s_smesc",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://smesc_new.kist.re.kr/ (사용자 페이지 (기존))",
+      "아이디": "smesc",
+      "암호": "smesc2014"
+    },
+    "comments": []
   },
   {
     "wr_id": "581",
@@ -3063,7 +5031,17 @@
     "targetUrl": "http://se-incu.socialenterprise.or.kr/",
     "author": "김종규",
     "date": "2013-12-17",
-    "hit": "5"
+    "hit": "5",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 중소기업지원센터 s_smesc",
+      "URL 종류": "관리자페이지(신규)",
+      "URL": "http://smesc.kist.re.kr/_intcms (관리자페이지)",
+      "아이디": "smesc_master",
+      "암호": "intcms1234!@#"
+    },
+    "comments": []
   },
   {
     "wr_id": "580",
@@ -3077,7 +5055,15 @@
     "targetUrl": "http://employment70.go.kr",
     "author": "김종규",
     "date": "2013-12-12",
-    "hit": "2"
+    "hit": "2",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "KIST 중소기업지원센터 s_smesc",
+      "URL 종류": "사용자페이지(신규)",
+      "URL": "http://smesc.kist.re.kr/ (사용자 페이지)"
+    },
+    "comments": []
   },
   {
     "wr_id": "579",
@@ -3091,7 +5077,17 @@
     "targetUrl": "http://pharmderma.cafe24.com/",
     "author": "이명준",
     "date": "2013-12-03",
-    "hit": "2"
+    "hit": "2",
+    "content": "123",
+    "files": [],
+    "meta": {
+      "사이트": "패션산업 해외마케팅인력 양성사업 s_fashionhrd",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://hrd.koreafashion.org/__admpg/ (패션산업 해외마케팅인력 양성사업 관리자)",
+      "아이디": "fashionadm",
+      "암호": "1234"
+    },
+    "comments": []
   },
   {
     "wr_id": "578",
@@ -3105,7 +5101,15 @@
     "targetUrl": "http://galeb.cafe24.com/",
     "author": "이명준",
     "date": "2013-12-03",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "패션산업 해외마케팅인력 양성사업 s_fashionhrd",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "http://hrd.koreafashion.org (패션산업 해외마케팅인력 양성사업)"
+    },
+    "comments": []
   },
   {
     "wr_id": "577",
@@ -3119,7 +5123,17 @@
     "targetUrl": "http://webzine.e-stc.or.kr",
     "author": "이명준",
     "date": "2013-12-02",
-    "hit": "1"
+    "hit": "1",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "사이트": "에이치앤프랜즈 s_hnfriends",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "http://www.hnfriends.com/_intcms (에이치앤프랜즈 관리자 (CMS))",
+      "아이디": "khj",
+      "암호": "rlagkrwls75!!"
+    },
+    "comments": []
   },
   {
     "wr_id": "576",
@@ -3133,7 +5147,17 @@
     "targetUrl": "http://thainthai.com/m/",
     "author": "이명준",
     "date": "2013-12-02",
-    "hit": "3"
+    "hit": "3",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "KIST융합연구정책센터 s_kist_crpc",
+      "URL 종류": "관리자페이지(기존)",
+      "URL": "crpc.kist.re.kr/_intcms (관리자 정보)",
+      "아이디": "admin",
+      "암호": "intcms"
+    },
+    "comments": []
   },
   {
     "wr_id": "575",
@@ -3147,6 +5171,14 @@
     "targetUrl": "http://www.safefirst.kr/",
     "author": "이명준",
     "date": "2013-11-28",
-    "hit": "1"
+    "hit": "1",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "사이트": "경기섬유종합지원센터 s_gtextopia",
+      "URL 종류": "사용자페이지(기존)",
+      "URL": "www.gtextopia.or.kr (경기섬유종합지원센터)"
+    },
+    "comments": []
   }
 ]

@@ -7730,8 +7730,9 @@ const App = {
         `;
       }
 
+      const itemId = item.wr_id || item.id || '';
       return `
-        <div class="p-4 bg-surface-container-lowest rounded-2xl border border-outline/70 shadow-xs flex flex-col justify-between gap-2">
+        <div class="p-4 bg-surface-container-lowest rounded-2xl border border-outline/70 shadow-xs flex flex-col justify-between gap-2 cursor-pointer active:scale-[0.99] transition-transform" onclick="App.openExtendedDetail('${tab}', '${itemId}')">
           <div>
             <div class="flex items-start justify-between gap-2">
               <h4 class="font-bold text-sm text-on-surface line-clamp-2">${title}</h4>
@@ -7739,10 +7740,184 @@ const App = {
             </div>
             ${metaHtml}
           </div>
-          ${actionHtml ? `<div class="pt-1">${actionHtml}</div>` : ''}
+          <div class="flex items-center justify-between pt-1 border-t border-outline/40">
+            ${actionHtml ? `<div onclick="event.stopPropagation()">${actionHtml}</div>` : '<div></div>'}
+            <span class="text-xs font-bold text-primary flex items-center gap-0.5 ml-auto">
+              상세보기
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+            </span>
+          </div>
         </div>
       `;
     }).join('');
+  },
+
+  openExtendedDetail(tab, id) {
+    const ext = (window.MockData && window.MockData.extendedData) || {};
+    const keyMap = {
+      contract: 'contracts',
+      estimate: 'estimates',
+      domain: 'domains',
+      server: 'servers',
+      url: 'projectUrls',
+      storyboard: 'storyboards'
+    };
+    const list = ext[keyMap[tab]] || [];
+    const item = list.find(i => String(i.wr_id || i.id) === String(id));
+    if (!item) return;
+
+    this.state.currentDetailExtendedItem = item;
+    const modal = document.getElementById('modal-extended-detail');
+    const content = document.getElementById('extended-detail-content');
+    const titleEl = document.getElementById('m-extended-modal-title');
+    if (!modal || !content) return;
+
+    const titles = {
+      contract: '계약서 상세',
+      estimate: '견적·제안 상세',
+      domain: '도메인 상세',
+      server: '서버·호스팅 상세',
+      url: '접속 URL 상세',
+      storyboard: '스토리보드 상세'
+    };
+    if (titleEl) titleEl.textContent = titles[tab] || '상세 정보';
+
+    const title = item.title || item.subject || item.domain || '상세 정보';
+    const site = item.site || item.company || '';
+    const author = item.author || '워드앤코드';
+    const date = item.date || '-';
+    const meta = item.meta || {};
+    const files = item.files || [];
+    const comments = item.comments || [];
+    const itemContent = item.content || '';
+
+    // 메타데이터 그리드
+    const metaEntries = Object.entries(meta);
+    let metaHtml = '';
+    if (metaEntries.length > 0) {
+      metaHtml = `
+        <div class="bg-surface-container-low p-4 rounded-2xl border border-outline-variant/15 text-xs space-y-2.5">
+          <h4 class="font-headline font-bold text-xs text-primary flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>상세 속성 및 계정 정보</span>
+          </h4>
+          <div class="grid grid-cols-1 gap-2 pt-1">
+            ${metaEntries.map(([k, v]) => `
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/10 text-xs">
+                <span class="text-on-surface-variant font-medium">${k}</span>
+                <div class="flex items-center gap-1.5 max-w-[65%]">
+                  <strong class="text-on-surface font-mono truncate select-all" title="${v}">${v}</strong>
+                  ${v.length > 2 ? `<button type="button" class="px-2 py-0.5 rounded bg-primary/10 text-primary font-bold text-[10px] shrink-0" onclick="App.copyText('${v.replace(/'/g, "\\'")}', '${k}')">복사</button>` : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 첨부파일 목록
+    let filesHtml = '';
+    if (files.length > 0) {
+      filesHtml = `
+        <div class="bg-surface-container-low p-4 rounded-2xl border border-outline-variant/15 text-xs space-y-2.5">
+          <h4 class="font-headline font-bold text-xs text-primary flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            <span>첨부파일 및 원본 문서 (${files.length}건)</span>
+          </h4>
+          <div class="space-y-2">
+            ${files.map(f => `
+              <div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/10 text-xs gap-2">
+                <div class="flex items-center gap-2 truncate">
+                  <svg class="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                  <span class="font-bold text-on-surface truncate" title="${f.fullInfo || f.name}">${f.name}</span>
+                </div>
+                <a href="${f.url}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-primary text-white text-[11px] font-bold shrink-0 flex items-center gap-1" download>
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>다운로드</span>
+                </a>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 본문 내용
+    let bodyHtml = '';
+    if (itemContent && itemContent !== '-' && itemContent !== '.') {
+      bodyHtml = `
+        <div class="bg-surface-container-low p-4 rounded-2xl border border-outline-variant/15 text-xs space-y-2">
+          <h4 class="font-headline font-bold text-xs text-primary flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M14 17H4v-2h10v2zm6-8H4V7h16v2zm0 4H4v-2h16v2zm0 4h-4v-2h4v2z"/></svg>
+            <span>상세 본문 / 메모</span>
+          </h4>
+          <div class="p-3 bg-surface-container-lowest rounded-xl font-mono text-[11px] leading-relaxed whitespace-pre-line text-on-surface border border-outline-variant/10 select-text">
+            ${itemContent}
+          </div>
+        </div>
+      `;
+    }
+
+    // 댓글/피드백
+    let commentsHtml = '';
+    if (comments.length > 0) {
+      commentsHtml = `
+        <div class="bg-surface-container-low p-4 rounded-2xl border border-outline-variant/15 text-xs space-y-2">
+          <h4 class="font-headline font-bold text-xs text-primary flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+            <span>댓글 및 히스토리 (${comments.length}건)</span>
+          </h4>
+          <div class="space-y-2">
+            ${comments.map(c => `
+              <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/10 text-xs space-y-1">
+                <div class="flex items-center justify-between">
+                  <strong class="text-primary font-bold">${c.author}</strong>
+                  <span class="text-[10px] text-on-surface-variant">${c.date}</span>
+                </div>
+                <p class="text-on-surface whitespace-pre-line leading-relaxed">${c.content}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    content.innerHTML = `
+      <!-- 1. 헤더 카드 -->
+      <div class="space-y-2">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="px-2.5 py-0.5 rounded-full bg-primary text-white font-bold text-xs">${titles[tab] || '상세 정보'}</span>
+          ${site ? `<span class="text-xs font-bold text-primary">${site}</span>` : ''}
+          <span class="text-xs text-on-surface-variant">작성: ${author} · ${date}</span>
+        </div>
+        <h3 class="font-headline font-black text-xl text-on-surface leading-tight">${title}</h3>
+      </div>
+
+      <!-- 2. 세부 섹션들 -->
+      ${metaHtml}
+      ${bodyHtml}
+      ${filesHtml}
+      ${commentsHtml}
+    `;
+
+    modal.classList.remove('hidden');
+  },
+
+  closeExtendedDetailModal() {
+    const modal = document.getElementById('modal-extended-detail');
+    if (modal) modal.classList.add('hidden');
+    this.state.currentDetailExtendedItem = null;
+  },
+
+  copyExtendedItemInfo() {
+    const item = this.state.currentDetailExtendedItem;
+    if (!item) return;
+    const title = item.title || item.subject || item.domain || '';
+    const site = item.site || item.company || '';
+    const metaStr = Object.entries(item.meta || {}).map(([k, v]) => `${k}: ${v}`).join('\n');
+    const fullText = `[${title}]\n사이트: ${site}\n${metaStr}\n${item.content || ''}`.trim();
+    this.copyText(fullText, '항목 상세 정보');
   },
 
   setSiteFilter(filterKey, chipEl) {

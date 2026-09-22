@@ -6,7 +6,13 @@
     "author": "관리자",
     "date": "10-04",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "ㄴㅇㄹ",
+    "files": [],
+    "meta": {
+      "ㄴㅇㄹ\n  글쓴이": "관리자"
+    },
+    "comments": []
   },
   {
     "wr_id": "1",
@@ -15,7 +21,13 @@
     "author": "관리자",
     "date": "10-04",
     "hit": "0",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "ㄴㅇㄹ",
+    "files": [],
+    "meta": {
+      "ㄴㅇㄹㄴㅇ\n  글쓴이": "관리자"
+    },
+    "comments": []
   },
   {
     "wr_id": "3",
@@ -24,7 +36,13 @@
     "author": "관리자",
     "date": "10-04",
     "hit": "0",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "ㄴㅇㄹ",
+    "files": [],
+    "meta": {
+      "ㄴㅇㄹ\n  글쓴이": "관리자"
+    },
+    "comments": []
   },
   {
     "wr_id": "2",
@@ -33,7 +51,13 @@
     "author": "관리자",
     "date": "10-04",
     "hit": "0",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "ㄴㅇㄹ",
+    "files": [],
+    "meta": {
+      "ㄴㅇㄹㄴㅇ\n  글쓴이": "관리자"
+    },
+    "comments": []
   },
   {
     "wr_id": "769",
@@ -42,7 +66,17 @@
     "author": "김종규",
     "date": "01-16",
     "hit": "15",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "일부 수정 견적입니다.",
+    "files": [
+      {
+        "name": "20080425_포텍_견적.doc (62.0K)",
+        "fullInfo": "20080425_포텍_견적.doc (62.0K), Down : 5, 2008-04-25 10:12:33",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=769&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "831",
@@ -51,7 +85,17 @@
     "author": "김종규",
     "date": "07-10",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[휴먼] 홈페이지 관리 견적 제안입니다.",
+    "files": [
+      {
+        "name": "20080710_휴먼_유지.doc (85.0K)",
+        "fullInfo": "20080710_휴먼_유지.doc (85.0K), Down : 2, 2008-07-10 10:44:53",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=831&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "834",
@@ -60,7 +104,11 @@
     "author": "김종규",
     "date": "07-14",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "피알파크 홈페이지 수정 및 추가건 견적서 입니다.\n\n* 협력업체 관계로 인해 견적서만 작성하며 비용은 청구하지 않습니다.\n견적서도 첨부하지 않고 업체에만 발송하겠습니다.",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "770",
@@ -69,7 +117,22 @@
     "author": "김종규",
     "date": "04-25",
     "hit": "10",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "차세대 문학연구원에서 한국어문능력개발원으로 변경되면서 발생되는 컨텐츠 수정건입니다.\n견적서 확인 부탁드립니다.",
+    "files": [
+      {
+        "name": "한국어문학연구회수정사항.ppt (2.0M)",
+        "fullInfo": "한국어문학연구회수정사항.ppt (2.0M), Down : 0, 2008-04-25 14:04:21",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=770&no=0"
+      },
+      {
+        "name": "20080428_한국어문개발원_견적.doc (61.0K)",
+        "fullInfo": "20080428_한국어문개발원_견적.doc (61.0K), Down : 1, 2008-04-28 14:38:32",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=770&no=1"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "665",
@@ -78,7 +141,27 @@
     "author": "김종규",
     "date": "01-04",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "업체명 : 굿프렌즈컨설팅\n담당자 : 배민경\n연락처 : 031-905-7501, 011-448-0218\n\ns커뮤니케이션에서 소개한 업체로 일시적인 작업과 유지관리에 대한 안내 문서 발송합니다.\n첨부파일 참고 부탁드립니다.\n\n(견적은 080104.doc에 대한 견적입니다.)",
+    "files": [
+      {
+        "name": "20080104_굿프렌드_수정.doc (59.5K)",
+        "fullInfo": "20080104_굿프렌드_수정.doc (59.5K), Down : 1, 2008-01-04 17:37:06",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=665&no=0"
+      },
+      {
+        "name": "080104.doc (26.0K)",
+        "fullInfo": "080104.doc (26.0K), Down : 0, 2008-01-04 17:37:06",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=665&no=1"
+      },
+      {
+        "name": "20080104_굿프렌드_유지보수_제안.doc (83.5K)",
+        "fullInfo": "20080104_굿프렌드_유지보수_제안.doc (83.5K), Down : 0, 2008-01-04 17:37:06",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=665&no=2"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "920",
@@ -87,7 +170,17 @@
     "author": "기획팀장",
     "date": "11-21",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[십팔기보존회] 홈페이지 수정 견적서입니다.",
+    "files": [
+      {
+        "name": "20081121_견적_십팔기보존회.doc (62.5K)",
+        "fullInfo": "20081121_견적_십팔기보존회.doc (62.5K), Down : 2, 2008-11-21 10:40:57",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=920&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "696",
@@ -96,7 +189,22 @@
     "author": "김종규",
     "date": "02-15",
     "hit": "9",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "안녕하세요... ^^\n알티잉글리쉬입니다.\n먼저 말씀드렸었던 홈페이지 리뉴얼건에 대하여 말씀드리겠습니다.\n진행하고자 하는 방향은 전체 디자인 변경쪽입니다.\n지난번 말씀하셨던 전체디자인 및 프로그램변경... 이부분에 해당이 되겠지요... ^^\n기본으로 삼고 싶은 홈페이지는 http://realenglish.net/ 입니다.\n특별히 추가해야할 프로그램은 없을것 같습니다.\n다만 중복이 되는 게시판을 다른 용도로 대체를 한다던가 하는 부분은 2~3개 정도 발생이 될것 같습니다.\n전체적인 페이지수는 지금과 비슷하지 않을까 생각합니다.\n가능한 깔끔하고 간결한 홈페이지 이미지를 원합니다. ^^\n위 리얼잉글리쉬 홈페이지 정도로 전체적인 리뉴얼을 했을경우에 대한 견적 부탁드립니다.\n \n수고하세요 ^^\n연락처 : 02-937-2381   /  016-210-6186\n\n========================\n\n견적 방향 : 전체 디자인 및 프로그램 스킨 변경 (프로그램 제외한 모든 디자인 변경 - 기본틀도 변경됨)\n\n2월 19일 오전중 견적예정입니다.",
+    "files": [
+      {
+        "name": "20080219_RT잉글리시_계약서.doc (42.0K)",
+        "fullInfo": "20080219_RT잉글리시_계약서.doc (42.0K), Down : 1, 2008-02-19 15:43:13",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=696&no=0"
+      },
+      {
+        "name": "20080219_RT잉글리쉬_리뉴얼.doc (62.0K)",
+        "fullInfo": "20080219_RT잉글리쉬_리뉴얼.doc (62.0K), Down : 0, 2008-02-19 15:43:13",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=696&no=1"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "685",
@@ -105,7 +213,17 @@
     "author": "김종규",
     "date": "01-28",
     "hit": "8",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "1월 31일 유지관리 3개월 임시계약 만료되어 계약서 첨부합니다.\n3개 사이트 10만원이던 것을 2개 사이트 7만원으로 조정합니다.",
+    "files": [
+      {
+        "name": "20080128_에스앤에프_유지보수_계약서.doc (78.5K)",
+        "fullInfo": "20080128_에스앤에프_유지보수_계약서.doc (78.5K), Down : 2, 2008-01-28 09:38:21",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=685&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "668",
@@ -114,7 +232,22 @@
     "author": "김종규",
     "date": "01-10",
     "hit": "10",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "아이들과 미래 임시계약 만료됨에 따라 년 계약 견적서 입니다.\n첨부파일 확인 부탁드립니다.\n\n\n\n2008년 1월 23일자\n계약완료 되어 작업완료로 하였습니다.",
+    "files": [
+      {
+        "name": "20080110_아이들과미래_유지보수.doc (85.0K)",
+        "fullInfo": "20080110_아이들과미래_유지보수.doc (85.0K), Down : 5, 2008-01-15 15:39:31",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=668&no=0"
+      },
+      {
+        "name": "20070117_아이들과미래_유지보수_계약서.doc (77.5K)",
+        "fullInfo": "20070117_아이들과미래_유지보수_계약서.doc (77.5K), Down : 0, 2008-01-17 09:45:30",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=668&no=1"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "673",
@@ -123,7 +256,17 @@
     "author": "김종규",
     "date": "01-16",
     "hit": "7",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[동화구연] 문자메시지 발송 견적서입니다.",
+    "files": [
+      {
+        "name": "20080116_동화구연_SMS발송.doc (57.5K)",
+        "fullInfo": "20080116_동화구연_SMS발송.doc (57.5K), Down : 2, 2008-01-16 16:25:02",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=673&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "672",
@@ -132,7 +275,17 @@
     "author": "김종규",
     "date": "01-14",
     "hit": "10",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[에스에프잉글리쉬] 프로그램 수정 견적서입니다.\n\nSF잉글리쉬 한 사이트만 작업하는것으로 진행합니다.",
+    "files": [
+      {
+        "name": "20080114_에스에프_스케쥴수정.doc (58.0K)",
+        "fullInfo": "20080114_에스에프_스케쥴수정.doc (58.0K), Down : 1, 2008-01-14 17:50:46",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=672&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "860",
@@ -141,7 +294,19 @@
     "author": "김종규",
     "date": "07-29",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "삼성대지 견적서 입니다.\n글자 수정으로 10건 정도여서 기본 수정견적으로 작성합니다.\n\n============작업 진행하며 8월 계산서 발행 시 추가부탁드립니다.",
+    "files": [
+      {
+        "name": "20080729_삼성대지.doc (56.5K)",
+        "fullInfo": "20080729_삼성대지.doc (56.5K), Down : 1, 2008-07-29 12:09:17",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=860&no=0"
+      }
+    ],
+    "meta": {
+      "[견적서] [포토마운트] 견적서 입니다.\n  글쓴이": "김종규"
+    },
+    "comments": []
   },
   {
     "wr_id": "929",
@@ -150,7 +315,17 @@
     "author": "기획팀장",
     "date": "12-17",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[에스앤에프] 팝업창 제작 견적서입니다.* 계산서 발행 완료계산서 발행 부탁드립니다.",
+    "files": [
+      {
+        "name": "20081201_견적_snf.doc (56.5K)",
+        "fullInfo": "20081201_견적_snf.doc (56.5K), Down : 2, 2008-12-01 16:11:54",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=929&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "766",
@@ -159,7 +334,17 @@
     "author": "김종규",
     "date": "04-11",
     "hit": "9",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "청소년 결제 증권 교실 전체적인 개편 견적서입니다.\n2~3차례에 걸쳐 확인 하였습니다.\n\n======== 4월 16일자  통계부분 제외한 견적서 입니다.",
+    "files": [
+      {
+        "name": "20080411_청소년결제증권교실_견적.doc (68.0K)",
+        "fullInfo": "20080411_청소년결제증권교실_견적.doc (68.0K), Down : 2, 2008-04-16 10:59:15",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=766&no=1"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "675",
@@ -168,7 +353,22 @@
     "author": "김종규",
     "date": "01-18",
     "hit": "8",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[감사협회] 프로그램 추가 견적서입니다.",
+    "files": [
+      {
+        "name": "직무수행방안_페이지_내용.zip (845.8K)",
+        "fullInfo": "직무수행방안_페이지_내용.zip (845.8K), Down : 0, 2008-01-18 10:29:56",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=675&no=0"
+      },
+      {
+        "name": "20080118_감사협회_직무수행.doc (57.0K)",
+        "fullInfo": "20080118_감사협회_직무수행.doc (57.0K), Down : 1, 2008-01-18 10:29:56",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=675&no=1"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "601",
@@ -177,7 +377,19 @@
     "author": "김종규",
     "date": "09-04",
     "hit": "5",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[죽이야기] 번역 견적서입니다.\n\n11월 계산서 발행시 추가 부탁드립니다.",
+    "files": [
+      {
+        "name": "20071024_죽이야기_번역.doc (55.0K)",
+        "fullInfo": "20071024_죽이야기_번역.doc (55.0K), Down : 2, 2007-10-24 16:14:23",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=601&no=0"
+      }
+    ],
+    "meta": {
+      "[견적서] [죽이야기] 번역 견적서입니다.\n  글쓴이": "김종규"
+    },
+    "comments": []
   },
   {
     "wr_id": "909",
@@ -186,7 +398,17 @@
     "author": "김종규",
     "date": "11-10",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[휴먼] 제품 추가건 견적서입니다.\n\n********** 부가세 포함입니다.",
+    "files": [
+      {
+        "name": "20081030_휴먼.doc (60.0K)",
+        "fullInfo": "20081030_휴먼.doc (60.0K), Down : 0, 2008-11-10 10:34:37",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=909&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "896",
@@ -195,7 +417,17 @@
     "author": "김종규",
     "date": "09-23",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[휴먼] 홈페이지 제품추가 견적서입니다.",
+    "files": [
+      {
+        "name": "20080925_견적_휴먼.doc (59.5K)",
+        "fullInfo": "20080925_견적_휴먼.doc (59.5K), Down : 0, 2008-09-25 15:09:57",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=896&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "692",
@@ -204,7 +436,17 @@
     "author": "김종규",
     "date": "02-13",
     "hit": "10",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[죽이야기] 이벤트 추가 작업 견적서입니다.\n- 기존 겨울 대박이벤트와 동일하게 이벤트 진행합니다.",
+    "files": [
+      {
+        "name": "20080213_죽이야기_이벤트.doc (57.5K)",
+        "fullInfo": "20080213_죽이야기_이벤트.doc (57.5K), Down : 0, 2008-02-13 16:34:31",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=692&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "663",
@@ -213,7 +455,22 @@
     "author": "김종규",
     "date": "01-03",
     "hit": "7",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[알티잉클리쉬] 부분 수정 및 변경건 견적입니다.",
+    "files": [
+      {
+        "name": "2008013_알티_수정.doc (59.5K)",
+        "fullInfo": "2008013_알티_수정.doc (59.5K), Down : 1, 2008-01-03 16:11:25",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=663&no=0"
+      },
+      {
+        "name": "알티잉글리쉬_수정.zip (898.8K)",
+        "fullInfo": "알티잉글리쉬_수정.zip (898.8K), Down : 0, 2008-01-03 16:11:25",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=663&no=1"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "938",
@@ -222,7 +479,22 @@
     "author": "마케팅팀장",
     "date": "01-02",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "확인해주세요.",
+    "files": [
+      {
+        "name": "비스트로미오 유지보수 계약서(20081209).hwp (36.5K)",
+        "fullInfo": "비스트로미오 유지보수 계약서(20081209).hwp (36.5K), Down : 4, 2009-01-02 10:36:19",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=938&no=0"
+      },
+      {
+        "name": "비스트로미오 유지보수 견적(20081208).xls (39.5K)",
+        "fullInfo": "비스트로미오 유지보수 견적(20081208).xls (39.5K), Down : 1, 2009-01-02 10:36:19",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=938&no=1"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "937",
@@ -231,7 +503,24 @@
     "author": "마케팅팀장",
     "date": "01-02",
     "hit": "9",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "계약서도 함께 올려요.",
+    "files": [
+      {
+        "name": "크린스피드 견적(20081205).xls (39.0K)",
+        "fullInfo": "크린스피드 견적(20081205).xls (39.0K), Down : 0, 2009-01-02 10:35:14",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=937&no=0"
+      },
+      {
+        "name": "크린스피드 유지보수 계약서(20081208).hwp (35.5K)",
+        "fullInfo": "크린스피드 유지보수 계약서(20081208).hwp (35.5K), Down : 6, 2009-01-02 10:35:14",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=937&no=1"
+      }
+    ],
+    "meta": {
+      "[견적서] [크린스피드] 견적서\n  글쓴이": "마케팅팀장"
+    },
+    "comments": []
   },
   {
     "wr_id": "645",
@@ -240,7 +529,13 @@
     "author": "관리자",
     "date": "12-14",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "~~",
+    "files": [],
+    "meta": {
+      "[견적서] [S커뮤니케이션] KTR 견적서\n  글쓴이": "관리자"
+    },
+    "comments": []
   },
   {
     "wr_id": "893",
@@ -249,7 +544,11 @@
     "author": "김종규",
     "date": "09-17",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "계산서 발행 부탁드립니다.",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "538",
@@ -258,7 +557,17 @@
     "author": "김종규",
     "date": "09-04",
     "hit": "8",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[엔토닉] 웹호스팅 계약서 입니다.\n\n대표자명, 주소, 연락처는 팩스 사본 접수 후 작성할 예정입니다.",
+    "files": [
+      {
+        "name": "20070904_계약서_엔토닉_웹호스팅.doc (76.5K)",
+        "fullInfo": "20070904_계약서_엔토닉_웹호스팅.doc (76.5K), Down : 5, 2007-09-04 16:58:06",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=538&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "547",
@@ -267,7 +576,17 @@
     "author": "김종규",
     "date": "09-07",
     "hit": "8",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[RFID] 웹진 작업 견적서입니다.\n\n내주부터 주간으로 웹진 발송예정이라고 합니다.\n대략 8개 정도 발송예정이라 하며 견적서는 최초 견적지준으로 1페이지당 8만원으로 넣었습니다.* 웹진 제작 현황 : (1) 1차 국문 & 영문 (2) 2차 국문작업 진행하기로 하였습니다.",
+    "files": [
+      {
+        "name": "20070919_RFID_웹진_견적서.doc (54.0K)",
+        "fullInfo": "20070919_RFID_웹진_견적서.doc (54.0K), Down : 4, 2007-09-19 16:49:28",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=547&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "903",
@@ -276,7 +595,24 @@
     "author": "김종규",
     "date": "10-23",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "최종 150만원으로 진행하기로 합니다.",
+    "files": [
+      {
+        "name": "20081023_온리유_리뉴얼.doc (61.0K)",
+        "fullInfo": "20081023_온리유_리뉴얼.doc (61.0K), Down : 1, 2008-10-23 14:13:20",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=903&no=0"
+      },
+      {
+        "name": "20081024_온리유_리뉴얼.doc (61.0K)",
+        "fullInfo": "20081024_온리유_리뉴얼.doc (61.0K), Down : 0, 2008-10-24 13:58:42",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=903&no=1"
+      }
+    ],
+    "meta": {
+      "[견적서] [온리유] 리뉴얼 견적서입니다.\n  글쓴이": "김종규"
+    },
+    "comments": []
   },
   {
     "wr_id": "859",
@@ -285,7 +621,17 @@
     "author": "김종규",
     "date": "07-29",
     "hit": "7",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[일조각] 약도 업데이트 견적입니다.",
+    "files": [
+      {
+        "name": "20080729_일조각.doc (58.5K)",
+        "fullInfo": "20080729_일조각.doc (58.5K), Down : 1, 2008-07-29 15:32:16",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=859&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "642",
@@ -294,7 +640,22 @@
     "author": "김종규",
     "date": "12-13",
     "hit": "7",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "국제와이드아트센터의 자회사인 아띠애드 홈페이지 구축견적과\n새주소 쇼핑몰 구축견적서입니다.\n\n아띠애드 홈페이지는 국제와이드 아트센터와 유사한 디자인에 동일한 컨텐츠 기준이며\n새주소 쇼핑몰은 아띠애드에서 하나의 아이템으로 쇼핑몰을 구축하는 것입니다.",
+    "files": [
+      {
+        "name": "20071213_아띠애드.doc (64.5K)",
+        "fullInfo": "20071213_아띠애드.doc (64.5K), Down : 2, 2007-12-13 14:08:57",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=642&no=0"
+      },
+      {
+        "name": "20071213_새주소_쇼핑몰.doc (66.0K)",
+        "fullInfo": "20071213_새주소_쇼핑몰.doc (66.0K), Down : 2, 2007-12-14 11:11:36",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=642&no=1"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "505",
@@ -303,7 +664,17 @@
     "author": "김종규",
     "date": "08-09",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[휴먼] 작업 추가건 견적서 입니다.",
+    "files": [
+      {
+        "name": "20070809_견적_휴먼_추가.doc (56.0K)",
+        "fullInfo": "20070809_견적_휴먼_추가.doc (56.0K), Down : 4, 2007-08-09 17:42:54",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=505&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "389",
@@ -312,7 +683,17 @@
     "author": "김종규",
     "date": "04-26",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "첨부파일과 같이 계산서 발행해 주시면 됩니다.",
+    "files": [
+      {
+        "name": "20070324_휴먼_수정작업_견적.doc (54.5K)",
+        "fullInfo": "20070324_휴먼_수정작업_견적.doc (54.5K), Down : 3, 2007-04-26 11:10:56",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=389&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "115",
@@ -321,7 +702,17 @@
     "author": "관리자",
     "date": "12-13",
     "hit": "7",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "오미라 주임에게 메신저를 통해 전달했으며 아직 액수에 대한 합의는 없었습니다. 팝업창 작업은 일단 진행합니다.",
+    "files": [
+      {
+        "name": "20061213_휴먼_수정작업_견적.doc (45.0K)",
+        "fullInfo": "20061213_휴먼_수정작업_견적.doc (45.0K), Down : 5, 2006-12-13 17:34:50",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=115&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "877",
@@ -330,7 +721,17 @@
     "author": "김종규",
     "date": "08-08",
     "hit": "5",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "심팀장과 논의 하여 작성하였습니다.\n\n\n상기 각 항목입니다.\n수업 입력 방식 추가       \t630,000\n스케쥴 공휴일 관리 및 수정\t440,000\n스케쥴 데이터 이전\t                460,000\n합계                                       1,530,000\n제안가  20%할인                     1,224,000",
+    "files": [
+      {
+        "name": "20080808_콜앤톡.doc (60.5K)",
+        "fullInfo": "20080808_콜앤톡.doc (60.5K), Down : 1, 2008-08-08 18:06:32",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=877&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "637",
@@ -339,7 +740,17 @@
     "author": "김종규",
     "date": "12-12",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[콘도매니아] 쇼핑몰 이전 견적서입니다.\n\n부가세 포함가격으로 90만원으로 하기로 협의 하였습니다.\n계산서 발행시 참고 부탁드립니다.* OK ~~",
+    "files": [
+      {
+        "name": "20071210_콘도매니아_코딩.doc (0byte)",
+        "fullInfo": "20071210_콘도매니아_코딩.doc (0byte), Down : 0, 2007-12-12 16:45:26",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=637&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "833",
@@ -348,7 +759,17 @@
     "author": "김종규",
     "date": "07-14",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[낙산테크] 설치업소 추가 견적서입니다.",
+    "files": [
+      {
+        "name": "20080714_낙산테크_수정.doc (55.5K)",
+        "fullInfo": "20080714_낙산테크_수정.doc (55.5K), Down : 0, 2008-07-14 16:49:07",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=833&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "596",
@@ -357,7 +778,24 @@
     "author": "김종규",
     "date": "10-15",
     "hit": "9",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[엔토닉] 리뉴얼 견적서입니다.",
+    "files": [
+      {
+        "name": "20071018_엔토닉_리뉴얼.doc (66.5K)",
+        "fullInfo": "20071018_엔토닉_리뉴얼.doc (66.5K), Down : 3, 2007-10-18 10:22:57",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=596&no=0"
+      },
+      {
+        "name": "20071018_계약서_엔토닉.doc (46.5K)",
+        "fullInfo": "20071018_계약서_엔토닉.doc (46.5K), Down : 2, 2007-10-18 10:22:57",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=596&no=1"
+      }
+    ],
+    "meta": {
+      "[계약서] [엔토닉] 리뉴얼 견적서입니다.\n  글쓴이": "김종규"
+    },
+    "comments": []
   },
   {
     "wr_id": "624",
@@ -366,7 +804,17 @@
     "author": "김종규",
     "date": "11-22",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "[아이들과미래] 서버이전 및 관리 견적서입니다.",
+    "files": [
+      {
+        "name": "20071122_아이들과미래_서버이전.doc (58.0K)",
+        "fullInfo": "20071122_아이들과미래_서버이전.doc (58.0K), Down : 0, 2007-11-22 14:01:39",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=624&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "777",
@@ -375,7 +823,17 @@
     "author": "김종규",
     "date": "05-16",
     "hit": "5",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "아이들과 미래 서버이전 견적서 입니다.\n내주 21일부터 이전할 예정입니다.",
+    "files": [
+      {
+        "name": "20080516_아미_서버이전.doc (57.5K)",
+        "fullInfo": "20080516_아미_서버이전.doc (57.5K), Down : 0, 2008-05-16 14:09:20",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=777&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "649",
@@ -384,6 +842,16 @@
     "author": "김종규",
     "date": "12-18",
     "hit": "10",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "현재 제작중인 컨텐츠에서 2~3개의 컨텐츠만 제외하고 동일하게 복사작업입니다.호스팅은 \nsqzit.com\nsqzit.co.kr 두개입니다.",
+    "files": [
+      {
+        "name": "20071218_에스큐지_추가.doc (66.0K)",
+        "fullInfo": "20071218_에스큐지_추가.doc (66.0K), Down : 2, 2007-12-18 13:56:47",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=project&wr_id=649&no=0"
+      }
+    ],
+    "meta": {},
+    "comments": []
   }
 ]

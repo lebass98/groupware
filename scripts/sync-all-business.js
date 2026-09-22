@@ -171,42 +171,57 @@ async function crawlBoard(bo_table, cookie, maxPages = 5) {
 async function fetchPostDetail(bo_table, wr_id, cookie) {
   const url = `${BASE_URL}/html/board/bbs/board.php?bo_table=${bo_table}&wr_id=${wr_id}`;
   const html = await fetchPage(url, cookie);
-  if (!html || html.includes('alert(')) return null;
+  if (!html) return null;
+  // Check gnuboard permission denial script alert only
+  if (/<script[^>]*>\s*alert\(['"](권한이 없습니다|글을 읽을 권한이 없습니다|올바른 방법으로 이용해 주십시오|존재하지 않는 게시글|비밀글)/.test(html)) {
+    return null;
+  }
 
   const $ = cheerio.load(html);
   
   // Attachments
   const files = [];
-  $('a[href*="download.php"]').each((_, a) => {
+  $('a[href*="download.php"], a[href*="file_download"]').each((_, a) => {
     const text = $(a).text().trim();
     const href = $(a).attr('href') || '';
+    let fileUrl = href;
+    const m = href.match(/file_download\(['"]([^'"]+)['"]/);
+    if (m) {
+      const raw = m[1];
+      fileUrl = raw.startsWith('http') ? raw : `${BASE_URL}/html/board/bbs/${raw.replace(/^\.\//, '')}`;
+    } else if (href.includes('download.php') && !href.startsWith('javascript:')) {
+      fileUrl = href.startsWith('http') ? href : `${BASE_URL}/html/board/bbs/${href.replace(/^\.\.\/bbs\//, '').replace(/^\.\//, '')}`;
+    }
     if (text) {
-      files.push({ name: text, url: href.startsWith('http') ? href : `${BASE_URL}/html/board/bbs/${href.replace(/^\.\.\/bbs\//, '')}` });
+      files.push({
+        name: text.split(',')[0].trim(),
+        fullInfo: text,
+        url: fileUrl
+      });
+    }
+  });
+
+  // Remove scripts & styles for clean content & metadata parsing
+  $('script, style').remove();
+
+  // Key-value metadata extraction from bullets
+  const meta = {};
+  $('body').text().split(/[●♥■◆★]/).map(s => s.trim()).filter(Boolean).forEach(b => {
+    const idx = b.indexOf(':');
+    if (idx !== -1) {
+      const k = b.slice(0, idx).trim();
+      const v = b.slice(idx + 1).split(/\n|●|♥|■|◆|★/)[0].trim();
+      if (k && v && k.length < 30 && v.length < 250) {
+        meta[k] = v;
+      }
     }
   });
 
   // Body content
-  let content = $('td.view_content, #view_content, .view_content').text().trim().replace(/\r\n/g, '\n');
+  let content = $('span.ct, td.view_content, #view_content, .view_content').text().trim().replace(/\r\n/g, '\n');
   if (!content) {
-    content = $('body').text().replace(/\s+/g, ' ').slice(0, 300);
+    content = $('body').text().replace(/\s+/g, ' ').slice(0, 500);
   }
-
-  // Key-value metadata extraction from rows
-  const meta = {};
-  $('tr').each((_, tr) => {
-    const text = $(tr).text().trim();
-    const bullets = text.split(/[●♥■]/).map(s => s.trim()).filter(Boolean);
-    bullets.forEach(b => {
-      const idx = b.indexOf(':');
-      if (idx !== -1) {
-        const k = b.slice(0, idx).trim();
-        const v = b.slice(idx + 1).trim();
-        if (k && v && k.length < 20) {
-          meta[k] = v;
-        }
-      }
-    });
-  });
 
   // Comments
   const comments = [];
@@ -219,7 +234,26 @@ async function fetchPostDetail(bo_table, wr_id, cookie) {
     }
   });
 
-  return { files, content: content.slice(0, 500), meta, comments };
+  return { files, content: content.slice(0, 1500), meta, comments };
+}
+
+// Parallel chunk enrichment helper
+async function enrichItemsWithDetails(items, bo_table, cookie, maxItems = 150, chunkSize = 15) {
+  const targetItems = items.slice(0, maxItems);
+  for (let i = 0; i < targetItems.length; i += chunkSize) {
+    const chunk = targetItems.slice(i, i + chunkSize);
+    await Promise.all(chunk.map(async item => {
+      try {
+        const d = await fetchPostDetail(bo_table, item.wr_id || item.id, cookie);
+        if (d) {
+          item.content = d.content || '';
+          item.files = d.files || [];
+          item.meta = d.meta || {};
+          item.comments = d.comments || [];
+        }
+      } catch (e) {}
+    }));
+  }
 }
 
 async function main() {
@@ -235,95 +269,74 @@ async function main() {
   // 1. cardncash (경비지출내역)
   console.log('📥 [2/16] 1. 경비지출내역 (cardncash) 수집 중...');
   const expensesList = await crawlBoard('cardncash', cookie, 10);
-  // Detail enrichment for yellow's posts or first 10
-  for (let i = 0; i < Math.min(expensesList.length, 15); i++) {
-    const d = await fetchPostDetail('cardncash', expensesList[i].wr_id, cookie);
-    if (d) {
-      expensesList[i].meta = d.meta;
-      expensesList[i].amount = d.meta['금액'] || '';
-      expensesList[i].receipt = d.meta['증빙서류'] || '';
-      expensesList[i].payDate = d.meta['지출일'] || expensesList[i].date;
-      expensesList[i].payType = d.meta['지출유형'] || expensesList[i].category;
-      expensesList[i].files = d.files;
+  await enrichItemsWithDetails(expensesList, 'cardncash', cookie, 100);
+  expensesList.forEach(item => {
+    if (item.meta) {
+      item.amount = item.meta['금액'] || item.amount || '';
+      item.receipt = item.meta['증빙서류'] || item.receipt || '';
+      item.payDate = item.meta['지출일'] || item.date;
+      item.payType = item.meta['지출유형'] || item.category;
     }
-  }
+  });
   fs.writeFileSync(path.join(LEGACY_DIR, 'expenses.json'), JSON.stringify(expensesList, null, 2));
-  console.log(`✅ [2/16] 경비지출내역: ${expensesList.length}건 수집 완료`);
+  console.log(`✅ [2/16] 경비지출내역: ${expensesList.length}건 (상세 포함) 수집 완료`);
 
   // 2. report_weekly (전사 주간회의록) & report_teamcap (팀장 전용)
   console.log('📥 [3/16] 2-3. 주간회의록 & 팀장보고 (report_weekly, report_teamcap) 수집 중...');
   const weeklyReports = await crawlBoard('report_weekly', cookie, 5);
-  for (let i = 0; i < Math.min(weeklyReports.length, 10); i++) {
-    const d = await fetchPostDetail('report_weekly', weeklyReports[i].wr_id, cookie);
-    if (d) {
-      weeklyReports[i].content = d.content;
-      weeklyReports[i].files = d.files;
-    }
-  }
+  await enrichItemsWithDetails(weeklyReports, 'report_weekly', cookie, 65);
   const teamcapReports = await crawlBoard('report_teamcap', cookie, 2);
-  for (let i = 0; i < teamcapReports.length; i++) {
-    const d = await fetchPostDetail('report_teamcap', teamcapReports[i].wr_id, cookie);
-    if (d) teamcapReports[i].content = d.content;
-  }
+  await enrichItemsWithDetails(teamcapReports, 'report_teamcap', cookie, 20);
   fs.writeFileSync(path.join(LEGACY_DIR, 'weekly_reports.json'), JSON.stringify(weeklyReports, null, 2));
   fs.writeFileSync(path.join(LEGACY_DIR, 'teamcap_reports.json'), JSON.stringify(teamcapReports, null, 2));
-  console.log(`✅ [3/16] 주간회의록: ${weeklyReports.length}건, 팀장보고: ${teamcapReports.length}건 수집 완료`);
+  console.log(`✅ [3/16] 주간회의록: ${weeklyReports.length}건, 팀장보고: ${teamcapReports.length}건 (상세 포함) 수집 완료`);
 
   // 4. equipment (사내 비품/자산 대장)
   console.log('📥 [4/16] 4. 사내 비품/자산 대장 (equipment) 수집 중...');
   const equipmentList = await crawlBoard('equipment', cookie, 8);
-  for (let i = 0; i < equipmentList.length; i++) {
-    const d = await fetchPostDetail('equipment', equipmentList[i].wr_id, cookie);
-    if (d) {
-      equipmentList[i].meta = d.meta;
-      equipmentList[i].code = d.meta['비품코드'] || `EQ-${equipmentList[i].wr_id}`;
-      equipmentList[i].user = d.meta['사용자'] || equipmentList[i].author;
-      equipmentList[i].team = d.meta['사용팀'] || '';
-      equipmentList[i].status = d.meta['현재 사용여부'] || '사용중';
-      equipmentList[i].acquireDate = d.meta['취득일'] || equipmentList[i].date;
-      equipmentList[i].content = d.content;
+  await enrichItemsWithDetails(equipmentList, 'equipment', cookie, 120);
+  equipmentList.forEach(item => {
+    if (item.meta) {
+      item.code = item.meta['비품코드'] || `EQ-${item.wr_id}`;
+      item.user = item.meta['사용자'] || item.author;
+      item.team = item.meta['사용팀'] || '';
+      item.status = item.meta['현재 사용여부'] || '사용중';
+      item.acquireDate = item.meta['취득일'] || item.date;
     }
-  }
+  });
   fs.writeFileSync(path.join(LEGACY_DIR, 'equipment.json'), JSON.stringify(equipmentList, null, 2));
-  console.log(`✅ [4/16] 사내 비품 대장: ${equipmentList.length}건 수집 완료`);
+  console.log(`✅ [4/16] 사내 비품 대장: ${equipmentList.length}건 (상세 포함) 수집 완료`);
 
   // 5. contract (계약서 관리 대장)
   console.log('📥 [5/16] 5. 계약서 관리 대장 (contract) 수집 중...');
   const contractList = await crawlBoard('contract', cookie, 10);
-  for (let i = 0; i < Math.min(contractList.length, 25); i++) {
-    const d = await fetchPostDetail('contract', contractList[i].wr_id, cookie);
-    if (d) {
-      contractList[i].meta = d.meta;
-      contractList[i].contractDate = d.meta['계약일'] || contractList[i].date;
-      contractList[i].totalAmount = d.meta['계약총액'] || '';
-      contractList[i].contractType = d.meta['계약유형'] || '기타';
-      contractList[i].files = d.files;
-      contractList[i].content = d.content;
+  await enrichItemsWithDetails(contractList, 'contract', cookie, 150);
+  contractList.forEach(item => {
+    if (item.meta) {
+      item.contractDate = item.meta['계약일'] || item.date;
+      item.totalAmount = item.meta['계약총액'] || '';
+      item.contractType = item.meta['계약유형'] || '기타';
     }
-  }
+  });
   fs.writeFileSync(path.join(LEGACY_DIR, 'contracts.json'), JSON.stringify(contractList, null, 2));
-  console.log(`✅ [5/16] 계약서 관리 대장: ${contractList.length}건 수집 완료`);
+  console.log(`✅ [5/16] 계약서 관리 대장: ${contractList.length}건 (상세 및 원본다운로드 링크 포함) 수집 완료`);
 
   // 6. estimate & project (견적/제안)
   console.log('📥 [6/16] 6. 견적/제안 내역 (estimate, project) 수집 중...');
   const estimateList = await crawlBoard('estimate', cookie, 2);
+  await enrichItemsWithDetails(estimateList, 'estimate', cookie, 50);
   const projectProposals = (await crawlBoard('project', cookie, 5)).filter(p => p.subject.includes('견적') || p.subject.includes('제안') || p.subject.includes('계약'));
+  await enrichItemsWithDetails(projectProposals, 'project', cookie, 50);
   const allEstimates = [...estimateList, ...projectProposals];
   fs.writeFileSync(path.join(LEGACY_DIR, 'estimates.json'), JSON.stringify(allEstimates, null, 2));
-  console.log(`✅ [6/16] 견적 및 제안서: ${allEstimates.length}건 수집 완료`);
+  console.log(`✅ [6/16] 견적 및 제안서: ${allEstimates.length}건 (상세 포함) 수집 완료`);
 
   // 7. com_reg (고객사 사업자정보 대장)
   console.log('📥 [7/16] 7. 고객사 사업자정보 (com_reg) 수집 중...');
   const comRegList = await crawlBoard('com_reg', cookie, 10);
-  for (let i = 0; i < Math.min(comRegList.length, 20); i++) {
-    const d = await fetchPostDetail('com_reg', comRegList[i].wr_id, cookie);
-    if (d) {
-      comRegList[i].files = d.files;
-      comRegList[i].meta = d.meta;
-    }
-  }
+  await enrichItemsWithDetails(comRegList, 'com_reg', cookie, 50);
   fs.writeFileSync(path.join(LEGACY_DIR, 'client_companies.json'), JSON.stringify(comRegList, null, 2));
-  console.log(`✅ [7/16] 고객사 사업자정보: ${comRegList.length}건 수집 완료`);
+  console.log(`✅ [7/16] 고객사 사업자정보: ${comRegList.length}건 (상세 포함) 수집 완료`);
 
   // 8. wc_pic (고객사 실무 담당자 명함첩)
   console.log('📥 [8/16] 8. 고객사 담당자 명함첩 (wc_pic) 정밀 수집 중...');
@@ -433,8 +446,9 @@ async function main() {
     });
     if (count === 0) break;
   }
+  await enrichItemsWithDetails(domainList, 'wc_domain', cookie, 150);
   fs.writeFileSync(path.join(LEGACY_DIR, 'domains.json'), JSON.stringify(domainList, null, 2));
-  console.log(`✅ [9/16] 도메인 대장: ${domainList.length}건 수집 완료`);
+  console.log(`✅ [9/16] 도메인 대장: ${domainList.length}건 (상세 계정정보 포함) 수집 완료`);
 
   // 10. wc_server & wc_hosting (서버/호스팅 인프라)
   console.log('📥 [10/16] 10. 서버/호스팅 인프라 (wc_server, wc_hosting) 정밀 수집 중...');
@@ -483,8 +497,9 @@ async function main() {
     });
     if (count === 0) break;
   }
+  await enrichItemsWithDetails(allServers, 'wc_server', cookie, 225);
   fs.writeFileSync(path.join(LEGACY_DIR, 'servers.json'), JSON.stringify(allServers, null, 2));
-  console.log(`✅ [10/16] 서버/호스팅: ${allServers.length}건 수집 완료`);
+  console.log(`✅ [10/16] 서버/호스팅: ${allServers.length}건 (상세 IP/PW/계정 포함) 수집 완료`);
 
   // 11. wc_url (프로젝트 URL 모음)
   console.log('📥 [11/16] 11. 프로젝트 URL 모음 (wc_url) 정밀 수집 중...');
@@ -529,21 +544,16 @@ async function main() {
     });
     if (count === 0) break;
   }
+  await enrichItemsWithDetails(projectUrls, 'wc_url', cookie, 225);
   fs.writeFileSync(path.join(LEGACY_DIR, 'project_urls.json'), JSON.stringify(projectUrls, null, 2));
-  console.log(`✅ [11/16] 프로젝트 URL: ${projectUrls.length}건 수집 완료`);
+  console.log(`✅ [11/16] 프로젝트 URL: ${projectUrls.length}건 (상세 포함) 수집 완료`);
 
   // 12. wc_storyboard (기획 스토리보드)
   console.log('📥 [12/16] 12. 기획 스토리보드 (wc_storyboard) 수집 중...');
   const storyboards = await crawlBoard('wc_storyboard', cookie, 2);
-  for (let i = 0; i < storyboards.length; i++) {
-    const d = await fetchPostDetail('wc_storyboard', storyboards[i].wr_id, cookie);
-    if (d) {
-      storyboards[i].files = d.files;
-      storyboards[i].content = d.content;
-    }
-  }
+  await enrichItemsWithDetails(storyboards, 'wc_storyboard', cookie, 10);
   fs.writeFileSync(path.join(LEGACY_DIR, 'storyboards.json'), JSON.stringify(storyboards, null, 2));
-  console.log(`✅ [12/16] 기획 스토리보드: ${storyboards.length}건 수집 완료`);
+  console.log(`✅ [12/16] 기획 스토리보드: ${storyboards.length}건 (상세 파일/내용 포함) 수집 완료`);
 
   // 13. wc_source, programming, pds (개발 자료 및 자료실)
   console.log('📥 [13/16] 13. 개발 자료 & 자료실 (wc_source, programming, pds) 수집 중...');
@@ -555,40 +565,31 @@ async function main() {
     ...devProgramming.map(p => ({ ...p, pdsType: 'dev' })),
     ...pdsList.map(l => ({ ...l, pdsType: 'general' }))
   ];
-  for (let i = 0; i < Math.min(allPds.length, 10); i++) {
-    const table = allPds[i].pdsType === 'source' ? 'wc_source' : (allPds[i].pdsType === 'dev' ? 'programming' : 'pds');
-    const d = await fetchPostDetail(table, allPds[i].wr_id, cookie);
-    if (d) {
-      allPds[i].content = d.content;
-      allPds[i].files = d.files;
-    }
-  }
+  await enrichItemsWithDetails(allPds.filter(p => p.pdsType === 'source'), 'wc_source', cookie, 20);
+  await enrichItemsWithDetails(allPds.filter(p => p.pdsType === 'dev'), 'programming', cookie, 20);
+  await enrichItemsWithDetails(allPds.filter(p => p.pdsType === 'general'), 'pds', cookie, 20);
   fs.writeFileSync(path.join(LEGACY_DIR, 'pds.json'), JSON.stringify(allPds, null, 2));
-  console.log(`✅ [13/16] 자료실/개발: ${allPds.length}건 수집 완료`);
+  console.log(`✅ [13/16] 자료실/개발: ${allPds.length}건 (상세 및 첨부파일 포함) 수집 완료`);
 
   // 14. meeting (고객사 미팅 회의록)
   console.log('📥 [14/16] 14. 고객사 미팅 회의록 (meeting) 수집 중...');
   const meetings = await crawlBoard('meeting', cookie, 3);
-  for (let i = 0; i < Math.min(meetings.length, 10); i++) {
-    const d = await fetchPostDetail('meeting', meetings[i].wr_id, cookie);
-    if (d) {
-      meetings[i].content = d.content;
-      meetings[i].files = d.files;
-    }
-  }
+  await enrichItemsWithDetails(meetings, 'meeting', cookie, 45);
   fs.writeFileSync(path.join(LEGACY_DIR, 'meetings.json'), JSON.stringify(meetings, null, 2));
-  console.log(`✅ [14/16] 고객사 미팅 회의록: ${meetings.length}건 수집 완료`);
+  console.log(`✅ [14/16] 고객사 미팅 회의록: ${meetings.length}건 (상세 회의록 포함) 수집 완료`);
 
   // 15. issues & wc_teamwork (팀 협업 및 이슈)
   console.log('📥 [15/16] 15. 팀 협업 및 이슈 (issues, wc_teamwork) 수집 중...');
   const issues = await crawlBoard('issues', cookie, 2);
   const teamwork = await crawlBoard('wc_teamwork', cookie, 3);
+  await enrichItemsWithDetails(issues, 'issues', cookie, 30);
+  await enrichItemsWithDetails(teamwork, 'wc_teamwork', cookie, 30);
   const allIssues = [
     ...issues.map(i => ({ ...i, issueType: 'issue' })),
     ...teamwork.map(t => ({ ...t, issueType: 'teamwork' }))
   ];
   fs.writeFileSync(path.join(LEGACY_DIR, 'issues.json'), JSON.stringify(allIssues, null, 2));
-  console.log(`✅ [15/16] 팀 협업 및 이슈: ${allIssues.length}건 수집 완료`);
+  console.log(`✅ [15/16] 팀 협업 및 이슈: ${allIssues.length}건 (상세 포함) 수집 완료`);
 
   // +@. toBeOrNotToBe (자리배치도 상황판 34석)
   console.log('📥 [16/16] +@. 워드앤코드 자리배치도 상황판 (toBeOrNotToBe) 수집 중...');

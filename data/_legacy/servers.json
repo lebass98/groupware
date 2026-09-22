@@ -13,7 +13,22 @@
     "author": "박은경",
     "date": "2025-06-09",
     "hit": "10",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "UTF-8 설정": "설정X",
+      "아이피": "112.175.50.208",
+      "URL": "code0185.sitegate.co.kr",
+      "아이디": "wncode_code0185",
+      "암호": "fkxls21!(",
+      "DB명": "wncode_code0185"
+    },
+    "comments": []
   },
   {
     "wr_id": "402",
@@ -29,7 +44,19 @@
     "author": "김진향",
     "date": "2025-05-23",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "아이피": "175.125.92.220",
+      "포트": "22",
+      "아이디": "m16",
+      "암호": "wncdpa16!("
+    },
+    "comments": []
   },
   {
     "wr_id": "401",
@@ -45,7 +72,19 @@
     "author": "김진향",
     "date": "2025-05-23",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2019-10-08 신청 호스팅 아이디 sv004\n\nOS : CentOS 7\nApache : 2.4\nPHP : 5.4\nMariaDB : 5.5 (Charset : rpm 기본값)\n보안설정 : 사용",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "아이피": "175.125.92.220",
+      "URL": "sv004.cafe24.com",
+      "아이디": "root",
+      "암호": "wc19m16!^"
+    },
+    "comments": []
   },
   {
     "wr_id": "400",
@@ -61,7 +100,17 @@
     "author": "김진향",
     "date": "2025-05-23",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-비밀번호 변경 : P@ssw0rd",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "아이피": "203.248.195.13",
+      "아이디": "hosting\\cu8282",
+      "암호": "asd1@#zxc"
+    },
+    "comments": []
   },
   {
     "wr_id": "399",
@@ -77,7 +126,18 @@
     "author": "현이컴",
     "date": "2025-03-31",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2019",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "서버호스팅(sv001)",
+      "OS": "윈도우",
+      "아이피": "1.234.66.85",
+      "아이디": "maverick",
+      "암호": "maverick09!("
+    },
+    "comments": []
   },
   {
     "wr_id": "398",
@@ -93,7 +153,20 @@
     "author": "이채원",
     "date": "2025-02-17",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2019-09-20 가상호스팅 변경으로 따로 신청함",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "DBMS/언어": "MS-SQL",
+      "URL": "sql16ssd-005.localnet.kr",
+      "포트": "1433",
+      "아이디": "sv003_mssql",
+      "암호": "wc1909@(mk",
+      "DB명": "sv003_mssql"
+    },
+    "comments": []
   },
   {
     "wr_id": "397",
@@ -109,7 +182,19 @@
     "author": "김 종규",
     "date": "2024-05-09",
     "hit": "11",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2019-09-20",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "서버호스팅(sv001)",
+      "OS": "윈도우",
+      "아이피": "1.234.66.85",
+      "URL": "sv003.cafe24.com",
+      "아이디": "administrator",
+      "암호": "wc190920maverick"
+    },
+    "comments": []
   },
   {
     "wr_id": "396",
@@ -125,7 +210,19 @@
     "author": "김 종규",
     "date": "2023-06-05",
     "hit": "12",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "119.205.220.39",
+      "아이디": "sajeok",
+      "암호": "wc3191353"
+    },
+    "comments": []
   },
   {
     "wr_id": "395",
@@ -141,7 +238,22 @@
     "author": "김종규",
     "date": "2023-05-24",
     "hit": "76",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정X",
+      "UTF-8 설정": "설정O",
+      "URL": "wnc03.cafe24.com",
+      "포트": "21",
+      "아이디": "wnc03",
+      "암호": "wordncode1199"
+    },
+    "comments": []
   },
   {
     "wr_id": "394",
@@ -157,7 +269,19 @@
     "author": "현이컴",
     "date": "2022-12-12",
     "hit": "40",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "182.162.27.73(10.6.51.4)",
+      "포트": "3306",
+      "아이디": "root",
+      "암호": "rkqldk2019@)!("
+    },
+    "comments": []
   },
   {
     "wr_id": "393",
@@ -173,7 +297,20 @@
     "author": "관리자",
     "date": "2022-06-22",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "- 예전 암호 : rkqldk2019@)!(",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "OS": "리눅스",
+      "SFTP 설정": "설정O",
+      "아이피": "182.162.27.72(10.6.51.2)",
+      "URL": "http://182.162.27.72:8080/",
+      "포트": "22",
+      "아이디": "root",
+      "암호": "Wc3191353!@#"
+    },
+    "comments": []
   },
   {
     "wr_id": "392",
@@ -189,7 +326,14 @@
     "author": "김종규",
     "date": "2022-05-17",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "아이디": "kbf2985",
+      "암호": "kmia2985!$"
+    },
+    "comments": []
   },
   {
     "wr_id": "391",
@@ -205,7 +349,20 @@
     "author": "김종규",
     "date": "2022-04-22",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "윈도우",
+      "DBMS/언어": "Oracle",
+      "SFTP 설정": "설정O",
+      "아이피": "121.78.124.239",
+      "아이디": "administrator",
+      "암호": "2019word)(*&"
+    },
+    "comments": []
   },
   {
     "wr_id": "390",
@@ -221,7 +378,19 @@
     "author": "김종규",
     "date": "2022-04-22",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "윈도우",
+      "SFTP 설정": "설정O",
+      "아이피": "121.78.124.238",
+      "아이디": "administrator",
+      "암호": "2019word)(*&"
+    },
+    "comments": []
   },
   {
     "wr_id": "389",
@@ -237,7 +406,21 @@
     "author": "박성재",
     "date": "2021-07-05",
     "hit": "35",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "210.90.199.26",
+      "포트": "3306",
+      "아이디": "root",
+      "암호": "historymit12#",
+      "DB명": "SAJEOK"
+    },
+    "comments": []
   },
   {
     "wr_id": "388",
@@ -253,7 +436,21 @@
     "author": "최수진",
     "date": "2021-06-14",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "아이피": "210.90.199.26",
+      "포트": "29175",
+      "아이디": "sajeok",
+      "암호": "sajeok2014!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "387",
@@ -269,7 +466,17 @@
     "author": "최수진",
     "date": "2021-06-14",
     "hit": "6",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "URL": "ftp://112.175.14.232:5001/",
+      "아이디": "tacs2",
+      "암호": "tacs21113"
+    },
+    "comments": []
   },
   {
     "wr_id": "386",
@@ -285,7 +492,17 @@
     "author": "최수진",
     "date": "2021-06-14",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "URL": "ftp://119.205.211.34:5001",
+      "아이디": "tacs3",
+      "암호": "tacs31113"
+    },
+    "comments": []
   },
   {
     "wr_id": "385",
@@ -301,7 +518,22 @@
     "author": "최수진",
     "date": "2021-06-14",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "SFTP 설정": "설정O",
+      "아이피": "1.234.23.176",
+      "URL": "spanish.nisus.kr",
+      "포트": "22",
+      "아이디": "snu_spanish_bk",
+      "암호": "spanish_bk09"
+    },
+    "comments": []
   },
   {
     "wr_id": "384",
@@ -317,7 +549,20 @@
     "author": "현이컴",
     "date": "2021-01-04",
     "hit": "5",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "아이피": "1.234.23.176",
+      "URL": "sv002.cafe24.com",
+      "포트": "22",
+      "아이디": "snu_spanish",
+      "암호": "spanish2019)^"
+    },
+    "comments": []
   },
   {
     "wr_id": "383",
@@ -333,7 +578,18 @@
     "author": "김종규",
     "date": "2020-12-13",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "1.234.23.176",
+      "아이디": "root",
+      "암호": "spanish06!("
+    },
+    "comments": []
   },
   {
     "wr_id": "382",
@@ -349,7 +605,18 @@
     "author": "김종규",
     "date": "2020-12-13",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2019-07-26 변경",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "윈도우",
+      "아이피": "121.78.124.245",
+      "아이디": "administrator",
+      "암호": "wcfashion)&@^19"
+    },
+    "comments": []
   },
   {
     "wr_id": "381",
@@ -365,7 +632,15 @@
     "author": "관리자",
     "date": "2020-11-19",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "아이피": "121.78.124.245",
+      "아이디": "fashionftp",
+      "암호": "guqghlvotuswc2019)&"
+    },
+    "comments": []
   },
   {
     "wr_id": "380",
@@ -381,7 +656,20 @@
     "author": "박성재",
     "date": "2020-10-23",
     "hit": "25",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "아이피": "121.78.124.242",
+      "아이디": "root",
+      "암호": "tjtmdghks1! (서승환1!)"
+    },
+    "comments": []
   },
   {
     "wr_id": "379",
@@ -397,7 +685,19 @@
     "author": "관리자",
     "date": "2020-10-20",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "SFTP 설정": "설정O",
+      "아이피": "121.78.124.243",
+      "아이디": "root",
+      "암호": "tjdnfsports (서울sports)"
+    },
+    "comments": []
   },
   {
     "wr_id": "378",
@@ -413,7 +713,20 @@
     "author": "관리자",
     "date": "2020-10-20",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "웹호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "222.231.62.178",
+      "포트": "22006",
+      "아이디": "simtos_user",
+      "암호": "user2721!"
+    },
+    "comments": []
   },
   {
     "wr_id": "377",
@@ -429,7 +742,19 @@
     "author": "김종규",
     "date": "2020-10-05",
     "hit": "5",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(타사)",
+      "OS": "윈도우",
+      "아이피": "222.231.62.178",
+      "포트": "22006",
+      "아이디": "administrator",
+      "암호": "178komma@%*)"
+    },
+    "comments": []
   },
   {
     "wr_id": "376",
@@ -445,7 +770,16 @@
     "author": "관리자",
     "date": "2020-09-16",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "아이피": "203.248.195.30",
+      "아이디": "hyenjin21",
+      "암호": "evervill21!"
+    },
+    "comments": []
   },
   {
     "wr_id": "375",
@@ -461,7 +795,16 @@
     "author": "관리자",
     "date": "2020-09-14",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "--",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "아이피": "203.248.195.42",
+      "아이디": "hosting/hyenjin21",
+      "암호": "evervill21!"
+    },
+    "comments": []
   },
   {
     "wr_id": "374",
@@ -477,7 +820,20 @@
     "author": "김종규",
     "date": "2020-09-08",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "20190703 생성",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "121.78.124.233",
+      "아이디": "arte365_wnc",
+      "암호": "wordncode_test",
+      "DB명": "arte365_wnc"
+    },
+    "comments": []
   },
   {
     "wr_id": "373",
@@ -493,7 +849,21 @@
     "author": "관리자",
     "date": "2020-09-04",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "20190703 생성",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "121.78.124.233",
+      "URL": "http://arte-wc.nisus.kr/",
+      "포트": "22",
+      "아이디": "arte365_wnc",
+      "암호": "wordncode_test"
+    },
+    "comments": []
   },
   {
     "wr_id": "372",
@@ -509,7 +879,16 @@
     "author": "이창현",
     "date": "2020-06-08",
     "hit": "8",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "URL": "e-sac.or.kr",
+      "아이디": "esac2013",
+      "암호": "ansghkdPtnf!@#$2013"
+    },
+    "comments": []
   },
   {
     "wr_id": "371",
@@ -525,7 +904,17 @@
     "author": "관리자",
     "date": "2020-05-25",
     "hit": "5",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "OS": "윈도우",
+      "아이피": "61.72.206.244",
+      "아이디": "administrator",
+      "암호": "e-sac!@#$2012"
+    },
+    "comments": []
   },
   {
     "wr_id": "370",
@@ -541,7 +930,18 @@
     "author": "관리자",
     "date": "2020-04-07",
     "hit": "9",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "미디어서버",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "61.72.206.223",
+      "아이디": "root",
+      "암호": "e-sac!@#2009"
+    },
+    "comments": []
   },
   {
     "wr_id": "369",
@@ -557,7 +957,18 @@
     "author": "김종규",
     "date": "2020-04-01",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "OS": "윈도우",
+      "DBMS/언어": "Oracle",
+      "아이피": "61.72.206.222",
+      "아이디": "administrator",
+      "암호": "e-sac!@#2009"
+    },
+    "comments": []
   },
   {
     "wr_id": "368",
@@ -573,7 +984,22 @@
     "author": "김종규",
     "date": "2020-04-01",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "SFTP 설정": "설정O",
+      "아이피": "1.234.23.176",
+      "URL": "spanish.nisus.kr",
+      "포트": "22",
+      "아이디": "snu_spanish_bk",
+      "암호": "spanish_bk09"
+    },
+    "comments": []
   },
   {
     "wr_id": "367",
@@ -589,7 +1015,20 @@
     "author": "이명준",
     "date": "2020-03-24",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "아이피": "1.234.23.176",
+      "URL": "sv002.cafe24.com",
+      "포트": "22",
+      "아이디": "snu_spanish",
+      "암호": "spanish2019)^"
+    },
+    "comments": []
   },
   {
     "wr_id": "366",
@@ -605,7 +1044,17 @@
     "author": "김종규",
     "date": "2020-03-10",
     "hit": "14",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "URL": "uni-eco.co.kr",
+      "아이디": "code0076",
+      "암호": "code0323"
+    },
+    "comments": []
   },
   {
     "wr_id": "365",
@@ -621,7 +1070,18 @@
     "author": "김종규",
     "date": "2020-02-28",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "1.234.23.176",
+      "아이디": "root",
+      "암호": "spanish06!("
+    },
+    "comments": []
   },
   {
     "wr_id": "364",
@@ -637,7 +1097,15 @@
     "author": "김종규",
     "date": "2020-02-28",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "아이피": "211.110.139.211",
+      "아이디": "root",
+      "암호": "96bf9915"
+    },
+    "comments": []
   },
   {
     "wr_id": "363",
@@ -653,7 +1121,20 @@
     "author": "김종규",
     "date": "2020-02-28",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "서버호스팅(sv001)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "121.78.124.233",
+      "아이디": "arte365",
+      "암호": "arte0530!(",
+      "DB명": "arte365"
+    },
+    "comments": []
   },
   {
     "wr_id": "362",
@@ -669,7 +1150,23 @@
     "author": "김종규",
     "date": "2020-02-28",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(sv001)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "121.78.124.233",
+      "URL": "http://arte365.nisus.kr",
+      "포트": "22",
+      "아이디": "arte365",
+      "암호": "arte0530!("
+    },
+    "comments": []
   },
   {
     "wr_id": "361",
@@ -685,7 +1182,20 @@
     "author": "관리자",
     "date": "2020-01-28",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2019-05-29 변경  qpfo0529!(\n\n2019-06-19 변경함",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "URL": "bien.co.kr",
+      "아이디": "code0021",
+      "암호": "Bienwc!()^19",
+      "DB명": "code0021"
+    },
+    "comments": []
   },
   {
     "wr_id": "360",
@@ -701,7 +1211,16 @@
     "author": "강슬기",
     "date": "2019-12-31",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "OS": "윈도우",
+      "아이피": "116.126.106.2",
+      "아이디": "Administrator",
+      "암호": "wndqn2016!@#$"
+    },
+    "comments": []
   },
   {
     "wr_id": "359",
@@ -717,7 +1236,20 @@
     "author": "김종규",
     "date": "2019-12-23",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "SFTP 설정": "설정O",
+      "아이피": "1.234.23.54",
+      "URL": "http://artedev.cafe24.com",
+      "포트": "22",
+      "아이디": "arte365",
+      "암호": "arte201905"
+    },
+    "comments": []
   },
   {
     "wr_id": "358",
@@ -733,7 +1265,11 @@
     "author": "하상범",
     "date": "2019-10-24",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "357",
@@ -749,7 +1285,42 @@
     "author": "이명준",
     "date": "2019-10-10",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "* DB서버\n- 서버호스팅상품명 : 카페24 퀵서버호스팅 : https://www.cafe24.com/?controller=product_page&type=server&page=server_2392\n- 아이디 : wncdb001\n- 암호 : wc3191353!@#\n- 서비스명\tQuick E3 381 (SSD)\n- 서비스 시작일\t2019-05-02\n- 서버IP : 175.123.253.72\n- 배포판 : CentOS 6.8 64bit(Fedora 6과 호환)\n- 아키텍처 : 64비트(x86_64)\n- 기본어플리케이션 : apache_2.2 / php_5.6 / mysql_5.6\n- 캐릭터셋 : UTF-8\n- 파티션 : /boot (200MB), /swap (램의 2배, 램 2GB 이상은 2GB), / (나머지)\n- 주요 어플리케이션은 /opt 에 설치됩니다.\n- mysql 실행 방법 : /opt/mysql/support-files/mysql.server start\n\n* DB암호화 관련\n- 현재 policelab(암호 pol2019), smepco(암호 sme2019) 2개 DB 가 암호화 되어 있음. 새 DB추가할 경우는 암호화요청을 하여야 함. \n- 관리자 : http://175.123.253.72:9080/securedb (admin / wc3191353) ==> 실제로는 별로 도움되는 부분 없는 듯.\n- 기술지원팀에 문의한 결과 root 계정으로 기존 암호화된 DB에 테이블 삭제/추가는 별도의 작업없이 가능하다고 함.\n\n* 기술지원\n- (주)엑츠솔루션 솔루션기술지원 / 박상춘 대리\n- 서울시 영등포구 문래동3가 82-29 우리벤처타운2차 307호\n- Tel) 070-5096-3236, FAX) 02-2644-5778\n- HP) 010-5411-8672\n- http://www.acts-sol.com\n- mail: tech@acts-sol.com[root 계정 정보]\n175.123.253.72\nroot / wc3191353!@#",
+    "files": [
+      {
+        "name": "DB암호화_사전설치조사서_SecureDB_커널암호화_Linu x_표준_템플릿.xlsx (59.4K)",
+        "fullInfo": "DB암호화_사전설치조사서_SecureDB_커널암호화_Linu x_표준_템플릿.xlsx (59.4K), Down : 0, 2019-05-16 10:09:32",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=wc_server&wr_id=357&no=0"
+      },
+      {
+        "name": "20190515KSSDB01_케이사인 제품 인증서(KSignSecureDB_커널)_워드앤코드_카페24.pdf (199.2K)",
+        "fullInfo": "20190515KSSDB01_케이사인 제품 인증서(KSignSecureDB_커널)_워드앤코드_카페24.pdf (199.2K), Down : 0, 2019-05-16 10:09:32",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=wc_server&wr_id=357&no=1"
+      },
+      {
+        "name": "카페24((주)워드앤코드)_작업결과보고서 0515.pdf (673.2K)",
+        "fullInfo": "카페24((주)워드앤코드)_작업결과보고서 0515.pdf (673.2K), Down : 0, 2019-05-16 10:09:32",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=wc_server&wr_id=357&no=2"
+      },
+      {
+        "name": "SecureDB 유저메뉴얼(Linux Standard).pdf (1.4M)",
+        "fullInfo": "SecureDB 유저메뉴얼(Linux Standard).pdf (1.4M), Down : 0, 2019-05-16 10:09:32",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=wc_server&wr_id=357&no=3"
+      }
+    ],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "175.123.253.72",
+      "아이디": "wncdb001",
+      "암호": "wc3191353!@#"
+    },
+    "comments": []
   },
   {
     "wr_id": "356",
@@ -764,8 +1335,18 @@
     "os": "리눅스",
     "author": "강슬기",
     "date": "2019-10-08",
-    "hit": "1",
-    "infraType": "server"
+    "hit": "6",
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(타사)",
+      "URL": "coffee900.com",
+      "아이디": "coffee900",
+      "암호": "ghrmdhkxm,.(호그와트,.)"
+    },
+    "comments": []
   },
   {
     "wr_id": "355",
@@ -780,8 +1361,21 @@
     "os": "리눅스",
     "author": "강슬기",
     "date": "2019-10-08",
-    "hit": "154",
-    "infraType": "server"
+    "hit": "155",
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정O",
+      "URL": "coffee900.com",
+      "아이디": "coffee900",
+      "암호": "ghrmdhkxm,.(호그와트,.)"
+    },
+    "comments": []
   },
   {
     "wr_id": "354",
@@ -796,8 +1390,19 @@
     "os": "리눅스",
     "author": "강슬기",
     "date": "2019-10-08",
-    "hit": "61",
-    "infraType": "server"
+    "hit": "62",
+    "infraType": "server",
+    "content": "~~",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이디": "wnc02",
+      "암호": "wc3191354!"
+    },
+    "comments": []
   },
   {
     "wr_id": "353",
@@ -812,8 +1417,19 @@
     "os": "",
     "author": "하상범",
     "date": "2019-09-26",
-    "hit": "6",
-    "infraType": "server"
+    "hit": "7",
+    "infraType": "server",
+    "content": "~~",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "SFTP 설정": "설정O",
+      "아이디": "wnc01",
+      "암호": "wc3191354!"
+    },
+    "comments": []
   },
   {
     "wr_id": "352",
@@ -828,8 +1444,20 @@
     "os": "윈도우",
     "author": "강슬기",
     "date": "2019-09-20",
-    "hit": "2",
-    "infraType": "server"
+    "hit": "3",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "DBMS/언어": "MySQL",
+      "URL": "https://www.cafe24.com",
+      "포트": "SSL 암호: stpstp-002",
+      "아이디": "mitmit",
+      "암호": "stpstp-002"
+    },
+    "comments": []
   },
   {
     "wr_id": "351",
@@ -844,8 +1472,22 @@
     "os": "",
     "author": "강슬기",
     "date": "2019-09-20",
-    "hit": "3",
-    "infraType": "server"
+    "hit": "4",
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "UTF-8 설정": "설정O",
+      "아이피": "220.73.161.15",
+      "URL": "http://code0179.sitegate.co.kr",
+      "아이디": "wncode_code0179",
+      "암호": "wordpress27"
+    },
+    "comments": []
   },
   {
     "wr_id": "350",
@@ -860,8 +1502,19 @@
     "os": "윈도우",
     "author": "강슬기",
     "date": "2019-09-20",
-    "hit": "6",
-    "infraType": "server"
+    "hit": "7",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "URL": "stp6000.cafe24.com",
+      "포트": "FTP : 21 SSH : 22",
+      "아이디": "stp6000",
+      "암호": "seoultp7135"
+    },
+    "comments": []
   },
   {
     "wr_id": "349",
@@ -876,8 +1529,20 @@
     "os": "리눅스",
     "author": "하상범",
     "date": "2019-09-17",
-    "hit": "2",
-    "infraType": "server"
+    "hit": "3",
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "SFTP 설정": "설정O",
+      "아이피": "183.110.224.172",
+      "포트": "22",
+      "아이디": "code0009",
+      "암호": "biz_code0009"
+    },
+    "comments": []
   },
   {
     "wr_id": "348",
@@ -892,8 +1557,21 @@
     "os": "리눅스",
     "author": "이명준",
     "date": "2019-09-16",
-    "hit": "1",
-    "infraType": "server"
+    "hit": "2",
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "서버호스팅(sv001)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "121.78.124.234",
+      "아이디": "spanish_new",
+      "암호": "spanish2019)$",
+      "DB명": "spanish_new"
+    },
+    "comments": []
   },
   {
     "wr_id": "347",
@@ -908,8 +1586,21 @@
     "os": "리눅스",
     "author": "하상범",
     "date": "2019-09-05",
-    "hit": "2",
-    "infraType": "server"
+    "hit": "3",
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "서버호스팅(sv001)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "121.78.124.234",
+      "URL": "http://spanish-new.nisus.kr",
+      "아이디": "spanish_new",
+      "암호": "spanish2019)$"
+    },
+    "comments": []
   },
   {
     "wr_id": "346",
@@ -924,8 +1615,18 @@
     "os": "리눅스",
     "author": "하상범",
     "date": "2019-09-05",
-    "hit": "7",
-    "infraType": "server"
+    "hit": "8",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "웹호스팅(WC-카페24)",
+      "URL": "https://www.cafe24.com",
+      "아이디": "ID : stp6000",
+      "암호": "PASSWORD : stpstp-002"
+    },
+    "comments": []
   },
   {
     "wr_id": "345",
@@ -940,8 +1641,21 @@
     "os": "",
     "author": "하상범",
     "date": "2019-09-05",
-    "hit": "5",
-    "infraType": "server"
+    "hit": "6",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "http://rwa64-036.fmcity.com/WebMysql",
+      "아이디": "wncode_kgyvc",
+      "암호": "kgyvckrdns",
+      "DB명": "wncode_kgyvc"
+    },
+    "comments": []
   },
   {
     "wr_id": "344",
@@ -956,8 +1670,22 @@
     "os": "윈도우",
     "author": "하상범",
     "date": "2019-09-03",
-    "hit": "4",
-    "infraType": "server"
+    "hit": "5",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "URL": "gysc.or.kr",
+      "아이디": "zrtdb04",
+      "암호": "police2021"
+    },
+    "comments": []
   },
   {
     "wr_id": "343",
@@ -972,8 +1700,15 @@
     "os": "윈도우",
     "author": "하상범",
     "date": "2019-09-03",
-    "hit": "3",
-    "infraType": "server"
+    "hit": "4",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "URL": "사용자 http://222.100.9.102/ 관리자(id:neo)http://222.100.9.102/neo/index.do"
+    },
+    "comments": []
   },
   {
     "wr_id": "342",
@@ -988,8 +1723,19 @@
     "os": "리눅스",
     "author": "하상범",
     "date": "2019-08-08",
-    "hit": "1",
-    "infraType": "server"
+    "hit": "2",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(타사)",
+      "아이피": "192.168.0.7",
+      "포트": "21",
+      "아이디": "onycom",
+      "암호": "djslzja123"
+    },
+    "comments": []
   },
   {
     "wr_id": "341",
@@ -1004,8 +1750,18 @@
     "os": "리눅스",
     "author": "하상범",
     "date": "2019-08-08",
-    "hit": "3",
-    "infraType": "server"
+    "hit": "4",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "아이피": "119.205.220.39",
+      "아이디": "minjugongje",
+      "암호": "wc3191353",
+      "DB명": "minjugongje"
+    },
+    "comments": []
   },
   {
     "wr_id": "340",
@@ -1020,8 +1776,20 @@
     "os": "",
     "author": "하상범",
     "date": "2019-07-31",
-    "hit": "1",
-    "infraType": "server"
+    "hit": "2",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(타사)",
+      "SFTP 설정": "설정O",
+      "아이피": "119.205.220.39",
+      "URL": "http://www.minjugongje.or.kr/",
+      "아이디": "minjugongje",
+      "암호": "minju3191353"
+    },
+    "comments": []
   },
   {
     "wr_id": "339",
@@ -1036,8 +1804,20 @@
     "os": "",
     "author": "하상범",
     "date": "2019-07-31",
-    "hit": "1",
-    "infraType": "server"
+    "hit": "2",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "윈도우",
+      "아이피": "211.239.159.117",
+      "포트": "22221",
+      "아이디": "administrator",
+      "암호": "(!!&votusguqghlWEB117)!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "338",
@@ -1052,8 +1832,22 @@
     "os": "리눅스",
     "author": "하상범",
     "date": "2019-07-30",
-    "hit": "5",
-    "infraType": "server"
+    "hit": "6",
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "아이피": "121.78.124.232",
+      "URL": "seoulsports.or.kr",
+      "아이디": "root",
+      "암호": "2019wordn)(*&"
+    },
+    "comments": []
   },
   {
     "wr_id": "337",
@@ -1068,8 +1862,21 @@
     "os": "리눅스",
     "author": "하상범",
     "date": "2019-07-30",
-    "hit": "5",
-    "infraType": "server"
+    "hit": "6",
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "183.111.126.15",
+      "아이디": "kaia",
+      "암호": "kaia2019!@",
+      "DB명": "kaia"
+    },
+    "comments": []
   },
   {
     "wr_id": "336",
@@ -1085,7 +1892,20 @@
     "author": "하상범",
     "date": "2019-07-30",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "SFTP 설정": "설정O",
+      "아이피": "183.111.126.15",
+      "아이디": "kaia",
+      "암호": "kaia2019!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "335",
@@ -1101,7 +1921,11 @@
     "author": "강슬기",
     "date": "2019-07-26",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "334",
@@ -1117,7 +1941,11 @@
     "author": "강슬기",
     "date": "2019-07-26",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "333",
@@ -1133,7 +1961,11 @@
     "author": "하상범",
     "date": "2019-07-26",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "332",
@@ -1149,7 +1981,11 @@
     "author": "하상범",
     "date": "2019-07-26",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "331",
@@ -1165,7 +2001,20 @@
     "author": "하상범",
     "date": "2019-07-23",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "ㅁ 아파치\n실행\ncentos6 : /etc/init.d/httpd start 또는 service httpd start\n\n\n\n버전\ncentos6 : Apache/2.2.15\ncentos7 : Apache/2.4.6\n\nㅁ Mysql\n실행\ncentos6 : /etc/init.d/mysqld start 또는 service mysqld start\n\n\nDB파일위치 : /var/lib/mysql\n소켓위치 : /var/lib/mysql/mysql.sock\n\nlog-error\ncentos6 : /var/log/mysqld.log\n\n\npid-file\ncentos6 : /var/run/mysqld/mysqld.pid\n\n\n기타관련 파일 위치 : /usr/bin\n\n버전\ncentos6 : mysql  Ver 14.14 Distrib 5.1.73\n\n\nㅁ PHP\n설정파일 : /etc/php.ini\n\n버전\ncentos6 : PHP 5.3.3php-mcrypt 설치 완료DB 계정 \n\n아이디: kaia \n비밀번호 kaia2019!@FTP 계정 \n\nsftp://183.111.126.15 (포트 22)\n아이디: kaia\n비밀번호 kaia2019!@",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "183.111.126.15",
+      "URL": "kaiawc.cafe24.com",
+      "아이디": "root",
+      "암호": "kaia2019!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "330",
@@ -1181,7 +2030,16 @@
     "author": "하상범",
     "date": "2019-07-23",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "아이피": "210.219.173.10",
+      "아이디": "root",
+      "암호": "mp12qwe09z!"
+    },
+    "comments": []
   },
   {
     "wr_id": "329",
@@ -1197,7 +2055,20 @@
     "author": "하상범",
     "date": "2019-07-12",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "121.78.124.235",
+      "아이디": "policelab",
+      "암호": "policelab0121!!",
+      "DB명": "policelab"
+    },
+    "comments": []
   },
   {
     "wr_id": "328",
@@ -1213,7 +2084,20 @@
     "author": "하상범",
     "date": "2019-07-12",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "JSP",
+      "아이피": "121.78.124.235",
+      "URL": "policelab.nisus.kr",
+      "아이디": "policelab",
+      "암호": "policelab0121!!"
+    },
+    "comments": []
   },
   {
     "wr_id": "327",
@@ -1229,7 +2113,21 @@
     "author": "강슬기",
     "date": "2019-07-03",
     "hit": "10",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".DB접속 : rwws2-002.fmcity.com User ID=code0020 Password=dhssl!@20160531",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "ASP",
+      "아이피": "222.122.213.212",
+      "URL": "ionlyyou.co.kr",
+      "포트": "6321",
+      "아이디": "code0020",
+      "암호": "wc04041604"
+    },
+    "comments": []
   },
   {
     "wr_id": "326",
@@ -1245,7 +2143,20 @@
     "author": "강슬기",
     "date": "2019-07-03",
     "hit": "14",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "183.111.141.93",
+      "URL": "http://code0184.sitegate.co.kr",
+      "아이디": "wncode_code0184",
+      "암호": "jungil0114"
+    },
+    "comments": []
   },
   {
     "wr_id": "325",
@@ -1261,7 +2172,18 @@
     "author": "하상범",
     "date": "2019-07-03",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "222.231.62.178",
+      "포트": "22006",
+      "아이디": "administrator",
+      "암호": "178komma@%*)"
+    },
+    "comments": []
   },
   {
     "wr_id": "324",
@@ -1277,7 +2199,19 @@
     "author": "하상범",
     "date": "2019-07-03",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "222.231.62.178",
+      "포트": "22006",
+      "아이디": "simtos_user",
+      "암호": "user2721!"
+    },
+    "comments": []
   },
   {
     "wr_id": "323",
@@ -1293,7 +2227,11 @@
     "author": "하상범",
     "date": "2019-07-03",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "322",
@@ -1309,7 +2247,21 @@
     "author": "하상범",
     "date": "2019-07-03",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "183.111.161.175",
+      "URL": "toureventure.cafe24.com",
+      "아이디": "toureventure",
+      "암호": "ktoventure1*!",
+      "DB명": "toureventure"
+    },
+    "comments": []
   },
   {
     "wr_id": "321",
@@ -1325,7 +2277,21 @@
     "author": "강슬기",
     "date": "2019-06-28",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "cafe24 호스팅(ftp, ssh 접속도 동일)\nid: zrtdb04\npw: police2021\nurl: gysc.or.kr",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "gysc.or.kr",
+      "아이디": "zrtdb04",
+      "암호": "police2021"
+    },
+    "comments": []
   },
   {
     "wr_id": "320",
@@ -1341,7 +2307,20 @@
     "author": "강슬기",
     "date": "2019-06-27",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "121.78.124.235",
+      "아이디": "smepco",
+      "암호": "smep12!*",
+      "DB명": "smepco"
+    },
+    "comments": []
   },
   {
     "wr_id": "319",
@@ -1357,7 +2336,20 @@
     "author": "하상범",
     "date": "2019-06-25",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "JSP",
+      "아이피": "121.78.124.235",
+      "URL": "http://smepco.or.kr/",
+      "아이디": "smepco",
+      "암호": "smep12!*"
+    },
+    "comments": []
   },
   {
     "wr_id": "318",
@@ -1373,7 +2365,19 @@
     "author": "강슬기",
     "date": "2019-06-24",
     "hit": "12",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "http://ruwa64-015.fmcity.com/WebMysql/",
+      "아이디": "wncode_code0183",
+      "암호": "pro3d12!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "317",
@@ -1389,7 +2393,20 @@
     "author": "강슬기",
     "date": "2019-06-20",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "183.110.224.172",
+      "URL": "code0183.sitegate.co.kr",
+      "아이디": "wncode_code0183",
+      "암호": "pro3d12!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "316",
@@ -1405,7 +2422,22 @@
     "author": "강슬기",
     "date": "2019-05-30",
     "hit": "9",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2018-12-04 변경DB 접속계정: wncode_code0115 / daega100104",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "SFTP 설정": "설정O",
+      "아이피": "222.122.84.37",
+      "URL": "daega.co.kr",
+      "포트": "22",
+      "아이디": "wncode_code0115",
+      "암호": "daega!*12"
+    },
+    "comments": []
   },
   {
     "wr_id": "315",
@@ -1421,7 +2453,11 @@
     "author": "강슬기",
     "date": "2019-05-30",
     "hit": "10",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "314",
@@ -1437,7 +2473,20 @@
     "author": "강슬기",
     "date": "2019-05-29",
     "hit": "8",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "20181128 이로긴에서 이전함",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "222.122.86.168",
+      "URL": "strength.or.kr",
+      "아이디": "wncode_code0182",
+      "암호": "rkdwja!!28"
+    },
+    "comments": []
   },
   {
     "wr_id": "313",
@@ -1453,7 +2502,20 @@
     "author": "하상범",
     "date": "2019-05-27",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "아이피": "115.89.202.122",
+      "포트": "21",
+      "아이디": "administrator",
+      "암호": "gshc2003!",
+      "DB명": "(패시브모드 해제)"
+    },
+    "comments": []
   },
   {
     "wr_id": "312",
@@ -1469,7 +2531,21 @@
     "author": "강슬기",
     "date": "2019-05-17",
     "hit": "8",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "SMS 관리및 SMS 발송\n\n서버 D드라이브에 되어 있으며,  D드라이브 전체용량 683GB 중 57.4GB 사용하여 626GB 사용 가능합니다.\n\nIIS에는 기본웹사이트(운영안함), sms(운영함,DB사용함) , 세세나라(운영안하는것으로 추측), Administration(운영안함) 되어 있습니다 (첨부파일 참고)",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "윈도우",
+      "DBMS/언어": "ASP",
+      "SFTP 설정": "설정X",
+      "아이피": "121.78.124.241",
+      "포트": "2211",
+      "아이디": "Administrator",
+      "암호": "(!smsqkfthdtjqjSMS1)!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "311",
@@ -1485,7 +2561,20 @@
     "author": "관리자",
     "date": "2019-05-16",
     "hit": "14",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "URL": "npen.orainbow.kr",
+      "아이디": "wmstudy_npen",
+      "암호": "kgbooks1024!",
+      "DB명": "DB명 : wmstudy_npen"
+    },
+    "comments": []
   },
   {
     "wr_id": "310",
@@ -1501,7 +2590,23 @@
     "author": "강슬기",
     "date": "2019-05-03",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "/usr/www/crpcnew",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "JSP",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "161.122.9.42",
+      "포트": "22",
+      "아이디": "crpc",
+      "암호": "kist@!rpccDB",
+      "DB명": "/usr/www/crpcnew"
+    },
+    "comments": []
   },
   {
     "wr_id": "309",
@@ -1517,7 +2622,20 @@
     "author": "강슬기",
     "date": "2019-05-03",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "182.162.27.81",
+      "아이디": "root",
+      "암호": "rkqldk2018@)!*",
+      "DB명": "mysql : root / gabia4370!"
+    },
+    "comments": []
   },
   {
     "wr_id": "308",
@@ -1533,7 +2651,19 @@
     "author": "관리자",
     "date": "2019-04-26",
     "hit": "5",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "182.162.27.80",
+      "아이디": "root",
+      "암호": "rkqldk2018@)!*"
+    },
+    "comments": []
   },
   {
     "wr_id": "307",
@@ -1549,7 +2679,18 @@
     "author": "관리자",
     "date": "2019-04-26",
     "hit": "9",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "URL": "https://orgcloud.gabia.com/login",
+      "아이디": "kbookcenter",
+      "암호": "kpipa154*"
+    },
+    "comments": []
   },
   {
     "wr_id": "306",
@@ -1565,7 +2706,23 @@
     "author": "하상범",
     "date": "2019-04-16",
     "hit": "19",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "SFTP 설정": "설정O",
+      "아이피": "161.122.9.43",
+      "URL": "tepri-im.kist.re.kr",
+      "포트": "6292",
+      "아이디": "tepri",
+      "암호": "ksttpr18!",
+      "DB명": "tepri"
+    },
+    "comments": []
   },
   {
     "wr_id": "305",
@@ -1581,7 +2738,20 @@
     "author": "강슬기",
     "date": "2019-04-15",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "http://ruwa64-012.fmcity.com/WebMysql/",
+      "아이디": "wncode_code180",
+      "암호": "wlqeksrmqtlr18",
+      "DB명": "wncode_code180"
+    },
+    "comments": []
   },
   {
     "wr_id": "304",
@@ -1597,7 +2767,21 @@
     "author": "하상범",
     "date": "2019-04-10",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "UTF-8 설정": "설정O",
+      "아이피": "183.110.224.60",
+      "URL": "code180.sitegate.co.kr",
+      "아이디": "wncode_code180",
+      "암호": "wlqeksrmqtlr18"
+    },
+    "comments": []
   },
   {
     "wr_id": "303",
@@ -1613,7 +2797,21 @@
     "author": "강슬기",
     "date": "2019-04-09",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정O",
+      "아이피": "211.110.139.211",
+      "아이디": "corp_koyca",
+      "암호": "corpwc!*",
+      "DB명": "corp_koyca"
+    },
+    "comments": []
   },
   {
     "wr_id": "302",
@@ -1629,7 +2827,19 @@
     "author": "강슬기",
     "date": "2019-04-02",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "211.110.139.211",
+      "아이디": "corp_koyca",
+      "암호": "corpwc!*"
+    },
+    "comments": []
   },
   {
     "wr_id": "301",
@@ -1645,7 +2855,21 @@
     "author": "강슬기",
     "date": "2019-04-02",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2018-10-30일 변경",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "211.110.139.211",
+      "URL": "koyca.nisus.kr",
+      "아이디": "koyca_user",
+      "암호": "tkdekadb1810#)",
+      "DB명": "koyca_web"
+    },
+    "comments": []
   },
   {
     "wr_id": "300",
@@ -1661,7 +2885,21 @@
     "author": "하상범",
     "date": "2019-03-29",
     "hit": "6",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정O",
+      "아이피": "211.110.139.211",
+      "URL": "koyca.nisus.kr",
+      "아이디": "koyca",
+      "암호": "tkdeka1810#)"
+    },
+    "comments": []
   },
   {
     "wr_id": "299",
@@ -1677,7 +2915,20 @@
     "author": "하상범",
     "date": "2019-03-27",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정O",
+      "URL": "code0179.sitegate.co.kr",
+      "아이디": "wncode_code0179",
+      "암호": "wordpress27"
+    },
+    "comments": []
   },
   {
     "wr_id": "298",
@@ -1693,7 +2944,19 @@
     "author": "하상범",
     "date": "2019-03-27",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-이로긴)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "220.73.161.81",
+      "아이디": "wncode_code0100",
+      "암호": "qpdlqlvot"
+    },
+    "comments": []
   },
   {
     "wr_id": "297",
@@ -1709,7 +2972,21 @@
     "author": "하상범",
     "date": "2019-03-26",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정O",
+      "URL": "http://ruwa64-093.fmcity.com/WebMysql/",
+      "아이디": "wncode_code0178",
+      "암호": "wckcf70!*",
+      "DB명": "wncode_code0178"
+    },
+    "comments": []
   },
   {
     "wr_id": "296",
@@ -1725,7 +3002,21 @@
     "author": "하상범",
     "date": "2019-03-26",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "UTF-8 설정": "설정O",
+      "아이피": "183.111.100.218",
+      "URL": "code0178.sitegate.co.kr",
+      "아이디": "wncode_code0178",
+      "암호": "wckcf70!*"
+    },
+    "comments": []
   },
   {
     "wr_id": "295",
@@ -1741,7 +3032,20 @@
     "author": "하상범",
     "date": "2019-03-21",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "아이피": "119.205.211.243",
+      "URL": "kcf70.com",
+      "포트": "5453",
+      "아이디": "kcf70",
+      "암호": "l2pxsutz4vk8z89"
+    },
+    "comments": []
   },
   {
     "wr_id": "294",
@@ -1757,7 +3061,21 @@
     "author": "하상범",
     "date": "2019-03-21",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "ASP",
+      "아이피": "222.122.213.215",
+      "URL": "ngel.or.kr",
+      "포트": "6156",
+      "아이디": "code0005",
+      "암호": "ikasi0341"
+    },
+    "comments": []
   },
   {
     "wr_id": "293",
@@ -1773,7 +3091,17 @@
     "author": "하상범",
     "date": "2019-03-20",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "URL": "http://ruwa64-009.fmcity.com/WebMysql/",
+      "아이디": "wncode_code0177",
+      "암호": "flytour0625"
+    },
+    "comments": []
   },
   {
     "wr_id": "292",
@@ -1789,7 +3117,19 @@
     "author": "하상범",
     "date": "2019-03-18",
     "hit": "5",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "아이피": "112.175.246.69",
+      "URL": "code0177.sitegate.co.kr",
+      "아이디": "wncode_code0177",
+      "암호": "flytour0625"
+    },
+    "comments": []
   },
   {
     "wr_id": "291",
@@ -1805,7 +3145,11 @@
     "author": "강슬기",
     "date": "2019-03-13",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "290",
@@ -1821,7 +3165,19 @@
     "author": "강슬기",
     "date": "2019-03-13",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "아이피": "121.78.124.240",
+      "포트": "22",
+      "아이디": "root",
+      "암호": "wordncode2016)(*&"
+    },
+    "comments": []
   },
   {
     "wr_id": "289",
@@ -1837,7 +3193,17 @@
     "author": "강슬기",
     "date": "2019-03-12",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "URL": "http://ruwa64-013.fmcity.com/WebMysql/",
+      "아이디": "wncode_code0176",
+      "암호": "ibs0608!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "288",
@@ -1853,7 +3219,20 @@
     "author": "하상범",
     "date": "2019-02-07",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "UTF-8 설정": "설정O",
+      "아이피": "183.110.224.76",
+      "URL": "code0176.sitegate.co.kr",
+      "아이디": "wncode_code0176",
+      "암호": "ibs0608!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "287",
@@ -1869,7 +3248,19 @@
     "author": "강슬기",
     "date": "2019-01-21",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "121.78.124.229",
+      "아이디": "fashionUsr",
+      "암호": "(!)$votusDB104)!@",
+      "DB명": "DB_FASHION"
+    },
+    "comments": []
   },
   {
     "wr_id": "286",
@@ -1885,7 +3276,19 @@
     "author": "강슬기",
     "date": "2019-01-21",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "윈도우",
+      "DBMS/언어": "ASP",
+      "아이피": "121.78.124.228",
+      "아이디": "fashionnetkorea",
+      "암호": "intlab2017)(*&"
+    },
+    "comments": []
   },
   {
     "wr_id": "285",
@@ -1901,7 +3304,19 @@
     "author": "강슬기",
     "date": "2019-01-16",
     "hit": "11",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "121.78.124.229",
+      "아이디": "kfa_user",
+      "암호": "(!)$guqghlvotusDB229)!@",
+      "DB명": "koreafashion"
+    },
+    "comments": []
   },
   {
     "wr_id": "284",
@@ -1917,7 +3332,22 @@
     "author": "강슬기",
     "date": "2019-01-14",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "윈도우",
+      "DBMS/언어": "ASP",
+      "SFTP 설정": "설정X",
+      "UTF-8 설정": "설정O",
+      "아이피": "121.78.124.245",
+      "포트": "패시브해제",
+      "아이디": "fashionftp",
+      "암호": "(!!&votusguqghlftp117)!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "283",
@@ -1933,7 +3363,23 @@
     "author": "하상범",
     "date": "2019-01-14",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정O",
+      "아이피": "183.111.161.175",
+      "URL": "toureventure.cafe24.com",
+      "포트": "21",
+      "아이디": "toureventure",
+      "암호": "ktoventure1*!",
+      "DB명": "toureventure"
+    },
+    "comments": []
   },
   {
     "wr_id": "282",
@@ -1949,7 +3395,21 @@
     "author": "하상범",
     "date": "2019-01-14",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "신규",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "222.122.86.168",
+      "URL": "code0175.sitegate.co.kr",
+      "아이디": "wncode_code0175",
+      "암호": "insil0516",
+      "DB명": "wncode_code0175"
+    },
+    "comments": []
   },
   {
     "wr_id": "281",
@@ -1965,7 +3425,11 @@
     "author": "김종규",
     "date": "2019-01-09",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "280",
@@ -1981,7 +3445,24 @@
     "author": "정지호",
     "date": "2019-01-04",
     "hit": "11",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정X",
+      "UTF-8 설정": "설정X",
+      "아이피": "118.219.234.56",
+      "URL": "snulawa.or.kr",
+      "포트": "21",
+      "아이디": "code0055",
+      "암호": "tjdnfqjq13",
+      "DB명": "code0055"
+    },
+    "comments": []
   },
   {
     "wr_id": "279",
@@ -1997,7 +3478,23 @@
     "author": "강슬기",
     "date": "2018-12-18",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정X",
+      "UTF-8 설정": "설정O",
+      "아이피": "183.110.224.60",
+      "URL": "code0174.sitegate.co.kr",
+      "포트": "21",
+      "아이디": "wncode_code0174",
+      "암호": "apelvkzm2018",
+      "DB명": "wncode_code0174"
+    },
+    "comments": []
   },
   {
     "wr_id": "278",
@@ -2013,7 +3510,20 @@
     "author": "강슬기",
     "date": "2018-12-18",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "URL": "cunews.co.kr",
+      "아이디": "wncode_code0153",
+      "암호": "code0153!@",
+      "DB명": "wncode_code0153"
+    },
+    "comments": []
   },
   {
     "wr_id": "277",
@@ -2029,7 +3539,20 @@
     "author": "강슬기",
     "date": "2018-12-12",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "아이피": "222.122.213.215",
+      "URL": "cunews.co.kr",
+      "포트": "5660",
+      "아이디": "wncode_code0153",
+      "암호": "qkfms0508!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "276",
@@ -2045,7 +3568,19 @@
     "author": "강슬기",
     "date": "2018-12-12",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2018-05-03",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "http://www.cloudv.kr",
+      "아이디": "wordncode",
+      "암호": "arte365!@#"
+    },
+    "comments": []
   },
   {
     "wr_id": "275",
@@ -2061,7 +3596,19 @@
     "author": "강슬기",
     "date": "2018-12-04",
     "hit": "15",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2018-05-03",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "http://www.cloudv.kr",
+      "아이디": "wordncode",
+      "암호": "arte365!@#"
+    },
+    "comments": []
   },
   {
     "wr_id": "274",
@@ -2077,7 +3624,19 @@
     "author": "강슬기",
     "date": "2018-11-28",
     "hit": "6",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "테스트 DB 서버입니다.",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "OS": "윈도우",
+      "DBMS/언어": "MySQL",
+      "아이피": "183.109.79.76",
+      "아이디": "biostar",
+      "암호": "biostar",
+      "DB명": "biostar"
+    },
+    "comments": []
   },
   {
     "wr_id": "273",
@@ -2093,7 +3652,20 @@
     "author": "이명준",
     "date": "2018-11-19",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1123",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "161.122.9.42",
+      "아이디": "root",
+      "암호": "choen2018!",
+      "DB명": "smesc"
+    },
+    "comments": []
   },
   {
     "wr_id": "272",
@@ -2109,7 +3681,19 @@
     "author": "강슬기",
     "date": "2018-11-15",
     "hit": "26",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "Oracle",
+      "아이피": "183.109.79.72",
+      "아이디": "administrator",
+      "암호": "Wordncode12#"
+    },
+    "comments": []
   },
   {
     "wr_id": "271",
@@ -2125,7 +3709,18 @@
     "author": "김종규",
     "date": "2018-11-13",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "영상",
+    "files": [],
+    "meta": {
+      "용도": "미디어계정",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "아이피": "121.78.124.227",
+      "아이디": "tntn",
+      "암호": "tntn@12"
+    },
+    "comments": []
   },
   {
     "wr_id": "270",
@@ -2141,7 +3736,20 @@
     "author": "이명준",
     "date": "2018-11-12",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "121.78.124.227",
+      "아이디": "tntnteacher",
+      "암호": "tntn0409!@",
+      "DB명": "tntnteacher"
+    },
+    "comments": []
   },
   {
     "wr_id": "269",
@@ -2157,7 +3765,20 @@
     "author": "김종규",
     "date": "2018-11-06",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "121.78.124.227",
+      "URL": "http://tntn.nisus.kr/",
+      "아이디": "tntnteacher",
+      "암호": "tntn0409"
+    },
+    "comments": []
   },
   {
     "wr_id": "268",
@@ -2173,7 +3794,22 @@
     "author": "김종규",
     "date": "2018-11-06",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "서울대 불어문화권연구소",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "아이피": "147.47.106.238",
+      "URL": "hosting03.snu.ac.kr",
+      "포트": "22",
+      "아이디": "kacs",
+      "암호": "francophonie.snu.ac.kr"
+    },
+    "comments": []
   },
   {
     "wr_id": "267",
@@ -2189,7 +3825,11 @@
     "author": "김종규",
     "date": "2018-10-31",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "266",
@@ -2205,7 +3845,20 @@
     "author": "강슬기",
     "date": "2018-10-18",
     "hit": "12",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "http://uws64-087.cafe24.com/WebMysql",
+      "아이디": "flyfreetel",
+      "암호": "flytour0326!@",
+      "DB명": "flyfreetel"
+    },
+    "comments": []
   },
   {
     "wr_id": "265",
@@ -2221,7 +3874,20 @@
     "author": "강슬기",
     "date": "2018-10-16",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "112.175.247.158",
+      "URL": "flyfreetel.cafe24.com",
+      "아이디": "flyfreetel",
+      "암호": "flytour0326!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "264",
@@ -2237,7 +3903,11 @@
     "author": "강슬기",
     "date": "2018-10-16",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "263",
@@ -2253,7 +3923,18 @@
     "author": "강슬기",
     "date": "2018-10-05",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "-",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "DBMS/언어": "Oracle",
+      "아이피": "161.122.9.61",
+      "포트": "1521",
+      "아이디": "KISTCMS",
+      "암호": "kistcmspass!"
+    },
+    "comments": []
   },
   {
     "wr_id": "262",
@@ -2269,7 +3950,21 @@
     "author": "강슬기",
     "date": "2018-10-05",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".도메인 kherb.org, 아이디 : code0004 패스워드 : wc3191353! 기타 : 포트 : 6155",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "222.122.213.215",
+      "URL": "kherb.org",
+      "포트": "6155",
+      "아이디": "code0004",
+      "암호": "koda0319"
+    },
+    "comments": []
   },
   {
     "wr_id": "261",
@@ -2285,7 +3980,21 @@
     "author": "강슬기",
     "date": "2018-10-05",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "222.122.213.215",
+      "URL": "snufrance.com",
+      "포트": "5837",
+      "아이디": "wncode_snufr",
+      "암호": "snu2018!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "260",
@@ -2301,7 +4010,11 @@
     "author": "강슬기",
     "date": "2018-10-05",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "259",
@@ -2317,7 +4030,20 @@
     "author": "이명준",
     "date": "2018-09-27",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "192.168.1.3",
+      "아이디": "hp_dev",
+      "암호": "dev@fiti#1!",
+      "DB명": "fitiweb3_reliability (해당 DB 가져와서 작업)"
+    },
+    "comments": []
   },
   {
     "wr_id": "258",
@@ -2333,7 +4059,19 @@
     "author": "김종규",
     "date": "2018-08-28",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "121.65.234.132 (DB작업/132번 터미널 접속 후 쿼리분석기 프로그램 통해서 작업)",
+      "아이디": "administrator",
+      "암호": "web2#132+J"
+    },
+    "comments": []
   },
   {
     "wr_id": "257",
@@ -2349,7 +4087,20 @@
     "author": "강슬기",
     "date": "2018-08-22",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "ASP",
+      "아이피": "121.65.234.131",
+      "아이디": "inbus",
+      "암호": "inbus@fiti131!",
+      "DB명": "wwwroot > echo_home (신뢰성센터 루트)"
+    },
+    "comments": []
   },
   {
     "wr_id": "256",
@@ -2365,7 +4116,20 @@
     "author": "강슬기",
     "date": "2018-08-22",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정O",
+      "URL": "http://ruwa64-004.fmcity.com/WebMysql",
+      "아이디": "wncode_code0105",
+      "암호": "dlfwhrkr"
+    },
+    "comments": []
   },
   {
     "wr_id": "255",
@@ -2381,7 +4145,20 @@
     "author": "이명준",
     "date": "2018-08-20",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "UTF-8 설정": "설정O",
+      "URL": "ilchokak.co.kr / code0105.sitegate.co.kr",
+      "아이디": "wncode_code0105",
+      "암호": "dlfwhrkr"
+    },
+    "comments": []
   },
   {
     "wr_id": "254",
@@ -2397,7 +4174,21 @@
     "author": "강슬기",
     "date": "2018-08-08",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "/home/tomcat_project/kist/",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "OS": "리눅스",
+      "DBMS/언어": "JSP",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "161.122.9.60",
+      "포트": "sftp",
+      "아이디": "root",
+      "암호": "!passw0rd960"
+    },
+    "comments": []
   },
   {
     "wr_id": "253",
@@ -2413,7 +4204,21 @@
     "author": "강슬기",
     "date": "2018-06-25",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "222.122.213.159",
+      "URL": "sql16-002.cafe24.com",
+      "아이디": "fitialliance",
+      "암호": "fiti!@0305",
+      "DB명": "fitialliance"
+    },
+    "comments": []
   },
   {
     "wr_id": "252",
@@ -2429,7 +4234,22 @@
     "author": "강슬기",
     "date": "2018-06-25",
     "hit": "6",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "222.122.213.158",
+      "URL": "fitialliance.cafe24.com",
+      "포트": "5561",
+      "아이디": "fitialliance",
+      "암호": "fiti!@0305",
+      "DB명": "fitialliance"
+    },
+    "comments": []
   },
   {
     "wr_id": "251",
@@ -2445,7 +4265,22 @@
     "author": "강슬기",
     "date": "2018-06-21",
     "hit": "8",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1년 호스팅신청",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "183.111.100.230",
+      "URL": "biostart.cafe24.com",
+      "아이디": "biostart",
+      "암호": "biostart22!@",
+      "DB명": "biostart"
+    },
+    "comments": []
   },
   {
     "wr_id": "250",
@@ -2461,7 +4296,19 @@
     "author": "강슬기",
     "date": "2018-06-08",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "웹호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "221.139.14.111 (ssh사용)",
+      "아이디": "root",
+      "암호": "서승환1!  (tjtmdghks1!)"
+    },
+    "comments": []
   },
   {
     "wr_id": "249",
@@ -2477,7 +4324,19 @@
     "author": "강슬기",
     "date": "2018-06-08",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "웹호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "seoulsports.or.kr",
+      "아이디": "blogssports",
+      "암호": "tjdnfsports123!@#1"
+    },
+    "comments": []
   },
   {
     "wr_id": "248",
@@ -2493,7 +4352,19 @@
     "author": "이명준",
     "date": "2018-06-05",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(타사)",
+      "OS": "리눅스",
+      "URL": "seoulsports.or.kr",
+      "아이디": "일반 : seoulnew  / root 권한 : root",
+      "암호": "일반 : tjdnf123  /  root 권한 :  tjdnfsports",
+      "DB명": "일반계정 로그인 상태에서 su root 권한상승  pw: tjdnfsports"
+    },
+    "comments": []
   },
   {
     "wr_id": "247",
@@ -2509,7 +4380,11 @@
     "author": "이명준",
     "date": "2018-06-05",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "246",
@@ -2525,7 +4400,22 @@
     "author": "이명준",
     "date": "2018-06-05",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정X",
+      "UTF-8 설정": "설정O",
+      "아이피": "119.205.220.39",
+      "아이디": "flytour",
+      "암호": "flytour0208!@",
+      "DB명": "flytour"
+    },
+    "comments": []
   },
   {
     "wr_id": "245",
@@ -2541,7 +4431,23 @@
     "author": "이명준",
     "date": "2018-06-05",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(WC-아이하트)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "119.205.220.39",
+      "URL": "flytour_new.nisus.kr",
+      "포트": "22",
+      "아이디": "flytour",
+      "암호": "flytour0208"
+    },
+    "comments": []
   },
   {
     "wr_id": "244",
@@ -2557,7 +4463,20 @@
     "author": "이명준",
     "date": "2018-05-31",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "121.65.234.132",
+      "URL": "132번 터미널 접속 후 쿼리분석기 프로그램 통해서 작업",
+      "아이디": "administrator",
+      "암호": "web2#132+J"
+    },
+    "comments": []
   },
   {
     "wr_id": "243",
@@ -2573,7 +4492,19 @@
     "author": "강슬기",
     "date": "2018-05-16",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "121.65.234.131",
+      "아이디": "inbus",
+      "암호": "inbus@fiti131!"
+    },
+    "comments": []
   },
   {
     "wr_id": "242",
@@ -2589,7 +4520,20 @@
     "author": "이명준",
     "date": "2018-05-14",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2018.01.20 토요일 서버이전으로 변경---------db--------------\nmssql\n222.122.213.215\nwncode_code0141\n!@ktappi2010#$",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "222.122.213.215",
+      "포트": "5669",
+      "아이디": "wncode_code0141",
+      "암호": "vjfvm0122"
+    },
+    "comments": []
   },
   {
     "wr_id": "241",
@@ -2605,7 +4549,20 @@
     "author": "이명준",
     "date": "2018-05-10",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2018.01.20 토요일 서버이전으로 변경",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "222.122.213.215",
+      "포트": "5669",
+      "아이디": "wncode_code0141",
+      "암호": "vjfvm0122"
+    },
+    "comments": []
   },
   {
     "wr_id": "240",
@@ -2621,7 +4578,11 @@
     "author": "강슬기",
     "date": "2018-05-08",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "239",
@@ -2637,7 +4598,16 @@
     "author": "강슬기",
     "date": "2018-05-08",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2018 01월 22일 확인함",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "아이피": "121.78.124.228",
+      "아이디": "administrator",
+      "암호": "intlab2017)(*&"
+    },
+    "comments": []
   },
   {
     "wr_id": "238",
@@ -2653,7 +4623,20 @@
     "author": "강슬기",
     "date": "2018-05-03",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "211.253.42.170",
+      "포트": "2100",
+      "아이디": "midasit",
+      "암호": "ftpTmfrjdi (ftp쓸거야)"
+    },
+    "comments": []
   },
   {
     "wr_id": "237",
@@ -2669,7 +4652,19 @@
     "author": "강슬기",
     "date": "2018-05-03",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "211.253.42.170",
+      "아이디": "administrator",
+      "암호": "koreaoecd"
+    },
+    "comments": []
   },
   {
     "wr_id": "236",
@@ -2685,7 +4680,19 @@
     "author": "이창현",
     "date": "2018-04-25",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "http://uws64-146.cafe24.com/WebMysql/",
+      "아이디": "hanoecd",
+      "암호": "oecd@1004"
+    },
+    "comments": []
   },
   {
     "wr_id": "235",
@@ -2701,7 +4708,20 @@
     "author": "김종규",
     "date": "2018-04-16",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "http://www.hosting.kr/main (웹호스팅)",
+      "URL": "public.oecdkorea.org",
+      "아이디": "oecdkorea",
+      "암호": "oecdkpc"
+    },
+    "comments": []
   },
   {
     "wr_id": "234",
@@ -2717,7 +4737,19 @@
     "author": "김종규",
     "date": "2018-04-13",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "MySQL",
+      "아이피": "211.253.42.170 (원격)",
+      "아이디": "administrator",
+      "암호": "koreaoecd"
+    },
+    "comments": []
   },
   {
     "wr_id": "233",
@@ -2733,7 +4765,16 @@
     "author": "강슬기",
     "date": "2018-04-10",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "계정정보 받아야 함\n\nhttp://public.oecdkorea.org/ebook/conf/login.jsp\n\n    ID : oecdkorea  비번 : admin1234",
+    "files": [],
+    "meta": {
+      "용도": "기타",
+      "위치": "웹호스팅(타사)",
+      "OS": "기타",
+      "DBMS/언어": "언어 기타"
+    },
+    "comments": []
   },
   {
     "wr_id": "232",
@@ -2749,7 +4790,11 @@
     "author": "강슬기",
     "date": "2018-04-09",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "231",
@@ -2765,7 +4810,20 @@
     "author": "강슬기",
     "date": "2018-04-09",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "211.253.42.170 (221.148.95.176경유)\n\nadministrator / koreaoecd \n\nmidasit / ftpTmfrjdi (포트:2100)\n\nD:\\KTCFamily\n\n211.253.42.170\n\nktcfamily \n\nroot / kdi*push\n\n\"http://reqnetwork.kdischool.ac.kr:9999/\n\nmidasit / midasit\n\n- 담당자 : 나동진 선임행정원 \n\n- 이메일 : djna@kdischool.ac.kr\n\n- 연락처 : 02-3299-1052 / 010-3013-2326\n\n- 원격 터미널 : mstsc /admin \n\n- 원격지 : 211.253.42.170 / administrator / koreaoecd\n\n- FTP : 211.253.42.170 / 2100 / midasit / ftpTmfrjdi(ftp쓸거야)\n\n- 출발지(우리쪽) : 221.148.95.176 (서브넷 255.255.255.0)\"",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(타사)",
+      "OS": "기타",
+      "아이피": "211.253.42.170 (221.148.95.176경유)",
+      "URL": "ㅁ",
+      "포트": "2100",
+      "아이디": "administrator",
+      "암호": "koreaoecd"
+    },
+    "comments": []
   },
   {
     "wr_id": "230",
@@ -2781,7 +4839,20 @@
     "author": "강슬기",
     "date": "2018-03-28",
     "hit": "9",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "DB 접속정보: http://uws64-146.cafe24.com/WebMysql/\n\n   아이디: hanoecd\n\n   비번: oecd@1004",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(타사)",
+      "OS": "기타",
+      "아이피": "hanoecd.cafe24.com",
+      "URL": "ㅁ",
+      "포트": "21",
+      "아이디": "hanoecd",
+      "암호": "oecd@1004"
+    },
+    "comments": []
   },
   {
     "wr_id": "229",
@@ -2797,7 +4868,22 @@
     "author": "강슬기",
     "date": "2018-03-26",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".ftp(196):/www/include/dbopen.asp\n\nSet dbCon = CreateObject(\"ADODB.Connection\")\n\tdbCon.ConnectionString = \"Provider=SQLOLEDB; Data Source=222.122.213.187; Catalog=code0047; User ID=code0047; Password=050505;\"\n\tdbCon.Open",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "SFTP 설정": "설정X",
+      "아이피": "222.122.213.215",
+      "URL": "ikasi.or.kr",
+      "포트": "9160",
+      "아이디": "code0047",
+      "암호": "ehdghk0116"
+    },
+    "comments": []
   },
   {
     "wr_id": "228",
@@ -2813,7 +4899,22 @@
     "author": "강슬기",
     "date": "2018-03-26",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "SFTP 설정": "설정X",
+      "아이피": "222.122.213.215",
+      "URL": "ikasi.or.kr",
+      "포트": "9160",
+      "아이디": "code0047",
+      "암호": "ehdghk0116"
+    },
+    "comments": []
   },
   {
     "wr_id": "227",
@@ -2829,7 +4930,16 @@
     "author": "이명준",
     "date": "2018-03-23",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "db \nsql-006.sitegate.co.kr\nid:code0027\npw:m_wc050505\n\nftp\nmaverick.co.kr\nid:code0027\npw:m_wc050505",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL"
+    },
+    "comments": []
   },
   {
     "wr_id": "226",
@@ -2845,7 +4955,20 @@
     "author": "강슬기",
     "date": "2018-03-19",
     "hit": "12",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "ASP",
+      "아이피": "121.78.124.229",
+      "아이디": "fashionUsr",
+      "암호": "(!)$votusDB104)!@",
+      "DB명": "DB_HRD"
+    },
+    "comments": []
   },
   {
     "wr_id": "225",
@@ -2861,7 +4984,20 @@
     "author": "강슬기",
     "date": "2018-03-12",
     "hit": "6",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "121.78.124.228",
+      "포트": "hrd_web/",
+      "아이디": "fashionnetkorea",
+      "암호": "intlab2017)(*&"
+    },
+    "comments": []
   },
   {
     "wr_id": "224",
@@ -2877,7 +5013,21 @@
     "author": "김종규",
     "date": "2018-03-09",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "Oracle",
+      "아이피": "161.122.37.104",
+      "포트": "1521",
+      "아이디": "TDVIIS",
+      "암호": "ENABLED",
+      "DB명": "KISTIIS"
+    },
+    "comments": []
   },
   {
     "wr_id": "223",
@@ -2893,7 +5043,21 @@
     "author": "김종규",
     "date": "2018-03-09",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "161.122.9.42",
+      "포트": "3306",
+      "아이디": "smesc",
+      "암호": "kist2014!@#",
+      "DB명": "smesc"
+    },
+    "comments": []
   },
   {
     "wr_id": "222",
@@ -2909,7 +5073,22 @@
     "author": "김종규",
     "date": "2018-03-09",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "161.122.9.42",
+      "포트": "Protocol: SFTP",
+      "아이디": "kist1",
+      "암호": "kist1966!"
+    },
+    "comments": []
   },
   {
     "wr_id": "221",
@@ -2925,7 +5104,18 @@
     "author": "김종규",
     "date": "2018-03-08",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "계정 : hnfdb / hnf@1921",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "웹호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이디": "hnfdb",
+      "암호": "hnfi6588@@"
+    },
+    "comments": []
   },
   {
     "wr_id": "220",
@@ -2941,7 +5131,18 @@
     "author": "김종규",
     "date": "2018-03-08",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "계정 : hnfweb / hnf@1921",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "JSP",
+      "아이디": "hnfweb",
+      "암호": "hnfi6588@@"
+    },
+    "comments": []
   },
   {
     "wr_id": "219",
@@ -2957,7 +5158,16 @@
     "author": "이명준",
     "date": "2018-03-07",
     "hit": "11",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "내부 : 192.168.41.39\n외부 : 210.181.202.67\n\n톰켓 6.x  jdk 1.6\n\n리눅스\nroot / hnfriends1234\n\n\nB.\t백업파일\n- 파일경로 : D:\\1. 작업문서\\1. 프로젝트\\8. 홈페이지\\소스\\2017-11-21\n- 소스 : hnfriends_new (50MB)\n- 첨부파일 : Resources (500MB)\n\n\n#####MySQL 5.0#####\ndriver=core.log.jdbc.driver.MysqlDriver\nuseUnicode=true&characterEncoding=utf8\nurl=jdbc:mysql://127.0.0.1:3306/newhnf?useUnicode=true&characterEncoding=utf8 username=newhnf password=hnf1234",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL"
+    },
+    "comments": []
   },
   {
     "wr_id": "218",
@@ -2973,7 +5183,20 @@
     "author": "강슬기",
     "date": "2018-03-05",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "JSP",
+      "아이피": "192.168.41.39",
+      "포트": "21",
+      "아이디": "hnfriends",
+      "암호": "hnf1234"
+    },
+    "comments": []
   },
   {
     "wr_id": "217",
@@ -2989,7 +5212,16 @@
     "author": "강슬기",
     "date": "2018-03-05",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "아이피": "161.122.9.42",
+      "아이디": "crpc",
+      "암호": "kist2014!@#"
+    },
+    "comments": []
   },
   {
     "wr_id": "216",
@@ -3005,7 +5237,21 @@
     "author": "강슬기",
     "date": "2018-02-22",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "경기섬유종합지원센터 웹서버 \n\nDB 별도",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "DBMS 기타",
+      "SFTP 설정": "설정O",
+      "아이피": "211.239.164.2",
+      "포트": "1972",
+      "아이디": "gtextopia_php",
+      "암호": "tjadb1114"
+    },
+    "comments": []
   },
   {
     "wr_id": "215",
@@ -3021,7 +5267,23 @@
     "author": "김종규",
     "date": "2018-02-14",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "웹서버",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "210.122.36.157",
+      "URL": "http://edu20.makeweb.kr",
+      "포트": "22",
+      "아이디": "edu20",
+      "암호": "?gozldgkwlak18!"
+    },
+    "comments": []
   },
   {
     "wr_id": "214",
@@ -3037,7 +5299,11 @@
     "author": "김종규",
     "date": "2018-02-14",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "213",
@@ -3053,7 +5319,19 @@
     "author": "김종규",
     "date": "2018-02-14",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2017-06-14 오후 변경된것같음",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(타사)",
+      "OS": "윈도우",
+      "URL": "safelife.or.kr",
+      "포트": "7480",
+      "아이디": "ansilyen01",
+      "암호": "ansilyen0119"
+    },
+    "comments": []
   },
   {
     "wr_id": "212",
@@ -3069,7 +5347,11 @@
     "author": "강슬기",
     "date": "2018-02-05",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "211",
@@ -3085,7 +5367,20 @@
     "author": "강슬기",
     "date": "2018-02-05",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "code0172.sitegate.co.kr",
+      "아이디": "wncode_code0172",
+      "암호": "indi0511",
+      "DB명": "wncode_code0172"
+    },
+    "comments": []
   },
   {
     "wr_id": "210",
@@ -3101,7 +5396,21 @@
     "author": "김종규",
     "date": "2018-02-01",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "DB서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MS-SQL",
+      "URL": "sql16-001.cafe24.com",
+      "포트": "1433",
+      "아이디": "kfdcs",
+      "암호": "kfdcs17!@",
+      "DB명": "kfdcs"
+    },
+    "comments": []
   },
   {
     "wr_id": "209",
@@ -3117,7 +5426,20 @@
     "author": "김종규",
     "date": "2018-02-01",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "URL": "kfdcs.cafe24.com",
+      "포트": "5565",
+      "아이디": "kfdcs",
+      "암호": "kfdcs17!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "208",
@@ -3133,7 +5455,11 @@
     "author": "강슬기",
     "date": "2018-01-22",
     "hit": "20",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "207",
@@ -3149,7 +5475,11 @@
     "author": "강슬기",
     "date": "2018-01-22",
     "hit": "11",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "206",
@@ -3165,7 +5495,24 @@
     "author": "강슬기",
     "date": "2018-01-22",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "텐비트관리자정보\nadmin /  122334\n\n도메인정보\n\nhttps://domain.whois.co.kr\n\nlogbuild  /  hwang#97104378윈도우서버2003\nIIS 6.0\nMSSql 2000\nDEXTUPLOAD 컴포넌트 PRO버전 (파일 업로드 및 섬네일 컴포넌트)\n\n\nFTP주소 : www.tenbit.co.kr\n아이디 : tenbit\n비밀번호 : tenbitfltvqp\n포트 : 21\n\n신청하신 공인아이피 (211.197.7.55) 에서만 접속이 가능하십니다.​\n텐비트 무선 비번  tenbit1 / tenbit10040",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "윈도우",
+      "DBMS/언어": "ASP",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "222.122.213.217",
+      "URL": "code0171.sitegate.co.kr",
+      "포트": "5669",
+      "아이디": "wncode_code0171",
+      "암호": "tenbit!@34",
+      "DB명": "wncode_code0171"
+    },
+    "comments": []
   },
   {
     "wr_id": "205",
@@ -3181,7 +5528,19 @@
     "author": "김종규",
     "date": "2018-01-18",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "관리자 (2017-08-16 일자로 변경)\nhttp://code0051.sitegate.co.kr/board/plit_adm \n\nadmin /  8282hardworking20220128\n\nadmin / snusnu  \n\n변경함",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "http://code0051.sitegate.co.kr",
+      "아이디": "code0051",
+      "암호": "cnpelwkdls"
+    },
+    "comments": []
   },
   {
     "wr_id": "204",
@@ -3197,7 +5556,24 @@
     "author": "김종규",
     "date": "2018-01-18",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "~~",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "서버호스팅(sv001)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "119.205.220.39",
+      "URL": "bootstrap.wordncode.com",
+      "포트": "22",
+      "아이디": "bootstrap",
+      "암호": "wc3191353!@#",
+      "DB명": "bootstrap"
+    },
+    "comments": []
   },
   {
     "wr_id": "203",
@@ -3213,7 +5589,24 @@
     "author": "김종규",
     "date": "2018-01-18",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "~~",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "서버호스팅(sv001)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "SFTP 설정": "설정O",
+      "UTF-8 설정": "설정O",
+      "아이피": "119.205.220.39",
+      "URL": "art.wordncode.com",
+      "포트": "22",
+      "아이디": "art",
+      "암호": "wc3191353!@#",
+      "DB명": "art"
+    },
+    "comments": []
   },
   {
     "wr_id": "202",
@@ -3229,7 +5622,18 @@
     "author": "김종규",
     "date": "2018-01-18",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "비에나래 FTP  변경 bien17@!\n\n2019-06-19 변경비에나래 관리자 페이지 정보 \n\nhttp://bien.co.kr/messia.asp\n\nid : bienvenue\npw : bonbon@feelgood##",
+    "files": [],
+    "meta": {
+      "OS": "윈도우",
+      "DBMS/언어": "MS-SQL",
+      "아이피": "222.122.213.212",
+      "포트": "6322",
+      "아이디": "code0021",
+      "암호": "wcbien19)^!("
+    },
+    "comments": []
   },
   {
     "wr_id": "201",
@@ -3245,7 +5649,21 @@
     "author": "김종규",
     "date": "2018-01-17",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "에어텍",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정O",
+      "아이피": "183.111.100.209",
+      "URL": "code0170.sitegate.co.kr",
+      "아이디": "wncode_code0170",
+      "암호": "airtec17!"
+    },
+    "comments": []
   },
   {
     "wr_id": "200",
@@ -3261,7 +5679,11 @@
     "author": "현이컴",
     "date": "2018-01-16",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "199",
@@ -3277,7 +5699,22 @@
     "author": "현이컴",
     "date": "2018-01-16",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "wncode_code0168",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정O",
+      "아이피": "183.111.100.210",
+      "URL": "code0168.sitegate.co.kr",
+      "아이디": "wncode_code0168",
+      "암호": "gyals16!",
+      "DB명": "wncode_code0168"
+    },
+    "comments": []
   },
   {
     "wr_id": "198",
@@ -3293,7 +5730,11 @@
     "author": "현이컴",
     "date": "2018-01-16",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "197",
@@ -3309,7 +5750,19 @@
     "author": "강슬기",
     "date": "2018-01-16",
     "hit": "18",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "1",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "아이피": "121.78.124.234",
+      "URL": "spanish.nisus.kr",
+      "아이디": "snu_spanish_bk",
+      "암호": "spanish_bk09"
+    },
+    "comments": []
   },
   {
     "wr_id": "196",
@@ -3325,7 +5778,19 @@
     "author": "강슬기",
     "date": "2018-01-16",
     "hit": "33",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "아르떼 테스트서버",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "code0151.sitegate.co.kr",
+      "아이디": "wncode_code0151",
+      "암호": "code0151!"
+    },
+    "comments": []
   },
   {
     "wr_id": "195",
@@ -3341,7 +5806,11 @@
     "author": "문성민",
     "date": "2018-01-16",
     "hit": "8",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "194",
@@ -3357,7 +5826,21 @@
     "author": "김종규",
     "date": "2018-01-10",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "DMZ  리눅스 계정",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "183.111.183.4",
+      "URL": "code0167.sitegate.co.kr",
+      "아이디": "wncode_code0167",
+      "암호": "dmz0629!@",
+      "DB명": "wncode_code0167"
+    },
+    "comments": []
   },
   {
     "wr_id": "193",
@@ -3373,7 +5856,11 @@
     "author": "김종규",
     "date": "2018-01-10",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "192",
@@ -3389,7 +5876,19 @@
     "author": "김종규",
     "date": "2018-01-08",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "정보",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(타사)",
+      "OS": "윈도우",
+      "URL": "otos.co.kr",
+      "포트": "21",
+      "아이디": "otos8000",
+      "암호": "otos09876"
+    },
+    "comments": []
   },
   {
     "wr_id": "191",
@@ -3405,7 +5904,21 @@
     "author": "김종규",
     "date": "2018-01-08",
     "hit": "4",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "리셀러 세팅",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정O",
+      "URL": "code0166.sitegate.co.kr",
+      "포트": "21",
+      "아이디": "wncode_code0166",
+      "암호": "wkdalfktk!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "190",
@@ -3421,7 +5934,11 @@
     "author": "김종규",
     "date": "2018-01-08",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "189",
@@ -3437,7 +5954,11 @@
     "author": "김종규",
     "date": "2017-12-12",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "188",
@@ -3453,7 +5974,20 @@
     "author": "김종규",
     "date": "2017-12-12",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": ".",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-이로긴)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "UTF-8 설정": "설정X",
+      "URL": "strength.or.kr",
+      "아이디": "cw001",
+      "암호": "!@#wc001"
+    },
+    "comments": []
   },
   {
     "wr_id": "187",
@@ -3469,7 +6003,20 @@
     "author": "김종규",
     "date": "2017-12-12",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "카페24 리셀러 일반형 으로 신청",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "PHP",
+      "UTF-8 설정": "설정O",
+      "아이디": "wncode_code0165",
+      "암호": "dnjseodus!@",
+      "DB명": "wncode_code0165"
+    },
+    "comments": []
   },
   {
     "wr_id": "186",
@@ -3485,7 +6032,11 @@
     "author": "김종규",
     "date": "2017-12-12",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "185",
@@ -3501,7 +6052,11 @@
     "author": "홍준표",
     "date": "2017-12-06",
     "hit": "3",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "184",
@@ -3517,7 +6072,19 @@
     "author": "강슬기",
     "date": "2017-11-14",
     "hit": "7",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "아르떼 서버 스마일서버",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "서버호스팅(타사)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "아이피": "115.68.59.140",
+      "아이디": "ch121",
+      "암호": "ch121@ch121"
+    },
+    "comments": []
   },
   {
     "wr_id": "183",
@@ -3533,7 +6100,11 @@
     "author": "안재홍",
     "date": "2017-09-22",
     "hit": "1",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "",
+    "files": [],
+    "meta": {},
+    "comments": []
   },
   {
     "wr_id": "182",
@@ -3549,7 +6120,21 @@
     "author": "강슬기",
     "date": "2017-06-14",
     "hit": "2",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "2015-10-13 강슬기 감사협회 SSH, FTP 비밀번호 변경",
+    "files": [],
+    "meta": {
+      "용도": "FTP계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "SFTP 설정": "설정O",
+      "아이피": "118.219.234.56",
+      "URL": "theiia.kr",
+      "포트": "22",
+      "아이디": "code0049",
+      "암호": "rkatkguqghl!@"
+    },
+    "comments": []
   },
   {
     "wr_id": "181",
@@ -3565,7 +6150,20 @@
     "author": "강슬기",
     "date": "2017-05-11",
     "hit": "5",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "~~",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "http://ruwa64-080.fmcity.com/WebMysql/",
+      "아이디": "wncode_code0164",
+      "암호": "isense12!",
+      "DB명": "wncode_code0164"
+    },
+    "comments": []
   },
   {
     "wr_id": "180",
@@ -3581,7 +6179,21 @@
     "author": "강슬기",
     "date": "2017-04-10",
     "hit": "5",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "아이센스 채용시스템 개발서버",
+    "files": [],
+    "meta": {
+      "용도": "FTP서버",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "UTF-8 설정": "설정X",
+      "URL": "code0164.sitegate.co.kr",
+      "아이디": "wncode_code0164",
+      "암호": "isens!12",
+      "DB명": "wncode_code0164"
+    },
+    "comments": []
   },
   {
     "wr_id": "179",
@@ -3597,6 +6209,19 @@
     "author": "강슬기",
     "date": "2017-04-10",
     "hit": "11",
-    "infraType": "server"
+    "infraType": "server",
+    "content": "~~",
+    "files": [],
+    "meta": {
+      "용도": "DB계정",
+      "위치": "웹호스팅(WC-카페24)",
+      "OS": "리눅스",
+      "DBMS/언어": "MySQL",
+      "URL": "http://rwa64-036.fmcity.com/WebMysql",
+      "아이디": "wncode_kgyvc",
+      "암호": "kgyvckrdns",
+      "DB명": "wncode_kgyvc"
+    },
+    "comments": []
   }
 ]

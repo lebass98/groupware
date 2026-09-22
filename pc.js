@@ -5616,20 +5616,189 @@ const PCApp = {
         `;
       }
 
+      const itemId = item.wr_id || item.id || '';
       return `
-        <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all flex flex-col justify-between">
+        <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group" onclick="PCApp.openExtendedModal('${tab}', '${itemId}')">
           <div>
             <div class="flex items-start justify-between gap-2 mb-2">
-              <h4 class="font-bold text-base text-on-surface line-clamp-2">${title}</h4>
+              <h4 class="font-bold text-base text-on-surface line-clamp-2 group-hover:text-primary transition-colors">${title}</h4>
               <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-surface-container text-on-surface-variant shrink-0">${author}</span>
             </div>
             ${site && tab !== 'url' && tab !== 'domain' ? `<p class="text-xs text-primary font-semibold line-clamp-1 mb-2">${site}</p>` : ''}
             ${metaHtml}
           </div>
-          ${actionHtml ? `<div class="pt-3 mt-3 border-t border-outline/40">${actionHtml}</div>` : ''}
+          <div class="pt-3 mt-3 border-t border-outline/40 flex items-center justify-between">
+            ${actionHtml ? `<div onclick="event.stopPropagation()">${actionHtml}</div>` : '<div></div>'}
+            <span class="text-xs font-bold text-primary flex items-center gap-1 group-hover:translate-x-1 transition-transform ml-auto">
+              상세보기
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+            </span>
+          </div>
         </div>
       `;
     }).join('');
+  },
+
+  openExtendedModal(tab, id) {
+    const ext = (window.MockData && window.MockData.extendedData) || {};
+    const keyMap = {
+      contract: 'contracts',
+      estimate: 'estimates',
+      domain: 'domains',
+      server: 'servers',
+      url: 'projectUrls',
+      storyboard: 'storyboards'
+    };
+    const list = ext[keyMap[tab]] || [];
+    const item = list.find(i => String(i.wr_id || i.id) === String(id));
+    if (!item) return;
+
+    const modalBody = document.getElementById('pc-modal-content');
+    if (!modalBody) return;
+
+    const title = item.title || item.subject || item.domain || '상세 정보';
+    const site = item.site || item.company || '';
+    const author = item.author || '워드앤코드';
+    const date = item.date || '-';
+    const meta = item.meta || {};
+    const files = item.files || [];
+    const comments = item.comments || [];
+    const content = item.content || '';
+
+    const titles = {
+      contract: '계약서 상세 정보',
+      estimate: '견적 및 제안서 상세 정보',
+      domain: '도메인 계정 및 상세 정보',
+      server: '서버 및 호스팅 인프라 상세 정보',
+      url: '프로젝트 접속 주소 상세 정보',
+      storyboard: '기획 스토리보드 상세 정보'
+    };
+
+    // 메타데이터 테이블 구성
+    const metaEntries = Object.entries(meta);
+    let metaGridHtml = '';
+    if (metaEntries.length > 0) {
+      metaGridHtml = `
+        <div class="bg-surface-container-low rounded-xl p-4 border border-outline/40">
+          <h4 class="font-bold text-xs text-primary mb-3 flex items-center gap-1.5">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>상세 속성 및 계정 보안 정보</span>
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
+            ${metaEntries.map(([k, v]) => `
+              <div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-lowest border border-outline/30">
+                <span class="text-on-surface-variant font-medium">${k}</span>
+                <div class="flex items-center gap-1.5 max-w-[65%]">
+                  <strong class="text-on-surface font-mono truncate select-all" title="${v}">${v}</strong>
+                  ${v.length > 3 ? `<button type="button" class="p-1 text-primary hover:bg-primary/10 rounded cursor-pointer shrink-0" onclick="event.stopPropagation(); PCApp.copyText('${v.replace(/'/g, "\\'")}', '${k}')" title="복사"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>` : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 첨부파일 다운로드 영역
+    let filesHtml = '';
+    if (files.length > 0) {
+      filesHtml = `
+        <div class="bg-surface-container-low rounded-xl p-4 border border-outline/40">
+          <h4 class="font-bold text-xs text-primary mb-3 flex items-center gap-1.5">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            <span>첨부파일 및 원본 문서 (${files.length}건)</span>
+          </h4>
+          <div class="space-y-2">
+            ${files.map(f => `
+              <div class="flex items-center justify-between bg-surface-container-lowest p-3 rounded-lg border border-outline/30 text-xs">
+                <div class="flex items-center gap-2 truncate mr-2">
+                  <svg class="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                  <span class="font-bold text-on-surface truncate" title="${f.fullInfo || f.name}">${f.name}</span>
+                </div>
+                <a href="${f.url}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 bg-primary text-white hover:bg-primary-dim font-bold rounded-lg text-xs transition-colors shrink-0 flex items-center gap-1" download>
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>다운로드</span>
+                </a>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 본문 내용
+    let contentHtml = '';
+    if (content && content !== '-' && content !== '.') {
+      contentHtml = `
+        <div class="bg-surface-container-low rounded-xl p-4 border border-outline/40">
+          <h4 class="font-bold text-xs text-primary mb-2 flex items-center gap-1.5">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M14 17H4v-2h10v2zm6-8H4V7h16v2zm0 4H4v-2h16v2zm0 4h-4v-2h4v2z"/></svg>
+            <span>상세 본문 및 작업 메모</span>
+          </h4>
+          <div class="bg-surface-container-lowest rounded-lg p-3.5 text-xs text-on-surface leading-relaxed whitespace-pre-line border border-outline/30 font-mono select-text">
+            ${content}
+          </div>
+        </div>
+      `;
+    }
+
+    // 댓글 히스토리
+    let commentsHtml = '';
+    if (comments.length > 0) {
+      commentsHtml = `
+        <div class="bg-surface-container-low rounded-xl p-4 border border-outline/40">
+          <h4 class="font-bold text-xs text-primary mb-3 flex items-center gap-1.5">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+            <span>댓글 및 피드백 이력 (${comments.length}건)</span>
+          </h4>
+          <div class="space-y-2">
+            ${comments.map(c => `
+              <div class="p-3 bg-surface-container-lowest rounded-lg border border-outline/30 text-xs">
+                <div class="flex items-center justify-between mb-1">
+                  <strong class="text-primary font-bold">${c.author}</strong>
+                  <span class="text-[11px] text-on-surface-variant">${c.date}</span>
+                </div>
+                <p class="text-on-surface whitespace-pre-line leading-relaxed">${c.content}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    modalBody.innerHTML = `
+      <div class="flex flex-col max-h-[85vh] text-left">
+        <!-- Header -->
+        <div class="flex items-start justify-between pb-4 border-b border-outline shrink-0">
+          <div>
+            <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+              <span class="px-2.5 py-0.5 rounded-full bg-primary text-white font-bold text-xs">${titles[tab] || '상세 정보'}</span>
+              ${site ? `<span class="text-xs font-bold text-primary">${site}</span>` : ''}
+              <span class="text-xs text-on-surface-variant">작성: ${author} · ${date}</span>
+            </div>
+            <h3 class="text-xl font-bold text-on-surface leading-snug">${title}</h3>
+          </div>
+          <button type="button" class="p-2 text-on-surface-variant hover:bg-surface-container rounded-lg cursor-pointer" onclick="PCApp.closeModal()">✕</button>
+        </div>
+
+        <!-- Scrollable Body -->
+        <div class="overflow-y-auto py-4 space-y-4 pr-1">
+          ${metaGridHtml}
+          ${contentHtml}
+          ${filesHtml}
+          ${commentsHtml}
+        </div>
+
+        <!-- Footer -->
+        <div class="pt-3 border-t border-outline flex justify-end gap-2 shrink-0">
+          <button type="button" class="px-6 py-2.5 rounded-xl font-bold text-sm bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors cursor-pointer" onclick="PCApp.closeModal()">
+            닫기
+          </button>
+        </div>
+      </div>
+    `;
+
+    this.showModal(null, true);
   },
 
   setSiteFilter(filterKey, tabEl) {

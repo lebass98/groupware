@@ -5,8 +5,16 @@
     "subject": "[안영재] 점심식대",
     "author": "이채원",
     "date": "06-05",
-    "hit": "8",
-    "commentCount": 0
+    "hit": "10",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-05",
+    "payType": ""
   },
   {
     "wr_id": "3511",
@@ -14,8 +22,16 @@
     "subject": "등기우편 발송",
     "author": "한상희",
     "date": "09-03",
-    "hit": "4",
-    "commentCount": 0
+    "hit": "6",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "09-03",
+    "payType": ""
   },
   {
     "wr_id": "3510",
@@ -23,8 +39,16 @@
     "subject": "[한국건강가정진흥원] 음료 구입비",
     "author": "이채원",
     "date": "08-13",
-    "hit": "3",
-    "commentCount": 0
+    "hit": "5",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "08-13",
+    "payType": ""
   },
   {
     "wr_id": "3509",
@@ -32,8 +56,23 @@
     "subject": "퍼블팀 간식비",
     "author": "이재광",
     "date": "07-31",
-    "hit": "5",
-    "commentCount": 0
+    "hit": "7",
+    "commentCount": 0,
+    "content": "2026년 8월 간식비 비출 (퍼블팀담당)\n196,210원 지출",
+    "files": [],
+    "meta": {
+      "[고양이] 퍼블팀 간식비\n  글쓴이": "이재광",
+      "지출일": "2026-07-31",
+      "증빙서류": "기타",
+      "금액": "196,210원",
+      "지출인": "이재광",
+      "지출유형": "기타"
+    },
+    "comments": [],
+    "amount": "196,210원",
+    "receipt": "기타",
+    "payDate": "2026-07-31",
+    "payType": "기타"
   },
   {
     "wr_id": "3508",
@@ -41,8 +80,16 @@
     "subject": "[안영재] 점심식대",
     "author": "안영재",
     "date": "07-31",
-    "hit": "3",
-    "commentCount": 0
+    "hit": "5",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "07-31",
+    "payType": ""
   },
   {
     "wr_id": "3507",
@@ -50,8 +97,16 @@
     "subject": "[안영재] 유류비",
     "author": "안영재",
     "date": "07-31",
-    "hit": "3",
-    "commentCount": 0
+    "hit": "5",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "07-31",
+    "payType": ""
   },
   {
     "wr_id": "3506",
@@ -59,8 +114,16 @@
     "subject": "[안영재] 점심식대",
     "author": "안영재",
     "date": "07-31",
-    "hit": "3",
-    "commentCount": 0
+    "hit": "5",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "07-31",
+    "payType": ""
   },
   {
     "wr_id": "3505",
@@ -68,8 +131,16 @@
     "subject": "[김종규, 윤익수, 박규태] 이음온라인 음료구입비",
     "author": "박규태",
     "date": "07-15",
-    "hit": "3",
-    "commentCount": 0
+    "hit": "5",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "07-15",
+    "payType": ""
   },
   {
     "wr_id": "3504",
@@ -77,8 +148,16 @@
     "subject": "야근식대",
     "author": "곽재훈",
     "date": "07-09",
-    "hit": "3",
-    "commentCount": 0
+    "hit": "5",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "07-09",
+    "payType": ""
   },
   {
     "wr_id": "3503",
@@ -86,8 +165,16 @@
     "subject": "[안영재] 점심식대",
     "author": "안영재",
     "date": "07-06",
-    "hit": "3",
-    "commentCount": 0
+    "hit": "5",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "07-06",
+    "payType": ""
   },
   {
     "wr_id": "3502",
@@ -95,8 +182,16 @@
     "subject": "[박규태]외근 교통카드 충전",
     "author": "박규태",
     "date": "06-30",
-    "hit": "3",
-    "commentCount": 0
+    "hit": "5",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-30",
+    "payType": ""
   },
   {
     "wr_id": "3501",
@@ -104,8 +199,16 @@
     "subject": "[김종규, 박규태]평가시스템 음료구입비",
     "author": "박규태",
     "date": "06-23",
-    "hit": "3",
-    "commentCount": 0
+    "hit": "5",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-23",
+    "payType": ""
   },
   {
     "wr_id": "3500",
@@ -113,8 +216,16 @@
     "subject": "[김종규, 박규태] 앤드와이즈 평가시스템 음료구입비",
     "author": "박규태",
     "date": "06-23",
-    "hit": "4",
-    "commentCount": 0
+    "hit": "6",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-23",
+    "payType": ""
   },
   {
     "wr_id": "3497",
@@ -122,8 +233,16 @@
     "subject": "[한국건강가정진흥원] 저녁 식대",
     "author": "이채원",
     "date": "06-12",
-    "hit": "5",
-    "commentCount": 0
+    "hit": "7",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-12",
+    "payType": ""
   },
   {
     "wr_id": "3496",
@@ -131,8 +250,16 @@
     "subject": "[이채원] 교통카드 충전",
     "author": "이채원",
     "date": "06-05",
-    "hit": "4",
-    "commentCount": 0
+    "hit": "6",
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-05",
+    "payType": ""
   },
   {
     "wr_id": "3494",
@@ -141,7 +268,15 @@
     "author": "장현아",
     "date": "06-05",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-05",
+    "payType": ""
   },
   {
     "wr_id": "3493",
@@ -150,7 +285,15 @@
     "author": "한상희",
     "date": "06-05",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-05",
+    "payType": ""
   },
   {
     "wr_id": "3492",
@@ -159,7 +302,15 @@
     "author": "박규태",
     "date": "06-05",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-05",
+    "payType": ""
   },
   {
     "wr_id": "3491",
@@ -168,7 +319,15 @@
     "author": "이채원",
     "date": "06-01",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-01",
+    "payType": ""
   },
   {
     "wr_id": "3490",
@@ -177,7 +336,15 @@
     "author": "신현우",
     "date": "05-29",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-29",
+    "payType": ""
   },
   {
     "wr_id": "3489",
@@ -186,7 +353,15 @@
     "author": "곽재훈",
     "date": "05-27",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-27",
+    "payType": ""
   },
   {
     "wr_id": "3486",
@@ -195,7 +370,15 @@
     "author": "이채원",
     "date": "05-20",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-20",
+    "payType": ""
   },
   {
     "wr_id": "3484",
@@ -204,7 +387,15 @@
     "author": "박규태",
     "date": "05-19",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-19",
+    "payType": ""
   },
   {
     "wr_id": "3481",
@@ -213,7 +404,15 @@
     "author": "신현우",
     "date": "05-18",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-18",
+    "payType": ""
   },
   {
     "wr_id": "3485",
@@ -222,7 +421,15 @@
     "author": "최지영",
     "date": "05-19",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-19",
+    "payType": ""
   },
   {
     "wr_id": "3480",
@@ -231,7 +438,15 @@
     "author": "이하늘",
     "date": "05-18",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-18",
+    "payType": ""
   },
   {
     "wr_id": "3479",
@@ -240,7 +455,15 @@
     "author": "박규태",
     "date": "05-15",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-15",
+    "payType": ""
   },
   {
     "wr_id": "3478",
@@ -249,7 +472,15 @@
     "author": "신현우",
     "date": "05-14",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-14",
+    "payType": ""
   },
   {
     "wr_id": "3476",
@@ -258,7 +489,15 @@
     "author": "신현우",
     "date": "05-08",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-08",
+    "payType": ""
   },
   {
     "wr_id": "3495",
@@ -267,7 +506,15 @@
     "author": "장현아",
     "date": "06-05",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-05",
+    "payType": ""
   },
   {
     "wr_id": "3487",
@@ -276,7 +523,15 @@
     "author": "신현우",
     "date": "04-15",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-15",
+    "payType": ""
   },
   {
     "wr_id": "3474",
@@ -285,7 +540,15 @@
     "author": "박규태",
     "date": "05-08",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-08",
+    "payType": ""
   },
   {
     "wr_id": "3473",
@@ -294,7 +557,15 @@
     "author": "박은경",
     "date": "05-07",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-07",
+    "payType": ""
   },
   {
     "wr_id": "3469",
@@ -303,7 +574,15 @@
     "author": "박은경",
     "date": "05-06",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-06",
+    "payType": ""
   },
   {
     "wr_id": "3499",
@@ -312,7 +591,15 @@
     "author": "신현우",
     "date": "06-17",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "06-17",
+    "payType": ""
   },
   {
     "wr_id": "3477",
@@ -321,7 +608,15 @@
     "author": "명희진",
     "date": "05-11",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-11",
+    "payType": ""
   },
   {
     "wr_id": "3498",
@@ -330,7 +625,28 @@
     "author": "이재광",
     "date": "06-17",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "ai 클로드 5월 결제 내역서",
+    "files": [
+      {
+        "name": "클로우5월영수증.pdf (54.6K)",
+        "fullInfo": "클로우5월영수증.pdf (54.6K), Down : 0, 2026-06-17 11:23:37",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=cardncash&wr_id=3498&no=0"
+      }
+    ],
+    "meta": {
+      "[고양이] ai 결제내역\n  글쓴이": "이재광",
+      "지출일": "2026-05-04",
+      "증빙서류": "카드전표(개인)",
+      "금액": "30,000원",
+      "지출인": "이재광",
+      "지출유형": "기타"
+    },
+    "comments": [],
+    "amount": "30,000원",
+    "receipt": "카드전표(개인)",
+    "payDate": "2026-05-04",
+    "payType": "기타"
   },
   {
     "wr_id": "3475",
@@ -339,7 +655,15 @@
     "author": "한상희",
     "date": "05-08",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-08",
+    "payType": ""
   },
   {
     "wr_id": "3472",
@@ -348,7 +672,15 @@
     "author": "이하늘",
     "date": "05-07",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-07",
+    "payType": ""
   },
   {
     "wr_id": "3467",
@@ -357,7 +689,15 @@
     "author": "이채원",
     "date": "04-30",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-30",
+    "payType": ""
   },
   {
     "wr_id": "3465",
@@ -366,7 +706,15 @@
     "author": "안영재",
     "date": "04-27",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-27",
+    "payType": ""
   },
   {
     "wr_id": "3464",
@@ -375,7 +723,15 @@
     "author": "신현우",
     "date": "04-24",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-24",
+    "payType": ""
   },
   {
     "wr_id": "3468",
@@ -384,7 +740,15 @@
     "author": "손석호",
     "date": "04-30",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-30",
+    "payType": ""
   },
   {
     "wr_id": "3462",
@@ -393,7 +757,15 @@
     "author": "신현우",
     "date": "04-20",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-20",
+    "payType": ""
   },
   {
     "wr_id": "3461",
@@ -402,7 +774,15 @@
     "author": "신현우",
     "date": "04-15",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-15",
+    "payType": ""
   },
   {
     "wr_id": "3460",
@@ -411,7 +791,15 @@
     "author": "안영재",
     "date": "03-25",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-25",
+    "payType": ""
   },
   {
     "wr_id": "3466",
@@ -420,7 +808,15 @@
     "author": "박은경",
     "date": "04-29",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-29",
+    "payType": ""
   },
   {
     "wr_id": "3458",
@@ -429,7 +825,15 @@
     "author": "박규태",
     "date": "04-13",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-13",
+    "payType": ""
   },
   {
     "wr_id": "3457",
@@ -438,7 +842,15 @@
     "author": "명희진",
     "date": "04-10",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-10",
+    "payType": ""
   },
   {
     "wr_id": "3456",
@@ -447,7 +859,15 @@
     "author": "손석호",
     "date": "04-09",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-09",
+    "payType": ""
   },
   {
     "wr_id": "3463",
@@ -456,7 +876,15 @@
     "author": "명희진",
     "date": "04-24",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-24",
+    "payType": ""
   },
   {
     "wr_id": "3482",
@@ -465,7 +893,15 @@
     "author": "한상희",
     "date": "05-19",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-19",
+    "payType": ""
   },
   {
     "wr_id": "3471",
@@ -474,7 +910,28 @@
     "author": "이재광",
     "date": "05-07",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "클로드 3만원 결제",
+    "files": [
+      {
+        "name": "Receipt-456034217898.pdf (54.6K)",
+        "fullInfo": "Receipt-456034217898.pdf (54.6K), Down : 0, 2026-05-07 09:28:38",
+        "url": "http://sitegate.co.kr/html/board/bbs/download.php?bo_table=cardncash&wr_id=3471&no=0"
+      }
+    ],
+    "meta": {
+      "[공룡] [이재광] AI 지원\n  글쓴이": "이재광",
+      "지출일": "2026-04-04",
+      "증빙서류": "카드전표(개인)",
+      "금액": "30,000원",
+      "지출인": "이재광",
+      "지출유형": "기타"
+    },
+    "comments": [],
+    "amount": "30,000원",
+    "receipt": "카드전표(개인)",
+    "payDate": "2026-04-04",
+    "payType": "기타"
   },
   {
     "wr_id": "3459",
@@ -483,7 +940,15 @@
     "author": "최지영",
     "date": "04-14",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-14",
+    "payType": ""
   },
   {
     "wr_id": "3452",
@@ -492,7 +957,15 @@
     "author": "이채원",
     "date": "04-07",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-07",
+    "payType": ""
   },
   {
     "wr_id": "3450",
@@ -501,7 +974,22 @@
     "author": "이재광",
     "date": "04-03",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "저녁식대(이재광,안영재,최지영)저녁식대(이재광,안영재,최지영)",
+    "files": [],
+    "meta": {
+      "[기타] [이재광] 저녁식대비\n  글쓴이": "이재광",
+      "지출일": "2026-04-02",
+      "증빙서류": "카드전표(법인국민카드)",
+      "금액": "30,000원",
+      "지출인": "이재광",
+      "지출유형": "저녁식대"
+    },
+    "comments": [],
+    "amount": "30,000원",
+    "receipt": "카드전표(법인국민카드)",
+    "payDate": "2026-04-02",
+    "payType": "저녁식대"
   },
   {
     "wr_id": "3449",
@@ -510,7 +998,15 @@
     "author": "이채원",
     "date": "04-03",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-03",
+    "payType": ""
   },
   {
     "wr_id": "3453",
@@ -519,7 +1015,15 @@
     "author": "이하늘",
     "date": "04-07",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "04-07",
+    "payType": ""
   },
   {
     "wr_id": "3447",
@@ -528,7 +1032,15 @@
     "author": "신현우",
     "date": "03-24",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-24",
+    "payType": ""
   },
   {
     "wr_id": "3448",
@@ -537,7 +1049,15 @@
     "author": "안영재",
     "date": "03-25",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-25",
+    "payType": ""
   },
   {
     "wr_id": "3446",
@@ -546,7 +1066,15 @@
     "author": "신현우",
     "date": "02-06",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "02-06",
+    "payType": ""
   },
   {
     "wr_id": "3445",
@@ -555,7 +1083,15 @@
     "author": "박은경",
     "date": "03-12",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-12",
+    "payType": ""
   },
   {
     "wr_id": "3444",
@@ -564,7 +1100,15 @@
     "author": "명희진",
     "date": "03-12",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-12",
+    "payType": ""
   },
   {
     "wr_id": "3443",
@@ -573,7 +1117,15 @@
     "author": "안영재",
     "date": "03-09",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-09",
+    "payType": ""
   },
   {
     "wr_id": "3442",
@@ -582,7 +1134,15 @@
     "author": "한상희",
     "date": "03-06",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-06",
+    "payType": ""
   },
   {
     "wr_id": "3488",
@@ -591,7 +1151,15 @@
     "author": "이채원",
     "date": "05-20",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "05-20",
+    "payType": ""
   },
   {
     "wr_id": "3441",
@@ -600,7 +1168,15 @@
     "author": "한상희",
     "date": "03-06",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-06",
+    "payType": ""
   },
   {
     "wr_id": "3440",
@@ -609,7 +1185,15 @@
     "author": "최지영",
     "date": "03-05",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-05",
+    "payType": ""
   },
   {
     "wr_id": "3439",
@@ -618,7 +1202,15 @@
     "author": "신현우",
     "date": "03-05",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-05",
+    "payType": ""
   },
   {
     "wr_id": "3438",
@@ -627,7 +1219,15 @@
     "author": "명희진",
     "date": "03-05",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-05",
+    "payType": ""
   },
   {
     "wr_id": "3454",
@@ -636,7 +1236,22 @@
     "author": "이재광",
     "date": "04-07",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": "클로드 ai 사용 22달러ㅇ",
+    "files": [],
+    "meta": {
+      "[고래] [이재광] ai 지원\n  글쓴이": "이재광",
+      "지출일": "2026-03-04",
+      "증빙서류": "카드전표(개인)",
+      "금액": "33원",
+      "지출인": "이재광",
+      "지출유형": "기타"
+    },
+    "comments": [],
+    "amount": "33원",
+    "receipt": "카드전표(개인)",
+    "payDate": "2026-03-04",
+    "payType": "기타"
   },
   {
     "wr_id": "3437",
@@ -645,7 +1260,15 @@
     "author": "손석호",
     "date": "03-04",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-04",
+    "payType": ""
   },
   {
     "wr_id": "3436",
@@ -654,7 +1277,15 @@
     "author": "이하늘",
     "date": "03-04",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "03-04",
+    "payType": ""
   },
   {
     "wr_id": "3435",
@@ -663,7 +1294,15 @@
     "author": "윤익수",
     "date": "02-12",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "02-12",
+    "payType": ""
   },
   {
     "wr_id": "3434",
@@ -672,7 +1311,15 @@
     "author": "신현우",
     "date": "02-06",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "02-06",
+    "payType": ""
   },
   {
     "wr_id": "3433",
@@ -681,7 +1328,15 @@
     "author": "이하늘",
     "date": "12-11",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-11",
+    "payType": ""
   },
   {
     "wr_id": "3432",
@@ -690,7 +1345,15 @@
     "author": "안영재",
     "date": "01-30",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "01-30",
+    "payType": ""
   },
   {
     "wr_id": "3431",
@@ -699,7 +1362,15 @@
     "author": "박은경",
     "date": "01-19",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "01-19",
+    "payType": ""
   },
   {
     "wr_id": "3430",
@@ -708,7 +1379,15 @@
     "author": "박은경",
     "date": "01-19",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "01-19",
+    "payType": ""
   },
   {
     "wr_id": "3428",
@@ -717,7 +1396,15 @@
     "author": "박은경",
     "date": "01-14",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "01-14",
+    "payType": ""
   },
   {
     "wr_id": "3427",
@@ -726,7 +1413,15 @@
     "author": "박은경",
     "date": "01-07",
     "hit": "3",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "01-07",
+    "payType": ""
   },
   {
     "wr_id": "3426",
@@ -735,7 +1430,15 @@
     "author": "신현우",
     "date": "01-06",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "01-06",
+    "payType": ""
   },
   {
     "wr_id": "3429",
@@ -744,7 +1447,15 @@
     "author": "박규태",
     "date": "01-19",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "01-19",
+    "payType": ""
   },
   {
     "wr_id": "3425",
@@ -753,7 +1464,15 @@
     "author": "명희진",
     "date": "12-31",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-31",
+    "payType": ""
   },
   {
     "wr_id": "3424",
@@ -762,7 +1481,15 @@
     "author": "박규태",
     "date": "12-29",
     "hit": "4",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-29",
+    "payType": ""
   },
   {
     "wr_id": "3423",
@@ -771,7 +1498,15 @@
     "author": "박은경",
     "date": "12-24",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-24",
+    "payType": ""
   },
   {
     "wr_id": "3422",
@@ -780,7 +1515,15 @@
     "author": "박은경",
     "date": "12-24",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-24",
+    "payType": ""
   },
   {
     "wr_id": "3419",
@@ -789,7 +1532,15 @@
     "author": "이하늘",
     "date": "12-15",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-15",
+    "payType": ""
   },
   {
     "wr_id": "3418",
@@ -798,7 +1549,15 @@
     "author": "이하늘",
     "date": "12-15",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-15",
+    "payType": ""
   },
   {
     "wr_id": "3417",
@@ -807,7 +1566,15 @@
     "author": "이하늘",
     "date": "12-11",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-11",
+    "payType": ""
   },
   {
     "wr_id": "3421",
@@ -816,7 +1583,15 @@
     "author": "한상희",
     "date": "11-21",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "11-21",
+    "payType": ""
   },
   {
     "wr_id": "3420",
@@ -825,7 +1600,15 @@
     "author": "한상희",
     "date": "12-17",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-17",
+    "payType": ""
   },
   {
     "wr_id": "3415",
@@ -834,7 +1617,15 @@
     "author": "안영재",
     "date": "12-10",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-10",
+    "payType": ""
   },
   {
     "wr_id": "3414",
@@ -843,7 +1634,15 @@
     "author": "이하늘",
     "date": "12-10",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-10",
+    "payType": ""
   },
   {
     "wr_id": "3416",
@@ -852,7 +1651,15 @@
     "author": "명희진",
     "date": "12-10",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-10",
+    "payType": ""
   },
   {
     "wr_id": "3413",
@@ -861,7 +1668,15 @@
     "author": "한상희",
     "date": "12-05",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-05",
+    "payType": ""
   },
   {
     "wr_id": "3412",
@@ -870,7 +1685,15 @@
     "author": "한상희",
     "date": "12-05",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-05",
+    "payType": ""
   },
   {
     "wr_id": "3411",
@@ -879,7 +1702,15 @@
     "author": "신현우",
     "date": "12-05",
     "hit": "2",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-05",
+    "payType": ""
   },
   {
     "wr_id": "3410",
@@ -888,7 +1719,15 @@
     "author": "박규태",
     "date": "12-03",
     "hit": "1",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-03",
+    "payType": ""
   },
   {
     "wr_id": "3409",
@@ -897,7 +1736,15 @@
     "author": "박은경",
     "date": "12-02",
     "hit": "6",
-    "commentCount": 0
+    "commentCount": 0,
+    "content": " ",
+    "files": [],
+    "meta": {},
+    "comments": [],
+    "amount": "",
+    "receipt": "",
+    "payDate": "12-02",
+    "payType": ""
   },
   {
     "wr_id": "3408",
