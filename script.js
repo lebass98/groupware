@@ -2201,6 +2201,19 @@ const App = {
     const checkOutTime = window.shortTime(this.state.checkOutTimeStr || '--:--');
     const isCheckedIn = this.state.isCheckedIn;
 
+    // 연차 현황은 크롤링된 실데이터(MockData.leaves)를 쓴다. 없으면 '-'로 둔다.
+    const leave = this.getMyLeaveSummary();
+    // 4.75 같은 값이 4.8로 반올림되면 실제 잔여와 달라 보인다. 소수점은 있는 그대로 보여준다.
+    const leaveVal = (v) => (v === null || v === undefined ? '-' : String(Number(Number(v).toFixed(2))));
+    const leaveHistory = (leave && leave.recent.length)
+      ? leave.recent.map((it) => `
+            <div class="flex justify-between items-center px-3 py-2 bg-surface-container-low/50 rounded-md text-xs">
+              <span class="font-bold ${it.deduct === 1 ? 'text-on-surface' : 'text-secondary'}">${esc(it.type)}</span>
+              <span class="text-on-surface-variant font-medium">${esc(it.date)}</span>
+            </div>`).join('')
+      : `
+            <div class="px-3 py-2 bg-surface-container-low/50 rounded-md text-xs text-on-surface-variant text-center">최근 휴가 신청 내역이 없습니다.</div>`;
+
     wrap.innerHTML = `
       <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/15 shadow-2xs">
         <!-- 1. Profile Section (Horizontal Layout: Photo left, Name/Role/Company right) -->
@@ -2291,32 +2304,46 @@ const App = {
 
           <div class="grid grid-cols-3 gap-2 mb-3">
             <div class="p-2.5 bg-surface-container-low/70 rounded-md text-center border border-outline-variant/10">
-              <div class="font-headline text-base font-black text-primary">9.0<span class="text-[10px] font-medium ml-0.5 opacity-80">일</span></div>
+              <div class="font-headline text-base font-black text-primary">${leaveVal(leave && leave.remaining)}<span class="text-[10px] font-medium ml-0.5 opacity-80">일</span></div>
               <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">잔여 연차</div>
             </div>
             <div class="p-2.5 bg-surface-container-low/70 rounded-md text-center border border-outline-variant/10">
-              <div class="font-headline text-base font-black text-on-surface">26.0<span class="text-[10px] font-medium ml-0.5 opacity-80">일</span></div>
+              <div class="font-headline text-base font-black text-on-surface">${leaveVal(leave && leave.used)}<span class="text-[10px] font-medium ml-0.5 opacity-80">일</span></div>
               <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">사용 연차</div>
             </div>
             <div class="p-2.5 bg-surface-container-low/70 rounded-md text-center border border-outline-variant/10">
-              <div class="font-headline text-base font-black text-on-surface-variant">35.0<span class="text-[10px] font-medium ml-0.5 opacity-80">일</span></div>
+              <div class="font-headline text-base font-black text-on-surface-variant">${leaveVal(leave && leave.total)}<span class="text-[10px] font-medium ml-0.5 opacity-80">일</span></div>
               <div class="text-[10px] text-on-surface-variant font-medium mt-0.5">총 연차</div>
             </div>
           </div>
 
           <div class="space-y-1.5">
-            <div class="flex justify-between items-center px-3 py-2 bg-surface-container-low/50 rounded-md text-xs">
-              <span class="font-bold text-on-surface">연차 (종일)</span>
-              <span class="text-on-surface-variant font-medium">2026-08-19</span>
-            </div>
-            <div class="flex justify-between items-center px-3 py-2 bg-surface-container-low/50 rounded-md text-xs">
-              <span class="font-bold text-secondary">반차 (오후)</span>
-              <span class="text-on-surface-variant font-medium">2026-08-21</span>
-            </div>
+            ${leaveHistory}
           </div>
         </div>
       </div>
     `;
+  },
+
+  /**
+   * 크롤링된 휴가 데이터(MockData.leaves)에서 로그인 사용자의 요약을 만든다.
+   * 데이터가 없으면 null을 돌려주고, 화면은 '-'로 표시한다(임의의 값을 지어내지 않는다).
+   */
+  getMyLeaveSummary() {
+    const leaves = (window.MockData && window.MockData.leaves) || null;
+    if (!leaves || !leaves.members) return null;
+
+    const myName = String((this.state.user && this.state.user.name) || '이재광').trim();
+    const me = leaves.members[myName];
+    if (!me) return null;
+
+    return {
+      total: me.total,
+      used: me.used,
+      remaining: me.remaining,
+      // 최근 신청 이력은 미래 일정이 섞여 있어도 날짜 내림차순 그대로 보여준다.
+      recent: (me.items || []).slice(0, 2)
+    };
   },
 
   /**

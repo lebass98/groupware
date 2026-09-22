@@ -202,6 +202,22 @@ const PCApp = {
   },
 
   /**
+   * 크롤링된 휴가 데이터(MockData.leaves)에서 로그인 사용자의 요약을 만든다.
+   * 데이터가 없으면 null을 돌려주고, 화면은 '-'로 표시한다.
+   * (모바일 script.js 의 동명 함수와 동일한 규칙)
+   */
+  getMyLeaveSummary() {
+    const leaves = (window.MockData && window.MockData.leaves) || null;
+    if (!leaves || !leaves.members) return null;
+
+    const myName = String((this.state.user && this.state.user.name) || '이재광').trim();
+    const me = leaves.members[myName];
+    if (!me) return null;
+
+    return { total: me.total, used: me.used, remaining: me.remaining, recent: (me.items || []).slice(0, 2) };
+  },
+
+  /**
    * 출퇴근 로그를 마스터(MockData = 크롤링 결과) 기준으로 병합한다.
    * 같은 날짜가 양쪽에 있으면 마스터를 우선하고, 마스터에 없는 로컬 기록만 보존한다.
    * (모바일 script.js 의 동명 함수와 동일한 규칙)
@@ -1228,6 +1244,22 @@ const PCApp = {
     if (profileWrap) {
       const now = new Date();
       const todayScheds = this.getSchedulesForDay(now.getFullYear(), now.getMonth() + 1, now.getDate()) || [];
+
+      // 연차 현황은 크롤링된 실데이터(MockData.leaves)를 쓴다. 없으면 '-'로 둔다.
+      const pcLeave = this.getMyLeaveSummary();
+      // 4.75 같은 값이 4.8로 반올림되면 실제 잔여와 달라 보인다. 소수점은 있는 그대로 보여준다.
+    const pcLeaveVal = (v) => (v === null || v === undefined ? '-' : String(Number(Number(v).toFixed(2))));
+      const pcLeaveHistory = (pcLeave && pcLeave.recent.length)
+        ? pcLeave.recent.map((it) => `
+              <div class="pc-leave-history-item">
+                <span class="font-bold text-sm ${it.deduct === 1 ? 'text-on-surface' : 'text-secondary'}">${esc(it.type)}</span>
+                <span class="text-xs text-on-surface-variant font-medium">${esc(it.date)}</span>
+              </div>`).join('')
+        : `
+              <div class="pc-leave-history-item">
+                <span class="text-xs text-on-surface-variant font-medium">최근 휴가 신청 내역이 없습니다.</span>
+              </div>`;
+
       profileWrap.innerHTML = `
         <div class="pc-bento-card">
           <!-- 1. Profile Section (Horizontal Layout: Photo left, Name/Role/Company right) -->
@@ -1318,28 +1350,21 @@ const PCApp = {
             
             <div class="pc-leave-stat-grid mb-3.5">
               <div class="pc-leave-stat-box">
-                <div class="pc-leave-val text-primary">9.0<span class="text-[11px] font-medium ml-0.5 opacity-80">일</span></div>
+                <div class="pc-leave-val text-primary">${pcLeaveVal(pcLeave && pcLeave.remaining)}<span class="text-[11px] font-medium ml-0.5 opacity-80">일</span></div>
                 <div class="pc-leave-lbl">잔여 연차</div>
               </div>
               <div class="pc-leave-stat-box">
-                <div class="pc-leave-val text-on-surface">26.0<span class="text-[11px] font-medium ml-0.5 opacity-80">일</span></div>
+                <div class="pc-leave-val text-on-surface">${pcLeaveVal(pcLeave && pcLeave.used)}<span class="text-[11px] font-medium ml-0.5 opacity-80">일</span></div>
                 <div class="pc-leave-lbl">사용 연차</div>
               </div>
               <div class="pc-leave-stat-box">
-                <div class="pc-leave-val text-on-surface-variant">35.0<span class="text-[11px] font-medium ml-0.5 opacity-80">일</span></div>
+                <div class="pc-leave-val text-on-surface-variant">${pcLeaveVal(pcLeave && pcLeave.total)}<span class="text-[11px] font-medium ml-0.5 opacity-80">일</span></div>
                 <div class="pc-leave-lbl">총 연차</div>
               </div>
             </div>
 
             <div class="pc-leave-history-list">
-              <div class="pc-leave-history-item">
-                <span class="font-bold text-sm text-on-surface">연차 (종일)</span>
-                <span class="text-xs text-on-surface-variant font-medium">2026-08-19</span>
-              </div>
-              <div class="pc-leave-history-item">
-                <span class="font-bold text-sm text-secondary">반차 (오후)</span>
-                <span class="text-xs text-on-surface-variant font-medium">2026-08-21</span>
-              </div>
+              ${pcLeaveHistory}
             </div>
           </div>
         </div>

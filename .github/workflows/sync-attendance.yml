@@ -1,6 +1,6 @@
-name: 근태일지 자동 크롤링
+name: 근태일지·휴가 자동 크롤링
 
-# 기존 그룹웨어(sitegate)의 전사 근태일지와 개인 출퇴근 기록을 가져와
+# 기존 그룹웨어(sitegate)의 전사 근태일지, 개인 출퇴근 기록, 전사 휴가 현황을 가져와
 # mockData.js 등 데이터 파일에 반영하고 커밋한다.
 # 커밋이 main에 올라가면 deploy.yml이 이어서 GitHub Pages를 재배포하므로,
 # 웹과 앱(WebView) 모두 별도 작업 없이 최신 데이터를 보게 된다.
@@ -61,6 +61,13 @@ jobs:
             echo "기본 범위 모드: 지난달 ~ 다음달"
             node scripts/sync-daily-reports.js
           fi
+
+      - name: 휴가 관리 크롤링 및 동기화
+        env:
+          SITEGATE_URL: ${{ secrets.SITEGATE_URL }}
+          SITEGATE_ID: ${{ secrets.SITEGATE_ID }}
+          SITEGATE_PW: ${{ secrets.SITEGATE_PW }}
+        run: node scripts/sync-leaves.js
 
       - name: 디바이스 간 데이터 일치 검증
         run: node data/verify-consistency.js

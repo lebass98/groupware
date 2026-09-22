@@ -2540,6 +2540,2667 @@
       }
     ]
   },
+  "leaves": {
+    "updatedAt": "2026-09-22",
+    "year": 2026,
+    "policy": {
+      "연차": 1,
+      "반차(오전)": 0.5,
+      "반차(오후)": 0.5,
+      "반반차": 0.25,
+      "생일휴가": 0,
+      "공가": 0,
+      "병가": 0,
+      "경조사": 0
+    },
+    "members": {
+      "김경현": {
+        "name": "김경현",
+        "joinDate": "2002-03-01",
+        "granted": 0,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 0,
+        "used": 0,
+        "remaining": 0,
+        "memo": "",
+        "counts": {},
+        "items": []
+      },
+      "오은주": {
+        "name": "오은주",
+        "joinDate": "2020-01-06",
+        "granted": 17,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 17,
+        "used": 10.75,
+        "remaining": 6.25,
+        "memo": "2026년 연차-17<br><br>",
+        "counts": {
+          "반차(오후)": 8,
+          "연차": 6,
+          "반반차": 3
+        },
+        "items": [
+          {
+            "date": "2026-09-07",
+            "type": "반차(오후)",
+            "reason": "개인 사정으로 오후 반차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-07 09:10:42"
+          },
+          {
+            "date": "2026-08-20",
+            "type": "반차(오후)",
+            "reason": "개인사정으로 오후 반차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-08-18 08:59:50"
+          },
+          {
+            "date": "2026-08-06",
+            "type": "연차",
+            "reason": "개인 사정으로 연차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-20 15:31:53"
+          },
+          {
+            "date": "2026-08-05",
+            "type": "연차",
+            "reason": "개인 사정으로 연차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-20 15:31:41"
+          },
+          {
+            "date": "2026-08-04",
+            "type": "연차",
+            "reason": "개인 사정으로 연차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-20 15:31:30"
+          },
+          {
+            "date": "2026-08-03",
+            "type": "연차",
+            "reason": "개인 사정으로 연차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-20 15:31:18"
+          },
+          {
+            "date": "2026-07-28",
+            "type": "반반차",
+            "reason": "개인 사정으로 오후 반반차 입니다(오후4시-6시)",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-07-28 09:12:20"
+          },
+          {
+            "date": "2026-07-23",
+            "type": "반차(오후)",
+            "reason": "개인 사정으로 오후 반차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-22 10:49:25"
+          },
+          {
+            "date": "2026-07-03",
+            "type": "반차(오후)",
+            "reason": "개인사정으로 오후 반차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-03 10:44:50"
+          },
+          {
+            "date": "2026-06-15",
+            "type": "반차(오후)",
+            "reason": "개인사정으로 오후 반차입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-06-15 10:54:13"
+          },
+          {
+            "date": "2026-06-01",
+            "type": "반차(오후)",
+            "reason": "개인사정으로 오후 반차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-06-01 08:56:45"
+          },
+          {
+            "date": "2026-04-21",
+            "type": "연차",
+            "reason": "개인사정으로 연차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-04-22 08:45:21"
+          },
+          {
+            "date": "2026-04-20",
+            "type": "반반차",
+            "reason": "개인사정으로 오후 반반차입니다(오후4시-6시)",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-04-10 10:13:02"
+          },
+          {
+            "date": "2026-04-08",
+            "type": "반반차",
+            "reason": "개인 사정으로 반반차 입니다",
+            "startTime": "11:00",
+            "endTime": "13:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-04-08 10:23:33"
+          },
+          {
+            "date": "2026-04-08",
+            "type": "반차(오후)",
+            "reason": "개인사정으로 오후 반차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-04-08 10:23:48"
+          },
+          {
+            "date": "2026-03-27",
+            "type": "연차",
+            "reason": "개인 사정으로 연차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-03-06 08:45:49"
+          },
+          {
+            "date": "2026-03-16",
+            "type": "반차(오후)",
+            "reason": "개인사정으로 오후 반차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-03-16 09:15:58"
+          }
+        ]
+      },
+      "김종규": {
+        "name": "김종규",
+        "joinDate": "2017-12-01",
+        "granted": 18,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 18,
+        "used": 9,
+        "remaining": 9,
+        "memo": "2026년 연차-18",
+        "counts": {
+          "연차": 7,
+          "반차(오후)": 4
+        },
+        "items": [
+          {
+            "date": "2026-08-18",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-03 10:36:49"
+          },
+          {
+            "date": "2026-08-04",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-20 08:22:15"
+          },
+          {
+            "date": "2026-07-24",
+            "type": "반차(오후)",
+            "reason": "오후반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-24 09:16:13"
+          },
+          {
+            "date": "2026-06-24",
+            "type": "반차(오후)",
+            "reason": "오후반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-06-22 07:00:02"
+          },
+          {
+            "date": "2026-05-15",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-05-07 16:54:01"
+          },
+          {
+            "date": "2026-05-04",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-04-27 10:02:53"
+          },
+          {
+            "date": "2026-04-08",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-04-06 11:10:50"
+          },
+          {
+            "date": "2026-03-18",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-03-19 08:03:52"
+          },
+          {
+            "date": "2026-03-17",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-03-16 11:10:18"
+          },
+          {
+            "date": "2026-02-27",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-05 09:49:21"
+          },
+          {
+            "date": "2026-02-06",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-26 07:00:35"
+          }
+        ]
+      },
+      "박규태": {
+        "name": "박규태",
+        "joinDate": "2023-01-16",
+        "granted": 15,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 15,
+        "used": 11.5,
+        "remaining": 3.5,
+        "memo": "2026년 연차-15",
+        "counts": {
+          "연차": 7,
+          "반차(오후)": 9,
+          "생일휴가": 1
+        },
+        "items": [
+          {
+            "date": "2026-12-29",
+            "type": "연차",
+            "reason": "개인 연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-07 09:52:46"
+          },
+          {
+            "date": "2026-12-28",
+            "type": "연차",
+            "reason": "개인 연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-07 09:52:39"
+          },
+          {
+            "date": "2026-09-23",
+            "type": "연차",
+            "reason": "개인연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-21 14:48:42"
+          },
+          {
+            "date": "2026-09-07",
+            "type": "반차(오후)",
+            "reason": "개인 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-07 09:52:28"
+          },
+          {
+            "date": "2026-08-21",
+            "type": "반차(오후)",
+            "reason": "개인 반차(오후)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-08-05 09:10:19"
+          },
+          {
+            "date": "2026-08-12",
+            "type": "연차",
+            "reason": "개인휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-03 12:16:28"
+          },
+          {
+            "date": "2026-08-10",
+            "type": "반차(오후)",
+            "reason": "개인 반차(오후)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-08-03 12:16:18"
+          },
+          {
+            "date": "2026-07-24",
+            "type": "연차",
+            "reason": "휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-22 16:10:32"
+          },
+          {
+            "date": "2026-07-10",
+            "type": "반차(오후)",
+            "reason": "개인반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-09 17:40:04"
+          },
+          {
+            "date": "2026-07-01",
+            "type": "반차(오후)",
+            "reason": "개인반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-01 09:14:48"
+          },
+          {
+            "date": "2026-06-26",
+            "type": "연차",
+            "reason": "휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-25 13:54:25"
+          },
+          {
+            "date": "2026-05-28",
+            "type": "반차(오후)",
+            "reason": "개인반차(오후)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-05-28 10:47:35"
+          },
+          {
+            "date": "2026-05-11",
+            "type": "반차(오후)",
+            "reason": "개인반차(오후)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-05-11 09:05:44"
+          },
+          {
+            "date": "2026-03-13",
+            "type": "반차(오후)",
+            "reason": "휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-03-13 08:50:31"
+          },
+          {
+            "date": "2026-02-25",
+            "type": "연차",
+            "reason": "휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-12 13:46:23"
+          },
+          {
+            "date": "2026-01-30",
+            "type": "반차(오후)",
+            "reason": "반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-01-28 13:41:50"
+          },
+          {
+            "date": "2026-01-07",
+            "type": "생일휴가",
+            "reason": "생일 휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0,
+            "appliedAt": "2025-12-08 10:19:09"
+          }
+        ]
+      },
+      "한상희": {
+        "name": "한상희",
+        "joinDate": "2025-03-24",
+        "granted": 13.6,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 13.6,
+        "used": 7,
+        "remaining": 6.6,
+        "memo": "2026년 연차-13.6",
+        "counts": {
+          "연차": 6,
+          "반차(오후)": 2
+        },
+        "items": [
+          {
+            "date": "2026-08-19",
+            "type": "연차",
+            "reason": "개인 연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-14 17:50:54"
+          },
+          {
+            "date": "2026-07-21",
+            "type": "연차",
+            "reason": "개인 연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-25 14:42:00"
+          },
+          {
+            "date": "2026-07-20",
+            "type": "연차",
+            "reason": "개인 연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-25 14:41:51"
+          },
+          {
+            "date": "2026-04-14",
+            "type": "반차(오후)",
+            "reason": "개인 연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-04-10 17:52:47"
+          },
+          {
+            "date": "2026-03-20",
+            "type": "연차",
+            "reason": "개인 연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-23 12:18:53"
+          },
+          {
+            "date": "2026-03-19",
+            "type": "연차",
+            "reason": "개인 연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-23 12:18:45"
+          },
+          {
+            "date": "2026-03-18",
+            "type": "반차(오후)",
+            "reason": "개인 연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-02-23 12:18:36"
+          },
+          {
+            "date": "2026-01-26",
+            "type": "연차",
+            "reason": "개인 연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-20 09:05:50"
+          }
+        ]
+      },
+      "장현아": {
+        "name": "장현아",
+        "joinDate": "2026-04-06",
+        "granted": 8,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 8,
+        "used": 2,
+        "remaining": 6,
+        "memo": "",
+        "counts": {
+          "반차(오후)": 2,
+          "연차": 1
+        },
+        "items": [
+          {
+            "date": "2026-09-18",
+            "type": "반차(오후)",
+            "reason": "개인 반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-16 13:59:56"
+          },
+          {
+            "date": "2026-09-08",
+            "type": "반차(오후)",
+            "reason": "개인 반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-03 09:11:05"
+          },
+          {
+            "date": "2026-08-07",
+            "type": "연차",
+            "reason": "개인 연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-24 12:17:57"
+          }
+        ]
+      },
+      "윤익수": {
+        "name": "윤익수",
+        "joinDate": "2018-10-01",
+        "granted": 18,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 18,
+        "used": 9.25,
+        "remaining": 8.75,
+        "memo": "2026년 연차-18",
+        "counts": {
+          "생일휴가": 1,
+          "반반차": 7,
+          "연차": 6,
+          "반차(오후)": 2,
+          "반차(오전)": 1
+        },
+        "items": [
+          {
+            "date": "2026-09-22",
+            "type": "생일휴가",
+            "reason": "생일휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0,
+            "appliedAt": "2026-08-31 10:58:47"
+          },
+          {
+            "date": "2026-08-21",
+            "type": "반반차",
+            "reason": "개인 일정",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-08-19 08:48:11"
+          },
+          {
+            "date": "2026-08-12",
+            "type": "반반차",
+            "reason": "오후 반반차",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-08-12 12:16:47"
+          },
+          {
+            "date": "2026-08-05",
+            "type": "반반차",
+            "reason": "병원 진료",
+            "startTime": "09:00",
+            "endTime": "11:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-07-31 12:21:32"
+          },
+          {
+            "date": "2026-07-28",
+            "type": "연차",
+            "reason": "여름 휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-07 10:55:09"
+          },
+          {
+            "date": "2026-07-27",
+            "type": "연차",
+            "reason": "여름 휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-07 10:55:00"
+          },
+          {
+            "date": "2026-07-24",
+            "type": "연차",
+            "reason": "여름 휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-07 10:54:51"
+          },
+          {
+            "date": "2026-06-12",
+            "type": "반반차",
+            "reason": "개인 일정 오후 반반차",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-06-12 11:50:50"
+          },
+          {
+            "date": "2026-05-15",
+            "type": "반차(오후)",
+            "reason": "개인일정 오후반반차",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.5,
+            "appliedAt": "2026-05-11 12:15:21"
+          },
+          {
+            "date": "2026-05-04",
+            "type": "반차(오후)",
+            "reason": "가족여행",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-05-04 08:55:35"
+          },
+          {
+            "date": "2026-04-29",
+            "type": "반반차",
+            "reason": "병원진료",
+            "startTime": "09:00",
+            "endTime": "11:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-04-20 11:21:00"
+          },
+          {
+            "date": "2026-04-23",
+            "type": "연차",
+            "reason": "휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-04-20 11:20:22"
+          },
+          {
+            "date": "2026-04-10",
+            "type": "반반차",
+            "reason": "오후반반차",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-04-10 08:50:48"
+          },
+          {
+            "date": "2026-02-20",
+            "type": "연차",
+            "reason": "연차 (가족여행)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-10 13:48:58"
+          },
+          {
+            "date": "2026-02-04",
+            "type": "반반차",
+            "reason": "병원 검사결과",
+            "startTime": "09:00",
+            "endTime": "11:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-01-21 09:19:20"
+          },
+          {
+            "date": "2026-01-15",
+            "type": "연차",
+            "reason": "병원 검사",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-12 11:36:34"
+          },
+          {
+            "date": "2026-01-09",
+            "type": "반차(오전)",
+            "reason": "병원 검사",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-01-05 14:40:34"
+          }
+        ]
+      },
+      "최지영": {
+        "name": "최지영",
+        "joinDate": "2025-02-17",
+        "granted": 14.1,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 14.1,
+        "used": 12,
+        "remaining": 2.1,
+        "memo": "2026년 연차-14.1",
+        "counts": {
+          "연차": 9,
+          "반반차": 4,
+          "반차(오전)": 1,
+          "반차(오후)": 3,
+          "생일휴가": 1
+        },
+        "items": [
+          {
+            "date": "2026-08-31",
+            "type": "연차",
+            "reason": "여름휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-19 14:27:43"
+          },
+          {
+            "date": "2026-07-30",
+            "type": "반반차",
+            "reason": "병원",
+            "startTime": "09:00",
+            "endTime": "11:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-07-27 13:39:37"
+          },
+          {
+            "date": "2026-07-28",
+            "type": "연차",
+            "reason": "아이 병간호",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-29 08:45:35"
+          },
+          {
+            "date": "2026-07-14",
+            "type": "반반차",
+            "reason": "가족상(외삼촌)",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-07-14 08:58:05"
+          },
+          {
+            "date": "2026-07-10",
+            "type": "반차(오전)",
+            "reason": "건강검진 (국가)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-06 13:58:33"
+          },
+          {
+            "date": "2026-06-29",
+            "type": "연차",
+            "reason": "자녀 돌봄 (병간호)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-29 08:53:09"
+          },
+          {
+            "date": "2026-06-15",
+            "type": "연차",
+            "reason": "육아",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-09 18:10:09"
+          },
+          {
+            "date": "2026-05-27",
+            "type": "연차",
+            "reason": "육아",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-05-20 14:07:53"
+          },
+          {
+            "date": "2026-04-27",
+            "type": "반차(오후)",
+            "reason": "개인일정",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-04-20 11:52:39"
+          },
+          {
+            "date": "2026-03-27",
+            "type": "연차",
+            "reason": "가족여행",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-03-04 09:28:58"
+          },
+          {
+            "date": "2026-03-26",
+            "type": "연차",
+            "reason": "가족여행",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-03-04 09:28:50"
+          },
+          {
+            "date": "2026-03-25",
+            "type": "생일휴가",
+            "reason": "생일휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0,
+            "appliedAt": "2026-02-06 14:17:33"
+          },
+          {
+            "date": "2026-03-03",
+            "type": "연차",
+            "reason": "육아(어린이집 적응기)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-25 16:13:34"
+          },
+          {
+            "date": "2026-02-19",
+            "type": "반반차",
+            "reason": "병원진료",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-02-10 13:52:29"
+          },
+          {
+            "date": "2026-02-06",
+            "type": "반반차",
+            "reason": "개인 업무",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-01-21 12:13:49"
+          },
+          {
+            "date": "2026-02-02",
+            "type": "반차(오후)",
+            "reason": "안과/부인과 방문",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-01-23 15:22:42"
+          },
+          {
+            "date": "2026-01-09",
+            "type": "반차(오후)",
+            "reason": "자녀 영유아검진",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-01-06 09:48:03"
+          },
+          {
+            "date": "2026-01-02",
+            "type": "연차",
+            "reason": "육아",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2025-12-31 14:48:38"
+          }
+        ]
+      },
+      "신현우": {
+        "name": "신현우",
+        "joinDate": "2024-03-11",
+        "granted": 15,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 15,
+        "used": 8,
+        "remaining": 7,
+        "memo": "2026년 연차-15",
+        "counts": {
+          "반차(오후)": 5,
+          "반반차": 2,
+          "연차": 5
+        },
+        "items": [
+          {
+            "date": "2026-09-18",
+            "type": "반차(오후)",
+            "reason": "치과방문으로 인한 오후반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-15 15:24:39"
+          },
+          {
+            "date": "2026-08-31",
+            "type": "반반차",
+            "reason": "안경점 방문으로 인한 오전반반차 사용",
+            "startTime": "09:00",
+            "endTime": "11:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-08-24 11:57:39"
+          },
+          {
+            "date": "2026-08-07",
+            "type": "반차(오후)",
+            "reason": "병원방문으로 인한 오후반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-08-05 13:30:38"
+          },
+          {
+            "date": "2026-07-31",
+            "type": "반차(오후)",
+            "reason": "병원진료로인한 오후반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-29 13:31:34"
+          },
+          {
+            "date": "2026-07-16",
+            "type": "반차(오후)",
+            "reason": "안과 진료로 인한 오후반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-01 10:58:04"
+          },
+          {
+            "date": "2026-06-04",
+            "type": "연차",
+            "reason": "병원진료(치과)로 인한 연차사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-05-28 10:24:34"
+          },
+          {
+            "date": "2026-05-15",
+            "type": "연차",
+            "reason": "개인적인 사정으로 인한 연차사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-05-07 13:46:05"
+          },
+          {
+            "date": "2026-04-30",
+            "type": "연차",
+            "reason": "개인적인 사정으로 인한 연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-04-24 09:36:56"
+          },
+          {
+            "date": "2026-03-31",
+            "type": "연차",
+            "reason": "병원진료로 인한 연차사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-03-23 11:49:13"
+          },
+          {
+            "date": "2026-03-13",
+            "type": "반차(오후)",
+            "reason": "개인적인 사정으로 인한 오후반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-03-09 17:54:14"
+          },
+          {
+            "date": "2026-02-19",
+            "type": "연차",
+            "reason": "개인적인 사정으로 인한 연차사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-02 11:44:33"
+          },
+          {
+            "date": "2026-01-26",
+            "type": "반반차",
+            "reason": "병가로 인한 오후반반차 (16:00~18:00)",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-01-26 14:34:23"
+          }
+        ]
+      },
+      "명희진": {
+        "name": "명희진",
+        "joinDate": "2024-04-29",
+        "granted": 15,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 15,
+        "used": 12.25,
+        "remaining": 2.75,
+        "memo": "2026-15",
+        "counts": {
+          "반반차": 9,
+          "연차": 8,
+          "반차(오전)": 1,
+          "반차(오후)": 3,
+          "생일휴가": 1
+        },
+        "items": [
+          {
+            "date": "2026-09-11",
+            "type": "반반차",
+            "reason": "병가",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-09-11 15:16:24"
+          },
+          {
+            "date": "2026-08-28",
+            "type": "연차",
+            "reason": "병원진료",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-28 08:43:09"
+          },
+          {
+            "date": "2026-08-24",
+            "type": "반반차",
+            "reason": "병원방문",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-08-24 12:03:56"
+          },
+          {
+            "date": "2026-08-14",
+            "type": "연차",
+            "reason": "휴가 (여행)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-15 17:59:18"
+          },
+          {
+            "date": "2026-08-13",
+            "type": "연차",
+            "reason": "휴가 (여행)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-15 17:59:10"
+          },
+          {
+            "date": "2026-07-24",
+            "type": "반반차",
+            "reason": "오후 반반차 / 병원",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-07-23 15:53:01"
+          },
+          {
+            "date": "2026-07-10",
+            "type": "반반차",
+            "reason": "오후 반반차 (16:00~18:00) / 병원",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-07-10 08:56:39"
+          },
+          {
+            "date": "2026-07-06",
+            "type": "반차(오전)",
+            "reason": "병원진료 (다리부상)",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-06 09:56:38"
+          },
+          {
+            "date": "2026-07-03",
+            "type": "반차(오후)",
+            "reason": "일정 / 오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-06-29 08:52:38"
+          },
+          {
+            "date": "2026-06-26",
+            "type": "반반차",
+            "reason": "병원 진료",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-06-26 14:27:27"
+          },
+          {
+            "date": "2026-05-27",
+            "type": "생일휴가",
+            "reason": "생일휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0,
+            "appliedAt": "2026-05-08 14:18:35"
+          },
+          {
+            "date": "2026-05-26",
+            "type": "연차",
+            "reason": "휴식",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-05-08 14:18:14"
+          },
+          {
+            "date": "2026-05-11",
+            "type": "반반차",
+            "reason": "휴식",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-05-11 11:45:12"
+          },
+          {
+            "date": "2026-04-03",
+            "type": "반반차",
+            "reason": "휴식",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-04-01 16:32:38"
+          },
+          {
+            "date": "2026-03-18",
+            "type": "반반차",
+            "reason": "휴식",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-03-18 14:53:55"
+          },
+          {
+            "date": "2026-01-22",
+            "type": "반차(오후)",
+            "reason": "외래 진료",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-01-19 17:18:22"
+          },
+          {
+            "date": "2026-01-20",
+            "type": "반반차",
+            "reason": "회복",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-01-20 14:02:23"
+          },
+          {
+            "date": "2026-01-16",
+            "type": "연차",
+            "reason": "회복",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-12 17:40:56"
+          },
+          {
+            "date": "2026-01-15",
+            "type": "연차",
+            "reason": "회복",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-05 17:59:43"
+          },
+          {
+            "date": "2026-01-14",
+            "type": "연차",
+            "reason": "입원 수술",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-05 17:59:36"
+          },
+          {
+            "date": "2026-01-13",
+            "type": "연차",
+            "reason": "입원 수술",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-05 17:59:18"
+          },
+          {
+            "date": "2026-01-08",
+            "type": "반차(오후)",
+            "reason": "병원 진료",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-01-05 17:58:54"
+          }
+        ]
+      },
+      "이재광": {
+        "name": "이재광",
+        "joinDate": "2024-05-20",
+        "granted": 15,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 15,
+        "used": 10.25,
+        "remaining": 4.75,
+        "memo": "2026년 연차-15",
+        "counts": {
+          "생일휴가": 1,
+          "연차": 7,
+          "반차(오후)": 3,
+          "반반차": 5,
+          "반차(오전)": 1
+        },
+        "items": [
+          {
+            "date": "2026-09-28",
+            "type": "생일휴가",
+            "reason": "생일휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0,
+            "appliedAt": "2026-09-07 17:29:22"
+          },
+          {
+            "date": "2026-09-18",
+            "type": "연차",
+            "reason": "고향방문",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-07 17:29:06"
+          },
+          {
+            "date": "2026-09-09",
+            "type": "반차(오후)",
+            "reason": "개인정비",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-09 08:58:51"
+          },
+          {
+            "date": "2026-08-20",
+            "type": "반반차",
+            "reason": "개인정비",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-08-20 13:38:38"
+          },
+          {
+            "date": "2026-08-19",
+            "type": "연차",
+            "reason": "여름휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-12 10:13:44"
+          },
+          {
+            "date": "2026-08-18",
+            "type": "연차",
+            "reason": "여름휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-12 10:13:30"
+          },
+          {
+            "date": "2026-08-07",
+            "type": "반차(오후)",
+            "reason": "지방방문",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-08-02 23:15:45"
+          },
+          {
+            "date": "2026-07-30",
+            "type": "연차",
+            "reason": "개인정비",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-29 13:56:47"
+          },
+          {
+            "date": "2026-07-10",
+            "type": "연차",
+            "reason": "개인정비",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-09 13:59:27"
+          },
+          {
+            "date": "2026-06-18",
+            "type": "반반차",
+            "reason": "개인정비",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-06-18 08:50:44"
+          },
+          {
+            "date": "2026-05-27",
+            "type": "반반차",
+            "reason": "차량점검",
+            "startTime": "11:00",
+            "endTime": "13:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-05-27 00:50:49"
+          },
+          {
+            "date": "2026-05-14",
+            "type": "반차(오전)",
+            "reason": "차량정비",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-05-12 00:10:35"
+          },
+          {
+            "date": "2026-03-25",
+            "type": "연차",
+            "reason": "개인정비",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-03-24 14:41:04"
+          },
+          {
+            "date": "2026-03-24",
+            "type": "반반차",
+            "reason": "개인정비",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-03-24 14:40:28"
+          },
+          {
+            "date": "2026-03-20",
+            "type": "반차(오후)",
+            "reason": "지방방문",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-03-16 19:23:20"
+          },
+          {
+            "date": "2026-02-06",
+            "type": "연차",
+            "reason": "고향방문",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-28 17:20:37"
+          },
+          {
+            "date": "2026-01-02",
+            "type": "반반차",
+            "reason": "개인정비",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-01-02 11:45:14"
+          }
+        ]
+      },
+      "조지혜": {
+        "name": "조지혜",
+        "joinDate": "2026-05-26",
+        "granted": 7,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 7,
+        "used": 6,
+        "remaining": 1,
+        "memo": "",
+        "counts": {
+          "연차": 4,
+          "반차(오후)": 3,
+          "반반차": 2
+        },
+        "items": [
+          {
+            "date": "2026-09-11",
+            "type": "연차",
+            "reason": "",
+            "startTime": "09:00",
+            "endTime": "11:00",
+            "deduct": 1,
+            "appliedAt": "2026-09-11 07:52:02"
+          },
+          {
+            "date": "2026-09-04",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-04 11:33:49"
+          },
+          {
+            "date": "2026-08-27",
+            "type": "반반차",
+            "reason": "반반차",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-08-25 08:58:31"
+          },
+          {
+            "date": "2026-08-24",
+            "type": "연차",
+            "reason": "개인정비",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-24 08:49:17"
+          },
+          {
+            "date": "2026-08-12",
+            "type": "연차",
+            "reason": "병원방문",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-12 08:46:51"
+          },
+          {
+            "date": "2026-08-10",
+            "type": "반반차",
+            "reason": "병원",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-08-10 14:58:03"
+          },
+          {
+            "date": "2026-08-06",
+            "type": "연차",
+            "reason": "개인정비",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-06 09:03:25"
+          },
+          {
+            "date": "2026-07-31",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-14 14:28:07"
+          },
+          {
+            "date": "2026-07-24",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-24 12:15:56"
+          }
+        ]
+      },
+      "손석호": {
+        "name": "손석호",
+        "joinDate": "2022-05-09",
+        "granted": 16,
+        "carriedOver": 0,
+        "substitute": 6,
+        "total": 22,
+        "used": 22,
+        "remaining": 0,
+        "memo": "2026년 연차-16<br><br>",
+        "counts": {
+          "연차": 13,
+          "반차(오후)": 17,
+          "반반차": 2
+        },
+        "items": [
+          {
+            "date": "2026-09-30",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-18 15:53:34"
+          },
+          {
+            "date": "2026-09-29",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-18 15:53:27"
+          },
+          {
+            "date": "2026-09-28",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-18 15:53:21"
+          },
+          {
+            "date": "2026-09-23",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-18 15:53:15"
+          },
+          {
+            "date": "2026-09-22",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-18 15:53:08"
+          },
+          {
+            "date": "2026-09-21",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-18 15:53:01"
+          },
+          {
+            "date": "2026-09-18",
+            "type": "반반차",
+            "reason": "오후 반반차(16:00 ~ 18:00)",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-09-18 15:52:40"
+          },
+          {
+            "date": "2026-09-16",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-14 18:06:13"
+          },
+          {
+            "date": "2026-09-15",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-14 18:06:06"
+          },
+          {
+            "date": "2026-09-08",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-07 11:57:29"
+          },
+          {
+            "date": "2026-09-07",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-07 11:57:17"
+          },
+          {
+            "date": "2026-08-24",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-08-24 13:00:26"
+          },
+          {
+            "date": "2026-08-10",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-08-10 11:56:06"
+          },
+          {
+            "date": "2026-08-04",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-08-04 11:16:10"
+          },
+          {
+            "date": "2026-07-30",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-30 09:07:23"
+          },
+          {
+            "date": "2026-07-27",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-24 11:35:15"
+          },
+          {
+            "date": "2026-07-24",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-24 11:35:08"
+          },
+          {
+            "date": "2026-07-23",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-24 11:34:56"
+          },
+          {
+            "date": "2026-07-16",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-16 11:40:30"
+          },
+          {
+            "date": "2026-07-13",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-13 12:27:51"
+          },
+          {
+            "date": "2026-07-07",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-06 17:10:21"
+          },
+          {
+            "date": "2026-07-03",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-01 16:52:52"
+          },
+          {
+            "date": "2026-07-02",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-01 16:52:40"
+          },
+          {
+            "date": "2026-06-29",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-06-26 10:22:45"
+          },
+          {
+            "date": "2026-06-26",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-06-26 10:21:45"
+          },
+          {
+            "date": "2026-06-12",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-06-11 15:55:08"
+          },
+          {
+            "date": "2026-06-05",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-04 11:13:21"
+          },
+          {
+            "date": "2026-05-12",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-05-08 11:08:17"
+          },
+          {
+            "date": "2026-04-03",
+            "type": "반차(오후)",
+            "reason": "오후 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-04-03 10:56:49"
+          },
+          {
+            "date": "2026-02-27",
+            "type": "반반차",
+            "reason": "오후 반반차(16:00 ~ 18:00)",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-02-27 14:51:24"
+          },
+          {
+            "date": "2026-02-23",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-20 14:19:04"
+          },
+          {
+            "date": "2026-02-12",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-11 09:53:34"
+          }
+        ]
+      },
+      "최우석": {
+        "name": "최우석",
+        "joinDate": "2022-06-02",
+        "granted": 16,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 16,
+        "used": 8.75,
+        "remaining": 7.25,
+        "memo": "2026년 연차-16",
+        "counts": {
+          "연차": 8,
+          "생일휴가": 1,
+          "반반차": 1,
+          "반차(오후)": 1
+        },
+        "items": [
+          {
+            "date": "2026-09-11",
+            "type": "연차",
+            "reason": "연차사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-22 14:41:35"
+          },
+          {
+            "date": "2026-09-10",
+            "type": "연차",
+            "reason": "연차사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-22 14:41:27"
+          },
+          {
+            "date": "2026-09-08",
+            "type": "생일휴가",
+            "reason": "생일휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0,
+            "appliedAt": "2026-09-04 12:00:31"
+          },
+          {
+            "date": "2026-08-28",
+            "type": "연차",
+            "reason": "연차사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-25 10:14:18"
+          },
+          {
+            "date": "2026-08-27",
+            "type": "반반차",
+            "reason": "반반차",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-08-27 16:17:38"
+          },
+          {
+            "date": "2026-08-04",
+            "type": "연차",
+            "reason": "연차사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-31 09:28:29"
+          },
+          {
+            "date": "2026-07-16",
+            "type": "연차",
+            "reason": "가족상",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-13 14:21:47"
+          },
+          {
+            "date": "2026-06-23",
+            "type": "반차(오후)",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-06-10 14:00:56"
+          },
+          {
+            "date": "2026-04-24",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-04-23 08:54:07"
+          },
+          {
+            "date": "2026-04-03",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-03-18 13:29:48"
+          },
+          {
+            "date": "2026-02-20",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-21 10:48:42"
+          }
+        ]
+      },
+      "안영재": {
+        "name": "안영재",
+        "joinDate": "2021-04-12",
+        "granted": 16,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 16,
+        "used": 7,
+        "remaining": 9,
+        "memo": "2026년 연차-16",
+        "counts": {
+          "연차": 6,
+          "반차(오후)": 2,
+          "생일휴가": 1
+        },
+        "items": [
+          {
+            "date": "2026-09-14",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-09 11:54:39"
+          },
+          {
+            "date": "2026-08-24",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-20 11:15:17"
+          },
+          {
+            "date": "2026-07-16",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-06 09:12:11"
+          },
+          {
+            "date": "2026-06-15",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-08 13:35:34"
+          },
+          {
+            "date": "2026-06-12",
+            "type": "반차(오후)",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-06-12 10:51:17"
+          },
+          {
+            "date": "2026-05-19",
+            "type": "반차(오후)",
+            "reason": "민방위 이후 반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-05-07 14:37:33"
+          },
+          {
+            "date": "2026-05-04",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-04-27 10:24:33"
+          },
+          {
+            "date": "2026-04-01",
+            "type": "생일휴가",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0,
+            "appliedAt": "2026-03-17 08:57:20"
+          },
+          {
+            "date": "2026-03-16",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-03-04 17:17:10"
+          }
+        ]
+      },
+      "곽재훈": {
+        "name": "곽재훈",
+        "joinDate": "2022-01-24",
+        "granted": 16,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 16,
+        "used": 7,
+        "remaining": 9,
+        "memo": "2026년 연차-16",
+        "counts": {
+          "반차(오후)": 2,
+          "연차": 6
+        },
+        "items": [
+          {
+            "date": "2026-09-18",
+            "type": "반차(오후)",
+            "reason": "오후반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-17 15:06:53"
+          },
+          {
+            "date": "2026-09-14",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-09 16:49:46"
+          },
+          {
+            "date": "2026-08-24",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-20 11:27:46"
+          },
+          {
+            "date": "2026-07-28",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-23 09:28:05"
+          },
+          {
+            "date": "2026-07-27",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-23 09:27:56"
+          },
+          {
+            "date": "2026-06-24",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-23 09:14:52"
+          },
+          {
+            "date": "2026-03-16",
+            "type": "반차(오후)",
+            "reason": "오후반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-03-16 09:13:38"
+          },
+          {
+            "date": "2026-02-24",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-23 15:59:43"
+          }
+        ]
+      },
+      "유종현": {
+        "name": "유종현",
+        "joinDate": "2023-12-01",
+        "granted": 15,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 15,
+        "used": 9.5,
+        "remaining": 5.5,
+        "memo": "2026년 연차-15",
+        "counts": {
+          "공가": 3,
+          "연차": 8,
+          "반차(오후)": 2,
+          "반차(오전)": 1
+        },
+        "items": [
+          {
+            "date": "2026-09-23",
+            "type": "공가",
+            "reason": "동원예비군훈련으로 3일 공가 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0,
+            "appliedAt": "2026-08-10 11:44:18"
+          },
+          {
+            "date": "2026-09-22",
+            "type": "공가",
+            "reason": "동원예비군훈련으로 3일 공가 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0,
+            "appliedAt": "2026-08-10 11:44:08"
+          },
+          {
+            "date": "2026-09-21",
+            "type": "공가",
+            "reason": "동원예비군훈련으로 3일 공가 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0,
+            "appliedAt": "2026-08-10 11:43:58"
+          },
+          {
+            "date": "2026-09-09",
+            "type": "연차",
+            "reason": "개인 사정으로 연차 1일 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-07 17:23:00"
+          },
+          {
+            "date": "2026-08-06",
+            "type": "연차",
+            "reason": "개인사정으로 하루 연차 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-05 09:13:07"
+          },
+          {
+            "date": "2026-07-13",
+            "type": "반차(오후)",
+            "reason": "개인 사정으로 오후 반차 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-13 11:52:36"
+          },
+          {
+            "date": "2026-06-19",
+            "type": "연차",
+            "reason": "개인사정으로 연차 하루 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-16 09:05:55"
+          },
+          {
+            "date": "2026-06-18",
+            "type": "연차",
+            "reason": "개인사정으로 연차 하루 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-16 09:05:46"
+          },
+          {
+            "date": "2026-04-24",
+            "type": "연차",
+            "reason": "개인 사정으로 연차 하루 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-04-20 17:15:35"
+          },
+          {
+            "date": "2026-04-23",
+            "type": "연차",
+            "reason": "개인 사정으로 연차 하루 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-04-20 17:15:28"
+          },
+          {
+            "date": "2026-03-26",
+            "type": "반차(오후)",
+            "reason": "개인 사정으로 오후 반차 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-03-24 13:38:10"
+          },
+          {
+            "date": "2026-03-11",
+            "type": "연차",
+            "reason": "개인 사정으로 하루 연차 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-03-10 17:57:59"
+          },
+          {
+            "date": "2026-02-06",
+            "type": "연차",
+            "reason": "개인 사정으로 연차 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-02-05 16:34:51"
+          },
+          {
+            "date": "2026-01-27",
+            "type": "반차(오전)",
+            "reason": "개인 사정으로 오전 반차 사용합니다.",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-01-26 23:02:45"
+          }
+        ]
+      },
+      "남기현": {
+        "name": "남기현",
+        "joinDate": "2018-01-01",
+        "granted": 18,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 18,
+        "used": 9.5,
+        "remaining": 8.5,
+        "memo": "2026년 연차-18",
+        "counts": {
+          "반차(오후)": 3,
+          "연차": 6,
+          "반차(오전)": 4
+        },
+        "items": [
+          {
+            "date": "2026-09-22",
+            "type": "반차(오후)",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-21 10:16:46"
+          },
+          {
+            "date": "2026-09-09",
+            "type": "반차(오후)",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-09 10:05:06"
+          },
+          {
+            "date": "2026-09-04",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-09-03 11:59:16"
+          },
+          {
+            "date": "2026-09-03",
+            "type": "반차(오후)",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-09-03 11:58:28"
+          },
+          {
+            "date": "2026-08-25",
+            "type": "반차(오전)",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-06 11:20:51"
+          },
+          {
+            "date": "2026-08-24",
+            "type": "반차(오전)",
+            "reason": "반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-08-24 11:26:43"
+          },
+          {
+            "date": "2026-07-22",
+            "type": "연차",
+            "reason": "휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-07-21 10:13:10"
+          },
+          {
+            "date": "2026-06-12",
+            "type": "연차",
+            "reason": "휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-06-12 08:07:20"
+          },
+          {
+            "date": "2026-05-22",
+            "type": "연차",
+            "reason": "휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-05-22 10:25:29"
+          },
+          {
+            "date": "2026-05-14",
+            "type": "반차(오전)",
+            "reason": "개인사정으로 오전 반차 입니다",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-05-14 08:56:16"
+          },
+          {
+            "date": "2026-04-08",
+            "type": "연차",
+            "reason": "연차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-04-07 16:27:08"
+          },
+          {
+            "date": "2026-03-26",
+            "type": "연차",
+            "reason": "휴가",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-03-26 08:45:09"
+          },
+          {
+            "date": "2026-01-13",
+            "type": "반차(오전)",
+            "reason": "남기현 반차",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-01-09 08:12:05"
+          }
+        ]
+      },
+      "윤진성": {
+        "name": "윤진성",
+        "joinDate": "2026-06-08",
+        "granted": 6,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 6,
+        "used": 1,
+        "remaining": 5,
+        "memo": "",
+        "counts": {
+          "연차": 1
+        },
+        "items": [
+          {
+            "date": "2026-08-31",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-27 11:03:24"
+          }
+        ]
+      },
+      "이채원": {
+        "name": "이채원",
+        "joinDate": "2024-12-16",
+        "granted": 15,
+        "carriedOver": 0,
+        "substitute": 0,
+        "total": 15,
+        "used": 8.75,
+        "remaining": 6.25,
+        "memo": "2026년 연차-15",
+        "counts": {
+          "연차": 5,
+          "반차(오후)": 5,
+          "반반차": 5
+        },
+        "items": [
+          {
+            "date": "2026-09-01",
+            "type": "연차",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-08-28 11:02:26"
+          },
+          {
+            "date": "2026-08-21",
+            "type": "반차(오후)",
+            "reason": "",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-08-13 12:00:01"
+          },
+          {
+            "date": "2026-08-07",
+            "type": "반반차",
+            "reason": "",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-08-07 09:58:44"
+          },
+          {
+            "date": "2026-07-16",
+            "type": "반차(오후)",
+            "reason": "오후 반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-07-10 14:40:45"
+          },
+          {
+            "date": "2026-07-03",
+            "type": "반반차",
+            "reason": "오후 반반차 사용",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-07-03 09:28:10"
+          },
+          {
+            "date": "2026-06-19",
+            "type": "반차(오후)",
+            "reason": "오후 반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-06-16 11:44:33"
+          },
+          {
+            "date": "2026-05-22",
+            "type": "반반차",
+            "reason": "오후 반반차 사용",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-05-21 09:39:20"
+          },
+          {
+            "date": "2026-05-08",
+            "type": "반반차",
+            "reason": "오후 반반차 사용",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-05-08 09:00:37"
+          },
+          {
+            "date": "2026-04-22",
+            "type": "반반차",
+            "reason": "오후 반반차 사용",
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "deduct": 0.25,
+            "appliedAt": "2026-04-21 11:07:45"
+          },
+          {
+            "date": "2026-04-13",
+            "type": "연차",
+            "reason": "연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-04-07 11:29:13"
+          },
+          {
+            "date": "2026-04-03",
+            "type": "반차(오후)",
+            "reason": "오후 반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-03-30 16:56:12"
+          },
+          {
+            "date": "2026-02-24",
+            "type": "연차",
+            "reason": "연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-08 15:09:59"
+          },
+          {
+            "date": "2026-02-23",
+            "type": "연차",
+            "reason": "연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-08 15:09:49"
+          },
+          {
+            "date": "2026-01-23",
+            "type": "연차",
+            "reason": "연차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 1,
+            "appliedAt": "2026-01-08 15:09:36"
+          },
+          {
+            "date": "2026-01-15",
+            "type": "반차(오후)",
+            "reason": "오후 반차 사용",
+            "startTime": "",
+            "endTime": "",
+            "deduct": 0.5,
+            "appliedAt": "2026-01-12 12:12:18"
+          }
+        ]
+      }
+    }
+  },
   "finance": {
     "expenses": {
       "corp": [
