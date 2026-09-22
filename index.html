@@ -1241,7 +1241,7 @@
         <!-- Monthly Birthday Highlight Banner Container -->
         <div id="directory-birthday-banner-container" class="space-y-3"></div>
 
-        <!-- 주소록 메인 구분 탭: 직원 / 고객사 / 비품 대장 -->
+        <!-- 주소록 메인 구분 탭: 직원 / 고객사 -->
         <div class="flex items-center gap-2 p-1 bg-surface-container rounded-2xl overflow-x-auto scrollbar-hide" id="directory-main-tabs">
           <button id="dir-main-tab-employee" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0" onclick="App.switchDirectoryMainTab('employee')">
             <span>직원</span>
@@ -1251,13 +1251,9 @@
             <span>고객사</span>
             <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary" id="dir-client-count-badge">375</span>
           </button>
-          <button id="dir-main-tab-equipment" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all whitespace-nowrap shrink-0" onclick="App.switchDirectoryMainTab('equipment')">
-            <span>비품 대장</span>
-            <span class="px-1.5 py-0.5 rounded-full text-[10px] bg-primary/10 text-primary" id="dir-equipment-count-badge">106</span>
-          </button>
         </div>
 
-        <!-- Team Category Filters (Bento Style Chips) -->
+        <!-- Team Category Filters (Bento Style Chips, 직원 탭 선택 시 노출) -->
         <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" id="directory-category-chips">
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold transition-all active:scale-95 dir-chip active" onclick="App.selectDirectoryCategory('all', this)">전체</button>
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip" onclick="App.selectDirectoryCategory('경영지원팀', this)">경영지원</button>
@@ -1267,6 +1263,11 @@
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip" onclick="App.selectDirectoryCategory('개발팀', this)">개발</button>
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip" onclick="App.selectDirectoryCategory('전략본부', this)">전략본부</button>
           <button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label text-xs font-bold transition-all active:scale-95 hover:bg-surface-container-highest dir-chip" onclick="App.selectDirectoryCategory('수행본부', this)">수행본부</button>
+        </div>
+
+        <!-- Client Project Filter Chips (고객사 탭 선택 시 노출) -->
+        <div class="hidden gap-2 overflow-x-auto pb-1 scrollbar-hide" id="directory-client-project-chips">
+          <!-- Dynamically rendered by App.renderDirectory() -->
         </div>
 
         <!-- Colleagues List Container -->

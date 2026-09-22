@@ -275,7 +275,7 @@
           </div>
         </div>
 
-        <!-- 주소록 메인 구분 탭: 직원 / 고객사 / 비품·자산 대장 -->
+        <!-- 주소록 메인 구분 탭: 직원 / 고객사 -->
         <div class="flex items-center gap-3 mb-5 border-b border-outline/50 pb-3" id="pc-dir-main-tabs">
           <button id="pc-dir-tab-employee" class="px-5 py-2.5 rounded-xl text-base font-bold bg-primary text-white shadow-sm flex items-center gap-2" onclick="PCApp.switchDirectoryMainTab('employee')">
             <span>직원</span>
@@ -284,10 +284,6 @@
           <button id="pc-dir-tab-client" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2" onclick="PCApp.switchDirectoryMainTab('client')">
             <span>고객사</span>
             <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-dir-client-count">375</span>
-          </button>
-          <button id="pc-dir-tab-equipment" class="px-5 py-2.5 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high flex items-center gap-2" onclick="PCApp.switchDirectoryMainTab('equipment')">
-            <span>비품/자산 대장</span>
-            <span class="px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary" id="pc-dir-equipment-count">106</span>
           </button>
         </div>
 
@@ -301,6 +297,11 @@
           <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" data-dept="개발팀" onclick="PCApp.setDirectoryDept('개발팀', this)">개발팀</button>
           <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" data-dept="전략본부" onclick="PCApp.setDirectoryDept('전략본부', this)">전략본부</button>
           <button class="px-4 py-2 rounded-xl text-base font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high shrink-0" data-dept="수행본부" onclick="PCApp.setDirectoryDept('수행본부', this)">수행본부</button>
+        </div>
+
+        <!-- 고객사 프로젝트별 탭 (고객사 탭 선택 시 노출) -->
+        <div class="hidden gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide" id="pc-dir-client-project-tabs">
+          <!-- Rendered dynamically by pc.js -->
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="pc-directory-grid">
