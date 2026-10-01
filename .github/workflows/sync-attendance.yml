@@ -35,7 +35,9 @@ concurrency:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    # sitegate는 해외(클라우드) IP 접속을 막아 GitHub 호스티드 러너에서는 크롤링이 항상 실패한다.
+    # 그래서 국내 IP인 사내 Mac에 등록한 셀프호스티드 러너에서 실행한다.
+    runs-on: [self-hosted, macOS, sitegate]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -107,7 +109,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "자동: $(date -u -d '+9 hours' '+%Y-%m-%d %H:%M') 근태일지 크롤링 동기화"
+          git commit -m "자동: $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M') 근태일지 크롤링 동기화"
           # 동시에 다른 커밋이 올라왔을 수 있으므로 리베이스 후 푸시한다.
           git pull --rebase origin main
           git push origin HEAD:main
