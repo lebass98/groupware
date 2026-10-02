@@ -11,8 +11,9 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#0346FF",
-        "foregroundImage": "./assets/icon.png"
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png",
+        "backgroundColor": "#0346FF"
       },
       "package": "com.wordncode.groupware"
     },
