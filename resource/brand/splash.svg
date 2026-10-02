@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1284" height="2778" viewBox="0 0 1284 2778" role="img" aria-label="WnC 그룹웨어 시작 화면">
+<title>WnC 그룹웨어 시작 화면</title>
+<defs><linearGradient id="brand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0346FF"/><stop offset="1" stop-color="#002B99"/></linearGradient></defs>
+<rect width="1284" height="2778" fill="url(#brand)"/>
+<polyline points="343.1,1037.5 455.8,1321.7 617.5,1106.1 730.2,1321.7 940.9,998.3" fill="none" stroke="#FFFFFF" stroke-width="105.84" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="642" y="1540" text-anchor="middle" font-family="Pretendard, 'Apple SD Gothic Neo', sans-serif" font-size="104" font-weight="700" fill="#FFFFFF">WnC 그룹웨어</text>
+<text x="642" y="2610" text-anchor="middle" font-family="Pretendard, 'Apple SD Gothic Neo', sans-serif" font-size="40" font-weight="700" fill="#FFFFFF">WordnCode</text>
+</svg>
