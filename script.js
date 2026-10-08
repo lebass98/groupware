@@ -1256,6 +1256,7 @@ const App = {
       console.info('[Firebase] 계정 인증에 실패하여 로컬 데모 모드로 진입합니다:', result.code);
     }
 
+    if (requireAuth) { this.showToast('로그인 서버 연결을 확인한 뒤 다시 시도해 주세요.'); return; }
     this.executeLoginTransition(() => {
       this.showToast(`🎉 ${this.state.user.name}님, 환영합니다! WnC 그룹웨어를 시작합니다.`);
     });

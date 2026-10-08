@@ -196,30 +196,46 @@ const PCApp = {
 
   /** 대시보드 3열 위젯 및 현재 활성 서브스크린을 전면 재렌더링한다. */
   syncTodayAttendanceFromLogs() {
-    const now = new Date();
-    const curM = now.getMonth() + 1;
-    const curD = now.getDate();
-    const todayLog = (this.state.logs || []).find((l) =>
-      (l.rawDate ? l.rawDate === `${now.getFullYear()}-${String(curM).padStart(2, '0')}-${String(curD).padStart(2, '0')}` : Number(String(l.monthStr).replace('월', '')) === curM && Number(l.dayNum) === curD));
+    const date = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+    const today = (this.state.logs || []).find(log => log.rawDate === date);
+    this.state.checkInTime = today?.checkInTimeStr && today.checkInTimeStr !== '-' ? window.shortTime(today.checkInTimeStr) : '--:--';
+    this.state.checkOutTime = today?.checkOutTimeStr && today.checkOutTimeStr !== '-' ? window.shortTime(today.checkOutTimeStr) : '--:--';
+    this.state.checkInTimeStr = today?.checkInTimeStr || null;
+    this.state.isCheckedIn = this.state.checkInTime !== '--:--';
+  },
 
-    if (!todayLog || !todayLog.checkInTimeStr || todayLog.checkInTimeStr === '-') {
-      this.state.isCheckedIn = false;
-      this.state.checkInTime = null;
-      this.state.checkInTimeStr = null;
+  renderAuthGate() {
+    if (!window.FirebaseOptions?.requireAuth) return;
+    if (window.WncCloud?.isSignedIn()) {
+      document.getElementById('pc-auth-gate')?.remove();
       return;
     }
+    if (document.getElementById('pc-auth-gate')) return;
+    const gate = document.createElement('div');
+    gate.id = 'pc-auth-gate';
+    gate.className = 'fixed inset-0 z-[200] flex items-center justify-center bg-surface-container-lowest p-6';
+    gate.innerHTML = `<form class="w-full max-w-sm space-y-4" onsubmit="event.preventDefault(); PCApp.signInAccount()">
+      <h1 class="text-2xl font-bold">그룹웨어 로그인</h1>
+      <p class="text-sm text-on-surface-variant">직원 계정으로 로그인하면 본인의 출퇴근 시간과 최신 연차·근태 정보를 불러옵니다.</p>
+      <input id="pc-login-email" type="email" autocomplete="username" required placeholder="회사 이메일" class="w-full p-3 rounded-xl border border-outline bg-surface-container-low" />
+      <input id="pc-login-password" type="password" autocomplete="current-password" required placeholder="로그인 비밀번호" class="w-full p-3 rounded-xl border border-outline bg-surface-container-low" />
+      <button id="pc-login-submit" type="submit" class="w-full p-3 rounded-xl bg-primary text-white font-bold">로그인</button>
+      <p id="pc-login-message" class="text-sm text-error" role="status"></p>
+    </form>`;
+    document.body.appendChild(gate);
+  },
 
-    this.state.checkInTimeStr = todayLog.checkInTimeStr;
-    this.state.isCheckedIn = !todayLog.checkOutTimeStr || todayLog.checkOutTimeStr === '-';
-
-    const inM = todayLog.checkInTimeStr.match(/(\d{1,2}):(\d{2})/);
-    if (inM) {
-      const d = new Date();
-      let hours = parseInt(inM[1], 10);
-      if (todayLog.checkInTimeStr.includes('오후') && hours < 12) hours += 12;
-      d.setHours(hours, parseInt(inM[2], 10), 0, 0);
-      this.state.checkInTime = d;
-    }
+  async signInAccount() {
+    const button = document.getElementById('pc-login-submit');
+    const message = document.getElementById('pc-login-message');
+    const password = document.getElementById('pc-login-password');
+    if (!window.WncCloud?.isReady()) { message.textContent = '로그인 연결을 준비하고 있습니다. 잠시 후 다시 시도해 주세요.'; return; }
+    button.disabled = true;
+    const result = await window.WncCloud.signIn(document.getElementById('pc-login-email').value.trim(), password.value);
+    password.value = '';
+    if (!result.ok) { message.textContent = result.message; button.disabled = false; return; }
+    this.renderAuthGate();
+    this.refreshAllViews();
   },
 
   renderAccountProfile() {
@@ -8070,6 +8086,7 @@ const PCApp = {
       const result = event.detail;
       if (result.message) this.showToast(result.message);
     });
+    window.addEventListener('wnc-cloud-status', () => this.renderAuthGate());
     window.addEventListener('wnc-cloud-account-changed', (e) => this.handleCloudAccountChanged(e.detail));
     window.addEventListener('wnc-cloud-hydrated', () => this.handleCloudHydrated());
     window.addEventListener('wnc-business-data', event => {
@@ -8108,4 +8125,5 @@ window.PCApp = PCApp;
 // Auto boot on DOM load
 document.addEventListener('DOMContentLoaded', () => {
   PCApp.init();
+  PCApp.renderAuthGate();
 });
