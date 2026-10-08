@@ -273,6 +273,7 @@ const PCApp = {
    * (모바일 script.js 의 동명 함수와 동일한 규칙)
    */
   getMyLeaveSummary() {
+    if (window.FirebaseOptions?.requireAuth && !window.WncCloud?._businessVersions?.leaves) return null;
     const leaves = (window.MockData && window.MockData.leaves) || null;
     if (!leaves || !leaves.members) return null;
 
@@ -1243,19 +1244,19 @@ const PCApp = {
               </span>
               <span class="pc-commute-status-pill ${this.state.isCheckedIn ? 'checked-in' : ''}">
                 <span class="w-1.5 h-1.5 rounded-full ${this.state.isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
-                ${this.state.isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}
+                ${window.WncCloud?.isSignedIn() && window.WncCloud._attendanceLogs === null ? '데이터 불러오는 중' : this.state.checkOutTime !== '--:--' ? '퇴근 완료' : this.state.isCheckedIn ? '근무 중 (정상)' : '출근 전'}
               </span>
             </div>
 
             <div class="pc-commute-time-display mb-4">
               <div>
                 <span class="text-xs text-on-surface-variant block mb-0.5 font-medium">출근 시간</span>
-                <span class="pc-commute-big-time text-primary">${this.state.checkInTime}</span>
+                <span class="pc-commute-big-time text-primary">${window.WncCloud?.isSignedIn() && window.WncCloud._attendanceLogs === null ? '--:--' : this.state.checkInTime}</span>
               </div>
               <span class="text-on-surface-variant text-xl font-bold">→</span>
               <div>
                 <span class="text-xs text-on-surface-variant block mb-0.5 font-medium">퇴근 시간</span>
-                <span class="pc-commute-big-time ${this.state.checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${this.state.checkOutTime}</span>
+                <span class="pc-commute-big-time ${this.state.checkOutTime !== '--:--' ? 'text-secondary' : 'text-on-surface-variant'}">${window.WncCloud?.isSignedIn() && window.WncCloud._attendanceLogs === null ? '--:--' : this.state.checkOutTime}</span>
               </div>
             </div>
 

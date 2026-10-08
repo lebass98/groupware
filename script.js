@@ -2368,6 +2368,7 @@ const App = {
    * 데이터가 없으면 null을 돌려주고, 화면은 '-'로 표시한다(임의의 값을 지어내지 않는다).
    */
   getMyLeaveSummary() {
+    if (window.FirebaseOptions?.requireAuth && !window.WncCloud?._businessVersions?.leaves) return null;
     const leaves = (window.MockData && window.MockData.leaves) || null;
     if (!leaves || !leaves.members) return null;
 
