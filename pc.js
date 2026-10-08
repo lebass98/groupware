@@ -987,10 +987,14 @@ const PCApp = {
    *   - 둘 다 없으면 앱 안에서만 기록하고 조용히 넘어간다.
    */
   async syncAttendanceToGroupware(mode) {
-    if (!window.WncSitegate) { this.showToast('출퇴근 서버를 불러오지 못했습니다.'); return; }
-    const result = await window.WncSitegate.syncAndNotify(mode, m => this.showToast(m));
-    if (result?.skipped) this.showToast('Vercel 출퇴근 서버에 연결하지 못했습니다.');
-    return result;
+    if (this._attendancePending) { this.showToast('출퇴근 등록을 처리하고 있습니다.'); return { ok: false }; }
+    if (!window.WncSitegate) { this.showToast('출퇴근 서버를 불러오지 못했습니다.'); return { ok: false }; }
+    this._attendancePending = true;
+    try {
+      const result = await window.WncSitegate.syncAndNotify(mode, m => this.showToast(m));
+      if (result?.skipped) this.showToast('Vercel 출퇴근 서버에 연결하지 못했습니다.');
+      return result;
+    } finally { this._attendancePending = false; }
   },
 
   // 2. Real-Time Header Clock
