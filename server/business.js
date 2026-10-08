@@ -18,10 +18,14 @@ async function collect(kind) {
   if (footer < 0) throw new Error('수집기 진입점 확인 실패');
   source = source.slice(0, footer).replace(/^#![^\n]*\n/, '') + '\nmodule.exports = main;';
   const files = new Map();
+  const environment = ['SITEGATE_URL', 'SITEGATE_ID', 'SITEGATE_PW'].map(key => `${key}=${process.env[key] || ''}`).join('\n');
   const memoryFs = {
     ...fs,
-    existsSync(file) { return path.basename(file) === '.env' ? false : files.has(file) || fs.existsSync(file); },
-    readFileSync(file, encoding) { return files.has(file) ? (encoding ? files.get(file) : Buffer.from(files.get(file))) : fs.readFileSync(file, encoding); },
+    existsSync(file) { return path.basename(file) === '.env' ? true : files.has(file) || fs.existsSync(file); },
+    readFileSync(file, encoding) {
+      if (path.basename(file) === '.env') return encoding ? environment : Buffer.from(environment);
+      return files.has(file) ? (encoding ? files.get(file) : Buffer.from(files.get(file))) : fs.readFileSync(file, encoding);
+    },
     writeFileSync(file, data) { files.set(file, String(data)); },
     mkdirSync() {}
   };
