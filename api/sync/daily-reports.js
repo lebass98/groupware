@@ -48,6 +48,14 @@ module.exports = async function handler(req, res) {
   try {
     const admin = await requireAdmin(token);
     if (!admin) return res.status(403).json({ ok: false, message: 'Firebase 관리자 계정으로 로그인한 뒤 다시 실행해 주세요.' });
+    return res.status(200).json(await syncMonth({ year, month, token, actor: admin.localId }));
+  } catch (error) {
+    console.error('[sitegate sync]', error.name, error.message.replace(/https?:\/\/\S+/g, '[upstream]'));
+    return res.status(502).json({ ok: false, message: error.name === 'TimeoutError' ? 'sitegate 응답 시간이 초과되었습니다. 잠시 후 다시 시도해 주세요.' : 'sitegate 로그인 또는 데이터 수집에 실패했습니다. 서버 로그를 확인해 주세요.' });
+  }
+};
+
+async function syncMonth({ year, month, token, actor }) {
     const now = new Date();
     const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
     const result = await collectDailyReports({
@@ -67,15 +75,12 @@ module.exports = async function handler(req, res) {
       writes.push({ update: { name: name(`schedules/${date}`), fields: fieldsOf({ date, items: result.schedules[date] || [] }) } });
     }
     const sourceEmail = employees.find(employee => employee.email?.split('@')[0] === process.env.SITEGATE_ID)?.email || '';
-    const payload = { source: 'sitegate', sourceEmail, year, month, schedules: result.schedules, logs: result.logs, updatedAt: now.toISOString(), updatedBy: admin.localId };
+    const payload = { source: 'sitegate', sourceEmail, year, month, schedules: result.schedules, logs: result.logs, updatedAt: now.toISOString(), updatedBy: actor };
     writes.push({ update: { name: name(`meta/sitegate-sync-${year}-${month}`), fields: fieldsOf(payload) } });
     const saved = await request(`${DOCUMENTS}:commit`, {
       method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ writes })
     });
-    if (!saved.ok) return res.status(502).json({ ok: false, message: '수집했지만 Firestore 저장에 실패했습니다. 관리자 권한과 보안 규칙을 확인해 주세요.' });
-    return res.status(200).json({ ok: true, scheduleDays: Object.keys(result.schedules).length, attendanceCount: result.logs.length, message: 'Firestore에 동기화했습니다.' });
-  } catch (error) {
-    console.error('[sitegate sync]', error.name, error.message.replace(/https?:\/\/\S+/g, '[upstream]'));
-    return res.status(502).json({ ok: false, message: error.name === 'TimeoutError' ? 'sitegate 응답 시간이 초과되었습니다. 잠시 후 다시 시도해 주세요.' : 'sitegate 로그인 또는 데이터 수집에 실패했습니다. 서버 로그를 확인해 주세요.' });
-  }
-};
+    if (!saved.ok) throw new Error('Firestore 저장 실패');
+    return { ok: true, scheduleDays: Object.keys(result.schedules).length, attendanceCount: result.logs.length, message: 'Firestore에 동기화했습니다.' };
+}
+module.exports.syncMonth = syncMonth;

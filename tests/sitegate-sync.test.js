@@ -74,6 +74,31 @@ test('잘못된 원본 페이지는 빈 데이터로 저장하지 않는다', as
     fetchImpl: url => url.includes('login_check') ? upstream(url) : Promise.resolve(new Response('<html>로그인</html>')) }), /페이지 구조/);
 });
 
+test('자동 수집 비밀키가 없거나 다르면 외부 요청을 차단', async () => {
+  const cron = require('../api/sync/cron');
+  const original = global.fetch;
+  const previousSecret = process.env.CRON_SECRET;
+  let calls = 0;
+  global.fetch = async () => { calls++; throw new Error('호출 금지'); };
+  try {
+    process.env.CRON_SECRET = 'valid-secret';
+    for (const authorization of [undefined, 'Bearer invalid', 'Bearer valid-secret-extra']) {
+      const result = response();
+      await cron({ method: 'POST', headers: { authorization } }, result);
+      assert.equal(result.code, 401);
+    }
+    delete process.env.CRON_SECRET;
+    const result = response();
+    await cron({ method: 'POST', headers: { authorization: 'Bearer undefined' } }, result);
+    assert.equal(result.code, 401);
+    assert.equal(calls, 0);
+  } finally {
+    global.fetch = original;
+    if (previousSecret === undefined) delete process.env.CRON_SECRET;
+    else process.env.CRON_SECRET = previousSecret;
+  }
+});
+
 test('클라우드 일정은 대상 월만 교체하며 개인 기록은 소유자에게만 적용', () => {
   const events = [];
   const window = { MockData: { schedules: { '2025-11-1': [{ title: '보존' }], '2025-12-2': [{ title: '삭제됨' }] }, attendance: { logs: [{ monthStr: '11월', dayNum: '1' }] } }, dispatchEvent: event => events.push(event) };

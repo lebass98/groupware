@@ -387,10 +387,16 @@ Pool/
 
 - **Vercel 서울 서버 크롤링 전환**: 설정의 근태일지 수집을 서울 리전 API와 Firebase 관리자 인증으로 연결하고 월별 결과를 Firestore에 저장·실시간 반영하도록 구현.
 
+- **Firebase 운영 연결 및 하루 두 번 자동 수집**: 서울 Firestore·이메일 인증·회원 명부와 보안 규칙을 연결하고 Mac 없이 Vercel에서 근태일지를 정기 저장하도록 구성.
+
 ### Vercel 근태일지 크롤링 운영
 
 - `SITEGATE_URL`, `SITEGATE_ID`, `SITEGATE_PW`는 Vercel Production의 Secret 환경변수로 관리합니다.
 - 설정 화면에서 Firebase 관리자 계정으로 로그인한 뒤 대상 월을 선택하고 크롤링을 실행합니다. GitHub 토큰과 Mac 러너는 이 버튼에 필요하지 않습니다.
 - 관리자 권한은 기존 `admins/{Firebase UID}` 문서로 확인합니다. `members/{이메일}` 명부 등록과 `firestore.rules` 적용도 필요합니다.
 - `/api/sync/daily-reports`는 서울(`icn1`)에서 실행됩니다. 일정 날짜 문서와 `meta/sitegate-sync-연도-월` 결과를 한 배치에 저장하여 실패 시 부분 반영을 방지합니다. PC·모바일은 월별 결과를 구독합니다. 개인 출퇴근 기록은 수집 계정 본인에게만 화면에 반영합니다.
-- 이번 전환은 설정의 수동 근태일지 크롤링에 적용됩니다. 기존 GitHub Actions의 정기 수집과 출퇴근 등록은 별도 경로입니다.
+- 현재 월 근태일지는 `.github/workflows/vercel-crawl.yml`에서 매일 한국 시간 08:15·18:15에 자동 수집합니다. GitHub 호스티드 러너는 호출만 하고 실제 수집·저장은 Vercel 서울 서버가 처리하므로 Mac을 켜둘 필요가 없습니다. GitHub 일정 실행은 지연될 수 있습니다.
+- 자동 수집은 전용 서비스 계정(`roles/datastore.user`)과 Vercel `FIREBASE_SERVICE_ACCOUNT`·`CRON_SECRET`, GitHub `WNC_CRAWL_SECRET`을 사용합니다. 키는 코드·브라우저에 포함하지 않습니다.
+- 기존 Mac 전체 업무 데이터 수집은 수동 실행으로 유지합니다. 출퇴근 등록은 별도 경로입니다.
+- Firebase는 서울 `asia-northeast3`의 기본 Firestore, 이메일/비밀번호 인증, Vercel 승인 도메인과 운영 보안 규칙을 사용합니다. 규칙 배포: `npx firebase-tools deploy --only firestore:rules --project wnc-groupware`.
+

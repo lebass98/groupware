@@ -1,9 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "regions": ["icn1"],
+  "regions": [
+    "icn1"
+  ],
   "functions": {
-    "api/sync/daily-reports.js": { "maxDuration": 300 }
+    "api/sync/daily-reports.js": {
+      "maxDuration": 300
+    },
+    "api/sync/cron.js": {
+      "maxDuration": 300
+    }
   },
   "buildCommand": "node scripts/build-vercel.js",
   "outputDirectory": "public",
