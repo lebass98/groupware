@@ -854,6 +854,9 @@ const PCApp = {
           <input type="password" id="pc-settings-sitegate-password" autocomplete="new-password" placeholder="기존 그룹웨어 비밀번호" class="w-full px-3 py-2.5 rounded-xl border border-outline bg-surface-container-lowest" />
           <button onclick="PCApp.saveSitegateAccount()" class="px-4 py-2 rounded-xl bg-primary text-white font-bold">계정 연결</button>
         </div>
+        <div class="pt-4 border-t border-outline">
+          <button type="button" id="pc-settings-logout" onclick="PCApp.logout()" class="w-full py-3 px-4 rounded-xl bg-error/10 text-error font-bold text-sm hover:bg-error hover:text-white transition-colors">로그아웃</button>
+        </div>
 
       </div>
     `;
@@ -861,6 +864,19 @@ const PCApp = {
     this.showModal(modalHtml);
     this.renderSettingsThemeToggle();
     this.initDailyReportSyncUI();
+  },
+
+  async logout() {
+    const button = document.getElementById('pc-settings-logout');
+    if (button) { button.disabled = true; button.textContent = '로그아웃 중'; }
+    await window.WncCloud?.signOut();
+    if (window.WncCloud?.user) {
+      if (button) { button.disabled = false; button.textContent = '로그아웃'; }
+      this.showToast('로그아웃에 실패했습니다. 다시 시도해 주세요.');
+      return;
+    }
+    this.closeModal();
+    this.renderAuthGate();
   },
 
   renderSettingsThemeToggle() {
