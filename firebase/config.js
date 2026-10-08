@@ -24,6 +24,6 @@ window.FirebaseConfig = {
  *           Authentication에 임직원 계정 등록을 마친 뒤 true로 변경하십시오.
  */
 window.FirebaseOptions = {
-  requireAuth: false,
+  requireAuth: true,
   syncDebounceMs: 400
 };

@@ -195,7 +195,48 @@ const PCApp = {
   },
 
   /** 대시보드 3열 위젯 및 현재 활성 서브스크린을 전면 재렌더링한다. */
+  syncTodayAttendanceFromLogs() {
+    const now = new Date();
+    const curM = now.getMonth() + 1;
+    const curD = now.getDate();
+    const todayLog = (this.state.logs || []).find((l) =>
+      (l.rawDate ? l.rawDate === `${now.getFullYear()}-${String(curM).padStart(2, '0')}-${String(curD).padStart(2, '0')}` : Number(String(l.monthStr).replace('월', '')) === curM && Number(l.dayNum) === curD));
+
+    if (!todayLog || !todayLog.checkInTimeStr || todayLog.checkInTimeStr === '-') {
+      this.state.isCheckedIn = false;
+      this.state.checkInTime = null;
+      this.state.checkInTimeStr = null;
+      return;
+    }
+
+    this.state.checkInTimeStr = todayLog.checkInTimeStr;
+    this.state.isCheckedIn = !todayLog.checkOutTimeStr || todayLog.checkOutTimeStr === '-';
+
+    const inM = todayLog.checkInTimeStr.match(/(\d{1,2}):(\d{2})/);
+    if (inM) {
+      const d = new Date();
+      let hours = parseInt(inM[1], 10);
+      if (todayLog.checkInTimeStr.includes('오후') && hours < 12) hours += 12;
+      d.setHours(hours, parseInt(inM[2], 10), 0, 0);
+      this.state.checkInTime = d;
+    }
+  },
+
+  renderAccountProfile() {
+    const email = window.WncCloud?.account?.email;
+    if (email) this.applySignedInProfile(email);
+    const user = this.state.user || {};
+    if (window.WncCloud?._attendanceLogs) {
+      this.state.logs = JSON.parse(JSON.stringify(window.WncCloud._attendanceLogs));
+      this.syncTodayAttendanceFromLogs();
+    }
+    for (const element of document.querySelectorAll('.pc-profile-info-name, #pc-settings-user-name')) element.textContent = `${user.name || ''} ${user.role || ''}`.trim();
+    for (const element of document.querySelectorAll('.pc-profile-info-dept, #pc-settings-user-detail')) element.textContent = `${user.dept || ''} · ${user.email || ''}`;
+    for (const element of document.querySelectorAll('.pc-expanded-profile img, #pc-settings-user-avatar')) { element.src = user.avatar || ''; element.alt = user.name || '프로필'; }
+  },
+
   refreshAllViews() {
+    this.renderAccountProfile();
     this.renderSidebar();
     this.renderLeftCol();
     this.renderCenterCol();
@@ -699,10 +740,11 @@ const PCApp = {
 
   // =========================================
   // 환경설정 모달 (Settings)
-  // 모바일 설정 드로어와 동일한 구성(프로필 / 화면 모드 / 근태일지 크롤링)을 제공한다.
+  // 모바일 설정 드로어와 동일한 구성(프로필 / 화면 모드 / 데이터 새로 불러오기)을 제공한다.
   // 독 메뉴 편집은 모바일 하단 독 전용 기능이라 PC에는 포함하지 않는다.
   // =========================================
   openSettingsModal() {
+    this.renderAccountProfile();
     const user = this.state.user || {};
     const now = new Date();
     const year = this.state.calYear || now.getFullYear();
@@ -734,10 +776,10 @@ const PCApp = {
 
         <!-- 1. 프로필 -->
         <div class="flex items-center gap-3 p-4 rounded-2xl bg-surface-container-low border border-outline">
-          <img src="${user.avatar || './profile.png'}" alt="프로필" class="w-12 h-12 rounded-full object-cover border border-outline shrink-0" />
+          <img id="pc-settings-user-avatar" src="${user.avatar || './profile.png'}" alt="프로필" class="w-12 h-12 rounded-full object-cover border border-outline shrink-0" />
           <div class="min-w-0">
-            <p class="text-base font-bold text-on-surface truncate">${user.name || '이재광'} ${user.role || '팀장'}</p>
-            <p class="text-xs text-on-surface-variant truncate">${user.dept || '퍼블리싱팀'} · ${user.email || 'yellow@wordncode.com'}</p>
+            <p id="pc-settings-user-name" class="text-base font-bold text-on-surface truncate">${user.name || '이재광'} ${user.role || '팀장'}</p>
+            <p id="pc-settings-user-detail" class="text-xs text-on-surface-variant truncate">${user.dept || '퍼블리싱팀'} · ${user.email || 'yellow@wordncode.com'}</p>
           </div>
         </div>
 
@@ -760,7 +802,7 @@ const PCApp = {
           </button>
         </div>
 
-        <!-- 3. 근태일지 크롤링 -->
+        <!-- 3. 데이터 새로 불러오기 -->
         <div class="p-4 rounded-2xl bg-surface-container-low border border-outline space-y-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -770,8 +812,8 @@ const PCApp = {
                 </svg>
               </div>
               <div>
-                <p class="text-sm font-bold text-on-surface">근태일지 크롤링</p>
-                <p class="text-xs text-on-surface-variant">기존 그룹웨어(sitegate)에서 선택한 달을 가져옵니다.</p>
+                <p class="text-sm font-bold text-on-surface">데이터 새로 불러오기</p>
+                <p class="text-xs text-on-surface-variant">출퇴근 시간·연차·휴가·외근·근태 정보를 새로 불러옵니다.</p>
               </div>
             </div>
           </div>
@@ -783,7 +825,7 @@ const PCApp = {
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
               </svg>
-              <span id="pc-settings-sync-label">크롤링</span>
+              <span id="pc-settings-sync-label">새로 불러오기</span>
             </button>
           </div>
           <p class="text-xs font-medium text-on-surface-variant" id="pc-settings-sync-status">중계 서버 확인 중...</p>
@@ -821,7 +863,6 @@ const PCApp = {
     const status = document.getElementById('pc-settings-sync-status');
     if (!btn || !status) return;
 
-    this.renderGithubTokenStatus();
 
     if (!window.WncSitegate) {
       btn.disabled = true;
@@ -838,7 +879,7 @@ const PCApp = {
         this._syncVia = 'relay';
         btn.disabled = false;
         status.innerText = info.transport === 'vercel'
-          ? (window.WncCloud?.isSignedIn() ? 'Vercel 서울 서버에서 수집해 모든 기기에 반영합니다. 관리자 권한이 필요합니다.' : 'Firebase 관리자 계정으로 로그인한 뒤 실행해 주세요.')
+          ? (window.WncCloud?.isSignedIn() ? '로그인한 직원의 데이터를 Vercel에서 새로 불러옵니다.' : '직원 계정으로 로그인한 뒤 실행해 주세요.')
           : '로컬 중계 연결됨 · 버튼을 누르면 해당 월을 바로 가져옵니다.';
         return;
       }
@@ -848,64 +889,6 @@ const PCApp = {
       status.innerText = 'Vercel 수집 서버에 연결하지 못했습니다. 새로고침 후 다시 확인해 주세요.';
 
     });
-  },
-
-  /** 저장된 GitHub 토큰 상태를 설정 모달에 표시한다. */
-  renderGithubTokenStatus() {
-    const status = document.getElementById('pc-settings-gh-status');
-    const input = document.getElementById('pc-settings-gh-token');
-    if (!status) return;
-
-    if (!window.WncActions || !window.WncActions.hasToken()) {
-      status.innerText = '등록된 토큰이 없습니다.';
-      return;
-    }
-
-    if (input) input.value = '';
-    status.innerText = '토큰 확인 중...';
-    window.WncActions.verifyToken().then((r) => {
-      status.innerText = r.ok ? '토큰 등록됨 · GitHub Actions 실행 요청에 사용됩니다.' : `${r.message}`;
-    });
-  },
-
-  /** 입력한 GitHub 토큰을 이 기기에 저장한다(저장소에는 올라가지 않는다). */
-  async saveSitegateAccount() {
-    const input = document.getElementById('pc-settings-sitegate-password');
-    if (!input?.value || !window.WncSitegate) { this.showToast('기존 그룹웨어 비밀번호를 입력해 주세요.'); return; }
-    const password = input.value;
-    input.value = '';
-    const result = await window.WncSitegate.connectAccount(password);
-    this.showToast(result.ok ? '본인 그룹웨어 계정이 연결되었습니다.' : result.message);
-  },
-
-  async saveGithubToken() {
-    const input = document.getElementById('pc-settings-gh-token');
-    const status = document.getElementById('pc-settings-gh-status');
-    if (!input || !window.WncActions) return;
-
-    const token = String(input.value || '').trim();
-    if (!token) {
-      window.WncActions.setToken('');
-      this.showToast('GitHub 토큰을 삭제했습니다.');
-      if (status) status.innerText = '등록된 토큰이 없습니다.';
-      this.initDailyReportSyncUI();
-      return;
-    }
-
-    window.WncActions.setToken(token);
-    input.value = '';
-    if (status) status.innerText = '토큰 확인 중...';
-
-    const result = await window.WncActions.verifyToken();
-    if (result.ok) {
-      this.showToast('GitHub 토큰이 등록되었습니다.');
-    } else {
-      // 잘못된 토큰을 남겨두면 버튼이 계속 실패한다. 즉시 지운다.
-      window.WncActions.setToken('');
-      this.showToast(result.message);
-    }
-    if (status) status.innerText = result.ok ? '토큰 등록됨 · GitHub Actions 실행 요청에 사용됩니다.' : result.message;
-    this.initDailyReportSyncUI();
   },
 
   async runDailyReportSync() {
@@ -919,16 +902,16 @@ const PCApp = {
     const year = Number(yStr);
     const month = Number(mStr);
     if (!year || !month) {
-      this.showToast('크롤링할 연·월을 먼저 선택해 주세요.');
+      this.showToast('불러올 연·월을 먼저 선택해 주세요.');
       return;
     }
 
     btn.disabled = true;
     if (label) label.innerText = '가져오는 중';
-    this.showToast(`${year}년 ${month}월 근태일지 크롤링을 시작합니다...`);
+    this.showToast(`${year}년 ${month}월 데이터를 새로 불러옵니다합니다...`);
 
     const done = (msg, ok) => {
-      if (label) label.innerText = '크롤링';
+      if (label) label.innerText = '새로 불러오기';
       btn.disabled = false;
       if (status) status.innerText = msg;
       this.showToast(msg);
@@ -937,15 +920,15 @@ const PCApp = {
 
     // 1) 로컬 중계가 있으면 직접 크롤링한다(가장 빠르다).
     if ((this._syncVia === 'relay' || window.location.hostname.endsWith('.vercel.app')) && window.WncSitegate) {
-      if (status) status.innerText = `${year}년 ${month}월 근태일지를 가져오는 중입니다...`;
+      if (status) status.innerText = `${year}년 ${month}월 데이터를 새로 불러오는 중입니다...`;
       const result = await window.WncSitegate.syncDailyReports(year, month);
       if (result && result.ok) {
         const parts = [];
         if (result.scheduleDays != null) parts.push(`일정 ${result.scheduleDays}일치`);
         if (result.attendanceCount != null) parts.push(`출퇴근 ${result.attendanceCount}건`);
-        done(`${year}년 ${month}월 동기화 완료${parts.length ? ` (${parts.join(', ')})` : ''}`, true);
+        done(result.message || `${year}년 ${month}월 데이터 불러오기 완료`, true);
       } else {
-        done(`크롤링 실패: ${(result && result.message) || '알 수 없는 오류'}`, false);
+        done(`데이터 불러오기 실패: ${(result && result.message) || '알 수 없는 오류'}`, false);
       }
       return;
     }
@@ -954,31 +937,7 @@ const PCApp = {
 
   },
 
-  /**
-   * GitHub Actions 워크플로를 실행시키고 완료까지 기다린다.
-   * 배포본(GitHub Pages)에는 중계 서버가 없어, 크롤링·출퇴근 등록을 이 경로로 처리한다.
-   * (모바일 script.js 의 동명 함수와 동일한 규칙)
-   */
-  async runGithubWorkflow(kind, inputs, onProgress) {
-    if (!window.WncActions) return { ok: false, message: 'GitHub 연동 모듈을 불러오지 못했습니다.' };
-    if (!window.WncActions.hasToken()) return { ok: false, message: '설정에서 GitHub 토큰을 먼저 등록해 주세요.' };
 
-    const notify = (m) => { if (typeof onProgress === 'function') onProgress(m); };
-
-    notify('GitHub Actions 실행을 요청하는 중...');
-    const started = await window.WncActions.dispatch(kind, inputs);
-    if (!started.ok) return { ok: false, message: started.message };
-
-    if (!started.runId) {
-      return { ok: false, message: '실행은 요청했으나 진행 상태를 확인하지 못했습니다. GitHub Actions 화면에서 확인해 주세요.' };
-    }
-
-    notify('GitHub Actions에서 처리 중입니다. 1~2분 걸립니다...');
-    const finished = await window.WncActions.waitForRun(started.runId,
-      (st) => notify(st === 'queued' ? '실행 대기 중입니다...' : 'GitHub Actions에서 처리 중입니다...'));
-
-    return finished.ok ? { ok: true, message: '완료되었습니다.' } : { ok: false, message: finished.message };
-  },
 
   /**
    * sitegate에 실제 출퇴근을 등록한다. 환경에 따라 경로가 다르다.
@@ -1175,6 +1134,7 @@ const PCApp = {
 
   // 4. Render Sidebar (10 Core Service Icons & Labels)
   renderSidebar() {
+    this.renderAccountProfile();
     const navItems = [
       { id: 'dashboard', name: '대시보드', iconName: 'grid_view' },
       { id: 'calendar', name: '근태일지', iconName: 'calendar_month' },
@@ -8106,6 +8066,10 @@ const PCApp = {
     });
 
     // 5. 계정 격리 연동: 로그인 계정 확정 및 클라우드 최초 수신 시점에 상태를 정렬한다.
+    window.addEventListener('wnc-login-sync', event => {
+      const result = event.detail;
+      if (result.message) this.showToast(result.message);
+    });
     window.addEventListener('wnc-cloud-account-changed', (e) => this.handleCloudAccountChanged(e.detail));
     window.addEventListener('wnc-cloud-hydrated', () => this.handleCloudHydrated());
     window.addEventListener('wnc-business-data', event => {
@@ -8116,8 +8080,11 @@ const PCApp = {
       this.refreshAllViews();
     });
     window.addEventListener('wnc-sitegate-data', (event) => {
-      const { months, logs } = event.detail;
-      if (logs) {
+      const { months, logs, personal } = event.detail;
+      if (personal) {
+        this.state.logs = JSON.parse(JSON.stringify(window.MockData.attendance.logs || []));
+        this.syncTodayAttendanceFromLogs?.();
+      } else if (logs) {
         this.state.logs = (this.state.logs || []).filter(log => !months.some(m =>
           log.rawDate ? log.rawDate.startsWith(`${m.year}-${String(m.month).padStart(2, '0')}-`)
             : log.monthStr === `${m.month}월`));

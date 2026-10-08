@@ -55,7 +55,7 @@
   async function getStatus() {
     if (!(await isAvailable())) return null;
     try {
-      const res = await withTimeout(fetch(ENDPOINT, { method: 'GET', headers: await authHeaders() }), TIMEOUT_MS);
+      const res = await withTimeout(fetch(ENDPOINT, { method: 'GET', headers: await authHeaders() }), 120000);
       return await res.json();
     } catch (err) {
       return { ok: false, message: err.message };
@@ -76,7 +76,7 @@
         method: 'POST',
         headers: await authHeaders(),
         body: JSON.stringify({ mode, confirm: true })
-      }), TIMEOUT_MS);
+      }), 120000);
       return await res.json();
     } catch (err) {
       return { ok: false, message: err.message };
@@ -123,13 +123,13 @@
       const headers = { 'Content-Type': 'application/json' };
       if (syncInfo?.transport === 'vercel') {
         const user = window.WncCloud && window.WncCloud.user;
-        if (!user) return { ok: false, message: 'Firebase 관리자 계정으로 로그인한 뒤 실행해 주세요.' };
+        if (!user) return { ok: false, message: '직원 계정으로 로그인한 뒤 실행해 주세요.' };
         headers.Authorization = `Bearer ${await user.getIdToken()}`;
       }
-      const res = await withTimeout(fetch(SYNC_ENDPOINT, {
+      const res = await withTimeout(fetch(syncInfo?.transport === 'vercel' ? '/api/sync/on-login' : SYNC_ENDPOINT, {
         method: 'POST',
         headers,
-        body: JSON.stringify({ year, month, confirm: true })
+        body: JSON.stringify({ year, month, confirm: true, force: true })
       }), SYNC_TIMEOUT_MS);
       const result = await res.json();
       if (result.ok && syncInfo?.transport === 'vercel') await window.WncCloud.refreshSitegateData();

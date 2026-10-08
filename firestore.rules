@@ -40,6 +40,10 @@ service cloud.firestore {
         allow read: if isMember() && request.auth.uid == uid;
         allow write: if false;
       }
+      match /attendance_months/{month} {
+        allow read: if isMember() && request.auth.uid == uid;
+        allow write: if false;
+      }
     }
     match /business_snapshots/{kind}/chunks/{chunk} {
       allow read: if isMember();

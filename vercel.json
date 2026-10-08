@@ -12,12 +12,16 @@
       "maxDuration": 300
     },
     "api/attendance.js": {
-      "maxDuration": 120
+      "maxDuration": 300
     },
     "api/sitegate-account.js": {
       "maxDuration": 60
     },
     "api/sync/business.js": {
+      "maxDuration": 300,
+      "includeFiles": "{scripts/**,data/mockData.js,data/_legacy/**,node_modules/**}"
+    },
+    "api/sync/on-login.js": {
       "maxDuration": 300,
       "includeFiles": "{scripts/**,data/mockData.js,data/_legacy/**,node_modules/**}"
     }
@@ -35,92 +39,12 @@
       "schedule": "15 9 * * *"
     },
     {
-      "path": "/api/sync/business?kind=projects",
-      "schedule": "20 23 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=sites",
-      "schedule": "21 23 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=team-schedules",
-      "schedule": "22 23 * * *"
-    },
-    {
       "path": "/api/sync/business?kind=leaves",
       "schedule": "23 23 * * *"
     },
     {
-      "path": "/api/sync/business?kind=equipment",
-      "schedule": "24 23 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=expenses",
-      "schedule": "25 23 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=issues",
-      "schedule": "26 23 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=contracts",
-      "schedule": "27 23 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=planning-estimates",
-      "schedule": "28 23 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=worklog-index",
-      "schedule": "29 23 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=all-business",
-      "schedule": "30 23 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=projects",
-      "schedule": "20 9 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=sites",
-      "schedule": "21 9 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=team-schedules",
-      "schedule": "22 9 * * *"
-    },
-    {
       "path": "/api/sync/business?kind=leaves",
       "schedule": "23 9 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=equipment",
-      "schedule": "24 9 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=expenses",
-      "schedule": "25 9 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=issues",
-      "schedule": "26 9 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=contracts",
-      "schedule": "27 9 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=planning-estimates",
-      "schedule": "28 9 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=worklog-index",
-      "schedule": "29 9 * * *"
-    },
-    {
-      "path": "/api/sync/business?kind=all-business",
-      "schedule": "30 9 * * *"
     }
   ]
 }

@@ -700,11 +700,13 @@
             </div>
           </div>
           <h2 class="profile-name" id="profile-name-text">이재광</h2>
-          <p class="profile-role" id="profile-role-text">시니어 운영 관리자</p>
+          <p class="profile-role" id="profile-role-text"></p>
+          <p class="text-xs text-on-surface-variant" id="profile-email-text"></p>
+          <p class="text-xs text-on-surface-variant" id="profile-phone-text"></p>
           <div class="profile-meta-tags">
-            <span class="meta-tag">ID: FA-99283</span>
+            <span class="meta-tag" id="profile-id-text"></span>
             <span class="meta-tag active">
-              <span class="log-badge-dot"></span> 정상 근무 중
+              <span class="log-badge-dot"></span> <span id="profile-status-text"></span>
             </span>
           </div>
         </div>
@@ -2842,20 +2844,20 @@
           </button>
         </div>
 
-        <!-- 4. 근태일지 크롤링 (기존 그룹웨어 sitegate 연동) -->
+        <!-- 4. 데이터 새로 불러오기 (기존 그룹웨어 sitegate 연동) -->
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <label class="font-label text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-1.5">
               <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
               </svg>
-              근태일지 크롤링
+              데이터 새로 불러오기
             </label>
             <span class="text-[11px] text-on-surface-variant font-medium">sitegate 연동</span>
           </div>
           <div class="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15 space-y-3">
             <p class="text-[11px] text-on-surface-variant leading-relaxed">
-              기존 그룹웨어(sitegate)에서 선택한 달의 전사 근태일지와 출퇴근 기록을 가져와 전 디바이스에 동기화합니다.
+              선택한 달의 출퇴근 시간·연차·휴가·외근·근태 정보를 새로 불러옵니다.
             </p>
             <div class="flex items-center gap-2">
               <input type="month" id="settings-sync-month"
@@ -2865,7 +2867,7 @@
                 <svg class="w-4 h-4" id="settings-sync-icon" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
                 </svg>
-                <span id="settings-sync-label">크롤링</span>
+                <span id="settings-sync-label">새로 불러오기</span>
               </button>
             </div>
             <p class="text-[11px] font-medium text-on-surface-variant" id="settings-sync-status">중계 상태를 확인하는 중입니다...</p>

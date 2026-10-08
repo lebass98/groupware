@@ -1,5 +1,6 @@
 const sitegate = require('../scripts/sitegate-attendance');
 const { member, credentials, serviceToken, DOCUMENTS } = require('../server/sitegate-user');
+const { syncAttendanceLogs } = require('../server/attendance-sync');
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   if (!['GET', 'POST'].includes(req.method)) return res.status(405).json({ ok: false });
@@ -24,6 +25,9 @@ module.exports = async (req, res) => {
           updatedAt: { timestampValue: new Date().toISOString() } } })
       });
       if (!saved.ok) result.message += ' · 기존 그룹웨어 등록은 완료됐지만 Firebase 보관에 실패했습니다.';
+      const parts = date.split('-').map(Number);
+      try { await syncAttendanceLogs(user, token, { year: parts[0], month: parts[1] }); }
+      catch { result.message += ' · 월별 기록 새로고침이 지연되고 있습니다.'; }
     }
     return res.status(200).json(result);
   } catch (error) {

@@ -5,7 +5,7 @@ const { createRequire } = require('node:module');
 const { gzipSync } = require('node:zlib');
 const { randomUUID } = require('node:crypto');
 const { DOCUMENTS } = require('./sitegate-user');
-const KINDS = ['projects', 'sites', 'team-schedules', 'leaves', 'equipment', 'expenses', 'issues', 'contracts', 'planning-estimates', 'worklog-index', 'all-business'];
+const KINDS = ['leaves'];
 
 // 기존 파서를 사용하되 파일 수정은 요청별 메모리에만 저장합니다.
 // 수집 완료 후 변경된 업무 데이터만 Firestore에 게시합니다.

@@ -19,7 +19,11 @@ module.exports = async (req, res) => {
     }
     return res.status(200).json(await save(body.kind, await collect(body.kind), await serviceToken()));
   } catch (error) {
-    console.error('[business sync]', error.name);
+    let message = String(error.message || '').replace(/https?:\/\/\S+/g, '[source]');
+    for (const key of ['SITEGATE_PW', 'CRON_SECRET', 'FIREBASE_SERVICE_ACCOUNT']) {
+      if (process.env[key]) message = message.split(process.env[key]).join('[secret]');
+    }
+    console.error('[business sync]', error.name, message.slice(0, 160));
     return res.status(502).json({ ok: false, message: '업무 데이터 수집 또는 저장에 실패했습니다. 이전 데이터는 유지됩니다.' });
   }
 };

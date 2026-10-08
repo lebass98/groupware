@@ -118,11 +118,31 @@
       console.info(`[Firebase] 로그인 상태 확인: ${user.email}`);
 
       this.account = { uid: user.uid, email: user.email, switched };
+      this._attendanceLogs = null;
+      if (window.MockData?.attendance && window.MockData.user?.email !== user.email) {
+        window.MockData.attendance.logs = [];
+      }
       // 앱이 인메모리 상태를 먼저 정리하도록 통지한 뒤 원격 구독을 시작한다.
       window.dispatchEvent(new CustomEvent('wnc-cloud-account-changed', { detail: this.account }));
 
       this._subscribe(user.uid);
       this._subscribeSitegateData();
+      this._syncOnLogin(user);
+    },
+
+    async _syncOnLogin(user) {
+      try {
+        const response = await fetch('/api/sync/on-login', {
+          method: 'POST', headers: { Authorization: `Bearer ${await user.getIdToken()}` },
+          signal: AbortSignal.timeout(300000)
+        });
+        const result = await response.json();
+        if (this.user?.uid !== user.uid) return;
+        if (result.ok) await this.refreshSitegateData();
+        window.dispatchEvent(new CustomEvent('wnc-login-sync', { detail: result }));
+      } catch (error) {
+        console.warn('[Firebase] 로그인 자동 수집 실패:', error.name);
+      }
     },
 
     /** 이메일/비밀번호 로그인. 결과를 항상 객체로 반환하며 예외를 던지지 않는다. */
@@ -261,6 +281,10 @@
     },
 
     _unsubscribeSnapshot() {
+      if (this._attendanceUnsubscribe) {
+        this._attendanceUnsubscribe();
+        this._attendanceUnsubscribe = null;
+      }
       if (this._businessUnsubscribe) {
         this._businessUnsubscribe();
         this._businessUnsubscribe = null;
@@ -308,6 +332,22 @@
     },
 
     _subscribeSitegateData() {
+      const uid = this.user.uid;
+      this._attendanceUnsubscribe = this._db.collection('users').doc(uid).collection('attendance_months')
+        .onSnapshot(snapshot => {
+          if (this.user?.uid !== uid) return;
+          const months = [];
+          const logs = [];
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.sourceEmail !== this.user.email) return;
+            months.push({ year: data.year, month: data.month });
+            logs.push(...JSON.parse(data.logs || '[]'));
+          });
+          this._attendanceLogs = logs;
+          window.MockData.attendance.logs = logs;
+          window.dispatchEvent(new CustomEvent('wnc-sitegate-data', { detail: { months, logs: true, personal: true } }));
+        }, error => console.warn('[Firebase] 개인 출퇴근 구독 실패:', error.code));
       this._businessVersions = {};
       this._businessUnsubscribe = this._db.collection('meta').where('source', '==', 'business')
         .onSnapshot(snapshot => {
