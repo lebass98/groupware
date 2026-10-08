@@ -384,3 +384,13 @@ Pool/
 
 ### 2026-10-08
 - **Vercel 배포 전환**: 정적 웹 배포 설정 추가, GitHub Pages 배포 중단 및 웹 공유·모바일 WebView 주소 변경.
+
+- **Vercel 서울 서버 크롤링 전환**: 설정의 근태일지 수집을 서울 리전 API와 Firebase 관리자 인증으로 연결하고 월별 결과를 Firestore에 저장·실시간 반영하도록 구현.
+
+### Vercel 근태일지 크롤링 운영
+
+- `SITEGATE_URL`, `SITEGATE_ID`, `SITEGATE_PW`는 Vercel Production의 Secret 환경변수로 관리합니다.
+- 설정 화면에서 Firebase 관리자 계정으로 로그인한 뒤 대상 월을 선택하고 크롤링을 실행합니다. GitHub 토큰과 Mac 러너는 이 버튼에 필요하지 않습니다.
+- 관리자 권한은 기존 `admins/{Firebase UID}` 문서로 확인합니다. `members/{이메일}` 명부 등록과 `firestore.rules` 적용도 필요합니다.
+- `/api/sync/daily-reports`는 서울(`icn1`)에서 실행됩니다. 일정 날짜 문서와 `meta/sitegate-sync-연도-월` 결과를 한 배치에 저장하여 실패 시 부분 반영을 방지합니다. PC·모바일은 월별 결과를 구독합니다. 개인 출퇴근 기록은 수집 계정 본인에게만 화면에 반영합니다.
+- 이번 전환은 설정의 수동 근태일지 크롤링에 적용됩니다. 기존 GitHub Actions의 정기 수집과 출퇴근 등록은 별도 경로입니다.

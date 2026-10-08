@@ -800,7 +800,7 @@ const PCApp = {
             </div>
             <div>
               <p class="text-sm font-bold text-on-surface">GitHub 연동 <span class="text-xs font-medium text-on-surface-variant">· 관리자 전용</span></p>
-              <p class="text-xs text-on-surface-variant">토큰을 등록하면 배포본에서도 크롤링·출퇴근 버튼이 동작합니다. 이 기기에만 저장됩니다.</p>
+              <p class="text-xs text-on-surface-variant">GitHub Actions 출퇴근 연동용입니다. 크롤링에는 Firebase 관리자 로그인을 사용합니다.</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
@@ -850,11 +850,14 @@ const PCApp = {
     btn.disabled = true;
     status.innerText = '실행 경로를 확인하는 중...';
 
-    window.WncSitegate.isAvailable().then((available) => {
+    window.WncSitegate.getSyncInfo().then((info) => {
+      const available = info && info.available !== false;
       if (available) {
         this._syncVia = 'relay';
         btn.disabled = false;
-        status.innerText = '로컬 중계 연결됨 · 버튼을 누르면 해당 월을 바로 가져옵니다.';
+        status.innerText = info.transport === 'vercel'
+          ? (window.WncCloud?.isSignedIn() ? '해당 월을 가져와 모든 기기에 바로 반영합니다. 관리자 권한이 필요합니다.' : 'Firebase 관리자 계정으로 로그인한 뒤 실행해 주세요.')
+          : '로컬 중계 연결됨 · 버튼을 누르면 해당 월을 바로 가져옵니다.';
         return;
       }
 
@@ -886,7 +889,7 @@ const PCApp = {
     if (input) input.value = '';
     status.innerText = '토큰 확인 중...';
     window.WncActions.verifyToken().then((r) => {
-      status.innerText = r.ok ? '토큰 등록됨 · 배포본에서도 버튼이 동작합니다.' : `${r.message}`;
+      status.innerText = r.ok ? '토큰 등록됨 · GitHub Actions 실행 요청에 사용됩니다.' : `${r.message}`;
     });
   },
 
@@ -917,7 +920,7 @@ const PCApp = {
       window.WncActions.setToken('');
       this.showToast(result.message);
     }
-    if (status) status.innerText = result.ok ? '토큰 등록됨 · 배포본에서도 버튼이 동작합니다.' : result.message;
+    if (status) status.innerText = result.ok ? '토큰 등록됨 · GitHub Actions 실행 요청에 사용됩니다.' : result.message;
     this.initDailyReportSyncUI();
   },
 
@@ -945,7 +948,7 @@ const PCApp = {
       btn.disabled = false;
       if (status) status.innerText = msg;
       this.showToast(msg);
-      if (ok) setTimeout(() => window.location.reload(), 1600);
+      if (ok) window.WncSitegate.getSyncInfo().then(info => { if (info?.transport !== 'vercel') setTimeout(() => window.location.reload(), 1600); });
     };
 
     // 1) 로컬 중계가 있으면 직접 크롤링한다(가장 빠르다).
@@ -8124,6 +8127,18 @@ const PCApp = {
     // 5. 계정 격리 연동: 로그인 계정 확정 및 클라우드 최초 수신 시점에 상태를 정렬한다.
     window.addEventListener('wnc-cloud-account-changed', (e) => this.handleCloudAccountChanged(e.detail));
     window.addEventListener('wnc-cloud-hydrated', () => this.handleCloudHydrated());
+    window.addEventListener('wnc-sitegate-data', (event) => {
+      const { months, logs } = event.detail;
+      if (logs) {
+        this.state.logs = (this.state.logs || []).filter(log => !months.some(m =>
+          log.rawDate ? log.rawDate.startsWith(`${m.year}-${String(m.month).padStart(2, '0')}-`)
+            : log.monthStr === `${m.month}월`));
+        this.state.logs = this.mergeAttendanceLogs(this.state.logs);
+      }
+      this.saveState();
+      this.refreshAllViews();
+    });
+
 
     // 인증 복원이 앱 초기화보다 먼저 끝난 경우를 대비해 마지막 이벤트를 재생한다.
     if (window.WncCloud && window.WncCloud.account) {

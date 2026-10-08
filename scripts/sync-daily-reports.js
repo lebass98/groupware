@@ -112,7 +112,7 @@ function loadEmployees() {
 }
 
 // 3. Sitegate 세션 로그인
-async function login(baseUrl, mb_id, mb_password) {
+async function login(baseUrl, mb_id, mb_password, fetchImpl = fetch) {
   const loginUrl = `${baseUrl}/html/board/bbs/login_check.php`;
   const bodyParams = new URLSearchParams({
     url: '/',
@@ -120,7 +120,7 @@ async function login(baseUrl, mb_id, mb_password) {
     mb_password
   });
 
-  const res = await fetch(loginUrl, {
+  const res = await fetchImpl(loginUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -130,18 +130,20 @@ async function login(baseUrl, mb_id, mb_password) {
     redirect: 'manual'
   });
 
+  if (res.status >= 400) throw new Error('sitegate 로그인 응답 오류 (HTTP ' + res.status + ')');
   const rawCookies = res.headers.getSetCookie ? res.headers.getSetCookie() : [];
   const validCookies = rawCookies
     .filter(c => !c.includes('deleted'))
     .map(c => c.split(';')[0]);
 
   const buf = await res.arrayBuffer();
-  const html = new TextDecoder('euc-kr').decode(buf);
+  const html = new TextDecoder(/charset=utf-?8/i.test(res.headers.get('content-type') || '') ? 'utf-8' : 'euc-kr').decode(buf);
   if (html.includes('alert(')) {
     const m = html.match(/alert\(['"]([^'"]+)['"]\)/);
     throw new Error(m ? m[1] : '로그인에 실패했습니다.');
   }
 
+  if (!validCookies.length) throw new Error('sitegate 로그인 세션을 받지 못했습니다.');
   return validCookies.join('; ');
 }
 
@@ -173,33 +175,13 @@ function calcDuration(inStr, outStr) {
   return { sec: diffSec, text: `${h}시간 ${m}분` };
 }
 
-async function main() {
-  console.log('🚀 [그룹웨어 근태 및 출퇴근 데이터 크롤링 & 동기화 시작]');
-
-  const env = loadEnv();
-  const baseUrl = env.SITEGATE_URL || 'http://sitegate.co.kr';
-  const mb_id = env.SITEGATE_ID || 'yellow';
-  const mb_password = env.SITEGATE_PW || '';
-
-  if (!mb_password) {
-    console.error('❌ .env 파일에 SITEGATE_PW(비밀번호)가 없습니다.');
-    process.exit(1);
-  }
-
-  console.log(`🔑 [1/5] sitegate.co.kr 로그인 중... (아이디: ${mb_id})`);
-  const cookieHeader = await login(baseUrl, mb_id, mb_password);
-  console.log('✅ [1/5] 로그인 성공! 세션 쿠키 획득 완료');
-
-  const employees = loadEmployees();
+async function collectDailyReports({ baseUrl, mb_id, mb_password, employees, range, fetchImpl = fetch }) {
+  const cookieHeader = await login(baseUrl, mb_id, mb_password, fetchImpl);
   const empMap = new Map();
-  employees.forEach(e => {
-    if (!empMap.has(e.name)) empMap.set(e.name, e);
-  });
-
+  employees.forEach(e => { if (!empMap.has(e.name)) empMap.set(e.name, e); });
   // -------------------------------------------------------------
   // 1. 근태일지 캘린더 (bo_table=daily_report&skin=diary) 크롤링
   // -------------------------------------------------------------
-  const range = getCrawlRange();
   const monthLabel = range.scheduleMonths.map((x) => `${x.month}월`).join(', ');
   console.log(`📥 [2/5] 전사 근태일지(${monthLabel}) 캘린더 데이터 크롤링 중...`);
   const allSchedules = {};
@@ -207,13 +189,15 @@ async function main() {
 
   for (const { year: y, month: m } of range.scheduleMonths) {
     const url = `${baseUrl}/html/board/bbs/board.php?bo_table=daily_report&skin=diary&year=${y}&month=${m}&id=${mb_id}`;
-    const res = await fetch(url, {
+    const res = await fetchImpl(url, {
       headers: { Cookie: cookieHeader, 'User-Agent': 'Mozilla/5.0' }
     });
+    if (!res.ok) throw new Error('sitegate 응답 오류 (HTTP ' + res.status + ')');
     const buf = await res.arrayBuffer();
-    const html = new TextDecoder('euc-kr').decode(buf);
+    const html = new TextDecoder(/charset=utf-?8/i.test(res.headers.get('content-type') || '') ? 'utf-8' : 'euc-kr').decode(buf);
     const $ = cheerio.load(html);
     const t3 = $('table').eq(3);
+    if (!t3.length || !html.includes('diary')) throw new Error('근태일지 페이지 구조를 확인하지 못했습니다.');
 
     t3.find('td').each((_, td) => {
       if ($(td).find('table').length > 0 || !$(td).text().includes('●')) return;
@@ -312,7 +296,7 @@ async function main() {
       });
 
       if (dayItems.length > 0) {
-        allSchedules[`2026-${m}-${day}`] = dayItems;
+        allSchedules[`${y}-${m}-${day}`] = dayItems;
       }
     });
   }
@@ -327,13 +311,15 @@ async function main() {
 
   for (const { year: y, month: m } of range.attendanceMonths) {
     const url = `${baseUrl}/html/board/bbs/board.php?bo_table=attendance&year=${y}&month=${m}&id=`;
-    const res = await fetch(url, {
+    const res = await fetchImpl(url, {
       headers: { Cookie: cookieHeader, 'User-Agent': 'Mozilla/5.0' }
     });
+    if (!res.ok) throw new Error('sitegate 응답 오류 (HTTP ' + res.status + ')');
     const buf = await res.arrayBuffer();
-    const html = new TextDecoder('euc-kr').decode(buf);
+    const html = new TextDecoder(/charset=utf-?8/i.test(res.headers.get('content-type') || '') ? 'utf-8' : 'euc-kr').decode(buf);
     const $ = cheerio.load(html);
     const t39 = $('table').eq(39);
+    if (!t39.length) throw new Error('출퇴근 페이지 구조를 확인하지 못했습니다.');
 
     t39.find('tr').each((_, tr) => {
       const cols = [];
@@ -382,9 +368,31 @@ async function main() {
   allLogs.sort((a, b) => b.rawDate.localeCompare(a.rawDate));
   allLogs.forEach((item, idx) => {
     item.id = idx + 1;
-    delete item.rawDate;
   });
   console.log(`✅ [3/5] 출퇴근 기록 크롤링 완료: 총 ${allLogs.length}건 수집 (최신: ${allLogs[0] ? `${allLogs[0].monthStr} ${allLogs[0].dayNum}일 ${allLogs[0].checkInTimeStr}` : '없음'})`);
+
+  return { schedules: allSchedules, logs: allLogs };
+}
+
+async function main() {
+  console.log('🚀 [그룹웨어 근태 및 출퇴근 데이터 크롤링 & 동기화 시작]');
+
+  const env = loadEnv();
+  const baseUrl = env.SITEGATE_URL || 'http://sitegate.co.kr';
+  const mb_id = env.SITEGATE_ID || 'yellow';
+  const mb_password = env.SITEGATE_PW || '';
+
+  if (!mb_password) {
+    console.error('❌ .env 파일에 SITEGATE_PW(비밀번호)가 없습니다.');
+    process.exit(1);
+  }
+
+  console.log(`🔑 [1/5] sitegate.co.kr 로그인 중... (아이디: ${mb_id})`);
+
+  const employees = loadEmployees();
+
+  const range = getCrawlRange();
+  const { schedules: allSchedules, logs: allLogs } = await collectDailyReports({ baseUrl, mb_id, mb_password, employees, range });
 
   // -------------------------------------------------------------
   // 2-5. 단일 월 모드 병합
@@ -491,7 +499,9 @@ async function main() {
   console.log('\n🎉 [성공] 그룹웨어 근태 및 출퇴근 데이터 크롤링 & 전 디바이스 동기화가 완벽히 완료되었습니다!');
 }
 
-main().catch(err => {
+module.exports = { collectDailyReports, login };
+
+if (require.main === module) main().catch(err => {
   console.error('\n❌ 크롤링 중 오류 발생:', err);
   process.exit(1);
 });

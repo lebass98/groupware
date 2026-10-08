@@ -18,10 +18,11 @@
   const ENDPOINT = '/api/attendance';
   const SYNC_ENDPOINT = '/api/sync/daily-reports';
   const TIMEOUT_MS = 20000;
-  const SYNC_TIMEOUT_MS = 180000; // 크롤링은 로그인·파싱·시드 재생성까지 포함해 오래 걸린다.
+  const SYNC_TIMEOUT_MS = 300000; // 크롤링은 로그인·파싱·시드 재생성까지 포함해 오래 걸린다.
 
   // 중계 존재 여부는 한 번만 확인하고 재사용한다(매번 확인하면 버튼이 느려진다).
   let availability = null;
+  let syncInfo = null;
 
   function withTimeout(promise, ms) {
     return new Promise((resolve, reject) => {
@@ -42,7 +43,8 @@
       const res = await withTimeout(fetch(SYNC_ENDPOINT, { method: 'GET' }), 5000);
       // 정적 호스팅이면 404/HTML이 돌아온다. JSON 응답일 때만 중계로 인정한다.
       const type = res.headers.get('content-type') || '';
-      availability = res.ok && type.includes('application/json');
+      syncInfo = res.ok && type.includes('application/json') ? await res.json() : null;
+      availability = !!syncInfo && syncInfo.available !== false;
     } catch (_) {
       availability = false;
     }
@@ -51,7 +53,7 @@
 
   /** 오늘의 sitegate 출퇴근 상태를 조회한다. 중계가 없으면 null. */
   async function getStatus() {
-    if (!(await isAvailable())) return null;
+    if (!(await isAvailable()) || syncInfo?.transport === 'vercel') return null;
     try {
       const res = await withTimeout(fetch(ENDPOINT, { method: 'GET' }), TIMEOUT_MS);
       return await res.json();
@@ -68,7 +70,7 @@
    *          중계가 없으면 { skipped: true } 를 돌려준다(오류가 아니다).
    */
   async function register(mode) {
-    if (!(await isAvailable())) return { skipped: true, ok: false };
+    if (!(await isAvailable()) || syncInfo?.transport === 'vercel') return { skipped: true, ok: false };
     try {
       const res = await withTimeout(fetch(ENDPOINT, {
         method: 'POST',
@@ -115,19 +117,28 @@
    */
   async function syncDailyReports(year, month) {
     if (!(await isAvailable())) {
-      return { skipped: true, ok: false, message: '크롤링 중계 서버가 없는 환경입니다. 로컬 개발 서버(npm start)에서만 동작합니다.' };
+      return { skipped: true, ok: false, message: '크롤링 중계 서버가 없는 환경입니다. 서버 설정을 확인해 주세요.' };
     }
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (syncInfo?.transport === 'vercel') {
+        const user = window.WncCloud && window.WncCloud.user;
+        if (!user) return { ok: false, message: 'Firebase 관리자 계정으로 로그인한 뒤 실행해 주세요.' };
+        headers.Authorization = `Bearer ${await user.getIdToken()}`;
+      }
       const res = await withTimeout(fetch(SYNC_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ year, month, confirm: true })
       }), SYNC_TIMEOUT_MS);
-      return await res.json();
+      const result = await res.json();
+      if (result.ok && syncInfo?.transport === 'vercel') await window.WncCloud.refreshSitegateData();
+      return result;
     } catch (err) {
       return { ok: false, message: err.message };
     }
   }
 
-  window.WncSitegate = { isAvailable, getStatus, register, syncAndNotify, syncDailyReports };
+  async function getSyncInfo() { await isAvailable(); return syncInfo; }
+  window.WncSitegate = { isAvailable, getSyncInfo, getStatus, register, syncAndNotify, syncDailyReports };
 })();

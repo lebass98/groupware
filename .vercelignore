@@ -11,3 +11,4 @@ public
 *.log
 ._*
 **/._*
+tests

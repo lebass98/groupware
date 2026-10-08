@@ -36,6 +36,7 @@
     _db: null,
     _auth: null,
     _unsubscribe: null,
+    _masterUnsubscribe: null,
     _pushTimer: null,
     _clientId: Math.random().toString(36).slice(2) + Date.now().toString(36),
     _lastPushed: {},
@@ -121,6 +122,7 @@
       window.dispatchEvent(new CustomEvent('wnc-cloud-account-changed', { detail: this.account }));
 
       this._subscribe(user.uid);
+      this._subscribeSitegateData();
     },
 
     /** 이메일/비밀번호 로그인. 결과를 항상 객체로 반환하며 예외를 던지지 않는다. */
@@ -259,10 +261,53 @@
     },
 
     _unsubscribeSnapshot() {
+      if (this._masterUnsubscribe) {
+        this._masterUnsubscribe();
+        this._masterUnsubscribe = null;
+      }
       if (this._unsubscribe) {
         this._unsubscribe();
         this._unsubscribe = null;
       }
+    },
+
+    _applySitegateData(snapshot) {
+      if (!this.user || !window.MockData) return;
+      const months = [];
+      let hasLogs = false;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (!Number.isInteger(data.year) || !Number.isInteger(data.month) || !data.schedules) return;
+        months.push({ year: data.year, month: data.month });
+        const prefix = `${data.year}-${data.month}-`;
+        Object.keys(window.MockData.schedules).forEach(key => {
+          if (key.startsWith(prefix)) delete window.MockData.schedules[key];
+        });
+        Object.assign(window.MockData.schedules, data.schedules);
+        // 수집 계정 본인에게만 개인 출퇴근 기록을 적용한다.
+        if (Array.isArray(data.logs) && data.sourceEmail === this.user.email) {
+          hasLogs = true;
+          const current = window.MockData.attendance.logs || [];
+          const kept = current.filter(log => log.rawDate
+            ? !log.rawDate.startsWith(`${data.year}-${String(data.month).padStart(2, '0')}-`)
+            : log.monthStr !== `${data.month}월`);
+          window.MockData.attendance.logs = kept.concat(data.logs);
+        }
+      });
+      if (months.length) window.dispatchEvent(new CustomEvent('wnc-sitegate-data', { detail: { months, logs: hasLogs } }));
+    },
+
+    async refreshSitegateData() {
+      if (!this.isSignedIn()) throw new Error('Firebase 로그인이 필요합니다.');
+      const snapshot = await this._db.collection('meta').where('source', '==', 'sitegate').get({ source: 'server' });
+      this._applySitegateData(snapshot);
+    },
+
+    _subscribeSitegateData() {
+      this._masterUnsubscribe = this._db.collection('meta').where('source', '==', 'sitegate')
+        .onSnapshot(snapshot => this._applySitegateData(snapshot), error => {
+          console.warn('[Firebase] 크롤링 데이터 구독 실패:', error.code);
+        });
     },
 
     /** 원격 확인 완료를 선언하고 업로드를 개방한다(최초 1회만 통지). */
