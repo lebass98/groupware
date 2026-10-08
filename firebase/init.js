@@ -261,6 +261,10 @@
     },
 
     _unsubscribeSnapshot() {
+      if (this._businessUnsubscribe) {
+        this._businessUnsubscribe();
+        this._businessUnsubscribe = null;
+      }
       if (this._masterUnsubscribe) {
         this._masterUnsubscribe();
         this._masterUnsubscribe = null;
@@ -304,10 +308,34 @@
     },
 
     _subscribeSitegateData() {
+      this._businessVersions = {};
+      this._businessUnsubscribe = this._db.collection('meta').where('source', '==', 'business')
+        .onSnapshot(snapshot => {
+          snapshot.forEach(doc => this._applyBusinessData(doc.data()).catch(error => console.warn('[Firebase] 업무 데이터 수신 실패:', error.name)));
+        });
       this._masterUnsubscribe = this._db.collection('meta').where('source', '==', 'sitegate')
         .onSnapshot(snapshot => this._applySitegateData(snapshot), error => {
           console.warn('[Firebase] 크롤링 데이터 구독 실패:', error.code);
         });
+    },
+
+    async _applyBusinessData(data) {
+      if (!this.user || this._businessVersions[data.kind] === data.version) return;
+      const uid = this.user.uid;
+      const documents = await Promise.all(Array.from({ length: data.chunks }, (_, i) =>
+        this._db.collection('business_snapshots').doc(data.kind).collection('chunks').doc(String(i)).get()));
+      if (this.user?.uid !== uid || documents.some(doc => !doc.exists || doc.data().version !== data.version)) return;
+      const encoded = documents.map(doc => doc.data().content).join('');
+      const bytes = Uint8Array.from(atob(encoded), char => char.charCodeAt(0));
+      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+      const changes = JSON.parse(await new Response(stream).text());
+      if (this.user?.uid !== uid) return;
+      for (const [key, value] of Object.entries(changes)) {
+        if (key === 'extendedData') Object.assign(window.MockData.extendedData ||= {}, value);
+        else window.MockData[key] = value;
+      }
+      this._businessVersions[data.kind] = data.version;
+      window.dispatchEvent(new CustomEvent('wnc-business-data', { detail: changes }));
     },
 
     /** 원격 확인 완료를 선언하고 업로드를 개방한다(최초 1회만 통지). */

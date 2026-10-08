@@ -53,9 +53,9 @@
 
   /** 오늘의 sitegate 출퇴근 상태를 조회한다. 중계가 없으면 null. */
   async function getStatus() {
-    if (!(await isAvailable()) || syncInfo?.transport === 'vercel') return null;
+    if (!(await isAvailable())) return null;
     try {
-      const res = await withTimeout(fetch(ENDPOINT, { method: 'GET' }), TIMEOUT_MS);
+      const res = await withTimeout(fetch(ENDPOINT, { method: 'GET', headers: await authHeaders() }), TIMEOUT_MS);
       return await res.json();
     } catch (err) {
       return { ok: false, message: err.message };
@@ -70,11 +70,11 @@
    *          중계가 없으면 { skipped: true } 를 돌려준다(오류가 아니다).
    */
   async function register(mode) {
-    if (!(await isAvailable()) || syncInfo?.transport === 'vercel') return { skipped: true, ok: false };
+    if (!(await isAvailable())) return { skipped: true, ok: false };
     try {
       const res = await withTimeout(fetch(ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: await authHeaders(),
         body: JSON.stringify({ mode, confirm: true })
       }), TIMEOUT_MS);
       return await res.json();
@@ -139,6 +139,25 @@
     }
   }
 
+  async function authHeaders() {
+    const headers = { 'Content-Type': 'application/json' };
+    if (syncInfo?.transport === 'vercel') {
+      const user = window.WncCloud?.user;
+      if (!user) throw new Error('직원 계정으로 로그인해 주세요.');
+      headers.Authorization = `Bearer ${await user.getIdToken()}`;
+    }
+    return headers;
+  }
+  async function connectAccount(password) {
+    try {
+      await isAvailable();
+      const response = await withTimeout(fetch('/api/sitegate-account', {
+        method: 'POST', headers: await authHeaders(), body: JSON.stringify({ password })
+      }), 60000);
+      return await response.json();
+    } catch (error) { return { ok: false, message: error.message }; }
+  }
+
   async function getSyncInfo() { await isAvailable(); return syncInfo; }
-  window.WncSitegate = { isAvailable, getSyncInfo, getStatus, register, syncAndNotify, syncDailyReports };
+  window.WncSitegate = { isAvailable, getSyncInfo, getStatus, register, syncAndNotify, syncDailyReports, connectAccount };
 })();

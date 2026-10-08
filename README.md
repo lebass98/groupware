@@ -391,14 +391,16 @@ Pool/
 
 - **white 계정 주소록 프로필 연결 및 수동 수집 경로 고정**: 최지영·디자인팀·과장 정보를 계정에 저장하고 로그인 후 클라우드 동기화에도 프로필을 유지하며 Vercel 수집 연결 실패 시 Mac 워크플로로 우회하지 않도록 수정.
 
-### Vercel 근태일지 크롤링 운영
+- **업무 연동 전체 Vercel 전환**: 직원별 출퇴근·계정 연결 API와 11종 업무 데이터 수집 API를 서울 리전으로 이동하고 Firebase 결과 구독 및 Vercel 자체 하루 두 번 예약을 구성, Mac/GitHub 업무 실행 경로 중단.
 
-- `SITEGATE_URL`, `SITEGATE_ID`, `SITEGATE_PW`는 Vercel Production의 Secret 환경변수로 관리합니다.
-- 설정 화면에서 Firebase 관리자 계정으로 로그인한 뒤 대상 월을 선택하고 크롤링을 실행합니다. GitHub 토큰과 Mac 러너는 이 버튼에 필요하지 않습니다.
-- 관리자 권한은 기존 `admins/{Firebase UID}` 문서로 확인합니다. `members/{이메일}` 명부 등록과 `firestore.rules` 적용도 필요합니다.
-- `/api/sync/daily-reports`는 서울(`icn1`)에서 실행됩니다. 일정 날짜 문서와 `meta/sitegate-sync-연도-월` 결과를 한 배치에 저장하여 실패 시 부분 반영을 방지합니다. PC·모바일은 월별 결과를 구독합니다. 개인 출퇴근 기록은 수집 계정 본인에게만 화면에 반영합니다.
-- 현재 월 근태일지는 `.github/workflows/vercel-crawl.yml`에서 매일 한국 시간 08:15·18:15에 자동 수집합니다. GitHub 호스티드 러너는 호출만 하고 실제 수집·저장은 Vercel 서울 서버가 처리하므로 Mac을 켜둘 필요가 없습니다. GitHub 일정 실행은 지연될 수 있습니다.
-- 자동 수집은 전용 서비스 계정(`roles/datastore.user`)과 Vercel `FIREBASE_SERVICE_ACCOUNT`·`CRON_SECRET`, GitHub `WNC_CRAWL_SECRET`을 사용합니다. 키는 코드·브라우저에 포함하지 않습니다.
-- 기존 Mac 전체 업무 데이터 수집은 수동 실행으로 유지합니다. 출퇴근 등록은 별도 경로입니다.
-- Firebase는 서울 `asia-northeast3`의 기본 Firestore, 이메일/비밀번호 인증, Vercel 승인 도메인과 운영 보안 규칙을 사용합니다. 규칙 배포: `npx firebase-tools deploy --only firestore:rules --project wnc-groupware`.
+### Vercel 운영
 
+- 웹: https://wnc-groupware.vercel.app
+- 수동 근태일지: 설정의 대상 월 선택 후 실행. Firebase 관리자 권한 필요.
+- 출근·퇴근: Firebase 직원 로그인 → Vercel `/api/attendance` → 본인 sitegate 계정 → 확인된 기록을 Firebase에 보관. 실제 기록이 확인된 이후 앱 화면에 완료 상태를 적용합니다.
+- `yellow`는 기존 서버 환경변수를 사용합니다. 다른 직원은 설정의 **기존 그룹웨어 계정 연결**에서 본인 sitegate 비밀번호를 연결합니다. 비밀번호는 사용자 상태·정적 파일·브라우저 저장소에 저장하지 않으며, 클라이언트 접근이 차단된 Firestore 서버 전용 경로에 저장합니다.
+- 일정 및 업무 데이터 수집은 Vercel Cron으로 하루 두 번 예약합니다. Hobby 요금제는 지정 시간부터 최대 59분 내 실행할 수 있습니다. 각 예약은 하루 한 번 실행하며 오전·오후 예약을 따로 구성합니다.
+- 업무 수집 종류: 프로젝트, 사이트, 팀보고, 휴가, 비품, 경비, 이슈, 계약, 견적, 업무일지 인덱스, 확장 업무 자료. `/api/sync/business`의 `kind`로 구분합니다. 각 작업은 시간 제한 내 수집한 결과를 Firestore에 원자적으로 게시하고 PC·모바일에서 구독합니다. 오류 발생 시 기존 데이터를 유지합니다.
+- Vercel Secret: `SITEGATE_URL`, `SITEGATE_ID`, `SITEGATE_PW`, `FIREBASE_SERVICE_ACCOUNT`, `CRON_SECRET`. Cron 및 백엔드는 서울 `icn1`, Firebase는 서울 `asia-northeast3`입니다.
+- 이전 GitHub Actions의 출퇴근·Mac 업무 수집·Vercel 호출 예약은 중단했습니다. 코드 배포는 Git 연동을 유지합니다.
+- 출근·퇴근 실제 등록 테스트는 사용자 요청에 따라 수행하지 않습니다.

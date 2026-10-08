@@ -23,6 +23,8 @@ const cheerio = require('cheerio');
 const ROOT = path.resolve(__dirname, '..');
 const AJAX_PATH = '/html/board/skin/board/attendance/attendanceAjax.php';
 
+function request(url, options = {}) { return fetch(url, { ...options, signal: AbortSignal.timeout(20000) }); }
+
 function loadEnv() {
   const env = {};
   const envPath = path.join(ROOT, '.env');
@@ -56,7 +58,7 @@ function config() {
 
 /** 세션 로그인. 실패 사유는 sitegate가 alert() 스크립트로 돌려주므로 그 문구를 꺼내 쓴다. */
 async function login({ baseUrl, id, pw }) {
-  const res = await fetch(`${baseUrl}/html/board/bbs/login_check.php`, {
+  const res = await request(`${baseUrl}/html/board/bbs/login_check.php`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -88,12 +90,14 @@ async function login({ baseUrl, id, pw }) {
  *            outTime:string|null, wrId:string|null}}
  */
 async function readToday(cfg, cookie, now = new Date()) {
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1;
-  const day = now.getDate();
+  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(now);
+  const get = type => Number(parts.find(p => p.type === type).value);
+  const year = get('year');
+  const month = get('month');
+  const day = get('day');
 
   const url = `${cfg.baseUrl}/html/board/bbs/board.php?bo_table=attendance&year=${year}&month=${month}&id=`;
-  const res = await fetch(url, { headers: { Cookie: cookie, 'User-Agent': 'Mozilla/5.0' } });
+  const res = await request(url, { headers: { Cookie: cookie, 'User-Agent': 'Mozilla/5.0' } });
   const html = new TextDecoder('euc-kr').decode(await res.arrayBuffer());
 
   const $ = cheerio.load(html);
@@ -129,7 +133,7 @@ async function readToday(cfg, cookie, now = new Date()) {
 /** 로그인한 계정의 표시 이름. 등록 시 wr_name으로 함께 보낸다. */
 async function readDisplayName(cfg, cookie) {
   const url = `${cfg.baseUrl}/html/board/bbs/board.php?bo_table=attendance&id=`;
-  const res = await fetch(url, { headers: { Cookie: cookie, 'User-Agent': 'Mozilla/5.0' } });
+  const res = await request(url, { headers: { Cookie: cookie, 'User-Agent': 'Mozilla/5.0' } });
   const html = new TextDecoder('euc-kr').decode(await res.arrayBuffer());
   // 페이지 스크립트에 var wr_name = "이재광"; 형태로 들어 있다.
   const m = html.match(/var\s+wr_name\s*=\s*"([^"]*)"/);
@@ -137,8 +141,7 @@ async function readDisplayName(cfg, cookie) {
 }
 
 /** 오늘 상태만 조회한다(등록하지 않음). */
-async function getStatus() {
-  const cfg = config();
+async function getStatus(cfg = config()) {
   const cookie = await login(cfg);
   const today = await readToday(cfg, cookie);
   return { ok: true, account: cfg.id, ...today };
@@ -152,12 +155,11 @@ async function getStatus() {
  *
  * @param {'in'|'out'} mode
  */
-async function registerAttendance(mode) {
+async function registerAttendance(mode, cfg = config()) {
   if (mode !== 'in' && mode !== 'out') {
     throw new Error("mode는 'in' 또는 'out'이어야 합니다.");
   }
 
-  const cfg = config();
   const cookie = await login(cfg);
   const before = await readToday(cfg, cookie);
 
@@ -188,7 +190,7 @@ async function registerAttendance(mode) {
     mode
   });
 
-  const res = await fetch(`${cfg.baseUrl}${AJAX_PATH}`, {
+  const res = await request(`${cfg.baseUrl}${AJAX_PATH}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',

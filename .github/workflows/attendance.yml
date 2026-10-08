@@ -27,57 +27,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  register:
-    # sitegate는 해외(클라우드) IP 접속을 막아 GitHub 호스티드 러너에서는 크롤링이 항상 실패한다.
-    # 그래서 국내 IP인 사내 Mac에 등록한 셀프호스티드 러너에서 실행한다.
-    runs-on: [self-hosted, macOS, sitegate]
+  retired:
+    if: ${{ false }}
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: 의존성 설치
-        run: npm ci
-
-      - name: sitegate 출퇴근 등록
-        env:
-          SITEGATE_URL: ${{ secrets.SITEGATE_URL }}
-          SITEGATE_ID: ${{ secrets.SITEGATE_ID }}
-          SITEGATE_PW: ${{ secrets.SITEGATE_PW }}
-        run: node scripts/sitegate-attendance.js --mode=${{ inputs.mode }}
-
-      # 등록된 기록을 곧바로 다시 크롤링해 앱 데이터에도 반영한다.
-      # 이 단계가 없으면 그룹웨어에는 기록됐는데 앱 화면은 예전 값을 보여준다.
-      - name: 이번 달 근태일지 재동기화
-        env:
-          SITEGATE_URL: ${{ secrets.SITEGATE_URL }}
-          SITEGATE_ID: ${{ secrets.SITEGATE_ID }}
-          SITEGATE_PW: ${{ secrets.SITEGATE_PW }}
-        run: |
-          YEAR=$(TZ=Asia/Seoul date '+%Y')
-          MONTH=$(TZ=Asia/Seoul date '+%-m')
-          node scripts/sync-daily-reports.js --year=$YEAR --month=$MONTH
-
-      - name: 데이터 일치 검증
-        run: node data/verify-consistency.js
-
-      - name: 변경사항 커밋 및 푸시
-        run: |
-          find . -name "._*" -not -path "./node_modules/*" -delete || true
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/
-
-          if git diff --cached --quiet; then
-            echo "변경사항이 없어 커밋을 건너뜁니다."
-            exit 0
-          fi
-
-          git commit -m "자동: $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M') ${{ inputs.mode == 'in' && '출근' || '퇴근' }} 등록 후 근태 동기화"
-          git pull --rebase origin main
-          git push origin HEAD:main
+      - run: echo "Vercel API 및 Vercel Cron으로 전환되었습니다."

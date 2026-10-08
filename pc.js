@@ -789,33 +789,11 @@ const PCApp = {
           <p class="text-xs font-medium text-on-surface-variant" id="pc-settings-sync-status">중계 서버 확인 중...</p>
         </div>
 
-        <!-- 4. GitHub 연동 토큰 (관리자 전용) -->
-        <!--
-          배포본(GitHub Pages)에는 중계 서버가 없어 크롤링·출퇴근 등록을 직접 할 수 없다.
-          대신 GitHub Actions 워크플로를 실행시켜 처리하며, 그 실행 권한이 이 토큰이다.
-          토큰은 이 브라우저에만 저장되고 저장소에는 절대 올라가지 않는다.
-        -->
         <div class="p-4 rounded-2xl bg-surface-container-low border border-outline space-y-3">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 1a11 11 0 0 0-3.48 21.44c.55.1.75-.24.75-.53v-1.85c-3.06.67-3.71-1.48-3.71-1.48-.5-1.27-1.22-1.61-1.22-1.61-1-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.58 1.2 3.21.92.1-.71.38-1.2.7-1.47-2.44-.28-5.01-1.22-5.01-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.29 3.02 1.13a10.5 10.5 0 0 1 5.5 0c2.1-1.42 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.58 5.15-5.03 5.43.4.34.75 1.01.75 2.04v3.03c0 .29.2.64.76.53A11 11 0 0 0 12 1z"/>
-              </svg>
-            </div>
-            <div>
-              <p class="text-sm font-bold text-on-surface">GitHub 연동 <span class="text-xs font-medium text-on-surface-variant">· 관리자 전용</span></p>
-              <p class="text-xs text-on-surface-variant">GitHub Actions 출퇴근 연동용입니다. 크롤링에는 Firebase 관리자 로그인을 사용합니다.</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <input type="password" id="pc-settings-gh-token" placeholder="github_pat_..." autocomplete="off"
-              class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-surface-container-lowest border border-outline text-sm font-medium text-on-surface focus:outline-none focus:border-primary transition-colors" />
-            <button type="button" onclick="PCApp.saveGithubToken()"
-              class="shrink-0 py-2.5 px-4 rounded-xl bg-surface-container-high hover:bg-primary hover:text-white text-on-surface font-bold text-sm transition-all active:scale-95">
-              저장
-            </button>
-          </div>
-          <p class="text-xs font-medium text-on-surface-variant" id="pc-settings-gh-status">등록된 토큰이 없습니다.</p>
+          <p class="text-sm font-bold">기존 그룹웨어 계정 연결</p>
+          <p class="text-xs text-on-surface-variant">현재 로그인한 직원의 출근·퇴근을 Vercel에서 등록합니다. 기존 그룹웨어 비밀번호를 한 번 연결해 주세요.</p>
+          <input type="password" id="pc-settings-sitegate-password" autocomplete="new-password" placeholder="기존 그룹웨어 비밀번호" class="w-full px-3 py-2.5 rounded-xl border border-outline bg-surface-container-lowest" />
+          <button onclick="PCApp.saveSitegateAccount()" class="px-4 py-2 rounded-xl bg-primary text-white font-bold">계정 연결</button>
         </div>
 
       </div>
@@ -865,24 +843,10 @@ const PCApp = {
         return;
       }
 
-      if (info?.transport === 'vercel' || window.location.hostname.endsWith('.vercel.app')) {
-        this._syncVia = 'relay';
-        btn.disabled = true;
-        status.innerText = 'Vercel 수집 서버에 연결하지 못했습니다. 새로고침 후 다시 확인해 주세요.';
-        return;
-      }
+      this._syncVia = 'relay';
+      btn.disabled = true;
+      status.innerText = 'Vercel 수집 서버에 연결하지 못했습니다. 새로고침 후 다시 확인해 주세요.';
 
-      this._syncVia = 'actions';
-      if (window.WncActions && window.WncActions.hasToken()) {
-        btn.disabled = false;
-        status.innerText = 'GitHub Actions 경유 · 실행 후 반영까지 2~4분 걸립니다.';
-      } else {
-        btn.disabled = true;
-        status.innerHTML = '이 환경에서는 아래 GitHub 토큰을 등록해야 버튼이 동작합니다. '
-          + '매일 오전 8시에 자동 동기화되며, '
-          + `<a href="${window.WncActions ? window.WncActions.actionsUrl('sync') : '#'}" target="_blank" rel="noopener" class="text-primary font-bold underline">GitHub에서 직접 실행</a>`
-          + '할 수도 있습니다.';
-      }
     });
   },
 
@@ -905,6 +869,15 @@ const PCApp = {
   },
 
   /** 입력한 GitHub 토큰을 이 기기에 저장한다(저장소에는 올라가지 않는다). */
+  async saveSitegateAccount() {
+    const input = document.getElementById('pc-settings-sitegate-password');
+    if (!input?.value || !window.WncSitegate) { this.showToast('기존 그룹웨어 비밀번호를 입력해 주세요.'); return; }
+    const password = input.value;
+    input.value = '';
+    const result = await window.WncSitegate.connectAccount(password);
+    this.showToast(result.ok ? '본인 그룹웨어 계정이 연결되었습니다.' : result.message);
+  },
+
   async saveGithubToken() {
     const input = document.getElementById('pc-settings-gh-token');
     const status = document.getElementById('pc-settings-gh-status');
@@ -977,15 +950,8 @@ const PCApp = {
       return;
     }
 
-    // 2) 배포본에서는 GitHub Actions를 실행시키고 완료까지 지켜본다.
-    const run = await this.runGithubWorkflow('sync', { year: String(year), month: String(month) },
-      (msg) => { if (status) status.innerText = msg; });
+    done('Vercel 수집 서버에 연결하지 못했습니다.', false);
 
-    if (!run.ok) {
-      done(run.message, false);
-      return;
-    }
-    done(`${year}년 ${month}월 동기화 완료 · 배포 반영까지 1~2분 더 걸립니다.`, true);
   },
 
   /**
@@ -1021,20 +987,10 @@ const PCApp = {
    *   - 둘 다 없으면 앱 안에서만 기록하고 조용히 넘어간다.
    */
   async syncAttendanceToGroupware(mode) {
-    const label = mode === 'in' ? '출근' : '퇴근';
-
-    if (window.WncSitegate) {
-      const result = await window.WncSitegate.syncAndNotify(mode, (m) => this.showToast(m));
-      if (!result || !result.skipped) return;
-    }
-
-    if (!window.WncActions || !window.WncActions.hasToken()) return;
-
-    this.showToast(`그룹웨어에 ${label}을 등록하는 중입니다...`);
-    const run = await this.runGithubWorkflow('attendance', { mode }, () => {});
-    this.showToast(run.ok
-      ? `그룹웨어에도 ${label} 등록되었습니다.`
-      : `그룹웨어 ${label} 등록 실패: ${run.message}`);
+    if (!window.WncSitegate) { this.showToast('출퇴근 서버를 불러오지 못했습니다.'); return; }
+    const result = await window.WncSitegate.syncAndNotify(mode, m => this.showToast(m));
+    if (result?.skipped) this.showToast('Vercel 출퇴근 서버에 연결하지 못했습니다.');
+    return result;
   },
 
   // 2. Real-Time Header Clock
@@ -7354,7 +7310,12 @@ const PCApp = {
   },
 
   // 7. Commute Check In/Out Actions
-  handleCheckIn() {
+  async handleCheckIn() {
+    const hosted = window.location.hostname.endsWith('.vercel.app');
+    if (hosted) {
+      const result = await this.syncAttendanceToGroupware('in');
+      if (!result?.ok) return;
+    }
     const now = new Date();
     const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     this.state.isCheckedIn = true;
@@ -7364,10 +7325,15 @@ const PCApp = {
     this.renderLeftCol();
     if (this.state.activeScreen === 'checkin') this.renderCheckinView();
     // 기존 그룹웨어(sitegate)에도 반영한다.
-    this.syncAttendanceToGroupware('in');
+    if (!hosted) this.syncAttendanceToGroupware('in');
   },
 
-  handleCheckOut() {
+  async handleCheckOut() {
+    const hosted = window.location.hostname.endsWith('.vercel.app');
+    if (hosted) {
+      const result = await this.syncAttendanceToGroupware('out');
+      if (!result?.ok) return;
+    }
     const now = new Date();
     const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     this.state.isCheckedIn = false;
@@ -7376,7 +7342,7 @@ const PCApp = {
     this.showToast(`[퇴근 완료] ${timeStr} 정상 퇴근 처리되었습니다. 수고하셨습니다!`);
     this.renderLeftCol();
     if (this.state.activeScreen === 'checkin') this.renderCheckinView();
-    this.syncAttendanceToGroupware('out');
+    if (!hosted) this.syncAttendanceToGroupware('out');
   },
 
   toggleTodo(idx) {
@@ -8138,6 +8104,13 @@ const PCApp = {
     // 5. 계정 격리 연동: 로그인 계정 확정 및 클라우드 최초 수신 시점에 상태를 정렬한다.
     window.addEventListener('wnc-cloud-account-changed', (e) => this.handleCloudAccountChanged(e.detail));
     window.addEventListener('wnc-cloud-hydrated', () => this.handleCloudHydrated());
+    window.addEventListener('wnc-business-data', event => {
+      for (const key of ['projects', 'sites', 'teamWorkReports']) {
+        if (event.detail[key] && key in this.state) this.state[key] = event.detail[key];
+      }
+      this.saveState();
+      this.refreshAllViews();
+    });
     window.addEventListener('wnc-sitegate-data', (event) => {
       const { months, logs } = event.detail;
       if (logs) {

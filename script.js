@@ -302,6 +302,14 @@ const App = {
     // 계정 격리 연동: 로그인 계정 확정 및 클라우드 최초 수신 시점에 상태를 정렬한다.
     window.addEventListener('wnc-cloud-account-changed', (e) => this.handleCloudAccountChanged(e.detail));
     window.addEventListener('wnc-cloud-hydrated', () => this.handleCloudHydrated());
+    window.addEventListener('wnc-business-data', event => {
+      for (const key of ['projects', 'sites', 'teamWorkReports']) {
+        if (event.detail[key] && key in this.state) this.state[key] = event.detail[key];
+      }
+      this.saveState();
+      this.renderUI();
+      this.renderTodayData();
+    });
     window.addEventListener('wnc-sitegate-data', (event) => {
       const { months, logs } = event.detail;
       if (logs) {
@@ -2404,25 +2412,18 @@ const App = {
    * @param {'in'|'out'} mode
    */
   async syncAttendanceToGroupware(mode) {
-    const label = mode === 'in' ? '출근' : '퇴근';
-
-    if (window.WncSitegate) {
-      const result = await window.WncSitegate.syncAndNotify(mode, (m) => this.showToast(m));
-      // 중계가 있었으면 여기서 끝. (성공/실패 안내는 syncAndNotify가 이미 했다)
-      if (!result || !result.skipped) return;
-    }
-
-    // 중계가 없는 환경. 토큰이 없으면 예전처럼 조용히 로컬 기록만 남긴다.
-    if (!window.WncActions || !window.WncActions.hasToken()) return;
-
-    this.showToast(`🔗 그룹웨어에 ${label}을 등록하는 중입니다...`);
-    const run = await this.runGithubWorkflow('attendance', { mode }, () => {});
-    this.showToast(run.ok
-      ? `🔗 그룹웨어에도 ${label} 등록되었습니다.`
-      : `⚠️ 그룹웨어 ${label} 등록 실패: ${run.message}`);
+    if (!window.WncSitegate) { this.showToast('출퇴근 서버를 불러오지 못했습니다.'); return; }
+    const result = await window.WncSitegate.syncAndNotify(mode, m => this.showToast(m));
+    if (result?.skipped) this.showToast('Vercel 출퇴근 서버에 연결하지 못했습니다.');
+    return result;
   },
 
-  handleCheckIn() {
+  async handleCheckIn() {
+    const hosted = window.location.hostname.endsWith('.vercel.app');
+    if (hosted) {
+      const result = await this.syncAttendanceToGroupware('in');
+      if (!result?.ok) return;
+    }
     const now = new Date();
     // 시간 표기는 앱 전체가 '오전/오후 HH:MM' 한 가지 형식만 쓴다.
     // (예전에는 이 경로만 'HH:MM'으로 저장해 PC 화면과 값이 달라 보였다.)
@@ -2435,10 +2436,15 @@ const App = {
     this.renderTodayData();
     this.renderUI();
     // 기존 그룹웨어(sitegate)에도 반영한다.
-    this.syncAttendanceToGroupware('in');
+    if (!hosted) this.syncAttendanceToGroupware('in');
   },
 
-  handleCheckOut() {
+  async handleCheckOut() {
+    const hosted = window.location.hostname.endsWith('.vercel.app');
+    if (hosted) {
+      const result = await this.syncAttendanceToGroupware('out');
+      if (!result?.ok) return;
+    }
     const now = new Date();
     const timeStr = this.formatCheckInTime(now);
     this.state.isCheckedIn = false;
@@ -2447,7 +2453,7 @@ const App = {
     this.showToast(`👏 [퇴근 완료] ${timeStr} 정상 퇴근 처리되었습니다. 수고하셨습니다!`);
     this.renderTodayData();
     this.renderUI();
-    this.syncAttendanceToGroupware('out');
+    if (!hosted) this.syncAttendanceToGroupware('out');
   },
 
   // Mobile Main Calendar & Today's Schedule Unified Widget (캘린더 달력 + 구분선 + 선택 일자 일정 통합 위젯)
@@ -6409,24 +6415,10 @@ const App = {
       }
 
       // 정적 호스팅: GitHub Actions를 실행시켜 처리한다. 토큰이 있어야 한다.
-      if (info?.transport === 'vercel' || window.location.hostname.endsWith('.vercel.app')) {
-        this._syncVia = 'relay';
-        btn.disabled = true;
-        status.innerText = 'Vercel 수집 서버에 연결하지 못했습니다. 새로고침 후 다시 확인해 주세요.';
-        return;
-      }
+      this._syncVia = 'relay';
+      btn.disabled = true;
+      status.innerText = 'Vercel 수집 서버에 연결하지 못했습니다. 새로고침 후 다시 확인해 주세요.';
 
-      this._syncVia = 'actions';
-      if (window.WncActions && window.WncActions.hasToken()) {
-        btn.disabled = false;
-        status.innerText = 'GitHub Actions 경유 · 실행 후 반영까지 2~4분 걸립니다.';
-      } else {
-        btn.disabled = true;
-        status.innerHTML = '이 환경에서는 아래 GitHub 토큰을 등록해야 버튼이 동작합니다. '
-          + '매일 오전 8시에 자동 동기화되며, '
-          + `<a href="${window.WncActions ? window.WncActions.actionsUrl('sync') : '#'}" target="_blank" rel="noopener" class="text-primary font-bold underline">GitHub에서 직접 실행</a>`
-          + '할 수도 있습니다.';
-      }
     });
   },
 
@@ -6449,6 +6441,15 @@ const App = {
   },
 
   /** 입력한 GitHub 토큰을 이 기기에 저장한다(저장소에는 올라가지 않는다). */
+  async saveSitegateAccount() {
+    const input = document.getElementById('settings-sitegate-password');
+    if (!input?.value || !window.WncSitegate) { this.showToast('기존 그룹웨어 비밀번호를 입력해 주세요.'); return; }
+    const password = input.value;
+    input.value = '';
+    const result = await window.WncSitegate.connectAccount(password);
+    this.showToast(result.ok ? '본인 그룹웨어 계정이 연결되었습니다.' : result.message);
+  },
+
   async saveGithubToken() {
     const input = document.getElementById('settings-gh-token');
     const status = document.getElementById('settings-gh-status');
@@ -6522,15 +6523,8 @@ const App = {
       return;
     }
 
-    // 2) 배포본에서는 GitHub Actions를 실행시키고 완료까지 지켜본다.
-    const run = await this.runGithubWorkflow('sync', { year: String(year), month: String(month) },
-      (msg) => { if (status) status.innerText = msg; });
+    done('Vercel 수집 서버에 연결하지 못했습니다.', false);
 
-    if (!run.ok) {
-      done(run.message, false);
-      return;
-    }
-    done(`${year}년 ${month}월 동기화 완료 · 배포 반영까지 1~2분 더 걸립니다.`, true);
   },
 
   /**

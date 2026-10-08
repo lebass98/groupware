@@ -36,6 +36,14 @@ service cloud.firestore {
     // 본인 것만 읽고 쓸 수 있습니다.
     match /users/{uid} {
       allow read, write: if isMember() && request.auth.uid == uid;
+      match /attendance/{date} {
+        allow read: if isMember() && request.auth.uid == uid;
+        allow write: if false;
+      }
+    }
+    match /business_snapshots/{kind}/chunks/{chunk} {
+      allow read: if isMember();
+      allow write: if false;
     }
 
     // 관리자 지정 문서는 조회만 가능하고 클라이언트에서 수정할 수 없습니다.
