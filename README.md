@@ -192,11 +192,13 @@ Pool/
 - 로그인 화면의 **‘비밀번호 찾기’는 Firebase 비밀번호 재설정 메일 발송으로 연결**되어 있습니다. 계정 존재 여부가 노출되지 않도록 미등록 이메일에도 동일한 안내를 표시합니다.
 - 보안 규칙은 로그인 여부만으로 접근을 허용하지 않고, **`members` 명부에 등록된 이메일인지까지 확인**합니다. 따라서 외부인이 계정을 만들어도 데이터는 한 건도 읽을 수 없습니다.
 
-## CI/CD 자동 배포 (GitHub Actions)
+## Vercel 배포
 
-본 프로젝트는 `.github/workflows/deploy.yml` 설정을 포함하고 있어, `main` 브랜치에 코드 Push 시 **GitHub Actions**가 자동으로 GitHub Pages로 실시간 배포를 완료합니다.
+웹은 `vercel.json` 설정과 `scripts/build-vercel.js`로 정적 파일을 `public/`에 빌드하여 Vercel에 배포합니다. GitHub Pages 배포 워크플로우는 중단했습니다. 출퇴근 및 데이터 수집용 GitHub Actions는 유지합니다.
 
-- **배포 확인 주소**: [https://lebass98.github.io/groupware/](https://lebass98.github.io/groupware/)
+- **배포 주소**: [WnC 그룹웨어](https://wnc-groupware.vercel.app/)
+- **수동 배포**: `npx vercel --prod`
+- 모바일 앱의 WebView 주소도 Vercel로 변경했으며, 설치된 앱에 반영하려면 APK를 다시 빌드해야 합니다.
 
 ---
 
@@ -379,3 +381,6 @@ Pool/
 
 ### 2026-10-02
 - **브랜드 로고·스플래시 신규 제작 및 전 디바이스 적용**: 체크 두 개가 이어진 W 심벌 로고 세트(`resource/brand/`) 제작, PC 사이드바·모바일 헤더·로그인 로고와 파비콘 교체, 앱 아이콘(적응형 포함)·스플래시(브랜드 블루 배경) 교체(PC·모바일 웹·앱 동일 적용).
+
+### 2026-10-08
+- **Vercel 배포 전환**: 정적 웹 배포 설정 추가, GitHub Pages 배포 중단 및 웹 공유·모바일 WebView 주소 변경.

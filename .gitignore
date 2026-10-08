@@ -11,3 +11,7 @@ react-native-app/android/
 .env
 .env.*
 scratch/
+.vercel/
+public/
+.vercel
+.env*

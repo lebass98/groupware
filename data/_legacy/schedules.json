@@ -1557,6 +1557,82 @@
       "badge": "반차",
       "author": "명희진 주임",
       "avatar": "./resource/image/profile_gray_20240502__.png"
+    },
+    {
+      "title": "외근(오전) 남기현 오전 건강가정진흥원",
+      "location": "건강가정진흥원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "남기현 본부장",
+      "avatar": "./resource/image/profile_help.png"
+    },
+    {
+      "title": "외근(오전) 평가시스템 고도화",
+      "location": "한국건강가정진흥원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "박규태 대리",
+      "avatar": "./resource/image/profile_green.png"
+    },
+    {
+      "title": "외근(오전) 평가시스템 고도화",
+      "location": "한가원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "윤진성 과장",
+      "avatar": "./resource/image/profile_apple_20250611.png"
+    },
+    {
+      "title": "외근(오전) 평가시스템 FP 산정 논의 미팅",
+      "location": "한국건강가정진흥원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "김종규 팀장",
+      "avatar": "./resource/image/profile_john.png"
+    },
+    {
+      "title": "반차(오후)",
+      "location": "",
+      "time": "13:00 ~ 18:00",
+      "type": "warning",
+      "badge": "반차",
+      "author": "조지혜 과장",
+      "avatar": "./resource/image/profile_red_20260602.png"
+    }
+  ],
+  "2026-10-6": [
+    {
+      "title": "외근(오후) 수소사업화플랫폼 회의(내방)",
+      "location": "수소연합",
+      "time": "13:00 ~ 18:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "남기현 본부장",
+      "avatar": "./resource/image/profile_help.png"
+    },
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "조지혜 과장",
+      "avatar": "./resource/image/profile_red_20260602.png"
+    }
+  ],
+  "2026-10-7": [
+    {
+      "title": "외근(오전) 월간회의 (고객사 내방)",
+      "location": "한국건강가정진흥원",
+      "time": "09:00 ~ 12:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "김종규 팀장",
+      "avatar": "./resource/image/profile_john.png"
     }
   ],
   "2026-10-8": [
@@ -1568,6 +1644,59 @@
       "badge": "반차",
       "author": "신현우 주임",
       "avatar": "./resource/image/profile_pink____________.png"
+    },
+    {
+      "title": "외근(종일) 보안 취약점 조치",
+      "location": "한국고용정보원(지역고용네트워크)",
+      "time": "09:00 ~ 18:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "안영재 대리",
+      "avatar": "./resource/image/profile_pro.png"
+    }
+  ],
+  "2026-10-12": [
+    {
+      "title": "외근(오후) 남기현 오후 국외소재문화유산재단",
+      "location": "국외소재문화유산재단",
+      "time": "13:00 ~ 18:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "남기현 본부장",
+      "avatar": "./resource/image/profile_help.png"
+    }
+  ],
+  "2026-10-14": [
+    {
+      "title": "외근(오후) 남기현 오후 시온솔루션 외근",
+      "location": "시온솔루션",
+      "time": "13:00 ~ 18:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "남기현 본부장",
+      "avatar": "./resource/image/profile_help.png"
+    }
+  ],
+  "2026-10-15": [
+    {
+      "title": "외근(오후) 남기현 오후 건강가정진흥원",
+      "location": "건강가정진흥원",
+      "time": "13:00 ~ 18:00",
+      "type": "primary",
+      "badge": "외근",
+      "author": "남기현 본부장",
+      "avatar": "./resource/image/profile_help.png"
+    }
+  ],
+  "2026-10-19": [
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "안영재 대리",
+      "avatar": "./resource/image/profile_pro.png"
     }
   ],
   "2026-10-20": [
@@ -1612,6 +1741,17 @@
       "badge": "연차",
       "author": "김종규 팀장",
       "avatar": "./resource/image/profile_john.png"
+    }
+  ],
+  "2026-10-26": [
+    {
+      "title": "연차",
+      "location": "",
+      "time": "종일",
+      "type": "secondary",
+      "badge": "연차",
+      "author": "안영재 대리",
+      "avatar": "./resource/image/profile_pro.png"
     }
   ],
   "2026-10-29": [

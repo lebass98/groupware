@@ -8,7 +8,7 @@ export default function App() {
   const [key, setKey] = useState(0);
   const [canGoBack, setCanGoBack] = useState(false);
   const webViewRef = useRef(null);
-  const targetUri = 'https://lebass98.github.io/groupware/';
+  const targetUri = 'https://wnc-groupware.vercel.app/';
 
   // 안드로이드 하드웨어 뒤로가기 버튼 대응
   useEffect(() => {

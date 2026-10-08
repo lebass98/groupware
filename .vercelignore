@@ -1,0 +1,13 @@
+.git
+.github
+.agents
+.claude
+.env
+.env.*
+node_modules
+react-native-app
+scratch
+public
+*.log
+._*
+**/._*
