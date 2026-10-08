@@ -389,6 +389,8 @@ Pool/
 
 - **Firebase 운영 연결 및 하루 두 번 자동 수집**: 서울 Firestore·이메일 인증·회원 명부와 보안 규칙을 연결하고 Mac 없이 Vercel에서 근태일지를 정기 저장하도록 구성.
 
+- **white 계정 주소록 프로필 연결 및 수동 수집 경로 고정**: 최지영·디자인팀·과장 정보를 계정에 저장하고 로그인 후 클라우드 동기화에도 프로필을 유지하며 Vercel 수집 연결 실패 시 Mac 워크플로로 우회하지 않도록 수정.
+
 ### Vercel 근태일지 크롤링 운영
 
 - `SITEGATE_URL`, `SITEGATE_ID`, `SITEGATE_PW`는 Vercel Production의 Secret 환경변수로 관리합니다.

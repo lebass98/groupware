@@ -443,6 +443,10 @@ const App = {
   /** 클라우드에서 본인 계정 데이터를 처음 내려받은 직후 화면을 재동기화한다. */
   handleCloudHydrated() {
     this.loadState();
+    if (window.WncCloud && window.WncCloud.account) {
+      this.applySignedInProfile(window.WncCloud.account.email);
+      this.saveState();
+    }
     this.updateNotificationBadge();
     if (this.state.isLoggedIn) {
       this.renderUI();
@@ -6399,12 +6403,19 @@ const App = {
         this._syncVia = 'relay';
         btn.disabled = false;
         status.innerText = info.transport === 'vercel'
-          ? (window.WncCloud?.isSignedIn() ? '해당 월을 가져와 모든 기기에 바로 반영합니다. 관리자 권한이 필요합니다.' : 'Firebase 관리자 계정으로 로그인한 뒤 실행해 주세요.')
+          ? (window.WncCloud?.isSignedIn() ? 'Vercel 서울 서버에서 수집해 모든 기기에 반영합니다. 관리자 권한이 필요합니다.' : 'Firebase 관리자 계정으로 로그인한 뒤 실행해 주세요.')
           : '로컬 중계 연결됨 · 버튼을 누르면 해당 월을 바로 가져옵니다.';
         return;
       }
 
       // 정적 호스팅: GitHub Actions를 실행시켜 처리한다. 토큰이 있어야 한다.
+      if (info?.transport === 'vercel' || window.location.hostname.endsWith('.vercel.app')) {
+        this._syncVia = 'relay';
+        btn.disabled = true;
+        status.innerText = 'Vercel 수집 서버에 연결하지 못했습니다. 새로고침 후 다시 확인해 주세요.';
+        return;
+      }
+
       this._syncVia = 'actions';
       if (window.WncActions && window.WncActions.hasToken()) {
         btn.disabled = false;
@@ -6497,7 +6508,7 @@ const App = {
     };
 
     // 1) 로컬 중계가 있으면 직접 크롤링한다(가장 빠르다).
-    if (this._syncVia === 'relay' && window.WncSitegate) {
+    if ((this._syncVia === 'relay' || window.location.hostname.endsWith('.vercel.app')) && window.WncSitegate) {
       if (status) status.innerText = `${year}년 ${month}월 근태일지를 가져오는 중입니다...`;
       const result = await window.WncSitegate.syncDailyReports(year, month);
       if (result && result.ok) {
