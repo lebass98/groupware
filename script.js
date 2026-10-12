@@ -2055,20 +2055,10 @@ const App = {
     const pendingCountEl = document.getElementById('today-summary-pending-count');
     const pendingListEl = document.getElementById('today-summary-pending-list');
     if (pendingCountEl && pendingListEl) {
-      pendingCountEl.innerText = '1건';
+      // 실제 전자결재 데이터 연동 전까지는 가짜 문서를 보여주지 않는다.
+      pendingCountEl.innerText = '0건';
       pendingListEl.innerHTML = `
-        <div class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/15 flex justify-between items-center cursor-pointer hover:bg-surface-container-low transition-colors" onclick="App.switchTab('screen-finance')">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-            </div>
-            <div class="text-left">
-              <p class="font-bold text-sm text-on-surface truncate max-w-[180px]">8월 4주차 UI/UX 라이선스 구매 품의</p>
-              <p class="text-xs text-on-surface-variant font-medium mt-0.5">2026.08.25 · 손석호 대리</p>
-            </div>
-          </div>
-          <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300 shrink-0">결재대기</span>
-        </div>
+        <div class="text-xs text-on-surface-variant py-2 text-center font-medium">대기 중인 결재 문서가 없습니다.</div>
       `;
     }
 

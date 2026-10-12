@@ -21,7 +21,6 @@ window.MockData = {
     { id: 10, name: "명희진", dept: "디자인팀", role: "주임", phone: "010-2607-5235", tel: "070-7711-4812", email: "gray@wordncode.com", avatar: "./resource/image/profile_gray_20240502__.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 11, name: "이재광", dept: "퍼블리싱팀", role: "팀장", phone: "010-5244-1251", tel: "070-7711-4808", email: "yellow@wordncode.com", avatar: "profile.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", birthdayMonth: 9 },
     { id: 12, name: "조지혜", dept: "퍼블리싱팀", role: "과장", phone: "010-2362-0263", tel: "070-7711-4806", email: "red@wordncode.com", avatar: "./resource/image/profile_red_20260602.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
-    { id: 13, name: "손석호", dept: "퍼블리싱팀", role: "주임", phone: "010-6565-4215", tel: "070-7711-4811", email: "pub@wordncode.com", avatar: "./resource/image/profile_pub.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", birthdayMonth: 9 },
     { id: 14, name: "최우석", dept: "개발팀", role: "과장", phone: "010-2887-1810", tel: "070-8805-1648", email: "mobile@wordncode.com", avatar: "./resource/image/profile_mobile.png", status: "work", statusText: "근무중", todaySchedule: "", location: "", birthdayMonth: 9 },
     { id: 15, name: "안영재", dept: "개발팀", role: "대리", phone: "010-9776-1309", tel: "070-7711-4805", email: "pro@wordncode.com", avatar: "./resource/image/profile_pro.png", status: "work", statusText: "근무중", todaySchedule: "", location: "" },
     { id: 16, name: "곽재훈", dept: "개발팀", role: "대리", phone: "010-8479-8729", tel: "070-7711-1653", email: "spring@wordncode.com", avatar: "./resource/image/profile_spring.png", status: "offwork", statusText: "퇴근", todaySchedule: "", location: "" },
@@ -4086,312 +4085,6 @@ window.MockData = {
             "endTime": "",
             "deduct": 0.5,
             "appliedAt": "2026-07-24 12:15:56"
-          }
-        ]
-      },
-      "손석호": {
-        "name": "손석호",
-        "joinDate": "2022-05-09",
-        "granted": 16,
-        "carriedOver": 0,
-        "substitute": 6,
-        "total": 22,
-        "used": 22,
-        "remaining": 0,
-        "memo": "2026년 연차-16<br><br>",
-        "counts": {
-          "연차": 13,
-          "반차(오후)": 17,
-          "반반차": 2
-        },
-        "items": [
-          {
-            "date": "2026-09-30",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-09-18 15:53:34"
-          },
-          {
-            "date": "2026-09-29",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-09-18 15:53:27"
-          },
-          {
-            "date": "2026-09-28",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-09-18 15:53:21"
-          },
-          {
-            "date": "2026-09-23",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-09-18 15:53:15"
-          },
-          {
-            "date": "2026-09-22",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-09-18 15:53:08"
-          },
-          {
-            "date": "2026-09-21",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-09-18 15:53:01"
-          },
-          {
-            "date": "2026-09-18",
-            "type": "반반차",
-            "reason": "오후 반반차(16:00 ~ 18:00)",
-            "startTime": "16:00",
-            "endTime": "18:00",
-            "deduct": 0.25,
-            "appliedAt": "2026-09-18 15:52:40"
-          },
-          {
-            "date": "2026-09-16",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-09-14 18:06:13"
-          },
-          {
-            "date": "2026-09-15",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-09-14 18:06:06"
-          },
-          {
-            "date": "2026-09-08",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-09-07 11:57:29"
-          },
-          {
-            "date": "2026-09-07",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-09-07 11:57:17"
-          },
-          {
-            "date": "2026-08-24",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-08-24 13:00:26"
-          },
-          {
-            "date": "2026-08-10",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-08-10 11:56:06"
-          },
-          {
-            "date": "2026-08-04",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-08-04 11:16:10"
-          },
-          {
-            "date": "2026-07-30",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-07-30 09:07:23"
-          },
-          {
-            "date": "2026-07-27",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-07-24 11:35:15"
-          },
-          {
-            "date": "2026-07-24",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-07-24 11:35:08"
-          },
-          {
-            "date": "2026-07-23",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-07-24 11:34:56"
-          },
-          {
-            "date": "2026-07-16",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-07-16 11:40:30"
-          },
-          {
-            "date": "2026-07-13",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-07-13 12:27:51"
-          },
-          {
-            "date": "2026-07-07",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-07-06 17:10:21"
-          },
-          {
-            "date": "2026-07-03",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-07-01 16:52:52"
-          },
-          {
-            "date": "2026-07-02",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-07-01 16:52:40"
-          },
-          {
-            "date": "2026-06-29",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-06-26 10:22:45"
-          },
-          {
-            "date": "2026-06-26",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-06-26 10:21:45"
-          },
-          {
-            "date": "2026-06-12",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-06-11 15:55:08"
-          },
-          {
-            "date": "2026-06-05",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-06-04 11:13:21"
-          },
-          {
-            "date": "2026-05-12",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-05-08 11:08:17"
-          },
-          {
-            "date": "2026-04-03",
-            "type": "반차(오후)",
-            "reason": "오후 반차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 0.5,
-            "appliedAt": "2026-04-03 10:56:49"
-          },
-          {
-            "date": "2026-02-27",
-            "type": "반반차",
-            "reason": "오후 반반차(16:00 ~ 18:00)",
-            "startTime": "16:00",
-            "endTime": "18:00",
-            "deduct": 0.25,
-            "appliedAt": "2026-02-27 14:51:24"
-          },
-          {
-            "date": "2026-02-23",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-02-20 14:19:04"
-          },
-          {
-            "date": "2026-02-12",
-            "type": "연차",
-            "reason": "연차",
-            "startTime": "",
-            "endTime": "",
-            "deduct": 1,
-            "appliedAt": "2026-02-11 09:53:34"
           }
         ]
       },
@@ -111765,20 +111458,6 @@ window.MockData = {
       targetScreen: "screen-calendar",
       pcScreen: "checkin",
       managerOnly: true, // 팀장/부서장급만 열람 가능
-      isRead: false
-    },
-    {
-      id: 2,
-      type: "approval",
-      subType: "request",
-      title: "전자결재 승인 요청",
-      message: "손석호 주임님이 제출한 [하반기 연차 휴가원] 결재 승인 대기 중입니다.",
-      time: "15분 전",
-      date: "08:40",
-      sender: { name: "손석호", role: "주임", dept: "퍼블리싱팀", avatar: "./resource/image/profile_pub.png" },
-      targetScreen: "screen-request",
-      pcScreen: "request",
-      managerOnly: false,
       isRead: false
     },
     {
@@ -242513,17 +242192,6 @@ if (typeof window !== "undefined") {
         "image": "./person/profile_apple.png"
       },
       {
-        "name": "손석호",
-        "mb_id": "pub",
-        "position": "주임",
-        "department": "퍼블리싱팀",
-        "mobile": "010-6565-4215",
-        "phone": "내선 4811",
-        "email": "pub@wordncode.com",
-        "schedule": "",
-        "image": "./person/profile_pub.png"
-      },
-      {
         "name": "신현우",
         "mb_id": "pink",
         "position": "사원",
@@ -242789,20 +242457,6 @@ if (typeof window !== "undefined") {
         "wr_10": "한국건강가정진흥원",
         "wr_link1": "20260922",
         "wr_datetime": "2026-09-17 15:07:54"
-      },
-      {
-        "wr_id": "121999",
-        "ca_name": "",
-        "mb_id": "pub",
-        "wr_name": "손석호",
-        "wr_subject": "연차",
-        "cat1": "1",
-        "wr_content": "����",
-        "wr_4": "",
-        "wr_5": "",
-        "wr_10": "손석호",
-        "wr_link1": "20260922",
-        "wr_datetime": "2026-09-18 15:53:08"
       },
       {
         "wr_id": "122019",
@@ -373443,17 +373097,6 @@ if (typeof module !== "undefined" && module.exports) {
         "image": "./person/profile_apple.png"
       },
       {
-        "name": "손석호",
-        "mb_id": "pub",
-        "position": "주임",
-        "department": "퍼블리싱팀",
-        "mobile": "010-6565-4215",
-        "phone": "내선 4811",
-        "email": "pub@wordncode.com",
-        "schedule": "",
-        "image": "./person/profile_pub.png"
-      },
-      {
         "name": "신현우",
         "mb_id": "pink",
         "position": "사원",
@@ -373719,20 +373362,6 @@ if (typeof module !== "undefined" && module.exports) {
         "wr_10": "한국건강가정진흥원",
         "wr_link1": "20260922",
         "wr_datetime": "2026-09-17 15:07:54"
-      },
-      {
-        "wr_id": "121999",
-        "ca_name": "",
-        "mb_id": "pub",
-        "wr_name": "손석호",
-        "wr_subject": "연차",
-        "cat1": "1",
-        "wr_content": "����",
-        "wr_4": "",
-        "wr_5": "",
-        "wr_10": "손석호",
-        "wr_link1": "20260922",
-        "wr_datetime": "2026-09-18 15:53:08"
       },
       {
         "wr_id": "122019",

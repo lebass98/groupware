@@ -170,21 +170,6 @@
     "location": ""
   },
   {
-    "id": 13,
-    "name": "손석호",
-    "dept": "퍼블리싱팀",
-    "role": "주임",
-    "phone": "010-6565-4215",
-    "tel": "070-7711-4811",
-    "email": "pub@wordncode.com",
-    "avatar": "./resource/image/profile_pub.png",
-    "status": "work",
-    "statusText": "근무중",
-    "todaySchedule": "",
-    "location": "",
-    "birthdayMonth": 9
-  },
-  {
     "id": 14,
     "name": "최우석",
     "dept": "개발팀",

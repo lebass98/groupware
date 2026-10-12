@@ -155,17 +155,6 @@
       "image": "./person/profile_apple.png"
     },
     {
-      "name": "손석호",
-      "mb_id": "pub",
-      "position": "주임",
-      "department": "퍼블리싱팀",
-      "mobile": "010-6565-4215",
-      "phone": "내선 4811",
-      "email": "pub@wordncode.com",
-      "schedule": "",
-      "image": "./person/profile_pub.png"
-    },
-    {
       "name": "신현우",
       "mb_id": "pink",
       "position": "사원",
@@ -431,20 +420,6 @@
       "wr_10": "한국건강가정진흥원",
       "wr_link1": "20260922",
       "wr_datetime": "2026-09-17 15:07:54"
-    },
-    {
-      "wr_id": "121999",
-      "ca_name": "",
-      "mb_id": "pub",
-      "wr_name": "손석호",
-      "wr_subject": "연차",
-      "cat1": "1",
-      "wr_content": "����",
-      "wr_4": "",
-      "wr_5": "",
-      "wr_10": "손석호",
-      "wr_link1": "20260922",
-      "wr_datetime": "2026-09-18 15:53:08"
     },
     {
       "wr_id": "122019",

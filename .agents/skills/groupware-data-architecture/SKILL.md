@@ -46,7 +46,6 @@ data/
 | 10 | 명희진 | 디자인팀 | 주임 | gray@wordncode.com | 010-2607-5235 |
 | 11 | 이재광 | 퍼블리싱팀 | 차장 | yellow@wordncode.com | 010-5244-1251 |
 | 12 | 조지혜 | 퍼블리싱팀 | 과장 | red@wordncode.com | 010-2362-0263 |
-| 13 | 손석호 | 퍼블리싱팀 | 주임 | pub@wordncode.com | 010-6565-4215 |
 | 14 | 최우석 | 개발팀 | 과장 | mobile@wordncode.com | 010-2887-1810 |
 | 15 | 안영재 | 개발팀 | 대리 | pro@wordncode.com | 010-9776-1309 |
 | 16 | 곽재훈 | 개발팀 | 대리 | spring@wordncode.com | 010-8479-8729 |
