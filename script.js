@@ -4723,8 +4723,6 @@ const App = {
       };
     }
 
-    const rawStatus = (emp.status || 'work').toLowerCase();
-    const rawText = emp.statusText || '';
 
     // 1. Determine Today's Scheduled Event (금일 근태일지 일정 및 예정 뱃지 실시간 동기화)
     let rawSched = '';
@@ -4762,53 +4760,24 @@ const App = {
 
     const todayScheduleText = this.simplifyScheduleText(rawSched || emp.todaySchedule, foundLocation);
 
-    // 2. Determine Primary Live Status (근무중, 외근중, 휴가중, 퇴근)
-    let mainStatus = {
-      type: 'work',
-      text: '근무중',
-      dotColor: 'bg-emerald-500',
-      badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
-      icon: 'laptop_mac',
-      pulse: true
-    };
+    // 2. 실시간 근무 상태 (근무중 / 외근중 / 휴가중 / 퇴근)
+    // emp.status는 시드 시점의 고정값이라 쓰지 않는다. 오늘 일정의 시간대·현재 시각·
+    // 본인 출퇴근 기록으로 매번 계산한다. 규칙은 PC와 공유한다(data/utils.js).
+    const todayAll = this.getMockSchedules(curYear, curMonth, curDay) || [];
+    const me = this.state.user || {};
+    const isSelf = emp.name === me.name && (!emp.role || !me.role || emp.role === me.role);
+    const outStr = this.state.checkOutTimeStr;
+    const live = window.WncUtils.resolveEmployeeStatus(emp, todayAll, {
+      self: isSelf ? { isCheckedIn: !!this.state.isCheckedIn, isCheckedOut: !!outStr && outStr !== '-' && outStr !== '--:--' } : null
+    });
 
-    if (rawStatus === 'business' || rawText === '외근중' || (todayScheduleText && todayScheduleText.startsWith('외근'))) {
-      mainStatus = {
-        type: 'business',
-        text: '외근중',
-        dotColor: 'bg-slate-500',
-        badgeClass: 'bg-surface-container text-on-surface-variant border border-outline/30',
-        icon: 'directions_car',
-        pulse: false
-      };
-    } else if (rawStatus === 'vacation' || rawText === '휴가중' || rawText === '연차' || (todayScheduleText && todayScheduleText === '연차')) {
-      mainStatus = {
-        type: 'vacation',
-        text: '휴가중',
-        dotColor: 'bg-amber-500',
-        badgeClass: 'bg-amber-500/10 text-amber-600 border border-amber-500/20',
-        icon: 'beach_access',
-        pulse: false
-      };
-    } else if (rawStatus === 'offwork' || rawStatus === 'away' || rawStatus === 'offline' || rawText === '퇴근') {
-      mainStatus = {
-        type: 'offwork',
-        text: '퇴근',
-        dotColor: 'bg-slate-400',
-        badgeClass: 'bg-slate-500/10 text-slate-500 border border-slate-500/20',
-        icon: 'home',
-        pulse: false
-      };
-    } else {
-      mainStatus = {
-        type: 'work',
-        text: '근무중',
-        dotColor: 'bg-emerald-500',
-        badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20',
-        icon: 'laptop_mac',
-        pulse: true
-      };
-    }
+    const STATUS_STYLES = {
+      work: { dotColor: 'bg-emerald-500', badgeClass: 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20', icon: 'laptop_mac', pulse: true },
+      business: { dotColor: 'bg-slate-500', badgeClass: 'bg-surface-container text-on-surface-variant border border-outline/30', icon: 'directions_car', pulse: false },
+      vacation: { dotColor: 'bg-amber-500', badgeClass: 'bg-amber-500/10 text-amber-600 border border-amber-500/20', icon: 'beach_access', pulse: false },
+      offwork: { dotColor: 'bg-slate-400', badgeClass: 'bg-slate-500/10 text-slate-500 border border-slate-500/20', icon: 'home', pulse: false }
+    };
+    const mainStatus = { type: live.type, text: live.text, ...STATUS_STYLES[live.type] };
 
     return {
       ...mainStatus,
@@ -5154,7 +5123,6 @@ const App = {
       const empDept = (emp.dept || '').toLowerCase();
       const empRole = (emp.role || '').toLowerCase();
       const empPhone = (emp.phone || '').toLowerCase();
-      const empStatusText = (emp.statusText || '').toLowerCase();
       const infoText = (statusInfo.text || '').toLowerCase();
       const schedText = (statusInfo.todaySchedule || '').toLowerCase();
 
@@ -5162,7 +5130,6 @@ const App = {
         empName.includes(query) ||
         empDept.includes(query) ||
         empRole.includes(query) ||
-        empStatusText.includes(query) ||
         infoText.includes(query) ||
         schedText.includes(query) ||
         (isBirthdayThisMonth(emp) && ('생일'.includes(query) || '생일자'.includes(query) || '이달의생일'.includes(query) || 'birthday'.includes(query))) ||

@@ -98,7 +98,109 @@
     return '기타';
   }
 
-  window.WncUtils = { escapeHtml, escapeAttr, toShortTime, choseongGroup, firstMeaningfulChar };
+  // ---------------------------------------------------------------------------
+  // 임직원 실시간 근무 상태 판정 (근무중 / 외근중 / 휴가중 / 퇴근)
+  //
+  // 임직원 데이터의 status·statusText는 시드 시점에 고정된 값이라 시간이 지나도
+  // 바뀌지 않는다. 그래서 그 값은 쓰지 않고, 크롤링된 '오늘 일정'의 시간대와
+  // 현재 시각, 본인의 실제 출퇴근 기록으로 매번 다시 계산한다.
+  // PC와 모바일이 같은 결과를 내도록 판정 규칙은 이 함수 하나에만 둔다.
+  // ---------------------------------------------------------------------------
+  var WORK_START = 9 * 60;   // 09:00
+  var WORK_END = 18 * 60;    // 18:00
+  var RANK_WORDS = ['대표', '본부장', '팀장', '차장', '과장', '대리', '주임', '사원', '수습'];
+
+  /** "13:00", "오후 1:30", "PM 1", "AM 9:30" 등을 자정 기준 분으로 바꾼다. (모바일은 일정 시간을 'PM 1' 형식으로 가공한다) */
+  function toMinutes(text) {
+    var str = String(text || '');
+    var m = str.match(/(\d{1,2})(?::(\d{2}))?/);
+    if (!m) return null;
+    var h = Number(m[1]);
+    var min = m[2] ? Number(m[2]) : 0;
+    if (!m[2] && !/AM|PM|오전|오후/i.test(str)) return null;
+    if (/PM|오후/i.test(str) && h < 12) h += 12;
+    if (/AM|오전/i.test(str) && h === 12) h = 0;
+    return h * 60 + min;
+  }
+
+  /** "13:00 ~ 18:00" → {start, end}. 시간이 없거나 '종일'이면 근무시간 전체로 본다. */
+  function scheduleWindow(s) {
+    var parts = String((s && s.time) || '').split('~');
+    var start = toMinutes(parts[0]);
+    var end = toMinutes(parts[1]);
+    if (start === null) start = WORK_START;
+    if (end === null) end = WORK_END;
+    return { start: start, end: end };
+  }
+
+  /** 일정 작성자 문자열이 이 임직원을 가리키는지 (동명이인은 직책·부서로 구분) */
+  function scheduleBelongsTo(s, emp) {
+    if (!s || !s.author || !emp || !emp.name) return false;
+    if (s.author.indexOf(emp.name) === -1) return false;
+    var hasRank = RANK_WORDS.some(function (w) { return s.author.indexOf(w) !== -1; });
+    if (hasRank && emp.role) {
+      return s.author.indexOf(emp.role) !== -1 || (!!emp.dept && s.author.indexOf(emp.dept) !== -1);
+    }
+    return true;
+  }
+
+  function isHolidayEntry(s) {
+    return !!s && (s.badge === '공휴일' || s.author === '공휴일' || s.author === '대한민국 공휴일');
+  }
+
+  function scheduleKind(s) {
+    var t = String((s && (s.badge || '')) + ' ' + ((s && s.title) || ''));
+    if (/외근|출장|미팅/.test(t)) return 'business';
+    if (/연차|반차|반반차|휴가|공가|병가|경조/.test(t)) return 'vacation';
+    return '';
+  }
+
+  /**
+   * @param {object} emp 임직원 {name, role, dept}
+   * @param {Array} todaySchedules 오늘 날짜의 일정 목록(공휴일 포함)
+   * @param {object} [opts]
+   *   now: Date (기본: 현재), self: {isCheckedIn, isCheckedOut} — 로그인 본인일 때만 전달
+   * @returns {{type:string, text:string, schedule:object|null}}
+   */
+  function resolveEmployeeStatus(emp, todaySchedules, opts) {
+    opts = opts || {};
+    var now = opts.now || new Date();
+    var nowMin = now.getHours() * 60 + now.getMinutes();
+    var list = Array.isArray(todaySchedules) ? todaySchedules : [];
+    var OFF = { type: 'offwork', text: '퇴근', schedule: null };
+
+    // 1) 주말·공휴일은 휴무
+    var day = now.getDay();
+    if (day === 0 || day === 6 || list.some(isHolidayEntry)) return OFF;
+
+    // 2) 지금 시각에 걸쳐 있는 본인 외근·휴가 일정
+    var mine = list.filter(function (s) { return scheduleBelongsTo(s, emp) && scheduleKind(s); });
+    var active = mine.filter(function (s) {
+      var w = scheduleWindow(s);
+      return nowMin >= w.start && nowMin < w.end;
+    });
+    // 휴가가 외근보다 우선 (같은 시간대에 둘 다 있으면 자리에 없는 것이 확실하다)
+    active.sort(function (a, b) { return scheduleKind(a) === 'vacation' ? -1 : scheduleKind(b) === 'vacation' ? 1 : 0; });
+    if (active.length) {
+      var kind = scheduleKind(active[0]);
+      return kind === 'vacation'
+        ? { type: 'vacation', text: '휴가중', schedule: active[0] }
+        : { type: 'business', text: '외근중', schedule: active[0] };
+    }
+
+    // 3) 로그인 본인은 실제 출퇴근 기록이 가장 정확하다
+    if (opts.self) {
+      if (opts.self.isCheckedOut) return OFF;
+      if (opts.self.isCheckedIn) return { type: 'work', text: '근무중', schedule: null };
+    }
+
+    // 4) 그 외에는 근무시간 기준
+    return (nowMin >= WORK_START && nowMin < WORK_END)
+      ? { type: 'work', text: '근무중', schedule: null }
+      : OFF;
+  }
+
+  window.WncUtils = { escapeHtml, escapeAttr, toShortTime, choseongGroup, firstMeaningfulChar, resolveEmployeeStatus, scheduleBelongsTo };
 
   // 템플릿 안에서 짧게 쓰기 위한 전역 별칭.
   window.esc = escapeHtml;

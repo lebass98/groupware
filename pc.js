@@ -2443,15 +2443,15 @@ const PCApp = {
         schedText = this.simplifyScheduleText(m.todaySchedule, foundLocation);
       }
 
-      let status = m.status || 'work';
-      let statusText = m.statusText || '근무중';
-      if (schedText && schedText.startsWith('외근')) {
-        status = 'business';
-        statusText = '외근중';
-      } else if (schedText === '연차') {
-        status = 'offwork';
-        statusText = '휴가';
-      }
+      // 실시간 근무 상태: 시드에 고정된 m.status 대신 오늘 일정의 시간대·현재 시각·
+      // 본인 출퇴근 기록으로 계산한다. 규칙은 모바일과 공유한다(data/utils.js).
+      const me = this.state.user || {};
+      const isSelf = m.name === me.name && (!m.role || !me.role || m.role === me.role);
+      const live = window.WncUtils.resolveEmployeeStatus(m, todaySchedules, {
+        self: isSelf ? { isCheckedIn: !!this.state.isCheckedIn, isCheckedOut: !!this.state.checkOutTime && this.state.checkOutTime !== '--:--' } : null
+      });
+      const status = live.type;
+      const statusText = live.text;
 
       return {
         ...m,
@@ -2477,10 +2477,12 @@ const PCApp = {
     if (empCountEl) empCountEl.textContent = membersList.length;
 
     container.innerHTML = filtered.map(m => {
-      const isWork = m.status === 'work' || m.statusText === '근무중';
-      const isOff = m.status === 'offwork' || m.statusText === '퇴근' || m.statusText === '휴가';
-      const isBusiness = m.status === 'business' || m.statusText === '외근중';
-      const statusClass = isBusiness ? 'bg-surface-container text-on-surface-variant border border-outline/20' : isWork ? 'bg-secondary-container text-secondary' : isOff ? 'bg-surface-container-high text-on-surface-variant' : 'bg-surface-container text-on-surface-variant';
+      const statusClass = {
+        work: 'bg-secondary-container text-secondary',
+        business: 'bg-surface-container text-on-surface-variant border border-outline/20',
+        vacation: 'bg-amber-500/10 text-amber-600',
+        offwork: 'bg-surface-container-high text-on-surface-variant'
+      }[m.status] || 'bg-surface-container text-on-surface-variant';
 
       return `
         <div class="p-5 bg-surface-container-lowest rounded-2xl border border-outline hover:border-primary hover:shadow-md transition-all text-base flex flex-col justify-between">
@@ -2493,7 +2495,7 @@ const PCApp = {
                   <p class="text-sm font-bold text-primary">${m.dept}</p>
                 </div>
               </div>
-              <span class="px-2.5 py-1 rounded-full text-xs font-bold ${statusClass}">● ${m.statusText || '근무중'}</span>
+              <span class="px-2.5 py-1 rounded-full text-xs font-bold ${statusClass}">● ${m.statusText}</span>
             </div>
             <div class="space-y-1.5 text-sm text-on-surface-variant pt-3 border-t border-outline/70">
               <p class="flex items-center gap-2">
