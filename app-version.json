@@ -1,0 +1,10 @@
+{
+  "_comment": "안드로이드 앱 업데이트 안내용 메타데이터. 앱이 시작할 때 이 파일을 읽어 자기 버전과 비교한다. 새 APK를 배포하면 version과 downloadUrl을 함께 갱신한다.",
+  "android": {
+    "version": "1.0.0",
+    "minimumVersion": "1.0.0",
+    "downloadUrl": "",
+    "releaseNotes": "",
+    "releasedAt": "2026-10-22"
+  }
+}
