@@ -425,3 +425,4 @@ Pool/
 - **임직원 19명 Firebase 계정 일괄 발급**: 주소록 기준 전 직원 Authentication 계정을 공통 초기 비밀번호(`00000000`)로 발급·검증(퇴사자 손석호 제외, 겸직자 김종규는 1계정).
 - **웹 푸시 알림(FCM) 전 디바이스 구축**: 루트 서비스 워커(`firebase-messaging-sw.js`)와 클라이언트 레이어(`firebase/messaging.js`, `window.WncPush`)를 추가하고 PC 환경설정·모바일 설정 드로어에 알림 토글을 동일 규격으로 배치. 기기 토큰은 `users/{UID}/push_tokens`에 본인만 읽고 쓰도록 규칙을 제한하고 로그아웃 시 해당 기기 토큰을 해제. 발송은 서버(`/api/notify`, FCM HTTP v1)가 담당하며 무효 토큰을 자동 정리(PC·모바일 웹·앱 동일 적용).
 - **안드로이드 앱 인앱 업데이트 기능**: 앱 시작 시 `app-version.json`의 최신 버전과 설치 버전을 비교해 새 APK가 있으면 안내 레이어를 띄우고 다운로드 링크로 연결(`react-native-app/updateChecker.js`). `minimumVersion`보다 낮은 버전은 건너뛰기를 막아 강제 업데이트로 동작하며, 버전 확인 실패는 앱 사용을 방해하지 않습니다. 앱 버전 1.1.0 / versionCode 2로 릴리즈 APK 빌드(66MB).
+- **보안 규칙 게시 및 APK 배포**: `users/{UID}/push_tokens` 규칙을 Firestore에 게시하고 본인 경로만 읽고 쓸 수 있음을 검증(타인 경로 403 차단 확인). 릴리즈 APK는 GitHub 릴리즈 `v1.1.0`과 구글 드라이브(`WnC 그룹웨어 APK` 폴더)에 배포.

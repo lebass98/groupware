@@ -24,10 +24,6 @@
     "api/sync/on-login.js": {
       "maxDuration": 300,
       "includeFiles": "{scripts/**,data/mockData.js,data/_legacy/**,node_modules/**}"
-    },
-    "api/admin/deploy-rules.js": {
-      "maxDuration": 60,
-      "includeFiles": "firestore.rules"
     }
   },
   "buildCommand": "node scripts/build-vercel.js",
