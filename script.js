@@ -506,11 +506,17 @@ const App = {
       this.state.isCheckedIn = false;
       this.state.checkInTime = null;
       this.state.checkInTimeStr = null;
+      this.state.checkOutTimeStr = null;
       return;
     }
 
     this.state.checkInTimeStr = todayLog.checkInTimeStr;
-    this.state.isCheckedIn = !todayLog.checkOutTimeStr || todayLog.checkOutTimeStr === '-';
+    // 퇴근 시간도 기록에서 읽어야 다른 기기에서 퇴근했거나 새로고침한 뒤에도 보인다(PC와 같은 기준).
+    // 기록에 아직 퇴근이 없으면, 방금 이 기기에서 누른 퇴근 시간(동기화 대기 중)은 지우지 않는다.
+    if (todayLog.checkOutTimeStr && todayLog.checkOutTimeStr !== '-') {
+      this.state.checkOutTimeStr = todayLog.checkOutTimeStr;
+    }
+    this.state.isCheckedIn = !this.state.checkOutTimeStr;
 
     const inM = todayLog.checkInTimeStr.match(/(\d{1,2}):(\d{2})/);
     if (inM) {
@@ -2272,7 +2278,7 @@ const App = {
             </span>
             <span class="px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center gap-1.5 ${isCheckedIn ? 'bg-secondary/15 text-secondary border border-secondary/30' : 'bg-surface-container text-on-surface-variant'}">
               <span class="w-1.5 h-1.5 rounded-full ${isCheckedIn ? 'bg-secondary' : 'bg-on-surface-variant'}"></span>
-              <span>${isCheckedIn ? '근무 중 (정상)' : '퇴근 완료'}</span>
+              <span>${isCheckedIn ? '근무 중 (정상)' : checkOutTime !== '--:--' ? '퇴근 완료' : '출근 전'}</span>
             </span>
           </div>
 
