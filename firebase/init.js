@@ -83,6 +83,17 @@
           window.dispatchEvent(new CustomEvent('wnc-cloud-status', { detail: { status: this.status } }));
         });
 
+        // 앱(WebView)이나 탭을 켜 둔 채 퇴근하면 페이지가 다시 로드되지 않아 퇴근 기록을 영영 못 받는다.
+        // 화면으로 돌아올 때, 그리고 켜 둔 동안 1분마다 마지막 수집이 10분 넘게 지났으면 다시 받아 온다.
+        // (안드로이드 앱 WebView는 복귀 이벤트를 주지 않을 수 있어 주기 확인을 함께 둔다.)
+        const resync = () => {
+          if (document.visibilityState !== 'visible' || !this.user || this._syncing) return;
+          if (Date.now() - (this._lastSyncAt || 0) < 10 * 60 * 1000) return;
+          this._syncOnLogin(this.user, { silent: true });
+        };
+        document.addEventListener('visibilitychange', resync);
+        setInterval(resync, 60 * 1000);
+
         console.info(`[Firebase] '${window.FirebaseConfig.projectId}' 프로젝트에 연결되었습니다.`);
         return true;
       } catch (err) {
@@ -130,7 +141,9 @@
       this._syncOnLogin(user);
     },
 
-    async _syncOnLogin(user) {
+    async _syncOnLogin(user, { silent = false } = {}) {
+      this._syncing = true;
+      this._lastSyncAt = Date.now();
       try {
         const response = await fetch('/api/sync/on-login', {
           method: 'POST', headers: { Authorization: `Bearer ${await user.getIdToken()}` },
@@ -139,9 +152,12 @@
         const result = await response.json();
         if (this.user?.uid !== user.uid) return;
         if (result.ok) await this.refreshSitegateData();
-        window.dispatchEvent(new CustomEvent('wnc-login-sync', { detail: result }));
+        // 화면 복귀 때 다시 받는 수집은 매번 안내하지 않고, 실패했을 때만 알린다.
+        if (!silent || !result.ok) window.dispatchEvent(new CustomEvent('wnc-login-sync', { detail: result }));
       } catch (error) {
         console.warn('[Firebase] 로그인 자동 수집 실패:', error.name);
+      } finally {
+        this._syncing = false;
       }
     },
 
