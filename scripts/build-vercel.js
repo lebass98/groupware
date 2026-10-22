@@ -7,7 +7,8 @@ fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
 
 // 웹에서 사용하는 정적 파일만 게시한다.
-const entries = ['index.html', 'pc.html', 'style.css', 'pc.css', 'script.js', 'pc.js', 'profile.png', 'data', 'firebase', 'resource', 'pc'];
+// firebase-messaging-sw.js는 반드시 사이트 루트에 있어야 서비스 워커가 전체 경로를 담당한다.
+const entries = ['index.html', 'pc.html', 'style.css', 'pc.css', 'script.js', 'pc.js', 'profile.png', 'firebase-messaging-sw.js', 'data', 'firebase', 'resource', 'pc'];
 const allowed = new Set(['.html', '.css', '.js', '.json', '.png', '.jpg', '.jpeg', '.svg', '.webp', '.gif', '.ico', '.woff', '.woff2']);
 const tooling = new Set(['build-seed.js', 'check-firebase.js', 'verify-seed.js', 'verify-consistency.js']);
 for (const entry of entries) {

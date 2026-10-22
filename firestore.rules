@@ -44,6 +44,11 @@ service cloud.firestore {
         allow read: if isMember() && request.auth.uid == uid;
         allow write: if false;
       }
+      // 웹 푸시 기기 토큰. 본인 기기만 등록·해제할 수 있고, 발송은 서버(서비스 계정)가 담당합니다.
+      // 문서 ID가 곧 토큰이므로 같은 기기가 재발급받으면 덮어쓰여 중복이 쌓이지 않습니다.
+      match /push_tokens/{token} {
+        allow read, write: if isMember() && request.auth.uid == uid;
+      }
     }
     match /business_snapshots/{kind}/chunks/{chunk} {
       allow read: if isMember();

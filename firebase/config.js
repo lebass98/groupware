@@ -11,7 +11,17 @@ window.FirebaseConfig = {
   storageBucket: "wnc-groupware.firebasestorage.app",
   messagingSenderId: "1088182727206",
   appId: "1:1088182727206:web:4d107f8d62f8ad561eece7",
-  measurementId: "G-8XV6Z7FZ5J"
+  measurementId: "G-8XV6Z7FZ5J",
+
+  /**
+   * 웹 푸시 인증서(VAPID) 공개키.
+   *
+   * 비워 두면 Firebase 기본 공개키로 토큰을 발급하므로 알림은 그대로 동작한다.
+   * 전용 키를 쓰려면 Firebase 콘솔 > 프로젝트 설정 > 클라우드 메시징 >
+   * '웹 푸시 인증서'에서 키 쌍을 생성해 여기에 붙여 넣는다.
+   * 키를 바꾸면 기존에 발급된 토큰은 무효가 되어 각 기기에서 알림을 다시 켜야 한다.
+   */
+  vapidKey: ""
 };
 
 /**

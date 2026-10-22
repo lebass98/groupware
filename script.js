@@ -1263,6 +1263,8 @@ const App = {
   },
 
   logout() {
+    // 공용 기기에서 다음 사용자에게 이전 사용자의 알림이 가지 않도록 토큰을 먼저 떼어 낸다.
+    if (window.WncPush) window.WncPush.detachForSignOut();
     if (window.WncCloud) window.WncCloud.signOut();
     this.state.isLoggedIn = false;
     this.state.isCheckedIn = false;
@@ -6356,7 +6358,10 @@ const App = {
       }
     }
 
-    // 3. 데이터 새로 불러오기 UI 초기화 (기본값: 현재 보고 있는 달)
+    // 3. 알림(웹 푸시) 토글 상태 갱신
+    this.renderPushToggle();
+
+    // 4. 데이터 새로 불러오기 UI 초기화 (기본값: 현재 보고 있는 달)
     this.initDailyReportSyncUI();
 
     // 드로어 노출
@@ -6370,6 +6375,52 @@ const App = {
       FramerMotion.animate(backdrop, { opacity: [0, 1] }, { duration: 0.28, easing: 'ease-out' });
       FramerMotion.animate(panel, { transform: ['translateX(100%)', 'translateX(0%)'] }, { duration: 0.35, easing: FramerMotion.spring({ stiffness: 380, damping: 32 }) });
     }
+  },
+
+  // =========================================
+  // 설정 > 알림 (웹 푸시)
+  // 실제 등록/해제는 firebase/messaging.js(WncPush)가 담당하고,
+  // 여기서는 스위치 모양과 안내 문구만 상태에 맞춰 보여 준다.
+  // =========================================
+
+  /** 현재 푸시 상태를 설정 드로어의 스위치와 설명 문구에 반영한다. */
+  renderPushToggle() {
+    const toggle = document.getElementById('drawer-push-toggle');
+    const knob = document.getElementById('drawer-push-knob');
+    const label = document.getElementById('drawer-push-label');
+    if (!toggle || !knob || !label) return;
+
+    const push = window.WncPush;
+    const on = !!(push && push.isEnabled() && push.status === 'on');
+    const disabled = !push || push.status === 'unsupported';
+
+    toggle.className = `relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${on ? 'bg-primary' : 'bg-surface-container-highest'}${disabled ? ' opacity-40 cursor-not-allowed' : ''}`;
+    knob.className = `inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${on ? 'translate-x-6' : 'translate-x-1'}`;
+    toggle.disabled = disabled;
+
+    if (!push) { label.innerText = '알림 모듈을 불러오지 못했습니다.'; return; }
+    if (push.status === 'unsupported') { label.innerText = push._unsupportedReason(); return; }
+    if (push.status === 'denied') { label.innerText = '브라우저에서 알림이 차단되어 있습니다.'; return; }
+    label.innerText = on ? '결재·공지·일정 알림을 받는 중' : '알림이 꺼져 있습니다';
+  },
+
+  /** 설정 드로어의 알림 스위치를 눌렀을 때. */
+  async togglePushNotifications() {
+    const push = window.WncPush;
+    if (!push) return;
+
+    const label = document.getElementById('drawer-push-label');
+    if (push.isEnabled() && push.status === 'on') {
+      await push.disable();
+      this.renderPushToggle();
+      this.showToast('🔕 이 기기에서 알림을 껐습니다.');
+      return;
+    }
+
+    if (label) label.innerText = '알림을 등록하는 중...';
+    const result = await push.enable();
+    this.renderPushToggle();
+    this.showToast(result.ok ? '🔔 이 기기에서 알림을 받습니다.' : `⚠️ ${result.message}`);
   },
 
   // =========================================

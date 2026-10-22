@@ -2815,7 +2815,27 @@
           </button>
         </div>
 
-        <!-- 3. 하단 독 메뉴 편집 -->
+        <!-- 3. 알림 (웹 푸시) -->
+        <div class="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/15 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-surface-container-highest flex items-center justify-center text-on-surface">
+                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-headline text-sm font-bold text-on-surface">알림</p>
+                <p class="text-[11px] text-on-surface-variant" id="drawer-push-label">알림 상태를 확인하는 중입니다...</p>
+              </div>
+            </div>
+            <button type="button" onclick="App.togglePushNotifications()" class="relative inline-flex h-6 w-11 items-center rounded-full bg-surface-container-highest transition-colors focus:outline-none" id="drawer-push-toggle">
+              <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1 shadow-sm" id="drawer-push-knob"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. 하단 독 메뉴 편집 -->
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <label class="font-label text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-1.5">
@@ -3652,8 +3672,10 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
   <script src="firebase/config.js"></script>
   <script src="firebase/init.js?v=20261008_account_sync"></script>
+  <script src="firebase/messaging.js?v=20261022_push"></script>
   <script src="data/mockData.js?v=20260911_projects_370"></script>
   <script src="script.js?v=20261008_account_sync"></script>
 </body>

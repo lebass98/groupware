@@ -819,7 +819,26 @@ const PCApp = {
           </button>
         </div>
 
-        <!-- 3. 데이터 새로 불러오기 -->
+        <!-- 3. 알림 (웹 푸시) -->
+        <div class="flex items-center justify-between p-4 rounded-2xl bg-surface-container-low border border-outline">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-on-surface">알림</p>
+              <p class="text-xs text-on-surface-variant" id="pc-settings-push-label">알림 상태를 확인하는 중입니다...</p>
+            </div>
+          </div>
+          <button type="button" onclick="PCApp.togglePushNotifications()" id="pc-settings-push-toggle"
+            class="relative inline-flex h-6 w-11 items-center rounded-full bg-surface-container-high transition-colors focus:outline-none">
+            <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1 shadow-sm" id="pc-settings-push-knob"></span>
+          </button>
+        </div>
+
+        <!-- 4. 데이터 새로 불러오기 -->
         <div class="p-4 rounded-2xl bg-surface-container-low border border-outline space-y-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -863,12 +882,15 @@ const PCApp = {
 
     this.showModal(modalHtml);
     this.renderSettingsThemeToggle();
+    this.renderPushToggle();
     this.initDailyReportSyncUI();
   },
 
   async logout() {
     const button = document.getElementById('pc-settings-logout');
     if (button) { button.disabled = true; button.textContent = '로그아웃 중'; }
+    // 공용 기기에서 다음 사용자에게 이전 사용자의 알림이 가지 않도록 토큰을 먼저 떼어 낸다.
+    await window.WncPush?.detachForSignOut();
     await window.WncCloud?.signOut();
     if (window.WncCloud?.user) {
       if (button) { button.disabled = false; button.textContent = '로그아웃'; }
@@ -888,6 +910,52 @@ const PCApp = {
     toggle.className = `relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${isDark ? 'bg-primary' : 'bg-surface-container-high'}`;
     knob.className = `inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${isDark ? 'translate-x-6' : 'translate-x-1'}`;
     label.innerText = isDark ? '다크 모드 적용 중' : '라이트 모드 적용 중';
+  },
+
+  // =========================================
+  // 환경설정 > 알림 (웹 푸시)
+  // 실제 등록/해제는 firebase/messaging.js(WncPush)가 담당하고,
+  // 여기서는 스위치 모양과 안내 문구만 상태에 맞춰 보여 준다. (모바일 script.js와 동일 규격)
+  // =========================================
+
+  /** 현재 푸시 상태를 환경설정 모달의 스위치와 설명 문구에 반영한다. */
+  renderPushToggle() {
+    const toggle = document.getElementById('pc-settings-push-toggle');
+    const knob = document.getElementById('pc-settings-push-knob');
+    const label = document.getElementById('pc-settings-push-label');
+    if (!toggle || !knob || !label) return;
+
+    const push = window.WncPush;
+    const on = !!(push && push.isEnabled() && push.status === 'on');
+    const disabled = !push || push.status === 'unsupported';
+
+    toggle.className = `relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${on ? 'bg-primary' : 'bg-surface-container-high'}${disabled ? ' opacity-40 cursor-not-allowed' : ''}`;
+    knob.className = `inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${on ? 'translate-x-6' : 'translate-x-1'}`;
+    toggle.disabled = disabled;
+
+    if (!push) { label.innerText = '알림 모듈을 불러오지 못했습니다.'; return; }
+    if (push.status === 'unsupported') { label.innerText = push._unsupportedReason(); return; }
+    if (push.status === 'denied') { label.innerText = '브라우저에서 알림이 차단되어 있습니다.'; return; }
+    label.innerText = on ? '결재·공지·일정 알림을 받는 중' : '알림이 꺼져 있습니다';
+  },
+
+  /** 환경설정의 알림 스위치를 눌렀을 때. */
+  async togglePushNotifications() {
+    const push = window.WncPush;
+    if (!push) return;
+
+    const label = document.getElementById('pc-settings-push-label');
+    if (push.isEnabled() && push.status === 'on') {
+      await push.disable();
+      this.renderPushToggle();
+      this.showToast('🔕 이 기기에서 알림을 껐습니다.');
+      return;
+    }
+
+    if (label) label.innerText = '알림을 등록하는 중...';
+    const result = await push.enable();
+    this.renderPushToggle();
+    this.showToast(result.ok ? '🔔 이 기기에서 알림을 받습니다.' : `⚠️ ${result.message}`);
   },
 
   // 실행 경로(로컬 중계 / GitHub Actions)를 판별해 크롤링 버튼 상태를 정한다.
