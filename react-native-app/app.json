@@ -2,7 +2,7 @@
   "expo": {
     "name": "WnC 그룹웨어",
     "slug": "groupware-app",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +16,7 @@
         "backgroundColor": "#0346FF"
       },
       "package": "com.wordncode.groupware",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png"
